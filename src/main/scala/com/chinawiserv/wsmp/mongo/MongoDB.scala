@@ -35,7 +35,7 @@ object MongoDB {
     addresses.add(new ServerAddress(HOST1, PORT))
     addresses.add(new ServerAddress(HOST2, PORT));
     addresses.add(new ServerAddress(HOST3, PORT));
-    new MongoDBClientProxy().bind(addresses, DB);
+    new MongoDBClientProxy().bind(addresses, DB, buildOptions);
   }
 
   def saveRecords(records: List[List[Document]]) = {
