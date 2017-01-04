@@ -1,7 +1,10 @@
 package com.chinawiserv.wsmp.spark.operator
 
-import com.chinawiserv.wsmp.spark.model.{Cmd, Record}
+import com.chinawiserv.wsmp.spark.model.{Cmd}
 import com.codahale.jerkson.Json
+import org.bson.Document
+
+import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
 
 object Operator {
@@ -10,13 +13,24 @@ object Operator {
     Json.parse[Cmd](json);
   }
 
-  def toList(cmd: Cmd): List[Record] = {
-    val records = new ListBuffer[Record];
+  def toRedis(cmd: Cmd): String = {
+    val map = new mutable.HashMap[String, Any];
+    map += ("id" -> cmd.id);
+    map += ("levels" -> cmd.levels);
+    Json.generate[mutable.HashMap[String, Any]](map);
+  }
+
+  def toList(cmd: Cmd): List[Document] = {
+    val records = new ListBuffer[Document];
     val startFreq = cmd.startFreq / 1000000;
     val stepFreq = cmd.stepFreq / 1000000;
     var index = 0;
     cmd.levels.foreach(byte => {
-      records += Record(cmd.id, cmd.scanOverTime, (startFreq + (stepFreq * index)), byte);
+      val doc = new Document();
+      doc.put("id", cmd.id);
+      doc.put("scanOverTime", cmd.scanOverTime);
+      doc.put("freq", startFreq + (stepFreq * index));
+      doc.put("level", byte);
       index += 1;
     });
     records.toList;

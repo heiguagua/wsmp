@@ -1,5 +1,6 @@
 package com.chinawiserv.wsmp.spark
 
+import com.chinawiserv.wsmp.jedis.JedisClientTool
 import com.chinawiserv.wsmp.mongo.MongoDB
 import com.chinawiserv.wsmp.spark.operator.Operator
 import kafka.serializer.StringDecoder
@@ -24,6 +25,17 @@ object SparkStreaming {
     val lines = KafkaUtils.createDirectStream[String, String, StringDecoder, StringDecoder](sc, kafkaParams, topic);
 
     val cmds = lines.map(x => x._2).map(json => Operator.toCmd(json));
+
+   /* cmds.foreachRDD(rdd => rdd.foreachPartition(par => par.foreach(cmd => {
+      val list = JedisClientTool.readMsg(cmd.id);
+      var abcd = 0;
+      for (json <- list) {
+        println("    "+ abcd + " " + json.substring(0, 1000));
+        abcd += 1;
+      }
+      JedisClientTool.addMsg(cmd.id, Operator.toRedis(cmd));
+    })));*/
+
     val list = cmds.map(cmd => Operator.toList(cmd));
     list.foreachRDD(rdd => rdd.foreachPartition(x => MongoDB.saveRecords(x.toList)));
 
