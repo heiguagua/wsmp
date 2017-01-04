@@ -29,6 +29,12 @@
             <artifactId>mongodb</artifactId>
             <groupId>com.chinawiserv.core.store</groupId>
             <version>2.2-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-classic</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>

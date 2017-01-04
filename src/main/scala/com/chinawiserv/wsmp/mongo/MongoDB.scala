@@ -26,8 +26,6 @@ object MongoDB {
 
   private val DB: String = "wsmp";
 
-  private val BULK_SIZE: Int = 2000;
-
   private val executorService = Executors.newCachedThreadPool();
 
   def createConnection(): MongoDBClient = {
@@ -35,7 +33,7 @@ object MongoDB {
     addresses.add(new ServerAddress(HOST1, PORT))
     addresses.add(new ServerAddress(HOST2, PORT));
     addresses.add(new ServerAddress(HOST3, PORT));
-    new MongoDBClientProxy().bind(addresses, DB, buildOptions);
+    new MongoDBClientProxy().bind(addresses, DB)
   }
 
   def saveRecords(records: List[List[Document]]) = {
@@ -45,7 +43,7 @@ object MongoDB {
           override def run(): Unit = {
             saveRecord(list);
           }
-        })
+        });
       });
     }
   }
@@ -60,10 +58,6 @@ object MongoDB {
         val level = document.getInteger("level");
         val updateOneModel = new UpdateOneModel[Document](Filters.and(Filters.eq("station", station), Filters.eq("index", index)), Updates.max("level", level), new UpdateOptions().upsert(true));
         writeModelList.add(updateOneModel);
-        if(writeModelList.size() % BULK_SIZE == 0){
-          mc.bulkWrite(DB, "ratio", writeModelList, new BulkWriteOptions().ordered(false));
-          writeModelList.clear();
-        }
       });
       if(writeModelList.size() > 0){
         mc.bulkWrite(DB, "ratio", writeModelList, new BulkWriteOptions().ordered(false));
@@ -75,7 +69,7 @@ object MongoDB {
 
   private def buildOptions: MongoClientOptions = {
         val builder = new MongoClientOptions.Builder;
-        builder.socketKeepAlive(true);
+        builder.socketKeepAlive(false);
         builder.connectionsPerHost(1000);
         builder.connectTimeout(5000);
         builder.socketTimeout(30000);
@@ -89,13 +83,14 @@ object MongoDB {
     }
 
   def main(args: Array[String]): Unit = {
+    println("start")
     val stationNum = 300;
     val records = ListBuffer[List[Document]]();
     for (station <- 1 to stationNum) {
       executorService.submit(new Runnable {
         override def run(): Unit = {
           val row = ListBuffer[Document]();
-          for (index <- 0 to 14000) {
+          for (index <- 0 until 1400) {
             val document = new Document("station", station);
             document.append("index", index).append("level", Random.nextInt(127));
             row += document;
