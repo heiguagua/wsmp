@@ -1,7 +1,6 @@
 package com.chinawiserv.wsmp.spark
 
 import com.chinawiserv.wsmp.jedis.JedisClientTool
-import com.chinawiserv.wsmp.mongo.MongoDB
 import com.chinawiserv.wsmp.spark.operator.Operator
 import kafka.serializer.StringDecoder
 import org.apache.log4j.{Level, Logger}
@@ -12,7 +11,7 @@ import org.apache.spark.streaming.{Durations, StreamingContext}
 object SparkStreaming {
   def main(args: Array[String]): Unit = {
 
-    Logger.getLogger("org.apache.spark").setLevel(Level.WARN);
+    Logger.getLogger("org.apache.spark").setLevel(Level.OFF);
     Logger.getLogger("org.eclipse.jetty.server").setLevel(Level.OFF);
 
     val sparkConf = new SparkConf().setAppName("SparkStreaming").setMaster("local[2]");
