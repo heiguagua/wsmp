@@ -2,8 +2,8 @@ package com.chinawiserv.wsmp.mongo
 
 import java.util
 
-import com.chinawiserv.wsmp.spark.model.Record
 import com.mongodb.{MongoClient, ServerAddress}
+import org.bson.Document
 
 object MongoDB {
 
@@ -20,13 +20,13 @@ object MongoDB {
     return new MongoClient(addresses);
   }
 
-  def saveRecords(records: List[List[Record]]) = {
+  def saveRecords(records: List[List[Document]]) = {
     if (records != null) {
       println("records.length="+records.length);
     }
   }
 
-  def saveRecord(record: List[Record]) = {
+  def saveRecord(record: List[Document]) = {
     if (record != null) {
       println("record.length="+record.length);
     }
