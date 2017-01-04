@@ -26,7 +26,7 @@ object SparkStreaming {
 
     val cmds = lines.map(x => x._2).map(json => Operator.toCmd(json));
 
-   /* cmds.foreachRDD(rdd => rdd.foreachPartition(par => par.foreach(cmd => {
+    cmds.foreachRDD(rdd => rdd.foreachPartition(par => par.foreach(cmd => {
       val list = JedisClientTool.readMsg(cmd.id);
       var abcd = 0;
       for (json <- list) {
@@ -34,10 +34,10 @@ object SparkStreaming {
         abcd += 1;
       }
       JedisClientTool.addMsg(cmd.id, Operator.toRedis(cmd));
-    })));*/
+    })));
 
-    val list = cmds.map(cmd => Operator.toList(cmd));
-    list.foreachRDD(rdd => rdd.foreachPartition(x => MongoDB.saveRecords(x.toList)));
+    //val list = cmds.map(cmd => Operator.toList(cmd));
+    //list.foreachRDD(rdd => rdd.foreachPartition(x => MongoDB.saveRecords(x.toList)));
 
     sc.start();
     sc.awaitTermination();
