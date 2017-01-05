@@ -22,30 +22,26 @@ object JedisClient extends Serializable {
   implicit class JedisExtended(jedis: Jedis) {
 
     def addMsg(key: String, element: String): Unit = {
-      synchronized({
-        val number = jedis.rpush(key, element);
-        if (number > 10) {
-          jedis.ltrim(key, (number - 10), (number - 1));
-        }
-        println("Add to Redis（hashCode="+jedis.hashCode()+"） "+key);
-      });
+      val number = jedis.rpush(key, element);
+      if (number > 10) {
+        jedis.ltrim(key, (number - 10), (number - 1));
+      }
+      println("Add to Redis（hashCode="+jedis.hashCode()+"） "+key);
     }
 
     def readMsg(key: String): List[String] = {
-      synchronized({
-        val result = new ListBuffer[String];
-        val number = jedis.llen(key);
-        var index = 0L;
-        if (number > 10) {
-          index = number - 10;
-        }
-        val list = jedis.lrange(key, index, number - 1);
-        for (i <- 0 until list.size()) {
-          result += list.get(i);
-        }
-        list.clear();
-        result.toList;
-      });
+      val result = new ListBuffer[String];
+      val number = jedis.llen(key);
+      var index = 0L;
+      if (number > 10) {
+        index = number - 10;
+      }
+      val list = jedis.lrange(key, index, number - 1);
+      for (i <- 0 until list.size()) {
+        result += list.get(i);
+      }
+      list.clear();
+      result.toList;
     }
   }
 }
