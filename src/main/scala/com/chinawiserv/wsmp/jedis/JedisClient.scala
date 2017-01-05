@@ -1,41 +1,51 @@
 package com.chinawiserv.wsmp.jedis
 
-import redis.clients.jedis.Jedis;
-import scala.collection.mutable.ListBuffer;
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig
+import redis.clients.jedis.{Jedis, JedisPool}
+import scala.collection.mutable.ListBuffer
 
-class JedisClient(host: String, port: Int) extends Jedis(host: String, port: Int) {
+object JedisClient extends Serializable {
 
-  def addMsg(key: String, element: String): Unit = {
-    while (this.llen(key) >= 10) {
-      this.lpop(key);
+  val redisHost = "web.dom"
+  val redisPort = 6379
+  val redisTimeout = 30000
+  lazy val pool = new JedisPool(new GenericObjectPoolConfig(), redisHost, redisPort, redisTimeout)
+
+  lazy val hook = new Thread {
+    override def run = {
+      println("Execute hook thread: " + this)
+      pool.destroy();
     }
-    this.rpush(key, element);
   }
+  sys.addShutdownHook(hook.run);
 
-  def readMsg(key: String): List[String] = {
-    val result = new ListBuffer[String];
-    var length = this.llen(key);
-    if (length >= 10) {
-      length = 10L;
+  implicit class JedisExtended(jedis: Jedis) {
+
+    def addMsg(key: String, element: String): Unit = {
+      synchronized({
+        val number = jedis.rpush(key, element);
+        if (number > 10) {
+          jedis.ltrim(key, (number - 10), (number - 1));
+        }
+        println("Add to Redis（hashCode="+jedis.hashCode()+"） "+key);
+      });
     }
-    val list = this.lrange(key, 0, length - 1);
-    import collection.JavaConversions._;
-    for (json <- list) {
-      result += json;
+
+    def readMsg(key: String): List[String] = {
+      synchronized({
+        val result = new ListBuffer[String];
+        val number = jedis.llen(key);
+        var index = 0L;
+        if (number > 10) {
+          index = number - 10;
+        }
+        val list = jedis.lrange(key, index, number - 1);
+        for (i <- 0 until list.size()) {
+          result += list.get(i);
+        }
+        list.clear();
+        result.toList;
+      });
     }
-    result.toList;
   }
-
-}
-
-object JedisClient {
-
-  private val REDIS_IP = "web.dom";
-
-  private val REDIS_PORT = 6379;
-
-  def apply(): JedisClient = {
-    new JedisClient(REDIS_IP, REDIS_PORT);
-  }
-
 }

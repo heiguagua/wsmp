@@ -1,6 +1,7 @@
 package com.chinawiserv.wsmp.spark
 
-import com.chinawiserv.wsmp.jedis.JedisClientTool
+import com.chinawiserv.wsmp.jedis.JedisClient
+import com.chinawiserv.wsmp.jedis.JedisClient.JedisExtended
 import com.chinawiserv.wsmp.spark.operator.Operator
 import kafka.serializer.StringDecoder
 import org.apache.log4j.{Level, Logger}
@@ -25,18 +26,19 @@ object SparkStreaming {
 
     val cmds = lines.map(x => x._2).map(json => Operator.toCmd(json));
 
-    cmds.foreachRDD(rdd => rdd.foreachPartition(par => par.foreach(cmd => {
-      val list = JedisClientTool.readMsg(cmd.id);
-      var abcd = 0;
-      for (json <- list) {
-        println("    "+ abcd + " " + json.substring(0, 1000));
-        abcd += 1;
-      }
-      JedisClientTool.addMsg(cmd.id, Operator.toRedis(cmd));
-    })));
-
-    //val list = cmds.map(cmd => Operator.toList(cmd));
-    //list.foreachRDD(rdd => rdd.foreachPartition(x => MongoDB.saveRecords(x.toList)));
+    cmds.foreachRDD(rdd => rdd.foreachPartition(par => {
+      val jedis = JedisClient.pool.getResource;
+      par.foreach(cmd => {
+        val list = jedis.readMsg(cmd.id);
+        var abcd = 0;
+        for (json <- list) {
+          println("    "+ abcd + " " + json.substring(0, 20));
+          abcd += 1;
+        }
+        jedis.addMsg(cmd.id, Operator.toRedis(cmd));
+      })
+      jedis.close();
+    }));
 
     sc.start();
     sc.awaitTermination();
