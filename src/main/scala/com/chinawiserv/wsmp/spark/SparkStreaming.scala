@@ -2,6 +2,7 @@ package com.chinawiserv.wsmp.spark
 
 import com.chinawiserv.wsmp.mem.MemManager
 import com.chinawiserv.wsmp.spark.operator.Operator
+import com.chinawiserv.wsmp.unusual.Unusual
 import kafka.serializer.StringDecoder
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.SparkConf
@@ -26,12 +27,7 @@ object SparkStreaming {
     val cmds = lines.map(x => x._2).map(json => Operator.toCmd(json));
 
     cmds.foreachRDD(rdd => rdd.foreachPartition(par => {
-      val memManager = new MemManager();
-      par.foreach(cmd => {
-        val list = memManager.readData(cmd.id);
-        list.foreach(x => println(cmd.toString.substring(0, 120)));
-        memManager.saveData(cmd);
-      })
+      new Unusual().compute(par.toList);
     }));
 
     sc.start();
