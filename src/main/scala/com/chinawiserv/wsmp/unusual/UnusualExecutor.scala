@@ -1,10 +1,10 @@
-package com.chinawiserv.wsmp.unusual.handler
+package com.chinawiserv.wsmp.unusual
 
-import com.chinawiserv.wsmp.mem.MemManager;
-import com.chinawiserv.wsmp.spark.model.{Cmd, Mem};
-import com.chinawiserv.wsmp.spark.operator.Operator;
+import com.chinawiserv.wsmp.mem.MemManager
+import com.chinawiserv.wsmp.mem.model.{Cmd, Mem}
+import com.chinawiserv.wsmp.operator.Operator;
 
-class CustomWorker(val memManager: MemManager, val cmds : List[Cmd]) extends Runnable {
+class UnusualExecutor(val memManager: MemManager, val cmds : List[Cmd]) extends Runnable {
 
   override def run(): Unit = {
     if (cmds != null && cmds.length > 0) {

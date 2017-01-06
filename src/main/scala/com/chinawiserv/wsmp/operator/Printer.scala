@@ -1,6 +1,6 @@
-package com.chinawiserv.wsmp.spark.operator
+package com.chinawiserv.wsmp.operator
 
-import com.chinawiserv.wsmp.spark.model.Cmd
+import com.chinawiserv.wsmp.mem.model.Cmd
 
 object Printer {
 

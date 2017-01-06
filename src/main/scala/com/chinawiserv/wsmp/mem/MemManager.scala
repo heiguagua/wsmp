@@ -1,7 +1,7 @@
 package com.chinawiserv.wsmp.mem
 
-import com.chinawiserv.wsmp.spark.model.{Cmd, Mem, Web}
-import com.chinawiserv.wsmp.spark.operator.Operator
+import com.chinawiserv.wsmp.mem.model.{Cmd, Mem, Web}
+import com.chinawiserv.wsmp.operator.Operator
 import com.codahale.jerkson.Json
 
 import scala.collection.mutable.{HashMap, ListBuffer}

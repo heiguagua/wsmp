@@ -1,6 +1,6 @@
-package com.chinawiserv.wsmp.spark.operator
+package com.chinawiserv.wsmp.operator
 
-import com.chinawiserv.wsmp.spark.model.{Cmd, Mem}
+import com.chinawiserv.wsmp.mem.model.{Cmd, Mem}
 import com.codahale.jerkson.Json
 import scala.collection.mutable
 

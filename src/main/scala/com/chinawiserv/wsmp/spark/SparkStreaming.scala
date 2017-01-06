@@ -1,7 +1,7 @@
 package com.chinawiserv.wsmp.spark
 
 import com.chinawiserv.wsmp.mem.MemManager
-import com.chinawiserv.wsmp.spark.operator.Operator
+import com.chinawiserv.wsmp.operator.Operator
 import com.chinawiserv.wsmp.unusual.Unusual
 import kafka.serializer.StringDecoder
 import org.apache.log4j.{Level, Logger}
