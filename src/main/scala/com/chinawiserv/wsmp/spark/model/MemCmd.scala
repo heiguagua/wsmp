@@ -1,17 +1,17 @@
 package com.chinawiserv.wsmp.spark.model
 
-case class Cmd(
+case class MemCmd(
                 //uint32	m_uiFlag	开始标志位,固定为:0xEEEEEEEE
-                uiFlag: Long,
+                //uiFlag: Long,
 
                 //uint32	m_uiLength	数据帧的长度（含帧头长度), 4字节浮整形
-                uiLength: Long,
+                //uiLength: Long,
 
                 //uint32	m_uiLength	本类型数据长度,包括m_uiLength的字节长度
-                dataUiLength: Long,
+                //dataUiLength: Long,
 
                 //char[20]	m_cDataType	表示数据类型, 20字节字符型；
-                cdataType: String,
+                //cdataType: String,
 
                 //char[40]	Id	传感器编号（Int类型字符串）
                 id: String,
@@ -35,30 +35,24 @@ case class Cmd(
                 flat: Long,
 
                 //char[9]	compressInfo	忽略
-                compressInfo: String,
+                //compressInfo: String,
 
                 //uint32	numOfTraceItems	数据个数
                 numOfTraceItems: Long,
 
                 //int16	selectorFlags	数据类型
-                selectorFlags: Short,
+                //selectorFlags: Short,
 
                 //uInt16	attCount	值固定为0
-                attCount: Int,
+                //attCount: Int,
 
                 //uInt32	dataLen	数据长度
-                dataLen: Long,
+                //dataLen: Long,
 
                 //sbyte[numOfTraceItems]	level	能量数据，8位有符号整数，取值[-128, 127]
-                levels: List[Byte],
+                levels: List[Byte]
 
                 //byte[numOfTraceItems]	Stddev	统计值，8位无符号整数,取值[0-255]
-                stddevs: List[Short]
-              ) {
-
-  def toMem(): MemCmd = {
-    MemCmd(id, scanOverTime, startFreq, stopFreq, stepFreq, flon, flat, numOfTraceItems, levels);
-  }
-
-}
+                //stddevs: List[Short]
+              );
 
