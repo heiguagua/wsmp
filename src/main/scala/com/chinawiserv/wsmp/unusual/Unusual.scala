@@ -1,8 +1,11 @@
 package com.chinawiserv.wsmp.unusual
 
+import java.util.concurrent.Executors
+
 import com.chinawiserv.wsmp.mem.MemManager
 import com.chinawiserv.wsmp.mem.model.Cmd
 import com.chinawiserv.wsmp.thread.{CustomThreadFactory, ThreadPool}
+
 import scala.collection.mutable.ListBuffer
 
 class Unusual {
