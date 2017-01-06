@@ -1,21 +1,8 @@
 package com.chinawiserv.wsmp.spark.operator
 
 import com.chinawiserv.wsmp.spark.model.Cmd
-import com.codahale.jerkson.Json
-import org.bson.Document
 
 object Printer {
-
-  def printRecords(records: List[Document]): Unit = {
-    println("records.length="+records.length);
-    var index = 0;
-    records.foreach(x => {
-      if (index % 10000 == 0) {
-        println(Json.generate[Document](x));
-      }
-      index += 1;
-    });
-  }
 
   def printCmd(cmd: Cmd): Unit = {
     if (cmd != null) {

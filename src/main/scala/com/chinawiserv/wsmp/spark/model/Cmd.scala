@@ -54,11 +54,5 @@ case class Cmd(
 
                 //byte[numOfTraceItems]	Stddev	统计值，8位无符号整数,取值[0-255]
                 stddevs: List[Short]
-              ) {
-
-  def toMem(): MemCmd = {
-    MemCmd(id, scanOverTime, startFreq, stopFreq, stepFreq, flon, flat, numOfTraceItems, levels);
-  }
-
-}
+              ) ;
 
