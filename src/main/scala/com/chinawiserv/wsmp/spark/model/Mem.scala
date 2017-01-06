@@ -1,6 +1,6 @@
 package com.chinawiserv.wsmp.spark.model
 
-case class MemCmd(
+case class Mem(
                 //uint32	m_uiFlag	开始标志位,固定为:0xEEEEEEEE
                 //uiFlag: Long,
 

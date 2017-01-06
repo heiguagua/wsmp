@@ -1,6 +1,6 @@
 package com.chinawiserv.wsmp.spark.operator
 
-import com.chinawiserv.wsmp.spark.model.{Cmd, MemCmd}
+import com.chinawiserv.wsmp.spark.model.{Cmd, Mem}
 import com.codahale.jerkson.Json
 import scala.collection.mutable
 
@@ -10,8 +10,8 @@ object Operator {
     Json.parse[Cmd](json);
   }
 
-  def toMem(cmd: Cmd): MemCmd = {
-    MemCmd(cmd.id, cmd.scanOverTime, cmd.startFreq, cmd.stopFreq, cmd.stepFreq, cmd.flon, cmd.flat, cmd.numOfTraceItems, cmd.levels);
+  def toMem(cmd: Cmd): Mem = {
+    Mem(cmd.id, cmd.scanOverTime, cmd.startFreq, cmd.stopFreq, cmd.stepFreq, cmd.flon, cmd.flat, cmd.numOfTraceItems, cmd.levels);
   }
 
   def toRedis(cmd: Cmd): String = {
