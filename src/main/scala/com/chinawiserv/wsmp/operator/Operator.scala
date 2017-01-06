@@ -11,7 +11,9 @@ object Operator {
   }
 
   def toMem(cmd: Cmd): Mem = {
-    Mem(cmd.id, cmd.scanOverTime, cmd.startFreq, cmd.stopFreq, cmd.stepFreq, cmd.flon, cmd.flat, cmd.numOfTraceItems, cmd.levels);
+    Mem(cmd.id, cmd.scanOverTime, cmd.startFreq,
+      cmd.stopFreq, cmd.stepFreq, cmd.flon,
+      cmd.flat, cmd.numOfTraceItems, cmd.levels);
   }
 
   def toRedis(cmd: Cmd): String = {
