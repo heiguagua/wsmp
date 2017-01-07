@@ -16,20 +16,20 @@ class UnusualExecutor(val memManager: MemManager, val cmds : List[Cmd]) extends 
     }
   }
 
-  def readAndSaveData(cmd: Cmd): List[Mem] = {
+  private def readAndSaveData(cmd: Cmd): List[Mem] = {
     val history = memManager.readData(cmd.id);
     memManager.saveData(cmd);
     return history;
   }
 
-  def computeUnusual(current: Mem, history: List[Mem]): Unit = {
+  private def computeUnusual(current: Mem, history: List[Mem]): Unit = {
     val numsOfUnusual =  100;
     this.memManager.updateWeb(current.id, numsOfUnusual);
     val json = this.memManager.jsonWeb();
     this.sendToWebSocket(json);
   }
 
-  def sendToWebSocket(json: String): Unit = {
+  private def sendToWebSocket(json: String): Unit = {
     println("sendToWebSocket");
   }
 }
