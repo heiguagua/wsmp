@@ -16,8 +16,7 @@ class WSClient {
 
   def this(endpointURI: String) {
     this();
-    val container = ContainerProvider.getWebSocketContainer();
-    container.connectToServer(this, new URI(endpointURI));
+    this.connectToServer(endpointURI);
   }
 
   @OnOpen
@@ -32,6 +31,10 @@ class WSClient {
 
   @OnMessage
   def onMessage(message: String) {
+  }
+
+  def connectToServer(endpointURI: String): Unit = {
+    ContainerProvider.getWebSocketContainer().connectToServer(this, new URI(endpointURI));
   }
 
   def sendMessage(message: String): Boolean = {
