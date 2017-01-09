@@ -143,6 +143,17 @@ public class DateTime {
 	public static String getCurrentDate_YYYYMMDDWithOutSeparator() {
 		return convertDateTime(new Date(), "yyyyMMdd");
 	}
+
+
+	/**
+	 * 获取当前时间
+	 * 格式：MMdd
+	 * @return 当前时间的字符串形式
+	 * @author Allen Zhang
+	 */
+	public static String getCurrentDate_MMDDWithOutSeparator() {
+		return convertDateTime(new Date(), "MMdd");
+	}
     /////////////////////////////////////////////////////////////////////////////////////
 
 	
