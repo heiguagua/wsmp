@@ -8,7 +8,7 @@ import scala.collection.mutable.ArrayBuffer
 case class OccupancyData(
 
   //char[40]	Id	传感器编号（Int类型字符串）
-  id: String,
+  id: Int,
 
   //int64	scanOverTime	本地的格林威治时间的秒数
   scanOverTime: Long,

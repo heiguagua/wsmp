@@ -1,14 +1,14 @@
 package com.chinawiserv.wsmp
 
-import scala.collection.mutable.{ArrayBuffer, Map}
+import com.chinawiserv.wsmp.occupancy.flush.disk.LoadDisk
 
 /**
-  * Created by Administrator on 2017/1/8.
+  * Created by zengpzh on 2017/1/8.
   */
 package object occupancy {
 
-  private[occupancy] val OCCUPANCY_MEM = Map[String, Map[String, ArrayBuffer[Byte]]]();
-
   private[occupancy] val TIME_FORMAT = "yyyyMMdd";
+
+  private[occupancy] val OCCUPANCY_MEM = LoadDisk.load;
 
 }

@@ -1,5 +1,6 @@
 package com.chinawiserv.wsmp.occupancy
-package flush.mem
+package flush
+package mem
 
 import java.util.Date
 
@@ -11,7 +12,7 @@ import scala.collection.mutable.{ArrayBuffer, Map}
 /**
   * Created by zengpzh on 2017/1/6.
   */
-object FlushMem{
+private[flush] object FlushMem{
 
   def flush(occupancyDatas: List[OccupancyData]): Unit ={
     println("-----------flush memory start, length: " + occupancyDatas.length);
@@ -30,13 +31,16 @@ object FlushMem{
         doFlush(time, occupancyData);
       });
     }
+    if(!NEED_FLUSH_DISK){
+      NEED_FLUSH_DISK = true;
+    }
     println("-----------flush memory over");
   }
 
   private def doFlush(time: String, occupancyData: OccupancyData): Unit ={
     var OCCUPANCY_MEM_DATA = OCCUPANCY_MEM.getOrElse(time, null);
     if(OCCUPANCY_MEM_DATA == null){
-      OCCUPANCY_MEM_DATA = Map[String, ArrayBuffer[Byte]]();
+      OCCUPANCY_MEM_DATA = Map[Int, ArrayBuffer[Byte]]();
       OCCUPANCY_MEM += (time -> OCCUPANCY_MEM_DATA);
     }
     var maxLevels = OCCUPANCY_MEM_DATA.getOrElse(occupancyData.id, null);
@@ -50,7 +54,7 @@ object FlushMem{
         maxLevels += levels(i);
       }else{
         val level = levels(i);
-        val maxLevel = maxLevels(i)
+        val maxLevel = maxLevels(i);
         if(level > maxLevel){
           maxLevels(i) = levels(i);
         }
@@ -63,7 +67,7 @@ object FlushMem{
       import scala.util.control.Breaks._;
       breakable({
         for((tempTime, tempData) <- OCCUPANCY_MEM.toMap if time != tempTime){
-          OCCUPANCY_MEM.remove(tempTime);
+          OCCUPANCY_MEM -= tempTime;
         }
       });
     }

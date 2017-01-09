@@ -1,9 +1,10 @@
 package com.chinawiserv.wsmp.occupancy
 
-import com.chinawiserv.wsmp.occupancy.flush.FlushTask
+import com.chinawiserv.wsmp.occupancy.flush.mem.FlushMemTask
 import com.chinawiserv.wsmp.thread.{CustomThreadFactory, ThreadPool}
 
-import scala.collection.mutable._
+import scala.collection.JavaConversions
+import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 import scala.util.Random
 
 /**
@@ -11,19 +12,28 @@ import scala.util.Random
   */
 class Occupancy {
 
+  OCCUPANCY_MEM;//实例化该类时就加载磁盘数据到内存，避免延迟加载对第一次调用的影响
+
   def compute(occupancyDatas: List[OccupancyData]): Unit = {
-    if (occupancyDatas != null) {
-      Occupancy.flushExecutorService.execute(new FlushTask(occupancyDatas));
+    if (occupancyDatas != null && !occupancyDatas.isEmpty) {
+      Occupancy.flushMemExecutorService.execute(new FlushMemTask(occupancyDatas));
+    }
+  }
+
+  @throws[Exception]
+  def compute(occupancyDatas: java.util.List[OccupancyData]): Unit ={
+    if(occupancyDatas != null){
+      this.compute(JavaConversions.asScalaBuffer(occupancyDatas).toList);
     }
   }
 
 }
 
-object Occupancy {
+private[occupancy] object Occupancy {
 
   private val FLUSH_CONCURRENT_NUM: Int = 3;
 
-  private val flushExecutorService = ThreadPool.newThreadPool(FLUSH_CONCURRENT_NUM, new CustomThreadFactory("Occupancy-Flush-Executor-"));
+  private val flushMemExecutorService = ThreadPool.newThreadPool(FLUSH_CONCURRENT_NUM, new CustomThreadFactory("Occupancy-Flush-Mem-Executor-"));
 
   def main(args: Array[String]): Unit = {
     while (true) {
@@ -38,13 +48,15 @@ object Occupancy {
         for (index <- 0 until levelNum) {
           levels += (Random.nextInt(127)).toByte;
         }
-        occupancyDatas += OccupancyData(station.toString, time, levels);
+        occupancyDatas += OccupancyData(station, time, levels);
       }
 
       o.compute(occupancyDatas.toList);
 
       Thread.sleep(1000);
+
     }
+
   }
 
 }

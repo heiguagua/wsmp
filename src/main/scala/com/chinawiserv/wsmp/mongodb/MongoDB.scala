@@ -35,7 +35,7 @@ object MongoDB {
     addresses.add(new ServerAddress(HOST3, PORT));
     addresses.add(new ServerAddress(HOST4, PORT));
     new MongoDBClientProxy().bind(addresses, DB, buildOptions);*/
-    new MongoDBClientProxy().bind("192.168.86.50", 28018, DB, buildOptions);
+    new MongoDBClientProxy().bind("172.16.7.205", 28018, DB, buildOptions);
   }
 
   private def buildOptions: MongoClientOptions = {
