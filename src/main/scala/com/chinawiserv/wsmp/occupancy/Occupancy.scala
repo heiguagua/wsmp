@@ -1,5 +1,6 @@
 package com.chinawiserv.wsmp.occupancy
 
+import com.chinawiserv.wsmp.handler.DataHandler
 import com.chinawiserv.wsmp.model.Cmd
 import com.chinawiserv.wsmp.occupancy.store.mem.FlushMemTask
 import com.chinawiserv.wsmp.thread.{CustomThreadFactory, ThreadPool}
@@ -14,7 +15,7 @@ import scala.util.Random
 /**
   * Created by zengpzh on 2017/1/6.
   */
-class Occupancy {
+class Occupancy extends DataHandler{
 
   OCCUPANCY_MEM;//实例化该类时就加载磁盘数据到内存，避免延迟加载对第一次调用的影响
 
@@ -22,19 +23,6 @@ class Occupancy {
   def compute(cmds: java.util.List[Cmd]): Unit ={
     if (cmds != null && !cmds.isEmpty) {
       Occupancy.flushMemExecutorService.execute(new FlushMemTask(JavaConversions.asScalaBuffer(cmds).toList));
-    }
-  }
-
-  def getOccupancy(time: String, thresholdVal: Byte): List[Document] = {
-    if(StringUtils.isNotBlank(time) && time.length == 8){
-      if(DateTime.getCurrentDate_YYYYMMDDWithOutSeparator == time){
-        store.mem.getOccupancyRate(time, thresholdVal)
-      }else{
-        println(store.mem.getOccupancyRate(time, thresholdVal));
-        store.disk.getOccupancyRate(time, thresholdVal);
-      }
-    }else{
-      List();
     }
   }
 
@@ -67,13 +55,26 @@ private[occupancy] object Occupancy {
       o.compute(occupancyDatas.toList);*/
 
       println(DateTime.getCurrentDate_HHMMSS);
-      println(o.getOccupancy("20170110", 125));
+      println(getOccupancy("20170110", 125));
       println(DateTime.getCurrentDate_HHMMSS);
 
       Thread.sleep(1000);
 
     }
 
+  }
+
+  def getOccupancy(time: String, thresholdVal: Byte): List[Document] = {
+    if(StringUtils.isNotBlank(time) && time.length == 8){
+      if(DateTime.getCurrentDate_YYYYMMDDWithOutSeparator == time){
+        store.mem.getOccupancyRate(time, thresholdVal)
+      }else{
+        println(store.mem.getOccupancyRate(time, thresholdVal));
+        store.disk.getOccupancyRate(time, thresholdVal);
+      }
+    }else{
+      List();
+    }
   }
 
 }
