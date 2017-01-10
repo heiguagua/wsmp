@@ -70,9 +70,6 @@ private[occupancy] object Occupancy {
     println(DateTime.getCurrentDate_HHMMSS);
     println(new Occupancy().getOccupancy("20170109", 125))
     println(DateTime.getCurrentDate_HHMMSS);
-    println(DateTime.getCurrentDate_HHMMSS);
-    println(new Occupancy().getOccupancy("20170109", 125))
-    println(DateTime.getCurrentDate_HHMMSS);
   }
 
 }
