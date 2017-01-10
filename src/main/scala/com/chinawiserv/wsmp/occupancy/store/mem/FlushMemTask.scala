@@ -1,4 +1,4 @@
-package com.chinawiserv.wsmp.occupancy.flush.mem
+package com.chinawiserv.wsmp.occupancy.store.mem
 
 import com.chinawiserv.wsmp.occupancy.OccupancyData
 

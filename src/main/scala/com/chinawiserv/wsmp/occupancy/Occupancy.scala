@@ -1,7 +1,10 @@
 package com.chinawiserv.wsmp.occupancy
 
-import com.chinawiserv.wsmp.occupancy.flush.mem.FlushMemTask
+import com.chinawiserv.wsmp.occupancy.store.mem.FlushMemTask
 import com.chinawiserv.wsmp.thread.{CustomThreadFactory, ThreadPool}
+import com.chinawiserv.wsmp.util.DateTime
+import org.apache.commons.lang.StringUtils
+import org.bson.Document
 
 import scala.collection.JavaConversions
 import scala.collection.mutable.{ArrayBuffer, ListBuffer}
@@ -27,6 +30,19 @@ class Occupancy {
     }
   }
 
+  def getOccupancy(time: String, thresholdVal: Byte): List[Document] = {
+    if(StringUtils.isNotBlank(time) && time.length == 8){
+      if(DateTime.getCurrentDate_YYYYMMDDWithOutSeparator == time){
+        store.mem.getOccupancyRate(time, thresholdVal)
+      }else{
+        println(store.mem.getOccupancyRate(time, thresholdVal));
+        store.disk.getOccupancyRate(time, thresholdVal);
+      }
+    }else{
+      List();
+    }
+  }
+
 }
 
 private[occupancy] object Occupancy {
@@ -36,10 +52,12 @@ private[occupancy] object Occupancy {
   private val flushMemExecutorService = ThreadPool.newThreadPool(FLUSH_CONCURRENT_NUM, new CustomThreadFactory("Occupancy-Flush-Mem-Executor-"));
 
   def main(args: Array[String]): Unit = {
+
+    val o =  new Occupancy();
+
     while (true) {
 
-      val o =  new Occupancy();
-      val stationNum = 300;
+     /*val stationNum = 300;
       val levelNum = 140000;
       val time = System.currentTimeMillis();
       val occupancyDatas = ListBuffer[OccupancyData]();
@@ -51,7 +69,11 @@ private[occupancy] object Occupancy {
         occupancyDatas += OccupancyData(station, time, levels);
       }
 
-      o.compute(occupancyDatas.toList);
+      o.compute(occupancyDatas.toList);*/
+
+      println(DateTime.getCurrentDate_HHMMSS);
+      println(o.getOccupancy("20170110", 125))
+      println(DateTime.getCurrentDate_HHMMSS);
 
       Thread.sleep(1000);
 

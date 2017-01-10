@@ -1,5 +1,5 @@
 package com.chinawiserv.wsmp.occupancy
-package flush
+package store
 package disk
 
 import java.util.concurrent.CountDownLatch
@@ -30,7 +30,7 @@ private class FlushDisk extends Thread("Occupancy-Flush-Disk") {
 
 }
 
-private[flush] object FlushDisk {
+private[store] object FlushDisk {
 
   var IS_FLUSHING: Boolean = false;
 

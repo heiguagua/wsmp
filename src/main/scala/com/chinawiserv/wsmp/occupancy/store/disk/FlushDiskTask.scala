@@ -1,5 +1,5 @@
 package com.chinawiserv.wsmp.occupancy
-package flush.disk
+package store.disk
 
 import java.util
 import java.util.concurrent.CountDownLatch
@@ -41,7 +41,7 @@ private[disk] object FlushDiskTask {
           val maxLevels = record.get("maxLevels", classOf[util.Collection[Byte]]);
           if (station != null && StringUtils.isNotBlank(time) && time.length == 8 && maxLevels != null) {
             if (collection.isEmpty) {
-              collection = collection_prefix + "_" + time.take(4);
+              collection = collection_prefix + time.take(4);
             }
             val daytime = time.takeRight(4);
             val filter = Filters.and(Filters.eq("station", station), Filters.eq("time", daytime));
