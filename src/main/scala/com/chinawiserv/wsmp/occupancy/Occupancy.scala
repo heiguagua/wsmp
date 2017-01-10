@@ -8,8 +8,8 @@ import com.chinawiserv.wsmp.util.DateTime
 import org.apache.commons.lang.StringUtils
 import org.bson.Document
 
-import scala.collection.JavaConversions
-import scala.collection.mutable.{ArrayBuffer, ListBuffer}
+import scala.collection.JavaConversions._
+import scala.collection.mutable.ArrayBuffer
 import scala.util.Random
 
 /**
@@ -22,7 +22,7 @@ class Occupancy extends DataHandler{
   @throws[Exception]
   def compute(cmds: java.util.List[Cmd]): Unit ={
     if (cmds != null && !cmds.isEmpty) {
-      Occupancy.flushMemExecutorService.execute(new FlushMemTask(JavaConversions.asScalaBuffer(cmds).toList));
+      Occupancy.flushMemExecutorService.execute(new FlushMemTask(cmds.toList));
     }
   }
 
@@ -40,23 +40,23 @@ private[occupancy] object Occupancy {
 
     while (true) {
 
-     /*val stationNum = 300;
+     val stationNum = 300;
       val levelNum = 140000;
       val time = System.currentTimeMillis();
-      val occupancyDatas = ListBuffer[OccupancyData]();
+      val cmds = new java.util.ArrayList[Cmd]();
       for (station <- 1 to stationNum) {
         val levels = ArrayBuffer[Byte]();
         for (index <- 0 until levelNum) {
           levels += (Random.nextInt(127)).toByte;
         }
-        occupancyDatas += OccupancyData(station, time, levels);
+        cmds.add(Cmd(0L, 0L, 0L, "", station, time, 0L, 0L, 0L, 0L, 0L, "", 0L, 0, 0, 0L, levels, null));
       }
 
-      o.compute(occupancyDatas.toList);*/
+      o.compute(cmds);
 
-      println(DateTime.getCurrentDate_HHMMSS);
-      println(getOccupancy("20170110", 125));
-      println(DateTime.getCurrentDate_HHMMSS);
+      /*println(DateTime.getCurrentDate_HHMMSS);
+      println(getOccupancy("20170109", 125));
+      println(DateTime.getCurrentDate_HHMMSS);*/
 
       Thread.sleep(1000);
 
@@ -65,11 +65,10 @@ private[occupancy] object Occupancy {
   }
 
   def getOccupancy(time: String, thresholdVal: Byte): List[Document] = {
-    if(StringUtils.isNotBlank(time) && time.length == 8){
+    if(StringUtils.isNotBlank(time) && time.length == (TIME_YEAR_LENGTH + TIME_DAY_LENGTH)){
       if(DateTime.getCurrentDate_YYYYMMDDWithOutSeparator == time){
         store.mem.getOccupancyRate(time, thresholdVal)
       }else{
-        println(store.mem.getOccupancyRate(time, thresholdVal));
         store.disk.getOccupancyRate(time, thresholdVal);
       }
     }else{

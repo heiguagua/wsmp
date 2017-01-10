@@ -39,11 +39,11 @@ private[disk] object FlushDiskTask {
           val station = record.getInteger("station");
           val time = record.getString("time");
           val maxLevels = record.get("maxLevels", classOf[util.Collection[Byte]]);
-          if (station != null && StringUtils.isNotBlank(time) && time.length == 8 && maxLevels != null) {
+          if (station != null && StringUtils.isNotBlank(time) && time.length == (TIME_YEAR_LENGTH + TIME_DAY_LENGTH) && maxLevels != null) {
             if (collection.isEmpty) {
-              collection = collection_prefix + time.take(4);
+              collection = collection_prefix + time.take(TIME_YEAR_LENGTH);
             }
-            val daytime = time.takeRight(4);
+            val daytime = time.takeRight(TIME_DAY_LENGTH);
             val filter = Filters.and(Filters.eq("station", station), Filters.eq("time", daytime));
             val replacement = new Document("station", station)
               .append("time", daytime)
@@ -52,7 +52,7 @@ private[disk] object FlushDiskTask {
             writeModels.add(replaceOneModel);
           }
         });
-        if (writeModels.size > 0 && collection.length == (collection_prefix.length + 5)) {
+        if (writeModels.size > 0 && collection.length == (collection_prefix.length + TIME_DAY_LENGTH)) {
           checkCollection(collection);
           MongoDB.mc.bulkWrite(db, collection, writeModels, new BulkWriteOptions().ordered(false));
           writeModels.clear();

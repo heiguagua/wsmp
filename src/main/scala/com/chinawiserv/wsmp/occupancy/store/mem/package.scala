@@ -19,8 +19,8 @@ package object mem {
     println(DateTime.getCurrentDate_YYYYMMDDHHMMSS);
     val OCCUPANCY_MEM_DATA = Map[Int, ArrayBuffer[Byte]]();
     val time =  DateTime.getCurrentDate_YYYYMMDDWithOutSeparator;
-    val year = time.take(4);
-    val daytime = time.takeRight(4);
+    val year = time.take(TIME_YEAR_LENGTH);
+    val daytime = time.takeRight(TIME_DAY_LENGTH);
     val collection = disk.collection_prefix + year;
     val filter = Filters.eq("time", daytime);
     disk.checkCollection(collection);
@@ -37,8 +37,8 @@ package object mem {
 
   private[occupancy] def getOccupancyRate(time: String, thresholdVal: Byte): List[Document] = {
     val records = new ListBuffer[Document]();
-    if (StringUtils.isNotBlank(time) && time.length == 8) {
-      val daytime = time.takeRight(4);
+    if (StringUtils.isNotBlank(time) && time.length == (TIME_YEAR_LENGTH + TIME_DAY_LENGTH)) {
+      val daytime = time.takeRight(TIME_DAY_LENGTH);
       val OCCUPANCY_MEM_DATA = OCCUPANCY_MEM.toMap.getOrElse(time, Map[Int, ArrayBuffer[Byte]]());
       for((station, maxLevels) <- OCCUPANCY_MEM_DATA if maxLevels != null){
         val totalNum = maxLevels.length;

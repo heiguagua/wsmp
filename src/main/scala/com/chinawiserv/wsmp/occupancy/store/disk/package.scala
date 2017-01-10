@@ -1,4 +1,5 @@
-package com.chinawiserv.wsmp.occupancy.store
+package com.chinawiserv.wsmp.occupancy
+package store
 
 import com.chinawiserv.wsmp.mongodb.MongoDB
 import com.mongodb.Block
@@ -22,9 +23,9 @@ package object disk {
   private[occupancy] val collection_prefix = "occupancy_";
 
   private[occupancy] def getOccupancyRate(time: String, thresholdVal: Byte): List[Document] = {
-    if (StringUtils.isNotBlank(time) && time.length == 8) {
-      val year = time.take(4);
-      val daytime = time.takeRight(4);
+    if (StringUtils.isNotBlank(time) && time.length == (TIME_YEAR_LENGTH + TIME_DAY_LENGTH)) {
+      val year = time.take(TIME_YEAR_LENGTH);
+      val daytime = time.takeRight(TIME_DAY_LENGTH);
       val collection = collection_prefix + year;
       val pipeline = new java.util.ArrayList[Bson]();
       val threshold = ListBuffer[BsonValue](new BsonString("$$item"), new BsonInt32(thresholdVal));
