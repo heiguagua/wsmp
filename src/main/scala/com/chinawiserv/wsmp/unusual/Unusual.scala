@@ -1,12 +1,12 @@
 package com.chinawiserv.wsmp.unusual
 
+import com.chinawiserv.wsmp.handler.DataHandler
 import com.chinawiserv.wsmp.model.Cmd
 import com.chinawiserv.wsmp.thread.{CustomThreadFactory, ThreadPool}
 import com.chinawiserv.wsmp.unusual.mem.MemManager
-
 import scala.collection.mutable.ListBuffer
 
-class Unusual {
+class Unusual extends DataHandler {
 
   private val tasksOfExecutor = 5;
   private val memManager = new MemManager();

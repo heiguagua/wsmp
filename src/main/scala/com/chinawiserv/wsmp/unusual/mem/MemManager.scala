@@ -4,10 +4,8 @@ import com.chinawiserv.wsmp.jedis.JedisClient
 import com.chinawiserv.wsmp.model.Cmd
 import com.chinawiserv.wsmp.operator.Operator
 import com.codahale.jerkson.Json
-
 import scala.collection.mutable.{HashMap, ListBuffer}
 import com.chinawiserv.wsmp.jedis.JedisClient.JedisExtended
-
 import scala.collection.JavaConversions._;
 
 /**
