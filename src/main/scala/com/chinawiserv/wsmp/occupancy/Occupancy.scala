@@ -1,5 +1,6 @@
 package com.chinawiserv.wsmp.occupancy
 
+import com.chinawiserv.wsmp.model.Cmd
 import com.chinawiserv.wsmp.occupancy.store.mem.FlushMemTask
 import com.chinawiserv.wsmp.thread.{CustomThreadFactory, ThreadPool}
 import com.chinawiserv.wsmp.util.DateTime
@@ -17,16 +18,10 @@ class Occupancy {
 
   OCCUPANCY_MEM;//实例化该类时就加载磁盘数据到内存，避免延迟加载对第一次调用的影响
 
-  def compute(occupancyDatas: List[OccupancyData]): Unit = {
-    if (occupancyDatas != null && !occupancyDatas.isEmpty) {
-      Occupancy.flushMemExecutorService.execute(new FlushMemTask(occupancyDatas));
-    }
-  }
-
   @throws[Exception]
-  def compute(occupancyDatas: java.util.List[OccupancyData]): Unit ={
-    if(occupancyDatas != null){
-      this.compute(JavaConversions.asScalaBuffer(occupancyDatas).toList);
+  def compute(cmds: java.util.List[Cmd]): Unit ={
+    if (cmds != null && !cmds.isEmpty) {
+      Occupancy.flushMemExecutorService.execute(new FlushMemTask(JavaConversions.asScalaBuffer(cmds).toList));
     }
   }
 
@@ -72,7 +67,7 @@ private[occupancy] object Occupancy {
       o.compute(occupancyDatas.toList);*/
 
       println(DateTime.getCurrentDate_HHMMSS);
-      println(o.getOccupancy("20170110", 125))
+      println(o.getOccupancy("20170110", 125));
       println(DateTime.getCurrentDate_HHMMSS);
 
       Thread.sleep(1000);
