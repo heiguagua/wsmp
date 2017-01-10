@@ -15,7 +15,7 @@ import scala.util.Random
   */
 class Occupancy {
 
-  //OCCUPANCY_MEM;//实例化该类时就加载磁盘数据到内存，避免延迟加载对第一次调用的影响
+  OCCUPANCY_MEM;//实例化该类时就加载磁盘数据到内存，避免延迟加载对第一次调用的影响
 
   def compute(occupancyDatas: List[OccupancyData]): Unit = {
     if (occupancyDatas != null && !occupancyDatas.isEmpty) {
@@ -31,8 +31,13 @@ class Occupancy {
   }
 
   def getOccupancy(time: String, thresholdVal: Byte): List[Document] = {
-    if(StringUtils.isNotBlank(time)){
-      store.disk.getOccupancyRate(time, thresholdVal);
+    if(StringUtils.isNotBlank(time) && time.length == 8){
+      if(DateTime.getCurrentDate_YYYYMMDDWithOutSeparator == time){
+        store.mem.getOccupancyRate(time, thresholdVal)
+      }else{
+        println(store.mem.getOccupancyRate(time, thresholdVal));
+        store.disk.getOccupancyRate(time, thresholdVal);
+      }
     }else{
       List();
     }
@@ -47,10 +52,12 @@ private[occupancy] object Occupancy {
   private val flushMemExecutorService = ThreadPool.newThreadPool(FLUSH_CONCURRENT_NUM, new CustomThreadFactory("Occupancy-Flush-Mem-Executor-"));
 
   def main(args: Array[String]): Unit = {
-    /*while (true) {
 
-      val o =  new Occupancy();
-      val stationNum = 300;
+    val o =  new Occupancy();
+
+    while (true) {
+
+     /*val stationNum = 300;
       val levelNum = 140000;
       val time = System.currentTimeMillis();
       val occupancyDatas = ListBuffer[OccupancyData]();
@@ -62,14 +69,16 @@ private[occupancy] object Occupancy {
         occupancyDatas += OccupancyData(station, time, levels);
       }
 
-      o.compute(occupancyDatas.toList);
+      o.compute(occupancyDatas.toList);*/
+
+      println(DateTime.getCurrentDate_HHMMSS);
+      println(o.getOccupancy("20170110", 125))
+      println(DateTime.getCurrentDate_HHMMSS);
 
       Thread.sleep(1000);
 
-    }*/
-    println(DateTime.getCurrentDate_HHMMSS);
-    println(new Occupancy().getOccupancy("20170109", 125))
-    println(DateTime.getCurrentDate_HHMMSS);
+    }
+
   }
 
 }

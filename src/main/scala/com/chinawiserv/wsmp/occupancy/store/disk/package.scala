@@ -1,12 +1,11 @@
 package com.chinawiserv.wsmp.occupancy.store
 
 import com.chinawiserv.wsmp.mongodb.MongoDB
-import com.chinawiserv.wsmp.util.DateTime
 import com.mongodb.Block
-import com.mongodb.client.model.{Aggregates, BsonField, Filters}
+import com.mongodb.client.model.{Aggregates, Filters}
 import org.apache.commons.lang.StringUtils
-import org.bson.conversions.Bson
 import org.bson._
+import org.bson.conversions.Bson
 
 import scala.collection.JavaConversions
 import scala.collection.mutable.ListBuffer
@@ -39,6 +38,7 @@ package object disk {
       pipeline.add(Aggregates.project(new Document("_id", 0).append("time", 1).append("station", 1)
         .append("occupancyRate", occupancyRate)));
       pipeline.add(Aggregates.sort(new Document("station", 1)));
+      checkCollection(collection);
       JavaConversions.asScalaBuffer(MongoDB.mc.aggregate(db, collection, pipeline)).toList;
     } else {
       List();
@@ -50,6 +50,7 @@ package object disk {
       synchronized({
         if (!collectionExists(collection)) {
           MongoDB.mc.createCollection(db, collection, null);
+          MongoDB.mc.createIndex(db, collection, "occupancyTimeIndex", new Document("time", "-1"))
           EXISTS_COLLECTIONS += collection;
         }
       });

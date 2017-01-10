@@ -1,11 +1,14 @@
-package com.chinawiserv.wsmp.occupancy.store
+package com.chinawiserv.wsmp.occupancy
+package store
 
 import com.chinawiserv.wsmp.mongodb.MongoDB
 import com.chinawiserv.wsmp.util.DateTime
 import com.mongodb.client.model.Filters
+import org.apache.commons.lang.StringUtils
+import org.bson.Document
 
 import scala.collection.JavaConversions
-import scala.collection.mutable.{ArrayBuffer, Map}
+import scala.collection.mutable.{ArrayBuffer, ListBuffer, Map}
 
 /**
   * Created by Administrator on 2017/1/10.
@@ -30,6 +33,25 @@ package object mem {
     });
     println(DateTime.getCurrentDate_YYYYMMDDHHMMSS);
     Map[String, Map[Int, ArrayBuffer[Byte]]](time -> OCCUPANCY_MEM_DATA);
+  }
+
+  private[occupancy] def getOccupancyRate(time: String, thresholdVal: Byte): List[Document] = {
+    val records = new ListBuffer[Document]();
+    if (StringUtils.isNotBlank(time) && time.length == 8) {
+      val daytime = time.takeRight(4);
+      val OCCUPANCY_MEM_DATA = OCCUPANCY_MEM.toMap.getOrElse(time, Map[Int, ArrayBuffer[Byte]]());
+      for((station, maxLevels) <- OCCUPANCY_MEM_DATA if maxLevels != null){
+        val totalNum = maxLevels.length;
+        val occupancyNum = maxLevels.count(_ > thresholdVal).toDouble;
+        val occupancyRate = occupancyNum / totalNum;
+        records += new Document("station", station).append("time", daytime).append("occupancyRate", occupancyRate);
+      }
+    }
+    records.sortWith((a, b) => {
+      val stationA = a.getInteger("station");
+      val stationB = b.getInteger("station");
+      stationA != null && stationB != null && stationA < stationB;
+    }).toList;
   }
 
 }
