@@ -4,14 +4,18 @@ import com.chinawiserv.wsmp.jedis.JedisClient
 import com.chinawiserv.wsmp.model.Cmd
 import com.chinawiserv.wsmp.operator.Operator
 import com.codahale.jerkson.Json
+
 import scala.collection.mutable.{HashMap, ListBuffer}
-import com.chinawiserv.wsmp.jedis.JedisClient.JedisExtended;
+import com.chinawiserv.wsmp.jedis.JedisClient.JedisExtended
+
+import scala.collection.JavaConversions._;
 
 /**
   * 内存数据管理
   */
 class MemManager {
 
+  private val keyPrefix = "wsmp";
   private val dataCount = 10;
   private val memMap = new HashMap[Int, ListBuffer[Mem]]();
   private val webMap = new HashMap[Int, Web]();
@@ -19,8 +23,20 @@ class MemManager {
   def initMem(): Unit = {
     try {
       val jedis = JedisClient.pool.getResource;
-      val keys = jedis.keys("wsmp*");
+      val keys = jedis.keys(keyPrefix+"*");
       if (keys != null && !keys.isEmpty) {
+        keys.foreach(key => {
+          val list = jedis.readMsg(key);
+          if (list != null && !list.isEmpty) {
+            val memList = new ListBuffer[Mem];
+            val id = key.replace(keyPrefix, "").toInt;
+            list.foreach(memjson => {
+              val mem = Json.parse[Mem](memjson);
+              memList += mem;
+            })
+            memMap += (id -> memList);
+          }
+        });
       }
       jedis.close();
     }
@@ -53,7 +69,7 @@ class MemManager {
   def saveToRedis(key: Int, element: String): Unit = {
     try {
       val jedis = JedisClient.pool.getResource;
-      jedis.addMsg("wsmp"+key, element);
+      jedis.addMsg(keyPrefix+key, element);
       jedis.close();
     }
     catch {
