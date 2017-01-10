@@ -1,5 +1,7 @@
 package com.chinawiserv.wsmp.model
 
+import com.chinawiserv.wsmp.unusual.mem.Mem
+
 import scala.collection.mutable.ArrayBuffer
 
 case class Cmd(
@@ -56,5 +58,5 @@ case class Cmd(
 
                 //byte[numOfTraceItems]	Stddev	统计值，8位无符号整数,取值[0-255]
                 stddevs: ArrayBuffer[Short]
-              ) ;
+              )
 

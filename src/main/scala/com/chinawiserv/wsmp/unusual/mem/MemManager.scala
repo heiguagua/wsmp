@@ -16,7 +16,6 @@ class MemManager {
   private val keyPrefix = "wsmp";
   private val dataCount = 10;
   private val memMap = new HashMap[Int, ListBuffer[Mem]]();
-  private val webMap = new HashMap[Int, Web]();
 
   def initMem(): Unit = {
     try {
@@ -77,18 +76,6 @@ class MemManager {
 
   def readData(id: Int): List[Mem] = {
     memMap.get(id).getOrElse(new ListBuffer[Mem]()).toList;
-  }
-
-  def updateWeb(id: Int, numsOfUnusual:Int): Unit = {
-    synchronized({
-      webMap += (id -> Web(id, numsOfUnusual));
-    });
-  }
-
-  def jsonWeb(): String = {
-    synchronized({
-      Json.generate[Iterable[Web]](webMap.values);
-    });
   }
 
 }
