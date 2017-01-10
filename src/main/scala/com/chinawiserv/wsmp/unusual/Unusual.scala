@@ -17,7 +17,6 @@ class Unusual extends DataHandler {
     compute(cmds.toList);
   }
 
-  @throws[Exception]
   def compute(cmds : List[Cmd]): Unit = {
     if (cmds != null && !cmds.isEmpty) {
       val list = cmds.sliding(tasksOfExecutor, tasksOfExecutor);
