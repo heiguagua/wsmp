@@ -1,5 +1,5 @@
 package com.chinawiserv.wsmp.occupancy
-package flush
+package store
 package mem
 
 import java.util.Date
@@ -12,7 +12,7 @@ import scala.collection.mutable.{ArrayBuffer, Map}
 /**
   * Created by zengpzh on 2017/1/6.
   */
-private[flush] object FlushMem{
+private[store] object FlushMem{
 
   def flush(occupancyDatas: List[OccupancyData]): Unit ={
     println("-----------flush memory start, length: " + occupancyDatas.length);

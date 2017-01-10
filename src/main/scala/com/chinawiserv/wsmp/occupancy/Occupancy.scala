@@ -1,7 +1,10 @@
 package com.chinawiserv.wsmp.occupancy
 
-import com.chinawiserv.wsmp.occupancy.flush.mem.FlushMemTask
+import com.chinawiserv.wsmp.occupancy.store.mem.FlushMemTask
 import com.chinawiserv.wsmp.thread.{CustomThreadFactory, ThreadPool}
+import com.chinawiserv.wsmp.util.DateTime
+import org.apache.commons.lang.StringUtils
+import org.bson.Document
 
 import scala.collection.JavaConversions
 import scala.collection.mutable.{ArrayBuffer, ListBuffer}
@@ -12,7 +15,7 @@ import scala.util.Random
   */
 class Occupancy {
 
-  OCCUPANCY_MEM;//实例化该类时就加载磁盘数据到内存，避免延迟加载对第一次调用的影响
+  //OCCUPANCY_MEM;//实例化该类时就加载磁盘数据到内存，避免延迟加载对第一次调用的影响
 
   def compute(occupancyDatas: List[OccupancyData]): Unit = {
     if (occupancyDatas != null && !occupancyDatas.isEmpty) {
@@ -27,6 +30,14 @@ class Occupancy {
     }
   }
 
+  def getOccupancy(time: String, thresholdVal: Byte): List[Document] = {
+    if(StringUtils.isNotBlank(time)){
+      store.disk.getOccupancyRate(time, thresholdVal);
+    }else{
+      List();
+    }
+  }
+
 }
 
 private[occupancy] object Occupancy {
@@ -36,7 +47,7 @@ private[occupancy] object Occupancy {
   private val flushMemExecutorService = ThreadPool.newThreadPool(FLUSH_CONCURRENT_NUM, new CustomThreadFactory("Occupancy-Flush-Mem-Executor-"));
 
   def main(args: Array[String]): Unit = {
-    while (true) {
+    /*while (true) {
 
       val o =  new Occupancy();
       val stationNum = 300;
@@ -55,8 +66,13 @@ private[occupancy] object Occupancy {
 
       Thread.sleep(1000);
 
-    }
-
+    }*/
+    println(DateTime.getCurrentDate_HHMMSS);
+    println(new Occupancy().getOccupancy("20170109", 125))
+    println(DateTime.getCurrentDate_HHMMSS);
+    println(DateTime.getCurrentDate_HHMMSS);
+    println(new Occupancy().getOccupancy("20170109", 125))
+    println(DateTime.getCurrentDate_HHMMSS);
   }
 
 }
