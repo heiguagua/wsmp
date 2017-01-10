@@ -1,8 +1,8 @@
 package com.chinawiserv.wsmp.unusual
 
-import com.chinawiserv.wsmp.mem.MemManager
-import com.chinawiserv.wsmp.mem.model.{Cmd, Mem}
-import com.chinawiserv.wsmp.operator.Operator;
+import com.chinawiserv.wsmp.model.Cmd
+import com.chinawiserv.wsmp.operator.Operator
+import com.chinawiserv.wsmp.unusual.mem.{Mem, MemManager};
 
 class UnusualExecutor(val memManager: MemManager, val cmds : List[Cmd]) extends Runnable {
 

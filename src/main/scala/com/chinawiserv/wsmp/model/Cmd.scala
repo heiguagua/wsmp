@@ -1,4 +1,6 @@
-package com.chinawiserv.wsmp.mem.model
+package com.chinawiserv.wsmp.model
+
+import scala.collection.mutable.ArrayBuffer
 
 case class Cmd(
                 //uint32	m_uiFlag	开始标志位,固定为:0xEEEEEEEE
@@ -14,7 +16,7 @@ case class Cmd(
                 cdataType: String,
 
                 //char[40]	Id	传感器编号（Int类型字符串）
-                id: String,
+                id: Int,
 
                 //int64	scanOverTime	本地的格林威治时间的秒数
                 scanOverTime: Long,
@@ -50,9 +52,9 @@ case class Cmd(
                 dataLen: Long,
 
                 //sbyte[numOfTraceItems]	level	能量数据，8位有符号整数，取值[-128, 127]
-                levels: List[Byte],
+                levels: ArrayBuffer[Byte],
 
                 //byte[numOfTraceItems]	Stddev	统计值，8位无符号整数,取值[0-255]
-                stddevs: List[Short]
+                stddevs: ArrayBuffer[Short]
               ) ;
 
