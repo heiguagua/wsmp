@@ -12,10 +12,12 @@ class Unusual extends DataHandler {
   private val memManager = new MemManager();
   private val executor = ThreadPool.newThreadPool(60, new CustomThreadFactory("UnusualExecutor-"));
 
+  @throws[Exception]
   def compute(cmds : java.util.List[Cmd]): Unit = {
     compute(cmds.toList);
   }
 
+  @throws[Exception]
   def compute(cmds : List[Cmd]): Unit = {
     if (cmds != null && !cmds.isEmpty) {
       val list = cmds.sliding(tasksOfExecutor, tasksOfExecutor);
