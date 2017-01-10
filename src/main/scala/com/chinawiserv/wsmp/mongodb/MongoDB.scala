@@ -1,13 +1,7 @@
 package com.chinawiserv.wsmp.mongodb
 
-import java.util
-
 import com.chinawiserv.core.mongo.{MongoDBClient, MongoDBClientProxy}
-import com.chinawiserv.wsmp.occupancy.Occupancy
-import com.chinawiserv.wsmp.util.DateTime
-import com.mongodb.client.model._
 import com.mongodb.{MongoClientOptions, ReadConcern, ReadPreference, WriteConcern}
-import org.bson.Document
 
 object MongoDB {
 
