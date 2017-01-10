@@ -1,7 +1,9 @@
 package com.chinawiserv.wsmp.operator
 
-import com.chinawiserv.wsmp.mem.model.{Cmd, Mem}
+import com.chinawiserv.wsmp.model.Cmd
+import com.chinawiserv.wsmp.unusual.mem.Mem
 import com.codahale.jerkson.Json
+
 import scala.collection.mutable
 
 object Operator {

@@ -1,6 +1,6 @@
-package com.chinawiserv.wsmp.mem
+package com.chinawiserv.wsmp.unusual.mem
 
-import com.chinawiserv.wsmp.mem.model.{Cmd, Mem, Web}
+import com.chinawiserv.wsmp.model.Cmd
 import com.chinawiserv.wsmp.operator.Operator
 import com.codahale.jerkson.Json
 
@@ -12,8 +12,8 @@ import scala.collection.mutable.{HashMap, ListBuffer}
 class MemManager {
 
   private val dataCount = 10;
-  private val memMap = new HashMap[String, ListBuffer[Mem]]();
-  private val webMap = new HashMap[String, Web]();
+  private val memMap = new HashMap[Int, ListBuffer[Mem]]();
+  private val webMap = new HashMap[Int, Web]();
 
   def saveData(cmd: Cmd): Boolean = {
     saveData(Operator.toMem(cmd));
@@ -35,11 +35,11 @@ class MemManager {
     });
   }
 
-  def readData(id: String): List[Mem] = {
+  def readData(id: Int): List[Mem] = {
     memMap.get(id).getOrElse(new ListBuffer[Mem]()).toList;
   }
 
-  def updateWeb(id: String, numsOfUnusual:Int): Unit = {
+  def updateWeb(id: Int, numsOfUnusual:Int): Unit = {
     synchronized({
       webMap += (id -> Web(id, numsOfUnusual));
     });

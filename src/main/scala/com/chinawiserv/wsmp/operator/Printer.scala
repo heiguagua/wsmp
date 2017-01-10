@@ -1,6 +1,7 @@
 package com.chinawiserv.wsmp.operator
 
-import com.chinawiserv.wsmp.mem.model.Cmd
+import com.chinawiserv.wsmp.model.Cmd
+
 
 object Printer {
 
