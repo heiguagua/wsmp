@@ -32,6 +32,6 @@ class UnusualExecutor(val cmds : List[Cmd], val wsClient: WSClient, val memManag
   private def sendToWebSocket(web: Web): Unit = {
     val json = Json.generate[Web](web);
     wsClient.sendMessage(json);
-    println(json);
+    println("sendToWebSocket="+json);
   }
 }
