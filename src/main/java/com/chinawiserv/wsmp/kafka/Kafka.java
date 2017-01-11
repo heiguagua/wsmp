@@ -1,7 +1,5 @@
 package com.chinawiserv.wsmp.kafka;
 
-import org.apache.kafka.common.serialization.StringDeserializer;
-
 import java.util.Properties;
 
 public class Kafka {

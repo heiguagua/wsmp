@@ -87,6 +87,7 @@ public class KafkaReader extends Kafka {
 
         public void run() {
             ConsumerRecords<String, String> records = consumer.poll(1000);
+            System.out.println(records.count());
             if (records != null && !records.isEmpty()) {
                 for (ConsumerRecord<String, String> record : records) {
                     System.out.println(record.key());
