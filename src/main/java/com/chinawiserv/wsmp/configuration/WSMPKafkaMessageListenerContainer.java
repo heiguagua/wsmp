@@ -400,7 +400,7 @@ public class WSMPKafkaMessageListenerContainer<K, V> extends AbstractMessageList
 					}
 					ConsumerRecords<K, V> records = this.consumer.poll(this.containerProperties.getPollTimeout());
 					if (records != null && this.logger.isDebugEnabled()) {
-						this.logger.debug("Received: " + records.count() + " records");
+						this.logger.info("Received: " + records.count() + " records");
 					}
 					if (records != null && records.count() > 0) {
 						if (this.containerProperties.getIdleEventInterval() != null) {
@@ -560,18 +560,30 @@ public class WSMPKafkaMessageListenerContainer<K, V> extends AbstractMessageList
 		}
 
 		private void invokeListener(final ConsumerRecords<K, V> records) {
-			WSMPKafkaListener.onMessages(records);
-			invokeListener(records.iterator());
-		}
-
-		private void invokeListener(Iterator<ConsumerRecord<K, V>> iterator) {
-
+			final int count = records.count();
+			final ArrayList<ConsumerRecord<K, V>> recordsList = new ArrayList<>(count);
+			Iterator<ConsumerRecord<K, V>> iterator = records.iterator();
 			while (iterator.hasNext() && (this.autoCommit || (this.invoker != null && this.invoker.active))) {
 				final ConsumerRecord<K, V> record = iterator.next();
-				if (!this.isAnyManualAck && !this.autoCommit) {
-					this.acks.add(record);
+				try {
+					recordsList.add(record);
+					if (!this.isAnyManualAck && !this.autoCommit) {
+						this.acks.add(record);
+					}
+				}
+				catch (Exception e) {
+					if (this.containerProperties.isAckOnError() && !this.autoCommit) {
+						this.acks.add(record);
+					}
+					if (this.containerProperties.getErrorHandler() != null) {
+						this.containerProperties.getErrorHandler().handle(e, record);
+					}
+					else {
+						this.logger.error("Listener threw an exception and no error handler for " + record, e);
+					}
 				}
 			}
+			WSMPKafkaListener.onMessages(recordsList, count);
 		}
 
 		private void processCommits() {

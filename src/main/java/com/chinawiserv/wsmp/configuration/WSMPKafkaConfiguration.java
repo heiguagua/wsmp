@@ -28,7 +28,7 @@ public class WSMPKafkaConfiguration {
 		final WSMPConcurrentKafkaListenerContainerFactory<String, String> factory = new WSMPConcurrentKafkaListenerContainerFactory<>();
 		factory.setConsumerFactory(consumerFactory);
 		factory.setConcurrency(1);
-		factory.getContainerProperties().setPollTimeout(3000);
+		factory.getContainerProperties().setPollTimeout(Long.MAX_VALUE);
 		return factory;
 	}
 	
@@ -38,18 +38,26 @@ public class WSMPKafkaConfiguration {
 	}
 
 	@Bean("consumerConfig")
-	public Map<String, Object> consumerConfigs(@Value("${kafka.bootstrap.servers}") String servers) {
-		System.out.println("fuck");
+	public Map<String, Object> consumerConfigs(
+			@Value("${kafka.consumer.bootstrap.servers}") String servers,
+			@Value("${kafka.consumer.enable.auto.commit}") boolean  autoComit,
+			@Value("${kafka.consumer.group.id}") String  groupId,
+			@Value("${kafka.consumer.client.id}") String  clientId
+	) {
 		final Map<String, Object> propsMap = new HashMap<>();
 
 		propsMap.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, servers);
-		propsMap.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
+		propsMap.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, autoComit);
+		propsMap.put(ConsumerConfig.RECEIVE_BUFFER_CONFIG, 1024 * 10240);
+		propsMap.put(ConsumerConfig.HEARTBEAT_INTERVAL_MS_CONFIG, "10000");
 		propsMap.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, "100");
 		propsMap.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "15000");
+		propsMap.put(ConsumerConfig.REQUEST_TIMEOUT_MS_CONFIG, "16000");
 		propsMap.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		propsMap.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-		propsMap.put(ConsumerConfig.GROUP_ID_CONFIG, "wsmp1");
-		propsMap.put(ConsumerConfig.CLIENT_ID_CONFIG, "wsmp_radio");
+		propsMap.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
+//		propsMap.put(ConsumerConfig.CLIENT_ID_CONFIG, clientId);
+		//latest
 		propsMap.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
 		return propsMap;

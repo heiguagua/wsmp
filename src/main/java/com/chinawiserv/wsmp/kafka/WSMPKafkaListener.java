@@ -12,6 +12,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Component
@@ -22,22 +23,25 @@ public class WSMPKafkaListener{
 
 	static List<DataHandler> dataHandlers;
 	
-	@KafkaListener(topics = "dom", group = "1")
+	@KafkaListener(topics = "${kafka.consumer.topic}", group = "1")
 	public void onMessage(ConsumerRecord<String, String> record) {
 		logger.info("receive messge {}", record);	
 	}
 
 	@SuppressWarnings("Unchecked")
-	public static <K, V>  void onMessages(ConsumerRecords<K, V> records) {
+	public static <K, V>  void onMessages(List<ConsumerRecord<K, V>> records, int count) {
 
-		final ArrayList<Cmd> cmds = new ArrayList<>();
-		for(ConsumerRecord<K, V> record : records){
+		final ArrayList<Cmd> cmds = new ArrayList<>(count);
+		for(Iterator<ConsumerRecord<K, V>> ite = records.iterator(); ite.hasNext();){
+			ConsumerRecord<K, V> record = ite.next();
+			ite.remove();
 			cmds.add(Operator.toCmd(record.value().toString()));
 		}
 		for(DataHandler handler : dataHandlers){
 			handler.compute((List<Cmd>) cmds.clone());
 		}
-		logger.info("receive messge {}, dataHandlers{}", cmds.size(), dataHandlers.size());
+
+		logger.info("receive messge {}, dataHandlers{}", count, dataHandlers.size());
 		cmds.clear();
 	}
 
