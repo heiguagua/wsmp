@@ -32,7 +32,7 @@ public class KafkaReader extends Kafka {
         this.scheduler = Executors.newScheduledThreadPool(1);
     }
 
-    public KafkaConsumer connectKafka() {
+    public KafkaConsumer connect() {
         try {
             if (this.consumer == null) {
                 ArrayList<String> topics = new ArrayList<String>();
@@ -50,19 +50,19 @@ public class KafkaReader extends Kafka {
         }
     }
 
-    public void startReadData() throws Exception {
+    public void start() throws Exception {
         if (consumer != null) {
             try {
                 this.scheduler.scheduleWithFixedDelay(new ReadDataRunnable(), 1000, 1, TimeUnit.MILLISECONDS);
             }
             catch (Exception e) {
                 log("Reading from Kafka fails, trying to reconnect Kafka ...");
-                this.connectKafka();
+                this.connect();
             }
         }
         else {
             log("Not connected to Kafka, try to connect ...");
-            this.connectKafka();
+            this.connect();
         }
     }
 
@@ -86,18 +86,12 @@ public class KafkaReader extends Kafka {
     private class ReadDataRunnable implements Runnable {
 
         public void run() {
-            try {
-                System.out.println("ReadDataRunnable...");
-                ConsumerRecords<String, String> records = consumer.poll(1000);
-                if (records != null && !records.isEmpty()) {
-                    for (ConsumerRecord<String, String> record : records) {
-                        System.out.println(record.key());
-                        System.out.println(record.value());
-                    }
+            ConsumerRecords<String, String> records = consumer.poll(1000);
+            if (records != null && !records.isEmpty()) {
+                for (ConsumerRecord<String, String> record : records) {
+                    System.out.println(record.key());
+                    System.out.println(record.topic());
                 }
-            }
-            finally {
-                consumer.close();
             }
         }
     }
