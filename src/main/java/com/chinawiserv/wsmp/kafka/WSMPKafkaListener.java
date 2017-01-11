@@ -22,7 +22,7 @@ public class WSMPKafkaListener{
 
 	static List<DataHandler> dataHandlers;
 	
-	@KafkaListener(topics = "test", group = "1")
+	@KafkaListener(topics = "dom", group = "1")
 	public void onMessage(ConsumerRecord<String, String> record) {
 		logger.info("receive messge {}", record);	
 	}
@@ -37,9 +37,8 @@ public class WSMPKafkaListener{
 		for(DataHandler handler : dataHandlers){
 			handler.compute((List<Cmd>) cmds.clone());
 		}
-		cmds.clear();
 		logger.info("receive messge {}, dataHandlers{}", cmds.size(), dataHandlers.size());
-
+		cmds.clear();
 	}
 
 	@Autowired
