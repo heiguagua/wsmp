@@ -7,6 +7,7 @@ import com.chinawiserv.wsmp.thread.{CustomThreadFactory, ThreadPool}
 import com.chinawiserv.wsmp.util.DateTime
 import org.apache.commons.lang.StringUtils
 import org.bson.Document
+import org.springframework.stereotype.Component
 
 import scala.collection.JavaConversions._
 import scala.collection.mutable.ArrayBuffer
@@ -15,6 +16,7 @@ import scala.util.Random
 /**
   * Created by zengpzh on 2017/1/6.
   */
+@Component
 class Occupancy extends DataHandler{
 
   OCCUPANCY_MEM;//实例化该类时就加载磁盘数据到内存，避免延迟加载对第一次调用的影响
