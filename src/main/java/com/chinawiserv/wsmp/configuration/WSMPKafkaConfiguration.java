@@ -39,7 +39,6 @@ public class WSMPKafkaConfiguration {
 
 	@Bean("consumerConfig")
 	public Map<String, Object> consumerConfigs(@Value("${kafka.bootstrap.servers}") String servers) {
-		System.out.println("fuck");
 		final Map<String, Object> propsMap = new HashMap<>();
 
 		propsMap.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, servers);
