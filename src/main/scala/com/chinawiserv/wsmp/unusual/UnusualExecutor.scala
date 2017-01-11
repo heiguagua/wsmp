@@ -2,9 +2,11 @@ package com.chinawiserv.wsmp.unusual
 
 import com.chinawiserv.wsmp.model.Cmd
 import com.chinawiserv.wsmp.operator.Operator
-import com.chinawiserv.wsmp.unusual.mem.{Mem, MemManager};
+import com.chinawiserv.wsmp.unusual.mem.{Mem, MemManager, Web}
+import com.chinawiserv.wsmp.websocket.WSClient
+import com.codahale.jerkson.Json;
 
-class UnusualExecutor(val memManager: MemManager, val cmds : List[Cmd]) extends Runnable {
+class UnusualExecutor(val cmds : List[Cmd], val wsClient: WSClient, val memManager: MemManager) extends Runnable {
 
   override def run(): Unit = {
     if (cmds != null && cmds.length > 0) {
@@ -24,12 +26,12 @@ class UnusualExecutor(val memManager: MemManager, val cmds : List[Cmd]) extends 
 
   private def computeUnusual(current: Mem, history: List[Mem]): Unit = {
     val numsOfUnusual =  100;
-    this.memManager.updateWeb(current.id, numsOfUnusual);
-    val json = this.memManager.jsonWeb();
-    this.sendToWebSocket(json);
+    this.sendToWebSocket(Web(current.id, numsOfUnusual));
   }
 
-  private def sendToWebSocket(json: String): Unit = {
-    println("sendToWebSocket");
+  private def sendToWebSocket(web: Web): Unit = {
+    val json = Json.generate[Web](web);
+    wsClient.sendMessage(json);
+    println("sendToWebSocket="+json);
   }
 }
