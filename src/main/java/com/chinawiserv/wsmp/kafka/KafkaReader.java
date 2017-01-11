@@ -1,6 +1,7 @@
 package com.chinawiserv.wsmp.kafka;
 
 import com.chinawiserv.wsmp.handler.DataHandler;
+import com.chinawiserv.wsmp.hbase.HbaseDataHandlers;
 import com.chinawiserv.wsmp.model.Cmd;
 import com.chinawiserv.wsmp.occupancy.Occupancy;
 import com.chinawiserv.wsmp.operator.Operator;
@@ -38,6 +39,7 @@ public class KafkaReader extends Kafka {
         this.topicName = topicName;
         this.dataHandlers = new ArrayList<DataHandler>();
         dataHandlers.add(new Unusual());
+        //dataHandlers.add(new HbaseDataHandlers());
         //dataHandlers.add(new Occupancy());
         this.scheduler = Executors.newScheduledThreadPool(1);
         this.connect();

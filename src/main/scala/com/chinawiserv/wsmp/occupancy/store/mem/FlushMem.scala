@@ -5,6 +5,7 @@ package mem
 import java.util.Date
 
 import com.chinawiserv.wsmp.model.Cmd
+import com.chinawiserv.wsmp.occupancy.model.OccupancyData
 import com.chinawiserv.wsmp.util.DateTime
 import org.apache.commons.lang.StringUtils
 
@@ -16,20 +17,21 @@ import scala.collection.mutable.{ArrayBuffer, Map}
 private[store] object FlushMem{
 
   def flush(cmds: List[Cmd]): Unit ={
-    println("-----------flush memory start, length: " + cmds.length);
-    val isTimeSame = this.checkTime(cmds);
+    //cmd为occupancyData
+    val occupancyDatas = parse2OccupancyData(cmds);
+    println("-----------flush memory start, length: " + occupancyDatas.length);
+    val isTimeSame = this.checkTime(occupancyDatas);
     if(isTimeSame){
       println("--------time same");
-      val time = DateTime.convertDateTime(new Date(cmds.head.scanOverTime), TIME_FORMAT);
+      val time = occupancyDatas.head.time;
       removeExpiredData(time);
-      cmds.foreach(cmd => {
-        doFlush(time, cmd);
+      occupancyDatas.foreach(occupancyData => {
+        doFlush(time, occupancyData);
       });
     }else{
       println("--------time is not same");
-      cmds.foreach(cmd => {
-        val time = DateTime.convertDateTime(new Date(cmd.scanOverTime), TIME_FORMAT);
-        doFlush(time, cmd);
+      occupancyDatas.foreach(occupancyData => {
+        doFlush(occupancyData.time, occupancyData);
       });
     }
     if(!NEED_FLUSH_DISK){
@@ -38,15 +40,18 @@ private[store] object FlushMem{
     println("-----------flush memory over");
   }
 
-  private def doFlush(time: String, cmd: Cmd): Unit ={
+  private def parse2OccupancyData(cmds: List[Cmd]): List[OccupancyData] ={
+    cmds.map(cmd => {
+      OccupancyData(cmd.id, DateTime.convertDateTime(new Date(cmd.scanOverTime * 1000), TIME_FORMAT), cmd.levels.clone);
+    });
+  }
+
+  private def doFlush(time: String, occupancyData: OccupancyData): Unit ={
     val OCCUPANCY_MEM_DATA = OCCUPANCY_MEM.getOrElseUpdate(time, Map[Int, ArrayBuffer[Byte]]());
-    val maxLevels = OCCUPANCY_MEM_DATA.getOrElseUpdate(cmd.id, ArrayBuffer[Byte]());
-    val maxLevelsLength = maxLevels.length;
-    val levels = cmd.levels;
+    val levels = occupancyData.levels;
     val levelsLength = levels.length;
-    if(maxLevelsLength == 0){
-      maxLevels ++= levels;
-    }else if(levelsLength == maxLevelsLength){
+    val maxLevels = OCCUPANCY_MEM_DATA.getOrElseUpdate(occupancyData.id, levels);
+    if(levelsLength == maxLevels.length){
       for(i <- 0 until levelsLength) {
         val level = levels(i);
         val maxLevel = maxLevels(i);
@@ -68,13 +73,13 @@ private[store] object FlushMem{
     }
   }
 
-  private def checkTime(cmds: List[Cmd], time: String = null): Boolean ={
-    if(cmds != null && !cmds.isEmpty) {
+  private def checkTime(occupancyDatas: List[OccupancyData], time: String = null): Boolean ={
+    if(occupancyDatas != null && !occupancyDatas.isEmpty) {
       if(time == null){
-        this.checkTime(cmds.tail, DateTime.convertDateTime(new Date(cmds.head.scanOverTime), TIME_FORMAT));
+        this.checkTime(occupancyDatas.tail, time);
       }else{
-        cmds.forall(cmd => {
-          time == DateTime.convertDateTime(new Date(cmd.scanOverTime), TIME_FORMAT);
+        occupancyDatas.forall(occupancyData => {
+          time == occupancyData.time;
         });
       }
     }else{
