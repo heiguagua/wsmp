@@ -49,7 +49,7 @@ class MemManager {
   def saveData(mem: Mem): Boolean = {
     synchronized({
       var result = false;
-      if (mem != null && mem.id != null) {
+      if (mem != null) {
         val list = memMap.get(mem.id).getOrElse(new ListBuffer[Mem]());
         if (list.length >= dataCount) {
           list.trimStart(list.length - (dataCount - 1));
