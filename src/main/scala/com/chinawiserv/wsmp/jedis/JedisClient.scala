@@ -23,11 +23,12 @@ object JedisClient extends Serializable {
 
     def addMsg(key: String, element: String): Unit = {
       synchronized({
+        val now = System.currentTimeMillis();
         val number = jedis.rpush(key, element);
         if (number > 10) {
           jedis.ltrim(key, (number - 10), (number - 1));
         }
-        println("Add to Redis（hashCode="+jedis.hashCode()+"） "+key);
+        println("Add to Redis（hashCode="+jedis.hashCode()+", ms= "+(System.currentTimeMillis() - now)+" 毫秒） "+key);
       });
     }
 

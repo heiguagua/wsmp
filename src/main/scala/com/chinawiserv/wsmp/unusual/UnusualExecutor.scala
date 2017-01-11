@@ -18,12 +18,22 @@ class UnusualExecutor(val cmds : List[Cmd], val wsClient: WSClient, val memManag
     }
   }
 
+  /**
+    * 数据当前节点的前 10 条数据，并保存当前数据（保存到内存与redis）
+    * @param cmd
+    * @return
+    */
   private def readAndSaveData(cmd: Cmd): List[Mem] = {
     val history = memManager.readData(cmd.id);
     memManager.saveData(cmd);
     return history;
   }
 
+  /**
+    * 调用异动算法接口
+    * @param current 当前数据
+    * @param history 10 条历史数据
+    */
   private def computeUnusual(current: Mem, history: List[Mem]): Unit = {
     val numsOfUnusual =  100;
     this.sendToWebSocket(Web(current.id, numsOfUnusual));
