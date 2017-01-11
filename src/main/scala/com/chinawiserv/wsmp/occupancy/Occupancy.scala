@@ -44,7 +44,7 @@ private[occupancy] object Occupancy {
 
      val stationNum = 300;
       val levelNum = 140000;
-      val time = System.currentTimeMillis();
+      val time = System.currentTimeMillis() / 1000;
       val cmds = new java.util.ArrayList[Cmd]();
       for (station <- 1 to stationNum) {
         val levels = ArrayBuffer[Byte]();
