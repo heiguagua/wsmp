@@ -56,7 +56,7 @@ class MemManager {
         }
         list += mem;
         memMap += (mem.id -> list);
-        //this.saveToRedis(mem.id, Json.generate[Mem](mem));
+        this.saveToRedis(mem.id, Json.generate[Mem](mem));
         result = true;
       }
       return result;

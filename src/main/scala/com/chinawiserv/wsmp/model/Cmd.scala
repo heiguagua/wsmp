@@ -1,7 +1,5 @@
 package com.chinawiserv.wsmp.model
 
-import com.chinawiserv.wsmp.unusual.mem.Mem
-
 import scala.collection.mutable.ArrayBuffer
 
 case class Cmd(

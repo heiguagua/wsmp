@@ -1,4 +1,4 @@
-package com.chinawiserv.wsmp;
+package com.chinawiserv.wsmp.unusual;
 
 public class UnusualLevel {
 
@@ -11,8 +11,13 @@ public class UnusualLevel {
         this.Res = new char[count];
     }
 
-    public int calcUnusualLevel(short[] Levels, short[] Variance, int Count) {
+    public UnusualLevel CreateObj() {
+        return this;
+    }
+
+    public int CalcUnusualLevel(short[] Levels, short[] Variance, int Count) {
         ++this.index;
+
         try {
             if(this.index == 1) {
                 for(int e = 0; e < Count; ++e) {
@@ -20,6 +25,7 @@ public class UnusualLevel {
                     if(Levels[e] > 120 || Levels[e] < 0) {
                         return -2;
                     }
+
                     if(e > 2678 && e < 3520 && Levels[e] > 100) {
                         this.temp[e] = 49;
                     }
@@ -29,13 +35,14 @@ public class UnusualLevel {
             if(this.index == 11) {
                 this.Res = this.temp;
             }
+
             return 1;
         } catch (Exception var5) {
             return 0;
         }
     }
 
-    public int free() {
+    public int FreeOccObj() {
         try {
             this.temp = null;
             this.Res = null;

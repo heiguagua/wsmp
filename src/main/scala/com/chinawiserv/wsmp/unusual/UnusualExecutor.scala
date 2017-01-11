@@ -4,7 +4,9 @@ import com.chinawiserv.wsmp.model.Cmd
 import com.chinawiserv.wsmp.operator.Operator
 import com.chinawiserv.wsmp.unusual.mem.{Mem, MemManager, Web}
 import com.chinawiserv.wsmp.websocket.WSClient
-import com.codahale.jerkson.Json;
+import com.codahale.jerkson.Json
+
+import scala.collection.mutable.ArrayBuffer;
 
 class UnusualExecutor(val cmds : List[Cmd], val wsClient: WSClient, val memManager: MemManager) extends Runnable {
 
@@ -36,6 +38,11 @@ class UnusualExecutor(val cmds : List[Cmd], val wsClient: WSClient, val memManag
     */
   private def computeUnusual(current: Mem, history: List[Mem]): Unit = {
     val numsOfUnusual =  100;
+    val currentArrayBuffer = new ArrayBuffer[Short]();
+    current.levels.foreach(x => {
+      currentArrayBuffer += x.toShort;
+    });
+    this.doCompute(current.numOfTraceItems.toInt, currentArrayBuffer.toArray, null);
     this.sendToWebSocket(Web(current.id, numsOfUnusual));
   }
 
@@ -43,5 +50,18 @@ class UnusualExecutor(val cmds : List[Cmd], val wsClient: WSClient, val memManag
     val json = Json.generate[Web](web);
     wsClient.sendMessage(json);
     println("sendToWebSocket="+json);
+  }
+
+  def doCompute(numOfTraceItems: Int, current: Array[Short], history: List[Array[Short]]): Array[Char] = {
+    synchronized({
+      val unusualLevel = new UnusualLevel(numOfTraceItems);
+      unusualLevel.CalcUnusualLevel(current, null, numOfTraceItems);
+      history.foreach(x => {
+        unusualLevel.CalcUnusualLevel(x, null, numOfTraceItems);
+      });
+      val res = unusualLevel.Res;
+      unusualLevel.FreeOccObj();
+      res;
+    });
   }
 }
