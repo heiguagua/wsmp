@@ -81,11 +81,11 @@ private[store] object FlushDisk {
     });
   }
 
-  private def slice(time: String, OCCUPANCY_MEM_DATA: Map[Int, ArrayBuffer[Byte]]): List[List[Document]] = {
+  private def slice(time: String, OCCUPANCY_MEM_DATA: Map[Int, ArrayBuffer[Short]]): List[List[Document]] = {
     if (OCCUPANCY_MEM_DATA != null) {
       val records = ListBuffer[Document]();
       for ((id, maxLevels) <- OCCUPANCY_MEM_DATA) {
-        val record = new Document("station", id).append("time", time).append("maxLevels", JavaConversions.asJavaCollection[Byte](maxLevels));
+        val record = new Document("station", id).append("time", time).append("maxLevels", JavaConversions.asJavaCollection[Short](maxLevels));
         records += record;
       }
       val shards = records.toList.sliding(FlushDisk.SHARD_SIZE, FlushDisk.SHARD_SIZE);

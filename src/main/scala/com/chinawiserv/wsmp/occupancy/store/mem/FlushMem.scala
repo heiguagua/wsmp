@@ -47,7 +47,7 @@ private[store] object FlushMem{
   }
 
   private def doFlush(time: String, occupancyData: OccupancyData): Unit ={
-    val OCCUPANCY_MEM_DATA = OCCUPANCY_MEM.getOrElseUpdate(time, Map[Int, ArrayBuffer[Byte]]());
+    val OCCUPANCY_MEM_DATA = OCCUPANCY_MEM.getOrElseUpdate(time, Map[Int, ArrayBuffer[Short]]());
     val levels = occupancyData.levels;
     val levelsLength = levels.length;
     val maxLevels = OCCUPANCY_MEM_DATA.getOrElseUpdate(occupancyData.id, levels);

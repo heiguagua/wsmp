@@ -38,7 +38,7 @@ private[disk] object FlushDiskTask {
         records.foreach(record => {
           val station = record.getInteger("station");
           val time = record.getString("time");
-          val maxLevels = record.get("maxLevels", classOf[util.Collection[Byte]]);
+          val maxLevels = record.get("maxLevels", classOf[util.Collection[Short]]);
           if (station != null && StringUtils.isNotBlank(time) && time.length == (TIME_YEAR_LENGTH + TIME_DAY_LENGTH) && maxLevels != null) {
             if (collection.isEmpty) {
               collection = collection_prefix + time.take(TIME_YEAR_LENGTH);

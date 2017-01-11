@@ -2,13 +2,13 @@ package com.chinawiserv.wsmp.unusual;
 
 public class UnusualLevel {
 
-    private char[] temp;
-    public char[] Res;
+    private byte[] temp;
+    public byte[] Res;
     public int index = 0;
 
     public UnusualLevel(int count) {
-        this.temp = new char[count];
-        this.Res = new char[count];
+        this.temp = new byte[count];
+        this.Res = new byte[count];
     }
 
     public UnusualLevel CreateObj() {
@@ -21,13 +21,13 @@ public class UnusualLevel {
         try {
             if(this.index == 1) {
                 for(int e = 0; e < Count; ++e) {
-                    this.temp[e] = 48;
+                    this.temp[e] = 0;
                     if(Levels[e] > 120 || Levels[e] < 0) {
                         return -2;
                     }
 
-                    if(e > 2678 && e < 3520 && Levels[e] > 100) {
-                        this.temp[e] = 49;
+                    if(e > 2678 && e < 3520 && Levels[e] > 90) {
+                        this.temp[e] = 1;
                     }
                 }
             }

@@ -22,7 +22,7 @@ package object disk {
 
   private[occupancy] val collection_prefix = "occupancy_";
 
-  private[occupancy] def getOccupancyRate(time: String, thresholdVal: Byte): List[Document] = {
+  private[occupancy] def getOccupancyRate(time: String, thresholdVal: Short): List[Document] = {
     if (StringUtils.isNotBlank(time) && time.length == (TIME_YEAR_LENGTH + TIME_DAY_LENGTH)) {
       val year = time.take(TIME_YEAR_LENGTH);
       val daytime = time.takeRight(TIME_DAY_LENGTH);
