@@ -16,7 +16,7 @@ class WSClient {
 
   def this(endpointURI: String) {
     this();
-    this.connectToServer(endpointURI);
+    //this.connectToServer(endpointURI);
   }
 
   @OnOpen

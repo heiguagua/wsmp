@@ -1,5 +1,10 @@
 package com.chinawiserv.wsmp.kafka;
 
+import com.chinawiserv.wsmp.handler.DataHandler;
+import com.chinawiserv.wsmp.model.Cmd;
+import com.chinawiserv.wsmp.occupancy.Occupancy;
+import com.chinawiserv.wsmp.operator.Operator;
+import com.chinawiserv.wsmp.unusual.Unusual;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -7,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -25,11 +31,16 @@ public class KafkaReader extends Kafka {
     private String topicName;
     private KafkaConsumer<String, String> consumer;
     private ScheduledExecutorService scheduler;
+    private List<DataHandler> dataHandlers;
 
     public KafkaReader(String brokers, String topicName) {
         this.brokers = brokers;
         this.topicName = topicName;
+        this.dataHandlers = new ArrayList<DataHandler>();
+        dataHandlers.add(new Unusual());
+        //dataHandlers.add(new Occupancy());
         this.scheduler = Executors.newScheduledThreadPool(1);
+        this.connect();
     }
 
     public KafkaConsumer connect() {
@@ -53,7 +64,7 @@ public class KafkaReader extends Kafka {
     public void start() throws Exception {
         if (consumer != null) {
             try {
-                this.scheduler.scheduleWithFixedDelay(new ReadDataRunnable(), 1000, 1, TimeUnit.MILLISECONDS);
+                this.scheduler.scheduleWithFixedDelay(new ReadDataRunnable(dataHandlers), 1000, 1, TimeUnit.MILLISECONDS);
             }
             catch (Exception e) {
                 log("Reading from Kafka fails, trying to reconnect Kafka ...");
@@ -84,14 +95,22 @@ public class KafkaReader extends Kafka {
     }
 
     private class ReadDataRunnable implements Runnable {
+        private List<DataHandler> dataHandlers;
+
+        public ReadDataRunnable(List<DataHandler> dataHandlers) {
+            this.dataHandlers  = dataHandlers;
+        }
 
         public void run() {
             ConsumerRecords<String, String> records = consumer.poll(1000);
-            System.out.println(records.count());
             if (records != null && !records.isEmpty()) {
+                List<Cmd> cmds = new ArrayList<Cmd>();
                 for (ConsumerRecord<String, String> record : records) {
-                    System.out.println(record.key());
-                    System.out.println(record.topic());
+                    Cmd cmd = Operator.toCmd(record.value());
+                    cmds.add(cmd);
+                }
+                for (DataHandler dataHandler : dataHandlers) {
+                    dataHandler.compute(cmds);
                 }
             }
         }
