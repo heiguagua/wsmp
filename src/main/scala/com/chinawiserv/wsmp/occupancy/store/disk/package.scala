@@ -51,7 +51,7 @@ package object disk {
       synchronized({
         if (!collectionExists(collection)) {
           MongoDB.mc.createCollection(db, collection, null);
-          MongoDB.mc.createIndex(db, collection, "occupancyTimeIndex", new Document("time", "-1"))
+          MongoDB.mc.createIndex(db, collection, "occupancyTimeIndex", new Document("time", -1));
           EXISTS_COLLECTIONS += collection;
         }
       });
