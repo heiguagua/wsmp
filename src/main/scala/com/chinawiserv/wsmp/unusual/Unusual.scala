@@ -6,7 +6,6 @@ import com.chinawiserv.wsmp.thread.{CustomThreadFactory, ThreadPool}
 import com.chinawiserv.wsmp.unusual.mem.MemManager
 import com.chinawiserv.wsmp.websocket.WSClient
 import org.springframework.stereotype.Component
-
 import scala.collection.JavaConversions._;
 
 @Component
