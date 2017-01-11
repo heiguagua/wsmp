@@ -39,24 +39,17 @@ private[store] object FlushMem{
   }
 
   private def doFlush(time: String, cmd: Cmd): Unit ={
-    var OCCUPANCY_MEM_DATA = OCCUPANCY_MEM.getOrElse(time, null);
-    if(OCCUPANCY_MEM_DATA == null){
-      OCCUPANCY_MEM_DATA = Map[Int, ArrayBuffer[Byte]]();
-      OCCUPANCY_MEM += (time -> OCCUPANCY_MEM_DATA);
-    }
-    var maxLevels = OCCUPANCY_MEM_DATA.getOrElse(cmd.id, null);
+    val OCCUPANCY_MEM_DATA = OCCUPANCY_MEM.getOrElseUpdate(time, Map[Int, ArrayBuffer[Byte]]());
+    val maxLevels = OCCUPANCY_MEM_DATA.getOrElseUpdate(cmd.id, ArrayBuffer[Byte]());
     val levels = cmd.levels;
     val levelsLength = levels.length;
-    for(i <- 0 until levelsLength){
-      if(maxLevels == null){
-        maxLevels = levels;
-        OCCUPANCY_MEM_DATA += (cmd.id -> maxLevels);
-      }else if(i >= maxLevels.length){
+    for(i <- 0 until levelsLength) {
+      if (i >= maxLevels.length) {
         maxLevels += levels(i);
-      }else{
+      } else {
         val level = levels(i);
         val maxLevel = maxLevels(i);
-        if(level > maxLevel){
+        if (level > maxLevel) {
           maxLevels(i) = levels(i);
         }
       }
