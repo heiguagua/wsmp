@@ -26,6 +26,7 @@ package object mem {
     disk.checkCollection(collection);
     val records = JavaConversions.asScalaBuffer(MongoDB.mc.find(disk.db, collection, filter, null)).toArray;
     records.foreach(record => {
+      println(record);
       val station = record.getInteger("station").toInt;
       val maxLevels = ArrayBuffer[Byte]();
       maxLevels ++= JavaConversions.asScalaBuffer[Int](record.get("maxLevels", classOf[java.util.List[Int]])).map(_.toByte);

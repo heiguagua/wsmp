@@ -14,7 +14,7 @@ class Unusual extends DataHandler {
   private val tasksOfExecutor = 5;
   private val memManager = new MemManager();
   private val wsClient = new WSClient("");
-  private val executor = ThreadPool.newThreadPool(60, new CustomThreadFactory("UnusualExecutor-"));
+  private val executor = ThreadPool.newThreadPool(6, new CustomThreadFactory("UnusualExecutor-"));
 
   @throws[Exception]
   def compute(cmds : java.util.List[Cmd]): Unit = {
