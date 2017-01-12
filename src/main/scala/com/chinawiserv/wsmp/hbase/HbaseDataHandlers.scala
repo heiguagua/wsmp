@@ -28,12 +28,13 @@ class HbaseDataHandlers extends DataHandler{
   override def compute(cmds: java.util.List[Cmd]): Unit = {
     printf("hbase recive cmds %d", cmds.size());
     AutoClose.using(this.connection.getAdmin, (admin : Admin) => {
-      List<Put> =  cmds.map((cmd : Cmd) =>{
+
+      cmds.map((cmd : Cmd) =>{
 
         var uuid = UUID.randomUUID().toString;
-        var rowid = Bytes.toByteArrays(uuid);
-//        var put = new Put(rowid);
-
+        var rowid = Bytes.toBytes(uuid);
+        var put = new Put(rowid);
+        put;
       })
     });
   }
