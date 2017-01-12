@@ -11,7 +11,7 @@ private[occupancy] class FlushMemTask extends Runnable{
         FlushMem.flush;
         Thread.sleep(1000);
       }catch {
-        case _ : Exception => Thread.currentThread().interrupt();
+        case e: Exception => Thread.currentThread().interrupt();
       }
     }
 
