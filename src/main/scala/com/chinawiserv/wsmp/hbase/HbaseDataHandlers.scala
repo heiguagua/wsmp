@@ -27,10 +27,9 @@ class HbaseDataHandlers extends DataHandler{
     printf("hbase recive cmds %d", cmds.size());
     AutoClose.using(this.connection.getAdmin, (admin : Admin) => {
           cmds.map((cmd : Cmd) =>{
-            var rowid = Bytes.va
-              var put = new Put();
+//            var rowid = Bytes.va
+//              var put = new Put();
 
-            put
           })
     });
   }
