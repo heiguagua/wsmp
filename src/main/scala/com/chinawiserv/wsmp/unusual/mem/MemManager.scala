@@ -4,8 +4,10 @@ import com.chinawiserv.wsmp.jedis.JedisClient
 import com.chinawiserv.wsmp.model.Cmd
 import com.chinawiserv.wsmp.operator.Operator
 import com.codahale.jerkson.Json
-import scala.collection.mutable.{HashMap, ListBuffer}
+
+import scala.collection.mutable.{ArrayBuffer, HashMap, ListBuffer}
 import com.chinawiserv.wsmp.jedis.JedisClient.JedisExtended
+
 import scala.collection.JavaConversions._;
 
 /**
@@ -74,8 +76,13 @@ class MemManager {
     }
   }
 
-  def readData(id: Int): List[Mem] = {
-    memMap.get(id).getOrElse(new ListBuffer[Mem]()).toList;
+  def readData(id: Int): List[Array[Short]] = {
+    val result = new ListBuffer[Array[Short]]();
+    val list = memMap.get(id).getOrElse(new ListBuffer[Mem]());
+    list.foreach(x => {
+      result += x.levels.toArray;
+    });
+    return result.toList;
   }
 
 }

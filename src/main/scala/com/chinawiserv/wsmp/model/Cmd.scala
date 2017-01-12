@@ -1,7 +1,5 @@
 package com.chinawiserv.wsmp.model
 
-import com.chinawiserv.wsmp.unusual.mem.Mem
-
 import scala.collection.mutable.ArrayBuffer
 
 case class Cmd(
@@ -54,7 +52,7 @@ case class Cmd(
                 dataLen: Long,
 
                 //sbyte[numOfTraceItems]	level	能量数据，8位有符号整数，取值[-128, 127]
-                levels: ArrayBuffer[Byte],
+                levels: ArrayBuffer[Short],
 
                 //byte[numOfTraceItems]	Stddev	统计值，8位无符号整数,取值[0-255]
                 stddevs: ArrayBuffer[Short]

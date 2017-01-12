@@ -1,5 +1,7 @@
 package com.chinawiserv.wsmp.hbase
 
+import java.util
+
 import com.chinawiserv.wsmp.handler.DataHandler
 import com.chinawiserv.wsmp.model.Cmd
 import org.apache.hadoop.conf.Configuration
@@ -33,6 +35,4 @@ class HbaseDataHandlers extends DataHandler{
           })
     });
   }
-
-  def newConnection()  = ConnectionFactory.createConnection(configuration);
 }
