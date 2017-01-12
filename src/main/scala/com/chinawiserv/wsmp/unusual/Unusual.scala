@@ -13,7 +13,7 @@ class Unusual extends DataHandler {
 
   private val tasksOfExecutor = 5;
   private val memManager = new MemManager();
-  private val wsClient = new WSClient("");
+  //private val wsClient = new WSClient("ws://127.0.0.1:8123");
   private val executor = ThreadPool.newThreadPool(6, new CustomThreadFactory("UnusualExecutor-"));
 
   @throws[Exception]
@@ -25,7 +25,7 @@ class Unusual extends DataHandler {
     if (cmds != null && !cmds.isEmpty) {
       val list = cmds.sliding(tasksOfExecutor, tasksOfExecutor);
       list.foreach(shard => {
-        executor.execute(new UnusualExecutor(shard, wsClient, memManager));
+        executor.execute(new UnusualExecutor(shard, null, memManager));
       });
     }
   }
