@@ -24,7 +24,7 @@ private[occupancy] object FlushMem {
     cmds.map(cmd => {
       occupancyDatas += OccupancyData(cmd.id, DateTime.convertDateTime(new Date(cmd.scanOverTime * 1000), TIME_FORMAT), cmd.levels.clone);
     });
-    flushMemQueue.add(occupancyDatas.toList);
+    flushMemQueue.offer(occupancyDatas.toList);
   }
 
   private[mem] def flush: Unit = {
