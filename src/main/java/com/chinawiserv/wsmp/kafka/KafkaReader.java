@@ -51,7 +51,7 @@ public class KafkaReader extends Kafka {
                 ArrayList<String> topics = new ArrayList<String>();
                 topics.add(topicName);
                 Properties props = this.getPropertiesForReader(brokers);
-                this.consumer = new KafkaConsumer<String, String>(props);
+                this.consumer = new KafkaConsumer<>(props);
                 this.consumer.subscribe(topics);
             }
             return this.consumer;
