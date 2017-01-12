@@ -124,6 +124,7 @@
 
     <build>
         <finalName>wsmp</finalName>
+        <defaultGoal>clean scala:compile assembly:assembly</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.scala-tools</groupId>
@@ -148,6 +149,22 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.5.3</version>
+                <configuration>
+                    <appendAssemblyId>true</appendAssemblyId>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.chinawiserv.wsmp.WsmpSpringStarter</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorId>jar-with-dependencies</descriptorId>
+                    </descriptorRefs>
+                </configuration>
             </plugin>
         </plugins>
     </build>
