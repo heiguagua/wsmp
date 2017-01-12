@@ -2,7 +2,6 @@ package com.chinawiserv.wsmp.occupancy
 package store
 
 import com.chinawiserv.wsmp.mongodb.MongoDB
-import com.mongodb.Block
 import com.mongodb.client.model.{Aggregates, Filters}
 import org.apache.commons.lang.StringUtils
 import org.bson._
@@ -12,13 +11,9 @@ import scala.collection.JavaConversions
 import scala.collection.mutable.ListBuffer
 
 /**
-  * Created by Administrator on 2017/1/9.
+  * Created by zengpzh on 2017/1/9.
   */
 package object disk {
-
-  private[occupancy] val db = "wsmp";
-
-  private[occupancy] val collection_prefix = "occupancy_";
 
   private[occupancy] def getOccupancyRate(time: String, thresholdVal: Short): List[Document] = {
     if (StringUtils.isNotBlank(time) && time.length == (TIME_YEAR_LENGTH + TIME_DAY_LENGTH)) {

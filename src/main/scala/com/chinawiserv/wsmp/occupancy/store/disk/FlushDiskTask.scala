@@ -2,7 +2,6 @@ package com.chinawiserv.wsmp.occupancy
 package store.disk
 
 import java.util
-import java.util.concurrent.CountDownLatch
 
 import com.chinawiserv.wsmp.mongodb.MongoDB
 import com.chinawiserv.wsmp.util.DateTime
@@ -13,16 +12,13 @@ import org.bson.Document
 /**
   * Created by zengpzh on 2017/1/6.
   */
-private[disk] class FlushDiskTask(shard: List[Document], time: String, count: CountDownLatch) extends Runnable {
+private[disk] class FlushDiskTask(shard: List[Document]) extends Runnable {
 
   override def run(): Unit = {
-    if (shard != null && StringUtils.isNotBlank(time)) {
+    if (shard != null) {
       println(Thread.currentThread.getName + "-----------flush shard on disk, shard length: " + shard.length + ", start: " + DateTime.getCurrentDate_YYYYMMDDHHMMSS);
       FlushDiskTask.flushRecords(shard);
       println(Thread.currentThread.getName + "-----------flush shard on disk over, end: " + DateTime.getCurrentDate_YYYYMMDDHHMMSS);
-    }
-    if (count != null) {
-      count.countDown();
     }
   }
 
