@@ -9,12 +9,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.util.ResourceUtils;
 
-//@org.springframework.context.annotation.Configuration
+@org.springframework.context.annotation.Configuration
 public class WSMPHbaseConfiguration implements InitializingBean {
 
 	@Bean
-	public org.apache.hadoop.conf.Configuration createHbaseConfig(@Value("${hbase.ip}") String hbaseIp,
-			@Value("${hbase.port}") String hbasePort) {
+	public org.apache.hadoop.conf.Configuration createHbaseConfig(
+			@Value("${hbase.zookeeper.quorum}")
+			String hbaseIp,
+			@Value("${hbase.zookeeper.property.clientPort}")
+			String hbasePort) {
 
 		final Configuration configuration = HBaseConfiguration.create();
 		configuration.set("hbase.zookeeper.quorum", hbaseIp);
