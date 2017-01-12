@@ -53,7 +53,6 @@ private[disk] object FlushDiskTask {
           }
         });
         if (writeModels.size > 0 && collection.length == (collection_prefix.length + TIME_DAY_LENGTH)) {
-          checkCollection(collection);
           MongoDB.mc.bulkWrite(db, collection, writeModels, new BulkWriteOptions().ordered(false));
           writeModels.clear();
         }

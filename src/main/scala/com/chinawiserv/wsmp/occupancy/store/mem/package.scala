@@ -11,7 +11,7 @@ import scala.collection.JavaConversions
 import scala.collection.mutable.{ArrayBuffer, ListBuffer, Map}
 
 /**
-  * Created by Administrator on 2017/1/10.
+  * Created by zengpzh on 2017/1/10.
   */
 package object mem {
 
@@ -23,10 +23,8 @@ package object mem {
     val daytime = time.takeRight(TIME_DAY_LENGTH);
     val collection = disk.collection_prefix + year;
     val filter = Filters.eq("time", daytime);
-    disk.checkCollection(collection);
     val records = JavaConversions.asScalaBuffer(MongoDB.mc.find(disk.db, collection, filter, null)).toArray;
     records.foreach(record => {
-      println(record);
       val station = record.getInteger("station").toInt;
       val maxLevels = ArrayBuffer[Short]();
       maxLevels ++= JavaConversions.asScalaBuffer[Int](record.get("maxLevels", classOf[java.util.List[Int]])).map(_.toShort);

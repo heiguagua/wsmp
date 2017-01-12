@@ -2,7 +2,8 @@ package com.chinawiserv.wsmp.occupancy
 
 import com.chinawiserv.wsmp.handler.DataHandler
 import com.chinawiserv.wsmp.model.Cmd
-import com.chinawiserv.wsmp.occupancy.store.mem.FlushMemTask
+import com.chinawiserv.wsmp.mongodb.MongoDB
+import com.chinawiserv.wsmp.occupancy.store.mem.{FlushMem, FlushMemTask}
 import com.chinawiserv.wsmp.thread.{CustomThreadFactory, ThreadPool}
 import com.chinawiserv.wsmp.util.DateTime
 import org.apache.commons.lang.StringUtils
@@ -16,15 +17,18 @@ import scala.util.Random
 /**
   * Created by zengpzh on 2017/1/6.
   */
-//@Component
-class Occupancy extends DataHandler{
+@Component
+class Occupancy extends DataHandler {
 
-  OCCUPANCY_MEM;//实例化该类时就加载磁盘数据到内存，避免延迟加载对第一次调用的影响
+  //实例化该类时就加载磁盘数据到内存，避免延迟加载对第一次调用的影响
+  OCCUPANCY_MEM;
+
+  Occupancy.flushMemExecutorService.execute(new FlushMemTask());
 
   @throws[Exception]
-  def compute(cmds: java.util.List[Cmd]): Unit ={
+  def compute(cmds: java.util.List[Cmd]): Unit = {
     if (cmds != null && !cmds.isEmpty) {
-      Occupancy.flushMemExecutorService.execute(new FlushMemTask(cmds.toList));
+      FlushMem.offer(cmds.toList);
     }
   }
 
@@ -32,17 +36,15 @@ class Occupancy extends DataHandler{
 
 private[occupancy] object Occupancy {
 
-  private val FLUSH_CONCURRENT_NUM: Int = 3;
-
-  private val flushMemExecutorService = ThreadPool.newThreadPool(FLUSH_CONCURRENT_NUM, new CustomThreadFactory("Occupancy-Flush-Mem-Executor-"));
+  private val flushMemExecutorService = ThreadPool.newThreadPool(3, new CustomThreadFactory("Occupancy-Flush-Mem-Executor-"));
 
   def main(args: Array[String]): Unit = {
 
-    val o =  new Occupancy();
+    val o = new Occupancy();
 
     while (true) {
 
-     val stationNum = 300;
+      val stationNum = Random.nextInt(301);
       val levelNum = 140000;
       val time = System.currentTimeMillis() / 1000;
       val cmds = new java.util.ArrayList[Cmd]();
@@ -58,8 +60,8 @@ private[occupancy] object Occupancy {
 
       /*println(DateTime.getCurrentDate_HHMMSS);
       println(getOccupancy("20170109", 125));
-      println(DateTime.getCurrentDate_HHMMSS);*/
-
+      println(DateTime.getCurrentDate_HHMMSS);
+      */
       Thread.sleep(1000);
 
     }
@@ -67,13 +69,13 @@ private[occupancy] object Occupancy {
   }
 
   def getOccupancy(time: String, thresholdVal: Byte): List[Document] = {
-    if(StringUtils.isNotBlank(time) && time.length == (TIME_YEAR_LENGTH + TIME_DAY_LENGTH)){
-      if(DateTime.getCurrentDate_YYYYMMDDWithOutSeparator == time){
+    if (StringUtils.isNotBlank(time) && time.length == (TIME_YEAR_LENGTH + TIME_DAY_LENGTH)) {
+      if (DateTime.getCurrentDate_YYYYMMDDWithOutSeparator == time) {
         store.mem.getOccupancyRate(time, thresholdVal)
-      }else{
+      } else {
         store.disk.getOccupancyRate(time, thresholdVal);
       }
-    }else{
+    } else {
       List();
     }
   }

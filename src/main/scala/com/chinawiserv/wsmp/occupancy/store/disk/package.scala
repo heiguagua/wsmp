@@ -16,8 +16,6 @@ import scala.collection.mutable.ListBuffer
   */
 package object disk {
 
-  private val EXISTS_COLLECTIONS = collection.mutable.ListBuffer[String]();
-
   private[occupancy] val db = "wsmp";
 
   private[occupancy] val collection_prefix = "occupancy_";
@@ -39,42 +37,10 @@ package object disk {
       pipeline.add(Aggregates.project(new Document("_id", 0).append("time", 1).append("station", 1)
         .append("occupancyRate", occupancyRate)));
       pipeline.add(Aggregates.sort(new Document("station", 1)));
-      checkCollection(collection);
       JavaConversions.asScalaBuffer(MongoDB.mc.aggregate(db, collection, pipeline)).toList;
     } else {
       List();
     }
-  }
-
-  private[store] def checkCollection(collection: String): Unit = {
-    if (!collectionExists(collection)) {
-      synchronized({
-        if (!collectionExists(collection)) {
-          MongoDB.mc.createCollection(db, collection, null);
-          MongoDB.mc.createIndex(db, collection, "occupancyTimeIndex", new Document("time", -1));
-          EXISTS_COLLECTIONS += collection;
-        }
-      });
-    }
-  }
-
-  private def collectionExists(collection: String): Boolean = {
-    var exists = false;
-    if (StringUtils.isNotBlank(collection)) {
-      exists = EXISTS_COLLECTIONS.contains(collection);
-    }
-    if (!exists) {
-      val mongoIterable = MongoDB.mc.listCollectionNames(db);
-      mongoIterable.forEach(new Block[String] {
-        override def apply(collectionName: String): Unit = {
-          if (collection == collectionName) {
-            exists = true;
-            EXISTS_COLLECTIONS += collection;
-          }
-        }
-      })
-    }
-    exists;
   }
 
 }
