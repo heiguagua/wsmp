@@ -35,49 +35,28 @@
                 <artifactId>spring-kafka</artifactId>
                 <version>1.0.5.RELEASE</version>
             </dependency>
-            <dependency>
-                <groupId>org.scala-lang</groupId>
-                <artifactId>scala-library</artifactId>
-                <version>${scala.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.scala-lang</groupId>
-                <artifactId>scala-compiler</artifactId>
-                <version>${scala.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.scala-lang</groupId>
-                <artifactId>scala-reflect</artifactId>
-                <version>${scala.version}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
+
         <dependency>
-            <groupId>com.sun.jna</groupId>
-            <artifactId>jna</artifactId>
-            <version>3.0.9</version>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-websocket</artifactId>
+            <version>8.5.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-websocket-api</artifactId>
+            <version>8.5.6</version>
         </dependency>
 
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.scala-lang</groupId>
-            <artifactId>scala-compiler</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.scala-lang</groupId>
-            <artifactId>scala-reflect</artifactId>
-        </dependency>
-
-
-        <dependency>
-            <groupId>org.apache.tomcat</groupId>
-            <artifactId>tomcat-websocket-api</artifactId>
-            <version>8.5.3</version>
+            <version>${scala.version}</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
@@ -96,6 +75,16 @@
             <groupId>com.gilt</groupId>
             <artifactId>jerkson_2.10</artifactId>
             <version>0.6.9</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.scala-lang</groupId>
+                    <artifactId>scala-library</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.scala-lang</groupId>
+                    <artifactId>scala-reflect</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -142,16 +131,19 @@
                 <version>2.15.2</version>
                 <executions>
                     <execution>
-                        <id>compile-scala</id>
+                        <id>scala-compile-first</id>
                         <goals>
-                            <goal>add-source</goal>
                             <goal>compile</goal>
                         </goals>
+                        <configuration>
+                            <includes>
+                                <include>**/*.scala</include>
+                            </includes>
+                        </configuration>
                     </execution>
                     <execution>
-                        <id>test-compile-scala</id>
+                        <id>scala-test-compile</id>
                         <goals>
-                            <goal>add-source</goal>
                             <goal>testCompile</goal>
                         </goals>
                     </execution>
