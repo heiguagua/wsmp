@@ -1,9 +1,10 @@
 package com.chinawiserv.wsmp
 
 import com.chinawiserv.wsmp.mongodb.MongoDB
-import com.chinawiserv.wsmp.occupancy.store.{disk, mem}
 import com.chinawiserv.wsmp.util.DateTime
+import com.mongodb.Block
 import com.mongodb.client.model.Filters
+import org.bson.conversions.Bson
 
 import scala.collection.JavaConversions
 import scala.collection.mutable.{ArrayBuffer, Map}
@@ -23,13 +24,15 @@ package object occupancy {
 
   private[occupancy] val collection_prefix = "occupancy_";
 
+  private[occupancy] val EXISTS_COLLECTIONS = ArrayBuffer[String]();
+
   //实例化该类时就加载磁盘数据到内存，避免延迟加载对第一次调用的影响
   private[occupancy] val OCCUPANCY_MEM = load;
 
-  private def load: Map[String, Map[Int, ArrayBuffer[Short]]] ={
+  private def load: Map[String, Map[Int, ArrayBuffer[Short]]] = {
     println(DateTime.getCurrentDate_YYYYMMDDHHMMSS);
     val OCCUPANCY_MEM_DATA = Map[Int, ArrayBuffer[Short]]();
-    val time =  DateTime.getCurrentDate_YYYYMMDDWithOutSeparator;
+    val time = DateTime.getCurrentDate_YYYYMMDDWithOutSeparator;
     val year = time.take(TIME_YEAR_LENGTH);
     val daytime = time.takeRight(TIME_DAY_LENGTH);
     val collection = collection_prefix + year;
@@ -44,5 +47,31 @@ package object occupancy {
     println(DateTime.getCurrentDate_YYYYMMDDHHMMSS);
     Map[String, Map[Int, ArrayBuffer[Short]]](time -> OCCUPANCY_MEM_DATA);
   }
+
+  private[occupancy] def shardCollection(collectionName: String, shardKey: Bson): Unit = {
+    var exists = EXISTS_COLLECTIONS.contains(collectionName);
+    if(!exists){
+      val collectionNames = MongoDB.mc.listCollectionNames(db);
+      collectionNames.forEach(new Block[String] {
+        override def apply(collectionName: String): Unit = {
+          if (collectionName == collectionName) {
+            EXISTS_COLLECTIONS += collectionName;
+            exists = true;
+            return;
+          }
+        }
+      });
+    }
+    if(!exists){
+      MongoDB.mc.createCollection(db, collectionName, null);
+      EXISTS_COLLECTIONS += collectionName;
+    }
+    val sharded = MongoDB.mc.getCollectionStats(db, collectionName).getBoolean("sharded");
+    if(sharded != null && !sharded){
+      MongoDB.mc.shardCollection(db, collectionName, shardKey);
+    }
+  }
+
+
 
 }
