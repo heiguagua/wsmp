@@ -39,30 +39,32 @@ object MongoDB {
   }
 
   def shardCollection(db: String, collectionName: String, shardKey: Bson): Unit = {
-    if(StringUtils.isNotBlank(db) && StringUtils.isNotBlank(collectionName) && shardKey != null){
-      val collections = EXISTS_COLLECTIONS.getOrElseUpdate(db, ArrayBuffer[String]());
-      var exists = collections.contains(collectionName);
-      if(!exists){
-        val collectionNames = MongoDB.mc.listCollectionNames(db);
-        collectionNames.forEach(new Block[String] {
-          override def apply(collectionName: String): Unit = {
-            if (collectionName == collectionName) {
-              collections += collectionName;
-              exists = true;
-              return;
+    synchronized({
+      if(StringUtils.isNotBlank(db) && StringUtils.isNotBlank(collectionName) && shardKey != null){
+        val collections = EXISTS_COLLECTIONS.getOrElseUpdate(db, ArrayBuffer[String]());
+        var exists = collections.contains(collectionName);
+        if(!exists){
+          val collectionNames = MongoDB.mc.listCollectionNames(db);
+          collectionNames.forEach(new Block[String] {
+            override def apply(collectionName: String): Unit = {
+              if (collectionName == collectionName) {
+                collections += collectionName;
+                exists = true;
+                return;
+              }
             }
-          }
-        });
+          });
+        }
+        if(!exists){
+          MongoDB.mc.createCollection(db, collectionName, null);
+          collections += collectionName;
+        }
+        val sharded = MongoDB.mc.getCollectionStats(db, collectionName).getBoolean("sharded");
+        if(sharded != null && !sharded){
+          MongoDB.mc.shardCollection(db, collectionName, shardKey);
+        }
       }
-      if(!exists){
-        MongoDB.mc.createCollection(db, collectionName, null);
-        collections += collectionName;
-      }
-      val sharded = MongoDB.mc.getCollectionStats(db, collectionName).getBoolean("sharded");
-      if(sharded != null && !sharded){
-        MongoDB.mc.shardCollection(db, collectionName, shardKey);
-      }
-    }
+    })
   }
 
   private def buildOptions: MongoClientOptions = {
