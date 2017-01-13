@@ -1,9 +1,9 @@
-package com.chinawiserv.wsmp.occupancy
+package com.chinawiserv.wsmp
+package occupancy
 package store.disk
 
 import java.util
 
-import com.chinawiserv.wsmp.mongodb.MongoDB
 import com.chinawiserv.wsmp.util.DateTime
 import com.mongodb.client.model._
 import org.apache.commons.lang.StringUtils
@@ -25,10 +25,6 @@ private class FlushDiskTask(shard: List[Document]) extends Runnable {
 }
 
 private[disk] object FlushDiskTask {
-
-  import com.chinawiserv.wsmp.configuration.SpringContextManager._;
-
-  private val mongoDB  = getBean(classOf[MongoDB]);
 
   def flushRecords(records: List[Document]): Unit = {
     if (records != null && !records.isEmpty) {
