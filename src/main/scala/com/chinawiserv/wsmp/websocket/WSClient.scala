@@ -7,6 +7,7 @@ import javax.websocket._
 class WSClient {
 
   private var session: Session = _;
+
   private var endpointURI: String = _;
 
   def this(endpointURI: String) {
@@ -41,7 +42,9 @@ class WSClient {
       ContainerProvider.getWebSocketContainer().connectToServer(this, new URI(this.endpointURI));
     }
     catch {
-      case e: Exception => println("WSClient.connectToServer:"+e.getMessage);
+      case e: Exception => {
+        println("WSClient.connectToServer.error:"+e.getMessage)
+      };
     }
   }
 
@@ -60,7 +63,7 @@ class WSClient {
     catch {
       case e : Exception => {
         result = false;
-        e.printStackTrace();
+        this.connectToServer();
       };
     }
     return result;
