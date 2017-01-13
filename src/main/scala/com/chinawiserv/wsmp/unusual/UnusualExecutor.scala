@@ -12,9 +12,8 @@ import org.bson.Document
 import org.bson.conversions.Bson
 import scala.collection.mutable.ListBuffer
 
-class UnusualExecutor(val cmds : List[Cmd], val wsClient: WSClient, val memManager: MemManager) extends Runnable {
+class UnusualExecutor(val cmds : List[Cmd], val wsClient: WSClient, val memManager: MemManager, val mongoDBName: String) extends Runnable {
 
-  private val mongoDBName = "wsmpExt2018";
   private val mongoColNamePrefix = "Unusual";
 
   override def run(): Unit = {
