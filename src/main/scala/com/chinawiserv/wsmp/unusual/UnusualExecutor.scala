@@ -59,11 +59,11 @@ class UnusualExecutor(val cmds : List[Cmd], val wsClient: WSClient, val memManag
         val docs = new util.ArrayList[Document]();
         for (i <- 0.until(res.length)) {
           if (res(i) == 1) {
-            val currentFreq = 20 + (0.025 * i);
+            val currentFreq = 20 + (0.025 * i) * 1000;
             val currentLevel = current.levels(i);
             val currentDate = current.scanOverTime * 1000;
             val doc = new Document();
-            doc.put("freq", currentFreq);
+            doc.put("freq", currentFreq.toInt);
             doc.put("level", currentLevel);
             doc.put("dt", currentDate);
             docs.add(doc);

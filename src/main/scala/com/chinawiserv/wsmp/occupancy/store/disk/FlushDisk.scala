@@ -45,7 +45,7 @@ private[occupancy] object FlushDisk {
   }
 
   private def flush(occupancyDatas: List[OccupancyData]): Unit = {
-    start(this.slice(occupancyDatas));
+    this.start(this.slice(occupancyDatas));
   }
 
   private def start(shards: (List[List[Document]])): Unit = {
