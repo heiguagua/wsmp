@@ -56,7 +56,7 @@ public class WSMPKafkaConfiguration {
 		propsMap.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		propsMap.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		propsMap.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
-//		propsMap.put(ConsumerConfig.CLIENT_ID_CONFIG, clientId);
+		propsMap.put(ConsumerConfig.CLIENT_ID_CONFIG, clientId);
 		//latest
 		propsMap.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
