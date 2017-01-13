@@ -3,8 +3,10 @@ package com.chinawiserv.wsmp.mongodb
 import com.chinawiserv.core.mongo.{MongoDBClient, MongoDBClientProxy}
 import com.mongodb._
 import org.apache.commons.lang.StringUtils
+import org.bson.Document
 import org.bson.conversions.Bson
 
+import scala.collection.JavaConversions
 import scala.collection.mutable.ArrayBuffer
 
 object MongoDB {
@@ -55,6 +57,13 @@ object MongoDB {
           });
         }
         if(!exists){
+          val documents = JavaConversions.asScalaBuffer(MongoDB.mc.find("config", "databases", new Document("_id", db), null)).toList;
+          documents.foreach(document => {
+            val partitioned = document.getBoolean("partitioned");
+            if(partitioned == null || !partitioned){
+              MongoDB.mc.enableDbShard(db);
+            }
+          });
           MongoDB.mc.createCollection(db, collection, null);
           collections += collection;
         }
