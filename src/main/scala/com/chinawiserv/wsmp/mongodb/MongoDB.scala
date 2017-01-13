@@ -2,6 +2,7 @@ package com.chinawiserv.wsmp.mongodb
 
 import com.chinawiserv.core.mongo.{MongoDBClient, MongoDBClientProxy}
 import com.mongodb._
+import org.apache.commons.lang.StringUtils
 import org.bson.conversions.Bson
 
 import scala.collection.mutable.ArrayBuffer
@@ -24,7 +25,7 @@ object MongoDB {
 
   private val DB: String = "wsmp";
 
-  private[occupancy] val EXISTS_COLLECTIONS = ArrayBuffer[String]();
+  private val EXISTS_COLLECTIONS = scala.collection.mutable.Map[String, ArrayBuffer[String]]();
 
   def createConnection(): MongoDBClient = {
     /*val addresses = new util.ArrayList[ServerAddress];
@@ -37,27 +38,30 @@ object MongoDB {
     new MongoDBClientProxy().bind("172.16.7.205", 28018, DB, buildOptions);
   }
 
-  def shardCollection(collectionName: String, shardKey: Bson): Unit = {
-    var exists = EXISTS_COLLECTIONS.contains(collectionName);
-    if(!exists){
-      val collectionNames = MongoDB.mc.listCollectionNames(DB);
-      collectionNames.forEach(new Block[String] {
-        override def apply(collectionName: String): Unit = {
-          if (collectionName == collectionName) {
-            EXISTS_COLLECTIONS += collectionName;
-            exists = true;
-            return;
+  def shardCollection(db: String, collectionName: String, shardKey: Bson): Unit = {
+    if(StringUtils.isNotBlank(db) && StringUtils.isNotBlank(collectionName) && shardKey != null){
+      val collections = EXISTS_COLLECTIONS.getOrElseUpdate(db, ArrayBuffer[String]());
+      var exists = collections.contains(collectionName);
+      if(!exists){
+        val collectionNames = MongoDB.mc.listCollectionNames(db);
+        collectionNames.forEach(new Block[String] {
+          override def apply(collectionName: String): Unit = {
+            if (collectionName == collectionName) {
+              collections += collectionName;
+              exists = true;
+              return;
+            }
           }
-        }
-      });
-    }
-    if(!exists){
-      MongoDB.mc.createCollection(DB, collectionName, null);
-      EXISTS_COLLECTIONS += collectionName;
-    }
-    val sharded = MongoDB.mc.getCollectionStats(DB, collectionName).getBoolean("sharded");
-    if(sharded != null && !sharded){
-      MongoDB.mc.shardCollection(DB, collectionName, shardKey);
+        });
+      }
+      if(!exists){
+        MongoDB.mc.createCollection(db, collectionName, null);
+        collections += collectionName;
+      }
+      val sharded = MongoDB.mc.getCollectionStats(db, collectionName).getBoolean("sharded");
+      if(sharded != null && !sharded){
+        MongoDB.mc.shardCollection(db, collectionName, shardKey);
+      }
     }
   }
 
