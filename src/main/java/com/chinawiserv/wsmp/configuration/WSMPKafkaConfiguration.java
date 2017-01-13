@@ -42,14 +42,17 @@ public class WSMPKafkaConfiguration {
 			@Value("${kafka.consumer.bootstrap.servers}") String servers,
 			@Value("${kafka.consumer.enable.auto.commit}") boolean  autoComit,
 			@Value("${kafka.consumer.group.id}") String  groupId,
-			@Value("${kafka.consumer.client.id}") String  clientId
+			@Value("${kafka.consumer.client.id}") String  clientId,
+			@Value("${kafka.consumer.receive.buffer.bytes}") String  buffSize,
+			@Value("${kafka.consumer.max.partition.fetch.bytes}") String  fetchSize
 	) {
 		final Map<String, Object> propsMap = new HashMap<>();
 
 		propsMap.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, servers);
-		propsMap.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, autoComit);
-		propsMap.put(ConsumerConfig.RECEIVE_BUFFER_CONFIG, 1024 * 10240);
-		propsMap.put(ConsumerConfig.HEARTBEAT_INTERVAL_MS_CONFIG, "10000");
+        propsMap.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, autoComit);
+        propsMap.put(ConsumerConfig.RECEIVE_BUFFER_CONFIG,  buffSize);
+        propsMap.put(ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG,  fetchSize);
+        propsMap.put(ConsumerConfig.HEARTBEAT_INTERVAL_MS_CONFIG, "10000");
 		propsMap.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, "100");
 		propsMap.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "15000");
 		propsMap.put(ConsumerConfig.REQUEST_TIMEOUT_MS_CONFIG, "16000");
