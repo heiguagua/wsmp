@@ -3,7 +3,7 @@ package com.chinawiserv.wsmp.unusual
 import java.io.File
 import java.util
 import java.util.{ArrayList, Date, HashMap, List}
-
+import com.chinawiserv.wsmp.common.ImplFileReader.Files;
 import com.chinawiserv.wsmp.mongodb.MongoDB
 import com.chinawiserv.wsmp.util.DateTime
 import com.codahale.jerkson.Json
@@ -45,7 +45,6 @@ object UnusualQuery {
   }
 
   def readJson(): HashMap[String, HashMap[String, Object]] = {
-    import com.chinawiserv.wsmp.common.FileReader.Files;
     val result = new HashMap[String, HashMap[String, Object]];
     val file = new File("F:\\IdeaProject\\DeepOne\\wsmp\\data\\map.json");
     val json = file.lines.mkString;
@@ -61,16 +60,18 @@ object UnusualQuery {
 
   def initMap(): util.Collection[HashMap[String, Object]] =  {
     val result = this.readJson();
-    val list = MongoDB.mc.find("wsmpExt", "UnusualLevels", new Document(), null);
-    if (list != null && !list.isEmpty) {
-      for (i <- 0.until(list.size())) {
-        val doc = list.get(i);
-        val id = doc.get("id").toString;
-        val un =  doc.get("un").toString;
-        val map = result.get(id);
-        if (map != null) {
-          map.put("num", un);
-          println("initMap.num="+un);
+    if (result != null && !result.isEmpty) {
+      val list = MongoDB.mc.find("wsmpExt", "UnusualLevels", new Document(), null);
+      if (list != null && !list.isEmpty) {
+        for (i <- 0.until(list.size())) {
+          val doc = list.get(i);
+          val id = doc.get("id").toString;
+          val un =  doc.get("un").toString;
+          val map = result.get(id);
+          if (map != null) {
+            println("initMap.num="+un);
+            map.put("num", un);
+          }
         }
       }
     }
