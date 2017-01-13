@@ -1,7 +1,10 @@
 package com.chinawiserv.wsmp.mongodb
 
 import com.chinawiserv.core.mongo.{MongoDBClient, MongoDBClientProxy}
-import com.mongodb.{MongoClientOptions, ReadConcern, ReadPreference, WriteConcern}
+import com.mongodb._
+import org.bson.conversions.Bson
+
+import scala.collection.mutable.ArrayBuffer
 
 object MongoDB {
 
@@ -21,6 +24,8 @@ object MongoDB {
 
   private val DB: String = "wsmp";
 
+  private[occupancy] val EXISTS_COLLECTIONS = ArrayBuffer[String]();
+
   def createConnection(): MongoDBClient = {
     /*val addresses = new util.ArrayList[ServerAddress];
     addresses.add(new ServerAddress(HOST0, PORT));
@@ -30,6 +35,30 @@ object MongoDB {
     addresses.add(new ServerAddress(HOST4, PORT));
     new MongoDBClientProxy().bind(addresses, DB, buildOptions);*/
     new MongoDBClientProxy().bind("172.16.7.205", 28018, DB, buildOptions);
+  }
+
+  def shardCollection(collectionName: String, shardKey: Bson): Unit = {
+    var exists = EXISTS_COLLECTIONS.contains(collectionName);
+    if(!exists){
+      val collectionNames = MongoDB.mc.listCollectionNames(DB);
+      collectionNames.forEach(new Block[String] {
+        override def apply(collectionName: String): Unit = {
+          if (collectionName == collectionName) {
+            EXISTS_COLLECTIONS += collectionName;
+            exists = true;
+            return;
+          }
+        }
+      });
+    }
+    if(!exists){
+      MongoDB.mc.createCollection(DB, collectionName, null);
+      EXISTS_COLLECTIONS += collectionName;
+    }
+    val sharded = MongoDB.mc.getCollectionStats(DB, collectionName).getBoolean("sharded");
+    if(sharded != null && !sharded){
+      MongoDB.mc.shardCollection(DB, collectionName, shardKey);
+    }
   }
 
   private def buildOptions: MongoClientOptions = {
