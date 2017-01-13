@@ -3,7 +3,7 @@ package com.chinawiserv.wsmp.common
 import java.io.{BufferedReader, File, FileReader}
 import scala.collection.mutable.ListBuffer
 
-object FileReader {
+object ImplFileReader {
   /**
     * 扩展Java的File类的方法
     * 为Java的File类提供一个获得所有行数的方法
