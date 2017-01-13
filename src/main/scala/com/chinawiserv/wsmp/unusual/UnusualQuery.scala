@@ -28,7 +28,8 @@ object UnusualQuery {
     for (i <- 0.until(list.size())) {
       val doc = list.get(i)
       val map = new HashMap[String, Object]();
-      map.put("freq", doc.get("_id").asInstanceOf[Document].get("_id"));
+      val freq = (doc.get("_id").asInstanceOf[Document].get("_id").toString.toDouble / 1000).toString;
+      map.put("freq", freq);
       map.put("level", doc.get("level"));
       map.put("dt", doc.get("dt"));
       map.put("amount", doc.get("amount"));
