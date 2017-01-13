@@ -1,34 +1,14 @@
 package com.chinawiserv;
 
-import com.dgbc.caculate.CUnusualLevel;
+import com.chinawiserv.wsmp.websocket.WSClient;
 
 public class AppTest {
 
-    public static void main(String[] args) {
-        System.out.println("test---------");
-        int count = 143201;
-        short[] Levels = new short[count];
-        CUnusualLevel level = new CUnusualLevel(count);
-
-        int i;
-        for(i = 0; i < count; ++i) {
-            Levels[i] = (short)((int)(Math.random() * 100.0D));
-            if(i == 2690) {
-                Levels[i] = 120;
-            }
+    public static void main(String[] args) throws Exception {
+        WSClient ws = new WSClient();
+        ws.connectToServer("ws://172.16.7.75:8080/Wifi/test");
+        for (int i = 0 ; i< 100; i ++) {
+            ws.sendMessage("{dom:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA}");
         }
-
-        for(i = 0; i < 11; ++i) {
-            level.CalcUnusualLevel(Levels, (short[])null, count);
-        }
-
-        System.out.println(level.Res[2690]);
-    }
-
-    public static void print(char[] chas) {
-        for(int i = 0; i < chas.length; ++i) {
-            System.out.println(i + "--->" + chas[i]);
-        }
-
     }
 }

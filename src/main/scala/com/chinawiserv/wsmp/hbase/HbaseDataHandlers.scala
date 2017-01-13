@@ -20,7 +20,7 @@ import scala.collection.mutable.ArrayBuffer
 /**
   * Created by chinawiserv-0006 on 2017/1/11.
   */
-@Component
+//@Component
 class HbaseDataHandlers extends DataHandler with InitializingBean {
 
   val logger: Logger = LoggerFactory.getLogger(this.getClass)
