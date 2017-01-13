@@ -1,5 +1,7 @@
 package com.chinawiserv.wsmp.configuration;
 
+import java.io.FileNotFoundException;
+import java.net.URISyntaxException;
 import java.nio.file.Paths;
 
 import org.apache.hadoop.conf.Configuration;
@@ -17,8 +19,9 @@ public class WSMPHbaseConfiguration implements InitializingBean {
 			@Value("${hbase.zookeeper.quorum}")
 			String hbaseIp,
 			@Value("${hbase.zookeeper.property.clientPort}")
-			String hbasePort) {
+			String hbasePort) throws FileNotFoundException, URISyntaxException {
 
+		System.setProperty("hadoop.home.dir", Paths.get(ResourceUtils.getURL("Hadoop").toURI()).toString());
 		final Configuration configuration = HBaseConfiguration.create();
 		configuration.set("hbase.zookeeper.quorum", hbaseIp);
 		configuration.set("hbase.zookeeper.property.clientPort", hbasePort);
