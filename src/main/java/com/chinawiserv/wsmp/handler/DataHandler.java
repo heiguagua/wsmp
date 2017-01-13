@@ -8,7 +8,6 @@ import java.util.List;
  */
 public interface DataHandler {
 
-	
     void compute(List<Cmd> cmds);
 
 }
