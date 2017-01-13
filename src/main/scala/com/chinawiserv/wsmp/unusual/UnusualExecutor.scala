@@ -1,9 +1,8 @@
-package com.chinawiserv.wsmp.unusual
+package com.chinawiserv.wsmp
+package unusual;
 
 import java.util
-
 import com.chinawiserv.wsmp.model.Cmd
-import com.chinawiserv.wsmp.mongodb.MongoDB
 import com.chinawiserv.wsmp.operator.Operator
 import com.chinawiserv.wsmp.unusual.mem.{Mem, MemManager}
 import com.chinawiserv.wsmp.websocket.WSClient
@@ -12,13 +11,10 @@ import com.mongodb.client.model.{Aggregates, BsonField}
 import org.bson.Document
 import org.bson.conversions.Bson
 import scala.collection.mutable.ListBuffer
-import com.chinawiserv.wsmp.configuration.SpringContextManager._;
 
 class UnusualExecutor(val cmds : List[Cmd], val wsClient: WSClient, val memManager: MemManager) extends Runnable {
 
   private val mongoColNamePrefix = "Unusual";
-
-  private val mongoDB  = getBean(classOf[MongoDB]);
 
   override def run(): Unit = {
     if (cmds != null && cmds.length > 0) {

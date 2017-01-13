@@ -1,21 +1,17 @@
-package com.chinawiserv.wsmp.unusual
+package com.chinawiserv.wsmp;
+package unusual;
 
+import java.util;
 import java.io.File
-import java.util
 import java.util.{ArrayList, Date, HashMap, List}
-
 import com.chinawiserv.wsmp.common.ImplFileReader.Files
 import com.chinawiserv.wsmp.util.DateTime
 import com.codahale.jerkson.Json
 import com.mongodb.client.model.{Aggregates, BsonField}
 import org.bson.Document
 import org.bson.conversions.Bson
-import com.chinawiserv.wsmp.configuration.SpringContextManager._
-import com.chinawiserv.wsmp.mongodb.MongoDB;
 
 object UnusualQuery {
-
-  private val mongoDB  = getBean(classOf[MongoDB]);
 
   def getUnusualById(id: String): List[HashMap[String, Object]] = {
    // db.Unusual52010001.aggregate([

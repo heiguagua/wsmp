@@ -13,9 +13,9 @@ import org.springframework.scheduling.annotation.EnableAsync;
 	}	
 )
 @EnableAsync
-public class WsmpSpringStarter {
+public class WsmpBooter {
 
 	public static void main(String[] args) {
-		SpringApplication.run(WsmpSpringStarter.class, args);
+		SpringApplication.run(WsmpBooter.class, args);
 	}
 }
