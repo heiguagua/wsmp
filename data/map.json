@@ -1,7 +1,7 @@
 [{
-    "id": 1,
-    "title": "20161221",
-    "num": 21,
+    "id": "52010015",
+    "title": "52010015",
+    "num": 0,
     "longitude": {
         "type": "Number",
         "default": 104.081565
@@ -15,9 +15,9 @@
         "default": "火车南站基站监控点数据表格等待展示"
     }
 }, {
-    "id": 2,
-    "title": "20161222",
-    "num": 18,
+    "id": "52010002",
+    "title": "52010002",
+    "num": 0,
     "longitude": {
         "type": "Number",
         "default": 104.073516

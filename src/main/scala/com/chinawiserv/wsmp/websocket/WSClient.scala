@@ -30,7 +30,7 @@ class WSClient {
   }
 
   @OnMessage
-  def onMessage(message: String) {
+  def onMessage(message: String): Unit = {
   }
 
   def connectToServer(endpointURI: String): Unit = {
@@ -41,13 +41,16 @@ class WSClient {
     var result = false;
     try {
       if (this.session != null && this.session.isOpen) {
-        this.session.getAsyncRemote.sendText(message);
+        this.session.getBasicRemote.sendText(message);
         println("sendMessage="+message);
         result = true;
       }
     }
     catch {
-      case e : Exception => result = false;
+      case e : Exception => {
+        result = false;
+        e.printStackTrace();
+      };
     }
     return result;
   }
