@@ -15,9 +15,6 @@ import scala.collection.JavaConversions._
 @Component
 class Occupancy extends DataHandler {
 
-  @Autowired
-  val mongoDB: MongoDB = _;
-
   @throws[Exception]
   def compute(cmds: java.util.List[Cmd]): Unit = {
     if (cmds != null && !cmds.isEmpty) {
