@@ -30,14 +30,14 @@ object MongoDB {
   private val EXISTS_COLLECTIONS = scala.collection.mutable.Map[String, ArrayBuffer[String]]();
 
   def createConnection(): MongoDBClient = {
-    /*val addresses = new util.ArrayList[ServerAddress];
+    val addresses = new java.util.ArrayList[ServerAddress];
     addresses.add(new ServerAddress(HOST0, PORT));
     addresses.add(new ServerAddress(HOST1, PORT));
     addresses.add(new ServerAddress(HOST2, PORT));
     addresses.add(new ServerAddress(HOST3, PORT));
     addresses.add(new ServerAddress(HOST4, PORT));
-    new MongoDBClientProxy().bind(addresses, DB, buildOptions);*/
-    new MongoDBClientProxy().bind("172.16.7.205", 28018, DB, buildOptions);
+    new MongoDBClientProxy().bind(addresses, DB, buildOptions);
+    //new MongoDBClientProxy().bind("172.16.7.205", 28018, DB, buildOptions);
   }
 
   def shardCollection(db: String, collection: String, shardKey: Bson): Unit = {
@@ -57,16 +57,16 @@ object MongoDB {
           });
         }
         if(!exists){
-          val documents = JavaConversions.asScalaBuffer(MongoDB.mc.find("config", "databases", new Document("_id", db), null)).toList;
-          documents.foreach(document => {
-            val partitioned = document.getBoolean("partitioned");
-            if(partitioned == null || !partitioned){
-              MongoDB.mc.enableDbShard(db);
-            }
-          });
           MongoDB.mc.createCollection(db, collection, null);
           collections += collection;
         }
+        val documents = JavaConversions.asScalaBuffer(MongoDB.mc.find("config", "databases", new Document("_id", db), null)).toList;
+        documents.foreach(document => {
+          val partitioned = document.getBoolean("partitioned");
+          if (partitioned == null || !partitioned) {
+            MongoDB.mc.enableDbShard(db);
+          }
+        });
         val sharded = MongoDB.mc.getCollectionStats(db, collection).getBoolean("sharded");
         if(sharded != null && !sharded){
           MongoDB.mc.shardCollection(db, collection, shardKey);
