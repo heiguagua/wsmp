@@ -17,7 +17,6 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <hbase.version>1.1.2</hbase.version>
-        <start-class>com.chinawiserv.wsmp.WsmpStarter</start-class>
     </properties>
 
     <pluginRepositories>
@@ -139,6 +138,7 @@
 
     <build>
         <finalName>wsmp</finalName>
+        <defaultGoal>clean scala:compile assembly:assembly</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.scala-tools</groupId>
@@ -146,20 +146,39 @@
                 <version>2.15.2</version>
                 <executions>
                     <execution>
-                        <id>compile-scala</id>
+                        <id>scala-compile-first</id>
                         <goals>
-                            <goal>add-source</goal>
                             <goal>compile</goal>
                         </goals>
+                        <configuration>
+                            <includes>
+                                <include>**/*.scala</include>
+                            </includes>
+                        </configuration>
                     </execution>
                     <execution>
-                        <id>test-compile-scala</id>
+                        <id>scala-test-compile</id>
                         <goals>
-                            <goal>add-source</goal>
                             <goal>testCompile</goal>
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.5.3</version>
+                <configuration>
+                    <appendAssemblyId>true</appendAssemblyId>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.chinawiserv.wsmp.WsmpBooter</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorId>jar-with-dependencies</descriptorId>
+                    </descriptorRefs>
+                </configuration>
             </plugin>
         </plugins>
     </build>
