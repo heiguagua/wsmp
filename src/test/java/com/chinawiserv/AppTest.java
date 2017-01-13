@@ -22,7 +22,7 @@ public class AppTest {
             level.CalcUnusualLevel(Levels, (short[])null, count);
         }
 
-        System.out.println(level.Res[2690]);
+        System.out.println(level.Res[2690]);*/
     }
 
     public static void print(char[] chas) {
