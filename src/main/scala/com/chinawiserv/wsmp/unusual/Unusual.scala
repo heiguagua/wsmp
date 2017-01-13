@@ -13,7 +13,7 @@ class Unusual extends DataHandler {
 
   private val tasksOfExecutor = 5;
   private val memManager = new MemManager();
-  private val wsClient = new WSClient("ws://172.16.7.75:8080/Wifi/test");
+  private val wsClient = new WSClient("ws://172.16.7.75:8080/test");
   private val executor = ThreadPool.newThreadPool(6, new CustomThreadFactory("UnusualExecutor-"));
 
   @throws[Exception]
@@ -22,11 +22,16 @@ class Unusual extends DataHandler {
   }
 
   def compute(cmds : List[Cmd]): Unit = {
-    if (cmds != null && !cmds.isEmpty) {
-      val list = cmds.sliding(tasksOfExecutor, tasksOfExecutor);
-      list.foreach(shard => {
-        executor.execute(new UnusualExecutor(shard, wsClient, memManager));
-      });
+    try {
+      if (cmds != null && !cmds.isEmpty) {
+        val list = cmds.sliding(tasksOfExecutor, tasksOfExecutor);
+        list.foreach(shard => {
+          executor.execute(new UnusualExecutor(shard, wsClient, memManager));
+        });
+      }
+    }
+    catch {
+      case e: Exception => println("Unusual.compute: "+e.getMessage) ;
     }
   }
 
