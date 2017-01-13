@@ -8,15 +8,11 @@ import com.chinawiserv.wsmp.util.DateTime
 import com.mongodb.client.model._
 import org.apache.commons.lang.StringUtils
 import org.bson.Document
-import org.springframework.context.annotation.Scope
-import org.springframework.stereotype.Component
 
 /**
   * Created by zengpzh on 2017/1/6.
   */
-@Component
-@Scope("prototype")
-private[disk] class FlushDiskTask(shard: List[Document]) extends Runnable {
+private class FlushDiskTask(shard: List[Document]) extends Runnable {
 
   override def run(): Unit = {
     if (shard != null) {
