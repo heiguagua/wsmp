@@ -72,9 +72,6 @@ object UnusualQuery {
           map.put("num", un);
           println("initMap.num="+un);
         }
-        else {
-          println(id);
-        }
       }
     }
     return result.values();
