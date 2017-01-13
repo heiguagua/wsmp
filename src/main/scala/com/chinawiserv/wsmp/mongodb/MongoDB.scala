@@ -50,7 +50,6 @@ object MongoDB {
               if (collectionName == collectionName) {
                 collections += collectionName;
                 exists = true;
-                return;
               }
             }
           });
