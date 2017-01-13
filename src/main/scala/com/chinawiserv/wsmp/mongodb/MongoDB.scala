@@ -38,29 +38,29 @@ object MongoDB {
     new MongoDBClientProxy().bind("172.16.7.205", 28018, DB, buildOptions);
   }
 
-  def shardCollection(db: String, collectionName: String, shardKey: Bson): Unit = {
+  def shardCollection(db: String, collection: String, shardKey: Bson): Unit = {
     synchronized({
-      if(StringUtils.isNotBlank(db) && StringUtils.isNotBlank(collectionName) && shardKey != null){
+      if(StringUtils.isNotBlank(db) && StringUtils.isNotBlank(collection) && shardKey != null){
         val collections = EXISTS_COLLECTIONS.getOrElseUpdate(db, ArrayBuffer[String]());
-        var exists = collections.contains(collectionName);
+        var exists = collections.contains(collection);
         if(!exists){
           val collectionNames = MongoDB.mc.listCollectionNames(db);
           collectionNames.forEach(new Block[String] {
             override def apply(collectionName: String): Unit = {
-              if (collectionName == collectionName) {
-                collections += collectionName;
+              if (collection == collectionName) {
+                collections += collection;
                 exists = true;
               }
             }
           });
         }
         if(!exists){
-          MongoDB.mc.createCollection(db, collectionName, null);
-          collections += collectionName;
+          MongoDB.mc.createCollection(db, collection, null);
+          collections += collection;
         }
-        val sharded = MongoDB.mc.getCollectionStats(db, collectionName).getBoolean("sharded");
+        val sharded = MongoDB.mc.getCollectionStats(db, collection).getBoolean("sharded");
         if(sharded != null && !sharded){
-          MongoDB.mc.shardCollection(db, collectionName, shardKey);
+          MongoDB.mc.shardCollection(db, collection, shardKey);
         }
       }
     })
