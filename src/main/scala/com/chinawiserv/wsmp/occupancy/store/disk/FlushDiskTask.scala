@@ -8,10 +8,14 @@ import com.chinawiserv.wsmp.util.DateTime
 import com.mongodb.client.model._
 import org.apache.commons.lang.StringUtils
 import org.bson.Document
+import org.springframework.context.annotation.Scope
+import org.springframework.stereotype.Component
 
 /**
   * Created by zengpzh on 2017/1/6.
   */
+@Component
+@Scope("prototype")
 private[disk] class FlushDiskTask(shard: List[Document]) extends Runnable {
 
   override def run(): Unit = {
@@ -26,6 +30,10 @@ private[disk] class FlushDiskTask(shard: List[Document]) extends Runnable {
 
 private[disk] object FlushDiskTask {
 
+  import com.chinawiserv.wsmp.configuration.SpringContextManager._;
+
+  private val mongoDB  = getBean(classOf[MongoDB]);
+
   def flushRecords(records: List[Document]): Unit = {
     if (records != null && !records.isEmpty) {
       try {
@@ -39,7 +47,7 @@ private[disk] object FlushDiskTask {
             if (collection.isEmpty) {
               collection = collection_prefix + time.take(TIME_YEAR_LENGTH);
             }
-            MongoDB.shardCollection(db, collection, new Document("station", 1));
+            mongoDB.shardCollection(db, collection, new Document("station", 1));
             val daytime = time.takeRight(TIME_DAY_LENGTH);
             val filter = Filters.and(Filters.eq("station", station), Filters.eq("time", daytime));
             val replacement = new Document("station", station)
@@ -50,7 +58,7 @@ private[disk] object FlushDiskTask {
           }
         });
         if (writeModels.size > 0 && collection.length == (collection_prefix.length + TIME_DAY_LENGTH)) {
-          MongoDB.mc.bulkWrite(db, collection, writeModels, new BulkWriteOptions().ordered(false));
+          mongoDB.mc.bulkWrite(db, collection, writeModels, new BulkWriteOptions().ordered(false));
           writeModels.clear();
         }
       } catch {

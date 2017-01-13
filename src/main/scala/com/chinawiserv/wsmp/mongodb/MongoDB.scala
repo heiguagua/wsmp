@@ -5,48 +5,44 @@ import com.mongodb._
 import org.apache.commons.lang.StringUtils
 import org.bson.Document
 import org.bson.conversions.Bson
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.stereotype.Component
 
 import scala.collection.JavaConversions
 import scala.collection.mutable.ArrayBuffer
 
-object MongoDB {
+@Component
+class MongoDB {
 
-  lazy val mc = createConnection;
+  @Value("${mongodb.hosts}")
+  var mongodbHosts: String = _;
 
-  private val HOST0: String = "172.16.7.210";
-
-  private val HOST1: String = "172.16.7.201";
-
-  private val HOST2: String = "172.16.7.202";
-
-  private val HOST3: String = "172.16.7.203";
-
-  private val HOST4: String = "172.16.7.204";
-
-  private val PORT: Int = 30000;
-
-  private val DB: String = "wsmp";
+  @Value("${mongodb.db}")
+  var mongodbDB: String = _;
 
   private val EXISTS_COLLECTIONS = scala.collection.mutable.Map[String, ArrayBuffer[String]]();
 
-  def createConnection(): MongoDBClient = {
-    val addresses = new java.util.ArrayList[ServerAddress];
-    addresses.add(new ServerAddress(HOST0, PORT));
-    addresses.add(new ServerAddress(HOST1, PORT));
-    addresses.add(new ServerAddress(HOST2, PORT));
-    addresses.add(new ServerAddress(HOST3, PORT));
-    addresses.add(new ServerAddress(HOST4, PORT));
-    new MongoDBClientProxy().bind(addresses, DB, buildOptions);
-    //new MongoDBClientProxy().bind("172.16.7.205", 28018, DB, buildOptions);
+  val mc = createConnection;
+
+  private def createConnection: MongoDBClient = {
+    val addresses = new java.util.ArrayList[ServerAddress]();
+    val mongodbHostArray = mongodbHosts.split(",");
+    mongodbHostArray.foreach(mongodbHost => {
+      val hostAndPort = mongodbHost.split(":");
+      if (hostAndPort.length == 2) {
+        addresses.add(new ServerAddress(hostAndPort(0), hostAndPort(1).toInt));
+      }
+    });
+    new MongoDBClientProxy().bind(addresses, mongodbDB, this.buildOptions);
   }
 
   def shardCollection(db: String, collection: String, shardKey: Bson): Unit = {
-    synchronized({
-      if(StringUtils.isNotBlank(db) && StringUtils.isNotBlank(collection) && shardKey != null){
-        val collections = EXISTS_COLLECTIONS.getOrElseUpdate(db, ArrayBuffer[String]());
+    synchronized(this, {
+      if (StringUtils.isNotBlank(db) && StringUtils.isNotBlank(collection) && shardKey != null) {
+        val collections = this.EXISTS_COLLECTIONS.getOrElseUpdate(db, ArrayBuffer[String]());
         var exists = collections.contains(collection);
-        if(!exists){
-          val collectionNames = MongoDB.mc.listCollectionNames(db);
+        if (!exists) {
+          val collectionNames = mc.listCollectionNames(db);
           collectionNames.forEach(new Block[String] {
             override def apply(collectionName: String): Unit = {
               if (collection == collectionName) {
@@ -56,20 +52,20 @@ object MongoDB {
             }
           });
         }
-        if(!exists){
-          MongoDB.mc.createCollection(db, collection, null);
+        if (!exists) {
+          mc.createCollection(db, collection, null);
           collections += collection;
         }
-        val documents = JavaConversions.asScalaBuffer(MongoDB.mc.find("config", "databases", new Document("_id", db), null)).toList;
+        val documents = JavaConversions.asScalaBuffer(mc.find("config", "databases", new Document("_id", db), null)).toList;
         documents.foreach(document => {
           val partitioned = document.getBoolean("partitioned");
           if (partitioned == null || !partitioned) {
-            MongoDB.mc.enableDbShard(db);
+            mc.enableDbShard(db);
           }
         });
-        val sharded = MongoDB.mc.getCollectionStats(db, collection).getBoolean("sharded");
-        if(sharded != null && !sharded){
-          MongoDB.mc.shardCollection(db, collection, shardKey);
+        val sharded = mc.getCollectionStats(db, collection).getBoolean("sharded");
+        if (sharded != null && !sharded) {
+          mc.shardCollection(db, collection, shardKey);
         }
       }
     })
