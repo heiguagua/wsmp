@@ -14,12 +14,13 @@ import scala.collection.mutable.ListBuffer
 
 class UnusualExecutor(val cmds : List[Cmd], val wsClient: WSClient, val memManager: MemManager) extends Runnable {
 
-  private val mongoDBName = "wsmpExt";
+  private val mongoDBName = "wsmpExt2018";
   private val mongoColNamePrefix = "Unusual";
 
   override def run(): Unit = {
     if (cmds != null && cmds.length > 0) {
       val wsList = new ListBuffer[Map[String, Any]]();
+      MongoDB.shardCollection(mongoDBName, mongoColNamePrefix+"Levels", new Document("id", 1));
       cmds.foreach(cmd => {
         val current = Operator.toMem(cmd);
         val history = this.readAndSaveData(cmd);
@@ -93,11 +94,11 @@ class UnusualExecutor(val cmds : List[Cmd], val wsClient: WSClient, val memManag
             docs.add(doc);
           }
         }
+        MongoDB.shardCollection(mongoDBName, mongoColNamePrefix+current.id, new Document("freq", 1));
         MongoDB.mc.insert(mongoDBName, mongoColNamePrefix+current.id, docs, null);
         val amount = this.countByColName(mongoColNamePrefix+current.id);
         if (amount > 0) {
           val doc = new Document();
-          doc.put("_id", current.id);
           doc.put("id", current.id);
           doc.put("un", amount);
           doc.put("flat", current.flat);

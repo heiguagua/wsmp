@@ -1,22 +1,18 @@
 package com.chinawiserv.wsmp.websocket
 
 import java.net.URI
-import javax.websocket.ClientEndpoint
-import javax.websocket.CloseReason
-import javax.websocket.ContainerProvider
-import javax.websocket.OnClose
-import javax.websocket.OnMessage
-import javax.websocket.OnOpen
-import javax.websocket.Session
+import javax.websocket._
 
 @ClientEndpoint
 class WSClient {
 
   private var session: Session = _;
+  private var endpointURI: String = _;
 
   def this(endpointURI: String) {
     this();
-    this.connectToServer(endpointURI);
+    this.endpointURI = endpointURI;
+    this.connectToServer();
   }
 
   @OnOpen
@@ -27,14 +23,26 @@ class WSClient {
   @OnClose
   def onClose(userSession: Session, reason: CloseReason) {
     this.session = null;
+    println("WebSocker.onClose:"+reason.getReasonPhrase);
   }
 
   @OnMessage
   def onMessage(message: String): Unit = {
   }
 
-  def connectToServer(endpointURI: String): Unit = {
-    ContainerProvider.getWebSocketContainer().connectToServer(this, new URI(endpointURI));
+  @OnError
+  def onError(throwable: Throwable, session: Session) {
+    this.session = null;
+    println("WebSocker.onError:"+throwable.getMessage);
+  }
+
+  def connectToServer(): Unit = {
+    try {
+      ContainerProvider.getWebSocketContainer().connectToServer(this, new URI(this.endpointURI));
+    }
+    catch {
+      case e: Exception => println("WSClient.connectToServer:"+e.getMessage);
+    }
   }
 
   def sendMessage(message: String): Boolean = {
@@ -44,6 +52,9 @@ class WSClient {
         this.session.getBasicRemote.sendText(message);
         println("sendMessage="+message);
         result = true;
+      }
+      else {
+        this.connectToServer();
       }
     }
     catch {
