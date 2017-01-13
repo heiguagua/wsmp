@@ -69,7 +69,6 @@ object UnusualQuery {
           val un =  doc.get("un").toString;
           val map = result.get(id);
           if (map != null) {
-            println("initMap.num="+un);
             map.put("num", un);
           }
         }
