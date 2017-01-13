@@ -1,6 +1,7 @@
 package com.chinawiserv.wsmp.unusual
 
 import java.util
+
 import com.chinawiserv.wsmp.model.Cmd
 import com.chinawiserv.wsmp.mongodb.MongoDB
 import com.chinawiserv.wsmp.operator.Operator
@@ -11,15 +12,18 @@ import com.mongodb.client.model.{Aggregates, BsonField}
 import org.bson.Document
 import org.bson.conversions.Bson
 import scala.collection.mutable.ListBuffer
+import com.chinawiserv.wsmp.configuration.SpringContextManager._;
 
-class UnusualExecutor(val cmds : List[Cmd], val wsClient: WSClient, val memManager: MemManager, val mongoDBName: String) extends Runnable {
+class UnusualExecutor(val cmds : List[Cmd], val wsClient: WSClient, val memManager: MemManager) extends Runnable {
 
   private val mongoColNamePrefix = "Unusual";
+
+  private val mongoDB  = getBean(classOf[MongoDB]);
 
   override def run(): Unit = {
     if (cmds != null && cmds.length > 0) {
       val wsList = new ListBuffer[Map[String, Any]]();
-      MongoDB.shardCollection(mongoDBName, mongoColNamePrefix+"Levels", new Document("id", 1));
+      mongoDB.shardCollection(mongoDB.dbName, mongoColNamePrefix+"Levels", new Document("id", 1));
       cmds.foreach(cmd => {
         val current = Operator.toMem(cmd);
         val history = this.readAndSaveData(cmd);
@@ -93,8 +97,8 @@ class UnusualExecutor(val cmds : List[Cmd], val wsClient: WSClient, val memManag
             docs.add(doc);
           }
         }
-        MongoDB.shardCollection(mongoDBName, mongoColNamePrefix+current.id, new Document("freq", 1));
-        MongoDB.mc.insert(mongoDBName, mongoColNamePrefix+current.id, docs, null);
+        mongoDB.shardCollection(mongoDB.dbName, mongoColNamePrefix+current.id, new Document("freq", 1));
+        mongoDB.mc.insert(mongoDB.dbName, mongoColNamePrefix+current.id, docs, null);
         val amount = this.countByColName(mongoColNamePrefix+current.id);
         if (amount > 0) {
           val doc = new Document();
@@ -102,7 +106,7 @@ class UnusualExecutor(val cmds : List[Cmd], val wsClient: WSClient, val memManag
           doc.put("un", amount);
           doc.put("flat", current.flat);
           doc.put("flon", current.flon);
-          MongoDB.mc.insert(mongoDBName, mongoColNamePrefix+"Levels", doc, null);
+          mongoDB.mc.insert(mongoDB.dbName, mongoColNamePrefix+"Levels", doc, null);
           wsList += Map("id" -> current.id, "un" -> amount);
         }
       }
@@ -118,7 +122,7 @@ class UnusualExecutor(val cmds : List[Cmd], val wsClient: WSClient, val memManag
     val pipeline: util.List[Bson] = new util.ArrayList[Bson];
     pipeline.add(Aggregates.group(null, new BsonField("count", new Document("$sum", 1))))
     pipeline.add(Aggregates.project(new Document("_id", 0)))
-    val list: util.List[Document] = MongoDB.mc.aggregate(mongoDBName, colName, pipeline)
+    val list: util.List[Document] = mongoDB.mc.aggregate(mongoDB.dbName, colName, pipeline)
     if (list != null && !list.isEmpty) {
       list.get(0).get("count").toString.toInt;
     }

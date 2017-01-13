@@ -18,7 +18,7 @@ class MongoDB {
   var mongodbHosts: String = _;
 
   @Value("${mongodb.db}")
-  var mongodbDB: String = _;
+  var dbName: String = _;
 
   private val EXISTS_COLLECTIONS = scala.collection.mutable.Map[String, ArrayBuffer[String]]();
 
@@ -33,7 +33,7 @@ class MongoDB {
         addresses.add(new ServerAddress(hostAndPort(0), hostAndPort(1).toInt));
       }
     });
-    new MongoDBClientProxy().bind(addresses, mongodbDB, this.buildOptions);
+    new MongoDBClientProxy().bind(addresses, dbName, this.buildOptions);
   }
 
   def shardCollection(db: String, collection: String, shardKey: Bson): Unit = {
