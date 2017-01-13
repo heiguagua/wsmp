@@ -3,15 +3,19 @@ package com.chinawiserv.wsmp.unusual
 import java.io.File
 import java.util
 import java.util.{ArrayList, Date, HashMap, List}
-import com.chinawiserv.wsmp.common.ImplFileReader.Files;
-import com.chinawiserv.wsmp.mongodb.MongoDB
+
+import com.chinawiserv.wsmp.common.ImplFileReader.Files
 import com.chinawiserv.wsmp.util.DateTime
 import com.codahale.jerkson.Json
 import com.mongodb.client.model.{Aggregates, BsonField}
 import org.bson.Document
 import org.bson.conversions.Bson
+import com.chinawiserv.wsmp.configuration.SpringContextManager._
+import com.chinawiserv.wsmp.mongodb.MongoDB;
 
 object UnusualQuery {
+
+  private val mongoDB  = getBean(classOf[MongoDB]);
 
   def getUnusualById(id: String): List[HashMap[String, Object]] = {
    // db.Unusual52010001.aggregate([
@@ -27,7 +31,7 @@ object UnusualQuery {
                                   new BsonField("level", new Document("$first", "$level")),
                                   new BsonField("dt", new Document("$first", "$dt"))))
     pipeline.add(Aggregates.sort(new Document("_id", 1)));
-    val list = MongoDB.mc.aggregate("wsmpExt", "Unusual"+id, pipeline);
+    val list = mongoDB.mc.aggregate("wsmpExt", "Unusual"+id, pipeline);
     if (list != null && !list.isEmpty) {
       for (i <- 0.until(list.size())) {
         val doc = list.get(i)
@@ -61,7 +65,7 @@ object UnusualQuery {
   def initMap(): util.Collection[HashMap[String, Object]] =  {
     val result = this.readJson();
     if (result != null && !result.isEmpty) {
-      val list = MongoDB.mc.find("wsmpExt", "UnusualLevels", new Document(), null);
+      val list = mongoDB.mc.find("wsmpExt", "UnusualLevels", new Document(), null);
       if (list != null && !list.isEmpty) {
         for (i <- 0.until(list.size())) {
           val doc = list.get(i);
