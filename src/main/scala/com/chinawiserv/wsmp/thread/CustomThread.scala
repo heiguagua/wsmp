@@ -21,7 +21,6 @@ class CustomThread extends Thread {
 
   override def run() {
     try {
-      println(this.getName);
       target.run();
     }
     finally {
