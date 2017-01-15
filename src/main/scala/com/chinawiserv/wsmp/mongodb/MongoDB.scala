@@ -77,17 +77,17 @@ class MongoDB extends InitializingBean{
               }
             }
           });
-        }
-        if (!exists) {
-          mc.createCollection(db, collection, null);
-          collections += collection;
-        }
-        if(db != dbName){
-          this.enableDbShard(db);
-        }
-        val sharded = mc.getCollectionStats(db, collection).getBoolean("sharded");
-        if (sharded != null && !sharded) {
-          mc.shardCollection(db, collection, shardKey);
+          if (!exists) {
+            mc.createCollection(db, collection, null);
+            collections += collection;
+          }
+          if(db != dbName){
+            this.enableDbShard(db);
+          }
+          val sharded = mc.getCollectionStats(db, collection).getBoolean("sharded");
+          if (sharded != null && !sharded) {
+            mc.shardCollection(db, collection, shardKey);
+          }
         }
       }
     })
