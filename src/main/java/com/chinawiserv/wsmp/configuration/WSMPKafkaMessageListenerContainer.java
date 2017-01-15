@@ -566,10 +566,10 @@ public class WSMPKafkaMessageListenerContainer<K, V> extends AbstractMessageList
 			while (iterator.hasNext() && (this.autoCommit || (this.invoker != null && this.invoker.active))) {
 				final ConsumerRecord<K, V> record = iterator.next();
 				try {
-					recordsList.add(record);
 					if (!this.isAnyManualAck && !this.autoCommit) {
 						this.acks.add(record);
 					}
+                    recordsList.add(record);
 				}
 				catch (Exception e) {
 					if (this.containerProperties.isAckOnError() && !this.autoCommit) {
@@ -584,6 +584,7 @@ public class WSMPKafkaMessageListenerContainer<K, V> extends AbstractMessageList
 				}
 			}
 			WSMPKafkaListener.onMessages(recordsList, count);
+			recordsList.clear();
 		}
 
 		private void processCommits() {

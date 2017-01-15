@@ -24,28 +24,21 @@ public class WSMPKafkaListener{
 	static Collection<DataHandler> dataHandlers;
 	
 	@KafkaListener(topics = "${kafka.consumer.topic}", group = "1")
-	public void onMessage(ConsumerRecord<String, String> record) {
-		logger.info("receive messge {}", record);	
+	public void onMessage(ConsumerRecord<String, Cmd> record) {
+        showDataFlow();
 	}
 
 	@SuppressWarnings("Unchecked")
-	public static <K, V>  void onMessages(List<ConsumerRecord<K, V>> records, int count) {
+	public static <K, V>  void onMessages(ArrayList<ConsumerRecord<K, V>> records, int count) {
 
 		dataFlow.inc(count);
 
-		final ArrayList<Cmd> cmds = new ArrayList<>(count);
-
-		for(Iterator<ConsumerRecord<K, V>> ite = records.iterator(); ite.hasNext();){
-			cmds.add(Operator.toCmd(ite.next().value().toString()));
+        for(DataHandler handler : dataHandlers){
+//			handler.compute((List<Cmd>) records.clone());
 		}
-
-/*		for(DataHandler handler : dataHandlers){
-			handler.compute((List<Cmd>) cmds.clone());
-		}*/
 
 		logger.info("receive messge {}, dataHandlers {}", count, dataHandlers.size());
 		showDataFlow();
-		cmds.clear();
 	}
 
 	@Autowired

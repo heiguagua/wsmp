@@ -19,6 +19,11 @@ public class DataFlow implements Serializable {
     private static ScheduledExecutorService scheduler;
     private DecimalFormat df = new DecimalFormat("#.00");
 
+    public long inc(int amount) {
+        this.drc.addAndGet(amount);
+        return this.totalVal.addAndGet(amount);
+    }
+
     public DataFlow() {
         this.avgVal = 0.0;
         this.drc = new AtomicInteger(0);
@@ -31,11 +36,6 @@ public class DataFlow implements Serializable {
     public long inc() {
         this.drc.incrementAndGet();
         return this.totalVal.incrementAndGet();
-    }
-
-    public long inc(int amount) {
-        this.drc.addAndGet(amount);
-        return this.totalVal.addAndGet(amount);
     }
 
     public double getAvgVal() {
