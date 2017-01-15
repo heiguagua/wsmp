@@ -19,7 +19,7 @@ class UnusualExecutor(val cmds : List[Cmd], val wsClient: WSClient, val memManag
   override def run(): Unit = {
     if (cmds != null && cmds.length > 0) {
      val wsList = new ListBuffer[Map[String, Any]]();
-      mongoDB.shardCollection(mongoDB.dbName, mongoColNamePrefix+"Levels", new Document("id", 1));
+      mongoDB.shardCollection(mongoColNamePrefix+"Levels", new Document("id", 1));
       cmds.foreach(cmd => {
         val current = Operator.toMem(cmd);
         val history = this.readAndSaveData(cmd);
@@ -93,9 +93,9 @@ class UnusualExecutor(val cmds : List[Cmd], val wsClient: WSClient, val memManag
             docs.add(doc);
           }
         }
-        mongoDB.shardCollection(mongoDB.dbName, mongoColNamePrefix+current.id, new Document("freq", 1));
+        mongoDB.shardCollection(mongoColNamePrefix+current.id, new Document("freq", 1));
         mongoDB.mc.insert(mongoDB.dbName, mongoColNamePrefix+current.id, docs, null);
-        val amount = this.countByColName(mongoColNamePrefix+current.id);
+       /* val amount = this.countByColName(mongoColNamePrefix+current.id);
         if (amount > 0) {
           val doc = new Document();
           doc.put("id", current.id);
@@ -104,7 +104,7 @@ class UnusualExecutor(val cmds : List[Cmd], val wsClient: WSClient, val memManag
           doc.put("flon", current.flon);
           mongoDB.mc.insert(mongoDB.dbName, mongoColNamePrefix+"Levels", doc, null);
           wsList += Map("id" -> current.id, "un" -> amount);
-        }
+        }*/
       }
     }
   }
