@@ -31,6 +31,10 @@ class MongoDB extends InitializingBean{
 
   override def afterPropertiesSet(): Unit = {
     mongoDBClient = createConnection;
+    this.enableDbShard(dbName);
+  }
+
+  private def enableDbShard(dbName: String): Unit ={
     if(mongodbHosts.contains(",")){
       val documents = JavaConversions.asScalaBuffer(mc.find("config", "databases", new Document("_id", dbName), null)).toList;
       if(documents.isEmpty){
@@ -77,6 +81,9 @@ class MongoDB extends InitializingBean{
         if (!exists) {
           mc.createCollection(db, collection, null);
           collections += collection;
+        }
+        if(db != dbName){
+          this.enableDbShard(db);
         }
         val sharded = mc.getCollectionStats(db, collection).getBoolean("sharded");
         if (sharded != null && !sharded) {
