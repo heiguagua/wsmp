@@ -1,7 +1,7 @@
 package com.chinawiserv.wsmp;
 package unusual;
 
-import java.util;
+import java.util
 import java.io.File
 import java.util.{ArrayList, Date, HashMap, List}
 import com.chinawiserv.wsmp.common.ImplFileReader.Files
@@ -27,7 +27,7 @@ object UnusualQuery {
                                   new BsonField("level", new Document("$first", "$level")),
                                   new BsonField("dt", new Document("$first", "$dt"))))
     pipeline.add(Aggregates.sort(new Document("_id", 1)));
-    val list = mongoDB.mc.aggregate("wsmpExt", "Unusual"+id, pipeline);
+    val list = mongoDB.mc.aggregate(mongoDB.dbName, "Unusual"+id, pipeline);
     if (list != null && !list.isEmpty) {
       for (i <- 0.until(list.size())) {
         val doc = list.get(i)
@@ -61,7 +61,7 @@ object UnusualQuery {
   def initMap(): util.Collection[HashMap[String, Object]] =  {
     val result = this.readJson();
     if (result != null && !result.isEmpty) {
-      val list = mongoDB.mc.find("wsmpExt", "UnusualLevels", new Document(), null);
+      val list = mongoDB.mc.find(mongoDB.dbName, "UnusualLevels", new Document(), null);
       if (list != null && !list.isEmpty) {
         for (i <- 0.until(list.size())) {
           val doc = list.get(i);
