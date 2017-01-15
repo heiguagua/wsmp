@@ -2,7 +2,6 @@ package com.chinawiserv.wsmp.kafka;
 
 import com.chinawiserv.model.Cmd;
 import com.chinawiserv.wsmp.handler.DataHandler;
-import com.chinawiserv.wsmp.operator.Operator;
 import com.chinawiserv.wsmp.statistics.DataFlow;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
@@ -17,11 +16,11 @@ import java.util.*;
 @Component
 public class WSMPKafkaListener{
 	
-	final static Logger logger  = LoggerFactory.getLogger(WSMPKafkaListener.class);
+	final private static Logger logger  = LoggerFactory.getLogger(WSMPKafkaListener.class);
 
 	private static DataFlow dataFlow = new DataFlow();
 
-	static Collection<DataHandler> dataHandlers;
+	private static Collection<DataHandler> dataHandlers;
 	
 	@KafkaListener(topics = "${kafka.consumer.topic}", group = "1")
 	public void onMessage(ConsumerRecord<String, Cmd> record) {
@@ -34,7 +33,7 @@ public class WSMPKafkaListener{
 		dataFlow.inc(count);
 
         for(DataHandler handler : dataHandlers){
-//			handler.compute((List<Cmd>) records.clone());
+			handler.compute((List<Cmd>) records.clone());
 		}
 
 		logger.info("receive messge {}, dataHandlers {}", count, dataHandlers.size());
