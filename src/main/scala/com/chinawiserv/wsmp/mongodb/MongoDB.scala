@@ -13,7 +13,7 @@ import scala.collection.JavaConversions
 import scala.collection.mutable.ArrayBuffer
 
 @Component
-class MongoDB extends InitializingBean{
+class MongoDB extends InitializingBean {
 
   @Value("${mongodb.hosts}")
   var mongodbHosts: String = _;
@@ -21,7 +21,7 @@ class MongoDB extends InitializingBean{
   @Value("${mongodb.db}")
   var dbName: String = _;
 
-  private val EXISTS_COLLECTIONS = scala.collection.mutable.Map[String, ArrayBuffer[String]]();
+  private val EXISTS_COLLECTIONS = ArrayBuffer[String]();
 
   private var mongoDBClient: MongoDBClient = _;
 
@@ -34,12 +34,12 @@ class MongoDB extends InitializingBean{
     this.enableDbShard(dbName);
   }
 
-  private def enableDbShard(dbName: String): Unit ={
-    if(mongodbHosts.contains(",")){
+  private def enableDbShard(dbName: String): Unit = {
+    if (mongodbHosts.contains(",")) {
       val documents = JavaConversions.asScalaBuffer(mc.find("config", "databases", new Document("_id", dbName), null)).toList;
-      if(documents.isEmpty){
+      if (documents.isEmpty) {
         mc.enableDbShard(dbName);
-      }else{
+      } else {
         documents.foreach(document => {
           val partitioned = document.getBoolean("partitioned");
           if (partitioned == null || !partitioned) {
@@ -62,35 +62,34 @@ class MongoDB extends InitializingBean{
     new MongoDBClientProxy().bind(addresses, dbName, this.buildOptions);
   }
 
-  def shardCollection(db: String, collection: String, shardKey: Bson): Unit = {
-    synchronized(MongoDB.lock, {
-      if (StringUtils.isNotBlank(db) && StringUtils.isNotBlank(collection) && shardKey != null) {
-        val collections = this.EXISTS_COLLECTIONS.getOrElseUpdate(db, ArrayBuffer[String]());
-        var exists = collections.contains(collection);
-        if (!exists) {
-          val collectionNames = mc.listCollectionNames(db);
-          collectionNames.forEach(new Block[String] {
-            override def apply(collectionName: String): Unit = {
-              if (collection == collectionName) {
-                collections += collection;
-                exists = true;
-              }
-            }
-          });
+  def shardCollection(collection: String, shardKey: Bson): Unit = {
+    if (StringUtils.isNotBlank(collection) && shardKey != null) {
+      var exists = EXISTS_COLLECTIONS.contains(collection);
+      if (!exists) {
+        synchronized(MongoDB.lock, {
+          exists = EXISTS_COLLECTIONS.contains(collection);
           if (!exists) {
-            mc.createCollection(db, collection, null);
-            collections += collection;
+            val collectionNames = mc.listCollectionNames(dbName);
+            collectionNames.forEach(new Block[String] {
+              override def apply(collectionName: String): Unit = {
+                if (collection == collectionName) {
+                  EXISTS_COLLECTIONS += collection;
+                  exists = true;
+                }
+              }
+            });
+            if (!exists) {
+              mc.createCollection(dbName, collection, null);
+              EXISTS_COLLECTIONS += collection;
+            }
+            val sharded = mc.getCollectionStats(dbName, collection).getBoolean("sharded");
+            if (sharded != null && !sharded) {
+              mc.shardCollection(dbName, collection, shardKey);
+            }
           }
-          if(db != dbName){
-            this.enableDbShard(db);
-          }
-          val sharded = mc.getCollectionStats(db, collection).getBoolean("sharded");
-          if (sharded != null && !sharded) {
-            mc.shardCollection(db, collection, shardKey);
-          }
-        }
+        })
       }
-    })
+    }
   }
 
   private def buildOptions: MongoClientOptions = {
@@ -109,7 +108,8 @@ class MongoDB extends InitializingBean{
     return builder.build();
   }
 }
-object MongoDB{
+
+object MongoDB {
 
   private val lock = new Object();
 
