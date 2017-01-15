@@ -12,6 +12,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class WSMPKafkaListener{
@@ -32,15 +33,12 @@ public class WSMPKafkaListener{
 
 		dataFlow.inc(count);
 
-		ArrayList<Cmd> cmds = new ArrayList<>(count);
-        for(ConsumerRecord<K, V> record : records){
-            cmds.add((Cmd) record.value());
-        }
-
+		final List<Cmd> cmds = records
+                .parallelStream()
+                .map( record -> (Cmd) record.value()).collect( Collectors.toList());
         for(DataHandler handler : dataHandlers){
-			handler.compute((List<Cmd>) cmds.clone());
+			handler.compute(new ArrayList<>( cmds ));
 		}
-
 
 		logger.info("receive messge {}, dataHandlers {}", count, dataHandlers.size());
 		showDataFlow();
