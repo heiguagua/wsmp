@@ -63,7 +63,7 @@ class MongoDB extends InitializingBean{
   }
 
   def shardCollection(db: String, collection: String, shardKey: Bson): Unit = {
-    synchronized(this, {
+    synchronized(MongoDB.lock, {
       if (StringUtils.isNotBlank(db) && StringUtils.isNotBlank(collection) && shardKey != null) {
         val collections = this.EXISTS_COLLECTIONS.getOrElseUpdate(db, ArrayBuffer[String]());
         var exists = collections.contains(collection);
@@ -96,7 +96,7 @@ class MongoDB extends InitializingBean{
   private def buildOptions: MongoClientOptions = {
     val builder = new MongoClientOptions.Builder;
     builder.connectionsPerHost(100);
-    builder.connectTimeout(3000);
+    builder.connectTimeout(5000);
     builder.minConnectionsPerHost(1);
     builder.maxConnectionIdleTime(3 * 1000);
     builder.maxConnectionLifeTime(5 * 60 * 1000);
@@ -108,6 +108,11 @@ class MongoDB extends InitializingBean{
     builder.readPreference(ReadPreference.secondary());
     return builder.build();
   }
+}
+object MongoDB{
+
+  private val lock = new Object();
+
 }
 
 
