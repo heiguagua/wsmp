@@ -5,6 +5,7 @@ import com.mongodb._
 import org.apache.commons.lang.StringUtils
 import org.bson.Document
 import org.bson.conversions.Bson
+import org.springframework.beans.factory.InitializingBean
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
@@ -12,7 +13,7 @@ import scala.collection.JavaConversions
 import scala.collection.mutable.ArrayBuffer
 
 @Component
-class MongoDB {
+class MongoDB extends InitializingBean{
 
   @Value("${mongodb.hosts}")
   var mongodbHosts: String = _;
@@ -22,7 +23,15 @@ class MongoDB {
 
   private val EXISTS_COLLECTIONS = scala.collection.mutable.Map[String, ArrayBuffer[String]]();
 
-  val mc = createConnection;
+  private var mongoDBClient: MongoDBClient = _;
+
+  def mc: MongoDBClient = {
+    this.mongoDBClient;
+  }
+
+  override def afterPropertiesSet(): Unit = {
+    mongoDBClient = createConnection;
+  }
 
   private def createConnection: MongoDBClient = {
     val addresses = new java.util.ArrayList[ServerAddress]();
@@ -86,7 +95,6 @@ class MongoDB {
     builder.readPreference(ReadPreference.secondary());
     return builder.build();
   }
-
 }
 
 
