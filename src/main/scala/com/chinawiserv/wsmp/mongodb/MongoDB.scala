@@ -62,7 +62,7 @@ class MongoDB extends InitializingBean{
     new MongoDBClientProxy().bind(addresses, dbName, this.buildOptions);
   }
 
-  def shardCollection(db: String, collection: String, shardKey: Bson): Unit = {
+  def shardCollection(db: String = dbName, collection: String, shardKey: Bson): Unit = {
     synchronized(this, {
       if (StringUtils.isNotBlank(db) && StringUtils.isNotBlank(collection) && shardKey != null) {
         val collections = this.EXISTS_COLLECTIONS.getOrElseUpdate(db, ArrayBuffer[String]());
