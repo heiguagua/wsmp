@@ -32,7 +32,7 @@ public class WSMPKafkaConfiguration {
 
     @Bean("kafkaListenerContainerFactory")
     <K, V> KafkaListenerContainerFactory<WSMPConcurrentMessageListenerContainer<K, V>> containerFactory(
-            @Value("kafka.consumer.count") int concurrency,  ConsumerFactory<K, V> consumerFactory) {
+            @Value("${kafka.consumer.count}") int concurrency,  ConsumerFactory<K, V> consumerFactory) {
 
         final WSMPConcurrentKafkaListenerContainerFactory<K, V> factory = new WSMPConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory);
