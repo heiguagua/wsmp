@@ -3,6 +3,7 @@ package com.chinawiserv.wsmp.kafka;
 import com.chinawiserv.wsmp.handler.DataHandler;
 import com.chinawiserv.wsmp.model.Cmd;
 import com.chinawiserv.wsmp.operator.Operator;
+import com.chinawiserv.wsmp.statistics.DataFlow;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ public class WSMPKafkaListener{
 	
 	final static Logger logger  = LoggerFactory.getLogger(WSMPKafkaListener.class);
 
+	private static DataFlow dataFlow = new DataFlow();
 
 	static Collection<DataHandler> dataHandlers;
 	
@@ -29,17 +31,20 @@ public class WSMPKafkaListener{
 	@SuppressWarnings("Unchecked")
 	public static <K, V>  void onMessages(List<ConsumerRecord<K, V>> records, int count) {
 
+		dataFlow.inc(count);
+
 		final ArrayList<Cmd> cmds = new ArrayList<>(count);
 
 		for(Iterator<ConsumerRecord<K, V>> ite = records.iterator(); ite.hasNext();){
 			cmds.add(Operator.toCmd(ite.next().value().toString()));
 		}
 
-		for(DataHandler handler : dataHandlers){
+/*		for(DataHandler handler : dataHandlers){
 			handler.compute((List<Cmd>) cmds.clone());
-		}
+		}*/
 
 		logger.info("receive messge {}, dataHandlers {}", count, dataHandlers.size());
+		showDataFlow();
 		cmds.clear();
 	}
 
@@ -49,4 +54,9 @@ public class WSMPKafkaListener{
 		dataHandlers = beans.values();
 		logger.info("receive dataHandlers {}", dataHandlers.size());
 	}
+
+	private static void showDataFlow()  {
+		System.out.println("收到数据:"+ dataFlow.getTotalVal()+" 条, 接收速度:"+dataFlow.getAvgVal()+" 条/秒");
+	}
+
 }

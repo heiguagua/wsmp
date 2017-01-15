@@ -7,11 +7,11 @@ import com.chinawiserv.wsmp.thread.{CustomThreadFactory, ThreadPool}
 import com.chinawiserv.wsmp.unusual.mem.MemManager
 import com.chinawiserv.wsmp.websocket.WSClient
 import org.springframework.beans.factory.InitializingBean
-import org.springframework.beans.factory.annotation.{Value}
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import scala.collection.JavaConversions._;
 
-@Component
+//@Component
 class Unusual extends DataHandler with  InitializingBean{
 
   @Value("${websocket.host}")
@@ -24,7 +24,7 @@ class Unusual extends DataHandler with  InitializingBean{
   override def afterPropertiesSet(): Unit = {
     this.memManager = new MemManager();
     this.wsClient = new WSClient(this.endpointURI);
-    this.executor = ThreadPool.newThreadPool(6, new CustomThreadFactory("UnusualExecutor-"));
+    this.executor = ThreadPool.newThreadPool(12, new CustomThreadFactory("UnusualExecutor-"));
   }
 
   @throws[Exception]
