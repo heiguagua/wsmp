@@ -32,11 +32,15 @@ public class WSMPKafkaListener{
 
 		dataFlow.inc(count);
 
-/*
+		ArrayList<Cmd> cmds = new ArrayList<>(count);
+        for(ConsumerRecord<K, V> record : records){
+            cmds.add((Cmd) record.value());
+        }
+
         for(DataHandler handler : dataHandlers){
-			handler.compute((List<Cmd>) records.clone());
+			handler.compute((List<Cmd>) cmds.clone());
 		}
-*/
+
 
 		logger.info("receive messge {}, dataHandlers {}", count, dataHandlers.size());
 		showDataFlow();
