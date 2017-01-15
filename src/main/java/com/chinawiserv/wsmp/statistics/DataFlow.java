@@ -17,7 +17,7 @@ public class DataFlow implements Serializable {
     private AtomicLong totalVal;
     private ConcurrentHashMap<String, Integer> map;
     private static ScheduledExecutorService scheduler;
-    private DecimalFormat df = new DecimalFormat("#.00");
+    private DecimalFormat df = new DecimalFormat("#.000");
 
     public long inc(int amount) {
         this.drc.addAndGet(amount);
@@ -44,6 +44,10 @@ public class DataFlow implements Serializable {
 
     public long getTotalVal() {
         return this.totalVal.get();
+    }
+
+    public DecimalFormat getDf() {
+        return df;
     }
 
     private void statistics() {

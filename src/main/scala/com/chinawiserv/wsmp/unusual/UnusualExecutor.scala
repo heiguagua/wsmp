@@ -5,30 +5,22 @@ import java.util
 import com.chinawiserv.model.Cmd
 import com.chinawiserv.wsmp.operator.Operator
 import com.chinawiserv.wsmp.unusual.mem.{Mem, MemManager}
-import com.chinawiserv.wsmp.websocket.WSClient
-import com.codahale.jerkson.Json
 import com.mongodb.client.model.{Aggregates, BsonField}
 import org.bson.Document
 import org.bson.conversions.Bson
 
-import scala.collection.mutable.ListBuffer
-
-class UnusualExecutor(val cmds : List[Cmd], val wsClient: WSClient, val memManager: MemManager) extends Runnable {
+class UnusualExecutor(val cmds : List[Cmd], val memManager: MemManager) extends Runnable {
 
   private val mongoColNamePrefix = "Unusual";
 
   override def run(): Unit = {
     if (cmds != null && cmds.length > 0) {
-     val wsList = new ListBuffer[Map[String, Any]]();
       mongoDB.shardCollection(mongoColNamePrefix+"Levels", new Document("id", 1));
       cmds.foreach(cmd => {
         val current = Operator.toMem(cmd);
         val history = this.readAndSaveData(cmd);
-        this.computeUnusual(current, history, wsList);
+        this.computeUnusual(current, history);
       });
-      if (!wsList.isEmpty) {
-        this.sendToWebSocket(wsList);
-      }
     }
   }
 
@@ -38,8 +30,8 @@ class UnusualExecutor(val cmds : List[Cmd], val wsClient: WSClient, val memManag
     * @return
     */
   private def readAndSaveData(cmd: Cmd): List[Array[Byte]] = {
-    val history = memManager.readData(cmd.getId());
-    memManager.saveData(cmd);
+    val history = memManager.readDataFromMem(cmd.getId());
+    memManager.saveDataToMem(cmd);
     return history;
   }
 
@@ -48,9 +40,9 @@ class UnusualExecutor(val cmds : List[Cmd], val wsClient: WSClient, val memManag
     * @param current 当前数据
     * @param history 10 条历史数据
     */
-  private def computeUnusual(current: Mem, history: List[Array[Byte]], wsList: ListBuffer[Map[String, Any]]): Unit = {
+  private def computeUnusual(current: Mem, history: List[Array[Byte]]): Unit = {
     val res = this.doCompute(current.numOfTraceItems.toInt, current.levels.toArray, history);
-    this.analyzeUnusual(current, res, wsList);
+    this.analyzeUnusual(current, res);
   }
 
   /**
@@ -76,7 +68,7 @@ class UnusualExecutor(val cmds : List[Cmd], val wsClient: WSClient, val memManag
     * @param current  当前消息
     * @param res 当前消息的异动计算结果
     */
-  private def analyzeUnusual(current: Mem, res: Array[Byte], wsList: ListBuffer[Map[String, Any]]): Unit = {
+  private def analyzeUnusual(current: Mem, res: Array[Byte]): Unit = {
     if (current != null && res != null) {
       val amount = res.count(_ == 1);
       //amount > 0 表示该消息中至少存在一个频率点有异动情况
@@ -104,7 +96,7 @@ class UnusualExecutor(val cmds : List[Cmd], val wsClient: WSClient, val memManag
           doc.put("flat", current.flat);
           doc.put("flon", current.flon);
           mongoDB.mc.insert(mongoDB.dbName, mongoColNamePrefix+"Levels", doc, null);
-          wsList += Map("id" -> current.id.toString, "un" -> amount);
+          memManager.saveDataToWeb(current.id, amount);
         }
       }
     }
@@ -126,14 +118,6 @@ class UnusualExecutor(val cmds : List[Cmd], val wsClient: WSClient, val memManag
     else {
       0;
     }
-  }
-
-  /**
-    * 将实时异动计算结果发送到WebSocket
-    */
-  private def sendToWebSocket(wsList: ListBuffer[Map[String, Any]]): Unit = {
-    val json = Json.generate[ListBuffer[Map[String, Any]]](wsList);
-    wsClient.sendMessage(json);
   }
 
 }

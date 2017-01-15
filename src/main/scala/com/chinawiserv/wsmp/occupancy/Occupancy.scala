@@ -7,9 +7,6 @@ import org.springframework.stereotype.Component
 
 import scala.collection.JavaConversions._
 
-/**
-  * Created by zengpzh on 2017/1/6.
-  */
 @Component
 class Occupancy extends DataHandler {
 

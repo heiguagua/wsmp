@@ -6,8 +6,6 @@ import com.chinawiserv.wsmp.operator.Operator
 import com.codahale.jerkson.Json
 import scala.collection.mutable.{HashMap, ListBuffer}
 import com.chinawiserv.wsmp.jedis.JedisClient.JedisExtended
-import org.springframework.stereotype.Component
-
 import scala.collection.JavaConversions._;
 
 /**
@@ -18,6 +16,7 @@ class MemManager {
   private val keyPrefix = "wsmp";
   private val dataCount = 10;
   private val memMap = new HashMap[Int, ListBuffer[Mem]]();
+  private val webMap = new HashMap[Int, Int]();
 
   def initMem(): Unit = {
     try {
@@ -44,13 +43,21 @@ class MemManager {
     }
   }
 
-  def saveData(cmd: Cmd): Boolean = {
-    saveData(Operator.toMem(cmd));
+  def readDataFromMem(id: Int): List[Array[Byte]] = {
+    synchronized({
+      val result = new ListBuffer[Array[Byte]]();
+      val list = memMap.get(id).getOrElse(new ListBuffer[Mem]());
+      list.foreach(x => {
+        result += x.levels;
+      });
+      return result.toList;
+    });
   }
 
-  def saveData(mem: Mem): Boolean = {
+  def saveDataToMem(cmd: Cmd): Boolean = {
     synchronized({
       var result = false;
+      val mem = Operator.toMem(cmd);
       if (mem != null) {
         val list = memMap.get(mem.id).getOrElse(new ListBuffer[Mem]());
         if (list.length >= dataCount) {
@@ -76,13 +83,27 @@ class MemManager {
     }
   }
 
-  def readData(id: Int): List[Array[Byte]] = {
-    val result = new ListBuffer[Array[Byte]]();
-    val list = memMap.get(id).getOrElse(new ListBuffer[Mem]());
-    list.foreach(x => {
-      result += x.levels;
+  def saveDataToWeb(id: Int, un: Int): Unit = {
+    synchronized({
+      webMap += (id -> un);
     });
-    return result.toList;
+  }
+
+  def readDataFromWeb(): String = {
+    synchronized({
+      if (!webMap.isEmpty) {
+        var result = new  ListBuffer[Map[String, Any]]();
+        val map = webMap.clone();
+        webMap.clear();
+        map.foreach(x => {
+          result += Map("id" -> x._1.toString, "un" -> x._2);
+        });
+        Json.generate[ListBuffer[Map[String, Any]]](result);
+      }
+      else {
+        "";
+      }
+    });
   }
 
 }

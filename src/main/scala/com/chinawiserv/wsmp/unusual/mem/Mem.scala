@@ -1,8 +1,5 @@
 package com.chinawiserv.wsmp.unusual.mem
 
-import scala.collection.mutable.ArrayBuffer
-
-
 case class Mem(
                 //uint32	m_uiFlag	开始标志位,固定为:0xEEEEEEEE
                 //uiFlag: Long,

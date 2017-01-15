@@ -2,9 +2,11 @@ package com.chinawiserv.wsmp.websocket
 
 import java.net.URI
 import javax.websocket._
+import org.slf4j.LoggerFactory
 
 @ClientEndpoint
 class WSClient {
+  private val log = LoggerFactory.getLogger(classOf[WSClient]);
 
   private var session: Session = _;
   var endpointURI: String = _;
@@ -23,7 +25,7 @@ class WSClient {
   @OnClose
   def onClose(userSession: Session, reason: CloseReason) {
     this.session = null;
-    println("WebSocker.onClose:"+reason.getReasonPhrase);
+    log.info("WebSocker.onClose:"+reason.getReasonPhrase);
   }
 
   @OnMessage
@@ -33,7 +35,7 @@ class WSClient {
   @OnError
   def onError(throwable: Throwable, session: Session) {
     this.session = null;
-    println("WebSocker.onError:"+throwable.getMessage);
+    log.error("WebSocker.onError:"+throwable.getMessage);
   }
 
   def connectToServer(): Unit = {
@@ -43,7 +45,7 @@ class WSClient {
     catch {
       case e: Exception => {
         this.session = null;
-        println("Connect To WebSocker Server Failed:("+this.endpointURI+")--"+e.getMessage)
+        log.info("Connect To WebSocker Server Failed:("+this.endpointURI+")--"+e.getMessage)
       };
     }
   }
@@ -53,7 +55,7 @@ class WSClient {
     try {
       if (this.session != null && this.session.isOpen) {
         this.session.getBasicRemote.sendText(message);
-        println("Send To WebSocket ("+ endpointURI + "): " +message);
+        log.info("Send To WebSocket ("+ endpointURI + "): " +message);
         result = true;
       }
       else {
