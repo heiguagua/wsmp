@@ -59,7 +59,7 @@ public class WSMPKafkaConfiguration {
 		propsMap.put("rebalance.max.retries", "5");
 		propsMap.put("rebalance.backoff.ms", "1200");
         propsMap.put(ConsumerConfig.RECEIVE_BUFFER_CONFIG,  buffSize);
-//        propsMap.put(ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG,  fetchSize);
+        propsMap.put(ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG,  fetchSize);
         propsMap.put(ConsumerConfig.HEARTBEAT_INTERVAL_MS_CONFIG, "10000");
 		propsMap.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, "100");
 		propsMap.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "15000");
