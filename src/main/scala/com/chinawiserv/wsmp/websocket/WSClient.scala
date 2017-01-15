@@ -7,7 +7,7 @@ import javax.websocket._
 class WSClient {
 
   private var session: Session = _;
-  private var endpointURI: String = _;
+  var endpointURI: String = _;
 
   def this(endpointURI: String) {
     this();
@@ -42,7 +42,8 @@ class WSClient {
     }
     catch {
       case e: Exception => {
-        println("Connect To Server Fail:("+this.endpointURI+")--"+e.getMessage)
+        this.session = null;
+        println("Connect To WebSocker Server Failed:("+this.endpointURI+")--"+e.getMessage)
       };
     }
   }
@@ -52,7 +53,7 @@ class WSClient {
     try {
       if (this.session != null && this.session.isOpen) {
         this.session.getBasicRemote.sendText(message);
-        println("sendMessage="+message);
+        println("Send To WebSocket ("+ endpointURI + "): " +message);
         result = true;
       }
       else {
