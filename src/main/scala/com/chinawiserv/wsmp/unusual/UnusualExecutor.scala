@@ -18,7 +18,7 @@ class UnusualExecutor(val cmds : List[Cmd], val wsClient: WSClient, val memManag
 
   override def run(): Unit = {
     if (cmds != null && cmds.length > 0) {
-      val wsList = new ListBuffer[Map[String, Any]]();
+     val wsList = new ListBuffer[Map[String, Any]]();
       mongoDB.shardCollection(mongoDB.dbName, mongoColNamePrefix+"Levels", new Document("id", 1));
       cmds.foreach(cmd => {
         val current = Operator.toMem(cmd);

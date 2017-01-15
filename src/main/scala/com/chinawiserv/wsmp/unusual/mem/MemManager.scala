@@ -14,7 +14,6 @@ import scala.collection.JavaConversions._;
 /**
   * 内存数据管理
   */
-@Component
 class MemManager {
 
   private val keyPrefix = "wsmp";
