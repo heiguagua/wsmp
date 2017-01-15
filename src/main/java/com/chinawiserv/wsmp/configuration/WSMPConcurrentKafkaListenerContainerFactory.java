@@ -43,16 +43,16 @@ import org.springframework.kafka.support.TopicPartitionInitialOffset;
 public class WSMPConcurrentKafkaListenerContainerFactory<K, V>
 		extends AbstractKafkaListenerContainerFactory<WSMPConcurrentMessageListenerContainer<K, V>, K, V> {
 
-	private Integer concurrency;
+    /**
+     * Specify the container concurrency.
+     * @param concurrency the number of consumers to create.
+     * @see ConcurrentMessageListenerContainer#setConcurrency(int)
+     */
+    public void setConcurrency(Integer concurrency) {
+        this.concurrency = concurrency;
+    }
 
-	/**
-	 * Specify the container concurrency.
-	 * @param concurrency the number of consumers to create.
-	 * @see ConcurrentMessageListenerContainer#setConcurrency(int)
-	 */
-	public void setConcurrency(Integer concurrency) {
-		this.concurrency = concurrency;
-	}
+	private Integer concurrency;
 
 	@Override
 	protected WSMPConcurrentMessageListenerContainer<K, V> createContainerInstance(KafkaListenerEndpoint endpoint) {
