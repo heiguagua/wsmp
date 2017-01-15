@@ -45,6 +45,7 @@ public class WSMPKafkaListener{
         for(ConsumerRecord<K, V> record : records){
             Cmd cmd = (Cmd) record.value();
             packSize = conf.asByteArray(cmd).length;
+			cmds.add(cmd);
         }
 
         for(DataHandler handler : dataHandlers){
