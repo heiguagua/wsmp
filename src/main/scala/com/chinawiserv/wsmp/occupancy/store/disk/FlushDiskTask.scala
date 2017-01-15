@@ -39,7 +39,7 @@ private[disk] object FlushDiskTask {
             if (collection.isEmpty) {
               collection = collection_prefix + time.take(TIME_YEAR_LENGTH);
             }
-            mongoDB.shardCollection(db, collection, new Document("station", 1));
+            mongoDB.shardCollection(mongoDB.dbName, collection, new Document("station", 1));
             val daytime = time.takeRight(TIME_DAY_LENGTH);
             val filter = Filters.and(Filters.eq("station", station), Filters.eq("time", daytime));
             val replacement = new Document("station", station)
@@ -50,7 +50,7 @@ private[disk] object FlushDiskTask {
           }
         });
         if (writeModels.size > 0 && collection.length == (collection_prefix.length + TIME_DAY_LENGTH)) {
-          mongoDB.mc.bulkWrite(db, collection, writeModels, new BulkWriteOptions().ordered(false));
+          mongoDB.mc.bulkWrite(mongoDB.dbName, collection, writeModels, new BulkWriteOptions().ordered(false));
           writeModels.clear();
         }
       } catch {

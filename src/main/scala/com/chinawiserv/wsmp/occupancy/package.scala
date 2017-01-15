@@ -17,8 +17,6 @@ package object occupancy {
 
   private[occupancy] val TIME_DAY_LENGTH = 4;
 
-  private[occupancy] val db = "wsmp";
-
   private[occupancy] val collection_prefix = "occupancy_";
 
   //实例化该类时就加载磁盘数据到内存，避免延迟加载对第一次调用的影响
@@ -32,7 +30,7 @@ package object occupancy {
     val daytime = time.takeRight(TIME_DAY_LENGTH);
     val collection = collection_prefix + year;
     val filter = Filters.eq("time", daytime);
-    val records = JavaConversions.asScalaBuffer(mongoDB.mc.find(db, collection, filter, null)).toArray;
+    val records = JavaConversions.asScalaBuffer(mongoDB.mc.find(mongoDB.dbName, collection, filter, null)).toArray;
     records.foreach(record => {
       val station = record.getInteger("station").toInt;
       val maxLevels = ArrayBuffer[Short]();
