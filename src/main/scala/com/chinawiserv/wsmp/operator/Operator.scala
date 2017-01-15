@@ -1,6 +1,6 @@
 package com.chinawiserv.wsmp.operator
 
-import com.chinawiserv.wsmp.model.Cmd
+import com.chinawiserv.model.Cmd
 import com.chinawiserv.wsmp.unusual.mem.Mem
 import com.codahale.jerkson.Json
 

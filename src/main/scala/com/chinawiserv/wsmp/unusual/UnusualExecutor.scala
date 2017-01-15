@@ -2,7 +2,8 @@ package com.chinawiserv.wsmp
 package unusual;
 
 import java.util
-import com.chinawiserv.wsmp.model.Cmd
+
+import com.chinawiserv.model.Cmd
 import com.chinawiserv.wsmp.operator.Operator
 import com.chinawiserv.wsmp.unusual.mem.{Mem, MemManager}
 import com.chinawiserv.wsmp.websocket.WSClient
@@ -10,6 +11,7 @@ import com.codahale.jerkson.Json
 import com.mongodb.client.model.{Aggregates, BsonField}
 import org.bson.Document
 import org.bson.conversions.Bson
+
 import scala.collection.mutable.ListBuffer
 
 class UnusualExecutor(val cmds : List[Cmd], val wsClient: WSClient, val memManager: MemManager) extends Runnable {

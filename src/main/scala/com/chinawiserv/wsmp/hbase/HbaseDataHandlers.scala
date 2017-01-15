@@ -2,8 +2,8 @@ package com.chinawiserv.wsmp.hbase
 
 import java.util.UUID
 
+import com.chinawiserv.model.Cmd
 import com.chinawiserv.wsmp.handler.DataHandler
-import com.chinawiserv.wsmp.model.Cmd
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.hbase.{HColumnDescriptor, HTableDescriptor, TableName}
 import org.apache.hadoop.hbase.client.{Admin, ConnectionFactory, Put, Table}

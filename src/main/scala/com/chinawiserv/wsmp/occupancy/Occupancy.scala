@@ -1,7 +1,7 @@
 package com.chinawiserv.wsmp.occupancy
 
+import com.chinawiserv.model.Cmd
 import com.chinawiserv.wsmp.handler.DataHandler
-import com.chinawiserv.wsmp.model.Cmd
 import com.chinawiserv.wsmp.occupancy.store.mem._
 import org.springframework.stereotype.Component
 

@@ -1,7 +1,7 @@
 package com.chinawiserv.wsmp.kafka;
 
+import com.chinawiserv.model.Cmd;
 import com.chinawiserv.wsmp.handler.DataHandler;
-import com.chinawiserv.wsmp.model.Cmd;
 import com.chinawiserv.wsmp.operator.Operator;
 import com.chinawiserv.wsmp.statistics.DataFlow;
 import org.apache.kafka.clients.consumer.ConsumerRecord;

@@ -5,7 +5,7 @@ package mem
 import java.util.Date
 import java.util.concurrent.LinkedBlockingQueue
 
-import com.chinawiserv.wsmp.model.Cmd
+import com.chinawiserv.model.Cmd
 import com.chinawiserv.wsmp.occupancy.model.OccupancyData
 import com.chinawiserv.wsmp.occupancy.store.disk.FlushDisk
 import com.chinawiserv.wsmp.thread.{CustomThreadFactory, ThreadPool}
