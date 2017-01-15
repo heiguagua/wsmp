@@ -6,11 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.Properties;
 
-// kafka-topics.sh --zookeeper slave1.dom:2181,slave2.dom:2181,slave3.dom:2181 --create --topic dom --replication-factor 1 --partitions 9
-// kafka-topics.sh --zookeeper slave1.dom:2181,slave2.dom:2181,slave3.dom:2181 --delete --topic dom
-// kafka-topics.sh --zookeeper slave1.dom:2181,slave2.dom:2181,slave3.dom:2181 --list
-// kafka-topics.sh --zookeeper slave1.dom:2181,slave2.dom:2181,slave3.dom:2181 --describe dom
-// kafka-console-consumer.sh --zookeeper slave1.dom:2181,slave2.dom:2181,slave3.dom:2181 --topic dom --from-beginning
 public class KafkaWriter extends Kafka {
 
     private Logger log = LoggerFactory.getLogger(KafkaWriter.class);
