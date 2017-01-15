@@ -4,7 +4,6 @@ import com.chinawiserv.wsmp.handler.DataHandler;
 import com.chinawiserv.wsmp.model.Cmd;
 import com.chinawiserv.wsmp.operator.Operator;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,16 +30,16 @@ public class WSMPKafkaListener{
 	public static <K, V>  void onMessages(List<ConsumerRecord<K, V>> records, int count) {
 
 		final ArrayList<Cmd> cmds = new ArrayList<>(count);
+
 		for(Iterator<ConsumerRecord<K, V>> ite = records.iterator(); ite.hasNext();){
-			ConsumerRecord<K, V> record = ite.next();
-			ite.remove();
-			cmds.add(Operator.toCmd(record.value().toString()));
+			cmds.add(Operator.toCmd(ite.next().value().toString()));
 		}
+
 		for(DataHandler handler : dataHandlers){
 			handler.compute((List<Cmd>) cmds.clone());
 		}
 
-		logger.info("receive messge {}, dataHandlers{}", count, dataHandlers.size());
+		logger.info("receive messge {}, dataHandlers {}", count, dataHandlers.size());
 		cmds.clear();
 	}
 

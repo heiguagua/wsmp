@@ -9,6 +9,7 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.KafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.listener.AbstractMessageListenerContainer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +30,7 @@ public class WSMPKafkaConfiguration {
 		factory.setConsumerFactory(consumerFactory);
 		factory.setConcurrency(1);
 		factory.getContainerProperties().setPollTimeout(Long.MAX_VALUE);
+		factory.getContainerProperties().setAckMode(AbstractMessageListenerContainer.AckMode.BATCH);
 		return factory;
 	}
 	
@@ -50,6 +52,9 @@ public class WSMPKafkaConfiguration {
 
 		propsMap.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, servers);
         propsMap.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, autoComit);
+        propsMap.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, 1200);
+		propsMap.put("rebalance.max.retries", "5");
+		propsMap.put("rebalance.backoff.ms", "1200");
         propsMap.put(ConsumerConfig.RECEIVE_BUFFER_CONFIG,  buffSize);
         propsMap.put(ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG,  fetchSize);
         propsMap.put(ConsumerConfig.HEARTBEAT_INTERVAL_MS_CONFIG, "10000");
@@ -59,8 +64,7 @@ public class WSMPKafkaConfiguration {
 		propsMap.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		propsMap.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		propsMap.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
-		propsMap.put(ConsumerConfig.CLIENT_ID_CONFIG, clientId);
-		//latest
+		//latest  earliest
 		propsMap.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
 		return propsMap;

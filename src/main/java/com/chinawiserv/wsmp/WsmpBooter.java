@@ -12,7 +12,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 			MongoAutoConfiguration.class,
 	}	
 )
-@EnableAsync
 public class WsmpBooter {
 
 	public static void main(String[] args) {
