@@ -57,7 +57,7 @@ private[occupancy] object FlushDisk {
   private def slice(occupancyDatas: List[OccupancyData]): List[List[Document]] = {
     if (occupancyDatas != null) {
       val records = occupancyDatas.map(occupancyData => {
-        new Document("station", occupancyData.id).append("time", occupancyData.time).append("maxLevels", JavaConversions.asJavaCollection[Short](occupancyData.levels));
+        new Document("station", occupancyData.id).append("time", occupancyData.time).append("maxLevels", JavaConversions.asJavaCollection[Byte](occupancyData.levels));
       });
       records.sliding(FlushDisk.SHARD_SIZE, FlushDisk.SHARD_SIZE).toList;
     } else {

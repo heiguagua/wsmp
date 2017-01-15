@@ -27,7 +27,11 @@ private[occupancy] object FlushMem {
 
   def offer(cmds: List[Cmd]): Unit = {
     val occupancyDatas = cmds.map(cmd => {
-      OccupancyData(cmd.id, DateTime.convertDateTime(new Date(cmd.scanOverTime * 1000), TIME_FORMAT), cmd.levels.clone);
+      val levels = new ArrayBuffer[Byte];
+      for (i <- 0.until(cmd.getLevels().length)) {
+        levels += cmd.getLevels()(i);
+      }
+      OccupancyData(cmd.getId(), DateTime.convertDateTime(new Date(cmd.getScanOverTime() * 1000), TIME_FORMAT), levels);
     });
     flushMemQueue.offer(occupancyDatas);
   }
@@ -62,7 +66,7 @@ private[occupancy] object FlushMem {
   }
 
   private def doFlush(time: String, occupancyData: OccupancyData, occupancyDatasMap: Map[String, ListBuffer[OccupancyData]]): Unit = {
-    val OCCUPANCY_MEM_DATA = OCCUPANCY_MEM.getOrElseUpdate(time, Map[Int, ArrayBuffer[Short]]());
+    val OCCUPANCY_MEM_DATA = OCCUPANCY_MEM.getOrElseUpdate(time, Map[Int, ArrayBuffer[Byte]]());
     val levels = occupancyData.levels;
     val levelsLength = levels.length;
     val maxLevels = OCCUPANCY_MEM_DATA.getOrElseUpdate(occupancyData.id, levels);

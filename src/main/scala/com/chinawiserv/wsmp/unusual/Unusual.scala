@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component
 
 import scala.collection.JavaConversions._;
 
-//@Component
+@Component
 class Unusual extends DataHandler with  InitializingBean{
 
   @Value("${websocket.host}")

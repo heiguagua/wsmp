@@ -2,7 +2,6 @@ package com.chinawiserv.wsmp
 package unusual;
 
 import java.util
-
 import com.chinawiserv.model.Cmd
 import com.chinawiserv.wsmp.operator.Operator
 import com.chinawiserv.wsmp.unusual.mem.{Mem, MemManager}
@@ -38,8 +37,8 @@ class UnusualExecutor(val cmds : List[Cmd], val wsClient: WSClient, val memManag
     * @param cmd
     * @return
     */
-  private def readAndSaveData(cmd: Cmd): List[Array[Short]] = {
-    val history = memManager.readData(cmd.id);
+  private def readAndSaveData(cmd: Cmd): List[Array[Byte]] = {
+    val history = memManager.readData(cmd.getId());
     memManager.saveData(cmd);
     return history;
   }
@@ -49,7 +48,7 @@ class UnusualExecutor(val cmds : List[Cmd], val wsClient: WSClient, val memManag
     * @param current 当前数据
     * @param history 10 条历史数据
     */
-  private def computeUnusual(current: Mem, history: List[Array[Short]], wsList: ListBuffer[Map[String, Any]]): Unit = {
+  private def computeUnusual(current: Mem, history: List[Array[Byte]], wsList: ListBuffer[Map[String, Any]]): Unit = {
     val res = this.doCompute(current.numOfTraceItems.toInt, current.levels.toArray, history);
     this.analyzeUnusual(current, res, wsList);
   }
@@ -61,7 +60,7 @@ class UnusualExecutor(val cmds : List[Cmd], val wsClient: WSClient, val memManag
     * @param history 10条历史消息
     * @return 异动计算结果
     */
-  def doCompute(numOfTraceItems: Int, current: Array[Short], history: List[Array[Short]]): Array[Byte] = {
+  def doCompute(numOfTraceItems: Int, current: Array[Byte], history: List[Array[Byte]]): Array[Byte] = {
     val unusualLevel = new UnusualLevel(numOfTraceItems);
     unusualLevel.CalcUnusualLevel(current, null, numOfTraceItems);
     history.foreach(x => {

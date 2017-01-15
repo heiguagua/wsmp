@@ -15,7 +15,7 @@ public class UnusualLevel {
         return this;
     }
 
-    public int CalcUnusualLevel(short[] Levels, short[] Variance, int Count) {
+    public int CalcUnusualLevel(byte[] Levels, byte[] Variance, int Count) {
         ++this.index;
 
         try {

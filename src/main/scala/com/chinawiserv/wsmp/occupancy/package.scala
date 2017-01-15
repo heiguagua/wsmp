@@ -22,9 +22,9 @@ package object occupancy {
   //实例化该类时就加载磁盘数据到内存，避免延迟加载对第一次调用的影响
   private[occupancy] val OCCUPANCY_MEM = load;
 
-  private def load: Map[String, Map[Int, ArrayBuffer[Short]]] = {
+  private def load: Map[String, Map[Int, ArrayBuffer[Byte]]] = {
     println(DateTime.getCurrentDate_YYYYMMDDHHMMSS);
-    val OCCUPANCY_MEM_DATA = Map[Int, ArrayBuffer[Short]]();
+    val OCCUPANCY_MEM_DATA = Map[Int, ArrayBuffer[Byte]]();
     val time = DateTime.getCurrentDate_YYYYMMDDWithOutSeparator;
     val year = time.take(TIME_YEAR_LENGTH);
     val daytime = time.takeRight(TIME_DAY_LENGTH);
@@ -33,12 +33,12 @@ package object occupancy {
     val records = JavaConversions.asScalaBuffer(mongoDB.mc.find(mongoDB.dbName, collection, filter, null)).toArray;
     records.foreach(record => {
       val station = record.getInteger("station").toInt;
-      val maxLevels = ArrayBuffer[Short]();
-      maxLevels ++= JavaConversions.asScalaBuffer[Int](record.get("maxLevels", classOf[java.util.List[Int]])).map(_.toShort);
+      val maxLevels = ArrayBuffer[Byte]();
+      maxLevels ++= JavaConversions.asScalaBuffer[Int](record.get("maxLevels", classOf[java.util.List[Int]])).map(_.toByte);
       OCCUPANCY_MEM_DATA += (station -> maxLevels);
     });
     println(DateTime.getCurrentDate_YYYYMMDDHHMMSS);
-    Map[String, Map[Int, ArrayBuffer[Short]]](time -> OCCUPANCY_MEM_DATA);
+    Map[String, Map[Int, ArrayBuffer[Byte]]](time -> OCCUPANCY_MEM_DATA);
   }
 
 }
