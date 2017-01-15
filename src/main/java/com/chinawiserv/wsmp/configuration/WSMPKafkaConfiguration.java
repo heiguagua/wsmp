@@ -1,6 +1,7 @@
 package com.chinawiserv.wsmp.configuration;
 
-import com.chinawiserv.kafka.kafkaObjSerializer;
+import com.chinawiserv.kafka.KafkaObjDeserializer;
+import com.chinawiserv.kafka.KafkaObjSerializer;
 import com.chinawiserv.model.Cmd;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -8,12 +9,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
-import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.config.KafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.AbstractMessageListenerContainer;
-import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,23 +23,23 @@ import java.util.Map;
 @Configuration
 @EnableKafka
 public class WSMPKafkaConfiguration {
-	
+
+
+    @Bean
+    public ConsumerFactory<String, Cmd> consumerFactory(@Value("#{consumerConfig}") Map<String, Object> configs) {
+        return new DefaultKafkaConsumerFactory<>(configs);
+    }
 	
 	@Bean("kafkaListenerContainerFactory")
 	<K, V> KafkaListenerContainerFactory<WSMPConcurrentMessageListenerContainer<K, V>> containerFactory(
 			ConsumerFactory<K, V> consumerFactory) {
-		
+
 		final WSMPConcurrentKafkaListenerContainerFactory<K, V> factory = new WSMPConcurrentKafkaListenerContainerFactory<>();
 		factory.setConsumerFactory(consumerFactory);
 		factory.setConcurrency(9);
 		factory.getContainerProperties().setPollTimeout(Long.MAX_VALUE);
 		factory.getContainerProperties().setAckMode(AbstractMessageListenerContainer.AckMode.BATCH);
 		return factory;
-	}
-	
-	@Bean
-	public <K, V> ConsumerFactory<K, V> consumerFactory(@Value("#{consumerConfig}") Map<String, Object> configs) {
-		return new DefaultKafkaConsumerFactory<>(configs);
 	}
 
 	@Bean("consumerConfig")
@@ -66,7 +65,7 @@ public class WSMPKafkaConfiguration {
 		propsMap.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "15000");
 		propsMap.put(ConsumerConfig.REQUEST_TIMEOUT_MS_CONFIG, "16000");
 		propsMap.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-		propsMap.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, kafkaObjSerializer.class);
+		propsMap.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaObjDeserializer.class);
 		propsMap.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
 		//latest  earliest
 		propsMap.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
