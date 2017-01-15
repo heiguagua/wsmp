@@ -57,13 +57,13 @@ public class WSMPKafkaConfiguration {
         propsMap.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, autoComit);
         propsMap.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, 1200);
         propsMap.put("rebalance.max.retries", "5");
-        propsMap.put("rebalance.backoff.ms", "1200");
+        propsMap.put("rebalance.backoff.ms", "12000");
+        propsMap.put("offset.flush.interval.ms", "120000");
         propsMap.put(ConsumerConfig.RECEIVE_BUFFER_CONFIG, buffSize);
         propsMap.put(ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG, fetchSize);
-        propsMap.put(ConsumerConfig.HEARTBEAT_INTERVAL_MS_CONFIG, "10000");
-        propsMap.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, "100");
-        propsMap.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "15000");
-        propsMap.put(ConsumerConfig.REQUEST_TIMEOUT_MS_CONFIG, "16000");
+        propsMap.put(ConsumerConfig.HEARTBEAT_INTERVAL_MS_CONFIG, "20000");
+        propsMap.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "21000");
+        propsMap.put(ConsumerConfig.REQUEST_TIMEOUT_MS_CONFIG, "32000");
         propsMap.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         propsMap.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaObjDeserializer.class);
         propsMap.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);

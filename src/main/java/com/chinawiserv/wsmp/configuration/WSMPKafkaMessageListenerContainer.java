@@ -29,6 +29,7 @@ import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.event.ListenerContainerIdleEvent;
 import org.springframework.kafka.listener.AbstractMessageListenerContainer;
 import org.springframework.kafka.listener.AcknowledgingMessageListener;
+import org.springframework.kafka.listener.KafkaMessageListenerContainer;
 import org.springframework.kafka.listener.MessageListener;
 import org.springframework.kafka.listener.config.ContainerProperties;
 import org.springframework.kafka.support.Acknowledgment;
@@ -561,15 +562,20 @@ public class WSMPKafkaMessageListenerContainer<K, V> extends AbstractMessageList
 
 		private void invokeListener(final ConsumerRecords<K, V> records) {
 			final int count = records.count();
-			final ArrayList<ConsumerRecord<K, V>> recordsList = new ArrayList<>(count);
 			Iterator<ConsumerRecord<K, V>> iterator = records.iterator();
 			while (iterator.hasNext() && (this.autoCommit || (this.invoker != null && this.invoker.active))) {
 				final ConsumerRecord<K, V> record = iterator.next();
 				try {
-					if (!this.isAnyManualAck && !this.autoCommit) {
-						this.acks.add(record);
-					}
-                    recordsList.add(record);
+                    if (this.acknowledgingMessageListener != null) {
+                        this.acknowledgingMessageListener.onMessage(record, this.isAnyManualAck
+                                ? new WSMPKafkaMessageListenerContainer.ListenerConsumer.ConsumerAcknowledgment(record, this.isManualImmediateAck) : null);
+                    }
+                    else {
+                        this.listener.onMessage(record);
+                    }
+                    if (!this.isAnyManualAck && !this.autoCommit) {
+                        this.acks.add(record);
+                    }
 				}
 				catch (Exception e) {
 					if (this.containerProperties.isAckOnError() && !this.autoCommit) {
@@ -583,8 +589,7 @@ public class WSMPKafkaMessageListenerContainer<K, V> extends AbstractMessageList
 					}
 				}
 			}
-			WSMPKafkaListener.onMessages(recordsList, count);
-			recordsList.clear();
+            WSMPKafkaListener.onMessages(records, records.count());
 		}
 
 		private void processCommits() {

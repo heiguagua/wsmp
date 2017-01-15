@@ -1,15 +1,18 @@
 package com.chinawiserv.wsmp.kafka;
 
 import com.chinawiserv.model.Cmd;
+import com.chinawiserv.wsmp.configuration.SpringContextManager;
 import com.chinawiserv.wsmp.handler.DataHandler;
 import com.chinawiserv.wsmp.statistics.DataFlow;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.nustaq.serialization.FSTConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.text.DecimalFormat;
@@ -24,33 +27,39 @@ public class WSMPKafkaListener{
 	private static DataFlow dataFlow = new DataFlow();
 	private static DecimalFormat df = new DecimalFormat("#.000");
 	private static FSTConfiguration conf = FSTConfiguration.createDefaultConfiguration();
-	private static int packSize = 286538;
-
 	private static Collection<DataHandler> dataHandlers;
-	
+
+    private static int packSize = 286538;
+
 	@KafkaListener(topics = "${kafka.consumer.topic}", group = "1")
 	public void onMessage(ConsumerRecord<String, Cmd> record) {
-		dataFlow.inc();
-        showDataFlow();
 	}
 
-	@SuppressWarnings("Unchecked")
-	public static <K, V>  void onMessages(ArrayList<ConsumerRecord<K, V>> records, int count) {
+	@Async
+	public <K, V> void distribute(ConsumerRecords<K, V> records, int count){
 
-		dataFlow.inc(count);
+        dataFlow.inc(count);
 
-		final List<Cmd> cmds = records.parallelStream().map( record -> {
-			Cmd cmd = (Cmd) record.value();
-			packSize = conf.asByteArray(cmd).length;
-			return cmd;
-		}).collect( Collectors.toList());
+        final ArrayList<Cmd> cmds = new ArrayList<>( count );
+
+        for(ConsumerRecord<K, V> record : records){
+            Cmd cmd = (Cmd) record.value();
+            packSize = conf.asByteArray(cmd).length;
+        }
 
         for(DataHandler handler : dataHandlers){
-			handler.compute(new ArrayList<>( cmds ));
-		}
+            handler.compute(new ArrayList<>( cmds ));
+        }
 
-		logger.info("receive messge {}, dataHandlers {}", count, dataHandlers.size());
-		showDataFlow();
+        logger.info("receive messge {}, dataHandlers {}", count, dataHandlers.size());
+        showDataFlow();
+    }
+
+	@SuppressWarnings("Unchecked")
+	public static <K, V>  void onMessages(ConsumerRecords<K, V> records, int count) {
+
+        final WSMPKafkaListener listener =  SpringContextManager.getBean( WSMPKafkaListener.class );
+        listener.distribute( records, count );
 	}
 
 	@Autowired
