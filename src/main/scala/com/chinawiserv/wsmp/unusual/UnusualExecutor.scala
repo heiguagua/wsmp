@@ -104,7 +104,7 @@ class UnusualExecutor(val cmds : List[Cmd], val wsClient: WSClient, val memManag
           doc.put("flat", current.flat);
           doc.put("flon", current.flon);
           mongoDB.mc.insert(mongoDB.dbName, mongoColNamePrefix+"Levels", doc, null);
-          wsList += Map("id" -> current.id, "un" -> amount);
+          wsList += Map("id" -> current.id.toString, "un" -> amount);
         }
       }
     }
@@ -133,7 +133,6 @@ class UnusualExecutor(val cmds : List[Cmd], val wsClient: WSClient, val memManag
     */
   private def sendToWebSocket(wsList: ListBuffer[Map[String, Any]]): Unit = {
     val json = Json.generate[ListBuffer[Map[String, Any]]](wsList);
-    //println(json);
     wsClient.sendMessage(json);
   }
 
