@@ -139,7 +139,7 @@
 
     <build>
         <finalName>wsmp</finalName>
-        <defaultGoal>clean scala:compile</defaultGoal>
+        <defaultGoal>clean scala:compile compile package</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.scala-tools</groupId>
