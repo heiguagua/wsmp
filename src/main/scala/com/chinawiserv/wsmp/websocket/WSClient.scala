@@ -2,19 +2,18 @@ package com.chinawiserv.wsmp.websocket
 
 import java.net.URI
 import javax.websocket._
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.stereotype.Component
 
-@Component
 @ClientEndpoint
 class WSClient {
 
   private var session: Session = _;
+  private var endpointURI: String = _;
 
-  @Value("${websocket.host}")
-  var endpointURI: String = _;
-
-  this.connectToServer();
+  def this(endpointURI: String) {
+    this();
+    this.endpointURI = endpointURI;
+    this.connectToServer();
+  }
 
   @OnOpen
   def onOpen(userSession: Session) {
@@ -43,7 +42,7 @@ class WSClient {
     }
     catch {
       case e: Exception => {
-        println("WSClient.connectToServer.error:"+e.getMessage)
+        println("Connect To Server Fail:("+this.endpointURI+")--"+e.getMessage)
       };
     }
   }
