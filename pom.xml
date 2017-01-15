@@ -154,8 +154,6 @@
                         <configuration>
                             <includes>
                                 <include>**/*.scala</include>
-                                <include>**/*.xml</include>
-                                <include>**/*.properties</include>
                             </includes>
                         </configuration>
                     </execution>
