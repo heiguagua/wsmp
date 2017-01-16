@@ -30,7 +30,7 @@ private[occupancy] object FlushDisk {
 
   private val flushDiskQueue = new LinkedBlockingQueue[List[OccupancyData]]();
 
-  private val FLUSH_DISK_CONCURRENT_NUM: Int = 15;
+  private val FLUSH_DISK_CONCURRENT_NUM: Int = 30;
 
   private val flushDiskExecutorService = ThreadPool.newThreadPool(FLUSH_DISK_CONCURRENT_NUM, new CustomThreadFactory("Occupancy-Flush-Disk-Executor-"));
 
