@@ -4,7 +4,7 @@ import com.chinawiserv.wsmp.util.DateTime
 import com.mongodb.client.model.Filters
 
 import scala.collection.JavaConversions
-import scala.collection.mutable.{ArrayBuffer, Map}
+import scala.collection.mutable.Map
 
 /**
   * Created by zengpzh on 2017/1/8.
@@ -22,9 +22,9 @@ package object occupancy {
   //实例化该类时就加载磁盘数据到内存，避免延迟加载对第一次调用的影响
   private[occupancy] val OCCUPANCY_MEM = load;
 
-  private def load: Map[String, Map[Int, ArrayBuffer[Byte]]] = {
+  private def load: Map[String, Map[Int, Array[Byte]]] = {
     println(DateTime.getCurrentDate_YYYYMMDDHHMMSS);
-    val OCCUPANCY_MEM_DATA = Map[Int, ArrayBuffer[Byte]]();
+    val OCCUPANCY_MEM_DATA = Map[Int, Array[Byte]]();
     val time = DateTime.getCurrentDate_YYYYMMDDWithOutSeparator;
     val year = time.take(TIME_YEAR_LENGTH);
     val daytime = time.takeRight(TIME_DAY_LENGTH);
@@ -33,12 +33,11 @@ package object occupancy {
     val records = JavaConversions.asScalaBuffer(mongoDB.mc.find(mongoDB.dbName, collection, filter, null)).toArray;
     records.foreach(record => {
       val station = record.getInteger("station").toInt;
-      val maxLevels = ArrayBuffer[Byte]();
-      maxLevels ++= JavaConversions.asScalaBuffer[Int](record.get("maxLevels", classOf[java.util.List[Int]])).map(_.toByte);
-      OCCUPANCY_MEM_DATA += (station -> maxLevels);
+      OCCUPANCY_MEM_DATA += (station ->
+        JavaConversions.asScalaBuffer[Int](record.get("maxLevels", classOf[java.util.List[Int]])).map(_.toByte).toArray);
     });
     println(DateTime.getCurrentDate_YYYYMMDDHHMMSS);
-    Map[String, Map[Int, ArrayBuffer[Byte]]](time -> OCCUPANCY_MEM_DATA);
+    Map[String, Map[Int, Array[Byte]]](time -> OCCUPANCY_MEM_DATA);
   }
 
 }

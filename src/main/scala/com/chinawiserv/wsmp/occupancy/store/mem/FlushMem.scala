@@ -12,7 +12,7 @@ import com.chinawiserv.wsmp.thread.{CustomThreadFactory, ThreadPool}
 import com.chinawiserv.wsmp.util.DateTime
 import org.apache.commons.lang.StringUtils
 
-import scala.collection.mutable.{ArrayBuffer, ListBuffer, Map}
+import scala.collection.mutable.{ListBuffer, Map}
 
 /**
   * Created by zengpzh on 2017/1/6.
@@ -27,24 +27,16 @@ private[occupancy] object FlushMem {
 
   def offer(cmds: List[Cmd]): Unit = {
     val occupancyDatas = cmds.map(cmd => {
-      val levels = new ArrayBuffer[Byte];
-      for (i <- 0.until(cmd.getLevels().length)) {
-        levels += cmd.getLevels()(i);
-      }
-      OccupancyData(cmd.getId(), DateTime.convertDateTime(new Date(cmd.getScanOverTime() * 1000), TIME_FORMAT), levels);
+      OccupancyData(cmd.getId(), DateTime.convertDateTime(new Date(cmd.getScanOverTime() * 1000), TIME_FORMAT), Array(cmd.getLevels: _*));
     });
     flushMemQueue.offer(occupancyDatas);
   }
 
   private[mem] def flush: Unit = {
-    var occupancyDatas = ListBuffer[OccupancyData]();
-    var count = 0;
-    while ((occupancyDatas ++= flushMemQueue.take).length < 300 && count < flushMemQueue.size()) {
-      count += 1;
-    }
+    val occupancyDatas = flushMemQueue.take;
     println("-----------flush memory start, length: " + occupancyDatas.length);
     val occupancyDatasMap = Map[String, ListBuffer[OccupancyData]]();
-    val isTimeSame = this.checkTime(occupancyDatas.toList);
+    val isTimeSame = this.checkTime(occupancyDatas);
     if (isTimeSame) {
       println("--------time same");
       val time = occupancyDatas.head.time;
@@ -66,7 +58,7 @@ private[occupancy] object FlushMem {
   }
 
   private def doFlush(time: String, occupancyData: OccupancyData, occupancyDatasMap: Map[String, ListBuffer[OccupancyData]]): Unit = {
-    val OCCUPANCY_MEM_DATA = OCCUPANCY_MEM.getOrElseUpdate(time, Map[Int, ArrayBuffer[Byte]]());
+    val OCCUPANCY_MEM_DATA = OCCUPANCY_MEM.getOrElseUpdate(time, Map[Int, Array[Byte]]());
     val levels = occupancyData.levels;
     val levelsLength = levels.length;
     val maxLevels = OCCUPANCY_MEM_DATA.getOrElseUpdate(occupancyData.id, levels);

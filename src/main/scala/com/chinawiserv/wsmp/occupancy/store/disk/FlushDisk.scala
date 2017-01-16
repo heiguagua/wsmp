@@ -28,11 +28,11 @@ private class FlushDisk extends Thread("Occupancy-Flush-Disk") {
 
 private[occupancy] object FlushDisk {
 
-  private val SHARD_SIZE: Int = 100;
+  private val SHARD_SIZE: Int = 1000;
 
   private val flushDiskQueue = new LinkedBlockingQueue[List[OccupancyData]]();
 
-  private val FLUSH_DISK_CONCURRENT_NUM: Int = 24;
+  private val FLUSH_DISK_CONCURRENT_NUM: Int = 12;
 
   private val flushDiskExecutorService = ThreadPool.newThreadPool(FLUSH_DISK_CONCURRENT_NUM, new CustomThreadFactory("Occupancy-Flush-Disk-Executor-"));
 
