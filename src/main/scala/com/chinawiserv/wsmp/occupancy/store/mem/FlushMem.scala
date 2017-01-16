@@ -33,7 +33,6 @@ private[occupancy] object FlushMem {
   }
 
   private[mem] def flush: Unit = {
-    println("----------flushMemQueue.size = " + flushMemQueue.size);
     val occupancyDatas = new ArrayBuffer[OccupancyData]();
     if(flushMemQueue.size == 0){
       occupancyDatas ++= flushMemQueue.take;
@@ -41,7 +40,6 @@ private[occupancy] object FlushMem {
     while(flushMemQueue.size > 0 && occupancyDatas.length < SHARD_SIZE){
       occupancyDatas ++= flushMemQueue.take;
     }
-    //println("-----------flush memory start, length: " + occupancyDatas.length);
     val occupancyDatasMap = Map[String, ListBuffer[OccupancyData]]();
     val isTimeSame = this.checkTime(occupancyDatas.toList);
     if (isTimeSame) {
@@ -59,7 +57,6 @@ private[occupancy] object FlushMem {
     for((_, occupancyDatas) <- occupancyDatasMap){
       FlushDisk.offer(occupancyDatas.toList);
     }
-    //println("-----------flush memory over");
   }
 
   private def doFlush(time: String, occupancyData: OccupancyData, occupancyDatasMap: Map[String, ListBuffer[OccupancyData]]): Unit = {

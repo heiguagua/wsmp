@@ -50,7 +50,7 @@ public class WSMPKafkaListener{
             cmds.add(cmd);
         } );
 
-        //dataHandlers.stream().forEach( dataHandler -> dataHandler.compute((ArrayList<Cmd>) cmds.clone()));
+        dataHandlers.stream().forEach( dataHandler -> dataHandler.compute((ArrayList<Cmd>) cmds.clone()));
 
         logger.info("receive messge {}, dataHandlers {}, {}", count, dataHandlers.size(), dhName);
         showDataFlow();
