@@ -8,7 +8,9 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.lang.reflect.Method;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Configuration
 @EnableAsync
@@ -20,11 +22,10 @@ public class WSMPThreadPoolConfigurer extends AsyncConfigurerSupport {
 		final ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setBeanName("defalut-ThreadPool");
 		executor.setAllowCoreThreadTimeOut(true);
-		executor.setCorePoolSize(10);
-		executor.setMaxPoolSize(10);
-		executor.setQueueCapacity(Integer.MAX_VALUE);
+		executor.setCorePoolSize(20);
+		executor.setMaxPoolSize(20);
+        executor.setKeepAliveSeconds( 360 );
 		executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
-		executor.setKeepAliveSeconds(120);
 		executor.setThreadPriority(Thread.MAX_PRIORITY);
 		executor.initialize();
 		return executor;
@@ -32,11 +33,8 @@ public class WSMPThreadPoolConfigurer extends AsyncConfigurerSupport {
 
 	@Override
 	public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-		return new AsyncUncaughtExceptionHandler() {
-			@Override
-			public void handleUncaughtException(Throwable ex, Method method, Object... params) {
-				ex.printStackTrace();
-			}
-		};
+        return (ex, method, params) -> {
+            ex.printStackTrace();
+        };
 	}
 }
