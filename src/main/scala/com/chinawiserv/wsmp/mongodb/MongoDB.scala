@@ -94,12 +94,12 @@ class MongoDB extends InitializingBean {
 
   private def buildOptions: MongoClientOptions = {
     val builder = new MongoClientOptions.Builder;
-    builder.connectionsPerHost(500);
+    builder.connectionsPerHost(20);
     builder.connectTimeout(5000);
     builder.minConnectionsPerHost(1);
     builder.maxConnectionIdleTime(30 * 1000);
     builder.maxConnectionLifeTime(5 * 60 * 1000);
-    builder.threadsAllowedToBlockForConnectionMultiplier(1);
+    builder.threadsAllowedToBlockForConnectionMultiplier(5);
     builder.maxWaitTime(6 * 1000);
     builder.serverSelectionTimeout(3000);
     builder.writeConcern(WriteConcern.MAJORITY);
