@@ -16,9 +16,7 @@ private class FlushDiskTask(shard: List[Document]) extends Runnable {
 
   override def run(): Unit = {
     if (shard != null) {
-      println(Thread.currentThread.getName + "-----------flush shard on disk, shard length: " + shard.length + ", start: " + DateTime.getCurrentDate_YYYYMMDDHHMMSS);
       FlushDiskTask.flushRecords(shard);
-      println(Thread.currentThread.getName + "-----------flush shard on disk over, end: " + DateTime.getCurrentDate_YYYYMMDDHHMMSS);
     }
   }
 
