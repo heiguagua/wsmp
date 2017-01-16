@@ -62,7 +62,7 @@ private[occupancy] object FlushMem {
     for((_, occupancyDatas) <- occupancyDatasMap){
       FlushDisk.offer(occupancyDatas.toList);
     }
-    logger.info("Occupancy flush mem, execute time : {} {}", System.currentTimeMillis() - now, "MS");
+    logger.info("Occupancy flush MEM, execute time : {} {}", System.currentTimeMillis() - now, "MS");
   }
 
   private def doFlush(time: String, occupancyData: OccupancyData, occupancyDatasMap: Map[String, ListBuffer[OccupancyData]]): Unit = {
