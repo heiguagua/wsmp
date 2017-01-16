@@ -42,7 +42,7 @@ private[occupancy] object FlushMem {
     }
     println("-----------flush memory start, length: " + occupancyDatas.length);
     val occupancyDatasMap = Map[String, ListBuffer[OccupancyData]]();
-    val isTimeSame = this.checkTime(occupancyDatas);
+    val isTimeSame = this.checkTime(occupancyDatas.toList);
     if (isTimeSame) {
       println("--------time same");
       val time = occupancyDatas.head.time;
