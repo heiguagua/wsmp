@@ -28,7 +28,7 @@ private class FlushDisk extends Thread("Occupancy-Flush-Disk") {
 
 private[occupancy] object FlushDisk {
 
-  private val SHARD_SIZE: Int = 1000;
+  private val SHARD_SIZE: Int = 500;
 
   private val flushDiskQueue = new LinkedBlockingQueue[List[OccupancyData]]();
 
