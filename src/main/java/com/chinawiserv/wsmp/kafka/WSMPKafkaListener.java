@@ -1,12 +1,12 @@
 package com.chinawiserv.wsmp.kafka;
 
 import com.chinawiserv.model.Cmd;
-import com.chinawiserv.util.FstUtil;
 import com.chinawiserv.wsmp.configuration.SpringContextManager;
 import com.chinawiserv.wsmp.handler.DataHandler;
 import com.chinawiserv.wsmp.statistics.DataFlow;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.nustaq.serialization.FSTConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,19 +14,22 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import java.util.*;
 
-// kafka-topics.sh --zookeeper slave1.dom:2181,slave2.dom:2181,slave3.dom:2181 --create --topic dom --replication-factor 1 --partitions 9
-// kafka-topics.sh --zookeeper slave1.dom:2181,slave2.dom:2181,slave3.dom:2181 --delete --topic dom
-// kafka-topics.sh --zookeeper slave1.dom:2181,slave2.dom:2181,slave3.dom:2181 --list
-// kafka-topics.sh --zookeeper slave1.dom:2181,slave2.dom:2181,slave3.dom:2181 --describe dom
-// kafka-console-consumer.sh --zookeeper slave1.dom:2181,slave2.dom:2181,slave3.dom:2181 --topic dom --from-beginning
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+import java.util.stream.Stream;
+
 @Component
 public class WSMPKafkaListener{
 	
 	final private static Logger logger  = LoggerFactory.getLogger(WSMPKafkaListener.class);
 
 	private static DataFlow dataFlow = new DataFlow();
+	private static DecimalFormat df = new DecimalFormat("#.000");
+	private static FSTConfiguration conf = FSTConfiguration.createDefaultConfiguration();
 	private static Collection<DataHandler> dataHandlers;
 	private static String dhName = "";
 
@@ -41,20 +44,16 @@ public class WSMPKafkaListener{
         dataFlow.inc(count);
 
         final ArrayList<Cmd> cmds = new ArrayList<>( count );
-
-        for(ConsumerRecord<K, V> record : records){
+        records.forEach( record -> {
             Cmd cmd = (Cmd) record.value();
-            packSize = FstUtil.fst.asByteArray(cmd).length;
-			cmds.add(cmd);
-        }
+            packSize = conf.asByteArray(cmd).length;
+            cmds.add(cmd);
+        } );
 
-        for(DataHandler handler : dataHandlers){
-            handler.compute(new ArrayList<>( cmds ));
-        }
+        //dataHandlers.stream().forEach( dataHandler -> dataHandler.compute((ArrayList<Cmd>) cmds.clone()));
 
-        logger.info("receive messge {}, dataHandlers {}", count, dataHandlers.size()+":"+dhName);
-
-        this.showDataFlow();
+        logger.info("receive messge {}, dataHandlers {}, {}", count, dataHandlers.size(), dhName);
+        showDataFlow();
     }
 
 	@SuppressWarnings("Unchecked")
@@ -68,7 +67,7 @@ public class WSMPKafkaListener{
 	public void setDataHandlers(ApplicationContext context){
 		Map<String, DataHandler> beans = context.getBeansOfType(DataHandler.class);
 		dataHandlers = beans.values();
-		dhName = "[ ";
+		dhName = "[";
 		for (DataHandler dh : dataHandlers) {
 			dhName = dhName + " " + dh.getClass().getSimpleName();
 		}
@@ -76,9 +75,9 @@ public class WSMPKafkaListener{
 		logger.info("receive dataHandlers {}", dataHandlers.size());
 	}
 
-	private void showDataFlow()  {
-		double flow = Double.valueOf(dataFlow.getDf().format(dataFlow.getAvgVal() * packSize / 1024 / 1024));
-		System.out.println("收到数据:"+ dataFlow.getTotalVal()+" 条, 处理速度:"+dataFlow.getAvgVal()+" 条/秒, 数据流量:"+ flow +" MB/S");
+	private static void showDataFlow()  {
+		double flow = Double.valueOf(df.format(dataFlow.getAvgVal() * packSize / 1024 / 1024));
+		System.out.println("处理数据:"+ dataFlow.getTotalVal()+" 条, 处理速度:"+dataFlow.getAvgVal()+" 条/秒, 数据流量:"+ flow +" MB/S");
 	}
 
 }
