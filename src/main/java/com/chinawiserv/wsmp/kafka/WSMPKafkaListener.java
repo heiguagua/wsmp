@@ -28,6 +28,7 @@ public class WSMPKafkaListener{
 
 	private static DataFlow dataFlow = new DataFlow();
 	private static Collection<DataHandler> dataHandlers;
+	private static String dhName = "";
 
     private static int packSize = 286538;
 
@@ -51,7 +52,7 @@ public class WSMPKafkaListener{
             handler.compute(new ArrayList<>( cmds ));
         }
 
-        logger.info("receive messge {}, dataHandlers {}", count, dataHandlers.size());
+        logger.info("receive messge {}, dataHandlers {}", count, dataHandlers.size()+":"+dhName);
 
         this.showDataFlow();
     }
@@ -67,6 +68,11 @@ public class WSMPKafkaListener{
 	public void setDataHandlers(ApplicationContext context){
 		Map<String, DataHandler> beans = context.getBeansOfType(DataHandler.class);
 		dataHandlers = beans.values();
+		dhName = "[ ";
+		for (DataHandler dh : dataHandlers) {
+			dhName = dhName + " " + dh.getClass().getSimpleName();
+		}
+		dhName = dhName + " ]" ;
 		logger.info("receive dataHandlers {}", dataHandlers.size());
 	}
 
