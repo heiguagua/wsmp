@@ -1,6 +1,6 @@
 package com.chinawiserv.wsmp.unusual
 
-import java.util.concurrent.{ExecutorService, Executors, ScheduledExecutorService, TimeUnit}
+import java.util.concurrent._
 import com.chinawiserv.model.Cmd
 import com.chinawiserv.wsmp.handler.DataHandler
 import com.chinawiserv.wsmp.thread.{CustomThreadFactory, ThreadPool}
@@ -20,7 +20,7 @@ class Unusual extends DataHandler with  InitializingBean{
   var endpointURI: String = _;
   private var memManager: MemManager = _;
   private var wsClient: WSClient = _;
-  private var executor: ExecutorService = _;
+  private var executor: ThreadPoolExecutor = _;
   private var scheduler: ScheduledExecutorService = _;
 
   override def afterPropertiesSet(): Unit = {
@@ -37,6 +37,7 @@ class Unusual extends DataHandler with  InitializingBean{
 
   def compute(cmds : List[Cmd]): Unit = {
     try {
+      log.info("this.executor.getQueue: {}", this.executor.getQueue.size());
       if (cmds != null && !cmds.isEmpty) {
         val list = cmds.sliding(5, 5);
         list.foreach(shard => {

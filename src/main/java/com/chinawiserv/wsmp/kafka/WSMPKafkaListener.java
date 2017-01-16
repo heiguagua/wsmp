@@ -4,6 +4,7 @@ import com.chinawiserv.model.Cmd;
 import com.chinawiserv.wsmp.configuration.SpringContextManager;
 import com.chinawiserv.wsmp.handler.DataHandler;
 import com.chinawiserv.wsmp.statistics.DataFlow;
+import com.chinawiserv.wsmp.statistics.Monitor;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.nustaq.serialization.FSTConfiguration;
@@ -77,7 +78,7 @@ public class WSMPKafkaListener{
 
 	private static void showDataFlow()  {
 		double flow = Double.valueOf(df.format(dataFlow.getAvgVal() * packSize / 1024 / 1024));
-		System.out.println("处理数据:"+ dataFlow.getTotalVal()+" 条, 处理速度:"+dataFlow.getAvgVal()+" 条/秒, 数据流量:"+ flow +" MB/S");
+		System.out.println("处理数据:"+ dataFlow.getTotalVal()+" 条, 处理速度:"+dataFlow.getAvgVal()+" 条/秒, 数据流量:"+ flow +" MB/S "+ Monitor.getInfo());
 	}
 
 }
