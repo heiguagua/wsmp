@@ -37,7 +37,6 @@ class Unusual extends DataHandler with  InitializingBean{
 
   def compute(cmds : List[Cmd]): Unit = {
     try {
-      log.info("this.executor.getQueue: {}", this.executor.getQueue.size());
       if (cmds != null && !cmds.isEmpty) {
         val list = cmds.sliding(5, 5);
         list.foreach(shard => {

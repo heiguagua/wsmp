@@ -26,7 +26,7 @@ public class UnusualLevel {
                         return -2;
                     }
 
-                    if(e > 2678 && e < 3520 && Levels[e] > 0) {
+                    if(e > 2678 && e < 3520 && Levels[e] > 80) {
                         this.temp[e] = 1;
                     }
                 }
