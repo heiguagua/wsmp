@@ -1,7 +1,6 @@
 package com.chinawiserv.wsmp.unusual
 
 import java.util.concurrent.{ExecutorService, Executors, ScheduledExecutorService, TimeUnit}
-
 import com.chinawiserv.model.Cmd
 import com.chinawiserv.wsmp.handler.DataHandler
 import com.chinawiserv.wsmp.thread.{CustomThreadFactory, ThreadPool}
@@ -32,7 +31,6 @@ class Unusual extends DataHandler with  InitializingBean{
     this.scheduler.scheduleWithFixedDelay(new SendDataRunnable(), 1, 1, TimeUnit.SECONDS);
   }
 
-  @throws[Exception]
   def compute(cmds : java.util.List[Cmd]): Unit = {
     compute(cmds.toList);
   }
