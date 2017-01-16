@@ -97,10 +97,10 @@ class MongoDB extends InitializingBean {
     builder.connectionsPerHost(20);
     builder.connectTimeout(5000);
     builder.minConnectionsPerHost(1);
-    builder.maxConnectionIdleTime(30 * 1000);
-    builder.maxConnectionLifeTime(5 * 60 * 1000);
+    builder.maxConnectionIdleTime(60 * 1000);
+    //builder.maxConnectionLifeTime(5 * 60 * 1000);
     builder.threadsAllowedToBlockForConnectionMultiplier(5);
-    builder.maxWaitTime(6 * 1000);
+    builder.maxWaitTime(60 * 1000);
     builder.serverSelectionTimeout(3000);
     builder.writeConcern(WriteConcern.MAJORITY);
     builder.readConcern(ReadConcern.DEFAULT);
