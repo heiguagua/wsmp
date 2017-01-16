@@ -12,7 +12,7 @@ import com.chinawiserv.wsmp.thread.{CustomThreadFactory, ThreadPool}
 import com.chinawiserv.wsmp.util.DateTime
 import org.apache.commons.lang.StringUtils
 
-import scala.collection.mutable.{ListBuffer, Map}
+import scala.collection.mutable.{ArrayBuffer, ListBuffer, Map}
 
 /**
   * Created by zengpzh on 2017/1/6.
@@ -33,7 +33,13 @@ private[occupancy] object FlushMem {
   }
 
   private[mem] def flush: Unit = {
-    val occupancyDatas = flushMemQueue.take;
+    val occupancyDatas = new ArrayBuffer[OccupancyData]();
+    if(flushMemQueue.size == 0){
+      occupancyDatas ++= flushMemQueue.take;
+    }
+    while(flushMemQueue.size > 0 && occupancyDatas.length < SHARD_SIZE){
+      occupancyDatas ++= flushMemQueue.take;
+    }
     println("-----------flush memory start, length: " + occupancyDatas.length);
     val occupancyDatasMap = Map[String, ListBuffer[OccupancyData]]();
     val isTimeSame = this.checkTime(occupancyDatas);
