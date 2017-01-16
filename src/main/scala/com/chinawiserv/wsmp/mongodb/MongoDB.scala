@@ -1,5 +1,7 @@
 package com.chinawiserv.wsmp.mongodb
 
+import java.util.concurrent.locks.{ReadWriteLock, ReentrantLock, ReentrantReadWriteLock}
+
 import com.chinawiserv.core.mongo.{MongoDBClient, MongoDBClientProxy}
 import com.mongodb._
 import org.apache.commons.lang.StringUtils
@@ -69,28 +71,28 @@ class MongoDB extends InitializingBean {
     if (shardEnable && StringUtils.isNotBlank(collection) && shardKey != null) {
       var exists = EXISTS_COLLECTIONS.contains(collection);
       if (!exists) {
-        synchronized(MongoDB.lock, {
-          exists = EXISTS_COLLECTIONS.contains(collection);
-          if (!exists) {
-            val collectionNames = mc.listCollectionNames(dbName);
-            collectionNames.forEach(new Block[String] {
-              override def apply(collectionName: String): Unit = {
-                if (collection == collectionName) {
-                  EXISTS_COLLECTIONS += collection;
-                  exists = true;
-                }
+        MongoDB.lock.writeLock.lock;
+        exists = EXISTS_COLLECTIONS.contains(collection);
+        if (!exists) {
+          val collectionNames = mc.listCollectionNames(dbName);
+          collectionNames.forEach(new Block[String] {
+            override def apply(collectionName: String): Unit = {
+              if (collection == collectionName) {
+                EXISTS_COLLECTIONS += collection;
+                exists = true;
               }
-            });
-            if (!exists) {
-              mc.createCollection(dbName, collection, null);
-              EXISTS_COLLECTIONS += collection;
             }
+          });
+          if (!exists) {
+            mc.createCollection(dbName, collection, null);
+            EXISTS_COLLECTIONS += collection;
             val sharded = mc.getCollectionStats(dbName, collection).getBoolean("sharded");
             if (sharded != null && !sharded) {
               mc.shardCollection(dbName, collection, shardKey);
             }
           }
-        })
+        }
+        MongoDB.lock.writeLock.unlock;
       }
     }
   }
@@ -114,7 +116,7 @@ class MongoDB extends InitializingBean {
 
 object MongoDB {
 
-  private val lock = new Object();
+  private val lock = new ReentrantReadWriteLock();
 
 }
 
