@@ -52,7 +52,7 @@ public class WSMPKafkaListener{
 
         dataHandlers.stream().forEach( dataHandler -> dataHandler.compute((ArrayList<Cmd>) cmds.clone()));
 
-        logger.info("receive messge {}, dataHandlers {}", count, dataHandlers.size());
+        logger.info("receive messge {}, dataHandlers {}, {}", count, dataHandlers.size(), dhName);
         showDataFlow();
     }
 
@@ -67,6 +67,11 @@ public class WSMPKafkaListener{
 	public void setDataHandlers(ApplicationContext context){
 		Map<String, DataHandler> beans = context.getBeansOfType(DataHandler.class);
 		dataHandlers = beans.values();
+		dhName = "[";
+		for (DataHandler dh : dataHandlers) {
+			dhName = dhName + " " + dh.getClass().getSimpleName();
+		}
+		dhName = dhName + " ]" ;
 		logger.info("receive dataHandlers {}", dataHandlers.size());
 	}
 
