@@ -28,11 +28,9 @@ private class FlushDisk extends Thread("Occupancy-Flush-Disk") {
 
 private[occupancy] object FlushDisk {
 
-  private val SHARD_SIZE: Int = 500;
-
   private val flushDiskQueue = new LinkedBlockingQueue[List[OccupancyData]]();
 
-  private val FLUSH_DISK_CONCURRENT_NUM: Int = 12;
+  private val FLUSH_DISK_CONCURRENT_NUM: Int = 15;
 
   private val flushDiskExecutorService = ThreadPool.newThreadPool(FLUSH_DISK_CONCURRENT_NUM, new CustomThreadFactory("Occupancy-Flush-Disk-Executor-"));
 
@@ -45,6 +43,7 @@ private[occupancy] object FlushDisk {
   }
 
   private def flush(occupancyDatas: List[OccupancyData]): Unit = {
+    println("------------flushDiskQueue.size = " + flushDiskQueue.size)
     this.start(this.slice(occupancyDatas));
   }
 
@@ -59,7 +58,7 @@ private[occupancy] object FlushDisk {
       val records = occupancyDatas.map(occupancyData => {
         new Document("station", occupancyData.id).append("time", occupancyData.time).append("maxLevels", JavaConversions.asJavaCollection[Byte](occupancyData.levels));
       });
-      records.sliding(FlushDisk.SHARD_SIZE, FlushDisk.SHARD_SIZE).toList;
+      records.sliding(SHARD_SIZE, SHARD_SIZE).toList;
     } else {
       null;
     }

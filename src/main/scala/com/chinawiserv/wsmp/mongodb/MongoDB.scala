@@ -21,6 +21,9 @@ class MongoDB extends InitializingBean {
   @Value("${mongodb.db}")
   var dbName: String = _;
 
+  @Value("${mongodb.shard.enable}")
+  var shardEnable: Boolean = _;
+
   private val EXISTS_COLLECTIONS = ArrayBuffer[String]();
 
   private var mongoDBClient: MongoDBClient = _;
@@ -35,7 +38,7 @@ class MongoDB extends InitializingBean {
   }
 
   private def enableDbShard(dbName: String): Unit = {
-    if (mongodbHosts.contains(",")) {
+    if (shardEnable && mongodbHosts.contains(",")) {
       val documents = JavaConversions.asScalaBuffer(mc.find("config", "databases", new Document("_id", dbName), null)).toList;
       if (documents.isEmpty) {
         mc.enableDbShard(dbName);
@@ -63,7 +66,7 @@ class MongoDB extends InitializingBean {
   }
 
   def shardCollection(collection: String, shardKey: Bson): Unit = {
-    if (StringUtils.isNotBlank(collection) && shardKey != null) {
+    if (shardEnable && StringUtils.isNotBlank(collection) && shardKey != null) {
       var exists = EXISTS_COLLECTIONS.contains(collection);
       if (!exists) {
         synchronized(MongoDB.lock, {
@@ -95,7 +98,7 @@ class MongoDB extends InitializingBean {
   private def buildOptions: MongoClientOptions = {
     val builder = new MongoClientOptions.Builder;
     builder.connectionsPerHost(20);
-    builder.connectTimeout(5000);
+    builder.connectTimeout(10000);
     builder.minConnectionsPerHost(1);
     builder.maxConnectionIdleTime(60 * 1000);
     //builder.maxConnectionLifeTime(5 * 60 * 1000);

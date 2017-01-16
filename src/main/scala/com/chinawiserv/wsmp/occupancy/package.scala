@@ -17,6 +17,8 @@ package object occupancy {
 
   private[occupancy] val TIME_DAY_LENGTH = 4;
 
+  private[occupancy] val SHARD_SIZE: Int = 500;
+
   private[occupancy] val collection_prefix = "occupancy_";
 
   //实例化该类时就加载磁盘数据到内存，避免延迟加载对第一次调用的影响
