@@ -35,8 +35,8 @@ class MongoDB extends InitializingBean {
   }
 
   override def afterPropertiesSet(): Unit = {
-//    mongoDBClient = createConnection;
-//    this.enableDbShard(dbName);
+    mongoDBClient = createConnection;
+    this.enableDbShard(dbName);
   }
 
   private def enableDbShard(dbName: String): Unit = {
