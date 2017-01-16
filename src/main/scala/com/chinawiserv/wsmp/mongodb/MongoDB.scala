@@ -1,6 +1,6 @@
 package com.chinawiserv.wsmp.mongodb
 
-import java.util.concurrent.locks.{ReadWriteLock, ReentrantLock, ReentrantReadWriteLock}
+import java.util.concurrent.locks.ReentrantReadWriteLock
 
 import com.chinawiserv.core.mongo.{MongoDBClient, MongoDBClientProxy}
 import com.mongodb._
