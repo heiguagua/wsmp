@@ -50,7 +50,7 @@ public class WSMPKafkaListener{
             cmds.add(cmd);
         } );
 
-        dataHandlers.stream().forEach( dataHandler -> dataHandler.compute((ArrayList<Cmd>) cmds.clone()));
+        //dataHandlers.stream().forEach( dataHandler -> dataHandler.compute((ArrayList<Cmd>) cmds.clone()));
 
         logger.info("receive messge {}, dataHandlers {}, {}", count, dataHandlers.size(), dhName);
         showDataFlow();
@@ -77,7 +77,7 @@ public class WSMPKafkaListener{
 
 	private static void showDataFlow()  {
 		double flow = Double.valueOf(df.format(dataFlow.getAvgVal() * packSize / 1024 / 1024));
-		System.out.println("收到数据:"+ dataFlow.getTotalVal()+" 条, 处理速度:"+dataFlow.getAvgVal()+" 条/秒, 数据流量:"+ flow +" MB/S");
+		System.out.println("处理数据:"+ dataFlow.getTotalVal()+" 条, 处理速度:"+dataFlow.getAvgVal()+" 条/秒, 数据流量:"+ flow +" MB/S");
 	}
 
 }
