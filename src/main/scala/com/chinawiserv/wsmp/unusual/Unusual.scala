@@ -55,7 +55,7 @@ class Unusual extends DataHandler with  InitializingBean{
     override def run(): Unit = {
       try {
         val json = memManager.readDataFromWeb();
-        if (json != null && !json.isEmpty) {
+        if (json != null && !"".equals(json)) {
           wsClient.sendMessage(json);
         }
       }

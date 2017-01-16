@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component
 
 import scala.collection.JavaConversions._
 
-@Component
+//@Component
 class Occupancy extends DataHandler {
 
   @throws[Exception]

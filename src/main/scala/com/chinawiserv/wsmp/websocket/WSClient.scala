@@ -44,8 +44,8 @@ class WSClient {
     }
     catch {
       case e: Exception => {
+        println("Connect To WebSocker Server Failed:("+this.endpointURI+")--"+e.getMessage)
         this.session = null;
-        log.info("Connect To WebSocker Server Failed:("+this.endpointURI+")--"+e.getMessage)
       };
     }
   }
@@ -55,7 +55,7 @@ class WSClient {
     try {
       if (this.session != null && this.session.isOpen) {
         this.session.getBasicRemote.sendText(message);
-        log.info("Send To WebSocket ("+ endpointURI + "): " +message);
+        println("Send To WebSocket ("+ endpointURI + "): " +message);
         result = true;
       }
       else {
