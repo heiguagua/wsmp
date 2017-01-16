@@ -1,7 +1,6 @@
 package com.chinawiserv.wsmp.configuration;
 
 import com.chinawiserv.kafka.KafkaObjDeserializer;
-import com.chinawiserv.kafka.KafkaObjSerializer;
 import com.chinawiserv.model.Cmd;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -24,21 +23,20 @@ import java.util.Map;
 @EnableKafka
 public class WSMPKafkaConfiguration {
 
-
     @Bean
     public ConsumerFactory<String, Cmd> consumerFactory(@Value("#{consumerConfig}") Map<String, Object> configs) {
-        return new DefaultKafkaConsumerFactory<>(configs);
+        return new DefaultKafkaConsumerFactory<>( configs );
     }
 
     @Bean("kafkaListenerContainerFactory")
     <K, V> KafkaListenerContainerFactory<WSMPConcurrentMessageListenerContainer<K, V>> containerFactory(
-            @Value("${kafka.consumer.count}") int concurrency,  ConsumerFactory<K, V> consumerFactory) {
+            @Value("${kafka.consumer.count}") int concurrency, ConsumerFactory<K, V> consumerFactory) {
 
         final WSMPConcurrentKafkaListenerContainerFactory<K, V> factory = new WSMPConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory);
-        factory.setConcurrency(concurrency);
-        factory.getContainerProperties().setPollTimeout(Long.MAX_VALUE);
-        factory.getContainerProperties().setAckMode(AbstractMessageListenerContainer.AckMode.BATCH);
+        factory.setConsumerFactory( consumerFactory );
+        factory.setConcurrency( concurrency );
+        factory.getContainerProperties().setPollTimeout( Long.MAX_VALUE );
+        factory.getContainerProperties().setAckMode( AbstractMessageListenerContainer.AckMode.BATCH );
         return factory;
     }
 
@@ -51,24 +49,25 @@ public class WSMPKafkaConfiguration {
             @Value("${kafka.consumer.receive.buffer.bytes}") String buffSize,
             @Value("${kafka.consumer.max.partition.fetch.bytes}") String fetchSize
     ) {
+
         final Map<String, Object> propsMap = new HashMap<>();
 
-        propsMap.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, servers);
-        propsMap.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, autoComit);
-        propsMap.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, 1200);
-        propsMap.put("rebalance.max.retries", "5");
-        propsMap.put("rebalance.backoff.ms", "12000");
-        propsMap.put("offset.flush.interval.ms", "120000");
-        propsMap.put(ConsumerConfig.RECEIVE_BUFFER_CONFIG, buffSize);
-        propsMap.put(ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG, fetchSize);
-        propsMap.put(ConsumerConfig.HEARTBEAT_INTERVAL_MS_CONFIG, "20000");
-        propsMap.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "21000");
-        propsMap.put(ConsumerConfig.REQUEST_TIMEOUT_MS_CONFIG, "32000");
-        propsMap.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        propsMap.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaObjDeserializer.class);
-        propsMap.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
+        propsMap.put( ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, servers );
+        propsMap.put( ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, autoComit );
+        propsMap.put( ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, 1200 );
+        propsMap.put( "rebalance.max.retries", "5" );
+        propsMap.put( "rebalance.backoff.ms", "12000" );
+        propsMap.put( "offset.flush.interval.ms", "120000" );
+        propsMap.put( ConsumerConfig.RECEIVE_BUFFER_CONFIG, buffSize );
+        propsMap.put( ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG, fetchSize );
+        propsMap.put( ConsumerConfig.HEARTBEAT_INTERVAL_MS_CONFIG, "20000" );
+        propsMap.put( ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "21000" );
+        propsMap.put( ConsumerConfig.REQUEST_TIMEOUT_MS_CONFIG, "32000" );
+        propsMap.put( ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class );
+        propsMap.put( ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaObjDeserializer.class );
+        propsMap.put( ConsumerConfig.GROUP_ID_CONFIG, groupId );
         //latest  earliest
-        propsMap.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+        propsMap.put( ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest" );
 
         return propsMap;
     }

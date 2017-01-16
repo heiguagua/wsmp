@@ -19,9 +19,7 @@ import org.springframework.stereotype.Component;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
-import java.util.stream.Stream;
 
 @Component
 public class WSMPKafkaListener{
