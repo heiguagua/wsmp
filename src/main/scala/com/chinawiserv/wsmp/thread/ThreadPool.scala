@@ -4,7 +4,7 @@ import java.util.concurrent._
 
 object ThreadPool {
 
-  def newThreadPool(nThreads: Int, threadFactory: ThreadFactory): ExecutorService = {
+  def newThreadPool(nThreads: Int, threadFactory: ThreadFactory): ThreadPoolExecutor = {
     val tpe = new ThreadPoolExecutor(nThreads,
                                       nThreads,
                                       60L,
