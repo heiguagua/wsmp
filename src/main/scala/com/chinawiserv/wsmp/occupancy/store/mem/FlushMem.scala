@@ -36,8 +36,8 @@ private[occupancy] object FlushMem {
   }
 
   private[mem] def flush: Unit = {
-    val now = System.currentTimeMillis();
     logger.info("Occupancy flush MEM, queued: {} ", flushMemQueue.size);
+    val now = System.currentTimeMillis();
     val occupancyDatas = new ArrayBuffer[OccupancyData]();
     if(flushMemQueue.size == 0){
       occupancyDatas ++= flushMemQueue.take;
