@@ -4,19 +4,23 @@ package store.disk
 
 import java.util
 
-import com.chinawiserv.wsmp.util.DateTime
 import com.mongodb.client.model._
 import org.apache.commons.lang.StringUtils
 import org.bson.Document
+import org.slf4j.{Logger, LoggerFactory}
 
 /**
   * Created by zengpzh on 2017/1/6.
   */
 private class FlushDiskTask(shard: List[Document]) extends Runnable {
 
+  private val logger: Logger = LoggerFactory.getLogger(classOf[FlushDiskTask]);
+
   override def run(): Unit = {
     if (shard != null) {
+      val now = System.currentTimeMillis();
       FlushDiskTask.flushRecords(shard);
+      logger.info("Occupancy flush DISK, execute time: {} {}", System.currentTimeMillis() - now, "MS");
     }
   }
 

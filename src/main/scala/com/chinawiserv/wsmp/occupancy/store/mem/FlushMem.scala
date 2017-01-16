@@ -11,6 +11,7 @@ import com.chinawiserv.wsmp.occupancy.store.disk.FlushDisk
 import com.chinawiserv.wsmp.thread.{CustomThreadFactory, ThreadPool}
 import com.chinawiserv.wsmp.util.DateTime
 import org.apache.commons.lang.StringUtils
+import org.slf4j.{Logger, LoggerFactory}
 
 import scala.collection.mutable.{ArrayBuffer, ListBuffer, Map}
 
@@ -18,6 +19,8 @@ import scala.collection.mutable.{ArrayBuffer, ListBuffer, Map}
   * Created by zengpzh on 2017/1/6.
   */
 private[occupancy] object FlushMem {
+
+  private val logger: Logger = LoggerFactory.getLogger(FlushMem.getClass);
 
   private val flushMemExecutorService = ThreadPool.newThreadPool(1, new CustomThreadFactory("Occupancy-Flush-Mem-Executor-"));
 
@@ -33,6 +36,8 @@ private[occupancy] object FlushMem {
   }
 
   private[mem] def flush: Unit = {
+    val now = System.currentTimeMillis();
+    logger.info("Occupancy flush MEM, queued: {} ", flushMemQueue.size);
     val occupancyDatas = new ArrayBuffer[OccupancyData]();
     if(flushMemQueue.size == 0){
       occupancyDatas ++= flushMemQueue.take;
@@ -57,6 +62,7 @@ private[occupancy] object FlushMem {
     for((_, occupancyDatas) <- occupancyDatasMap){
       FlushDisk.offer(occupancyDatas.toList);
     }
+    logger.info("Occupancy flush mem, execute time : {} {}", System.currentTimeMillis() - now, "MS");
   }
 
   private def doFlush(time: String, occupancyData: OccupancyData, occupancyDatasMap: Map[String, ListBuffer[OccupancyData]]): Unit = {

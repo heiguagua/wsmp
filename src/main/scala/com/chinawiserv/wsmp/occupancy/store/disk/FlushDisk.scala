@@ -6,6 +6,7 @@ import java.util.concurrent.LinkedBlockingQueue
 import com.chinawiserv.wsmp.occupancy.model.OccupancyData
 import com.chinawiserv.wsmp.thread.{CustomThreadFactory, ThreadPool}
 import org.bson.Document
+import org.slf4j.{Logger, LoggerFactory}
 
 import scala.collection.JavaConversions
 
@@ -28,6 +29,8 @@ private class FlushDisk extends Thread("Occupancy-Flush-Disk") {
 
 private[occupancy] object FlushDisk {
 
+  private val logger: Logger = LoggerFactory.getLogger(FlushDisk.getClass);
+
   private val flushDiskQueue = new LinkedBlockingQueue[List[OccupancyData]]();
 
   private val FLUSH_DISK_CONCURRENT_NUM: Int = 1;
@@ -43,6 +46,7 @@ private[occupancy] object FlushDisk {
   }
 
   private def flush(occupancyDatas: List[OccupancyData]): Unit = {
+    logger.info("Occupancy flush DISK, queued: {} ", flushDiskQueue.size);
     this.start(this.slice(occupancyDatas));
   }
 
