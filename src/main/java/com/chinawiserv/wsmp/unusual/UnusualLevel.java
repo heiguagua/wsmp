@@ -22,11 +22,11 @@ public class UnusualLevel {
             if(this.index == 1) {
                 for(int e = 0; e < Count; ++e) {
                     this.temp[e] = 0;
-                    if(Levels[e] > 120 || Levels[e] < 0) {
+                    if(Levels[e] > 120 || Levels[e] < -20) {
                         return -2;
                     }
 
-                    if(e > 2678 && e < 3520 && Levels[e] > 80) {
+                    if(e > 2678 && e < 3520 && Levels[e] > 100) {
                         this.temp[e] = 1;
                     }
                 }
