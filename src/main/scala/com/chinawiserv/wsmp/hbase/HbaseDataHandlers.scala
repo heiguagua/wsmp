@@ -52,7 +52,7 @@ class HbaseDataHandlers extends DataHandler with InitializingBean {
   override def compute(cmds: java.util.List[Cmd]): Unit = {
 
     AutoClose.using(this.connection.getTable(TableName.valueOf(hbaseTableName)), (table: Table) => {
-      table.setWriteBufferSize(1024*1024*1024*2);
+      table.setWriteBufferSize(1024*1024*1024);
       table.put(
         cmds.map(cmd => {
           val uuid = UUID.randomUUID().toString;
