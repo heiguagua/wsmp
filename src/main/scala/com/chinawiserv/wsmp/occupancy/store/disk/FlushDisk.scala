@@ -10,7 +10,6 @@ import com.chinawiserv.wsmp.thread.{CustomThreadFactory, ThreadPool}
 import com.mongodb.client.model._
 import org.apache.commons.lang.StringUtils
 import org.bson.Document
-import org.slf4j.{Logger, LoggerFactory}
 
 import scala.collection.JavaConversions
 
@@ -19,8 +18,6 @@ import scala.collection.JavaConversions
   */
 
 private[occupancy] object FlushDisk {
-
-  private val logger: Logger = LoggerFactory.getLogger(FlushDisk.getClass);
 
   private val flushDiskQueue = new LinkedBlockingQueue[List[OccupancyData]]();
 
