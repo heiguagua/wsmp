@@ -52,7 +52,8 @@ class HbaseDataHandlers extends DataHandler with InitializingBean {
   override def compute(cmds: java.util.List[Cmd]): Unit = {
 
     AutoClose.using(this.connection.getTable(TableName.valueOf(hbaseTableName)), (table: Table) => {
-      //table.put(
+      table.setWriteBufferSize(1024*1024*100);
+      table.put(
         cmds.map(cmd => {
           val uuid = UUID.randomUUID().toString;
           val rowid = toBytes(uuid);
@@ -64,11 +65,12 @@ class HbaseDataHandlers extends DataHandler with InitializingBean {
               val qualifier = toBytes(field.getName);
               val value = getBytes(field.get(cmd));
               put.addColumn(family, qualifier, value);
+              put.setWriteToWAL(false);
             }
           });
-          table.put(put);
+          put;
         }
-        //)
+        )
       )
     });
 
