@@ -2,6 +2,7 @@ package com.chinawiserv.wsmp
 
 import com.chinawiserv.wsmp.util.DateTime
 import com.mongodb.client.model.Filters
+import org.bson.Document
 import org.slf4j.{Logger, LoggerFactory}
 
 import scala.collection.JavaConversions
@@ -35,6 +36,7 @@ package object occupancy {
     val daytime = time.takeRight(TIME_DAY_LENGTH);
     val collection = collection_prefix + year;
     val filter = Filters.eq("time", daytime);
+    mongoDB.shardCollection(collection, new Document("station", 1));
     val records = JavaConversions.asScalaBuffer(mongoDB.mc.find(mongoDB.dbName, collection, filter, null)).toArray;
     records.foreach(record => {
       val station = record.getInteger("station").toInt;
