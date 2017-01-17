@@ -2,6 +2,7 @@ package com.chinawiserv.wsmp
 
 import com.chinawiserv.wsmp.util.DateTime
 import com.mongodb.client.model.Filters
+import org.slf4j.{Logger, LoggerFactory}
 
 import scala.collection.JavaConversions
 import scala.collection.mutable.Map
@@ -10,6 +11,8 @@ import scala.collection.mutable.Map
   * Created by zengpzh on 2017/1/8.
   */
 package object occupancy {
+
+  private val logger: Logger = LoggerFactory.getLogger(occupancy.getClass);
 
   private[occupancy] val TIME_FORMAT = "yyyyMMdd";
 
@@ -25,7 +28,7 @@ package object occupancy {
   private[occupancy] val OCCUPANCY_MEM = load;
 
   private def load: Map[String, Map[Int, Array[Byte]]] = {
-    println(DateTime.getCurrentDate_YYYYMMDDHHMMSS);
+    logger.info("Load occupancy data from disk, start: {} ", DateTime.getCurrentDate_YYYYMMDDHHMMSS);
     val OCCUPANCY_MEM_DATA = Map[Int, Array[Byte]]();
     val time = DateTime.getCurrentDate_YYYYMMDDWithOutSeparator;
     val year = time.take(TIME_YEAR_LENGTH);
@@ -38,7 +41,7 @@ package object occupancy {
       OCCUPANCY_MEM_DATA += (station ->
         JavaConversions.asScalaBuffer[Int](record.get("maxLevels", classOf[java.util.List[Int]])).map(_.toByte).toArray);
     });
-    println(DateTime.getCurrentDate_YYYYMMDDHHMMSS);
+    logger.info("Load occupancy data from disk, end: {} ", DateTime.getCurrentDate_YYYYMMDDHHMMSS);
     Map[String, Map[Int, Array[Byte]]](time -> OCCUPANCY_MEM_DATA);
   }
 
