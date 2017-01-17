@@ -1,6 +1,5 @@
 package com.chinawiserv.wsmp.occupancy
-package store
-package mem
+package store.mem
 
 import java.util.Date
 import java.util.concurrent.LinkedBlockingQueue
