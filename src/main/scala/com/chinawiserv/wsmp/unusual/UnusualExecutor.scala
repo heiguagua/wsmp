@@ -87,6 +87,7 @@ class UnusualExecutor(val cmds : List[Cmd], val memManager: MemManager) extends 
             doc.put("level", currentLevel);
             doc.put("dt", currentDate);
             docs.add(doc);
+            log.info("收到异动数据，基站编号: "+current.id+", 异动频率: "+currentFreq+", 能量值: "+currentLevel);
           }
         }
         mongoDB.shardCollection(mongoColNamePrefix+current.id, new Document("freq", 1));
