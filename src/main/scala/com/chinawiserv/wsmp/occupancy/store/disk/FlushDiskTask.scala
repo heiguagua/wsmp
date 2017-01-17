@@ -4,15 +4,18 @@ package store.disk
 
 import java.util
 
+import com.chinawiserv.wsmp.occupancy.model.OccupancyData
 import com.mongodb.client.model._
 import org.apache.commons.lang.StringUtils
 import org.bson.Document
 import org.slf4j.{Logger, LoggerFactory}
 
+import scala.collection.JavaConversions
+
 /**
   * Created by zengpzh on 2017/1/6.
   */
-private class FlushDiskTask(records: List[Document]) extends Runnable {
+private class FlushDiskTask(records: List[OccupancyData]) extends Runnable {
 
   private val logger: Logger = LoggerFactory.getLogger(classOf[FlushDiskTask]);
 
@@ -28,15 +31,15 @@ private class FlushDiskTask(records: List[Document]) extends Runnable {
 
 private[disk] object FlushDiskTask {
 
-  def flushRecords(records: List[Document]): Unit = {
+  def flushRecords(records: List[OccupancyData]): Unit = {
     if (records != null && !records.isEmpty) {
       try {
         val writeModels = new util.ArrayList[WriteModel[Document]]();
         var collection = "";
         records.foreach(record => {
-          val station = record.getInteger("station");
-          val time = record.getString("time");
-          val maxLevels = record.get("maxLevels", classOf[util.Collection[Short]]);
+          val station = record.id;
+          val time = record.time;
+          val maxLevels = JavaConversions.asJavaCollection[Byte](record.levels);
           if (station != null && StringUtils.isNotBlank(time) && time.length == (TIME_YEAR_LENGTH + TIME_DAY_LENGTH) && maxLevels != null) {
             if (collection.isEmpty) {
               collection = collection_prefix + time.take(TIME_YEAR_LENGTH);
