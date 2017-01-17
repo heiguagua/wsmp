@@ -112,6 +112,18 @@ class UnusualExecutor(val cmds : List[Cmd], val memManager: MemManager) extends 
     */
   def countByColName(colName: String): Int = {
     val pipeline: util.List[Bson] = new util.ArrayList[Bson];
+    pipeline.add(Aggregates.group(new Document("_id", "$freq")))
+    val list: util.List[Document] = mongoDB.mc.aggregate(mongoDB.dbName, colName, pipeline)
+    if (list != null && !list.isEmpty) {
+      list.size();
+    }
+    else {
+      0;
+    }
+  }
+
+  def countByColName_BAK(colName: String): Int = {
+    val pipeline: util.List[Bson] = new util.ArrayList[Bson];
     pipeline.add(Aggregates.group(null, new BsonField("count", new Document("$sum", 1))))
     pipeline.add(Aggregates.project(new Document("_id", 0)))
     val list: util.List[Document] = mongoDB.mc.aggregate(mongoDB.dbName, colName, pipeline)
@@ -122,5 +134,8 @@ class UnusualExecutor(val cmds : List[Cmd], val memManager: MemManager) extends 
       0;
     }
   }
+
+
+
 
 }
