@@ -12,7 +12,7 @@ import scala.collection.mutable.Map
   */
 package object occupancy {
 
-  private val logger: Logger = LoggerFactory.getLogger(occupancy.getClass);
+  private val logger: Logger = LoggerFactory.getLogger(classOf[Occupancy]);
 
   private[occupancy] val TIME_FORMAT = "yyyyMMdd";
 
