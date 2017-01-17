@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import scala.collection.JavaConversions._;
 
-//@Component
+@Component
 class Unusual extends DataHandler with  InitializingBean{
   private val log = LoggerFactory.getLogger(classOf[Unusual]);
 
