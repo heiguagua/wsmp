@@ -19,12 +19,15 @@ public class WSMPHbaseConfiguration implements InitializingBean {
 			@Value("${hbase.zookeeper.quorum}")
 			String hbaseIp,
 			@Value("${hbase.zookeeper.property.clientPort}")
-			String hbasePort) throws FileNotFoundException, URISyntaxException {
+			String hbasePort,
+			@Value("${hbase.zookeeper.znode.parent}")
+			String znodeParent) throws FileNotFoundException, URISyntaxException {
 
 		System.setProperty("hadoop.home.dir", Paths.get(ResourceUtils.getURL("Hadoop").toURI()).toString());
 		final Configuration configuration = HBaseConfiguration.create();
 		configuration.set("hbase.zookeeper.quorum", hbaseIp);
 		configuration.set("hbase.zookeeper.property.clientPort", hbasePort);
+		configuration.set("zookeeper.znode.parent", znodeParent);
 		
 		return configuration;
 	}
