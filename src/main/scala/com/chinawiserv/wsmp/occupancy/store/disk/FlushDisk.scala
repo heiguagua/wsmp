@@ -18,7 +18,7 @@ private class FlushDisk extends Thread("Occupancy-Flush-Disk") {
   override def run() {
     while (!Thread.currentThread().isInterrupted) {
       try {
-        FlushDisk.flush(FlushDisk.flushDiskQueue.take);
+        FlushDisk.flush;
       } catch {
         case e: Exception => Thread.currentThread().interrupt();
       }
@@ -33,7 +33,7 @@ private[occupancy] object FlushDisk {
 
   private val flushDiskQueue = new LinkedBlockingQueue[List[OccupancyData]]();
 
-  private val FLUSH_DISK_CONCURRENT_NUM: Int = 1;
+  private val FLUSH_DISK_CONCURRENT_NUM: Int = 3;
 
   private val flushDiskExecutorService = ThreadPool.newThreadPool(FLUSH_DISK_CONCURRENT_NUM, new CustomThreadFactory("Occupancy-Flush-Disk-Executor-"));
 
@@ -45,23 +45,20 @@ private[occupancy] object FlushDisk {
     }
   }
 
-  private def flush(occupancyDatas: List[OccupancyData]): Unit = {
+  private def flush: Unit = {
     logger.info("Occupancy flush DISK, queued: {} ", flushDiskQueue.size);
-    this.start(this.slice(occupancyDatas));
+    this.start(this.convert2Document(FlushDisk.flushDiskQueue.take));
   }
 
-  private def start(shards: (List[List[Document]])): Unit = {
-    shards.foreach(shard => {
-      FlushDisk.flushDiskExecutorService.execute(new FlushDiskTask(shard));
-    });
+  private def start(records: List[Document]): Unit = {
+    FlushDisk.flushDiskExecutorService.execute(new FlushDiskTask(records));
   }
 
-  private def slice(occupancyDatas: List[OccupancyData]): List[List[Document]] = {
+  private def convert2Document(occupancyDatas: List[OccupancyData]): List[Document] = {
     if (occupancyDatas != null) {
-      val records = occupancyDatas.map(occupancyData => {
+      occupancyDatas.map(occupancyData => {
         new Document("station", occupancyData.id).append("time", occupancyData.time).append("maxLevels", JavaConversions.asJavaCollection[Byte](occupancyData.levels));
       });
-      records.sliding(SHARD_SIZE, SHARD_SIZE).toList;
     } else {
       null;
     }
