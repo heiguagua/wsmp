@@ -38,12 +38,9 @@ private[occupancy] object FlushMem {
     logger.info("Occupancy flush MEM, queued: {} ", flushMemQueue.size);
     val now = System.currentTimeMillis();
     val occupancyDatas = new ArrayBuffer[OccupancyData]();
-    if(flushMemQueue.size == 0){
+    do{
       occupancyDatas ++= flushMemQueue.take;
-    }
-    while(flushMemQueue.size > 0 && occupancyDatas.length < SHARD_SIZE){
-      occupancyDatas ++= flushMemQueue.take;
-    }
+    }while(flushMemQueue.size > 0 && occupancyDatas.length < SHARD_SIZE)
     val occupancyDatasMap = Map[String, ListBuffer[OccupancyData]]();
     val isTimeSame = this.checkTime(occupancyDatas.toList);
     if (isTimeSame) {
