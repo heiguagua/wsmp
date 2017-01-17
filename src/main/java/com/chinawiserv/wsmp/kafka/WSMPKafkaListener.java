@@ -21,6 +21,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+// kafka-topics.sh --zookeeper slave6.dom:2181,slave7.dom:2181,slave8.dom:2181 --create --topic wsmp --replication-factor 1 --partitions 9
+// kafka-topics.sh --zookeeper slave6.dom:2181,slave7.dom:2181,slave8.dom:2181 --delete --topic wsmp
+// kafka-topics.sh --zookeeper slave6.dom:2181,slave7.dom:2181,slave8.dom:2181 --list
+// kafka-topics.sh --zookeeper slave6.dom:2181,slave7.dom:2181,slave8.dom:2181 --describe wsmp
+// kafka-console-consumer.sh --zookeeper slave6.dom:2181,slave7.dom:2181,slave8.dom:2181 --topic wsmp --from-beginning
 @Component
 public class WSMPKafkaListener{
 	

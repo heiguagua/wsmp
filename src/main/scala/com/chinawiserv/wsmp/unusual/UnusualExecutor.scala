@@ -18,14 +18,12 @@ class UnusualExecutor(val cmds : List[Cmd], val memManager: MemManager) extends 
 
   override def run(): Unit = {
     if (cmds != null && cmds.length > 0) {
-      val now = System.currentTimeMillis();
       mongoDB.shardCollection(mongoColNamePrefix+"Levels", new Document("id", 1));
       cmds.foreach(cmd => {
         val current = Operator.toMem(cmd);
         val history = this.readAndSaveData(cmd);
         this.computeUnusual(current, history);
       });
-      log.info("UnusualExecutor执行时间：{} {}", (System.currentTimeMillis() - now), "" );
     }
   }
 
