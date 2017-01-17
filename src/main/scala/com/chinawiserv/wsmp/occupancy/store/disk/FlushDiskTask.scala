@@ -40,7 +40,7 @@ private[disk] object FlushDiskTask {
           val station = record.id;
           val time = record.time;
           val maxLevels = JavaConversions.asJavaCollection[Byte](record.levels);
-          if (station != null && StringUtils.isNotBlank(time) && time.length == (TIME_YEAR_LENGTH + TIME_DAY_LENGTH) && maxLevels != null) {
+          if (StringUtils.isNotBlank(time) && time.length == (TIME_YEAR_LENGTH + TIME_DAY_LENGTH) && maxLevels != null) {
             if (collection.isEmpty) {
               collection = collection_prefix + time.take(TIME_YEAR_LENGTH);
             }
