@@ -13,7 +13,7 @@ import scala.collection.JavaConversions
 /**
   * Created by zengpzh on 2017/1/6.
   */
-private class FlushDisk extends Thread("Occupancy-Flush-Disk") {
+private class FlushDisk extends Runnable {
 
   override def run() {
     while (!Thread.currentThread().isInterrupted) {
@@ -33,11 +33,11 @@ private[occupancy] object FlushDisk {
 
   private val flushDiskQueue = new LinkedBlockingQueue[List[OccupancyData]]();
 
-  private val FLUSH_DISK_CONCURRENT_NUM: Int = 3;
+  private val FLUSH_DISK_CONCURRENT_NUM: Int = 5;
 
   private val flushDiskExecutorService = ThreadPool.newThreadPool(FLUSH_DISK_CONCURRENT_NUM, new CustomThreadFactory("Occupancy-Flush-Disk-Executor-"));
 
-  new FlushDisk().start;
+  flushDiskExecutorService.execute(new FlushDisk());
 
   def offer(occupancyDatas: List[OccupancyData]): Unit ={
     if(occupancyDatas != null && !occupancyDatas.isEmpty){
@@ -51,7 +51,7 @@ private[occupancy] object FlushDisk {
   }
 
   private def start(records: List[Document]): Unit = {
-    FlushDisk.flushDiskExecutorService.execute(new FlushDiskTask(records));
+    flushDiskExecutorService.execute(new FlushDiskTask(records));
   }
 
   private def convert2Document(occupancyDatas: List[OccupancyData]): List[Document] = {
