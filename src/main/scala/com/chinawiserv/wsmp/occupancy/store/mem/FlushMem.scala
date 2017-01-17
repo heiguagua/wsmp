@@ -35,7 +35,6 @@ private[occupancy] object FlushMem {
   }
 
   private[mem] def flush: Unit = {
-    logger.info("Occupancy flush MEM, queued: {} ", flushMemQueue.size);
     val now = System.currentTimeMillis();
     val occupancyDatas = new ArrayBuffer[OccupancyData]();
     do{
@@ -58,7 +57,6 @@ private[occupancy] object FlushMem {
     for((_, occupancyDatas) <- occupancyDatasMap){
       FlushDisk.offer(occupancyDatas.toList);
     }
-    logger.info("Occupancy flush MEM, execute time : {} {}", System.currentTimeMillis() - now, "MS");
   }
 
   private def doFlush(time: String, occupancyData: OccupancyData, occupancyDatasMap: Map[String, ListBuffer[OccupancyData]]): Unit = {

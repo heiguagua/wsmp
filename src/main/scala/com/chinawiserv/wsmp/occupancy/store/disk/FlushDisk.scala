@@ -37,13 +37,11 @@ private[occupancy] object FlushDisk {
   }
 
   private[disk] def flush: Unit = {
-    logger.info("Occupancy flush DISK, queued: {} ", flushDiskQueue.size);
     val records = flushDiskQueue.take;
     flushDiskExecutorService.execute(new Runnable {
       override def run(): Unit = {
         val now = System.currentTimeMillis();
         doFlush(records);
-        logger.info("Occupancy flush DISK, execute time: {} {}", System.currentTimeMillis() - now, "MS");
       }
     })
   }
