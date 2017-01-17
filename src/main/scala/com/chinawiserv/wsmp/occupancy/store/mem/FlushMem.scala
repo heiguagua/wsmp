@@ -22,9 +22,9 @@ private[occupancy] object FlushMem {
 
   private val logger: Logger = LoggerFactory.getLogger(FlushMem.getClass);
 
-  private val flushMemExecutorService = ThreadPool.newThreadPool(1, new CustomThreadFactory("Occupancy-Flush-Mem-Executor-"));
-
   private val flushMemQueue = new LinkedBlockingQueue[List[OccupancyData]]();
+
+  private val flushMemExecutorService = ThreadPool.newThreadPool(1, new CustomThreadFactory("Occupancy-Flush-Mem-Executor-"));
 
   flushMemExecutorService.execute(new FlushMemTask());
 
