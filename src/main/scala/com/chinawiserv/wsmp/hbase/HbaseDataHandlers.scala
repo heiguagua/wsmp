@@ -3,6 +3,7 @@ package com.chinawiserv.wsmp.hbase
 import java.util.UUID
 
 import com.chinawiserv.model.Cmd
+import com.chinawiserv.util.FstUtil
 import com.chinawiserv.wsmp.handler.DataHandler
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.hbase.{HColumnDescriptor, HTableDescriptor, TableName}
@@ -20,7 +21,7 @@ import scala.collection.mutable.ArrayBuffer
 /**
   * Created by chinawiserv-0006 on 2017/1/11.
   */
-//@Component
+@Component
 class HbaseDataHandlers extends DataHandler with InitializingBean {
 
   val logger: Logger = LoggerFactory.getLogger(this.getClass)
@@ -50,7 +51,7 @@ class HbaseDataHandlers extends DataHandler with InitializingBean {
   @Async
   override def compute(cmds: java.util.List[Cmd]): Unit = {
 
-    AutoClose.using(this.connection.getTable(TableName.valueOf("TestRadio")), (table: Table) => {
+    AutoClose.using(this.connection.getTable(TableName.valueOf(hbaseTableName)), (table: Table) => {
       table.put(
         cmds.map(cmd => {
           val uuid = UUID.randomUUID().toString;
@@ -75,12 +76,14 @@ class HbaseDataHandlers extends DataHandler with InitializingBean {
     obj match {
       case obj: String => toBytes(obj)
       case obj: Long => toBytes(obj)
+      case obj: Double => toBytes(obj)
+      case obj: Float => toBytes(obj)
       case obj: Short => toBytes(obj)
       case obj: Int => toBytes(obj)
       case obj: ArrayBuffer[_] => toBytes(obj.addString(new StringBuilder, ",").toString)
+      case obj => FstUtil.fst.asByteArray(obj);
     }
   }
-
 
   def newConnection() = ConnectionFactory.createConnection(configuration);
 
