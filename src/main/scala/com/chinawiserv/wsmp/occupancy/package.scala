@@ -29,22 +29,27 @@ package object occupancy {
   private[occupancy] val OCCUPANCY_MEM = load;
 
   private def load: Map[String, Map[Int, Array[Byte]]] = {
-    logger.info("Load occupancy data from disk, start: {} ", DateTime.getCurrentDate_YYYYMMDDHHMMSS);
-    val OCCUPANCY_MEM_DATA = Map[Int, Array[Byte]]();
-    val time = DateTime.getCurrentDate_YYYYMMDDWithOutSeparator;
-    val year = time.take(TIME_YEAR_LENGTH);
-    val daytime = time.takeRight(TIME_DAY_LENGTH);
-    val collection = collection_prefix + year;
-    val filter = Filters.eq("time", daytime);
-    mongoDB.shardCollection(collection, new Document("station", 1));
-    val records = JavaConversions.asScalaBuffer(mongoDB.mc.find(mongoDB.dbName, collection, filter, null)).toArray;
-    records.foreach(record => {
-      val station = record.getInteger("station").toInt;
-      OCCUPANCY_MEM_DATA += (station ->
-        JavaConversions.asScalaBuffer[Int](record.get("maxLevels", classOf[java.util.List[Int]])).map(_.toByte).toArray);
-    });
-    logger.info("Load occupancy data from disk, end: {} ", DateTime.getCurrentDate_YYYYMMDDHHMMSS);
-    Map[String, Map[Int, Array[Byte]]](time -> OCCUPANCY_MEM_DATA);
+    try {
+      logger.info("Load occupancy data from disk, start: {} ", DateTime.getCurrentDate_YYYYMMDDHHMMSS);
+      val OCCUPANCY_MEM_DATA = Map[Int, Array[Byte]]();
+      val time = DateTime.getCurrentDate_YYYYMMDDWithOutSeparator;
+      val year = time.take(TIME_YEAR_LENGTH);
+      val daytime = time.takeRight(TIME_DAY_LENGTH);
+      val collection = collection_prefix + year;
+      val filter = Filters.eq("time", daytime);
+      mongoDB.shardCollection(collection, new Document("station", 1));
+      val records = JavaConversions.asScalaBuffer(mongoDB.mc.find(mongoDB.dbName, collection, filter, null)).toArray;
+      records.foreach(record => {
+        val station = record.getInteger("station").toInt;
+        OCCUPANCY_MEM_DATA += (station ->
+          JavaConversions.asScalaBuffer[Int](record.get("maxLevels", classOf[java.util.List[Int]])).map(_.toByte).toArray);
+      });
+      logger.info("Load occupancy data from disk, end: {} ", DateTime.getCurrentDate_YYYYMMDDHHMMSS);
+      Map[String, Map[Int, Array[Byte]]](time -> OCCUPANCY_MEM_DATA);
+    }
+    catch {
+      case e: Exception => Map[String, Map[Int, Array[Byte]]]();
+    }
   }
 
 }
