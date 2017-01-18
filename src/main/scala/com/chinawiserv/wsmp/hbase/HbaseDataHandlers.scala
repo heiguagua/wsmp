@@ -6,21 +6,25 @@ import com.chinawiserv.model.Cmd
 import com.chinawiserv.util.FstUtil
 import com.chinawiserv.wsmp.handler.DataHandler
 import org.apache.hadoop.conf.Configuration
-import org.apache.hadoop.hbase.client.{Admin, ConnectionFactory, Put, Table}
+import org.apache.hadoop.hbase.client.{ Admin, ConnectionFactory, Put, Table }
 import org.apache.hadoop.hbase.util.Bytes._
-import org.apache.hadoop.hbase.{HColumnDescriptor, HTableDescriptor, TableName}
-import org.slf4j.{Logger, LoggerFactory}
+import org.apache.hadoop.hbase.{ HColumnDescriptor, HTableDescriptor, TableName }
+import org.slf4j.{ Logger, LoggerFactory }
 import org.springframework.beans.factory.InitializingBean
-import org.springframework.beans.factory.annotation.{Autowired, Value}
+import org.springframework.beans.factory.annotation.{ Autowired, Value }
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Component
 
 import scala.collection.JavaConversions._
 import scala.collection.mutable.ArrayBuffer
+import org.apache.hadoop.hbase.client.BufferedMutatorParams
+import org.apache.hadoop.hbase.client.Durability
+import com.chinawiserv.wsmp.hbase.AutoClose._
+import org.apache.hadoop.hbase.client.BufferedMutator
 
 /**
-  * Created by chinawiserv-0006 on 2017/1/11.
-  */
+ * Created by chinawiserv-0006 on 2017/1/11.
+ */
 @Component
 class HbaseDataHandlers extends DataHandler with InitializingBean {
 
@@ -36,7 +40,7 @@ class HbaseDataHandlers extends DataHandler with InitializingBean {
 
   override def afterPropertiesSet(): Unit = {
 
-    AutoClose.using(this.connection.getAdmin, (admin: Admin) => {
+    using(this.connection.getAdmin, (admin: Admin) => {
       val tableName = TableName.valueOf(hbaseTableName);
       if (!admin.tableExists(tableName)) {
         logger.info("Hbase table {} not exists, now will create it", this.hbaseTableName)
@@ -51,30 +55,38 @@ class HbaseDataHandlers extends DataHandler with InitializingBean {
   @Async
   override def compute(cmds: java.util.List[Cmd]): Unit = {
 
-    AutoClose.using(this.connection.getTable(TableName.valueOf(hbaseTableName)), (table: Table) => {
-      table.setWriteBufferSize(1024*1024*1024);
-      table.put(
-        cmds.map(cmd => {
+    val tableName = TableName.valueOf(hbaseTableName);
+    using(this.connection.getTable(tableName), (table: Table) => {
+
+      val params = new BufferedMutatorParams(tableName).writeBufferSize(1024 * 1024 * 1024);
+      
+      using(connection.getBufferedMutator(params), (mutator: BufferedMutator) => {
+      
+        mutator.mutate(cmds.map(cmd => {
+          
           val uuid = UUID.randomUUID().toString;
           val rowid = toBytes(uuid);
           val put = new Put(rowid);
           val family = toBytes("default");
+          
           cmd.getClass.getDeclaredFields.foreach(field => {
+            
             field.setAccessible(true);
             val qualifier = toBytes(field.getName);
             val value = getBytes(field.get(cmd));
             put.addColumn(family, qualifier, value);
-            put.setWriteToWAL(false);
+            put.setDurability(Durability.SKIP_WAL)
           });
           put;
-        }
-        )
-      )
+        }));
+        mutator.flush();
+      })
     });
 
   }
 
   def getBytes[T](obj: T): Array[Byte] = {
+
     obj match {
       case obj: String => toBytes(obj)
       case obj: Long => toBytes(obj)
