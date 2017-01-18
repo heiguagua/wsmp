@@ -21,6 +21,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+// kafka-topics.sh --zookeeper slave6.dom:2181,slave7.dom:2181,slave8.dom:2181 --create --topic wsmp --replication-factor 1 --partitions 9
+// kafka-topics.sh --zookeeper slave6.dom:2181,slave7.dom:2181,slave8.dom:2181 --delete --topic wsmp
+// kafka-topics.sh --zookeeper slave6.dom:2181,slave7.dom:2181,slave8.dom:2181 --list
+// kafka-topics.sh --zookeeper slave6.dom:2181,slave7.dom:2181,slave8.dom:2181 --describe wsmp
+// kafka-console-consumer.sh --zookeeper slave6.dom:2181,slave7.dom:2181,slave8.dom:2181 --topic wsmp --from-beginning
 @Component
 public class WSMPKafkaListener{
 	
@@ -34,14 +39,10 @@ public class WSMPKafkaListener{
 
     private static int packSize = 286538;
 
-	/**
-	 * @param record
-	 */
 	@KafkaListener(topics = "${kafka.consumer.topic}", group = "1")
 	public void onMessage(ConsumerRecord<String, Cmd> record) {
 	}
 
-	@SuppressWarnings("unchecked")
 	@Async
 	public <K, V> void distribute(ConsumerRecords<K, V> records, int count){
         dataFlow.inc(count);
@@ -59,6 +60,7 @@ public class WSMPKafkaListener{
         showDataFlow();
     }
 
+	@SuppressWarnings("Unchecked")
 	public static <K, V>  void onMessages(ConsumerRecords<K, V> records, int count) {
 
         final WSMPKafkaListener listener =  SpringContextManager.getBean( WSMPKafkaListener.class );

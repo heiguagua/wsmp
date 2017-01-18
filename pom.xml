@@ -20,7 +20,7 @@
         <encoding>UTF-8</encoding>
         <java.version>1.8</java.version>
         <scala.version>2.10.4</scala.version>
-        <hbase.version>1.0.0-cdh5.5.1</hbase.version>
+        <hbase.version>1.1.2</hbase.version>
         <start-class>com.chinawiserv.wsmp.WsmpBooter</start-class>
     </properties>
 
@@ -138,8 +138,8 @@
     </dependencies>
 
     <build>
-        <finalName>wsmp</finalName>
-        <defaultGoal>clean scala:compile</defaultGoal>
+        <finalName>wsmp-dae-deepone</finalName>
+        <defaultGoal>clean scala:compile compile package</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.scala-tools</groupId>
@@ -162,11 +162,6 @@
                         <goals>
                             <goal>testCompile</goal>
                         </goals>
-                        <configuration>
-                            <includes>
-                                <include>**/*.scala</include>
-                            </includes>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>

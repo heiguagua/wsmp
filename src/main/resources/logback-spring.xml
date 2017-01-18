@@ -5,8 +5,8 @@
     <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
     <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter" />
 
-    <property name="CONSOLE_LOG_PATTERN" value="[%thread-%d{HH:mm:ss}-%highlight(%-5level)] %msg %n %cyan(%caller{1})"/>
-    <property name="FILE_LOG_PATTERN" value="[%thread-%d{HH:mm:ss}-%highlight(%-5level)] %msg %n %cyan(%caller{1})"/>
+    <property name="CONSOLE_LOG_PATTERN" value="[%thread-%d{HH:mm:ss}-%highlight(%-5level)] %msg %n"/>
+    <property name="FILE_LOG_PATTERN" value="[%thread-%d{HH:mm:ss}-%highlight(%-5level)] %msg %n"/>
 
     <property name="LOG_FILE" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}/}kapac-configuration.log}"/>
     <appender name="DEBUG_LEVEL_REMAPPER" class="org.springframework.boot.logging.logback.LevelRemappingAppender">

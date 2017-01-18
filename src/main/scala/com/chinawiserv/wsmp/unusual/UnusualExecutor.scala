@@ -18,14 +18,12 @@ class UnusualExecutor(val cmds : List[Cmd], val memManager: MemManager) extends 
 
   override def run(): Unit = {
     if (cmds != null && cmds.length > 0) {
-      val now = System.currentTimeMillis();
       mongoDB.shardCollection(mongoColNamePrefix+"Levels", new Document("id", 1));
       cmds.foreach(cmd => {
         val current = Operator.toMem(cmd);
         val history = this.readAndSaveData(cmd);
         this.computeUnusual(current, history);
       });
-      log.info("UnusualExecutor执行时间：{} {}", (System.currentTimeMillis() - now), "" );
     }
   }
 
@@ -89,6 +87,7 @@ class UnusualExecutor(val cmds : List[Cmd], val memManager: MemManager) extends 
             doc.put("level", currentLevel);
             doc.put("dt", currentDate);
             docs.add(doc);
+            log.info("收到异动数据，基站编号: "+current.id+", 异动频率: "+currentFreq+", 能量值: "+currentLevel);
           }
         }
         mongoDB.shardCollection(mongoColNamePrefix+current.id, new Document("freq", 1));
@@ -114,6 +113,18 @@ class UnusualExecutor(val cmds : List[Cmd], val memManager: MemManager) extends 
     */
   def countByColName(colName: String): Int = {
     val pipeline: util.List[Bson] = new util.ArrayList[Bson];
+    pipeline.add(Aggregates.group(new Document("_id", "$freq")))
+    val list: util.List[Document] = mongoDB.mc.aggregate(mongoDB.dbName, colName, pipeline)
+    if (list != null && !list.isEmpty) {
+      list.size();
+    }
+    else {
+      0;
+    }
+  }
+
+  def countByColName_BAK(colName: String): Int = {
+    val pipeline: util.List[Bson] = new util.ArrayList[Bson];
     pipeline.add(Aggregates.group(null, new BsonField("count", new Document("$sum", 1))))
     pipeline.add(Aggregates.project(new Document("_id", 0)))
     val list: util.List[Document] = mongoDB.mc.aggregate(mongoDB.dbName, colName, pipeline)
@@ -124,5 +135,8 @@ class UnusualExecutor(val cmds : List[Cmd], val memManager: MemManager) extends 
       0;
     }
   }
+
+
+
 
 }

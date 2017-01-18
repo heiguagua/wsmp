@@ -1,6 +1,5 @@
 package com.chinawiserv.wsmp.occupancy
-package store
-package mem
+package store.mem
 
 import java.util.Date
 import java.util.concurrent.LinkedBlockingQueue
@@ -22,9 +21,9 @@ private[occupancy] object FlushMem {
 
   private val logger: Logger = LoggerFactory.getLogger(FlushMem.getClass);
 
-  private val flushMemExecutorService = ThreadPool.newThreadPool(1, new CustomThreadFactory("Occupancy-Flush-Mem-Executor-"));
-
   private val flushMemQueue = new LinkedBlockingQueue[List[OccupancyData]]();
+
+  private val flushMemExecutorService = ThreadPool.newThreadPool(1, new CustomThreadFactory("Occupancy-Flush-Mem-Executor-"));
 
   flushMemExecutorService.execute(new FlushMemTask());
 
@@ -39,12 +38,9 @@ private[occupancy] object FlushMem {
     logger.info("Occupancy flush MEM, queued: {} ", flushMemQueue.size);
     val now = System.currentTimeMillis();
     val occupancyDatas = new ArrayBuffer[OccupancyData]();
-    if(flushMemQueue.size == 0){
+    do{
       occupancyDatas ++= flushMemQueue.take;
-    }
-    while(flushMemQueue.size > 0 && occupancyDatas.length < SHARD_SIZE){
-      occupancyDatas ++= flushMemQueue.take;
-    }
+    }while(flushMemQueue.size > 0 && occupancyDatas.length < SHARD_SIZE)
     val occupancyDatasMap = Map[String, ListBuffer[OccupancyData]]();
     val isTimeSame = this.checkTime(occupancyDatas.toList);
     if (isTimeSame) {
