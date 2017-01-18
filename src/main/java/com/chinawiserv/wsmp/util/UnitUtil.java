@@ -25,7 +25,7 @@ public class UnitUtil {
 
     static {
         if (unitList == null) {
-            unitList = new ArrayList<String>();
+            unitList = new ArrayList<>();
             unitList.add(BYTE);
             unitList.add(KB);
             unitList.add(MB);

@@ -1,15 +1,15 @@
 package com.chinawiserv.wsmp.configuration;
 
-import java.io.FileNotFoundException;
-import java.net.URISyntaxException;
-import java.nio.file.Paths;
-
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.util.ResourceUtils;
+
+import java.io.FileNotFoundException;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
 
 @org.springframework.context.annotation.Configuration
 public class WSMPHbaseConfiguration implements InitializingBean {

@@ -12,7 +12,9 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class DataFlow implements Serializable {
 
-    private double avgVal;
+	private static final long serialVersionUID = 6097765622351566409L;
+	
+	private double avgVal;
     private AtomicInteger drc;
     private AtomicLong totalVal;
     private ConcurrentHashMap<String, Integer> map;
@@ -28,9 +30,10 @@ public class DataFlow implements Serializable {
         this.avgVal = 0.0;
         this.drc = new AtomicInteger(0);
         this.totalVal = new AtomicLong(0);
-        this.map = new ConcurrentHashMap<String, Integer>(10);
-        this.scheduler =  Executors.newScheduledThreadPool(1);
-        this.scheduler.scheduleAtFixedRate(new StatisticsRunnable(), 1, 1, TimeUnit.SECONDS);
+        this.map = new ConcurrentHashMap<>(10);
+       
+        scheduler =  Executors.newScheduledThreadPool(1);
+        scheduler.scheduleAtFixedRate(new StatisticsRunnable(), 1, 1, TimeUnit.SECONDS);
     }
 
     public long inc() {
@@ -64,7 +67,11 @@ public class DataFlow implements Serializable {
     }
 
     private class StatisticsRunnable implements Runnable, Serializable {
-        public void run() {
+        
+		private static final long serialVersionUID = 8467907654825997931L;
+
+		@Override
+		public void run() {
             statistics();
         }
     }

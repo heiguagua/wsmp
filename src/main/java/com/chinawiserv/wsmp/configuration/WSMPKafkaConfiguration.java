@@ -45,7 +45,6 @@ public class WSMPKafkaConfiguration {
             @Value("${kafka.consumer.bootstrap.servers}") String servers,
             @Value("${kafka.consumer.enable.auto.commit}") boolean autoComit,
             @Value("${kafka.consumer.group.id}") String groupId,
-            @Value("${kafka.consumer.client.id}") String clientId,
             @Value("${kafka.consumer.receive.buffer.bytes}") String buffSize,
             @Value("${kafka.consumer.max.partition.fetch.bytes}") String fetchSize
     ) {

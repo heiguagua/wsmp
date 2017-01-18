@@ -16,14 +16,14 @@ package com.chinawiserv.wsmp.configuration;
  * limitations under the License.
  */
 
-import java.util.Collection;
-
 import org.springframework.kafka.config.AbstractKafkaListenerContainerFactory;
 import org.springframework.kafka.config.KafkaListenerContainerFactory;
 import org.springframework.kafka.config.KafkaListenerEndpoint;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.listener.config.ContainerProperties;
 import org.springframework.kafka.support.TopicPartitionInitialOffset;
+
+import java.util.Collection;
 
 /**
  * A {@link KafkaListenerContainerFactory} implementation to build a
@@ -60,19 +60,15 @@ public class WSMPConcurrentKafkaListenerContainerFactory<K, V>
 		if (!topicPartitions.isEmpty()) {
 			ContainerProperties properties = new ContainerProperties(
 					topicPartitions.toArray(new TopicPartitionInitialOffset[topicPartitions.size()]));
-			return new WSMPConcurrentMessageListenerContainer<K, V>(getConsumerFactory(), properties);
+			return new WSMPConcurrentMessageListenerContainer<>(getConsumerFactory(), properties);
 		}
-		else {
-			Collection<String> topics = endpoint.getTopics();
-			if (!topics.isEmpty()) {
-				ContainerProperties properties = new ContainerProperties(topics.toArray(new String[topics.size()]));
-				return new WSMPConcurrentMessageListenerContainer<K, V>(getConsumerFactory(), properties);
-			}
-			else {
-				ContainerProperties properties = new ContainerProperties(endpoint.getTopicPattern());
-				return new WSMPConcurrentMessageListenerContainer<K, V>(getConsumerFactory(), properties);
-			}
+		Collection<String> topics = endpoint.getTopics();
+		if (!topics.isEmpty()) {
+			ContainerProperties properties = new ContainerProperties(topics.toArray(new String[topics.size()]));
+			return new WSMPConcurrentMessageListenerContainer<>(getConsumerFactory(), properties);
 		}
+		ContainerProperties properties = new ContainerProperties(endpoint.getTopicPattern());
+		return new WSMPConcurrentMessageListenerContainer<>(getConsumerFactory(), properties);
 	}
 
 	@Override

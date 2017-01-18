@@ -120,23 +120,19 @@ public class WSMPConcurrentMessageListenerContainer<K, V> extends AbstractMessag
 		if (this.concurrency == 1) {
 			return topicPartitions;
 		}
-		else {
-			int numPartitions = topicPartitions.length;
-			if (numPartitions == this.concurrency) {
-				return new TopicPartitionInitialOffset[] { topicPartitions[i] };
-			}
-			else {
-				int perContainer = numPartitions / this.concurrency;
-				TopicPartitionInitialOffset[] subset;
-				if (i == this.concurrency - 1) {
-					subset = Arrays.copyOfRange(topicPartitions, i * perContainer, topicPartitions.length);
-				}
-				else {
-					subset = Arrays.copyOfRange(topicPartitions, i * perContainer, (i + 1) * perContainer);
-				}
-				return subset;
-			}
+		int numPartitions = topicPartitions.length;
+		if (numPartitions == this.concurrency) {
+			return new TopicPartitionInitialOffset[] { topicPartitions[i] };
 		}
+		int perContainer = numPartitions / this.concurrency;
+		TopicPartitionInitialOffset[] subset;
+		if (i == this.concurrency - 1) {
+			subset = Arrays.copyOfRange(topicPartitions, i * perContainer, topicPartitions.length);
+		}
+		else {
+			subset = Arrays.copyOfRange(topicPartitions, i * perContainer, (i + 1) * perContainer);
+		}
+		return subset;
 	}
 
 	/*

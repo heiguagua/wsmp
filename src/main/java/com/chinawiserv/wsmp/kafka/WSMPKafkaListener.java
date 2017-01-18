@@ -34,10 +34,14 @@ public class WSMPKafkaListener{
 
     private static int packSize = 286538;
 
+	/**
+	 * @param record
+	 */
 	@KafkaListener(topics = "${kafka.consumer.topic}", group = "1")
 	public void onMessage(ConsumerRecord<String, Cmd> record) {
 	}
 
+	@SuppressWarnings("unchecked")
 	@Async
 	public <K, V> void distribute(ConsumerRecords<K, V> records, int count){
         dataFlow.inc(count);
@@ -55,7 +59,6 @@ public class WSMPKafkaListener{
         showDataFlow();
     }
 
-	@SuppressWarnings("Unchecked")
 	public static <K, V>  void onMessages(ConsumerRecords<K, V> records, int count) {
 
         final WSMPKafkaListener listener =  SpringContextManager.getBean( WSMPKafkaListener.class );

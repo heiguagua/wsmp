@@ -21,8 +21,8 @@ public class SpringContextManager {
         return applicationContext.getBean(clazz);
     }
 
-    @SuppressWarnings("Unchecked")
-    public static <T> T getBean(String name){
+    @SuppressWarnings("unchecked")
+	public static <T> T getBean(String name){
         return (T)applicationContext.getBean(name);
     }
 

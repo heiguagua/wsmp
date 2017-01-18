@@ -49,7 +49,7 @@ public class DateTime {
 		}
 		try {
 			SimpleDateFormat formatter = new SimpleDateFormat(datetimeFormat);  
-			parsedDate = (Date)formatter.parse(datetimeStr);  
+			parsedDate = formatter.parse(datetimeStr);  
 		}
 		catch  (Exception  e)  {  
 		}  
@@ -555,12 +555,10 @@ public class DateTime {
      * @author Allen Zhang
      */
     public static long getDays(Date dateBeg, Date dateEnd) {
-    	if (dateEnd != null && dateEnd != null) {
+    	if (dateEnd != null && dateBeg != null) {
         	return (Math.abs(dateEnd.getTime() - dateBeg.getTime()) / 24 / 3600 / 1000 );
     	}
-    	else {
-    		return 0;
-    	}
+		return 0;
     }
 
     /**
@@ -571,12 +569,10 @@ public class DateTime {
      * @author Allen Zhang
      */
     public static long getMinutes(Date dateBeg, Date dateEnd) {
-    	if (dateEnd != null && dateEnd != null) {
+    	if (dateEnd != null && dateBeg != null) {
         	return (Math.abs(dateEnd.getTime() - dateBeg.getTime()) / 60 / 1000 );
     	}
-    	else {
-    		return 0;
-    	}
+		return 0;
     }
 
     /**
@@ -587,12 +583,10 @@ public class DateTime {
      * @author Allen Zhang
      */
     public static long getSecond(Date dateBeg, Date dateEnd) {
-    	if (dateEnd != null && dateEnd != null) {
+    	if (dateEnd != null && dateBeg != null) {
         	return (Math.abs(dateEnd.getTime() - dateBeg.getTime()) / 1000 );
     	}
-    	else {
-    		return 0;
-    	}
+		return 0;
     }
     
     /**
@@ -603,11 +597,10 @@ public class DateTime {
      * @author Allen Zhang
      */
     public static long getMilliSecond(Date dateBeg, Date dateEnd) {
-    	if (dateEnd != null && dateEnd != null) {
+    	if (dateEnd != null && dateBeg != null) {
     	    return Math.abs(dateEnd.getTime() - dateBeg.getTime());
-    	}else {
-    	    return 0;
     	}
+		return 0;
     }
     
     /**
@@ -634,12 +627,10 @@ public class DateTime {
      * @author Allen Zhang
      */
     public static long getMinutes_No_abs(Date dateBeg, Date dateEnd) {
-    	if (dateEnd != null && dateEnd != null) {
+    	if (dateEnd != null && dateBeg != null) {
         	return ((dateEnd.getTime() - dateBeg.getTime()) / 60 / 1000 );
     	}
-    	else {
-    		return 0;
-    	}
+		return 0;
     }
     
     /**
@@ -650,7 +641,7 @@ public class DateTime {
      * @author AllenZhang
      */
     public static synchronized ArrayList<String> listDays(Date dateBeg, Date dateEnd) {
-    	ArrayList<String> listday = new ArrayList<String>();
+    	ArrayList<String> listday = new ArrayList<>();
     	if (dateBeg != null && dateEnd != null) {
         	long days = getDays(dateBeg, dateEnd);
         	if (days > 0) {
@@ -692,7 +683,8 @@ public class DateTime {
 	 * @return 时间差（X天X小时X分）
 	 */
 	public static String dateDiff(Date beginDate, Date endDate) {
-		if (beginDate != null && endDate != null && beginDate instanceof Date && endDate instanceof Date) {
+		
+		if (beginDate != null && endDate != null) {
 			long diffMS = endDate.getTime() - beginDate.getTime();//毫秒差
 			long diffS = diffMS / 1000; //秒差
 			long diffD = diffS / 86400; //天数
@@ -702,12 +694,8 @@ public class DateTime {
 			if (diffD > 0) {
 				return diffD + "天" + diffH + "小时" + diffM + "分";
 			}
-			else {
-				return diffH + "小时" + diffM + "分" + diffS + "秒";
-			}
+			return diffH + "小时" + diffM + "分" + diffS + "秒";
 		}
-		else {
-			return "";
-		}
+		return "";
 	}
 }

@@ -1,5 +1,49 @@
 package com.chinawiserv.wsmp.configuration;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.kafka.clients.consumer.Consumer;
+import org.apache.kafka.clients.consumer.ConsumerRebalanceListener;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.apache.kafka.clients.consumer.OffsetAndMetadata;
+import org.apache.kafka.clients.consumer.OffsetCommitCallback;
+import org.apache.kafka.common.TopicPartition;
+import org.apache.kafka.common.errors.WakeupException;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import org.springframework.kafka.KafkaException;
+import org.springframework.kafka.core.ConsumerFactory;
+import org.springframework.kafka.event.ListenerContainerIdleEvent;
+import org.springframework.kafka.listener.AbstractMessageListenerContainer;
+import org.springframework.kafka.listener.AcknowledgingMessageListener;
+import org.springframework.kafka.listener.MessageListener;
+import org.springframework.kafka.listener.config.ContainerProperties;
+import org.springframework.kafka.support.Acknowledgment;
+import org.springframework.kafka.support.TopicPartitionInitialOffset;
+import org.springframework.scheduling.SchedulingAwareRunnable;
+import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.util.concurrent.ListenableFutureCallback;
+
 /*
  * Copyright 2016 the original author or authors.
  *
@@ -17,32 +61,6 @@ package com.chinawiserv.wsmp.configuration;
  */
 
 import com.chinawiserv.wsmp.kafka.WSMPKafkaListener;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.kafka.clients.consumer.*;
-import org.apache.kafka.common.TopicPartition;
-import org.apache.kafka.common.errors.WakeupException;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.core.task.SimpleAsyncTaskExecutor;
-import org.springframework.kafka.KafkaException;
-import org.springframework.kafka.core.ConsumerFactory;
-import org.springframework.kafka.event.ListenerContainerIdleEvent;
-import org.springframework.kafka.listener.AbstractMessageListenerContainer;
-import org.springframework.kafka.listener.AcknowledgingMessageListener;
-import org.springframework.kafka.listener.KafkaMessageListenerContainer;
-import org.springframework.kafka.listener.MessageListener;
-import org.springframework.kafka.listener.config.ContainerProperties;
-import org.springframework.kafka.support.Acknowledgment;
-import org.springframework.kafka.support.TopicPartitionInitialOffset;
-import org.springframework.scheduling.SchedulingAwareRunnable;
-import org.springframework.util.Assert;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.concurrent.ListenableFuture;
-import org.springframework.util.concurrent.ListenableFutureCallback;
-
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.concurrent.*;
 
 /**
  * Single-threaded Message listener container using the Java {@link Consumer}
@@ -129,7 +147,7 @@ public class WSMPKafkaMessageListenerContainer<K, V> extends AbstractMessageList
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "null" })
 	protected void doStart() {
 		if (isRunning()) {
 			return;
@@ -146,8 +164,10 @@ public class WSMPKafkaMessageListenerContainer<K, V> extends AbstractMessageList
 				containerProperties.setAckTime(5000);
 			}
 		}
+		
 		Object messageListener = containerProperties.getMessageListener();
 		Assert.state(messageListener != null, "A MessageListener is required");
+		
 		if (messageListener instanceof AcknowledgingMessageListener) {
 			this.acknowledgingMessageListener = (AcknowledgingMessageListener<K, V>) messageListener;
 		} else if (messageListener instanceof MessageListener) {
@@ -515,10 +535,9 @@ public class WSMPKafkaMessageListenerContainer<K, V> extends AbstractMessageList
 			if (this.containerProperties.isPauseEnabled() && CollectionUtils.isEmpty(this.definedPartitions)) {
 				return !this.recordsToProcess.offer(records, this.containerProperties.getPauseAfter(),
 						TimeUnit.MILLISECONDS);
-			} else {
-				this.recordsToProcess.put(records);
-				return false;
 			}
+			this.recordsToProcess.put(records);
+			return false;
 		}
 
 		/**
@@ -561,35 +580,34 @@ public class WSMPKafkaMessageListenerContainer<K, V> extends AbstractMessageList
 		}
 
 		private void invokeListener(final ConsumerRecords<K, V> records) {
-			final int count = records.count();
 			Iterator<ConsumerRecord<K, V>> iterator = records.iterator();
 			while (iterator.hasNext() && (this.autoCommit || (this.invoker != null && this.invoker.active))) {
 				final ConsumerRecord<K, V> record = iterator.next();
 				try {
-                    if (this.acknowledgingMessageListener != null) {
-                        this.acknowledgingMessageListener.onMessage(record, this.isAnyManualAck
-                                ? new WSMPKafkaMessageListenerContainer.ListenerConsumer.ConsumerAcknowledgment(record, this.isManualImmediateAck) : null);
-                    }
-                    else {
-                        this.listener.onMessage(record);
-                    }
-                    if (!this.isAnyManualAck && !this.autoCommit) {
-                        this.acks.add(record);
-                    }
-				}
-				catch (Exception e) {
+					if (this.acknowledgingMessageListener != null) {
+						this.acknowledgingMessageListener.onMessage(record,
+								this.isAnyManualAck
+										? new ListenerConsumer.ConsumerAcknowledgment(
+												record, this.isManualImmediateAck)
+										: null);
+					} else {
+						this.listener.onMessage(record);
+					}
+					if (!this.isAnyManualAck && !this.autoCommit) {
+						this.acks.add(record);
+					}
+				} catch (Exception e) {
 					if (this.containerProperties.isAckOnError() && !this.autoCommit) {
 						this.acks.add(record);
 					}
 					if (this.containerProperties.getErrorHandler() != null) {
 						this.containerProperties.getErrorHandler().handle(e, record);
-					}
-					else {
+					} else {
 						this.logger.error("Listener threw an exception and no error handler for " + record, e);
 					}
 				}
 			}
-            WSMPKafkaListener.onMessages(records, records.count());
+			WSMPKafkaListener.onMessages(records, records.count());
 		}
 
 		private void processCommits() {

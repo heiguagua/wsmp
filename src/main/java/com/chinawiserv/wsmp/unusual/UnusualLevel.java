@@ -15,6 +15,9 @@ public class UnusualLevel {
         return this;
     }
 
+    /**
+	 * @param Variance  
+	 */
     public int CalcUnusualLevel(byte[] Levels, byte[] Variance, int Count) {
         ++this.index;
 
