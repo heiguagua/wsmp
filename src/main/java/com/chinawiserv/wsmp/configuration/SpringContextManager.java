@@ -10,20 +10,20 @@ import org.springframework.stereotype.Component;
 @Component
 public class SpringContextManager {
 
-    private static ApplicationContext applicationContext;
+	private static ApplicationContext applicationContext;
 
-    @Autowired
-    public void  setContxt(ApplicationContext context){
-        applicationContext = context;
-    }
+	@Autowired
+	public void setContxt(ApplicationContext context) {
+		applicationContext = context;
+	}
 
-    public static <T> T getBean(Class<T> clazz){
-        return applicationContext.getBean(clazz);
-    }
+	public static <T> T getBean(Class<T> clazz) {
+		return applicationContext.getBean(clazz);
+	}
 
-    @SuppressWarnings("unchecked")
-	public static <T> T getBean(String name){
-        return (T)applicationContext.getBean(name);
-    }
+	@SuppressWarnings("unchecked")
+	public static <T> T getBean(String name) {
+		return (T) applicationContext.getBean(name);
+	}
 
 }

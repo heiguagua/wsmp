@@ -76,6 +76,7 @@ class HbaseDataHandlers extends DataHandler with InitializingBean {
             val value = getBytes(field.get(cmd));
             put.addColumn(family, qualifier, value);
             put.setDurability(Durability.SKIP_WAL)
+            
           });
           put;
         }));
