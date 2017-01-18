@@ -138,7 +138,7 @@
     </dependencies>
 
     <build>
-        <finalName>wsmp</finalName>
+        <finalName>wsmp-dae-deepone</finalName>
         <defaultGoal>clean scala:compile compile package</defaultGoal>
         <plugins>
             <plugin>
