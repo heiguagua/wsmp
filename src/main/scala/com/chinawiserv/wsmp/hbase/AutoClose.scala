@@ -15,7 +15,7 @@ object AutoClose {
  * @param stream
  * @param f，匿名函数
  */
-def using[A <: Closeable]( stream : A, f : (A) => Unit ): Unit = {
+def   using[A <: Closeable]( stream : A, f : (A) => Unit ): Unit = {
     try f(stream) 
     catch {case  e : Throwable => logger.error("Auto Close Error {}", e.getMessage)}
     finally stream.close();

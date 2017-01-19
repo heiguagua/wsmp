@@ -58,10 +58,10 @@ class HbaseDataHandlers extends DataHandler with InitializingBean {
     val tableName = TableName.valueOf(hbaseTableName);
     using(this.connection.getTable(tableName), (table: Table) => {
 
-      val params = new BufferedMutatorParams(tableName).writeBufferSize(1024 * 1024 * 1024);
+      val params = new BufferedMutatorParams(tableName).writeBufferSize(1024 * 1024 * 10);
       
       using(connection.getBufferedMutator(params), (mutator: BufferedMutator) => {
-      
+
         mutator.mutate(cmds.map(cmd => {
           
           val uuid = UUID.randomUUID().toString;
