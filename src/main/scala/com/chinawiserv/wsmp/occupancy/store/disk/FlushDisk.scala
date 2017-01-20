@@ -9,7 +9,7 @@ import com.chinawiserv.wsmp.occupancy.model.OccupancyData
 import com.chinawiserv.wsmp.thread.{CustomThreadFactory, ThreadPool}
 import com.mongodb.client.model._
 import org.apache.commons.lang.StringUtils
-import org.bson.Document
+import org.bson.{BsonBinary, Document}
 
 import scala.collection.JavaConversions
 
@@ -51,7 +51,7 @@ private[occupancy] object FlushDisk {
         records.foreach(record => {
           val station = record.id;
           val time = record.time;
-          val maxLevels = JavaConversions.asJavaCollection[Byte](record.levels);
+          val maxLevels = record.levels;
           if (StringUtils.isNotBlank(time) && time.length == (TIME_YEAR_LENGTH + TIME_DAY_LENGTH) && maxLevels != null) {
             if (collection.isEmpty) {
               collection = collection_prefix + time.take(TIME_YEAR_LENGTH);
@@ -60,7 +60,7 @@ private[occupancy] object FlushDisk {
             val filter = Filters.and(Filters.eq("station", station), Filters.eq("time", daytime));
             val replacement = new Document("station", station)
               .append("time", daytime)
-              .append("maxLevels", maxLevels);
+              .append("maxLevels", new BsonBinary(maxLevels));
             val replaceOneModel = new ReplaceOneModel[Document](filter, replacement, new UpdateOptions().upsert(true));
             writeModels.add(replaceOneModel);
           }
