@@ -1,1 +1,1 @@
-java -jar DataAnalyzer-jar-with-dependencies.jar
+java -Dcom.sun.management.jmxremote.port=8124 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -jar ./libs/wsmp-dae-deepone.jar
