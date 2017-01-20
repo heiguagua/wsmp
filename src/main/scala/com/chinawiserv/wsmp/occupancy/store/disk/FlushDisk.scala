@@ -60,7 +60,7 @@ private[occupancy] object FlushDisk {
             val filter = Filters.and(Filters.eq("station", station), Filters.eq("time", daytime));
             val replacement = new Document("station", station)
               .append("time", daytime)
-              .append("maxLevels", new BsonBinary(maxLevels));
+              .append("maxLevels", new BsonBinary(maxLevels.clone);
             val replaceOneModel = new ReplaceOneModel[Document](filter, replacement, new UpdateOptions().upsert(true));
             writeModels.add(replaceOneModel);
           }
