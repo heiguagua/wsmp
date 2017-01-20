@@ -1,7 +1,9 @@
 package com.chinawiserv.wsmp
 package unusual;
 
+import java.text.DecimalFormat
 import java.util
+
 import com.chinawiserv.model.Cmd
 import com.chinawiserv.wsmp.operator.Operator
 import com.chinawiserv.wsmp.unusual.mem.{Mem, MemManager}
@@ -15,6 +17,7 @@ class UnusualExecutor(val cmds : List[Cmd], val memManager: MemManager) extends 
   private val log = LoggerFactory.getLogger(classOf[UnusualExecutor]);
 
   private val mongoColNamePrefix = "Unusual";
+  private val df = new DecimalFormat("#.000")
 
   override def run(): Unit = {
     if (cmds != null && cmds.length > 0) {
@@ -87,7 +90,7 @@ class UnusualExecutor(val cmds : List[Cmd], val memManager: MemManager) extends 
             doc.put("level", currentLevel);
             doc.put("dt", currentDate);
             docs.add(doc);
-            log.info("收到异动数据，基站编号: "+current.id+", 异动频率: "+currentFreq+", 能量值: "+currentLevel);
+            log.info("收到异动数据，基站编号: "+current.id+", 异动频率: "+df.format(currentFreq / 1000)+", 能量值: "+currentLevel);
           }
         }
         mongoDB.shardCollection(mongoColNamePrefix+current.id, new Document("freq", 1));
