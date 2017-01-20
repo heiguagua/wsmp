@@ -25,7 +25,7 @@ private[occupancy] object FlushDisk {
 
   private val flushDiskExecutorService = ThreadPool.newThreadPool(FLUSH_DISK_CONCURRENT_NUM, new CustomThreadFactory("Occupancy-Flush-Disk-Executor-"));
 
-  flushDiskExecutorService.execute(new FlushDiskTask());
+  //flushDiskExecutorService.execute(new FlushDiskTask());
 
   def offer(records: List[OccupancyData]): Unit ={
     if(records != null && !records.isEmpty){

@@ -56,7 +56,7 @@ private[occupancy] object FlushMem {
       });
     }
     for((_, occupancyDatas) <- occupancyDatasMap){
-      FlushDisk.offer(occupancyDatas.toList);
+      //FlushDisk.offer(occupancyDatas.toList);
     }
     logger.info("Occupancy flush MEM, execute time : {} {}", System.currentTimeMillis() - now, "MS");
   }
