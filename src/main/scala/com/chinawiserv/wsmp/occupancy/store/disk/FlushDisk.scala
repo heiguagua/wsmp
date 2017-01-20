@@ -21,7 +21,7 @@ private[occupancy] object FlushDisk {
 
   private val flushDiskQueue = new LinkedBlockingQueue[List[OccupancyData]]();
 
-  private val FLUSH_DISK_CONCURRENT_NUM: Int = 10;
+  private val FLUSH_DISK_CONCURRENT_NUM: Int = 3;
 
   private val flushDiskExecutorService = ThreadPool.newThreadPool(FLUSH_DISK_CONCURRENT_NUM, new CustomThreadFactory("Occupancy-Flush-Disk-Executor-"));
 
@@ -37,7 +37,6 @@ private[occupancy] object FlushDisk {
     val records = flushDiskQueue.take;
     flushDiskExecutorService.execute(new Runnable {
       override def run(): Unit = {
-        val now = System.currentTimeMillis();
         doFlush(records);
       }
     })
