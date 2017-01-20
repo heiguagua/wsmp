@@ -1,6 +1,7 @@
 package com.chinawiserv.wsmp.unusual
 
 import java.util.concurrent._
+
 import com.chinawiserv.model.Cmd
 import com.chinawiserv.wsmp.handler.DataHandler
 import com.chinawiserv.wsmp.thread.{CustomThreadFactory, ThreadPool}
@@ -9,10 +10,9 @@ import com.chinawiserv.wsmp.websocket.WSClient
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.stereotype.Component
+
 import scala.collection.JavaConversions._;
 
-@Component
 class Unusual extends DataHandler with  InitializingBean{
   private val log = LoggerFactory.getLogger(classOf[Unusual]);
 

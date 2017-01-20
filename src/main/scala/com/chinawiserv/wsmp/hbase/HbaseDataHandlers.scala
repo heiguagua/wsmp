@@ -5,27 +5,22 @@ import java.util.UUID
 import com.chinawiserv.model.Cmd
 import com.chinawiserv.util.FstUtil
 import com.chinawiserv.wsmp.handler.DataHandler
+import com.chinawiserv.wsmp.hbase.AutoClose._
 import org.apache.hadoop.conf.Configuration
-import org.apache.hadoop.hbase.client.{ Admin, ConnectionFactory, Put, Table }
+import org.apache.hadoop.hbase.client._
 import org.apache.hadoop.hbase.util.Bytes._
-import org.apache.hadoop.hbase.{ HColumnDescriptor, HTableDescriptor, TableName }
-import org.slf4j.{ Logger, LoggerFactory }
+import org.apache.hadoop.hbase.{HColumnDescriptor, HTableDescriptor, TableName}
+import org.slf4j.{Logger, LoggerFactory}
 import org.springframework.beans.factory.InitializingBean
-import org.springframework.beans.factory.annotation.{ Autowired, Value }
+import org.springframework.beans.factory.annotation.{Autowired, Value}
 import org.springframework.scheduling.annotation.Async
-import org.springframework.stereotype.Component
 
 import scala.collection.JavaConversions._
 import scala.collection.mutable.ArrayBuffer
-import org.apache.hadoop.hbase.client.BufferedMutatorParams
-import org.apache.hadoop.hbase.client.Durability
-import com.chinawiserv.wsmp.hbase.AutoClose._
-import org.apache.hadoop.hbase.client.BufferedMutator
 
 /**
  * Created by chinawiserv-0006 on 2017/1/11.
  */
-@Component
 class HbaseDataHandlers extends DataHandler with InitializingBean {
 
   val logger: Logger = LoggerFactory.getLogger(this.getClass)
@@ -39,7 +34,7 @@ class HbaseDataHandlers extends DataHandler with InitializingBean {
   lazy val connection = newConnection();
 
   override def afterPropertiesSet(): Unit = {
-
+    println("")
     using(this.connection.getAdmin, (admin: Admin) => {
       val tableName = TableName.valueOf(hbaseTableName);
       if (!admin.tableExists(tableName)) {
@@ -58,10 +53,8 @@ class HbaseDataHandlers extends DataHandler with InitializingBean {
     val tableName = TableName.valueOf(hbaseTableName);
     using(this.connection.getTable(tableName), (table: Table) => {
 
-      val params = new BufferedMutatorParams(tableName).writeBufferSize(1024 * 1024 * 10);
-      
+      val params = new BufferedMutatorParams(tableName).writeBufferSize(1024 * 1024 * 4);
       using(connection.getBufferedMutator(params), (mutator: BufferedMutator) => {
-
         mutator.mutate(cmds.map(cmd => {
           
           val uuid = UUID.randomUUID().toString;

@@ -60,7 +60,6 @@ public class WSMPKafkaListener{
         showDataFlow();
     }
 
-	@SuppressWarnings("Unchecked")
 	public static <K, V>  void onMessages(ConsumerRecords<K, V> records, int count) {
 
         final WSMPKafkaListener listener =  SpringContextManager.getBean( WSMPKafkaListener.class );
