@@ -141,7 +141,7 @@
 
 	<build>
 		<finalName>wsmp-dae-deepone</finalName>
-		<defaultGoal>clean scala:compile compile package</defaultGoal>
+		<defaultGoal>clean scala:compile compile</defaultGoal>
 		<plugins>
 			<plugin>
 				<groupId>org.scala-tools</groupId>

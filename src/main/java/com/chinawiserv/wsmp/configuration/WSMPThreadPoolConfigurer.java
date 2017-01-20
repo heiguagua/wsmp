@@ -23,8 +23,8 @@ public class WSMPThreadPoolConfigurer extends AsyncConfigurerSupport {
 		final ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setBeanName("defalut-ThreadPool");
 		executor.setAllowCoreThreadTimeOut(true);
-		executor.setCorePoolSize(20);
-		executor.setMaxPoolSize(20);
+		executor.setCorePoolSize(100);
+		executor.setMaxPoolSize(100);
         executor.setKeepAliveSeconds( 360 );
 		executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
 		executor.setThreadPriority(Thread.MAX_PRIORITY);

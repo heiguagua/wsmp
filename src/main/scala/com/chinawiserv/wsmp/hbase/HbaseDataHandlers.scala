@@ -1,5 +1,6 @@
 package com.chinawiserv.wsmp.hbase
 
+import java.lang.reflect.Field
 import java.util.UUID
 
 import com.chinawiserv.model.Cmd
@@ -18,9 +19,6 @@ import org.springframework.scheduling.annotation.Async
 import scala.collection.JavaConversions._
 import scala.collection.mutable.ArrayBuffer
 
-/**
- * Created by chinawiserv-0006 on 2017/1/11.
- */
 class HbaseDataHandlers extends DataHandler with InitializingBean {
 
   val logger: Logger = LoggerFactory.getLogger(this.getClass)
@@ -30,13 +28,19 @@ class HbaseDataHandlers extends DataHandler with InitializingBean {
 
   @Value("${hbase.tableName}")
   var hbaseTableName: String = _;
+  var tableName : TableName = _;
+  var fieldNames : Array[Field] = _;
+  var mutator : BufferedMutator = _;
 
-  lazy val connection = newConnection();
+
+  lazy val connection: Connection = newConnection();
 
   override def afterPropertiesSet(): Unit = {
-    println("")
+
+    this.tableName = TableName.valueOf(this.hbaseTableName);
+    this.mutator = this.connection.getBufferedMutator(this.tableName);
+
     using(this.connection.getAdmin, (admin: Admin) => {
-      val tableName = TableName.valueOf(hbaseTableName);
       if (!admin.tableExists(tableName)) {
         logger.info("Hbase table {} not exists, now will create it", this.hbaseTableName)
         val tableDetailInfo = new HTableDescriptor(tableName);
@@ -45,54 +49,44 @@ class HbaseDataHandlers extends DataHandler with InitializingBean {
         logger.info("Hbase table {} create success !", this.hbaseTableName)
       }
     })
+    this.fieldNames = classOf[Cmd].getDeclaredFields;
+    this.fieldNames.foreach(f => f.setAccessible(true));
   }
 
   @Async
   override def compute(cmds: java.util.List[Cmd]): Unit = {
 
-    val tableName = TableName.valueOf(hbaseTableName);
-    using(this.connection.getTable(tableName), (table: Table) => {
+    mutator.mutate(cmds.map(cmd => {
 
-      val params = new BufferedMutatorParams(tableName).writeBufferSize(1024 * 1024 * 4);
-      using(connection.getBufferedMutator(params), (mutator: BufferedMutator) => {
-        mutator.mutate(cmds.map(cmd => {
-          
-          val uuid = UUID.randomUUID().toString;
-          val rowid = toBytes(uuid);
-          val put = new Put(rowid);
-          val family = toBytes("default");
-          
-          cmd.getClass.getDeclaredFields.foreach(field => {
-            
-            field.setAccessible(true);
-            val qualifier = toBytes(field.getName);
-            val value = getBytes(field.get(cmd));
-            put.addColumn(family, qualifier, value);
-            put.setDurability(Durability.SKIP_WAL)
-            
-          });
-          put;
-        }));
-        mutator.flush();
-      })
-    });
+      val uuid = UUID.randomUUID().toString;
+      val rowid = toBytes(uuid);
+      val put = new Put(rowid);
+      val family = toBytes("default");
+
+      this.fieldNames.foreach((field: Field) => {
+        val qualifier = toBytes(field.getName);
+        val value = getBytes(field.get(cmd));
+        put.addColumn(family, qualifier, value);
+        put.setDurability(Durability.SKIP_WAL)
+      });
+      put;
+    }));
+    mutator.flush();
+    println("hbase 入库条数:" + cmds.size());
 
   }
 
-  def getBytes[T](obj: T): Array[Byte] = {
-
-    obj match {
-      case obj: String => toBytes(obj)
-      case obj: Long => toBytes(obj)
-      case obj: Double => toBytes(obj)
-      case obj: Float => toBytes(obj)
-      case obj: Short => toBytes(obj)
-      case obj: Int => toBytes(obj)
-      case obj: ArrayBuffer[_] => toBytes(obj.addString(new StringBuilder, ",").toString)
-      case obj => FstUtil.fst.asByteArray(obj);
-    }
+  def getBytes[T](obj: T): Array[Byte] = obj match {
+    case obj: String => toBytes(obj)
+    case obj: Long => toBytes(obj)
+    case obj: Double => toBytes(obj)
+    case obj: Float => toBytes(obj)
+    case obj: Short => toBytes(obj)
+    case obj: Int => toBytes(obj)
+    case obj: ArrayBuffer[_] => toBytes(obj.addString(new StringBuilder, ",").toString)
+    case obj => FstUtil.fst.asByteArray(obj);
   }
 
-  def newConnection() = ConnectionFactory.createConnection(configuration);
+  def newConnection(): Connection = ConnectionFactory.createConnection(configuration);
 
 }
