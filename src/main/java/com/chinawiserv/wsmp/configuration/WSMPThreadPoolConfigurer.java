@@ -24,6 +24,7 @@ public class WSMPThreadPoolConfigurer extends AsyncConfigurerSupport {
 	@Override
 	public Executor getAsyncExecutor() {
 
+        logger.info( "Spring-ThreadPool size :{}" , poolSize);
 		final ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setBeanName("Spring-ThreadPool");
 		executor.setAllowCoreThreadTimeOut(true);
