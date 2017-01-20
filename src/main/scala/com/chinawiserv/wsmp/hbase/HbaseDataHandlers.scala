@@ -38,7 +38,9 @@ class HbaseDataHandlers extends DataHandler with InitializingBean {
   override def afterPropertiesSet(): Unit = {
 
     this.tableName = TableName.valueOf(this.hbaseTableName);
-    this.mutator = this.connection.getBufferedMutator(this.tableName);
+    val params = new BufferedMutatorParams(tableName);
+    params.writeBufferSize(1024 * 1024)
+    this.mutator = this.connection.getBufferedMutator(params);
 
     using(this.connection.getAdmin, (admin: Admin) => {
       if (!admin.tableExists(tableName)) {
@@ -71,7 +73,7 @@ class HbaseDataHandlers extends DataHandler with InitializingBean {
       });
       put;
     }));
-    mutator.flush();
+//    mutator.flush();
     println("hbase 入库条数:" + cmds.size());
 
   }
