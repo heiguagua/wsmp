@@ -37,7 +37,7 @@ package object occupancy {
       val daytime = time.takeRight(TIME_DAY_LENGTH);
       val collection = collection_prefix + year;
       val filter = Filters.eq("time", daytime);
-      mongoDB.shardCollection(collection, new Document("station", 1));
+      mongoDB.shardCollection(collection, new Document("time", 1));
       val records = JavaConversions.asScalaBuffer(mongoDB.mc.find(mongoDB.dbName, collection, filter, null)).toArray;
       records.foreach(record => {
         val station = record.getInteger("station").toInt;
