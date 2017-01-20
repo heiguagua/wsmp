@@ -7,7 +7,6 @@ import com.chinawiserv.model.Cmd
 import com.chinawiserv.util.FstUtil
 import com.chinawiserv.wsmp.handler.DataHandler
 import com.chinawiserv.wsmp.hbase.AutoClose._
-import com.chinawiserv.wsmp.util.Tools
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.hbase.client._
 import org.apache.hadoop.hbase.util.Bytes._
@@ -61,7 +60,7 @@ class HbaseDataHandlers extends DataHandler with InitializingBean {
 
     mutator.mutate(cmds.map(cmd => {
 
-      val uuid = Tools.random(20) + "-" + System.currentTimeMillis() +"-" + cmd.getId;
+      val uuid = UUID.randomUUID().toString;
       val rowid = toBytes(uuid);
       val put = new Put(rowid);
       val family = toBytes("default");
