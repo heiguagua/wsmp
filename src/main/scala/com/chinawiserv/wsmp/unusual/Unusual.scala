@@ -26,7 +26,7 @@ class Unusual extends DataHandler with  InitializingBean{
   override def afterPropertiesSet(): Unit = {
     this.memManager = new MemManager();
     this.wsClient = new WSClient(this.endpointURI);
-    this.executor = ThreadPool.newThreadPool(12, new CustomThreadFactory("UnusualExecutor-"));
+    this.executor = ThreadPool.newThreadPool(1, new CustomThreadFactory("UnusualExecutor-"));
     this.scheduler =  Executors.newScheduledThreadPool(1);
     this.scheduler.scheduleWithFixedDelay(new SendDataRunnable(), 1, 1, TimeUnit.SECONDS);
   }

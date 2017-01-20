@@ -44,32 +44,28 @@ class MemManager {
   }
 
   def readDataFromMem(id: Int): List[Array[Byte]] = {
-    synchronized({
-      val result = new ListBuffer[Array[Byte]]();
-      val list = memMap.get(id).getOrElse(new ListBuffer[Mem]());
-      list.foreach(x => {
-        result += x.levels;
-      });
-      return result.toList;
+    val result = new ListBuffer[Array[Byte]]();
+    val list = memMap.get(id).getOrElse(new ListBuffer[Mem]());
+    list.foreach(x => {
+      result += x.levels;
     });
+    return result.toList;
   }
 
   def saveDataToMem(cmd: Cmd): Boolean = {
-    synchronized({
-      var result = false;
-      val mem = Operator.toMem(cmd);
-      if (mem != null) {
-        val list = memMap.get(mem.id).getOrElse(new ListBuffer[Mem]());
-        if (list.length >= dataCount) {
-          list.trimStart(list.length - (dataCount - 1));
-        }
-        list += mem;
-        memMap += (mem.id -> list);
-        this.saveToRedis(mem.id, Json.generate[Mem](mem));
-        result = true;
+    var result = false;
+    val mem = Operator.toMem(cmd);
+    if (mem != null) {
+      val list = memMap.get(mem.id).getOrElse(new ListBuffer[Mem]());
+      if (list.length >= dataCount) {
+        list.trimStart(list.length - (dataCount - 1));
       }
-      return result;
-    });
+      list += mem;
+      memMap += (mem.id -> list);
+      this.saveToRedis(mem.id, Json.generate[Mem](mem));
+      result = true;
+    }
+    return result;
   }
 
   def saveToRedis(key: Int, element: String): Unit = {
@@ -84,26 +80,22 @@ class MemManager {
   }
 
   def saveDataToWeb(id: Int, un: Int): Unit = {
-    synchronized({
-      webMap += (id -> un);
-    });
+    webMap += (id -> un);
   }
 
   def readDataFromWeb(): String = {
-    synchronized({
-      if (!webMap.isEmpty) {
-        var result = new  ListBuffer[Map[String, Any]]();
-        val map = webMap.clone();
-        webMap.clear();
-        map.foreach(x => {
-          result += Map("id" -> x._1.toString, "un" -> x._2);
-        });
-        Json.generate[ListBuffer[Map[String, Any]]](result);
-      }
-      else {
-        "";
-      }
-    });
+    if (!webMap.isEmpty) {
+      var result = new  ListBuffer[Map[String, Any]]();
+      val map = webMap.clone();
+      webMap.clear();
+      map.foreach(x => {
+        result += Map("id" -> x._1.toString, "un" -> x._2);
+      });
+      Json.generate[ListBuffer[Map[String, Any]]](result);
+    }
+    else {
+      "";
+    }
   }
 
 }

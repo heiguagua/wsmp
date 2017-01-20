@@ -37,7 +37,6 @@ private[occupancy] object FlushDisk {
     val records = flushDiskQueue.take;
     flushDiskExecutorService.execute(new Runnable {
       override def run(): Unit = {
-        val now = System.currentTimeMillis();
         doFlush(records);
       }
     })
