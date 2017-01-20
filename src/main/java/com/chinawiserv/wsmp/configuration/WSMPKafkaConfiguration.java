@@ -54,9 +54,6 @@ public class WSMPKafkaConfiguration {
         propsMap.put( ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, servers );
         propsMap.put( ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, autoComit );
         propsMap.put( ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, 1200 );
-        propsMap.put( "rebalance.max.retries", "5" );
-        propsMap.put( "rebalance.backoff.ms", "12000" );
-        propsMap.put( "offset.flush.interval.ms", "120000" );
         propsMap.put( ConsumerConfig.RECEIVE_BUFFER_CONFIG, buffSize );
         propsMap.put( ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG, fetchSize );
         propsMap.put( ConsumerConfig.HEARTBEAT_INTERVAL_MS_CONFIG, "20000" );

@@ -20,6 +20,7 @@ public class WSMPDataHandlersConfiguration {
     public DataHandler hbaseHandler(){
         return new HbaseDataHandlers();
     }
+
     @ConditionalOnProperty(prefix = "datahandler.mongostream", value = "enable", havingValue = "true")
     @Bean(name = "mongoStreamHandler")
     public DataHandler mongoStreamHandler(){
