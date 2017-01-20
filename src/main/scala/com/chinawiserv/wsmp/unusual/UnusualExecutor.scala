@@ -23,7 +23,6 @@ class UnusualExecutor(val cmds : List[Cmd], val memManager: MemManager) extends 
         val current = Operator.toMem(cmd);
         val history = this.readAndSaveData(cmd);
         this.computeUnusual(current, history);
-        log.info("UnusualExecutor.当前处理基站编号="+current.id);
       });
     }
   }

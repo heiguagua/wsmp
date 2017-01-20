@@ -40,6 +40,7 @@ private[occupancy] object FlushDisk {
         doFlush(records);
       }
     })
+    println("flushDiskQueue.size()="+flushDiskQueue.size());
   }
 
   private def doFlush(records: List[OccupancyData]): Unit = {

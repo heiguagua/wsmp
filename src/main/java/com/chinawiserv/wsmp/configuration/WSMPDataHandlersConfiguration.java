@@ -27,7 +27,6 @@ public class WSMPDataHandlersConfiguration {
         return new Unusual();
     }
 
-
     @ConditionalOnProperty(prefix = "datahandler.mongoflush", value = "enable", havingValue = "true")
     @Bean(name = "hbaseHandler")
     public DataHandler mongoflushHandler(){
