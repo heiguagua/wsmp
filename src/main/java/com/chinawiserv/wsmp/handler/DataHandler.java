@@ -10,6 +10,10 @@ import java.util.concurrent.Semaphore;
  */
 public interface DataHandler {
 
-    void compute(List<Cmd> cmds, Semaphore semaphore);
+    /**
+     * 计算接口
+     * @param cmds 消息
+     */
+    void compute(List<Cmd> cmds);
 
 }

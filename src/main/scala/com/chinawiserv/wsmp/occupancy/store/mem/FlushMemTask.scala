@@ -1,5 +1,7 @@
 package com.chinawiserv.wsmp.occupancy.store.mem
 
+import com.chinawiserv.wsmp.kafka.WSMPKafkaListener
+
 /**
   * Created by zengpzh on 2017/1/7.
   */
@@ -11,6 +13,9 @@ private[occupancy] class FlushMemTask extends Runnable{
         FlushMem.flush;
       }catch {
         case e: Exception => Thread.currentThread().interrupt();
+      }
+      finally {
+        WSMPKafkaListener.semaphore.release();
       }
     }
 

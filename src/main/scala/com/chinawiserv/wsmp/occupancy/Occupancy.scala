@@ -11,7 +11,7 @@ import scala.collection.JavaConversions._
 class Occupancy extends DataHandler {
 
   @throws[Exception]
-  def compute(cmds: java.util.List[Cmd], semaphore: Semaphore): Unit = {
+  def compute(cmds: java.util.List[Cmd]): Unit = {
     if (cmds != null && !cmds.isEmpty) {
       FlushMem.offer(cmds.toList);
     }

@@ -8,6 +8,7 @@ import com.chinawiserv.model.Cmd
 import com.chinawiserv.util.FstUtil
 import com.chinawiserv.wsmp.handler.DataHandler
 import com.chinawiserv.wsmp.hbase.AutoClose._
+import com.chinawiserv.wsmp.kafka.WSMPKafkaListener
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.hbase.client._
 import org.apache.hadoop.hbase.util.Bytes._
@@ -16,6 +17,7 @@ import org.slf4j.{Logger, LoggerFactory}
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.beans.factory.annotation.{Autowired, Value}
 import org.springframework.scheduling.annotation.Async
+
 import scala.collection.JavaConversions._
 import scala.collection.mutable.ArrayBuffer
 
@@ -56,7 +58,7 @@ class HbaseDataHandlers extends DataHandler with InitializingBean {
   }
 
   @Async
-  override def compute(cmds: java.util.List[Cmd], semaphore: Semaphore): Unit = {
+  override def compute(cmds: java.util.List[Cmd]): Unit = {
 
     try{
 
@@ -78,7 +80,7 @@ class HbaseDataHandlers extends DataHandler with InitializingBean {
       println("hbase 入库条数:" + cmds.size());
     } catch {case e : Throwable => e.printStackTrace();}
     finally {
-      semaphore.release();
+      WSMPKafkaListener.semaphore.release();
     }
 //    mutator.flush();
   }

@@ -4,6 +4,7 @@ import java.util.concurrent._
 
 import com.chinawiserv.model.Cmd
 import com.chinawiserv.wsmp.handler.DataHandler
+import com.chinawiserv.wsmp.kafka.WSMPKafkaListener
 import com.chinawiserv.wsmp.thread.{CustomThreadFactory, ThreadPool}
 import com.chinawiserv.wsmp.unusual.mem.MemManager
 import com.chinawiserv.wsmp.websocket.WSClient
@@ -39,13 +40,17 @@ class Unusual extends DataHandler with  InitializingBean{
     try {
       if (cmds != null && !cmds.isEmpty) {
         val list = cmds.sliding(5, 5);
-        list.foreach(shard => {
-          executor.execute(new UnusualExecutor(shard, memManager));
+        val futures = list.map(shard => {
+          executor.submit(new UnusualExecutor(shard, memManager));
         });
+        futures.foreach(x => {x.get();});
       }
     }
     catch {
       case e: Exception => log.error("Unusual.compute: "+e.getMessage) ;
+    }
+    finally {
+      WSMPKafkaListener.semaphore.release();
     }
   }
 

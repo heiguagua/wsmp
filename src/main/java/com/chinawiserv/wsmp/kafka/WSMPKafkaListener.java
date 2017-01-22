@@ -36,7 +36,7 @@ public class WSMPKafkaListener{
 	private static Collection<DataHandler> dataHandlers;
 	private static String dhName = "";
 	private static int handlerCount = 0;
-	private static Semaphore semaphore;
+	public static Semaphore semaphore;
     private static int packSize = 286538;
 
 	@KafkaListener(topics = "${kafka.consumer.topic}", group = "1")
@@ -57,8 +57,8 @@ public class WSMPKafkaListener{
 
         if(handlerCount > 0){
             try {
-                semaphore.acquire(3);
-                dataHandlers.stream().forEach( dataHandler -> dataHandler.compute((ArrayList<Cmd>) cmds.clone(), semaphore));
+                semaphore.acquire(handlerCount);
+                dataHandlers.stream().forEach( dataHandler -> dataHandler.compute((ArrayList<Cmd>) cmds.clone()));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
