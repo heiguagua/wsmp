@@ -39,8 +39,6 @@ public class WSMPThreadPoolConfigurer extends AsyncConfigurerSupport {
 
 	@Override
 	public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-        return (ex, method, params) -> {
-			logger.error(ex.getMessage());
-        };
+        return (ex, method, params) ->  logger.error(ex.getMessage());
 	}
 }

@@ -2,6 +2,7 @@ package com.chinawiserv.wsmp.hbase
 
 import java.lang.reflect.Field
 import java.util.UUID
+import java.util.concurrent.Semaphore
 
 import com.chinawiserv.model.Cmd
 import com.chinawiserv.util.FstUtil
@@ -15,7 +16,6 @@ import org.slf4j.{Logger, LoggerFactory}
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.beans.factory.annotation.{Autowired, Value}
 import org.springframework.scheduling.annotation.Async
-
 import scala.collection.JavaConversions._
 import scala.collection.mutable.ArrayBuffer
 
@@ -56,23 +56,31 @@ class HbaseDataHandlers extends DataHandler with InitializingBean {
   }
 
   @Async
-  override def compute(cmds: java.util.List[Cmd]): Unit = {
+  override def compute(cmds: java.util.List[Cmd], semaphore: Semaphore): Unit = {
 
-    mutator.mutate(cmds.map(cmd => {
+    try{
 
-      val uuid = UUID.randomUUID().toString;
-      val rowid = toBytes(uuid);
-      val put = new Put(rowid);
-      val family = toBytes("default");
+      mutator.mutate(cmds.map(cmd => {
 
-      this.fieldNames.foreach((field: Field) => {
-        val qualifier = toBytes(field.getName);
-        val value = getBytes(field.get(cmd));
-        put.addColumn(family, qualifier, value);
-        put.setDurability(Durability.SKIP_WAL)
-      });
-      put;
-    }));
+        val uuid = UUID.randomUUID().toString;
+        val rowid = toBytes(uuid);
+        val put = new Put(rowid);
+        val family = toBytes("default");
+
+        this.fieldNames.foreach((field: Field) => {
+          val qualifier = toBytes(field.getName);
+          val value = getBytes(field.get(cmd));
+          put.addColumn(family, qualifier, value);
+          put.setDurability(Durability.SKIP_WAL)
+        });
+        put;
+      }));
+      println("hbase 入库条数:" + cmds.size());
+    } catch {case e : Throwable => e.printStackTrace();}
+    finally {
+      semaphore.release();
+    }
+//    mutator.flush();
   }
 
   def getBytes[T](obj: T): Array[Byte] = obj match {

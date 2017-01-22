@@ -1,7 +1,6 @@
 package com.chinawiserv.wsmp.kafka;
 
 import com.chinawiserv.model.Cmd;
-import com.chinawiserv.wsmp.configuration.SpringContextManager;
 import com.chinawiserv.wsmp.handler.DataHandler;
 import com.chinawiserv.wsmp.statistics.DataFlow;
 import com.chinawiserv.wsmp.statistics.Monitor;
@@ -13,13 +12,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import java.util.concurrent.Semaphore;
 
 // kafka-topics.sh --zookeeper slave6.dom:2181,slave7.dom:2181,slave8.dom:2181 --create --topic wsmp --replication-factor 1 --partitions 9
 // kafka-topics.sh --zookeeper slave6.dom:2181,slave7.dom:2181,slave8.dom:2181 --delete --topic wsmp
@@ -36,34 +35,36 @@ public class WSMPKafkaListener{
 	private static FSTConfiguration conf = FSTConfiguration.createDefaultConfiguration();
 	private static Collection<DataHandler> dataHandlers;
 	private static String dhName = "";
-
+	private static int handlerCount = 0;
+	private static Semaphore semaphore;
     private static int packSize = 286538;
 
 	@KafkaListener(topics = "${kafka.consumer.topic}", group = "1")
 	public void onMessage(ConsumerRecord<String, Cmd> record) {
 	}
 
-	@Async
-	public <K, V> void distribute(ConsumerRecords<K, V> records, int count){
+	public static <K, V>  void onMessages(ConsumerRecords<K, V> records, int count) {
+
         dataFlow.inc(count);
 
         final ArrayList<Cmd> cmds = new ArrayList<>( count );
+
         records.forEach( record -> {
             Cmd cmd = (Cmd) record.value();
             packSize = conf.asByteArray(cmd).length;
             cmds.add(cmd);
         } );
 
-        dataHandlers.stream().forEach( dataHandler -> dataHandler.compute((ArrayList<Cmd>) cmds.clone()));
-
-        logger.info("receive messge {}, dataHandlers {}, {}", count, dataHandlers.size(), dhName);
+        if(handlerCount > 0){
+            try {
+                semaphore.acquire(3);
+                dataHandlers.stream().forEach( dataHandler -> dataHandler.compute((ArrayList<Cmd>) cmds.clone(), semaphore));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        logger.info("receive messge {}, dataHandlers {}, {}", count, handlerCount, dhName);
         showDataFlow();
-    }
-
-	public static <K, V>  void onMessages(ConsumerRecords<K, V> records, int count) {
-
-        final WSMPKafkaListener listener =  SpringContextManager.getBean( WSMPKafkaListener.class );
-        listener.distribute( records, count );
 	}
 
 	@Autowired
@@ -75,7 +76,9 @@ public class WSMPKafkaListener{
 			dhName = dhName + " " + dh.getClass().getSimpleName();
 		}
 		dhName = dhName + " ]" ;
-		logger.info("receive dataHandlers {}", dataHandlers.size());
+        handlerCount = dataHandlers.size();
+        semaphore = new Semaphore(handlerCount);
+		logger.info("receive dataHandlers {}", handlerCount);
 	}
 
 	private static void showDataFlow()  {

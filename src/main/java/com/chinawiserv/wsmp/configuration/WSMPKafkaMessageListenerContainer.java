@@ -1,30 +1,9 @@
 package com.chinawiserv.wsmp.configuration;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
+import com.chinawiserv.wsmp.kafka.WSMPKafkaListener;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.kafka.clients.consumer.Consumer;
-import org.apache.kafka.clients.consumer.ConsumerRebalanceListener;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.clients.consumer.OffsetAndMetadata;
-import org.apache.kafka.clients.consumer.OffsetCommitCallback;
+import org.apache.kafka.clients.consumer.*;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.errors.WakeupException;
 import org.springframework.context.ApplicationEventPublisher;
@@ -44,6 +23,10 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.concurrent.*;
+
 /*
  * Copyright 2016 the original author or authors.
  *
@@ -59,8 +42,6 @@ import org.springframework.util.concurrent.ListenableFutureCallback;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-import com.chinawiserv.wsmp.kafka.WSMPKafkaListener;
 
 /**
  * Single-threaded Message listener container using the Java {@link Consumer}
@@ -580,7 +561,14 @@ public class WSMPKafkaMessageListenerContainer<K, V> extends AbstractMessageList
 		}
 
 		private void invokeListener(final ConsumerRecords<K, V> records) {
+
+			WSMPKafkaListener.onMessages(records, records.count());
 			Iterator<ConsumerRecord<K, V>> iterator = records.iterator();
+			invokeListener(iterator);
+		}
+
+		private void invokeListener(final Iterator<ConsumerRecord<K, V>> iterator) {
+
 			while (iterator.hasNext() && (this.autoCommit || (this.invoker != null && this.invoker.active))) {
 				final ConsumerRecord<K, V> record = iterator.next();
 				try {
@@ -588,7 +576,7 @@ public class WSMPKafkaMessageListenerContainer<K, V> extends AbstractMessageList
 						this.acknowledgingMessageListener.onMessage(record,
 								this.isAnyManualAck
 										? new ListenerConsumer.ConsumerAcknowledgment(
-												record, this.isManualImmediateAck)
+										record, this.isManualImmediateAck)
 										: null);
 					} else {
 						this.listener.onMessage(record);
@@ -607,7 +595,6 @@ public class WSMPKafkaMessageListenerContainer<K, V> extends AbstractMessageList
 					}
 				}
 			}
-			WSMPKafkaListener.onMessages(records, records.count());
 		}
 
 		private void processCommits() {

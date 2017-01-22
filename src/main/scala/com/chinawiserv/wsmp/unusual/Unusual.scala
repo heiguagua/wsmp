@@ -31,7 +31,7 @@ class Unusual extends DataHandler with  InitializingBean{
     this.scheduler.scheduleWithFixedDelay(new SendDataRunnable(), 1, 1, TimeUnit.SECONDS);
   }
 
-  def compute(cmds : java.util.List[Cmd]): Unit = {
+  def compute(cmds : java.util.List[Cmd], semaphore: Semaphore): Unit = {
     compute(cmds.toList);
   }
 
