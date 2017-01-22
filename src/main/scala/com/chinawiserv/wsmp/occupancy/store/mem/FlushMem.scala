@@ -63,14 +63,16 @@ private[occupancy] object FlushMem {
     val levels = occupancyData.levels;
     val levelsLength = levels.length;
     val maxLevels = OCCUPANCY_MEM_DATA.getOrElseUpdate(occupancyData.id, levels);
-    var changed = false;
-    if (levelsLength == maxLevels.length) {
-      for (i <- 0 until levelsLength) {
-        val level = levels(i);
-        val maxLevel = maxLevels(i);
-        if (level > maxLevel) {
-          maxLevels(i) = levels(i);
-          changed = true;
+    var changed = maxLevels == levels;
+    if(!changed){
+      if (levelsLength == maxLevels.length) {
+        for (i <- 0 until levelsLength) {
+          val level = levels(i);
+          val maxLevel = maxLevels(i);
+          if (level > maxLevel) {
+            maxLevels(i) = levels(i);
+            changed = true;
+          }
         }
       }
     }
