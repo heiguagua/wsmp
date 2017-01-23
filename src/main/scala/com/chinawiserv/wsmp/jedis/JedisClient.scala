@@ -6,7 +6,7 @@ import scala.collection.mutable.ListBuffer
 
 object JedisClient extends Serializable {
 
-  val redisHost = "slave5.dom"
+  val redisHost = "192.168.13.150"
   val redisPort = 6379
   val redisTimeout = 30000
   lazy val pool = new JedisPool(new GenericObjectPoolConfig(), redisHost, redisPort, redisTimeout)

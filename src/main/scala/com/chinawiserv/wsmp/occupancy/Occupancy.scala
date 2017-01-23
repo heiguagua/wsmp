@@ -1,7 +1,5 @@
 package com.chinawiserv.wsmp.occupancy
 
-import java.util.concurrent.Semaphore
-
 import com.chinawiserv.model.Cmd
 import com.chinawiserv.wsmp.handler.DataHandler
 import com.chinawiserv.wsmp.occupancy.store.mem._

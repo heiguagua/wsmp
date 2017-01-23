@@ -20,11 +20,11 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 
-// kafka-topics.sh --zookeeper slave6.dom:2181,slave7.dom:2181,slave8.dom:2181 --create --topic wsmp --replication-factor 1 --partitions 9
-// kafka-topics.sh --zookeeper slave6.dom:2181,slave7.dom:2181,slave8.dom:2181 --delete --topic wsmp
-// kafka-topics.sh --zookeeper slave6.dom:2181,slave7.dom:2181,slave8.dom:2181 --list
-// kafka-topics.sh --zookeeper slave6.dom:2181,slave7.dom:2181,slave8.dom:2181 --describe wsmp
-// kafka-console-consumer.sh --zookeeper slave6.dom:2181,slave7.dom:2181,slave8.dom:2181 --topic wsmp --from-beginning
+// kafka-topics.sh --zookeeper 192.168.13.151:2181,192.168.13.152:2181,192.168.13.154:2181 --create --topic wsmp --replication-factor 1 --partitions 9
+// kafka-topics.sh --zookeeper 192.168.13.151:2181,192.168.13.152:2181,192.168.13.154:2181 --delete --topic wsmp
+// kafka-topics.sh --zookeeper 192.168.13.151:2181,192.168.13.152:2181,192.168.13.154:2181 --list
+// kafka-topics.sh --zookeeper 192.168.13.151:2181,192.168.13.152:2181,192.168.13.154:2181 --describe wsmp
+// kafka-console-consumer.sh --zookeeper 192.168.13.151:2181,192.168.13.152:2181,192.168.13.154:2181 --topic wsmp --from-beginning
 @Component
 public class WSMPKafkaListener{
 	
