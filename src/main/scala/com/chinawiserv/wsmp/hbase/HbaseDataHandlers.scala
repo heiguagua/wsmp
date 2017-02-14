@@ -82,7 +82,6 @@ class HbaseDataHandlers extends DataHandler with InitializingBean {
     finally {
       WSMPKafkaListener.semaphore.release();
     }
-//    mutator.flush();
   }
 
   def getBytes[T](obj: T): Array[Byte] = obj match {
