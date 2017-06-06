@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import javax.sql.DataSource;
 import org.apache.ibatis.io.DefaultVFS;
-import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -50,11 +49,11 @@ public class MybatisPlusConfig {
     	return refresh;
     }
     
-	@Bean
-	public MapperScannerConfigurer initMapperScannerConfigurer(){
-		MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
-		mapperScannerConfigurer.setBasePackage("com.chinawiserv.radio.business.mapper");
-		//mapperScannerConfigurer.setAnnotationClass(Repository.class);
-		return mapperScannerConfigurer;
-	}
+//	@Bean
+//	public MapperScannerConfigurer initMapperScannerConfigurer(){
+//		MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
+//		mapperScannerConfigurer.setBasePackage("com.chinawiserv.radio.business.mapper");
+//		//mapperScannerConfigurer.setAnnotationClass(Repository.class);
+//		return mapperScannerConfigurer;
+//	}
 }
