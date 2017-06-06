@@ -1,0 +1,80 @@
+@charset "UTF-8";
+#waveOrder {
+  /*电磁环境评估 style*/ }
+  #waveOrder .city-list {
+    margin: 0 20px; }
+  #waveOrder .table-title {
+    text-align: left;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 25px 0 0 15px;
+    margin: 0; }
+  #waveOrder #table-radio th {
+    text-align: center; }
+  #waveOrder #table-alarm-undeal th {
+    text-align: center; }
+  #waveOrder #table-alarm-dealed th {
+    text-align: center; }
+  #waveOrder .signal-wrap {
+    padding: 15px;
+    border-bottom: 1px solid #DDD; }
+    #waveOrder .signal-wrap .signal-detect {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 0;
+      vertical-align: middle; }
+  #waveOrder .signal-category {
+    display: inline-block;
+    font-size: 16px;
+    margin-bottom: 0;
+    vertical-align: middle; }
+    #waveOrder .signal-category .item {
+      float: left;
+      margin-left: 20px; }
+    #waveOrder .signal-category .signal-sign {
+      display: inline-block;
+      vertical-align: middle;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      margin-left: 10px;
+      margin-right: 5px; }
+      #waveOrder .signal-category .signal-sign.legal {
+        background: #2ccd7d; }
+      #waveOrder .signal-category .signal-sign.legal-wrong {
+        background: #2ccd7d;
+        border: 2px solid #ff6059; }
+      #waveOrder .signal-category .signal-sign.known {
+        background: #2ccd7d;
+        border: 2px solid #d1d1d1; }
+      #waveOrder .signal-category .signal-sign.illegal {
+        background: #ff6059; }
+      #waveOrder .signal-category .signal-sign.unknown {
+        background: #d1d1d1; }
+    #waveOrder .signal-category .number {
+      display: inline-block;
+      vertical-align: middle; }
+    #waveOrder .signal-category .legal-number, #waveOrder .signal-category .legal-wrong, #waveOrder .signal-category .known {
+      color: #2ccd7d; }
+    #waveOrder .signal-category .illegal-number {
+      color: #ff6059; }
+    #waveOrder .signal-category .unknown-number {
+      color: #d1d1d1; }
+  #waveOrder .btn-refresh {
+    background: #FFF;
+    color: #333;
+    padding: 5px 15px;
+    border-radius: 4px; }
+    #waveOrder .btn-refresh .fa-repeat {
+      color: #49b2fc;
+      font-size: 18px; }
+  #waveOrder .elect-evaluate-wrap {
+    padding: 15px;
+    font-size: 16px;
+    overflow: hidden;
+    border-bottom: 1px solid #DDD; }
+    #waveOrder .elect-evaluate-wrap .module-name {
+      font-weight: bold; }
+    #waveOrder .elect-evaluate-wrap .coverage-number {
+      color: #49b2fc;
+      font-size: 18px; }
