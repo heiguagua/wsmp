@@ -1,0 +1,110 @@
+#waveOrder{
+  .city-list{
+    margin:0 20px;
+  }
+  .table-title{
+    text-align:left;
+    font-size:16px;
+    font-weight:bold;
+    padding: 25px 0 0 15px;
+    margin: 0;
+  }
+  #table-radio{
+    th{
+      text-align:center;
+    }
+  }
+  #table-alarm-undeal{
+    th{
+      text-align:center;
+    }
+  }
+  #table-alarm-dealed{
+    th{
+      text-align:center;
+    }
+  }
+  .signal-wrap{
+    padding:15px;
+    border-bottom: 1px solid #DDD;
+    .signal-detect{
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom:0;
+      vertical-align: middle;
+    }
+  }
+  .signal-category{
+    display: inline-block;
+    font-size: 16px;
+    margin-bottom: 0;
+    vertical-align: middle;
+    .item{
+      float:left;
+      margin-left:20px;
+    }
+    .signal-sign{
+      display: inline-block;
+      vertical-align: middle;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      margin-left: 10px;
+      margin-right: 5px;
+      &.legal{
+        background:rgb(44,205,125);
+      }
+      &.legal-wrong{
+        background:rgb(44,205,125);
+        border:2px solid rgb(255,96,89);
+      }
+      &.known{
+        background:rgb(44,205,125);
+        border:2px solid rgb(209,209,209);
+      }
+      &.illegal{
+        background::rgb(255,96,89);
+      }
+      &.unknown{
+        background:rgb(209,209,209);
+      }
+    }
+    .number{
+      display:inline-block;
+      vertical-align:middle;
+    }
+    .legal-number,.legal-wrong,.known{
+      color:rgb(44,205,125);
+    }
+    .illegal-number{
+      color:rgb(255,96,89);
+    }
+    .unknown-number{
+      color:rgb(209,209,209);
+    }
+  }
+  .btn-refresh{
+    background: #FFF;
+    color: #333;
+    padding: 5px 15px;
+    border-radius: 4px;
+    .fa-repeat{
+      color:#49b2fc;
+      font-size:18px;
+    }
+  }
+  /*电磁环境评估 style*/
+  .elect-evaluate-wrap{
+    padding:15px;
+    font-size:16px;
+    overflow: hidden;
+    border-bottom: 1px solid #DDD;
+    .module-name{
+      font-weight:bold;
+    }
+    .coverage-number{
+      color:#49b2fc;
+      font-size:18px;
+    }
+  }
+}
