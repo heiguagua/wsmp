@@ -35,15 +35,20 @@ import com.chinawiserv.radio.config.NeedAsyn;
 @Component
 @NeedAsyn(aysn_method = "startWatch")
 public class FileListener {
-	@Autowired
-	ApplicationContext applicationContext;
+
 	private static WatchService watchService;
+
 	private final static Kind<?>[] kinds = new Kind[] { StandardWatchEventKinds.ENTRY_CREATE,
 			StandardWatchEventKinds.ENTRY_MODIFY, StandardWatchEventKinds.OVERFLOW };
+
 	private final static Logger logger = LoggerFactory.getLogger(FileListener.class);
+
 	private final static ConcurrentHashMap<WatchKey, Set<Object>> configMap = new ConcurrentHashMap<>();
+
 	private final static ConcurrentHashMap<Object, Method> methodMap = new ConcurrentHashMap<>();
+
 	private final static ConcurrentHashMap<Path, WatchKey> registedPath = new ConcurrentHashMap<>();
+
 	static {
 
 		try {
@@ -53,6 +58,66 @@ public class FileListener {
 			e.printStackTrace();
 		}
 	}
+	public static void regist(Object obj, Path... paths) throws IOException {
+		for (Path path : paths) {
+			regist(obj, path, kinds);
+		}
+	}
+
+	public static void regist(final Object obj, Path path, final Kind<?>[] kinds) throws IOException {
+		final boolean isDirectory = (path != null && Files.isDirectory(path));
+		if (isDirectory) {
+
+			// 先将文件夹下所有的子文件夹都注册
+			Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
+
+				@Override
+				public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+
+					WatchKey key = registedPath.get(dir);
+					key = key == null ? dir.register(watchService, kinds) : key;
+					configMap.putIfAbsent(key, new HashSet<>(1));
+					configMap.get(key).add(obj);
+					return super.preVisitDirectory(dir, attrs);
+				}
+			});
+
+			for (Method method : obj.getClass().getMethods()) {
+				if (AnnotationUtils.findAnnotation(method, OnFileChange.class) != null) {
+					methodMap.putIfAbsent(obj, method);
+				}
+			}
+
+		} else {
+			logger.warn("[" + path + "] can not register, it's directory " + isDirectory);
+		}
+	}
+
+	public static void regist(Object obj, Path[] paths, Kind<?>[] kinds) throws IOException {
+		System.out.println("regist");
+		for (Path path : paths) {
+			regist(obj, path, kinds);
+		}
+	}
+
+	private static WatchService getWatchService() throws Exception {
+
+		return FileSystems.getDefault().newWatchService();
+
+	}
+
+	@Autowired
+	ApplicationContext applicationContext;
+
+	// private void appendListenByPath(Path file) throws IOException {
+	// Files.walkFileTree(file, new SimpleFileVisitor<Path>() {
+	// @Override
+	// public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+	// dir.register(watchService, StandardWatchEventKinds.ENTRY_CREATE);
+	// return FileVisitResult.CONTINUE;
+	// }
+	// });
+	// }
 
 	@Async
 	public void startWatch(String string_path) throws InterruptedException, IOException {
@@ -63,6 +128,7 @@ public class FileListener {
 		Path path = Paths.get(mapperFolder.getAbsolutePath());
 		path.register(watchService, StandardWatchEventKinds.ENTRY_MODIFY, StandardWatchEventKinds.ENTRY_CREATE);
 		Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
+
 			@Override
 			public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
 				if (dir.toFile().isDirectory()) {
@@ -94,7 +160,7 @@ public class FileListener {
 								regist(obj, path);
 							}
 						}
-						onFileChange(list, path);
+						this.onFileChange(list, path);
 					}
 				}
 			} finally {
@@ -104,63 +170,6 @@ public class FileListener {
 				}
 			}
 		}
-
-	}
-
-	public static void regist(Object obj, Path... paths) throws IOException {
-		for (Path path : paths) {
-			regist(obj, path, kinds);
-		}
-	}
-
-	public static void regist(Object obj, Path[] paths, Kind<?>[] kinds) throws IOException {
-		System.out.println("regist");
-		for (Path path : paths) {
-			regist(obj, path, kinds);
-		}
-	}
-
-	 public static void regist(final Object obj, Path path, final Kind<?>[] kinds) throws IOException {
-			final boolean isDirectory = (path != null && Files.isDirectory(path));
-			if (isDirectory) {
-
-			    // 先将文件夹下所有的子文件夹都注册
-			    Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
-				@Override
-				public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-
-				    WatchKey key = registedPath.get(dir);
-				    key = key == null ? dir.register(watchService, kinds) : key;
-				    configMap.putIfAbsent(key, new HashSet<Object>(1));
-				    configMap.get(key).add(obj);
-				    return super.preVisitDirectory(dir, attrs);
-				}
-			    });
-
-			    for (Method method : obj.getClass().getMethods()) {
-				if (AnnotationUtils.findAnnotation(method, OnFileChange.class) != null) {
-				    methodMap.putIfAbsent(obj, method);
-				}
-			    }
-
-			} else {
-			    logger.warn("[" + path + "] can not register, it's directory " + isDirectory);
-			}
-		    }
-	
-//	private void appendListenByPath(Path file) throws IOException {
-//		Files.walkFileTree(file, new SimpleFileVisitor<Path>() {
-//			@Override
-//			public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-//				dir.register(watchService, StandardWatchEventKinds.ENTRY_CREATE);
-//				return FileVisitResult.CONTINUE;
-//			}
-//		});
-//	}
-
-	private static WatchService getWatchService() throws Exception {
-
-		return FileSystems.getDefault().newWatchService();
 
 	}
 
