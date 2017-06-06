@@ -8,27 +8,30 @@ import org.springframework.context.annotation.Configuration;
 
 import com.alibaba.druid.pool.DruidDataSource;
 
-@Configuration
+//@Configuration
 public class DruidConfig {
+
 	@Value("${spring.datasource.username}")
 	private String userName;
+
 	@Value("${spring.datasource.password}")
 	private String userPassWord;
+
 	@Value("${spring.datasource.url}")
 	private String url;
-	@Value ("${spring.datasource.driver-class-name}")
+
+	@Value("${spring.datasource.driver-class-name}")
 	private String driverName;
-	
-	
+
 	@Bean
 	public DataSource getDataSource() {
 		DruidDataSource dataSource = new DruidDataSource();
-		dataSource.setUsername(userName);
-		dataSource.setPassword(userPassWord);
-		dataSource.setDriverClassName(driverName);
-		dataSource.setUrl(url);
+		dataSource.setUsername(this.userName);
+		dataSource.setPassword(this.userPassWord);
+		dataSource.setDriverClassName(this.driverName);
+		dataSource.setUrl(this.url);
 		return dataSource;
-		
+
 	}
-	
+
 }

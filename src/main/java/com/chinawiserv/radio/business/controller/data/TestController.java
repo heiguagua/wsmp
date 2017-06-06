@@ -10,7 +10,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.chinawiserv.radio.business.pojo.User;
 import com.chinawiserv.radio.business.service.UserService;
 
-@Controller
+//@Controller
 @RequestMapping("/data")
 public class TestController {
 
