@@ -9,8 +9,9 @@ import com.chinawiserv.radio.business.pojo.User;
 
 @Service
 public class UserService extends ServiceImpl<UserMapper, User> {
+
 	public Page<User> selectUserPage(Page<User> page, String state) {
-		page.setRecords(baseMapper.selectUserList(page, state));
+		page.setRecords(this.baseMapper.selectUserList(page, state));
 		return page;
 	}
 }
