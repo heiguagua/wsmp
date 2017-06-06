@@ -8,11 +8,13 @@ import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
 import com.baomidou.mybatisplus.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.spring.MybatisMapperRefresh;
 import com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean;
 
-//@Configuration
+@Configuration
 public class MybatisPlusConfig {
 
 	@Autowired
@@ -25,7 +27,7 @@ public class MybatisPlusConfig {
 	@Bean
 	public MybatisMapperRefresh getMybatisMapperRefresh() throws Exception {
 		MybatisSqlSessionFactoryBean sqlSessionFactoryBean = this.context.getBean(MybatisSqlSessionFactoryBean.class);
-		MybatisMapperRefresh refresh = new MybatisMapperRefresh(this.context.getResources("classpath:mapper/*/*.xml"), sqlSessionFactoryBean.getObject(), true);
+		MybatisMapperRefresh refresh = new MybatisMapperRefresh(sqlSessionFactoryBean.getObject(),1,1,true);
 		return refresh;
 	}
 
