@@ -12,9 +12,6 @@ public class Start {
 
 	public static void main(String[] args) {
 
-		ConfigurableApplicationContext con = SpringApplication.run(Start.class);
-		final UserMapper userMapper = con.getBean(UserMapper.class);
-		System.out.println(userMapper);
-		System.out.println(userMapper.test());
+		SpringApplication.run(Start.class);
 	}
 }
