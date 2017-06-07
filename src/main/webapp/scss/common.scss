@@ -37,11 +37,26 @@ h1,h2,h3,h4,h5,h6,p{
 input{
   outline:none;
 }
+select{
+  min-width:80px;
+}
+label,.control-label{
+  font-size: 14px;
+}
 .right10{
   margin-right:10px;
 }
+.padding0{
+  padding:0;
+}
 .padding15{
   padding:15px;
+}
+.mrg-top15{
+  margin-top:15px;
+}
+.mrg-bottom15{
+  margin-bottom:15px;
 }
 @mixin flex-flow ($flow:row) {
   display: -webkit-box;
@@ -164,6 +179,9 @@ input{
   background:rgb(6,138,231);
   color:#FFF;
   padding: 10px;
+  .modal-title{
+    font-size:16px;
+  }
 }
 .modal .close{
   color:#FFF;
@@ -212,36 +230,37 @@ input{
   min-height:130px;
   &.box-tabs{
     border:none;
-    .nav-tabs{
-      background: #f9fcfe;
-      li{
-        a{
-          padding: 12px 40px;
-          font-size: 16px;
-          background-color:#eef7ff;
-          color:#656565;
-        }
-        &.active{
-          border: none;
-          a{
-            color:#49b2fc;
-            background-color:#FFF;
-            padding: 13px 40px;
-          }
-        }
-        &:not(.active){
-          a{
-            border:1px solid #DDD;
-            border-bottom: none;
-          }
-        }
+
+  }
+}
+.nav-tabs{
+  background: #f9fcfe;
+  li{
+    a{
+      padding: 12px 40px;
+      font-size: 16px;
+      background-color:#eef7ff;
+      color:#656565;
+    }
+    &.active{
+      border: none;
+      a{
+        color:#49b2fc;
+        background-color:#FFF;
+        padding: 13px 40px;
       }
     }
-    .tab-content{
-      border: 1px solid #DDD;
-      border-top: none;
+    &:not(.active){
+      a{
+        border:1px solid #DDD;
+        border-bottom: none;
+      }
     }
   }
+}
+.tab-content{
+  border: 1px solid #DDD;
+  border-top: none;
 }
 .box2{
   @extend .box;

@@ -8,6 +8,7 @@
     <link href='library/bootstrap/css/bootstrap.min.css' rel='stylesheet'/>
     <link href='library/font-awesome/css/font-awesome.min.css' rel='stylesheet'/>
     <link href='library/bootstrap/css/awesome-bootstrap-checkbox.css' rel='stylesheet'/>
+    <link href='library/select2/select2.min.css' rel='stylesheet'/>
     <link href='css/common.css' rel='stylesheet'/>
     <link href='css/signal.css' rel='stylesheet'/>
   </head>
@@ -23,7 +24,7 @@
         <option>检测站</option>
       </select>
       <div class='config pull-right'>
-        <a class='btn btn-default btn-config'><i class='fa fa-gear'></i>&nbsp;&nbsp;配置</a>
+        <a class='btn btn-default btn-config' data-toggle="modal" data-target="#modalConfig"><i class='fa fa-gear'></i>&nbsp;&nbsp;配置</a>
       </div>
     </div>
 
@@ -77,7 +78,7 @@
               </div>
             </div>
             <div class='signal-type flex1 flex-column justify-center'>
-              <div class='flex1 flex-row align-center'>
+              <div class='flex1 flex-row align-center mrg-top15'>
                 <div class="radio radio-primary flex1 ">
                                 <input type="radio" name="signal-type" id="legal-normal" >
                                 <label for="legal-normal">
@@ -91,7 +92,7 @@
                                             </label>
                                         </div>
               </div>
-              <div class='flex1 flex-row align-center'>
+              <div class='flex1 flex-row align-center mrg-bottom15'>
                 <div class="radio radio-primary flex1 ">
                                 <input type="radio" name="signal-type" id="legal" >
                                 <label for="legal">
@@ -116,19 +117,159 @@
         </div>
       </section>
       <section class='flex-row'>
-        <div class='box'></div>
+        <div class='box'>
+          <div class='data-play'>
+            <label class='module-name'>数据回放</label>
+            <a class='btn btn-default btn-choose pull-right'>选择数据</a>
+            <ul class="nav nav-pills pull-right">
+              <li role="presentation" class="active"><a href="#">音频</a></li>
+              <li role="presentation"><a href="#">IQ数据</a></li>
+              <li role="presentation"><a href="#">频谱</a></li>
+            </ul>
+          </div>
+        </div>
       </section>
       <section class='flex-row'>
-        <div class='box'></div>
+        <div class='box'>
+          <div class='month-data flex-column'>
+            <h4 class='title'>近3个月占用度（按天统计）</h4>
+            <div class='flex1' id='monthChart'></div>
+          </div>
+        </div>
       </section>
       <section class='flex-row'>
-        <div class='box'></div>
+        <div class='box'>
+          <div class='locate-coverage'>
+            <label class='module-name'><i class='fa fa-map-marker'></i>成都某某站台</label>
+            <div class='pull-right'>电磁覆盖率:&nbsp;<span class='coverage-number'>90%</span></div>
+          </div>
+        </div>
       </section>
+    </div>
+
+    <!-- Modal 日占用度-->
+    <div class="modal fade" id="modalDay" tabindex="-1" role="dialog" aria-labelledby="modalDayLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="modalDayLabel">日占用度（按24小时统计）</h4>
+          </div>
+          <div class="modal-body">
+            <div id='dayChart'></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 小时占用度-->
+    <div class="modal fade" id="modalHour" tabindex="-1" role="dialog" aria-labelledby="modalHourLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="modalHourLabel">小时占用度（按60分钟统计）</h4>
+          </div>
+          <div class="modal-body">
+            <div id='hourChart'></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 配置设置-->
+    <div class="modal fade" id="modalConfig" tabindex="-1" role="dialog" aria-labelledby="modalConfigLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="modalConfigLabel">配置设置</h4>
+          </div>
+          <div class="modal-body">
+            <ul class="nav nav-tabs">
+              <li role="presentation" ><a href="#profile">总览</a></li>
+              <li role="presentation"><a href="#radio">频率</a></li>
+              <li role="presentation"><a href="#station">台站</a></li>
+              <li role="presentation" class="active"><a href="#envim">电磁环境</a></li>
+              <li role="presentation"><a href="#network">网络运维</a></li>
+            </ul>
+            <div class="tab-content">
+              <div role="tabpanel" class="tab-pane active " id="envim">
+                <div class='flex-row'>
+                <div class='flex1 config-left'>
+                  <form class="form-horizontal ">
+                    <div class="form-group ">
+                      <label for="" class="col-sm-3 control-label padding0">默认参数配置</label>
+                      <div class="col-sm-9">
+
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="" class="col-sm-3 control-label">选择监测站</label>
+                      <div class="col-sm-9">
+                        <select class='select2'>
+                          <option></option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="" class="col-sm-3 control-label">时间占用度</label>
+                      <div class="col-sm-9">
+                        <select class='select2'>
+                          <option></option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group ">
+                      <div class="col-sm-offset-3 col-sm-9 mrg-top15">
+                        <button type="submit" class="btn btn-default btn-apply">应用</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class='flex1 config-right'>
+                  <form class="form-horizontal">
+                    <div class="form-group">
+                      <label for="" class="col-sm-4 control-label padding0">重点监测参数配置</label>
+                      <div class="col-sm-8">
+
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="" class="col-sm-4 control-label">设置监测站&nbsp;&nbsp;&nbsp;</label>
+                      <div class="col-sm-8">
+                        <select class='select2'>
+                          <option></option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="" class="col-sm-4 control-label">选择监测时间</label>
+                      <div class="col-sm-8">
+                        <select class='select2'>
+                          <option></option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group ">
+                      <div class="col-sm-offset-4 col-sm-8 mrg-top15">
+                        <button type="submit" class="btn btn-default btn-apply">应用</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <!-- Libraries -->
     <script src='library/jquery/jquery.min.js'></script>
     <script src='library/bootstrap/js/bootstrap.min.js'></script>
     <script src='library/echarts/echarts.min.js'></script>
+    <script src='library/select2/select2.min.js'></script>
     <script src='js/signal.js'></script>
   </body>
 </html>
