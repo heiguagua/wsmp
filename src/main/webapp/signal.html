@@ -17,14 +17,15 @@
     <!--header-->
     <div class='header-bar'>
       <span class='module-name'>信号管理</span>
-      <select class='radio-list'>
-        <option>88.5MHz</option>
-      </select>
-      <select class='station-list'>
+      <div  class='header-search' ><input type='text'/>
+        <span class='search-icon'></span>
+      </div>
+      <!-- <select class='station-list select2-picker'>
         <option>检测站</option>
-      </select>
+      </select> -->
       <div class='config pull-right'>
-        <a class='btn btn-default btn-config' data-toggle="modal" data-target="#modalConfig"><i class='fa fa-gear'></i>&nbsp;&nbsp;配置</a>
+        <a class='btn btn-default btn-config' ><img  src='images/export.png' />&nbsp;&nbsp;导出报表</a>
+        <a class='btn btn-default btn-config' data-toggle="modal" data-target="#modalConfig"><img  src='images/config.png' />&nbsp;&nbsp;配置</a>
       </div>
     </div>
 
@@ -65,14 +66,14 @@
             <div class='detect-way flex1 flex-row'>
               <div class='way-key flex1 checked'>
                 <div class='way-sign'>
-
+                  <img src='images/way_2.png' alt='重点监测' />
                 </div>
                 <p>重点监测</p>
 
               </div>
               <div class='way-single flex1'>
                 <div class='way-sign'>
-
+                  <img src='images/way_1.png' alt='单频测量' />
                 </div>
                 <p>单频测量</p>
               </div>
@@ -129,19 +130,20 @@
           </div>
         </div>
       </section>
+
       <section class='flex-row'>
         <div class='box'>
-          <div class='month-data flex-column'>
-            <h4 class='title'>近3个月占用度（按天统计）</h4>
-            <div class='flex1' id='monthChart'></div>
+          <div class='locate-coverage'>
+            <label class='module-name'><img src='images/locate.png'  />&nbsp;&nbsp;成都某某站台</label>
+            <div class='pull-right'>电磁覆盖率:&nbsp;<span class='coverage-number'>90%</span></div>
           </div>
         </div>
       </section>
       <section class='flex-row'>
         <div class='box'>
-          <div class='locate-coverage'>
-            <label class='module-name'><i class='fa fa-map-marker'></i>成都某某站台</label>
-            <div class='pull-right'>电磁覆盖率:&nbsp;<span class='coverage-number'>90%</span></div>
+          <div class='month-data flex-column'>
+            <h4 class='title'>近3个月占用度（按天统计）</h4>
+            <div class='flex1' id='monthChart'></div>
           </div>
         </div>
       </section>
@@ -162,13 +164,13 @@
       </div>
     </div>
 
-    <!-- Modal 小时占用度-->
+    <!-- Modal 小时场强度-->
     <div class="modal fade" id="modalHour" tabindex="-1" role="dialog" aria-labelledby="modalHourLabel">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="modalHourLabel">小时占用度（按60分钟统计）</h4>
+            <h4 class="modal-title" id="modalHourLabel">小时场强度（按60分钟统计）</h4>
           </div>
           <div class="modal-body">
             <div id='hourChart'></div>
@@ -177,82 +179,37 @@
       </div>
     </div>
 
-    <!-- Modal 配置设置-->
+    <!-- Modal 重点监测参数配置-->
     <div class="modal fade" id="modalConfig" tabindex="-1" role="dialog" aria-labelledby="modalConfigLabel">
-      <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-dialog " role="document">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="modalConfigLabel">配置设置</h4>
+            <h4 class="modal-title" id="modalConfigLabel">重点监测参数配置</h4>
           </div>
           <div class="modal-body">
-            <ul class="nav nav-tabs">
-              <li role="presentation" ><a href="#profile">总览</a></li>
-              <li role="presentation"><a href="#radio">频率</a></li>
-              <li role="presentation"><a href="#station">台站</a></li>
-              <li role="presentation" class="active"><a href="#envim">电磁环境</a></li>
-              <li role="presentation"><a href="#network">网络运维</a></li>
-            </ul>
-            <div class="tab-content">
               <div role="tabpanel" class="tab-pane active " id="envim">
                 <div class='flex-row'>
                 <div class='flex1 config-left'>
                   <form class="form-horizontal ">
-                    <div class="form-group ">
-                      <label for="" class="col-sm-3 control-label padding0">默认参数配置</label>
-                      <div class="col-sm-9">
-
-                      </div>
-                    </div>
                     <div class="form-group">
-                      <label for="" class="col-sm-3 control-label">选择监测站</label>
+                      <label for="" class="col-sm-3 control-label">设置监测站</label>
                       <div class="col-sm-9">
-                        <select class='select2'>
+                        <select class='select2-picker'>
                           <option></option>
                         </select>
                       </div>
                     </div>
                     <div class="form-group">
-                      <label for="" class="col-sm-3 control-label">时间占用度</label>
+                      <label for="" class="col-sm-3 control-label">选择监测时间</label>
                       <div class="col-sm-9">
-                        <select class='select2'>
+                        <select class='select2-picker'>
                           <option></option>
                         </select>
                       </div>
                     </div>
                     <div class="form-group ">
-                      <div class="col-sm-offset-3 col-sm-9 mrg-top15">
-                        <button type="submit" class="btn btn-default btn-apply">应用</button>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-                <div class='flex1 config-right'>
-                  <form class="form-horizontal">
-                    <div class="form-group">
-                      <label for="" class="col-sm-4 control-label padding0">重点监测参数配置</label>
-                      <div class="col-sm-8">
-
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label for="" class="col-sm-4 control-label">设置监测站&nbsp;&nbsp;&nbsp;</label>
-                      <div class="col-sm-8">
-                        <select class='select2'>
-                          <option></option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label for="" class="col-sm-4 control-label">选择监测时间</label>
-                      <div class="col-sm-8">
-                        <select class='select2'>
-                          <option></option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="form-group ">
-                      <div class="col-sm-offset-4 col-sm-8 mrg-top15">
+                      <div class="col-sm-offset-3 col-sm-9 mrg-top15 text-right">
                         <button type="submit" class="btn btn-default btn-apply">应用</button>
                       </div>
                     </div>
@@ -260,7 +217,6 @@
                 </div>
               </div>
               </div>
-            </div>
           </div>
         </div>
       </div>

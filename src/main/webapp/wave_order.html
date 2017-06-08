@@ -9,7 +9,7 @@
     <link href="library/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
     <link href='library/font-awesome/css/font-awesome.min.css' rel='stylesheet'/>
     <link href='library/bootstrap/css/awesome-bootstrap-checkbox.css' rel='stylesheet'/>
-
+    <link href='library/select2/select2.min.css' rel='stylesheet'/>
     <link href='css/common.css' rel='stylesheet'/>
     <link href='css/wave_order.css' rel='stylesheet'/>
   </head>
@@ -18,9 +18,11 @@
     <!--header-->
     <div class='header-bar'>
       <span class='module-name'>电波秩序管理</span>
-      <select class='city-list'>
-        <option>成都市</option>
-      </select>
+      <div class='search-filters'>
+        <select class='city-list select2-picker'>
+          <option>成都市</option>
+        </select>
+      </div>
     </div>
 
     <!--content-->
@@ -99,7 +101,7 @@
                     </div>
                 <span class='signal-sign unknown'></span><span class='number unknown-number'>1</span></li>
             </ul>
-            <a class='btn btn-default btn-refresh pull-right'><i class='fa fa-repeat'></i>&nbsp;&nbsp;刷新</a>
+            <a class='btn btn-default btn-refresh pull-right'><img src='images/refresh.png' />&nbsp;&nbsp;刷新</a>
           </div>
         </div>
       </section>
@@ -184,6 +186,7 @@
     <script src='library/bootstrap/js/bootstrap.min.js'></script>
     <script src="library/bootstrap-table/bootstrap-table.min.js"></script>
     <script src="library/bootstrap-table/bootstrap-table-zh-CN.min.js"></script>
+    <script src='library/select2/select2.min.js'></script>
     <script src='js/wave_order.js'></script>
   </body>
 </html>

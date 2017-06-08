@@ -1,0 +1,60 @@
+#alarm .detect-way {
+  height: 100%; }
+  #alarm .detect-way .way-key {
+    border-right: 1px solid #DAE5F0; }
+    #alarm .detect-way .way-key.checked {
+      background: #f0fcf6;
+      position: relative; }
+      #alarm .detect-way .way-key.checked:before {
+        content: "";
+        background: #2CCD7D;
+        border: 1px solid #1EBB35;
+        display: inline-block;
+        position: absolute;
+        width: 28px;
+        height: 28px;
+        right: 15px;
+        top: 5px;
+        border-radius: 50%;
+        -webkit-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+        -o-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+        transition: border 0.15s ease-in-out, color 0.15s ease-in-out; }
+      #alarm .detect-way .way-key.checked:after {
+        font-family: "FontAwesome";
+        content: "\f00c";
+        display: inline-block;
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        right: 24px;
+        top: 5px;
+        margin-left: -20px;
+        padding-left: 3px;
+        padding-top: 1px;
+        font-size: 17px;
+        color: #FFF; }
+  #alarm .detect-way .way-sign {
+    width: 60px;
+    height: 60px;
+    margin: 10px auto;
+    text-align: center; }
+  #alarm .detect-way p {
+    text-align: center; }
+
+#alarm .radio-type-check {
+  height: 100%;
+  padding: 0 15px; }
+
+#alarm .month-data {
+  padding: 15px;
+  height: 100%;
+  min-height: 340px; }
+  #alarm .month-data .title {
+    font-size: 16px;
+    color: #505363;
+    text-align: center;
+    margin-top: 0; }
+
+#alarm #dayChart, #alarm #hourChart {
+  width: 100%;
+  min-height: 300px; }

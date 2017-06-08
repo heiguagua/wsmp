@@ -1,0 +1,30 @@
+#communication{
+  .table-title{
+    text-align: left;
+    font-size: 14px;
+    padding: 25px 0 0 15px;
+    margin: 0;
+    color: #505363;
+  }
+  table{
+    th{
+      color: #5D7D94;
+    }
+    tr{
+      td{
+        text-align:left;
+      }
+    }
+  }
+  .select2-container{
+    min-width:140px;
+  }
+  .btn-search{
+    background: #1893F7;
+    border-radius: 3px;
+    color: #FFF;
+    padding: 4px 12px;
+    font-size: 14px;
+    margin-left: 15px;
+  }
+}

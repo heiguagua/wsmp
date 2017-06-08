@@ -1,0 +1,66 @@
+{
+  "total":100,
+  "rows":[
+    {
+      "station_type":"移动",
+      "2G":"GSM 20928",
+      "3G":"TD-LTE 20928",
+      "4G":"TD-LTE 20928",
+      "station_total":"109328"
+    },{
+      "station_type":"移动",
+      "2G":"GSM 20928",
+      "3G":"TD-LTE 20928",
+      "4G":"TD-LTE 20928",
+      "station_total":"109328"
+    },{
+      "station_type":"移动",
+      "2G":"GSM 20928",
+      "3G":"TD-LTE 20928",
+      "4G":"TD-LTE 20928",
+      "station_total":"109328"
+    },{
+      "station_type":"移动",
+      "2G":"GSM 20928",
+      "3G":"TD-LTE 20928",
+      "4G":"TD-LTE 20928",
+      "station_total":"109328"
+    },{
+      "station_type":"移动",
+      "2G":"GSM 20928",
+      "3G":"TD-LTE 20928",
+      "4G":"TD-LTE 20928",
+      "station_total":"109328"
+    },{
+      "station_type":"移动",
+      "2G":"GSM 20928",
+      "3G":"TD-LTE 20928",
+      "4G":"TD-LTE 20928",
+      "station_total":"109328"
+    },{
+      "station_type":"移动",
+      "2G":"GSM 20928",
+      "3G":"TD-LTE 20928",
+      "4G":"TD-LTE 20928",
+      "station_total":"109328"
+    },{
+      "station_type":"移动",
+      "2G":"GSM 20928",
+      "3G":"TD-LTE 20928",
+      "4G":"TD-LTE 20928",
+      "station_total":"109328"
+    },{
+      "station_type":"移动",
+      "2G":"GSM 20928",
+      "3G":"TD-LTE 20928",
+      "4G":"TD-LTE 20928",
+      "station_total":"109328"
+    },{
+      "station_type":"移动",
+      "2G":"GSM 20928",
+      "3G":"TD-LTE 20928",
+      "4G":"TD-LTE 20928",
+      "station_total":"109328"
+    }
+    ]
+  }
