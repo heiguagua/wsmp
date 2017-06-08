@@ -4,7 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>å¬ä¼ç§»å¨éä¿¡ç®¡ç</title>
+    <title>公众移动通信管理</title>
     <meta name="description" content=""/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
     <link href='library/bootstrap/css/bootstrap.min.css' rel='stylesheet'/>
@@ -18,17 +18,17 @@
   <body id='communication'>
     <!--header-->
     <div class='header-bar'>
-      <span class='module-name'>å¬ä¼ç§»å¨éä¿¡ç®¡ç</span>
+      <span class='module-name'>公众移动通信管理</span>
       <div class='search-filters'>
-        éæ©åå¸
+        选择城市
         <select class='city-list select2-picker'>
-          <option>æé½å¸</option>
+          <option>成都市</option>
         </select>
-        å¼å§æ¶é´
+        开始时间
         <input type='text' class='timepicker' />
-        ç»ææ¶é´
+        结束时间
         <input type='text' class='timepicker' />
-        <a class='btn btn-search'>ç¡®å®<a>
+        <a class='btn btn-search'>确定<a>
       </div>
     </div>
 
@@ -43,28 +43,28 @@
 
       <section>
         <div class='box'>
-          <p class='table-title'>åºç«æ°å¯¹æ¯</p>
+          <p class='table-title'>基站数对比</p>
           <table class="table table-striped text-center" id='table-station-compare'>
           </table>
         </div>
       </section>
     </div>
 
-    <!-- Modal éç½®-->
+    <!-- Modal 配置-->
     <div class="modal fade" id="" tabindex="-1" role="dialog" aria-labelledby="modalConfigLabel">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="modalConfigLabel">éç½®</h4>
+            <h4 class="modal-title" id="modalConfigLabel">配置</h4>
           </div>
           <div class="modal-body">
             <ul class="nav nav-tabs">
-              <li role="presentation" ><a href="#profile">æ»è§</a></li>
-              <li role="presentation"><a href="#radio">é¢ç</a></li>
-              <li role="presentation"><a href="#station">å°ç«</a></li>
-              <li role="presentation" class="active"><a href="#envim">çµç£ç¯å¢</a></li>
-              <li role="presentation"><a href="#network">ç½ç»è¿ç»´</a></li>
+              <li role="presentation" ><a href="#profile">总览</a></li>
+              <li role="presentation"><a href="#radio">频率</a></li>
+              <li role="presentation"><a href="#station">台站</a></li>
+              <li role="presentation" class="active"><a href="#envim">电磁环境</a></li>
+              <li role="presentation"><a href="#network">网络运维</a></li>
             </ul>
             <div class="tab-content">
               <div role="tabpanel" class="tab-pane active " id="envim">
@@ -72,13 +72,13 @@
                 <div class='flex1 config-left'>
                   <form class="form-horizontal ">
                     <div class="form-group ">
-                      <label for="" class="col-sm-3 control-label padding0">é»è®¤åæ°éç½®</label>
+                      <label for="" class="col-sm-3 control-label padding0">默认参数配置</label>
                       <div class="col-sm-9">
 
                       </div>
                     </div>
                     <div class="form-group">
-                      <label for="" class="col-sm-3 control-label">éæ©çæµç«</label>
+                      <label for="" class="col-sm-3 control-label">选择监测站</label>
                       <div class="col-sm-9">
                         <select class='select2'>
                           <option></option>
@@ -86,7 +86,7 @@
                       </div>
                     </div>
                     <div class="form-group">
-                      <label for="" class="col-sm-3 control-label">æ¶é´å ç¨åº¦</label>
+                      <label for="" class="col-sm-3 control-label">时间占用度</label>
                       <div class="col-sm-9">
                         <select class='select2'>
                           <option></option>
@@ -95,7 +95,7 @@
                     </div>
                     <div class="form-group ">
                       <div class="col-sm-offset-3 col-sm-9 mrg-top15">
-                        <button type="submit" class="btn btn-default btn-apply">åºç¨</button>
+                        <button type="submit" class="btn btn-default btn-apply">应用</button>
                       </div>
                     </div>
                   </form>
@@ -103,13 +103,13 @@
                 <div class='flex1 config-right'>
                   <form class="form-horizontal">
                     <div class="form-group">
-                      <label for="" class="col-sm-4 control-label padding0">éç¹çæµåæ°éç½®</label>
+                      <label for="" class="col-sm-4 control-label padding0">重点监测参数配置</label>
                       <div class="col-sm-8">
 
                       </div>
                     </div>
                     <div class="form-group">
-                      <label for="" class="col-sm-4 control-label">è®¾ç½®çæµç«&nbsp;&nbsp;&nbsp;</label>
+                      <label for="" class="col-sm-4 control-label">设置监测站&nbsp;&nbsp;&nbsp;</label>
                       <div class="col-sm-8">
                         <select class='select2'>
                           <option></option>
@@ -117,7 +117,7 @@
                       </div>
                     </div>
                     <div class="form-group">
-                      <label for="" class="col-sm-4 control-label">éæ©çæµæ¶é´</label>
+                      <label for="" class="col-sm-4 control-label">选择监测时间</label>
                       <div class="col-sm-8">
                         <select class='select2'>
                           <option></option>
@@ -126,7 +126,7 @@
                     </div>
                     <div class="form-group ">
                       <div class="col-sm-offset-4 col-sm-8 mrg-top15">
-                        <button type="submit" class="btn btn-default btn-apply">åºç¨</button>
+                        <button type="submit" class="btn btn-default btn-apply">应用</button>
                       </div>
                     </div>
                   </form>
