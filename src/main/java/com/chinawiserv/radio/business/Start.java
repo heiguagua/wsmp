@@ -1,4 +1,4 @@
- package com.chinawiserv.radio;
+ package com.chinawiserv.radio.business;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
