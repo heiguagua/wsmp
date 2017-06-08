@@ -1,0 +1,140 @@
+<%@ page language="java" isThreadSafe="true" pageEncoding="utf8" %>
+<%@ page contentType="text/html; charset=utf8" %>
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>告警管理</title>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <link href='library/bootstrap/css/bootstrap.min.css' rel='stylesheet'/>
+    <link href='library/font-awesome/css/font-awesome.min.css' rel='stylesheet'/>
+    <link href='library/bootstrap/css/awesome-bootstrap-checkbox.css' rel='stylesheet'/>
+    <link href='css/common.css' rel='stylesheet'/>
+    <link href='css/alarm.css' rel='stylesheet'/>
+  </head>
+
+  <body id='alarm'>
+    <!--header-->
+    <div class='header-bar'>
+      <span class='module-name'>告警管理</span>
+      <div  class='header-search' ><input type='text'/>
+        <span class='search-icon'></span>
+      </div>
+    </div>
+
+    <!--content-->
+    <div class='content-wrap'>
+      <section class='flex-row'>
+        <div class='box right10'>
+          <div class='detect-way flex-row'>
+            <div class='way-key flex1'>
+              <div class='way-sign'>
+                <img src='images/way_2.png' alt='告警确认' />
+              </div>
+              <p>告警确认</p>
+            </div>
+            <div class='way-key flex1 checked'>
+              <div class='way-sign'>
+                <img src='images/way_2.png' alt='重点监测' />
+              </div>
+              <p>重点监测</p>
+            </div>
+            <div class='way-single flex1'>
+              <div class='way-sign'>
+                <img src='images/way_1.png' alt='单频测量' />
+              </div>
+              <p>单频测量</p>
+            </div>
+          </div>
+        </div>
+        <div class='box2'>
+          <div class='flex-row radio-type-check align-center'>
+            <div class="radio radio-primary flex1 ">
+                            <input type="radio" name="signal-type" id="legal-normal" >
+                            <label for="legal-normal">
+                                合法台站正常
+                            </label>
+                        </div>
+                        <div class="radio radio-primary flex1 ">
+                                        <input type="radio" name="signal-type" id="legal-wrong" >
+                                        <label for="legal-wrong">
+                                            合法台站违规
+                                        </label>
+                                    </div>
+                                    <div class="radio radio-primary flex1 ">
+                                                    <input type="radio" name="signal-type" id="legal" >
+                                                    <label for="legal">
+                                                        合法站台
+                                                    </label>
+                                                </div>
+                                                <div class="radio radio-primary flex1 ">
+                                                                <input type="radio" name="signal-type" id="illegal" checked >
+                                                                <label for="illegal">
+                                                                    非法信号
+                                                                </label>
+                                                            </div>
+                                                            <div class="radio radio-primary flex1 ">
+                                                                            <input type="radio" name="signal-type" id="unknown" >
+                                                                            <label for="unknown">
+                                                                                不明信号
+                                                                            </label>
+                                                                        </div>
+          </div>
+        </div>
+      </section>
+      <section class='flex-row'>
+        <div class='box'>
+          <div class='locate-coverage'>
+            <label class='module-name'><img src='images/locate.png'  />&nbsp;&nbsp;成都某某站台</label>
+            <div class='pull-right'>电磁覆盖率:&nbsp;<span class='coverage-number'>90%</span></div>
+          </div>
+        </div>
+      </section>
+      <section class='flex-row'>
+        <div class='box'>
+          <div class='month-data flex-column'>
+            <h4 class='title'>近3个月占用度（按天统计）</h4>
+            <div class='flex1' id='monthChart'></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Modal 日占用度-->
+    <div class="modal fade" id="modalDay" tabindex="-1" role="dialog" aria-labelledby="modalDayLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="modalDayLabel">日占用度（按24小时统计）</h4>
+          </div>
+          <div class="modal-body">
+            <div id='dayChart'></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 小时场强度-->
+    <div class="modal fade" id="modalHour" tabindex="-1" role="dialog" aria-labelledby="modalHourLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="modalHourLabel">小时场强度（按60分钟统计）</h4>
+          </div>
+          <div class="modal-body">
+            <div id='hourChart'></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Libraries -->
+    <script src='library/jquery/jquery.min.js'></script>
+    <script src='library/bootstrap/js/bootstrap.min.js'></script>
+    <script src='library/echarts/echarts.min.js'></script>
+    <script src='js/alarm.js'></script>
+  </body>
+</html>
