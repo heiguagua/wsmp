@@ -9,6 +9,7 @@
     <link href="library/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
     <link href='library/font-awesome/css/font-awesome.min.css' rel='stylesheet'/>
     <link href='library/select2/select2.min.css' rel='stylesheet'/>
+    <link href='library/timepicker/css/bootstrap-datetimepicker.min.css' rel='stylesheet'/>
     <link href='css/common.css' rel='stylesheet'/>
     <link href='css/communication.css' rel='stylesheet'/>
   </head>
@@ -22,11 +23,23 @@
         <select class='city-list select2-picker'>
           <option>成都市</option>
         </select>
-        开始时间
-        <input type='text' class='timepicker' />
-        结束时间
-        <input type='text' class='timepicker' />
-        <a class='btn btn-search'>确定<a>
+        <div class='time-wrap'>
+          开始时间
+          <div class='input-group date ' id='startTime'>
+                      <input type='text' class="form-control time-picker"  data-date-format="yyyy-mm-dd" />
+                      <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-calendar"></span>
+                      </span>
+                  </div>
+          结束时间
+          <div class='input-group date ' id='endTime'>
+                      <input type='text' class="form-control time-picker" />
+                      <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-calendar"></span>
+                      </span>
+                  </div>
+        </div>
+        <a class='btn btn-search'>确定</a>
       </div>
     </div>
 
@@ -142,6 +155,10 @@
     <script src="library/bootstrap-table/bootstrap-table.min.js"></script>
     <script src="library/bootstrap-table/bootstrap-table-zh-CN.min.js"></script>
     <script src='library/select2/select2.min.js'></script>
+    <script src='library/timepicker/moment.min.js'></script>
+    <script src='library/timepicker/js/bootstrap-datetimepicker.min.js'></script>
+    <script src='library/timepicker/bootstrap-datetimepicker.zh-CN.js'></script>
+    <script src='js/common.js'></script>
     <script src='js/communication.js'></script>
   </body>
 </html>

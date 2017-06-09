@@ -2,6 +2,9 @@ $(function(){
 
   $('.select2-picker').select2();
 
+  $('.time-picker').datetimepicker({
+    
+  });
   $('#table-comms').bootstrapTable({
         method: 'get',
         contentType: "application/x-www-form-urlencoded",//必须要有！！！！

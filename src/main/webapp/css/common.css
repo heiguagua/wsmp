@@ -362,3 +362,6 @@ label, .control-label {
   .checkbox.radio-primary input[type="radio"]:checked + label::after, .radio.radio-primary input[type="radio"]:checked + label::after {
     background-color: #37a5ff;
     top: 6px; }
+
+.datetimepicker table tr td span, .datetimepicker td {
+  text-align: center !important; }

@@ -21,3 +21,28 @@
   padding: 4px 12px;
   font-size: 14px;
   margin-left: 15px; }
+
+#communication .time-wrap {
+  display: inline-block;
+  vertical-align: middle; }
+  #communication .time-wrap .date {
+    display: inline-block; }
+  #communication .time-wrap .time-picker {
+    display: inline-block;
+    padding: 2px 4px;
+    height: 30px;
+    border: 1px solid #DAE5F0;
+    border-radius: 4px;
+    float: none;
+    box-shadow: none; }
+  #communication .time-wrap .input-group-addon, #communication .time-wrap .input-group-btn {
+    display: inline-block;
+    position: absolute;
+    right: 4px;
+    z-index: 99;
+    width: 15px;
+    height: 15px;
+    background: #FFF;
+    border: none;
+    top: 8px;
+    padding: 0; }
