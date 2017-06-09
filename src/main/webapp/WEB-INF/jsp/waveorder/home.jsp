@@ -14,6 +14,11 @@
     <link href='library/select2/select2.min.css' rel='stylesheet'/>
     <link href='css/common.css' rel='stylesheet'/>
     <link href='css/wave_order.css' rel='stylesheet'/>
+    <link rel="stylesheet" href="arcgis_js_v39_api/arcgis_js_api/library/3.9/3.9/js/esri/css/esri.css">
+	<link rel="stylesheet"
+		  href="arcgis_js_v39_api/arcgis_js_api/library/3.9/3.9/js/dojo/dijit/themes/tundra/tundra.css">
+	<link rel="stylesheet" href="arcgis_js_v39_api/arcgis_js_api/library/3.9/3.9/js/dojo/webgis/widgets/themes/darkangel/darkangel.css">
+	<link rel="stylesheet" href="arcgis_js_v39_api/arcgis_js_api/library/3.9/3.9/js/dojo/webgis/widgets/themes/darkangel/override.css">
   </head>
 
   <body id='waveOrder'>
@@ -103,6 +108,7 @@
                     </div>
                 <span class='signal-sign unknown'></span><span class='number unknown-number'>1</span></li>
             </ul>
+            <div id = "mapDiv1" padding: 10px; height: 960px"></div>
             <a class='btn btn-default btn-refresh pull-right'><img src='images/refresh.png' />&nbsp;&nbsp;刷新</a>
           </div>
         </div>
@@ -115,6 +121,7 @@
             <div class='pull-left module-name'>电磁环境评估</div>
             <div class='pull-right'>电磁覆盖率:&nbsp;<span class='coverage-number'>90%</span></div>
           </div>
+          <div id = "mapDiv2" padding: 10px; height: 960px"></div>
         </div>
       </section>
     </div>
@@ -190,5 +197,17 @@
     <script src="library/bootstrap-table/bootstrap-table-zh-CN.min.js"></script>
     <script src='library/select2/select2.min.js'></script>
     <script src='js/wave_order.js'></script>
+     <script src="arcgis_js_v39_api/arcgis_js_api/library/3.9/3.9/init.js"></script>
+    <script type="text/javascript">
+    	require(["home/WaveorderMapInit",
+            "dojo/domReady!"],
+        function (init) {
+            //parser.parse();
+           // var jsonf = geoJsonConverter();
+            var map = init.init();
+            // map = new Map("mapDiv");
+
+        });
+    </script>
   </body>
 </html>

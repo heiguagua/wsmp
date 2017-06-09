@@ -12,6 +12,11 @@
     <link href='library/bootstrap/css/awesome-bootstrap-checkbox.css' rel='stylesheet'/>
     <link href='css/common.css' rel='stylesheet'/>
     <link href='css/alarm.css' rel='stylesheet'/>
+	<link rel="stylesheet" href="arcgis_js_v39_api/arcgis_js_api/library/3.9/3.9/js/esri/css/esri.css">
+	<link rel="stylesheet"
+		  href="arcgis_js_v39_api/arcgis_js_api/library/3.9/3.9/js/dojo/dijit/themes/tundra/tundra.css">
+	<link rel="stylesheet" href="arcgis_js_v39_api/arcgis_js_api/library/3.9/3.9/js/dojo/webgis/widgets/themes/darkangel/darkangel.css">
+	<link rel="stylesheet" href="arcgis_js_v39_api/arcgis_js_api/library/3.9/3.9/js/dojo/webgis/widgets/themes/darkangel/override.css">
   </head>
 
   <body id='alarm'>
@@ -89,6 +94,7 @@
             <label class='module-name'><img src='images/locate.png'  />&nbsp;&nbsp;成都某某站台</label>
             <div class='pull-right'>电磁覆盖率:&nbsp;<span class='coverage-number'>90%</span></div>
           </div>
+          <div id = "mapDiv" padding: 10px; height: 960px"></div>
         </div>
       </section>
       <section class='flex-row'>
@@ -136,5 +142,17 @@
     <script src='library/bootstrap/js/bootstrap.min.js'></script>
     <script src='library/echarts/echarts.min.js'></script>
     <script src='js/alarm.js'></script>
+    <script src="arcgis_js_v39_api/arcgis_js_api/library/3.9/3.9/init.js"></script>
+    <script type="text/javascript">
+    	require(["home/init",
+            "dojo/domReady!"],
+        function (init) {
+            //parser.parse();
+           // var jsonf = geoJsonConverter();
+            var map = init.init();
+            // map = new Map("mapDiv");
+
+        });
+    </script>
   </body>
 </html>
