@@ -9,7 +9,18 @@
   color: #5D7D94; }
 
 #communication table tr td {
-  text-align: left; }
+  text-align: left;
+  line-height: 20px; }
+  #communication table tr td .fa {
+    font-size: 18px;
+    padding-left: 10px; }
+    #communication table tr td .fa.fa-arrow-up {
+      color: #2CCD7D; }
+    #communication table tr td .fa.fa-arrow-down {
+      color: #ff6059; }
+
+#communication table#table-station-compare td {
+  line-height: 28px; }
 
 #communication .select2-container {
   min-width: 140px; }
@@ -21,6 +32,20 @@
   padding: 4px 12px;
   font-size: 14px;
   margin-left: 15px; }
+
+#communication .btn-config, #communication .btn-config:hover, #communication .btn-config:active {
+  background: #FFF;
+  padding: 5px 15px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #6F7479;
+  border: 1px solid #DAE5F0;
+  height: 30px; }
+  #communication .btn-config img, #communication .btn-config:hover img, #communication .btn-config:active img {
+    margin-bottom: 2px; }
+  #communication .btn-config .fa-gear {
+    color: #DAE5F0;
+    font-size: 18px; }
 
 #communication .time-wrap {
   display: inline-block;
@@ -53,3 +78,11 @@
     border: none;
     top: 8px;
     padding: 0; }
+
+#communication #comConfigModal .control-label {
+  padding-top: 4px; }
+
+#communication #comConfigModal .nav-tabs li a {
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 4px; }

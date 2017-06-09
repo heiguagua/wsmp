@@ -3,7 +3,7 @@ $(function(){
   $('.select2-picker').select2();
 
   $('.time-picker').datetimepicker({
-    
+
   });
   $('#table-comms').bootstrapTable({
         method: 'get',
@@ -91,19 +91,45 @@ $(function(){
             },
             columns: [{
                     field: 'station_type',
-                    title: '类型'
+                    title: '类型',
+                    class:'',
+
                 }, {
-                    field: '2G',
-                    title: '2G'
+                    field: 'G2',
+                    title: '2G',
+                    formatter:function(value,row,index) {
+                      if(row.G2_compare == 'up') {
+                        return value+'<span class="fa fa-arrow-up"></span>';
+                      }
+                      return value+'<span class="fa fa-arrow-down"></span>';
+                    }
                 }, {
-                    field: '3G',
-                    title: '3G'
+                    field: 'G3',
+                    title: '3G',
+                    formatter:function(value,row,index) {
+                      if(row.G3_compare == 'up') {
+                        return value+'<span class="fa fa-arrow-up"></span>';
+                      }
+                      return value+'<span class="fa fa-arrow-down"></span>';
+                    }
                 }, {
-                    field: '4G',
-                    title: '4G '
+                    field: 'G4',
+                    title: '4G ',
+                    formatter:function(value,row,index) {
+                      if(row.G4_compare == 'up') {
+                        return value+'<span class="fa fa-arrow-up"></span>';
+                      }
+                      return value+'<span class="fa fa-arrow-down"></span>';
+                    }
                 }, {
                     field: 'station_total',
-                    title: '总数'
+                    title: '总数',
+                    formatter:function(value,row,index) {
+                      if(row.total_compare == 'up') {
+                        return value+'<span class="fa fa-arrow-up"></span>';
+                      }
+                      return value+'<span class="fa fa-arrow-down"></span>';
+                    }
                 }]
           });
 

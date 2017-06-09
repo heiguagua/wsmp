@@ -28,6 +28,9 @@
     color: #6F7479;
     border: 1px solid #DAE5F0;
     height:30px;
+    &:hover,&:active{
+      @extend .btn-config;
+    }
     img{
       margin-bottom:2px;
     }
@@ -215,7 +218,7 @@
       margin-top: 0;
     }
   }
-  
+
   #dayChart,#hourChart{
     width:100%;
     min-height:300px;

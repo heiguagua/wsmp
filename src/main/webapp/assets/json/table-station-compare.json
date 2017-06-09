@@ -1,66 +1,36 @@
 {
-  "total":100,
+  "total":3,
   "rows":[
     {
       "station_type":"移动",
-      "2G":"GSM 20928",
-      "3G":"TD-LTE 20928",
-      "4G":"TD-LTE 20928",
-      "station_total":"109328"
+      "G2":"GSM 20928",
+      "G2_compare":"up",
+      "G3":"TD-LTE 20928",
+      "G3_compare":"down",
+      "G4":"TD-LTE 20928",
+      "G4_compare":"up",
+      "station_total":"109328",
+      "total_compare":"up"
     },{
-      "station_type":"移动",
-      "2G":"GSM 20928",
-      "3G":"TD-LTE 20928",
-      "4G":"TD-LTE 20928",
-      "station_total":"109328"
+      "station_type":"联通",
+      "G2":"GSM 20928",
+      "G2_compare":"down",
+      "G3":"TD-LTE 20928",
+      "G3_compare":"up",
+      "G4":"TD-LTE 20928",
+      "G4_compare":"up",
+      "station_total":"109328",
+      "total_compare":"up"
     },{
-      "station_type":"移动",
-      "2G":"GSM 20928",
-      "3G":"TD-LTE 20928",
-      "4G":"TD-LTE 20928",
-      "station_total":"109328"
-    },{
-      "station_type":"移动",
-      "2G":"GSM 20928",
-      "3G":"TD-LTE 20928",
-      "4G":"TD-LTE 20928",
-      "station_total":"109328"
-    },{
-      "station_type":"移动",
-      "2G":"GSM 20928",
-      "3G":"TD-LTE 20928",
-      "4G":"TD-LTE 20928",
-      "station_total":"109328"
-    },{
-      "station_type":"移动",
-      "2G":"GSM 20928",
-      "3G":"TD-LTE 20928",
-      "4G":"TD-LTE 20928",
-      "station_total":"109328"
-    },{
-      "station_type":"移动",
-      "2G":"GSM 20928",
-      "3G":"TD-LTE 20928",
-      "4G":"TD-LTE 20928",
-      "station_total":"109328"
-    },{
-      "station_type":"移动",
-      "2G":"GSM 20928",
-      "3G":"TD-LTE 20928",
-      "4G":"TD-LTE 20928",
-      "station_total":"109328"
-    },{
-      "station_type":"移动",
-      "2G":"GSM 20928",
-      "3G":"TD-LTE 20928",
-      "4G":"TD-LTE 20928",
-      "station_total":"109328"
-    },{
-      "station_type":"移动",
-      "2G":"GSM 20928",
-      "3G":"TD-LTE 20928",
-      "4G":"TD-LTE 20928",
-      "station_total":"109328"
+      "station_type":"电信",
+      "G2":"GSM 20928",
+      "G2_compare":"up",
+      "G3":"TD-LTE 20928",
+      "G3_compare":"up",
+      "G4":"TD-LTE 20928",
+      "G4_compare":"down",
+      "station_total":"109328",
+      "total_compare":"down"
     }
     ]
   }

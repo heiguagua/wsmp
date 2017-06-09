@@ -17,7 +17,7 @@
     height: 27px;
     background: url(../images/search.png) no-repeat center; }
 
-#signal .btn-config {
+#signal .btn-config, #signal .btn-config:hover, #signal .btn-config:active {
   background: #FFF;
   padding: 5px 15px;
   border-radius: 4px;
@@ -25,7 +25,7 @@
   color: #6F7479;
   border: 1px solid #DAE5F0;
   height: 30px; }
-  #signal .btn-config img {
+  #signal .btn-config img, #signal .btn-config:hover img, #signal .btn-config:active img {
     margin-bottom: 2px; }
   #signal .btn-config .fa-gear {
     color: #DAE5F0;
