@@ -27,11 +27,26 @@ h1, h2, h3, h4, h5, h6, p {
 input {
   outline: none; }
 
+select {
+  min-width: 80px; }
+
+label, .control-label {
+  font-size: 14px; }
+
 .right10 {
   margin-right: 10px; }
 
+.padding0 {
+  padding: 0; }
+
 .padding15 {
   padding: 15px; }
+
+.mrg-top15 {
+  margin-top: 15px; }
+
+.mrg-bottom15 {
+  margin-bottom: 15px; }
 
 .pagination-wrap {
   height: 58px;
@@ -82,6 +97,8 @@ input {
   background: #068ae7;
   color: #FFF;
   padding: 10px; }
+  .modal-header .modal-title {
+    font-size: 16px; }
 
 .modal .close {
   color: #FFF; }
@@ -219,25 +236,27 @@ input {
   min-height: 130px; }
   .box.box-tabs, .box-tabs.box2 {
     border: none; }
-    .box.box-tabs .nav-tabs, .box-tabs.box2 .nav-tabs {
-      background: #f9fcfe; }
-      .box.box-tabs .nav-tabs li a, .box-tabs.box2 .nav-tabs li a {
-        padding: 12px 40px;
-        font-size: 16px;
-        background-color: #eef7ff;
-        color: #656565; }
-      .box.box-tabs .nav-tabs li.active, .box-tabs.box2 .nav-tabs li.active {
-        border: none; }
-        .box.box-tabs .nav-tabs li.active a, .box-tabs.box2 .nav-tabs li.active a {
-          color: #49b2fc;
-          background-color: #FFF;
-          padding: 13px 40px; }
-      .box.box-tabs .nav-tabs li:not(.active) a, .box-tabs.box2 .nav-tabs li:not(.active) a {
-        border: 1px solid #DDD;
-        border-bottom: none; }
-    .box.box-tabs .tab-content, .box-tabs.box2 .tab-content {
-      border: 1px solid #DDD;
-      border-top: none; }
+
+.nav-tabs {
+  background: #f9fcfe; }
+  .nav-tabs li a {
+    padding: 12px 40px;
+    font-size: 16px;
+    background-color: #eef7ff;
+    color: #656565; }
+  .nav-tabs li.active {
+    border: none; }
+    .nav-tabs li.active a {
+      color: #49b2fc;
+      background-color: #FFF;
+      padding: 13px 40px; }
+  .nav-tabs li:not(.active) a {
+    border: 1px solid #DDD;
+    border-bottom: none; }
+
+.tab-content {
+  border: 1px solid #DDD;
+  border-top: none; }
 
 .box2 {
   -moz-flex-grow: 2;

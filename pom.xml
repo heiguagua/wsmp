@@ -27,12 +27,19 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusion>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-tomcat</artifactId>
+			</exclusion>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web-services</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jdbc</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>com.baomidou</groupId>
 			<artifactId>mybatisplus-spring-boot-starter</artifactId>
@@ -56,13 +63,17 @@
 		<dependency>
 			<groupId>org.apache.tomcat.embed</groupId>
 			<artifactId>tomcat-embed-jasper</artifactId>
-			<scope>provided</scope>
 		</dependency>
-		
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
+			<groupId>com.chinawiserv.apps</groupId>
+			<artifactId>spring-boot-webservice-autoconfig</artifactId>
+			<version>1.0.0.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.chinawiserv.apps</groupId>
+			<artifactId>chinawiserv-apps-util-logger</artifactId>
+			<version>1.0.9.RELEASE</version>
 		</dependency>
 
 		<dependency>
@@ -70,11 +81,38 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
 
 	</dependencies>
 
 	<build>
 		<finalName>${project.artifactId}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+		<resources>
+			<resource>
+				<directory>${basedir}/src/main/webapp</directory>
+				<!--注意此次必须要放在此目录下才能被访问到 -->
+				<targetPath>META-INF/resources</targetPath>
+				<includes>
+					<include>**/**</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>${basedir}/src/main/resources</directory>
+				<includes>
+					<include>**/**</include>
+				</includes>
+			</resource>
+		</resources>
 	</build>
 
 </project>
