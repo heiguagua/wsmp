@@ -11,6 +11,7 @@
     <link href="library/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
     <link href='library/font-awesome/css/font-awesome.min.css' rel='stylesheet'/>
     <link href='library/select2/select2.min.css' rel='stylesheet'/>
+    <link href='library/timepicker/css/bootstrap-datetimepicker.min.css' rel='stylesheet'/>
     <link href='css/common.css' rel='stylesheet'/>
     <link href='css/communication.css' rel='stylesheet'/>
   </head>
@@ -24,11 +25,26 @@
         <select class='city-list select2-picker'>
           <option>成都市</option>
         </select>
-        开始时间
-        <input type='text' class='timepicker' />
-        结束时间
-        <input type='text' class='timepicker' />
-        <a class='btn btn-search'>确定<a>
+        <div class='time-wrap'>
+          开始时间
+          <div class='input-group date time-picker' id='startTime'>
+                      <input type='text' class="form-control "  />
+                      <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-calendar"></span>
+                      </span>
+                  </div>
+          结束时间
+          <div class='input-group date time-picker' id='endTime'>
+                      <input type='text' class="form-control " />
+                      <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-calendar"></span>
+                      </span>
+                  </div>
+        </div>
+        <a class='btn btn-search'>确定</a>
+      </div>
+      <div class='config pull-right'>
+        <a class='btn btn-default btn-config' data-toggle="modal" data-target="#comConfigModal"><img  src='images/config.png' />&nbsp;&nbsp;配置</a>
       </div>
     </div>
 
@@ -51,7 +67,7 @@
     </div>
 
     <!-- Modal 配置-->
-    <div class="modal fade" id="" tabindex="-1" role="dialog" aria-labelledby="modalConfigLabel">
+    <div class="modal fade" id="comConfigModal" tabindex="-1" role="dialog" aria-labelledby="modalConfigLabel">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -63,72 +79,30 @@
               <li role="presentation" ><a href="#profile">总览</a></li>
               <li role="presentation"><a href="#radio">频率</a></li>
               <li role="presentation"><a href="#station">台站</a></li>
-              <li role="presentation" class="active"><a href="#envim">电磁环境</a></li>
+              <li role="presentation" class=""><a href="#envim">电磁环境</a></li>
               <li role="presentation"><a href="#network">网络运维</a></li>
+              <li role="presentation" class='active'><a href="#network">专项管理</a></li>
             </ul>
-            <div class="tab-content">
+            <div class="tab-content" style='min-height:300px;padding-top:50px'>
               <div role="tabpanel" class="tab-pane active " id="envim">
                 <div class='flex-row'>
                 <div class='flex1 config-left'>
                   <form class="form-horizontal ">
-                    <div class="form-group ">
-                      <label for="" class="col-sm-3 control-label padding0">默认参数配置</label>
-                      <div class="col-sm-9">
 
-                      </div>
-                    </div>
                     <div class="form-group">
                       <label for="" class="col-sm-3 control-label">选择监测站</label>
                       <div class="col-sm-9">
-                        <select class='select2'>
+                        <select class='select2-picker'>
                           <option></option>
                         </select>
                       </div>
                     </div>
-                    <div class="form-group">
-                      <label for="" class="col-sm-3 control-label">时间占用度</label>
-                      <div class="col-sm-9">
-                        <select class='select2'>
-                          <option></option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="form-group ">
+
+                    <!-- <div class="form-group ">
                       <div class="col-sm-offset-3 col-sm-9 mrg-top15">
                         <button type="submit" class="btn btn-default btn-apply">应用</button>
                       </div>
-                    </div>
-                  </form>
-                </div>
-                <div class='flex1 config-right'>
-                  <form class="form-horizontal">
-                    <div class="form-group">
-                      <label for="" class="col-sm-4 control-label padding0">重点监测参数配置</label>
-                      <div class="col-sm-8">
-
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label for="" class="col-sm-4 control-label">设置监测站&nbsp;&nbsp;&nbsp;</label>
-                      <div class="col-sm-8">
-                        <select class='select2'>
-                          <option></option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label for="" class="col-sm-4 control-label">选择监测时间</label>
-                      <div class="col-sm-8">
-                        <select class='select2'>
-                          <option></option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="form-group ">
-                      <div class="col-sm-offset-4 col-sm-8 mrg-top15">
-                        <button type="submit" class="btn btn-default btn-apply">应用</button>
-                      </div>
-                    </div>
+                    </div> -->
                   </form>
                 </div>
               </div>
@@ -144,6 +118,10 @@
     <script src="library/bootstrap-table/bootstrap-table.min.js"></script>
     <script src="library/bootstrap-table/bootstrap-table-zh-CN.min.js"></script>
     <script src='library/select2/select2.min.js'></script>
+    <script src='library/timepicker/moment.min.js'></script>
+    <script src='library/timepicker/js/bootstrap-datetimepicker.min.js'></script>
+    <script src='library/timepicker/bootstrap-datetimepicker.zh-CN.js'></script>
+    <script src='js/common.js'></script>
     <script src='js/communication.js'></script>
   </body>
 </html>
