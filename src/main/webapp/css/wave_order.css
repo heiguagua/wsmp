@@ -5,10 +5,10 @@
     margin: 0 20px; }
   #waveOrder .table-title {
     text-align: left;
-    font-size: 16px;
-    font-weight: bold;
+    font-size: 14px;
     padding: 25px 0 0 15px;
-    margin: 0; }
+    margin: 0;
+    color: #505363; }
   #waveOrder #table-radio th {
     text-align: center; }
   #waveOrder #table-alarm-undeal th {
@@ -17,15 +17,15 @@
     text-align: center; }
   #waveOrder .signal-wrap {
     padding: 15px;
-    border-bottom: 1px solid #DDD; }
+    border-bottom: 1px solid #DAE5F0; }
     #waveOrder .signal-wrap .signal-detect {
-      font-size: 16px;
-      font-weight: bold;
+      font-size: 14px;
+      color: #505363;
       margin-bottom: 0;
       vertical-align: middle; }
   #waveOrder .signal-category {
     display: inline-block;
-    font-size: 16px;
+    font-size: 14px;
     margin-bottom: 0;
     vertical-align: middle; }
     #waveOrder .signal-category .item {
@@ -34,8 +34,8 @@
     #waveOrder .signal-category .signal-sign {
       display: inline-block;
       vertical-align: middle;
-      width: 16px;
-      height: 16px;
+      width: 15px;
+      height: 15px;
       border-radius: 50%;
       margin-left: 10px;
       margin-right: 5px; }
@@ -62,19 +62,23 @@
       color: #d1d1d1; }
   #waveOrder .btn-refresh {
     background: #FFF;
-    color: #333;
     padding: 5px 15px;
-    border-radius: 4px; }
-    #waveOrder .btn-refresh .fa-repeat {
-      color: #49b2fc;
-      font-size: 18px; }
+    border-radius: 4px;
+    font-size: 12px;
+    color: #6F7479;
+    letter-spacing: 0;
+    line-height: 18px;
+    border: 1px solid #DAE5F0; }
+    #waveOrder .btn-refresh .fa-refresh {
+      color: #DDD;
+      font-size: 16px; }
   #waveOrder .elect-evaluate-wrap {
     padding: 15px;
-    font-size: 16px;
+    font-size: 14px;
     overflow: hidden;
-    border-bottom: 1px solid #DDD; }
+    border-bottom: 1px solid #DAE5F0; }
     #waveOrder .elect-evaluate-wrap .module-name {
-      font-weight: bold; }
+      color: #505363; }
     #waveOrder .elect-evaluate-wrap .coverage-number {
-      color: #49b2fc;
+      color: #37A5FF;
       font-size: 18px; }

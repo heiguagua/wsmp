@@ -1,49 +1,79 @@
 #signal{
+  .header-search{
+    margin-left:20px;
+    display:inline-block;
+    position:relative;
+    input{
+      padding:2px 20px 2px 4px;
+      border: 1px solid #DAE5F0;
+      border-radius: 4px;
+      width:130px;
+    }
+    .search-icon{
+      position:absolute;
+      cursor:pointer;
+      right:2px;
+      top:0;
+      display:block;
+      width:27px;
+      height:27px;
+      background:url(../images/search.png) no-repeat center;
+    }
+  }
   .btn-config{
     background: #FFF;
-    color: #333;
     padding: 5px 15px;
     border-radius: 4px;
+    font-size: 12px;
+    color: #6F7479;
+    border: 1px solid #DAE5F0;
+    height:30px;
+    img{
+      margin-bottom:2px;
+    }
     .fa-gear{
-      color:#DDD;
+      color:#DAE5F0;
       font-size:18px;
     }
   }
   .signal-profile{
     padding:20px 0;
     min-height:220px;
-    font-size:16px;
+    font-size:14px;
     .item{
       &.info{
-        border-right:1px solid #DDD;
+        border-right:1px solid #DAE5F0;
         padding:25px 15px;
         min-width:300px;
       }
       &.chart {
-        border-right:1px solid #DDD;
+        border-right:1px solid #DAE5F0;
         // max-width:300px;
       }
     }
     .radio-info{
       margin-bottom:24px;
+      color: #505363;
       .r-i-item{
         min-width:110px;
         min-height:40px;
-        background:rgb(237,241,245);
         margin:0 10px;
         text-align:center;
-        border-radius:4px;
+        background: #EEF2F5;
+        border: 1px solid #DAE5F0;
+        border-radius: 3px;
       }
     }
     .type-info{
       .t-i-item{
         min-width:110px;
         min-height:40px;
-        background:rgb(44,205,125);
+        background: #2CCD7D;
         color:#FFF;
         margin:0 10px;
         text-align:center;
-        border-radius:4px;
+        border: 1px solid #1EBB35;
+        border-radius: 3px;
       }
     }
     .radio-chart{
@@ -57,14 +87,14 @@
       padding:15px 18px;
       max-height:200px;
       .title{
-        font-size:16px;
-        font-weight: 600;
+        font-size:14px;
+        color: #505363;
         text-align:center;
         margin-top:2px;
       }
       .features-list{
         padding:0;
-        font-size:14px;
+        font-size:12px;
         li{
           margin-bottom:8px;
         }
@@ -81,23 +111,24 @@
   }
   .singal-control{
     height:100%;
+    color: #505363;
     .detect-way{
       .way-key{
-        border-right:1px solid #DDD;
+        border-right:1px solid #DAE5F0;
         &.checked{
           background:rgb(240,252,246);
           position:relative;
           &:before{
             content: "";
+            background: #2CCD7D;
+            border: 1px solid #1EBB35;
             display: inline-block;
             position: absolute;
             width: 28px;
             height: 28px;
             right: 15px;
             top: 5px;
-            border: 1px solid #cccccc;
             border-radius: 50%;
-            background-color: #2ccd7d;
             -webkit-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
             -o-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
             transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
@@ -120,22 +151,20 @@
         }
       }
       .way-sign{
-        width: 68px;
-        height: 68px;
+        width: 60px;
+        height: 60px;
         margin: 10px auto;
-        background: rgba(246, 250, 253, 1);
-        border-radius: 50%;
-        border: 1px solid #DDD;
+        text-align: center;
       }
       p{
         text-align:center;
       }
     }
     .signal-type{
-      border-top:1px solid #DDD;
+      border-top:1px solid #DAE5F0;
       padding:0 20px;
       .radio,label{
-        font-size:16px;
+        font-size:14px;
       }
     }
   }
@@ -143,21 +172,26 @@
     padding:15px;
     .module-name{
       font-size:16px;
-      font-weight:bold;
+      color: #505363;
     }
     .btn-choose{
       padding: 2px 12px;
-      font-size: 14px;
       background: #FFF;
       border-radius: 4px;
       margin-left: 25px;
+      font-size: 12px;
+      color: #6F7479;
+      letter-spacing: 0;
+      line-height: 18px;
+      border: 1px solid #DAE5F0;
     }
   }
 
   .nav-pills{
     li{
       a{
-        color:#333;
+        font-size: 14px;
+        color: #505363;
         font-weight: 400;
         padding: 2px 15px;
         border-radius: 4px;
@@ -176,29 +210,12 @@
     min-height: 340px;
     .title{
       font-size: 16px;
+      color: #505363;
       text-align: center;
-      font-weight: bold;
       margin-top: 0;
     }
   }
-  .locate-coverage{
-    padding:15px;
-    font-size:16px;
-    border-bottom: 1px solid #DDD;
-    .module-name{
-      font-size:16px;
-      font-weight:bold;
-      .fa-map-marker{
-        color:rgb(55,165,255);
-        font-size:20px;
-        padding:0 10px 0 5px;
-      }
-    }
-    .coverage-number{
-      color:#49b2fc;
-      font-size:18px;
-    }
-  }
+  
   #dayChart,#hourChart{
     width:100%;
     min-height:300px;
@@ -225,7 +242,6 @@
       border: none;
     }
     .config-left{
-      border-right: 1px solid #DDD;
       padding:15px 0;
     }
     .config-right{
@@ -234,5 +250,8 @@
     .control-label{
       padding:4px 0 !important;
     }
+  }
+  .select2-container{
+      min-width: 160px;
   }
 }

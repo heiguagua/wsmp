@@ -1,65 +1,4 @@
 $(function(){
-  initChart();
-  initSelect2();
-
-  function initSelect2(){
-    $('.select2-picker').select2();
-  }
-
-  function initChart() {
-    // draw radio pie chart
-    var option = {
-      color:['rgb(44,205,125)','rgb(55,165,255)'],
-      tooltip: {
-          trigger: 'item',
-          formatter: "{a} <br/>{b}: {c} ({d}%)"
-      },
-      legend: {
-          show:false,
-          orient: 'vertical',
-          x: 'left',
-          data:['AM','FM']
-      },
-      series: [
-          {
-              name:'信号',
-              type:'pie',
-              radius: ['40%', '65%'],
-              avoidLabelOverlap: false,
-              label: {
-                  normal: {
-                      show: true,
-                      position: 'outside',
-                      formatter:'{b} {d}%',
-                      textStyle: {
-                          fontSize: '16'
-                      }
-                  },
-                  emphasis: {
-                      show: true,
-                      textStyle: {
-                          fontSize: '16',
-                          fontWeight: 'bold'
-                      }
-                  }
-              },
-              labelLine: {
-                  normal: {
-                      show: false,
-                      length:10,
-                      length2:0
-                  }
-              },
-              data:[
-                  {value:20, name:'AM'},
-                  {value:80, name:'FM'}
-              ]
-          }
-      ]
-  };
-  var myChart = echarts.init($('#radioChart')[0]);
-  myChart.setOption(option);
-
   // draw month data chart
   var optionMonth = {
     color:['rgb(55,165,255)'],
@@ -270,6 +209,4 @@ $(function(){
     var hourChart = echarts.init($('#hourChart')[0]);
     hourChart.setOption(optionHour);
   })
-  }
-
 })

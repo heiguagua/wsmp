@@ -1,39 +1,66 @@
+#signal .header-search {
+  margin-left: 20px;
+  display: inline-block;
+  position: relative; }
+  #signal .header-search input {
+    padding: 2px 20px 2px 4px;
+    border: 1px solid #DAE5F0;
+    border-radius: 4px;
+    width: 130px; }
+  #signal .header-search .search-icon {
+    position: absolute;
+    cursor: pointer;
+    right: 2px;
+    top: 0;
+    display: block;
+    width: 27px;
+    height: 27px;
+    background: url(../images/search.png) no-repeat center; }
+
 #signal .btn-config {
   background: #FFF;
-  color: #333;
   padding: 5px 15px;
-  border-radius: 4px; }
+  border-radius: 4px;
+  font-size: 12px;
+  color: #6F7479;
+  border: 1px solid #DAE5F0;
+  height: 30px; }
+  #signal .btn-config img {
+    margin-bottom: 2px; }
   #signal .btn-config .fa-gear {
-    color: #DDD;
+    color: #DAE5F0;
     font-size: 18px; }
 
 #signal .signal-profile {
   padding: 20px 0;
   min-height: 220px;
-  font-size: 16px; }
+  font-size: 14px; }
   #signal .signal-profile .item.info {
-    border-right: 1px solid #DDD;
+    border-right: 1px solid #DAE5F0;
     padding: 25px 15px;
     min-width: 300px; }
   #signal .signal-profile .item.chart {
-    border-right: 1px solid #DDD; }
+    border-right: 1px solid #DAE5F0; }
   #signal .signal-profile .radio-info {
-    margin-bottom: 24px; }
+    margin-bottom: 24px;
+    color: #505363; }
     #signal .signal-profile .radio-info .r-i-item {
       min-width: 110px;
       min-height: 40px;
-      background: #edf1f5;
       margin: 0 10px;
       text-align: center;
-      border-radius: 4px; }
+      background: #EEF2F5;
+      border: 1px solid #DAE5F0;
+      border-radius: 3px; }
   #signal .signal-profile .type-info .t-i-item {
     min-width: 110px;
     min-height: 40px;
-    background: #2ccd7d;
+    background: #2CCD7D;
     color: #FFF;
     margin: 0 10px;
     text-align: center;
-    border-radius: 4px; }
+    border: 1px solid #1EBB35;
+    border-radius: 3px; }
   #signal .signal-profile .radio-chart {
     width: 100%;
     height: 100%;
@@ -43,13 +70,13 @@
     padding: 15px 18px;
     max-height: 200px; }
     #signal .signal-profile .features .title {
-      font-size: 16px;
-      font-weight: 600;
+      font-size: 14px;
+      color: #505363;
       text-align: center;
       margin-top: 2px; }
     #signal .signal-profile .features .features-list {
       padding: 0;
-      font-size: 14px; }
+      font-size: 12px; }
       #signal .signal-profile .features .features-list li {
         margin-bottom: 8px; }
       #signal .signal-profile .features .features-list .item-name {
@@ -60,23 +87,24 @@
         width: 20%; }
 
 #signal .singal-control {
-  height: 100%; }
+  height: 100%;
+  color: #505363; }
   #signal .singal-control .detect-way .way-key {
-    border-right: 1px solid #DDD; }
+    border-right: 1px solid #DAE5F0; }
     #signal .singal-control .detect-way .way-key.checked {
       background: #f0fcf6;
       position: relative; }
       #signal .singal-control .detect-way .way-key.checked:before {
         content: "";
+        background: #2CCD7D;
+        border: 1px solid #1EBB35;
         display: inline-block;
         position: absolute;
         width: 28px;
         height: 28px;
         right: 15px;
         top: 5px;
-        border: 1px solid #cccccc;
         border-radius: 50%;
-        background-color: #2ccd7d;
         -webkit-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
         -o-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
         transition: border 0.15s ease-in-out, color 0.15s ease-in-out; }
@@ -95,34 +123,37 @@
         font-size: 17px;
         color: #FFF; }
   #signal .singal-control .detect-way .way-sign {
-    width: 68px;
-    height: 68px;
+    width: 60px;
+    height: 60px;
     margin: 10px auto;
-    background: #f6fafd;
-    border-radius: 50%;
-    border: 1px solid #DDD; }
+    text-align: center; }
   #signal .singal-control .detect-way p {
     text-align: center; }
   #signal .singal-control .signal-type {
-    border-top: 1px solid #DDD;
+    border-top: 1px solid #DAE5F0;
     padding: 0 20px; }
     #signal .singal-control .signal-type .radio, #signal .singal-control .signal-type label {
-      font-size: 16px; }
+      font-size: 14px; }
 
 #signal .data-play {
   padding: 15px; }
   #signal .data-play .module-name {
     font-size: 16px;
-    font-weight: bold; }
+    color: #505363; }
   #signal .data-play .btn-choose {
     padding: 2px 12px;
-    font-size: 14px;
     background: #FFF;
     border-radius: 4px;
-    margin-left: 25px; }
+    margin-left: 25px;
+    font-size: 12px;
+    color: #6F7479;
+    letter-spacing: 0;
+    line-height: 18px;
+    border: 1px solid #DAE5F0; }
 
 #signal .nav-pills li a {
-  color: #333;
+  font-size: 14px;
+  color: #505363;
   font-weight: 400;
   padding: 2px 15px;
   border-radius: 4px; }
@@ -139,24 +170,9 @@
   min-height: 340px; }
   #signal .month-data .title {
     font-size: 16px;
+    color: #505363;
     text-align: center;
-    font-weight: bold;
     margin-top: 0; }
-
-#signal .locate-coverage {
-  padding: 15px;
-  font-size: 16px;
-  border-bottom: 1px solid #DDD; }
-  #signal .locate-coverage .module-name {
-    font-size: 16px;
-    font-weight: bold; }
-    #signal .locate-coverage .module-name .fa-map-marker {
-      color: #37a5ff;
-      font-size: 20px;
-      padding: 0 10px 0 5px; }
-  #signal .locate-coverage .coverage-number {
-    color: #49b2fc;
-    font-size: 18px; }
 
 #signal #dayChart, #signal #hourChart {
   width: 100%;
@@ -179,7 +195,6 @@
   border: none; }
 
 #signal #modalConfig .config-left {
-  border-right: 1px solid #DDD;
   padding: 15px 0; }
 
 #signal #modalConfig .config-right {
@@ -187,3 +202,6 @@
 
 #signal #modalConfig .control-label {
   padding: 4px 0 !important; }
+
+#signal .select2-container {
+  min-width: 160px; }

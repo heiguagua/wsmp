@@ -1,4 +1,5 @@
 $(function(){
+  $('.select2-picker').select2();
   $('#table-radio').bootstrapTable({
         method: 'get',
         contentType: "application/x-www-form-urlencoded",//必须要有！！！！
