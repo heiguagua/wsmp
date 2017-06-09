@@ -35,6 +35,11 @@
     border-radius: 4px;
     float: none;
     box-shadow: none; }
+    #communication .time-wrap .time-picker > input {
+      border: none;
+      height: 24px;
+      padding: 0 10px;
+      box-shadow: none; }
   #communication .time-wrap .input-group-addon, #communication .time-wrap .input-group-btn {
     display: inline-block;
     position: absolute;
