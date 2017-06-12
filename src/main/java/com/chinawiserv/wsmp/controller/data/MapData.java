@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
@@ -23,8 +24,11 @@ public class MapData {
 	@Autowired
 	ApplicationContext spring;
 
+	ApplicationContext spring1;
+
 	@RequestMapping(path = "/getGeoJson", method = RequestMethod.GET)
 	public Object getGeoJson() {
+
 		Resource resource = this.spring.getResource("classpath:geoJson/Tianjin_Great.json");
 		try {
 			File file = resource.getFile();

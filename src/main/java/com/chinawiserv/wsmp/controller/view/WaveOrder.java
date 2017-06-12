@@ -6,10 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("waveorder")
 public class WaveOrder {
+	
 	@RequestMapping(path = {"/",""})
 	public String home() {
 		return "waveorder/home";
-
 	}
-
 }
