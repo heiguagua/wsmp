@@ -5,11 +5,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("waveorder")
-public class WaveOrder {
+public class WaveOrderViewController {
+	
 	@RequestMapping(path = {"/",""})
 	public String home() {
-		return "waveorder/home";
-
+		return "waveorder/waveorder_home";
 	}
-
 }

@@ -18,6 +18,7 @@
 <link rel="stylesheet" href="arcgis_js_v39_api/arcgis_js_api/library/3.9/3.9/js/dojo/webgis/widgets/themes/darkangel/darkangel.css">
 <link rel="stylesheet" href="arcgis_js_v39_api/arcgis_js_api/library/3.9/3.9/js/dojo/webgis/widgets/themes/darkangel/override.css">
 </head>
+
 <body id='signal'>
   <!--header-->
   <div class='header-bar'>
@@ -38,6 +39,7 @@
       </a>
     </div>
   </div>
+
   <!--content-->
   <div class='content-wrap'>
     <section class='flex-row'>
@@ -60,26 +62,16 @@
             <div class='features'>
               <h4 class='title'>信号特征</h4>
               <ul class='features-list'>
-                <li>
-                  <div class='item-name'>谱密度最大值</div>
-                  <div class='item-value'>2048</div>
-                </li>
-                <li>
-                  <div class='item-name'>频谱周期性</div>
-                  <div class='item-value'>null</div>
-                </li>
-                <li>
-                  <div class='item-name'>马速率</div>
-                  <div class='item-value'>null</div>
-                </li>
-                <li>
-                  <div class='item-name'>功率谱平稳度指数</div>
-                  <div class='item-value'>0.07</div>
-                </li>
-                <li>
-                  <div class='item-name'>频率峰值个数(识别FSK和PSK)</div>
-                  <div class='item-value'>1.00</div>
-                </li>
+                <li><div class='item-name'>谱密度最大值</div>
+                  <div class='item-value'>2048</div></li>
+                <li><div class='item-name'>频谱周期性</div>
+                  <div class='item-value'>null</div></li>
+                <li><div class='item-name'>马速率</div>
+                  <div class='item-value'>null</div></li>
+                <li><div class='item-name'>功率谱平稳度指数</div>
+                  <div class='item-value'>0.07</div></li>
+                <li><div class='item-name'>频率峰值个数(识别FSK和PSK)</div>
+                  <div class='item-value'>1.00</div></li>
               </ul>
             </div>
           </div>
@@ -93,6 +85,7 @@
                 <img src='images/way_2.png' alt='重点监测' />
               </div>
               <p>重点监测</p>
+
             </div>
             <div class='way-single flex1'>
               <div class='way-sign'>
@@ -136,19 +129,14 @@
           <label class='module-name'>数据回放</label>
           <a class='btn btn-default btn-choose pull-right'>选择数据</a>
           <ul class="nav nav-pills pull-right">
-            <li role="presentation" class="active">
-              <a href="#">音频</a>
-            </li>
-            <li role="presentation">
-              <a href="#">IQ数据</a>
-            </li>
-            <li role="presentation">
-              <a href="#">频谱</a>
-            </li>
+            <li role="presentation" class="active"><a href="#">音频</a></li>
+            <li role="presentation"><a href="#">IQ数据</a></li>
+            <li role="presentation"><a href="#">频谱</a></li>
           </ul>
         </div>
       </div>
     </section>
+
     <section class='flex-row'>
       <div class='box'>
         <div class='locate-coverage'>
@@ -172,6 +160,7 @@
       </div>
     </section>
   </div>
+
   <!-- Modal 日占用度-->
   <div class="modal fade" id="modalDay" tabindex="-1" role="dialog" aria-labelledby="modalDayLabel">
     <div class="modal-dialog modal-lg" role="document">
@@ -188,6 +177,7 @@
       </div>
     </div>
   </div>
+
   <!-- Modal 小时场强度-->
   <div class="modal fade" id="modalHour" tabindex="-1" role="dialog" aria-labelledby="modalHourLabel">
     <div class="modal-dialog modal-lg" role="document">
@@ -204,6 +194,7 @@
       </div>
     </div>
   </div>
+
   <!-- Modal 重点监测参数配置-->
   <div class="modal fade" id="modalConfig" tabindex="-1" role="dialog" aria-labelledby="modalConfigLabel">
     <div class="modal-dialog " role="document">
@@ -256,15 +247,15 @@
   <script src='js/signal.js'></script>
   <script src="arcgis_js_v39_api/arcgis_js_api/library/3.9/3.9/init.js"></script>
   <script type="text/javascript">
-		require([ "home/init",
-			"dojo/domReady!" ],
-			function(init) {
-				//parser.parse();
-				// var jsonf = geoJsonConverter();
-				var map = init.init();
-				// map = new Map("mapDiv");
-	
-			});
-	</script>
+    require([ "home/init",
+      "dojo/domReady!" ],
+      function(init) {
+        //parser.parse();
+        // var jsonf = geoJsonConverter();
+        var map = init.init();
+        // map = new Map("mapDiv");
+  
+      });
+  </script>
 </body>
 </html>

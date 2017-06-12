@@ -1,30 +1,31 @@
-package com.chinawiserv.wsmp.controller.data;
+package com.chinawiserv.wsmp.pojo;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.LinkedHashMap;
+
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 
-@RestController
-@RequestMapping(path = "/data/map")
+@Component
 public class MapData {
 
 	@Autowired
-	ApplicationContext spring;
+	public ApplicationContext spring;
 
-	@RequestMapping(path = "/getGeoJson", method = RequestMethod.GET)
-	public Object getGeoJson() {
+	public Object data;
+
+	@PostConstruct
+	public void ss() {
 
 		Resource resource = this.spring.getResource("classpath:geoJson/Tianjin_Great.json");
 		try {
@@ -38,15 +39,20 @@ public class MapData {
 			}
 			LinkedHashMap<String, Object> map = JSON.parseObject(next, new TypeReference<LinkedHashMap<String, Object>>() {});
 			br.close();
-			Object object = map.get("geometries");
-			return object;
-		} catch (IOException e1) {
+			this.data = map.get("geometries");
+		}
+		catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		} finally {
+		}
+		finally {
 
 		}
 
-		return Collections.emptyList();
 	}
+
+	public Object getData() {
+		return data;
+	}
+
 }

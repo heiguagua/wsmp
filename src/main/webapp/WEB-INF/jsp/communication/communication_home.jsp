@@ -15,6 +15,7 @@
 <link href='css/common.css' rel='stylesheet' />
 <link href='css/communication.css' rel='stylesheet' />
 </head>
+
 <body id='communication'>
   <!--header-->
   <div class='header-bar'>
@@ -47,6 +48,7 @@
       </a>
     </div>
   </div>
+
   <!--content-->
   <div class='content-wrap'>
     <section>
@@ -55,6 +57,7 @@
         </table>
       </div>
     </section>
+
     <section>
       <div class='box'>
         <p class='table-title'>基站数对比</p>
@@ -63,6 +66,7 @@
       </div>
     </section>
   </div>
+
   <!-- Modal 配置-->
   <div class="modal fade" id="comConfigModal" tabindex="-1" role="dialog" aria-labelledby="modalConfigLabel">
     <div class="modal-dialog modal-lg" role="document">
@@ -75,30 +79,19 @@
         </div>
         <div class="modal-body">
           <ul class="nav nav-tabs">
-            <li role="presentation">
-              <a href="#profile">总览</a>
-            </li>
-            <li role="presentation">
-              <a href="#radio">频率</a>
-            </li>
-            <li role="presentation">
-              <a href="#station">台站</a>
-            </li>
-            <li role="presentation" class="">
-              <a href="#envim">电磁环境</a>
-            </li>
-            <li role="presentation">
-              <a href="#network">网络运维</a>
-            </li>
-            <li role="presentation" class='active'>
-              <a href="#network">专项管理</a>
-            </li>
+            <li role="presentation"><a href="#profile">总览</a></li>
+            <li role="presentation"><a href="#radio">频率</a></li>
+            <li role="presentation"><a href="#station">台站</a></li>
+            <li role="presentation" class=""><a href="#envim">电磁环境</a></li>
+            <li role="presentation"><a href="#network">网络运维</a></li>
+            <li role="presentation" class='active'><a href="#network">专项管理</a></li>
           </ul>
           <div class="tab-content" style='min-height:300px;padding-top:50px'>
             <div role="tabpanel" class="tab-pane active " id="envim">
               <div class='flex-row'>
                 <div class='flex1 config-left'>
                   <form class="form-horizontal ">
+
                     <div class="form-group">
                       <label for="" class="col-sm-3 control-label">选择监测站</label>
                       <div class="col-sm-9">
@@ -107,6 +100,7 @@
                         </select>
                       </div>
                     </div>
+
                     <!-- <div class="form-group ">
                       <div class="col-sm-offset-3 col-sm-9 mrg-top15">
                         <button type="submit" class="btn btn-default btn-apply">应用</button>
