@@ -9,6 +9,6 @@ public class AlarmManagerView {
 
 	@RequestMapping(path = { "/", "" })
 	public String test() {
-		return "alarmmanage/home";
+		return "alarmmanage/alarmmanage_home";
 	}
 }

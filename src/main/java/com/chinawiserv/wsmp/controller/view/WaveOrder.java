@@ -9,6 +9,6 @@ public class WaveOrder {
 	
 	@RequestMapping(path = {"/",""})
 	public String home() {
-		return "waveorder/home";
+		return "waveorder/waveorder_home";
 	}
 }

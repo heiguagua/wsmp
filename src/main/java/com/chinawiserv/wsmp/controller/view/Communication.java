@@ -9,6 +9,6 @@ public class Communication {
 
 	@RequestMapping(path = { "/", "" })
 	public String communication() {
-		return "communication/home";
+		return "communication/communication_home";
 	}
 }
