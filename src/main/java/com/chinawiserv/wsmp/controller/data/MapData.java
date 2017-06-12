@@ -25,6 +25,7 @@ public class MapData {
 
 	@RequestMapping(path = "/getGeoJson", method = RequestMethod.GET)
 	public Object getGeoJson() {
+
 		Resource resource = this.spring.getResource("classpath:geoJson/Tianjin_Great.json");
 		try {
 			File file = resource.getFile();

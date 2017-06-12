@@ -10,7 +10,6 @@ public class Signal {
 	@RequestMapping(path = { "/", "" })
 	public String home() {
 		return "signal/home";
-
 	}
 
 }

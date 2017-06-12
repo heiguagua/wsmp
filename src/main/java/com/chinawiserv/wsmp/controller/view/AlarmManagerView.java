@@ -6,10 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/alarmmanage")
 public class AlarmManagerView {
-	
-	@RequestMapping(path={"/",""})
+
+	@RequestMapping(path = { "/", "" })
 	public String test() {
 		return "alarmmanage/home";
-
 	}
 }
