@@ -4,11 +4,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("signal")
-public class Signal {
+@RequestMapping("/alarmmanage")
+public class AlarmManagerViewController {
 
 	@RequestMapping(path = { "/", "" })
-	public String home() {
-		return "signal/signal_home";
+	public String test() {
+		return "alarmmanage/alarmmanage_home";
 	}
 }

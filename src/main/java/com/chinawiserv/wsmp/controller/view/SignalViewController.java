@@ -4,11 +4,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("waveorder")
-public class WaveOrder {
-	
-	@RequestMapping(path = {"/",""})
+@RequestMapping("signal")
+public class SignalViewController {
+
+	@RequestMapping(path = { "/", "" })
 	public String home() {
-		return "waveorder/waveorder_home";
+		return "signal/signal_home";
 	}
 }
