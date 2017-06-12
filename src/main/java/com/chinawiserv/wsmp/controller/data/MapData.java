@@ -1,4 +1,4 @@
-package com.chinawiserv.radio.business.controller.data;
+package com.chinawiserv.wsmp.controller.data;
 
 import java.io.BufferedReader;
 import java.io.File;
