@@ -11,5 +11,4 @@ public class Communication {
 	public String communication() {
 		return "communication/home";
 	}
-
 }
