@@ -7,13 +7,14 @@
 <title>公众移动通信管理</title>
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-<link href='library/bootstrap/css/bootstrap.min.css' rel='stylesheet' />
-<link href="library/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
-<link href='library/font-awesome/css/font-awesome.min.css' rel='stylesheet' />
-<link href='library/select2/select2.min.css' rel='stylesheet' />
-<link href='library/timepicker/css/bootstrap-datetimepicker.min.css' rel='stylesheet' />
+<link href='3.9/js/dojo/library/bootstrap/css/bootstrap.min.css' rel='stylesheet' />
+<link href="3.9/js/dojo/library/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+<link href='3.9/js/dojo/library/font-awesome/css/font-awesome.min.css' rel='stylesheet' />
+<link href='3.9/js/dojo/library/select2/select2.min.css' rel='stylesheet' />
+<link href='3.9/js/dojo/library/timepicker/css/bootstrap-datetimepicker.min.css' rel='stylesheet' />
 <link href='css/common.css' rel='stylesheet' />
 <link href='css/communication.css' rel='stylesheet' />
+<link rel="stylesheet" href="3.9/js/dojo/webgis/widgets/themes/darkangel/override.css">
 </head>
 
 <body id='communication'>
@@ -116,15 +117,37 @@
     </div>
   </div>
   <!-- Libraries -->
-  <script src='library/jquery/jquery.min.js'></script>
-  <script src='library/bootstrap/js/bootstrap.min.js'></script>
-  <script src="library/bootstrap-table/bootstrap-table.min.js"></script>
-  <script src="library/bootstrap-table/bootstrap-table-zh-CN.min.js"></script>
-  <script src='library/select2/select2.min.js'></script>
-  <script src='library/timepicker/moment.min.js'></script>
-  <script src='library/timepicker/js/bootstrap-datetimepicker.min.js'></script>
-  <script src='library/timepicker/bootstrap-datetimepicker.zh-CN.js'></script>
-  <script src='js/common.js'></script>
-  <script src='js/communication.js'></script>
+ <script src='3.9/js/dojo/library/jquery/jquery.min.js'></script>
+  <script src='3.9/js/dojo/library/bootstrap/js/bootstrap.min.js'></script>
+  <script src="3.9/js/dojo/library/bootstrap-table/bootstrap-table.min.js"></script>
+  <script src="3.9/js/dojo/library/bootstrap-table/bootstrap-table-zh-CN.min.js"></script>
+  <script src='3.9/js/dojo/library/select2/select2.min.js'></script>
+  <script src='3.9/js/dojo/library/timepicker/moment.min.js'></script>
+  <script src='3.9/js/dojo/library/timepicker/js/bootstrap-datetimepicker.min.js'></script>
+  <script src='3.9/js/dojo/library/timepicker/bootstrap-datetimepicker.zh-CN.js'></script>
+  <script src='3.9/js/dojo/home/communication/common.js'></script>
+  <script src='3.9/js/dojo/home/communication/communication.js'></script> 
+  <script src="3.9/init.js"></script>
+  <!-- <script type="text/javascript">
+    var test = 1;
+    require([ "home/init", "jquery",
+      "dojo/domReady!" ],
+      function(init) {
+        require([ "bootstrap", "bootstrapTable",
+          "bootstrap_table_cn", "select2", "moment", "datetimepicker" ], function() {
+          require([ "datetimepicker_cn" ,"home/communication/communication_manage"], function(datetimepicker_cn,communication_manage) {
+            console.log(test);
+            //var map = init.init();
+            
+          });
+        //
+        //
+        });
+      //parser.parse();
+      // var jsonf = geoJsonConverter();
+      // map = new Map("mapDiv");
+      });
+  </script> -->
+
 </body>
 </html>
