@@ -8,24 +8,24 @@
 <meta name="description" content="" />
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, maximum-scale=1" />
-<link href='library/bootstrap/css/bootstrap.min.css' rel='stylesheet' />
-<link href="library/bootstrap-table/bootstrap-table.min.css"
+<link href='3.9/js/dojo/library/bootstrap/css/bootstrap.min.css' rel='stylesheet' />
+<link href="3.9/js/dojo/library/bootstrap-table/bootstrap-table.min.css"
 	rel="stylesheet">
-<link href='library/font-awesome/css/font-awesome.min.css'
+<link href='3.9/js/dojo/library/font-awesome/css/font-awesome.min.css'
 	rel='stylesheet' />
-<link href='library/bootstrap/css/awesome-bootstrap-checkbox.css'
+<link href='3.9/js/dojo/library/bootstrap/css/awesome-bootstrap-checkbox.css'
 	rel='stylesheet' />
-<link href='library/select2/select2.min.css' rel='stylesheet' />
+<link href='3.9/js/dojo/library/select2/select2.min.css' rel='stylesheet' />
 <link href='css/common.css' rel='stylesheet' />
 <link href='css/wave_order.css' rel='stylesheet' />
 <link rel="stylesheet"
-	href="arcgis_js_v39_api/arcgis_js_api/library/3.9/3.9/js/esri/css/esri.css">
+	href="3.9/js/esri/css/esri.css">
 <link rel="stylesheet"
-	href="arcgis_js_v39_api/arcgis_js_api/library/3.9/3.9/js/dojo/dijit/themes/tundra/tundra.css">
+	href="3.9/js/dojo/dijit/themes/tundra/tundra.css">
 <link rel="stylesheet"
-	href="arcgis_js_v39_api/arcgis_js_api/library/3.9/3.9/js/dojo/webgis/widgets/themes/darkangel/darkangel.css">
+	href="3.9/js/dojo/webgis/widgets/themes/darkangel/darkangel.css">
 <link rel="stylesheet"
-	href="arcgis_js_v39_api/arcgis_js_api/library/3.9/3.9/js/dojo/webgis/widgets/themes/darkangel/override.css">
+	href="3.9/js/dojo/webgis/widgets/themes/darkangel/override.css">
 </head>
 
 <body id='waveOrder'>
@@ -213,14 +213,17 @@
 	<script src='js/wave_order.js'></script>
 	<script src="arcgis_js_v39_api/arcgis_js_api/library/3.9/3.9/init.js"></script>
 	<script type="text/javascript">
-    	require(["home/WaveorderMapInit",
+    	require(["home/WaveorderMapInit","jquery"
             "dojo/domReady!"],
         function (init) {
             //parser.parse();
            // var jsonf = geoJsonConverter();
             var map = init.init();
             // map = new Map("mapDiv");
-
+            require(["bootstrap","bootstrapTable","select2","home/waveorder/wave_order"],function(){
+            
+            
+            });
         });
     </script>
 </body>
