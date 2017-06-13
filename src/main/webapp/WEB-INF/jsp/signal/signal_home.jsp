@@ -239,26 +239,15 @@
       </div>
     </div>
   </div>
-  <!-- Libraries -->
- <!--  <script src='library/jquery/jquery.min.js'></script>
-  <script src='library/bootstrap/js/bootstrap.min.js'></script>
-  <script src='library/echarts/echarts.min.js'></script>
-  <script src='library/select2/select2.min.js'></script>
-  <script src='js/signal.js'></script> -->
   <script src="3.9/init.js"></script>
   <script type="text/javascript">
-    require([ "home/init","jquery",
-      "dojo/domReady!" ],
+    require([ "home/init","jquery","dojo/domReady!" ],
       function(init) {
-        //parser.parse();
-        // var jsonf = geoJsonConverter();
         require(["bootstrap","echarts","select2","home/signal/signal_manage"], function(bootstrap,echarts,select2,signal_manage) {
              signal_manage.init();
         	 var map = init.init();
         })
        
-        // map = new Map("mapDiv");
-  
       });
   </script>
 </body>

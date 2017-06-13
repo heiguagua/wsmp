@@ -609,7 +609,7 @@
     },
     shim : {
         bootstrap : {deps : ["jquery"]},
-       	bootstrap_table_cn :{deps : ["bootstrapTable"]}
+       	bootstrap_table_cn :{deps : ["bootstrapTable"],exports: 'bootstrap_table_cn'}
 //    	'vForm' : [ 'jquery' ],
 //    	'layui' : [ 'jquery'],
 //    	'ztreeJquery' : [ 'jquery' ],

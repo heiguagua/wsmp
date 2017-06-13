@@ -8,14 +8,14 @@
 <meta name="description" content="" />
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, maximum-scale=1" />
-<link href='3.9/js/dojo/library/bootstrap/css/bootstrap.min.css' rel='stylesheet' />
-<link href="3.9/js/dojo/library/bootstrap-table/bootstrap-table.min.css"
+<link href='library/bootstrap/css/bootstrap.min.css' rel='stylesheet' />
+<link href="library/bootstrap-table/bootstrap-table.min.css"
 	rel="stylesheet">
-<link href='3.9/js/dojo/library/font-awesome/css/font-awesome.min.css'
+<link href='library/font-awesome/css/font-awesome.min.css'
 	rel='stylesheet' />
-<link href='3.9/js/dojo/library/bootstrap/css/awesome-bootstrap-checkbox.css'
+<link href='library/bootstrap/css/awesome-bootstrap-checkbox.css'
 	rel='stylesheet' />
-<link href='3.9/js/dojo/library/select2/select2.min.css' rel='stylesheet' />
+<link href='library/select2/select2.min.css' rel='stylesheet' />
 <link href='css/common.css' rel='stylesheet' />
 <link href='css/wave_order.css' rel='stylesheet' />
 <link rel="stylesheet"
@@ -204,26 +204,19 @@
 			</div>
 		</div>
 	</div>
-	<!-- Libraries -->
-	<script src='library/jquery/jquery.min.js'></script>
-	<script src='library/bootstrap/js/bootstrap.min.js'></script>
-	<script src="library/bootstrap-table/bootstrap-table.min.js"></script>
-	<script src="library/bootstrap-table/bootstrap-table-zh-CN.min.js"></script>
-	<script src='library/select2/select2.min.js'></script>
-	<script src='js/wave_order.js'></script>
-	<script src="arcgis_js_v39_api/arcgis_js_api/library/3.9/3.9/init.js"></script>
+		
+	<script src="3.9/init.js"></script>
 	<script type="text/javascript">
-    	require(["home/WaveorderMapInit","jquery"
-            "dojo/domReady!"],
+    	require(["home/waveorder/WaveorderMapInit","jquery","dojo/domReady!"],
         function (init) {
-            //parser.parse();
-           // var jsonf = geoJsonConverter();
             var map = init.init();
-            // map = new Map("mapDiv");
-            require(["bootstrap","bootstrapTable","select2","home/waveorder/wave_order"],function(){
-            
-            
-            });
+            require([ "bootstrap", "bootstrapTable", "select2" ],function(){
+            	require([ "bootstrap_table_cn" ],function(){	
+            		require([ "home/waveorder/waveorder_manage" ],function(wave_order){	
+            			wave_order.init();
+                	})
+            	})
+            })
         });
     </script>
 </body>

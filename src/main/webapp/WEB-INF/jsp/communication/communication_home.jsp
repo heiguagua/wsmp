@@ -116,38 +116,24 @@
       </div>
     </div>
   </div>
-  <!-- Libraries -->
- <script src='3.9/js/dojo/library/jquery/jquery.min.js'></script>
-  <script src='3.9/js/dojo/library/bootstrap/js/bootstrap.min.js'></script>
-  <script src="3.9/js/dojo/library/bootstrap-table/bootstrap-table.min.js"></script>
-  <script src="3.9/js/dojo/library/bootstrap-table/bootstrap-table-zh-CN.min.js"></script>
-  <script src='3.9/js/dojo/library/select2/select2.min.js'></script>
-  <script src='3.9/js/dojo/library/timepicker/moment.min.js'></script>
-  <script src='3.9/js/dojo/library/timepicker/js/bootstrap-datetimepicker.min.js'></script>
-  <script src='3.9/js/dojo/library/timepicker/bootstrap-datetimepicker.zh-CN.js'></script>
-  <script src='3.9/js/dojo/home/communication/common.js'></script>
-  <script src='3.9/js/dojo/home/communication/communication.js'></script> 
-  <script src="3.9/init.js"></script>
-  <!-- <script type="text/javascript">
+
+  <script src="3.9/init.js"></script> 
+   <script type="text/javascript">
     var test = 1;
     require([ "home/init", "jquery",
       "dojo/domReady!" ],
-      function(init) {
+      function() {
         require([ "bootstrap", "bootstrapTable",
-          "bootstrap_table_cn", "select2", "moment", "datetimepicker" ], function() {
-          require([ "datetimepicker_cn" ,"home/communication/communication_manage"], function(datetimepicker_cn,communication_manage) {
-            console.log(test);
-            //var map = init.init();
-            
+          "select2", "moment", "datetimepicker" ], function() {
+          require([ "bootstrap_table_cn","datetimepicker_cn"], function() {
+            require(["home/communication/communication_manage"],function(communication_manage) {
+            	console.log(communication_manage);
+            	communication_manage.init();
+            })
           });
-        //
-        //
         });
-      //parser.parse();
-      // var jsonf = geoJsonConverter();
-      // map = new Map("mapDiv");
       });
-  </script> -->
+  </script> 
 
 </body>
 </html>
