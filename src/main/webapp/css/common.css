@@ -285,6 +285,7 @@ label, .control-label {
   min-height: 0; }
 
 .box, .box2 {
+  width:100%;
   -moz-flex-grow: 1;
   -webkit-flex-grow: 1;
   flex-grow: 1;
