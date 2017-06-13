@@ -7,9 +7,9 @@
 <title>告警管理</title>
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-<link href='library/bootstrap/css/bootstrap.min.css' rel='stylesheet' />
+<link href='3.9/js/dojo/library/bootstrap/css/bootstrap.min.css' rel='stylesheet' />
 <link href='3.9/js/dojo/library/font-awesome/css/font-awesome.min.css' rel='stylesheet' />
-<link href='library/bootstrap/css/awesome-bootstrap-checkbox.css' rel='stylesheet' />
+<link href='3.9/js/dojo/library/bootstrap/css/awesome-bootstrap-checkbox.css' rel='stylesheet' />
 <link href='css/common.css' rel='stylesheet' />
 <link href='css/alarm.css' rel='stylesheet' />
 <link rel="stylesheet" href="3.9/js/esri/css/esri.css">
