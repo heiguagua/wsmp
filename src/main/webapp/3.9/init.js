@@ -600,10 +600,16 @@
         jquery : "../library/jquery/jquery",
         bootstrap : "../library/bootstrap/js/bootstrap",
         echarts : "../library/echarts/echarts",
-
+        bootstrapTable: "../library/bootstrap-table/bootstrap-table.min",
+        bootstrap_table_cn: "../library/bootstrap-table/bootstrap-table-zh-CN.min",
+        select2 : "../library/select2/select2.min",
+        datetimepicker : "../library/timepicker/js/bootstrap-datetimepicker.min",
+        moment : "../library/timepicker/moment.min",
+        datetimepicker_cn : "../library/timepicker/bootstrap-datetimepicker.zh-CN"
     },
     shim : {
-        bootstrap : {deps : ["jquery"]}
+        bootstrap : {deps : ["jquery"]},
+       	bootstrap_table_cn :{deps : ["bootstrapTable"]}
 //    	'vForm' : [ 'jquery' ],
 //    	'layui' : [ 'jquery'],
 //    	'ztreeJquery' : [ 'jquery' ],
