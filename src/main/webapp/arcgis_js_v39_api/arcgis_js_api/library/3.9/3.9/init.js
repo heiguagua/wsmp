@@ -583,7 +583,6 @@
     }
 })(this.dojoConfig || this.djConfig || this.require || {}, {
     baseUrl: (location.protocol === 'file:' ? 'http:' : location.protocol) + '//' + "127.0.0.1:8081/radio/app/arcgis_js_v39_api/arcgis_js_api/library/3.9/3.9/js/dojo/dojo",
-    urlArgs: "version=1468575741",
     hasCache: {
         "config-selectorEngine": "acme", "config-tlmSiblingOfDojo": 1, "dojo-built": 1, "dojo-has-api": 1,
         "dojo-loader": 1, "dojo-undef-api": 0, dom: 1, "extend-esri": 1, "host-browser": 1
@@ -597,9 +596,24 @@
         name: "esri"
     }, {location: ".", name: "dojo"}, {location: "../../put-selector", main: "put", name: "put-selector"}],
     paths: {
-        "jquery": "http://127.0.0.1:8081/radio/app/jquery/jquery-2.1.0"
+        jquery : "http://127.0.0.1:8081/radio/app/library/jquery/jquery",
+        bootstrap : "http://127.0.0.1:8081/radio/app/library/bootstrap/js/bootstrap",
+        echarts : "http://127.0.0.1:8081/radio/app/library/echarts/echarts",
 
-    }
+    },
+    shim : {
+        bootstrap : {deps : ["jquery"]}
+//    	'vForm' : [ 'jquery' ],
+//    	'layui' : [ 'jquery'],
+//    	'ztreeJquery' : [ 'jquery' ],
+//    	'ajaxFrom' : [ 'jquery' ],
+//    	"select2" : [ "jquery" ],
+//    	"jscroll" : [ "jquery" ],
+//    	"domReady" : [ "jquery" ],
+//    	"treeView" : ['jquery' ],
+//    	"Validform" : [ "jquery" ],
+//    	"select2Load" : [ "select2" ]
+        }
 });
 require({
     cache: {

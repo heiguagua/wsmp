@@ -689,7 +689,7 @@
 	}
 })(this.dojoConfig || this.djConfig || this.require || {}, {
 	async : 0,
-	baseUrl : (location.protocol === 'file:' ? 'http:' : location.protocol) + '//' + "localhost:8081/radio/app/arcgis_js_v39_api/arcgis_js_api/library/3.9/3.9/js/dojo/dojo",
+	baseUrl : (location.protocol === 'file:' ? 'http:' : location.protocol) + '//' + "localhost:8081/arcgis/radio/arcgis_js_v39_api/arcgis_js_api/library/3.9/3.9/js/dojo/dojo",
 	hasCache : {
 		"config-selectorEngine" : "acme",
 		"config-tlmSiblingOfDojo" : 1,

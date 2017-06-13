@@ -24,13 +24,15 @@ define(["dojo/parser","esri/map","esri/layers/ArcGISTiledMapServiceLayer","dojo/
         map.addLayer(agoLayer);
         var glayer = new GraphicsLayer();
         map.addLayer(glayer);
+        var ti = $("#warning_confirm").attr("class");
+        console.log(ti);
 //        var scaleba = new Scalebar({
 //        	  map:map,
 //        	  attachTo:"bottom-left"
 //        	});
         
-//        require(["dojo/request","home/geoJson2ArcJson","home/init","esri/geometry/Polygon","esri/graphic"], 
-//        		function(request,geoJson2ArcJson,init,Polygon){  
+        require(["dojo/request","home/geoJson2ArcJson","home/init","esri/geometry/Polygon","esri/graphic"], 
+        		function(request,geoJson2ArcJson,init,Polygon){  
 //            request.get("../data/map/getGeoJson", {  
 //                data: {  
 //                    color: "blue",  
@@ -67,7 +69,7 @@ define(["dojo/parser","esri/map","esri/layers/ArcGISTiledMapServiceLayer","dojo/
 //                // map.addLayer(graphic);  
 //                
 //            });  
-//        });  
+        });  
         return map;
     }
     return {
