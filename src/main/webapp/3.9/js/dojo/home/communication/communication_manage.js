@@ -1,9 +1,5 @@
-/**
- * 
- */
-
-define(["jquery","bootstrap","bootstrapTable","bootstrap_table_cn","moment","datetimepicker","datetimepicker_cn","select2"], function() {
-	function init(){
+define(function() {
+	function cmt_init(){
 		init1();
 		init2();
 	}
@@ -152,8 +148,5 @@ define(["jquery","bootstrap","bootstrapTable","bootstrap_table_cn","moment","dat
 		                }]
 		          });
 				}
-	return 
-	{
-		init : init
-	}
+	 return { init : cmt_init}
 })

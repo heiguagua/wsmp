@@ -3,7 +3,7 @@
 //
 //})
 
-define(["jquery","bootstrap","echarts"], function(jquery,bootstrap,echarts) {
+define(["echarts"], function(echarts) {
 	function init(){
 		$("#warning_confirm").click(function() {
 			if ($(this).hasClass("checked")) {

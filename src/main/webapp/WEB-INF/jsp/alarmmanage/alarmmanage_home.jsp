@@ -137,11 +137,6 @@
     </div>
   </div>
 
-  <!--   <!-- Libraries -->
-  <!-- <script src='library/jquery/jquery.min.js'></script> -->
-  <!--   <script src='library/bootstrap/js/bootstrap.min.js'></script>
-  <script src='library/echarts/echarts.min.js'></script>
-  <script src='js/alarm.js'></script> -->
   <script src="3.9/init.js"></script>
   <script type="text/javascript">
     var test = 1;
@@ -153,12 +148,6 @@
           alarm_manage.init();
           var map = init.init();
         });
-  
-        //parser.parse();
-        // var jsonf = geoJsonConverter();
-  
-  
-        // map = new Map("mapDiv");
   
   
       });

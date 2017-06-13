@@ -19,13 +19,13 @@
 <link href='css/common.css' rel='stylesheet' />
 <link href='css/wave_order.css' rel='stylesheet' />
 <link rel="stylesheet"
-	href="arcgis_js_v39_api/arcgis_js_api/library/3.9/3.9/js/esri/css/esri.css">
+	href="3.9/js/esri/css/esri.css">
 <link rel="stylesheet"
-	href="arcgis_js_v39_api/arcgis_js_api/library/3.9/3.9/js/dojo/dijit/themes/tundra/tundra.css">
+	href="3.9/js/dojo/dijit/themes/tundra/tundra.css">
 <link rel="stylesheet"
-	href="arcgis_js_v39_api/arcgis_js_api/library/3.9/3.9/js/dojo/webgis/widgets/themes/darkangel/darkangel.css">
+	href="3.9/js/dojo/webgis/widgets/themes/darkangel/darkangel.css">
 <link rel="stylesheet"
-	href="arcgis_js_v39_api/arcgis_js_api/library/3.9/3.9/js/dojo/webgis/widgets/themes/darkangel/override.css">
+	href="3.9/js/dojo/webgis/widgets/themes/darkangel/override.css">
 </head>
 
 <body id='waveOrder'>
@@ -204,23 +204,19 @@
 			</div>
 		</div>
 	</div>
-	<!-- Libraries -->
-	<script src='library/jquery/jquery.min.js'></script>
-	<script src='library/bootstrap/js/bootstrap.min.js'></script>
-	<script src="library/bootstrap-table/bootstrap-table.min.js"></script>
-	<script src="library/bootstrap-table/bootstrap-table-zh-CN.min.js"></script>
-	<script src='library/select2/select2.min.js'></script>
-	<script src='js/wave_order.js'></script>
-	<script src="arcgis_js_v39_api/arcgis_js_api/library/3.9/3.9/init.js"></script>
+		
+	<script src="3.9/init.js"></script>
 	<script type="text/javascript">
-    	require(["home/WaveorderMapInit",
-            "dojo/domReady!"],
+    	require(["home/waveorder/WaveorderMapInit","jquery","dojo/domReady!"],
         function (init) {
-            //parser.parse();
-           // var jsonf = geoJsonConverter();
             var map = init.init();
-            // map = new Map("mapDiv");
-
+            require([ "bootstrap", "bootstrapTable", "select2" ],function(){
+            	require([ "bootstrap_table_cn" ],function(){	
+            		require([ "home/waveorder/waveorder_manage" ],function(wave_order){	
+            			wave_order.init();
+                	})
+            	})
+            })
         });
     </script>
 </body>
