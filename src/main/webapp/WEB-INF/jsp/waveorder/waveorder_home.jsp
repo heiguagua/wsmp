@@ -8,14 +8,14 @@
 <meta name="description" content="" />
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, maximum-scale=1" />
-<link href='library/bootstrap/css/bootstrap.min.css' rel='stylesheet' />
-<link href="library/bootstrap-table/bootstrap-table.min.css"
+<link href='3.9/js/dojo/library/bootstrap/css/bootstrap.min.css' rel='stylesheet' />
+<link href="3.9/js/dojo/library/bootstrap-table/bootstrap-table.min.css"
 	rel="stylesheet">
-<link href='library/font-awesome/css/font-awesome.min.css'
+<link href='3.9/js/dojo/library/font-awesome/css/font-awesome.min.css'
 	rel='stylesheet' />
-<link href='library/bootstrap/css/awesome-bootstrap-checkbox.css'
+<link href='3.9/js/dojo/library/bootstrap/css/awesome-bootstrap-checkbox.css'
 	rel='stylesheet' />
-<link href='library/select2/select2.min.css' rel='stylesheet' />
+<link href='3.9/js/dojo/library/select2/select2.min.css' rel='stylesheet' />
 <link href='css/common.css' rel='stylesheet' />
 <link href='css/wave_order.css' rel='stylesheet' />
 <link rel="stylesheet"
