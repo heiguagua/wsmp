@@ -7,15 +7,16 @@
 <title>告警管理</title>
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-<link href='library/bootstrap/css/bootstrap.min.css' rel='stylesheet' />
-<link href='library/font-awesome/css/font-awesome.min.css' rel='stylesheet' />
-<link href='library/bootstrap/css/awesome-bootstrap-checkbox.css' rel='stylesheet' />
+<link href='3.9/js/dojo/library/bootstrap/css/bootstrap.min.css' rel='stylesheet' />
+<link href='3.9/js/dojo/library/font-awesome/css/font-awesome.min.css' rel='stylesheet' />
+<link href='3.9/js/dojo/library/bootstrap/css/awesome-bootstrap-checkbox.css' rel='stylesheet' />
 <link href='css/common.css' rel='stylesheet' />
 <link href='css/alarm.css' rel='stylesheet' />
-<link rel="stylesheet" href="arcgis_js_v39_api/arcgis_js_api/library/3.9/3.9/js/esri/css/esri.css">
-<link rel="stylesheet" href="arcgis_js_v39_api/arcgis_js_api/library/3.9/3.9/js/dojo/dijit/themes/tundra/tundra.css">
-<link rel="stylesheet" href="arcgis_js_v39_api/arcgis_js_api/library/3.9/3.9/js/dojo/webgis/widgets/themes/darkangel/darkangel.css">
-<link rel="stylesheet" href="arcgis_js_v39_api/arcgis_js_api/library/3.9/3.9/js/dojo/webgis/widgets/themes/darkangel/override.css">
+<link rel="stylesheet" href="3.9/js/esri/css/esri.css">
+<link rel="stylesheet" href="3.9/js/dojo/dijit/themes/tundra/tundra.css">
+<link rel="stylesheet" href="3.9/js/dojo/webgis/widgets/themes/darkangel/darkangel.css">
+<link rel="stylesheet" href="3.9/js/dojo/webgis/widgets/themes/darkangel/override.css">
+
 </head>
 
 <body id='alarm'>
@@ -33,7 +34,7 @@
     <section class='flex-row'>
       <div class='box right10'>
         <div class='detect-way flex-row'>
-          <div class='way-key flex1'>
+          <div class='way-key flex1' id="warning_confirm">
             <div class='way-sign'>
               <img src='images/way_2.png' alt='告警确认' />
             </div>
@@ -136,20 +137,18 @@
     </div>
   </div>
 
-  <!-- Libraries -->
-  <script src='library/jquery/jquery.min.js'></script>
-  <script src='library/bootstrap/js/bootstrap.min.js'></script>
-  <script src='library/echarts/echarts.min.js'></script>
-  <script src='js/alarm.js'></script>
-  <script src="arcgis_js_v39_api/arcgis_js_api/library/3.9/3.9/init.js"></script>
+  <script src="3.9/init.js"></script>
   <script type="text/javascript">
-    require([ "home/init",
+    var test = 1;
+    require([ "home/init", "jquery",
       "dojo/domReady!" ],
       function(init) {
-        //parser.parse();
-        // var jsonf = geoJsonConverter();
-        var map = init.init();
-        // map = new Map("mapDiv");
+        require([ "bootstrap", "echarts", "home/alarm/alarm_manage" ], function(bootstrap, echarts, alarm_manage) {
+          console.log(test);
+          alarm_manage.init();
+          var map = init.init();
+        });
+  
   
       });
   </script>
