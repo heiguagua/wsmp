@@ -96,8 +96,8 @@
     <section class='flex-row'>
       <div class='box'>
         <div class='month-data flex-column'>
-          <h4 class='title'>近3个月占用度（按天统计）</h4>
-          <div class='flex1' id='monthChart'></div>
+          <h4>近3个月占用度（按天统计）</h4>
+          <h4 id = "month" class='title' style="height: 100%"></h4>
         </div>
       </div>
     </section>
@@ -111,10 +111,10 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-          <h4 class="modal-title" id="modalDayLabel">日占用度（按24小时统计）</h4>
+          <h4 class="modal-title" id="modalDayLabel" style="height: 100%">日占用度（按24小时统计）</h4>
         </div>
         <div class="modal-body">
-          <div id='dayChart'></div>
+          <div id='day'></div>
         </div>
       </div>
     </div>
@@ -131,7 +131,7 @@
           <h4 class="modal-title" id="modalHourLabel">小时场强度（按60分钟统计）</h4>
         </div>
         <div class="modal-body">
-          <div id='hourChart'></div>
+          <div id='hour'></div>
         </div>
       </div>
     </div>
