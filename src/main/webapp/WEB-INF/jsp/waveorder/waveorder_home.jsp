@@ -26,7 +26,8 @@
 		<span class='module-name'>电波秩序管理</span>
 		<div class='search-filters'>
 			<select class='city-list select2-picker'>
-				<option>成都市</option>
+				<option value="xxxx">成都市</option>
+				<option value="yyyy">成都市1</option>
 			</select>
 		</div>
 	</div>
@@ -37,9 +38,7 @@
 		<section class='flex-row'>
 			<div class='box right10'>
 				<p class='table-title'>频段状态</p>
-				<table class="table table-striped text-center" id='table-radio'>
-				</table>
-
+                <span id = "table_radio"></span>
 			</div>
 			<div class='box box-tabs'>
 				<ul class="nav nav-tabs">
@@ -53,9 +52,7 @@
 						</table>
 					</div>
 					<div role="tabpanel" class="tab-pane" id="dealed">
-						<table class="table table-striped text-center"
-							id='table-alarm-dealed'>
-						</table>
+                        <span id = "table_alarm_dealed"></span>
 					</div>
 				</div>
 
