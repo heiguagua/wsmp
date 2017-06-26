@@ -5,5 +5,11 @@
            maxEntriesLocalHeap="200"
            timeToLiveSeconds="60">
     </cache>
+    
+    <cache name="AlarmDealed"
+           maxEntriesLocalHeap="200"
+           timeToLiveSeconds="60">
+    </cache>
+    
 
 </ehcache>
