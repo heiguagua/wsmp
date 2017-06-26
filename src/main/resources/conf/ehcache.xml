@@ -11,5 +11,9 @@
            timeToLiveSeconds="60">
     </cache>
     
+    <cache name="RedioType"
+           maxEntriesLocalHeap="200"
+           timeToLiveSeconds="60">
+    </cache>
 
 </ehcache>
