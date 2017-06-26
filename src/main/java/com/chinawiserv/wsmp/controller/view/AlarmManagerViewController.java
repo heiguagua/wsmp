@@ -39,8 +39,6 @@ public class AlarmManagerViewController {
 	@RequestMapping(path = { "" })
 	public ModelAndView test(ModelAndView modelAndView) throws IOException {
 		RedioType redioType = checkBoxFactory.getRedioType();
-		RedioType redioType1 = checkBoxFactory.getRedioType();
-		System.out.println(redioType == redioType1);
 		modelAndView.setViewName("alarmmanage/alarmmanage_home");
 		modelAndView.addObject("redioType", redioType);
 		return modelAndView;
