@@ -2,19 +2,23 @@ package com.chinawiserv.wsmp.pojo;
 
 public class AlarmUnDealed {
 
-	private String radio;
+	private String radio = "";
 
-	private String firstTime;
+	private String firstTime = "";
 
-	private String lastingTime;
+	private String lastingTime = "";
 
-	private String radioType;
+	private String radioType = "";
 
-	private String station;
+	private String station = "";
 
-	private String radioStatus;
+	private String radioStatus = "";
 
-	private String mark;
+	private String mark = "";
+
+	public AlarmUnDealed() {
+
+	}
 
 	public AlarmUnDealed(String radio, String firstTime, String lastingTime, String radioType, String station, String radioStatus, String mark) {
 		super();

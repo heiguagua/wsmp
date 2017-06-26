@@ -17,6 +17,10 @@ public class AlarmDealed {
 
 	private String mark;
 
+	public AlarmDealed() {
+
+	}
+
 	public AlarmDealed(String radio, String firstTime, String lastingTime, String radioType, String station, String radioStatus, String mark) {
 		super();
 		this.radio = radio;

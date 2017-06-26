@@ -1,15 +1,24 @@
 package com.chinawiserv.wsmp.controller.view;
 
+import java.io.IOException;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.chinawiserv.wsmp.cache.CheckBoxFactory;
+import com.chinawiserv.wsmp.pojo.RedioType;
 
 @Controller
 @RequestMapping("/alarmmanage")
 public class AlarmManagerViewController {
+
+	@Autowired
+	CheckBoxFactory checkBoxFactory;
 
 	@GetMapping(path = "/dayCharts")
 	public String dayCharts(@RequestParam Map<String, Object> params) {
@@ -28,7 +37,12 @@ public class AlarmManagerViewController {
 	}
 
 	@RequestMapping(path = { "" })
-	public String test() {
-		return "alarmmanage/alarmmanage_home";
+	public ModelAndView test(ModelAndView modelAndView) throws IOException {
+		RedioType redioType = checkBoxFactory.getRedioType();
+		RedioType redioType1 = checkBoxFactory.getRedioType();
+		System.out.println(redioType == redioType1);
+		modelAndView.setViewName("alarmmanage/alarmmanage_home");
+		modelAndView.addObject("redioType", redioType);
+		return modelAndView;
 	}
 }
