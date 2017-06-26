@@ -1,13 +1,58 @@
-define(["jquery","bootstrap","echarts"], function(jquery ,bootstrap,echarts) {
+define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap, echarts, ajax) {
 	function init() {
-		initChart();
-		initSelect2();
+		init_signal_detail();
+		init_select2();
 	}
+	
+	function warning_confirm(){
+		$("#warning_confirm").click(function() {
+			if ($(this).hasClass("checked")) {
+				$(this).removeClass("checked");
+			} else {
+				$(this).addClass("checked");
+			}
+		});
+	}
+	
+	function init_select2() {
+		$('.select2-picker').select2();
+		$("#search").keydown(function(e) {
+			if (e.keyCode == 13) {
+				var val = $(this).val();
+				console.log(val);
+				$("#station_list").children().remove();
+				$("#station_list").load("signal/stationlist", function() {
+					initSelect2();
+				});
+			}
+		});
+
+		//		var val = $(".select2-picker option:selected").val();
+		//		alert(val);
+
+		$(".search-icon").click(function() {
+			$("#station_list").children().remove();
+			$("#station_list").load("signal/stationlist", function() {
+				initSelect2();
+			});
+		});
+	}
+
+	function init_signal_detail() {
+		$("#signal_detail").load("signal/sigaldetail", function() {
+			warning_confirm();
+			ajax.get("data/signal/FmRate",[],function(data){
+				console.log(data)
+				initChart(data);
+			});
+		})
+	}
+
 	function initSelect2() {
 		$('.select2-picker').select2();
 	}
 
-	function initChart() {
+	function initChart(data) {
 		// draw radio pie chart
 		var option = {
 			color : [ 'rgb(44,205,125)', 'rgb(55,165,255)' ],
@@ -51,16 +96,17 @@ define(["jquery","bootstrap","echarts"], function(jquery ,bootstrap,echarts) {
 							length2 : 0
 						}
 					},
-					data : [
-						{
-							value : 20,
-							name : 'AM'
-						},
-						{
-							value : 80,
-							name : 'FM'
-						}
-					]
+					data : data 
+//						[
+//						{
+//							value : 20,
+//							name : 'AM'
+//						},
+//						{
+//							value : 80,
+//							name : 'FM'
+//						}
+//					]
 				}
 			]
 		};
@@ -278,6 +324,8 @@ define(["jquery","bootstrap","echarts"], function(jquery ,bootstrap,echarts) {
 			hourChart.setOption(optionHour);
 		})
 	}
-	
-	return {init : init}
+
+	return {
+		init : init
+	}
 })

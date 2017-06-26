@@ -1,5 +1,11 @@
 $(function(){
   $('.select2-picker').select2();
+  $(".select2-picker").on("select2:select",function(e){
+
+	　　  // e 的话就是一个对象 然后需要什么就 “e.参数” 形式 进行获取 
+	　　var val = $(".select2-picker option:selected").val();
+		alert(val);
+	})
   $('#table-radio').bootstrapTable({
         method: 'get',
         contentType: "application/x-www-form-urlencoded",//必须要有！！！！

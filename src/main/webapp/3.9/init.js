@@ -605,7 +605,8 @@
         select2 : "../library/select2/select2.min",
         datetimepicker : "../library/timepicker/js/bootstrap-datetimepicker.min",
         moment : "../library/timepicker/moment.min",
-        datetimepicker_cn : "../library/timepicker/bootstrap-datetimepicker.zh-CN"
+        datetimepicker_cn : "../library/timepicker/bootstrap-datetimepicker.zh-CN",
+        ajax : "../library/util/ajax"
     },
     shim : {
         bootstrap : {deps : ["jquery"]},
