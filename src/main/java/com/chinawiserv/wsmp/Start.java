@@ -12,10 +12,10 @@ public class Start extends SpringBootServletInitializer {
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-		return builder.sources(TestStart.class);
+		return builder.sources(Start.class);
 	}
 
 	public static void main(String[] args) {
-		SpringApplication.run(TestStart.class);
+		SpringApplication.run(Start.class);
 	}
 }
