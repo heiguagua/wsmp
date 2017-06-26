@@ -13,14 +13,14 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.3.RELEASE</version>
+		<version>1.5.4.RELEASE</version>
 	</parent>
 
 	<properties>
 		<encoding>UTF-8</encoding>
 		<java.version>1.8</java.version>
 		<druid.version>1.0.31</druid.version>
-		<start-class>com.chinawiserv.Start</start-class>
+		<start-class>com.chinawiserv.wsmp.Start</start-class>
 	</properties>
 
 	<dependencies>
@@ -63,12 +63,12 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.tomcat.embed</groupId>
 			<artifactId>tomcat-embed-jasper</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.chinawiserv.apps</groupId>
 			<artifactId>spring-boot-webservice-autoconfig</artifactId>
@@ -101,6 +101,9 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<executable>true</executable>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
