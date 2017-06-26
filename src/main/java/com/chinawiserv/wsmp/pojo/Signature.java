@@ -21,28 +21,28 @@ public class Signature {
 		this.frequencyPeaksNum = frequencyPeaksNum;
 	}
 
+	public int getFrequencyPeaksNum() {
+		return this.frequencyPeaksNum;
+	}
+
 	public int getMaxDensity() {
-		return maxDensity;
+		return this.maxDensity;
+	}
+
+	public double getRate() {
+		return this.rate;
+	}
+
+	public String getS() {
+		return this.s;
+	}
+
+	public double getStationaryIndex() {
+		return this.stationaryIndex;
 	}
 
 	public void setMaxDensity(int maxDensity) {
 		this.maxDensity = maxDensity;
-	}
-
-	public String getS() {
-		return s;
-	}
-
-	public double getRate() {
-		return rate;
-	}
-
-	public int getFrequencyPeaksNum() {
-		return frequencyPeaksNum;
-	}
-
-	public double getStationaryIndex() {
-		return stationaryIndex;
 	}
 
 }
