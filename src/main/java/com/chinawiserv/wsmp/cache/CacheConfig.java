@@ -4,22 +4,22 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Properties;
 
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.EncodedResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
-import org.springframework.stereotype.Component;
 
 import com.chinawiserv.wsmp.pojo.AlarmDealed;
 import com.chinawiserv.wsmp.pojo.AlarmUnDealed;
 import com.chinawiserv.wsmp.pojo.BandStatusTable;
+import com.chinawiserv.wsmp.pojo.RedioType;
 
-@Component
-public class TableColumnFactory {
+@Configuration
+public class CacheConfig {
 
-	// 频段状态表头
-	@Cacheable(value = "BandStatus", sync = true)
+	@Bean
 	public BandStatusTable getBandStatusTable() throws IOException {
 
 		DefaultResourceLoader loader = new DefaultResourceLoader();
@@ -37,7 +37,7 @@ public class TableColumnFactory {
 	}
 
 	// 实时警告处理表头
-	@Cacheable(value = "AlarmDealed", sync = true)
+	@Bean
 	public AlarmDealed getAlarmDealed() throws IOException {
 		DefaultResourceLoader loader = new DefaultResourceLoader();
 		final Resource resource = loader.getResource("table_column/alarm_dealed.properties");
@@ -55,7 +55,7 @@ public class TableColumnFactory {
 	}
 
 	// 实时警告未处理表头
-	@Cacheable(value = "AlarmUnDealed", sync = true)
+	@Bean
 	public AlarmUnDealed getAlarmUnDealed() throws IOException {
 		DefaultResourceLoader loader = new DefaultResourceLoader();
 		final Resource resource = loader.getResource("table_column/alarm_undealed.properties");
@@ -70,6 +70,20 @@ public class TableColumnFactory {
 		String mark = p.getProperty("mark", "备注");
 		return new AlarmUnDealed(radio, firstTime, lastingTime, radioType, station, radioStatus, mark);
 
+	}
+
+	@Bean
+	public RedioType getRedioType() throws IOException {
+		final DefaultResourceLoader loader = new DefaultResourceLoader();
+		final Resource resource = loader.getResource("checkbox/RedioType.properties");
+		final EncodedResource encodedResource = new EncodedResource(resource, Charset.forName("utf-8"));
+		final Properties p = PropertiesLoaderUtils.loadProperties(encodedResource);
+		final String legalNormalStation = p.getProperty("legalNormalStation", "合法台站正常");
+		final String illegalNormalStation = p.getProperty("legalUnNormalStation", "合法台站违规");
+		final String llegalStation = p.getProperty("legalStation", "合法台站");
+		final String illegalSignal = p.getProperty("illegalSignal", "非法信号");
+		final String unKonw = p.getProperty("unKonw", "不明信号");
+		return new RedioType(legalNormalStation, illegalNormalStation, llegalStation, illegalSignal, unKonw);
 	}
 
 }
