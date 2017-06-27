@@ -1,7 +1,12 @@
 package com.chinawiserv.wsmp.cache;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.util.LinkedHashMap;
 import java.util.Properties;
 
 import org.springframework.context.annotation.Bean;
@@ -10,7 +15,10 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.EncodedResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
+import org.springframework.util.ResourceUtils;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.chinawiserv.wsmp.pojo.AlarmDealed;
 import com.chinawiserv.wsmp.pojo.AlarmUnDealed;
 import com.chinawiserv.wsmp.pojo.BandStatusTable;
@@ -18,6 +26,8 @@ import com.chinawiserv.wsmp.pojo.RedioType;
 
 @Configuration
 public class CacheConfig {
+
+	public final static String MAP_DATA = "mapData";
 
 	@Bean
 	public BandStatusTable getBandStatusTable() throws IOException {
@@ -86,4 +96,16 @@ public class CacheConfig {
 		return new RedioType(legalNormalStation, illegalNormalStation, llegalStation, illegalSignal, unKonw);
 	}
 
+	@Bean(name = MAP_DATA)
+	public Object mapData() throws IOException {
+
+		final File file = ResourceUtils.getFile("classpath:geoJson/Tianjin_Great.json");
+		final Type type = new TypeReference<LinkedHashMap<String, Object>>() {}.getType();
+
+		try (InputStream is = Files.newInputStream(file.toPath())) {
+
+			final LinkedHashMap<String, Object> map = JSON.parseObject(is, type);
+			return map.get("geometries");
+		}
+	}
 }

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.chinawiserv.wsmp.pojo.MapDataConfiguration;
+import com.chinawiserv.wsmp.cache.CacheConfig;
 
 @RestController
 @RequestMapping(path = "/data/map")
@@ -17,7 +17,7 @@ public class MapDataController {
 	@Autowired
 	ApplicationContext spring;
 
-	@Resource(name = MapDataConfiguration.MAP_DATA)
+	@Resource(name = CacheConfig.MAP_DATA)
 	Object data;
 
 	@RequestMapping(path = "/getGeoJson", method = RequestMethod.GET)
