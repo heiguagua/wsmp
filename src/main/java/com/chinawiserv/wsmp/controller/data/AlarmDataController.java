@@ -3,14 +3,23 @@ package com.chinawiserv.wsmp.controller.data;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.chinawiserv.wsmp.pojo.Test;
+import com.chinawiserv.wsmp.service.impl.INTENSIVE_MONITORINGServiceImpl;
 
 @RestController
 @RequestMapping("/data/alarm")
 public class AlarmDataController {
+
+	@Autowired
+	INTENSIVE_MONITORINGServiceImpl service;
 
 	@GetMapping("/dayCharts")
 	public Object dayCharts(@RequestParam Map<String, Object> param) {
@@ -49,5 +58,11 @@ public class AlarmDataController {
 		map.put("xAxis", xAxis);
 		map.put("series", series);
 		return map;
+	}
+
+	@RequestMapping(path = "/warringconfirm", method = RequestMethod.POST)
+	public void alarmConfirm(@RequestBody Test test) {
+		// service.insert(param);
+		System.out.println(test);
 	}
 }

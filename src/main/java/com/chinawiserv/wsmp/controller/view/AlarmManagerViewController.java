@@ -17,7 +17,7 @@ import com.chinawiserv.wsmp.pojo.RedioType;
 public class AlarmManagerViewController {
 
 	@Autowired
-	RedioType redioType;
+	private RedioType redioType;
 
 	@GetMapping(path = "/dayCharts")
 	public String dayCharts(@RequestParam Map<String, Object> params) {

@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.util.LinkedHashMap;
 import java.util.Properties;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.DefaultResourceLoader;
@@ -29,19 +30,21 @@ public class CacheConfig {
 
 	public final static String MAP_DATA = "mapData";
 
+	@Autowired
+	private DefaultResourceLoader def;
+
 	@Bean
 	public BandStatusTable getBandStatusTable() throws IOException {
-
-		DefaultResourceLoader loader = new DefaultResourceLoader();
-		final Resource resource = loader.getResource("table_column/band_status.properties");
-		EncodedResource encodedResource = new EncodedResource(resource, Charset.forName("utf-8"));
-		Properties p = PropertiesLoaderUtils.loadProperties(encodedResource);
-		String radioName = p.getProperty("radio_name", "频段名称");
-		String legalStation = p.getProperty("legal_station", "合法正常台站");
-		String illegalStation = p.getProperty("illegal_station", "合法违规台站");
-		String legalSignal = p.getProperty("legal_signal", "已知信号");
-		String illegalSignal = p.getProperty("illegal_signal", "不明信号");
-		String unknownSignal = p.getProperty("unknown_signal", "非法信号");
+		// DefaultResourceLoader loader = new DefaultResourceLoader();
+		final Resource resource = def.getResource("classpath:table_column/band_status.properties");
+		final EncodedResource encodedResource = new EncodedResource(resource, Charset.forName("utf-8"));
+		final Properties p = PropertiesLoaderUtils.loadProperties(encodedResource);
+		final String radioName = p.getProperty("radio_name", "频段名称");
+		final String legalStation = p.getProperty("legal_station", "合法正常台站");
+		final String illegalStation = p.getProperty("illegal_station", "合法违规台站");
+		final String legalSignal = p.getProperty("legal_signal", "已知信号");
+		final String illegalSignal = p.getProperty("illegal_signal", "不明信号");
+		final String unknownSignal = p.getProperty("unknown_signal", "非法信号");
 		return new BandStatusTable(radioName, legalStation, illegalStation, legalSignal, unknownSignal, illegalSignal);
 
 	}
@@ -49,17 +52,16 @@ public class CacheConfig {
 	// 实时警告处理表头
 	@Bean
 	public AlarmDealed getAlarmDealed() throws IOException {
-		DefaultResourceLoader loader = new DefaultResourceLoader();
-		final Resource resource = loader.getResource("table_column/alarm_dealed.properties");
-		EncodedResource encodedResource = new EncodedResource(resource, Charset.forName("utf-8"));
-		Properties p = PropertiesLoaderUtils.loadProperties(encodedResource);
-		String radio = p.getProperty("radio", "频率");
-		String firstTime = p.getProperty("first_appear_time", "首次出现时间");
-		String lastingTime = p.getProperty("lasting_time", "持续时间");
-		String radioType = p.getProperty("radio_type", "类型");
-		String station = p.getProperty("station", "监测站");
-		String radioStatus = p.getProperty("radio_status", "状态");
-		String mark = p.getProperty("mark", "备注");
+		final Resource resource = def.getResource("classpath:table_column/alarm_dealed.properties");
+		final EncodedResource encodedResource = new EncodedResource(resource, Charset.forName("utf-8"));
+		final Properties p = PropertiesLoaderUtils.loadProperties(encodedResource);
+		final String radio = p.getProperty("radio", "频率");
+		final String firstTime = p.getProperty("first_appear_time", "首次出现时间");
+		final String lastingTime = p.getProperty("lasting_time", "持续时间");
+		final String radioType = p.getProperty("radio_type", "类型");
+		final String station = p.getProperty("station", "监测站");
+		final String radioStatus = p.getProperty("radio_status", "状态");
+		final String mark = p.getProperty("mark", "备注");
 		return new AlarmDealed(radio, firstTime, lastingTime, radioType, station, radioStatus, mark);
 
 	}
@@ -67,25 +69,23 @@ public class CacheConfig {
 	// 实时警告未处理表头
 	@Bean
 	public AlarmUnDealed getAlarmUnDealed() throws IOException {
-		DefaultResourceLoader loader = new DefaultResourceLoader();
-		final Resource resource = loader.getResource("table_column/alarm_undealed.properties");
+		final Resource resource = def.getResource("classpath:table_column/alarm_undealed.properties");
 		EncodedResource encodedResource = new EncodedResource(resource, Charset.forName("utf-8"));
-		Properties p = PropertiesLoaderUtils.loadProperties(encodedResource);
-		String radio = p.getProperty("radio", "频率");
-		String firstTime = p.getProperty("first_appear_time", "首次出现时间");
-		String lastingTime = p.getProperty("lasting_time", "持续时间");
-		String radioType = p.getProperty("radio_type", "类型");
-		String station = p.getProperty("station", "监测站");
-		String radioStatus = p.getProperty("radio_status", "状态");
-		String mark = p.getProperty("mark", "备注");
+		final Properties p = PropertiesLoaderUtils.loadProperties(encodedResource);
+		final String radio = p.getProperty("radio", "频率");
+		final String firstTime = p.getProperty("first_appear_time", "首次出现时间");
+		final String lastingTime = p.getProperty("lasting_time", "持续时间");
+		final String radioType = p.getProperty("radio_type", "类型");
+		final String station = p.getProperty("station", "监测站");
+		final String radioStatus = p.getProperty("radio_status", "状态");
+		final String mark = p.getProperty("mark", "备注");
 		return new AlarmUnDealed(radio, firstTime, lastingTime, radioType, station, radioStatus, mark);
 
 	}
 
 	@Bean
 	public RedioType getRedioType() throws IOException {
-		final DefaultResourceLoader loader = new DefaultResourceLoader();
-		final Resource resource = loader.getResource("checkbox/RedioType.properties");
+		final Resource resource = def.getResource("classpath:checkbox/RedioType.properties");
 		final EncodedResource encodedResource = new EncodedResource(resource, Charset.forName("utf-8"));
 		final Properties p = PropertiesLoaderUtils.loadProperties(encodedResource);
 		final String legalNormalStation = p.getProperty("legalNormalStation", "合法台站正常");
