@@ -5,7 +5,6 @@ import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.chinawiserv.wsmp.pojo.MapDataConfiguration;
@@ -14,14 +13,13 @@ import com.chinawiserv.wsmp.pojo.MapDataConfiguration;
 @RequestMapping(path = "/data/map")
 public class MapDataController {
 
-	@Autowired
-	ApplicationContext spring;
+    @Autowired
+    ApplicationContext spring;
 
-	@Resource(name = MapDataConfiguration.MAP_DATA)
-	Object data;
+    @Resource(name = MapDataConfiguration.MAP_DATA)
+    private Object data;
 
-	@RequestMapping(path = "/getGeoJson", method = RequestMethod.GET)
-	public Object getGeoJson() {
-		return this.data;
-	}
+    public void setData(Object data) {
+        this.data = data;
+    }
 }

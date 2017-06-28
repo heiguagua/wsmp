@@ -11,24 +11,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/alarmmanage")
 public class AlarmManagerViewController {
 
-	@GetMapping(path = "/dayCharts")
-	public String dayCharts(@RequestParam Map<String, Object> params) {
-		return "alarmmanage/day_chart";
-	}
+    @GetMapping(path = "/dayCharts")
+    public String dayCharts(@RequestParam Map<String, Object> params) {
+        return "alarmmanage/day_chart";
+    }
 
-	@GetMapping(path = "/hourCharts")
-	public String hourCharts(@RequestParam Map<String, Object> params) {
-		return "alarmmanage/hour_chart";
-	}
+    @GetMapping(path = "/hourCharts")
+    public String hourCharts(@RequestParam Map<String, Object> params) {
+        return "alarmmanage/hour_chart";
+    }
 
-	@GetMapping(path = "/monthCharts")
-	public String monthCharts(@RequestParam Map<String, Object> params) {
+    @GetMapping(path = "/monthCharts")
+    public String monthCharts(@RequestParam Map<String, Object> params) {
 
-		return "alarmmanage/month_chart";
-	}
+        return "alarmmanage/month_chart";
+    }
 
-	@RequestMapping(path = { "" })
-	public String test() {
-		return "alarmmanage/alarmmanage_home";
-	}
+    @RequestMapping(path = {""})
+    public String test() {
+        return "alarmmanage/alarmmanage_home";
+    }
 }

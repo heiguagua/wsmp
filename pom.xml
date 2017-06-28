@@ -11,9 +11,9 @@
 	<url>http://wsmp.chinawiserv.com</url>
 
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.4.RELEASE</version>
+		<groupId>com.chinawiserv.spring.boot</groupId>
+		<artifactId>parent</artifactId>
+		<version>1.0.4.RELEASE</version>
 	</parent>
 
 	<properties>
@@ -78,7 +78,7 @@
 		<dependency>
 			<groupId>com.chinawiserv.apps</groupId>
 			<artifactId>chinawiserv-apps-util-logger</artifactId>
-			<version>1.0.9.RELEASE</version>
+			<version>1.1.9.RELEASE</version>
 		</dependency>
 
 		<dependency>
@@ -98,15 +98,50 @@
 	<build>
 		<finalName>${project.artifactId}</finalName>
 		<plugins>
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<executable>true</executable>
+					<embeddedLaunchScriptProperties>
+						<mode>service</mode>
+						<confFolder>config</confFolder>
+					</embeddedLaunchScriptProperties>
 				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<packagingExcludes>**/*.properties,**/*.xml</packagingExcludes>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<appendAssemblyId>false</appendAssemblyId>
+					<recompressZippedFiles>true</recompressZippedFiles>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-zip</id><!--名字任意 -->
+						<phase>package</phase><!-- 绑定到package生命周期阶段上 -->
+						<goals>
+							<goal>single</goal><!-- 只运行一次 -->
+						</goals>
+						<configuration>
+							<descriptors> <!--描述文件路径 -->
+								<descriptor>src/main/resources/wsmp_package.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
 
