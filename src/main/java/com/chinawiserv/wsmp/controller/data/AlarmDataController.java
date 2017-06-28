@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.chinawiserv.wsmp.pojo.IntensiveMonitoring;
-import com.chinawiserv.wsmp.service.IIntensiveMonitoringService;
+import com.chinawiserv.wsmp.service.impl.IntensiveMonitoringServiceImpl;
 
 @RestController
 @RequestMapping("/data/alarm")
 public class AlarmDataController {
 
 	@Autowired
-	IIntensiveMonitoringService iIntensiveMonitoringServicel;
+	IntensiveMonitoringServiceImpl iIntensiveMonitoringServicel;
 	@GetMapping("/dayCharts")
 	public Object dayCharts(@RequestParam Map<String, Object> param) {
 
@@ -61,7 +61,6 @@ public class AlarmDataController {
 
 	@RequestMapping(path = "/warringconfirm", method = RequestMethod.POST)
 	public void alarmConfirm(@RequestBody IntensiveMonitoring in) {
-		// service.insert(param);
 		iIntensiveMonitoringServicel.insert(in);
 	}
 

@@ -1,5 +1,7 @@
 package com.chinawiserv.wsmp.mapper;
 
+import org.apache.ibatis.annotations.Mapper;
+
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.chinawiserv.wsmp.pojo.FrequencyRange;
 
@@ -11,6 +13,7 @@ import com.chinawiserv.wsmp.pojo.FrequencyRange;
  * @author ${author}
  * @since 2017-06-28
  */
+@Mapper
 public interface FrequencyRangeMapper extends BaseMapper<FrequencyRange> {
 
 }
