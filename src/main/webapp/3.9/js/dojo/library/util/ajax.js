@@ -1,9 +1,5 @@
 define([ "jquery" ], function($) {
 
-
-
-
-
 	function get(url, data, success, error) {
 		ajax(url, "GET", data, false, success, error);
 	}
@@ -49,12 +45,12 @@ define([ "jquery" ], function($) {
 					}
 					count++;
 					json[key] = value;
-//					json["mark"] = "insert" 
+				//					json["mark"] = "insert" 
 				}
-				if(count > 0){
+				if (count > 0) {
 					tablevalue.push(json);
 				}
-				
+
 				var upJson = {};
 				var upCount = 0;
 				for (var i = 0; i < editSize; i++) {
@@ -66,7 +62,7 @@ define([ "jquery" ], function($) {
 					}
 					upCount++;
 					upJson[key] = value;
-//					upJson["mark"] = "updata" 
+				//					upJson["mark"] = "updata" 
 				}
 				if (upCount > 0) {
 					updaValue.push(upJson);
@@ -124,7 +120,7 @@ define([ "jquery" ], function($) {
 			}
 		}
 	}
-	
+
 	function ajax(url, type, data, json, success, error) {
 		//url = mvcPath + url;
 		var params = {
@@ -134,7 +130,7 @@ define([ "jquery" ], function($) {
 			error : error ? error : function(xhr, status, error) {
 				console.error("error:" + xhr.responseText);
 			},
-			success :success
+			success : success
 		};
 
 		if (json) {
