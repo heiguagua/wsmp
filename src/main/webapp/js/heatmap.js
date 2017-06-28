@@ -7,6 +7,7 @@ var days = ['2017.1.1', '2017.1.2', '2017.1.3',
     '2017.1.4', '2017.1.5', '2017.1.6', '2017.1.7', '2017.1.8', '2017.1.9', '2017.1.10', '2017.1.11', '2017.1.12', '2017.1.13', '2017.1.14', '2017.1.15', '2017.1.16', '2017.1.17', '2017.1.18', '2017.1.19', '2017.1.20', '2017.1.21', '2017.1.22', '2017.1.23', '2017.1.24', '2017.1.25', '2017.1.26', '2017.1.27', '2017.1.28', '2017.1.29', '2017.1.30'
 ];
 
+
 var data = [
     [0, 0, 5],
     [0, 1, 1],
@@ -207,52 +208,52 @@ data = data.map(function(item) {
 });
 
 var option = {
-    tooltip: {
-        position: 'top'
+    tooltip : {
+        position : 'top'
     },
-    animation: false,
-    grid: {
-        height: '500',
-        y: '10%',
-        backgroundColor:'red'
+    animation : false,
+    grid : {
+        height : '500',
+        y : '10%',
+        backgroundColor : 'red'
     },
-    xAxis: {
-        type: 'category',
-        data: hours,
-        splitLine: {
-            show: true,
-            lineStyle: {
-                color: ['rgb(228,237,246)']
+    xAxis : {
+        type : 'category',
+        data : hours,
+        splitLine : {
+            show : true,
+            lineStyle : {
+                color : ['rgb(228,237,246)']
             }
         },
-        /*splitArea: {
-            show: true,
-            areaStyle: {
-                color: ['rgb(246,250,253)']
+    /*splitArea: {
+        show: true,
+        areaStyle: {
+            color: ['rgb(246,250,253)']
+        }
+    }
+    */
+    },
+    yAxis : {
+        type : 'category',
+        data : days,
+        splitLine : {
+            show : true,
+            lineStyle : {
+                color : ['rgb(228,237,246)']
             }
         }
-        */
     },
-    yAxis: {
-        type: 'category',
-        data: days,
-        splitLine: {
-            show: true,
-            lineStyle: {
-                color: ['rgb(228,237,246)']
-            }
-        }
-    },
-    visualMap: {
-        min: 1,
-        max: 4,
-        show: false,
-        splitNumber: 2,
-        calculable: false,
-        color: ['rgb(111,172,70)', 'red'],
-        orient: 'horizontal',
-        left: 'center',
-        bottom: '2%'
+    visualMap : {
+        min : 1,
+        max : 4,
+        show : false,
+        splitNumber : 2,
+        calculable : false,
+        color : ['rgb(111,172,70)', 'red'],
+        orient : 'horizontal',
+        left : 'center',
+        bottom : '2%'
     },
     // dataZoom: {
     //     type: 'slider',
@@ -260,19 +261,19 @@ var option = {
     //     start: 100,
     //     end: 50
     // },
-    series: [{
-        name: 'Punch Card',
-        type: 'heatmap',
-        data: data,
-        label: {
-            normal: {
-                show: true
+    series : [{
+        name : 'Punch Card',
+        type : 'heatmap',
+        data : data,
+        label : {
+            normal : {
+                show : true
             }
         },
-        itemStyle: {
-            emphasis: {
-                shadowBlur: 10,
-                shadowColor: 'rgba(0, 0, 0, 0.5)'
+        itemStyle : {
+            emphasis : {
+                shadowBlur : 10,
+                shadowColor : 'rgba(0, 0, 0, 0.5)'
             }
         }
     }]

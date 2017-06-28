@@ -33,26 +33,11 @@ public class CacheConfig {
 	@Autowired
 	private DefaultResourceLoader def;
 
-	@Bean
-	public BandStatusTable getBandStatusTable() throws IOException {
-		// DefaultResourceLoader loader = new DefaultResourceLoader();
-		final Resource resource = def.getResource("classpath:table_column/band_status.properties");
-		final EncodedResource encodedResource = new EncodedResource(resource, Charset.forName("utf-8"));
-		final Properties p = PropertiesLoaderUtils.loadProperties(encodedResource);
-		final String radioName = p.getProperty("radio_name", "频段名称");
-		final String legalStation = p.getProperty("legal_station", "合法正常台站");
-		final String illegalStation = p.getProperty("illegal_station", "合法违规台站");
-		final String legalSignal = p.getProperty("legal_signal", "已知信号");
-		final String illegalSignal = p.getProperty("illegal_signal", "不明信号");
-		final String unknownSignal = p.getProperty("unknown_signal", "非法信号");
-		return new BandStatusTable(radioName, legalStation, illegalStation, legalSignal, unknownSignal, illegalSignal);
-
-	}
-
 	// 实时警告处理表头
 	@Bean
 	public AlarmDealed getAlarmDealed() throws IOException {
-		final Resource resource = def.getResource("classpath:table_column/alarm_dealed.properties");
+
+		final Resource resource = this.def.getResource("classpath:table_column/alarm_dealed.properties");
 		final EncodedResource encodedResource = new EncodedResource(resource, Charset.forName("utf-8"));
 		final Properties p = PropertiesLoaderUtils.loadProperties(encodedResource);
 		final String radio = p.getProperty("radio", "频率");
@@ -63,13 +48,13 @@ public class CacheConfig {
 		final String radioStatus = p.getProperty("radio_status", "状态");
 		final String mark = p.getProperty("mark", "备注");
 		return new AlarmDealed(radio, firstTime, lastingTime, radioType, station, radioStatus, mark);
-
 	}
 
 	// 实时警告未处理表头
 	@Bean
 	public AlarmUnDealed getAlarmUnDealed() throws IOException {
-		final Resource resource = def.getResource("classpath:table_column/alarm_undealed.properties");
+
+		final Resource resource = this.def.getResource("classpath:table_column/alarm_undealed.properties");
 		EncodedResource encodedResource = new EncodedResource(resource, Charset.forName("utf-8"));
 		final Properties p = PropertiesLoaderUtils.loadProperties(encodedResource);
 		final String radio = p.getProperty("radio", "频率");
@@ -80,12 +65,28 @@ public class CacheConfig {
 		final String radioStatus = p.getProperty("radio_status", "状态");
 		final String mark = p.getProperty("mark", "备注");
 		return new AlarmUnDealed(radio, firstTime, lastingTime, radioType, station, radioStatus, mark);
+	}
 
+	@Bean
+	public BandStatusTable getBandStatusTable() throws IOException {
+
+		// DefaultResourceLoader loader = new DefaultResourceLoader();
+		final Resource resource = this.def.getResource("classpath:table_column/band_status.properties");
+		final EncodedResource encodedResource = new EncodedResource(resource, Charset.forName("utf-8"));
+		final Properties p = PropertiesLoaderUtils.loadProperties(encodedResource);
+		final String radioName = p.getProperty("radio_name", "频段名称");
+		final String legalStation = p.getProperty("legal_station", "合法正常台站");
+		final String illegalStation = p.getProperty("illegal_station", "合法违规台站");
+		final String legalSignal = p.getProperty("legal_signal", "已知信号");
+		final String illegalSignal = p.getProperty("illegal_signal", "不明信号");
+		final String unknownSignal = p.getProperty("unknown_signal", "非法信号");
+		return new BandStatusTable(radioName, legalStation, illegalStation, legalSignal, unknownSignal, illegalSignal);
 	}
 
 	@Bean
 	public RedioType getRedioType() throws IOException {
-		final Resource resource = def.getResource("classpath:checkbox/RedioType.properties");
+
+		final Resource resource = this.def.getResource("classpath:checkbox/RedioType.properties");
 		final EncodedResource encodedResource = new EncodedResource(resource, Charset.forName("utf-8"));
 		final Properties p = PropertiesLoaderUtils.loadProperties(encodedResource);
 		final String legalNormalStation = p.getProperty("legalNormalStation", "合法台站正常");

@@ -16,9 +16,9 @@ public class MapDataController {
 	@Autowired
 	ApplicationContext spring;
 
-	@Resource(name = MapDataConfiguration.MAP_DATA)
 	private Object data;
 
+	@Resource(name = MapDataConfiguration.MAP_DATA)
 	public void setData(Object data) {
 		this.data = data;
 	}

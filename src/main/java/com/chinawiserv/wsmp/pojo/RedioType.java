@@ -1,6 +1,5 @@
 package com.chinawiserv.wsmp.pojo;
 
-
 public class RedioType {
 
 	private String legalNormalStation;
@@ -12,7 +11,9 @@ public class RedioType {
 	private String illegalSignal;
 
 	private String unKonw;
+
 	public RedioType(String legalNormalStation, String illegalNormalStation, String llegalStation, String illegalSignal, String unKonw) {
+
 		this.legalNormalStation = legalNormalStation;
 		this.illegalNormalStation = illegalNormalStation;
 		this.llegalStation = llegalStation;
@@ -20,40 +21,40 @@ public class RedioType {
 		this.unKonw = unKonw;
 	}
 
-	public String getLegalNormalStation() {
-		return legalNormalStation;
-	}
-
-	public void setLegalNormalStation(String legalNormalStation) {
-		this.legalNormalStation = legalNormalStation;
-	}
-
 	public String getIllegalNormalStation() {
-		return illegalNormalStation;
+		return this.illegalNormalStation;
+	}
+
+	public String getIllegalSignal() {
+		return this.illegalSignal;
+	}
+
+	public String getLegalNormalStation() {
+		return this.legalNormalStation;
+	}
+
+	public String getLlegalStation() {
+		return this.llegalStation;
+	}
+
+	public String getUnKonw() {
+		return this.unKonw;
 	}
 
 	public void setIllegalNormalStation(String illegalNormalStation) {
 		this.illegalNormalStation = illegalNormalStation;
 	}
 
-	public String getLlegalStation() {
-		return llegalStation;
-	}
-
-	public void setLlegalStation(String llegalStation) {
-		this.llegalStation = llegalStation;
-	}
-
-	public String getIllegalSignal() {
-		return illegalSignal;
-	}
-
 	public void setIllegalSignal(String illegalSignal) {
 		this.illegalSignal = illegalSignal;
 	}
 
-	public String getUnKonw() {
-		return unKonw;
+	public void setLegalNormalStation(String legalNormalStation) {
+		this.legalNormalStation = legalNormalStation;
+	}
+
+	public void setLlegalStation(String llegalStation) {
+		this.llegalStation = llegalStation;
 	}
 
 	public void setUnKonw(String unKonw) {
