@@ -58,23 +58,23 @@
         <div class='flex-row radio-type-check align-center'>
           <div class="radio radio-primary flex1 ">
             <input type="radio" name="signal-type" id="legal-normal">
-            <label for="legal-normal"> 合法台站正常 </label>
+            <label for="legal-normal"> ${redioType.legalNormalStation} </label>
           </div>
           <div class="radio radio-primary flex1 ">
             <input type="radio" name="signal-type" id="legal-wrong">
-            <label for="legal-wrong"> 合法台站违规 </label>
+            <label for="legal-wrong"> ${redioType.illegalNormalStation} </label>
           </div>
           <div class="radio radio-primary flex1 ">
             <input type="radio" name="signal-type" id="legal">
-            <label for="legal"> 合法站台 </label>
+            <label for="legal">  ${redioType.llegalStation} </label>
           </div>
           <div class="radio radio-primary flex1 ">
             <input type="radio" name="signal-type" id="illegal" checked>
-            <label for="illegal"> 非法信号 </label>
+            <label for="illegal"> ${redioType.illegalSignal} </label>
           </div>
           <div class="radio radio-primary flex1 ">
             <input type="radio" name="signal-type" id="unknown">
-            <label for="unknown"> 不明信号 </label>
+            <label for="unknown"> ${redioType.unKonw} </label>
           </div>
         </div>
       </div>
