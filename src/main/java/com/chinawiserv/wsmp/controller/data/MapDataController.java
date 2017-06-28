@@ -7,7 +7,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.chinawiserv.wsmp.cache.CacheConfig;
 import com.chinawiserv.wsmp.pojo.MapDataConfiguration;
 
 @RestController
