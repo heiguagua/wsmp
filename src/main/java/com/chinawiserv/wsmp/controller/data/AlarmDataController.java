@@ -68,7 +68,7 @@ public class AlarmDataController {
 		if (in.getStatus() == 0) {
 			// 需要取消对应的
 			EntityWrapper<IntensiveMonitoring> ew = new EntityWrapper<IntensiveMonitoring>(in);
-			ew.where("SINGAL_ID = {0}", in.getSingalId());
+			ew.where("SINGAL_FREQUENCY = {0}", in.getSingalFrequency());
 			iIntensiveMonitoringServicel.delete(ew);
 		} else {
 			iIntensiveMonitoringServicel.insert(in);
@@ -76,7 +76,5 @@ public class AlarmDataController {
 	}
 
 	@PostMapping(path = "/warringconfirm")
-	public void warning_confirm(@RequestBody WarringConfirm warringConfirm) {
-
-	}
+	public void warning_confirm(@RequestBody WarringConfirm warringConfirm) {}
 }

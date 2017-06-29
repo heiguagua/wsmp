@@ -19,24 +19,15 @@ public class IntensiveMonitoring extends Model<IntensiveMonitoring> {
 
     private static final long serialVersionUID = 1L;
 
-	@TableField("SINGAL_ID")
-	private String singalId;
+	@TableField("SINGAL_FREQUENCY")
+	private String singalFrequency;
 
 	@TableField(exist = false)
 	private int status;
 
-	public String getSingalId() {
-		return singalId;
-	}
-
-	public void setSingalId(String singalId) {
-
-		this.singalId = singalId;
-	}
-
 	@Override
 	protected Serializable pkVal() {
-		return this.singalId;
+		return this.getSingalFrequency();
 	}
 
 	public int getStatus() {
@@ -45,6 +36,14 @@ public class IntensiveMonitoring extends Model<IntensiveMonitoring> {
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public String getSingalFrequency() {
+		return singalFrequency;
+	}
+
+	public void setSingalFrequency(String singalFrequency) {
+		this.singalFrequency = singalFrequency;
 	}
 
 }

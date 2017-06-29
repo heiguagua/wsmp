@@ -10,11 +10,11 @@
   <name>wsmp</name>
   <url>http://wsmp.chinawiserv.com</url>
 
-	<parent>
-		<groupId>com.chinawiserv.spring.boot</groupId>
-		<artifactId>parent</artifactId>
-		<version>1.0.4.RELEASE</version>
-	</parent>
+  <parent>
+    <groupId>com.chinawiserv.spring.boot</groupId>
+    <artifactId>parent</artifactId>
+    <version>1.0.4.RELEASE</version>
+  </parent>
 
   <properties>
     <encoding>UTF-8</encoding>
@@ -24,7 +24,13 @@
   </properties>
 
   <dependencies>
-
+  
+    <dependency>
+      <groupId>com.chinawiserv.apps</groupId>
+      <artifactId>chinawiserv-apps-util-datasources</artifactId>
+      <version>1.1.9.RELEASE</version>
+    </dependency>
+    
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
@@ -75,11 +81,11 @@
       <version>1.0.0.RELEASE</version>
     </dependency>
 
-		<dependency>
-			<groupId>com.chinawiserv.apps</groupId>
-			<artifactId>chinawiserv-apps-util-logger</artifactId>
-			<version>1.1.9.RELEASE</version>
-		</dependency>
+    <dependency>
+      <groupId>com.chinawiserv.apps</groupId>
+      <artifactId>chinawiserv-apps-util-logger</artifactId>
+      <version>1.1.9.RELEASE</version>
+    </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -95,53 +101,53 @@
 
   </dependencies>
 
-	<build>
-		<finalName>${project.artifactId}</finalName>
-		<plugins>
+  <build>
+    <finalName>${project.artifactId}</finalName>
+    <plugins>
 
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<executable>true</executable>
-					<embeddedLaunchScriptProperties>
-						<mode>service</mode>
-						<confFolder>config</confFolder>
-					</embeddedLaunchScriptProperties>
-				</configuration>
-			</plugin>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <executable>true</executable>
+          <embeddedLaunchScriptProperties>
+            <mode>service</mode>
+            <confFolder>config</confFolder>
+          </embeddedLaunchScriptProperties>
+        </configuration>
+      </plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<configuration>
-					<packagingExcludes>**/*.properties,**/*.xml</packagingExcludes>
-				</configuration>
-			</plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <packagingExcludes>**/*.properties,**/*.xml</packagingExcludes>
+        </configuration>
+      </plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<configuration>
-					<appendAssemblyId>false</appendAssemblyId>
-					<recompressZippedFiles>true</recompressZippedFiles>
-				</configuration>
-				<executions>
-					<execution>
-						<id>make-zip</id><!--名字任意 -->
-						<phase>package</phase><!-- 绑定到package生命周期阶段上 -->
-						<goals>
-							<goal>single</goal><!-- 只运行一次 -->
-						</goals>
-						<configuration>
-							<descriptors> <!--描述文件路径 -->
-								<descriptor>src/main/resources/wsmp_package.xml</descriptor>
-							</descriptors>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <appendAssemblyId>false</appendAssemblyId>
+          <recompressZippedFiles>true</recompressZippedFiles>
+        </configuration>
+        <executions>
+          <execution>
+            <id>make-zip</id><!--名字任意 -->
+            <phase>package</phase><!-- 绑定到package生命周期阶段上 -->
+            <goals>
+              <goal>single</goal><!-- 只运行一次 -->
+            </goals>
+            <configuration>
+              <descriptors> <!--描述文件路径 -->
+                <descriptor>src/main/resources/wsmp_package.xml</descriptor>
+              </descriptors>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
 

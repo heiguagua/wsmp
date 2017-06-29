@@ -9,14 +9,14 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart" ,"h
 		var obj = $(this);
 		$("#warning_confirm").click(function() {
 			if ($(this).hasClass("checked")) {
-				var data = {"singalId": "1","status":1};
+				var data = {"frequency": "1","status":1};
 				console.log(data);
 				ajax.post("data/alarm/warringconfirm",data,function(){
 					obj.removeClass("checked");
 				});
 			} else {
 				
-				var data = {"singalId": "1","status":0};
+				var data = {"frequency": "1","status":0};
 				console.log(data);
 				ajax.post("data/alarm/warringconfirm",data,function(){
 					obj.addClass("checked");
@@ -27,12 +27,12 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart" ,"h
 		$("#intensive_monitoring").click(function(){
 			var obj = $(this);
 			if ($(this).hasClass("checked")) {
-				var data = {"singalId": "1","status":"0"};
+				var data = {"singalFrequency": "1","status":"0"};
 				ajax.post("data/alarm/intensivemonitoring",data,function(){
 					obj.removeClass("checked");
 				});
 			} else {
-				var data = {"singalId": "1","status":"1"};
+				var data = {"singalFrequency": "1","status":"1"};
 				ajax.post("data/alarm/intensivemonitoring",data,function(){
 					obj.addClass("checked");
 				});
