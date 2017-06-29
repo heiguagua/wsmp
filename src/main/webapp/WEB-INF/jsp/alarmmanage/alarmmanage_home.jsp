@@ -42,7 +42,7 @@
           </div>
           <div class='way-key flex1 checked'>
             <div class='way-sign'>
-              <img src='images/way_2.png' alt='重点监测' />
+              <img src='images/way_2.png' id = "intensive_monitoring" alt='重点监测' />
             </div>
             <p>重点监测</p>
           </div>
