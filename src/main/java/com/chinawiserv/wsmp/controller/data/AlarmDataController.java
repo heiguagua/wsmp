@@ -5,13 +5,15 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.chinawiserv.wsmp.pojo.IntensiveMonitoring;
+import com.chinawiserv.wsmp.pojo.WarringConfirm;
 import com.chinawiserv.wsmp.service.impl.IntensiveMonitoringServiceImpl;
 
 @RestController
@@ -20,6 +22,7 @@ public class AlarmDataController {
 
 	@Autowired
 	IntensiveMonitoringServiceImpl iIntensiveMonitoringServicel;
+
 	@GetMapping("/dayCharts")
 	public Object dayCharts(@RequestParam Map<String, Object> param) {
 
@@ -59,9 +62,21 @@ public class AlarmDataController {
 		return map;
 	}
 
-	@RequestMapping(path = "/warringconfirm", method = RequestMethod.POST)
-	public void alarmConfirm(@RequestBody IntensiveMonitoring in) {
-		iIntensiveMonitoringServicel.insert(in);
+	@PostMapping(path = "/intensivemonitoring")
+	public void intensivemonitoring(@RequestBody IntensiveMonitoring in) {
+
+		if (in.getStatus() == 0) {
+			// 需要取消对应的
+			EntityWrapper<IntensiveMonitoring> ew = new EntityWrapper<IntensiveMonitoring>(in);
+			ew.where("SINGAL_ID = {0}", in.getSingalId());
+			iIntensiveMonitoringServicel.delete(ew);
+		} else {
+			iIntensiveMonitoringServicel.insert(in);
+		}
 	}
 
+	@PostMapping(path = "/warringconfirm")
+	public void warning_confirm(@RequestBody WarringConfirm warringConfirm) {
+
+	}
 }

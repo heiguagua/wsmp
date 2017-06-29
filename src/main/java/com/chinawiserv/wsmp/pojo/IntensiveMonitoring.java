@@ -22,18 +22,29 @@ public class IntensiveMonitoring extends Model<IntensiveMonitoring> {
 	@TableField("SINGAL_ID")
 	private String singalId;
 
+	@TableField(exist = false)
+	private int status;
 
 	public String getSingalId() {
 		return singalId;
 	}
 
 	public void setSingalId(String singalId) {
+
 		this.singalId = singalId;
 	}
 
 	@Override
 	protected Serializable pkVal() {
 		return this.singalId;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 }
