@@ -10,6 +10,7 @@
 <link href='3.9/js/dojo/library/bootstrap/css/bootstrap.min.css' rel='stylesheet' />
 <link href='3.9/js/dojo/library/font-awesome/css/font-awesome.min.css' rel='stylesheet' />
 <link href='3.9/js/dojo/library/bootstrap/css/awesome-bootstrap-checkbox.css' rel='stylesheet' />
+<link href='3.9/js/dojo/library/select2/select2.min.css' rel='stylesheet' />
 <link href='css/common.css' rel='stylesheet' />
 <link href='css/alarm.css' rel='stylesheet' />
 <link rel="stylesheet" href="3.9/js/esri/css/esri.css">
@@ -24,9 +25,13 @@
   <div class='header-bar'>
     <span class='module-name'>告警管理</span>
     <div class='header-search'>
-      <input type='text' />
+      <input type='text' id = "search" />
       <span class='search-icon'></span>
     </div>
+     <span id = "station_list" >
+       <select class='station-list select2-picker'>
+      </select>
+    </span>
   </div>
 
   <!--content-->
@@ -40,9 +45,9 @@
             </div>
             <p>告警确认</p>
           </div>
-          <div class='way-key flex1 checked'>
+          <div class='way-key flex1' id = "intensive_monitoring">
             <div class='way-sign'>
-              <img src='images/way_2.png' id = "intensive_monitoring" alt='重点监测' />
+              <img src='images/way_2.png'  alt='重点监测' />
             </div>
             <p>重点监测</p>
           </div>
@@ -143,7 +148,7 @@
     require([ "home/init", "jquery",
       "dojo/domReady!" ],
       function(init) {
-        require([ "bootstrap", "echarts", "home/alarm/alarm_manage" ], function(bootstrap, echarts, alarm_manage) {
+        require([ "bootstrap", "select2","echarts", "home/alarm/alarm_manage" ], function(bootstrap,select2,echarts, alarm_manage) {
           console.log(test);
           alarm_manage.init();
           var map = init.init();
