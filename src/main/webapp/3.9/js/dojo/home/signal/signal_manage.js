@@ -3,8 +3,8 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 		init_signal_detail();
 		init_select2();
 	}
-	
-	function warning_confirm(){
+
+	function warning_confirm() {
 		$("#warning_confirm").click(function() {
 			if ($(this).hasClass("checked")) {
 				$(this).removeClass("checked");
@@ -13,7 +13,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 			}
 		});
 	}
-	
+
 	function init_select2() {
 		$('.select2-picker').select2();
 		$("#search").keydown(function(e) {
@@ -22,7 +22,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 				console.log(val);
 				$("#station_list").children().remove();
 				$("#station_list").load("signal/stationlist", function() {
-					initSelect2();
+					$('.select2-picker').select2();
 				});
 			}
 		});
@@ -33,7 +33,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 		$(".search-icon").click(function() {
 			$("#station_list").children().remove();
 			$("#station_list").load("signal/stationlist", function() {
-				initSelect2();
+				$('.select2-picker').select2();
 			});
 		});
 	}
@@ -41,7 +41,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 	function init_signal_detail() {
 		$("#signal_detail").load("signal/sigaldetail", function() {
 			warning_confirm();
-			ajax.get("data/signal/FmRate",[],function(data){
+			ajax.get("data/signal/FmRate", [], function(data) {
 				console.log(data)
 				initChart(data);
 			});
@@ -96,17 +96,17 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 							length2 : 0
 						}
 					},
-					data : data 
-//						[
-//						{
-//							value : 20,
-//							name : 'AM'
-//						},
-//						{
-//							value : 80,
-//							name : 'FM'
-//						}
-//					]
+					data : data
+				//						[
+				//						{
+				//							value : 20,
+				//							name : 'AM'
+				//						},
+				//						{
+				//							value : 80,
+				//							name : 'FM'
+				//						}
+				//					]
 				}
 			]
 		};
