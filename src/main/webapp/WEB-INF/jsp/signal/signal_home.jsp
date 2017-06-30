@@ -75,6 +75,14 @@
     <section class='flex-row'>
       <div class='box'>
         <div class='month-data flex-column'>
+          <h4 class='title'>电平峰值</h4>
+          <div class='flex1' id='levelChart'></div>
+        </div>
+      </div>
+    </section>
+    <section class='flex-row'>
+      <div class='box'>
+        <div class='month-data flex-column'>
           <h4 class='title'>近3个月占用度（按天统计）</h4>
           <div class='flex1' id='monthChart'></div>
         </div>
