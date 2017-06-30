@@ -101,8 +101,16 @@
     <section class='flex-row'>
       <div class='box'>
         <div class='month-data flex-column'>
-          <h4>近3个月占用度（按天统计）</h4>
-          <h4 id = "month" class='title' style="height: 100%"></h4>
+          <h4 class="text-center">电平峰值</h4>
+          <div id = "level" class='title' style="height: 100%"></div>
+        </div>
+      </div>
+    </section>
+    <section class='flex-row'>
+      <div class='box'>
+        <div class='month-data flex-column'>
+          <h4 class="text-center">近3个月占用度（按天统计）</h4>
+          <div id = "month" class='title' style="height: 100%"></div>
         </div>
       </div>
     </section>

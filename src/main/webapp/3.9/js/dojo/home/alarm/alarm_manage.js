@@ -3,7 +3,7 @@
 //
 //})
 
-define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart" ,"home/alarm/hour_charts","bootstrap",], function(ajax,echarts, month_charts, day_chart,hour_chart,bootstrap) {
+define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart" ,"home/alarm/hour_charts","bootstrap","home/alarm/level_charts"], function(ajax,echarts, month_charts, day_chart,hour_chart,bootstrap,level_charts) {
 	function init() {
 		
 		var obj = $(this);
@@ -47,6 +47,11 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart" ,"h
 		// draw month data chart
 		$("#month").load("alarmmanage/monthCharts", function() {
 			month_charts.init();
+		})
+		
+		// 电平峰值
+		$("#level").load("alarmmanage/levelCharts", function() {
+			level_charts.init();
 		})
 		
 		$('#modalDay').on('shown.bs.modal', function(e) {
