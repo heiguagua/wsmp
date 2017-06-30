@@ -150,21 +150,21 @@ define([ "ajax" ], function(ajax) {
 					}, {
 						field : 'legal_signal',
 						title : '已知信号',
-						formatter : function(value, row, index) {
-							return '<a>' + value + '</a>';
-						}
+						formatter:function(value,row,index) {
+		                    return '<a data-toggle="modal" data-target="#modalSignal">'+value+'</a>';
+		                  }
 					}, {
 						field : 'unknown_signal',
 						title : '不明信号',
-						formatter : function(value, row, index) {
-							return '<a>' + value + '</a>';
-						}
+						formatter:function(value,row,index) {
+		                    return '<a data-toggle="modal" data-target="#modalSignal">'+value+'</a>';
+		                  }
 					}, {
 						field : 'illegal_signal',
 						title : '非法信号',
-						formatter : function(value, row, index) {
-							return '<a>' + value + '</a>';
-						}
+						formatter:function(value,row,index) {
+		                    return '<a data-toggle="modal" data-target="#modalSignal">'+value+'</a>';
+		                  }
 					} ]
 				});
 			} else {

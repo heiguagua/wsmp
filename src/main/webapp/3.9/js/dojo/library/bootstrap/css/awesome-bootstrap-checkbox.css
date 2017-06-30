@@ -201,8 +201,8 @@
   content: "";
   display: inline-block;
   position: absolute;
-  width: 17px;
-  height: 17px;
+  width: 19px;
+  height: 19px;
   left: 0;
   margin-left: -20px;
   border: 1px solid #cccccc;
@@ -216,8 +216,8 @@
   display: inline-block;
   position: absolute;
   content: " ";
-  width: 11px;
-  height: 11px;
+  width: 13px;
+  height: 13px;
   left: 3px;
   top: 3px;
   margin-left: -20px;
