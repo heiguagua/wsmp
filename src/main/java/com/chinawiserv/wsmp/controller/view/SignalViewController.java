@@ -1,10 +1,15 @@
 package com.chinawiserv.wsmp.controller.view;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.chinawiserv.wsmp.pojo.MonitoringStation;
 import com.chinawiserv.wsmp.pojo.Signature;
 
 @Controller
@@ -23,7 +28,16 @@ public class SignalViewController {
     }
 
     @GetMapping(path = {"/stationlist"})
-    public String stationList() {
-        return "signal/monitoring_station_list";
+	public ModelAndView stationList(ModelAndView modelAndView) {
+		modelAndView.setViewName("signal/monitoring_station_list");
+		List<MonitoringStation> stations = new ArrayList<MonitoringStation>();
+		for (int i = 0; i < 4; i++) {
+			MonitoringStation station = new MonitoringStation();
+			station.setStationCode("dddd");
+			station.setStationName("dddd站2");
+			stations.add(station);
+		}
+		modelAndView.addObject("stations", stations);
+		return modelAndView;
     }
 }
