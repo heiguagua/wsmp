@@ -74,7 +74,7 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart" ,"h
 				var val = $(this).val();
 				console.log(val);
 				$("#station_list").children().remove();
-				$("#station_list").load("signal/stationlist", function() {
+				$("#station_list").load("alarmmanage/stationlist", function() {
 					$('.select2-picker').select2();
 				});
 			}
@@ -85,7 +85,7 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart" ,"h
 
 		$(".search-icon").click(function() {
 			$("#station_list").children().remove();
-			$("#station_list").load("signal/stationlist", function() {
+			$("#station_list").load("alarmmanage/stationlist", function() {
 				$('.select2-picker').select2();
 			});
 		});
