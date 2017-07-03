@@ -104,6 +104,18 @@ define([ "ajax" ], function(ajax) {
 				title : '备注',
 			} ]
 		})
+		
+		$("#warningEnsure").click(function() {
+			$(this).removeClass("active");
+			$("#warningUnsure").removeClass("active");
+			$(this).addClass("active");
+		});
+		
+		$("#warningUnsure").click(function(){
+			$(this).removeClass("active");
+			$("#warningEnsure").removeClass("active");
+			$(this).addClass("active");
+		});
 	}
 
 	function table_radio_init(b) {
