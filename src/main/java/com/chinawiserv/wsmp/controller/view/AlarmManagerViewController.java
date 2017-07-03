@@ -40,7 +40,7 @@ public class AlarmManagerViewController {
 
 	@GetMapping(path = { "/stationlist" })
 	public ModelAndView stationList(ModelAndView modelAndView) {
-		modelAndView.setViewName("alarmmanage/station_list");
+		modelAndView.setViewName("alarmmanage/monitoring_station_list");
 		List<MonitoringStation> stations = new ArrayList<MonitoringStation>();
 		for (int i = 0; i < 4; i++) {
 			MonitoringStation station = new MonitoringStation();
