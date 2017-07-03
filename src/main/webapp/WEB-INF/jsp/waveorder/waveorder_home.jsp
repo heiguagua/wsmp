@@ -56,8 +56,8 @@
 			</div>
 			<div class='box box-tabs'>
 				<ul class="nav nav-tabs">
-					<li role="presentation" class="active"><a href="#undeal">实时告警未确认</a></li>
-					<li role="presentation"><a href="#dealed">实时告警已确认</a></li>
+					<li id = 'warningEnsure' role="presentation" class="active"><a href="#dealed">实时告警未确认</a></li>
+					<li id = 'warningUnsure' role="presentation"><a href="#dealed">实时告警已确认</a></li>
 				</ul>
 				<div class="tab-content">
 					<div role="tabpanel" class="tab-pane active" id="undeal">
