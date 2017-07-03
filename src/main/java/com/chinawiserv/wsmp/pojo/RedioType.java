@@ -1,6 +1,6 @@
 package com.chinawiserv.wsmp.pojo;
 
-public class RedioStatus {
+public class RedioType {
 
 	private String legalNormalStation;
 
@@ -12,7 +12,7 @@ public class RedioStatus {
 
 	private String unKonw;
 
-	public RedioStatus(String legalNormalStation, String illegalNormalStation, String llegalStation, String illegalSignal, String unKonw) {
+	public RedioType(String legalNormalStation, String illegalNormalStation, String llegalStation, String illegalSignal, String unKonw) {
 
 		this.legalNormalStation = legalNormalStation;
 		this.illegalNormalStation = illegalNormalStation;
