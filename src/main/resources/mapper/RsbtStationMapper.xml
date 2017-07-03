@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinawiserv.wsmp.mapper.RsbtStationMapper">
+<resultMap id="detailedBlogResultMap" type="com.chinawiserv.wsmp.pojo.RedioDetail">  
+    <id column="id" property="id"/>    
+    <result column="STAT_Name" property="name"/>    
+    <result column="FREQ_LC" property="centor"/>    
+    <result column="FREQ_E_Band" property="band"/>    
+</resultMap>  
+<select id ="getStationDetail" resultMap = "detailedBlogResultMap" parameterType  = "com.chinawiserv.wsmp.pojo.RedioDetail">
+  SELECT
+	station.STAT_Name ,
+	freq.FREQ_LC ,
+	freq.FREQ_E_Band
+FROM
+	(
+		SELECT
+			r.GUI ,
+			r.STAT_Name
+		FROM
+			RSBT_STATION r
+		WHERE
+			r.STAT_Type = '1'
+		AND r.STAT_Status = '0'
+	) station
+LEFT JOIN RSBT_FREQ freq ON station.GUI = freq.Station_GUID 
+</select>
+
+</mapper>
