@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.chinawiserv.wsmp.pojo.Signature;
 
 @Controller
-@RequestMapping("signal")
+@RequestMapping("/signal")
 public class SignalViewController {
 
     @RequestMapping(path = {"/", ""})
