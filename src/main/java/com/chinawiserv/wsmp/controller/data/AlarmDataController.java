@@ -76,5 +76,7 @@ public class AlarmDataController {
 	}
 
 	@PostMapping(path = "/warringconfirm")
-	public void warning_confirm(@RequestBody WarringConfirm warringConfirm) {}
+	public void warning_confirm(@RequestBody WarringConfirm warringConfirm) {
+		System.out.println("waiting...");
+	}
 }

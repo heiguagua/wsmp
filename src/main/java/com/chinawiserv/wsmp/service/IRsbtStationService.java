@@ -12,5 +12,5 @@ import com.chinawiserv.wsmp.pojo.RsbtStation;
  * @since 2017-06-29
  */
 public interface IRsbtStationService extends IService<RsbtStation> {
-	
+
 }

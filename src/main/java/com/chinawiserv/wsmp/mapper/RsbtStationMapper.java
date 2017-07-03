@@ -1,6 +1,10 @@
 package com.chinawiserv.wsmp.mapper;
 
+import java.util.List;
+
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.chinawiserv.wsmp.pojo.FrequencyType;
+import com.chinawiserv.wsmp.pojo.RedioDetail;
 import com.chinawiserv.wsmp.pojo.RsbtStation;
 
 /**
@@ -13,4 +17,5 @@ import com.chinawiserv.wsmp.pojo.RsbtStation;
  */
 public interface RsbtStationMapper extends BaseMapper<RsbtStation> {
 
+	public List<RedioDetail> getStationDetail(FrequencyType frequencyType);
 }
