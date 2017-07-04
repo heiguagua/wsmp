@@ -2,9 +2,9 @@
  * Created by wuhaoran on 2017/2/25.
  */
 //
-define([ "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer", "dojo/request", "esri/layers/GraphicsLayer", "esri/dijit/Scalebar"
+define(["ajax","dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer", "dojo/request", "esri/layers/GraphicsLayer", "esri/dijit/Scalebar"
 	, "esri/symbols/TextSymbol", "esri/geometry/Point", "esri/graphic", "esri/symbols/Font", "esri/symbols/SimpleMarkerSymbol" ],
-	function(parser, Map, ArcGISTiledMapServiceLayer, request, GraphicsLayer, Scalebar, TextSymbol, Point, graphic, Font, SimpleMarkerSymbol) {
+	function(ajax,parser, Map, ArcGISTiledMapServiceLayer, request, GraphicsLayer, Scalebar, TextSymbol, Point, graphic, Font, SimpleMarkerSymbol) {
 		var testWidget = null;
 		//var map = null;
 		//config.defaults.io.corsEnabledServers.push("192.168.13.79:7080");
@@ -40,7 +40,7 @@ define([ "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer", "d
 			var ti = $("#warning_confirm").attr("class");
 			console.log(ti);
 			signalClick(map,pSymbol,glayer);
-			$("#illegal").click();
+			//$("#illegal").click();
 			
 			
 			//        var scaleba = new Scalebar({
@@ -94,69 +94,90 @@ define([ "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer", "d
 		
 		function signalClick(map,pSymbol,glayer){
 			$("#legal-normal").click(function() {
-				glayer.clear();
-				var p = new Point(104.06, 30.67);
-				var textSymbol = new TextSymbol("75").setColor(
-					new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
-					new Font("12pt").setWeight(Font.WEIGHT_BOLD));
-				var graphic = new esri.Graphic(p, textSymbol);
-				var textsyboml = new esri.Graphic(p, pSymbol);
-				glayer.add(textsyboml);
-				glayer.add(graphic);
-				map.addLayer(glayer);
+				var value = $('option:selected').val();
+				var data = {"stationCode":value};
+				ajax.get("data/alarm/getStation",data,function(reslut){
+					glayer.clear();
+					var p = new Point(reslut);
+					var textSymbol = new TextSymbol(reslut.count).setColor(
+						new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
+						new Font("12pt").setWeight(Font.WEIGHT_BOLD));
+					var graphic = new esri.Graphic(p, textSymbol);
+					var textsyboml = new esri.Graphic(p, pSymbol);
+					glayer.add(textsyboml);
+					glayer.add(graphic);
+					map.addLayer(glayer);
+				});
 			});
 			
 			$("#legal-wrong").click(function() {
-				glayer.clear();
-				var p = new Point(104.06, 30.67);
-				var textSymbol = new TextSymbol("55").setColor(
-					new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
-					new Font("12pt").setWeight(Font.WEIGHT_BOLD));
-				var graphic = new esri.Graphic(p, textSymbol);
-				var textsyboml = new esri.Graphic(p, pSymbol);
-				glayer.add(textsyboml);
-				glayer.add(graphic);
-				map.addLayer(glayer);
+				var value = $('option:selected').val();
+				var data = {"stationCode":value};
+				ajax.get("data/alarm/getStation",data,function(reslut){
+					glayer.clear();
+					var p = new Point(reslut);
+					var textSymbol = new TextSymbol(reslut.count).setColor(
+						new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
+						new Font("12pt").setWeight(Font.WEIGHT_BOLD));
+					var graphic = new esri.Graphic(p, textSymbol);
+					var textsyboml = new esri.Graphic(p, pSymbol);
+					glayer.add(textsyboml);
+					glayer.add(graphic);
+					map.addLayer(glayer);
+				});
 			});
 			
 			
 			$("#legal").click(function() {
-				glayer.clear();
-				var p = new Point({"x":104.06,"y":30.67});
-				var textSymbol = new TextSymbol("45").setColor(
-					new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
-					new Font("12pt").setWeight(Font.WEIGHT_BOLD));
-				var graphic = new esri.Graphic(p, textSymbol);
-				var textsyboml = new esri.Graphic(p, pSymbol);
-				glayer.add(textsyboml);
-				glayer.add(graphic);
-				map.addLayer(glayer);
+				var value = $('option:selected').val();
+				var data = {"stationCode":value};
+				ajax.get("data/alarm/getStation",data,function(reslut){
+					glayer.clear();
+					var p = new Point(reslut);
+					var textSymbol = new TextSymbol(reslut.count).setColor(
+						new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
+						new Font("12pt").setWeight(Font.WEIGHT_BOLD));
+					var graphic = new esri.Graphic(p, textSymbol);
+					var textsyboml = new esri.Graphic(p, pSymbol);
+					glayer.add(textsyboml);
+					glayer.add(graphic);
+					map.addLayer(glayer);
+				});
+				
 			});
 			
 			$("#illegal").click(function() {
-				glayer.clear();
-				var p = new Point(104.06, 30.671);
-				var textSymbol = new TextSymbol("115").setColor(
-					new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
-					new Font("12pt").setWeight(Font.WEIGHT_BOLD));
-				var graphic = new esri.Graphic(p, textSymbol);
-				var textsyboml = new esri.Graphic(p, pSymbol);
-				glayer.add(textsyboml);
-				glayer.add(graphic);
-				map.addLayer(glayer);
+				var value = $('option:selected').val();
+				var data = {"stationCode":value};
+				ajax.get("data/alarm/getStation",data,function(reslut){
+					glayer.clear();
+					var p = new Point(reslut);
+					var textSymbol = new TextSymbol(reslut.count).setColor(
+						new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
+						new Font("12pt").setWeight(Font.WEIGHT_BOLD));
+					var graphic = new esri.Graphic(p, textSymbol);
+					var textsyboml = new esri.Graphic(p, pSymbol);
+					glayer.add(textsyboml);
+					glayer.add(graphic);
+					map.addLayer(glayer);
+				});
 			});
 			
 			$("#unknown").click(function() {
-				glayer.clear();
-				var p = new Point(104.06, 30.67);
-				var textSymbol = new TextSymbol("665").setColor(
-					new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
-					new Font("12pt").setWeight(Font.WEIGHT_BOLD));
-				var graphic = new esri.Graphic(p, textSymbol);
-				var textsyboml = new esri.Graphic(p, pSymbol);
-				glayer.add(textsyboml);
-				glayer.add(graphic);
-				map.addLayer(glayer);
+				var value = $('option:selected').val();
+				var data = {"stationCode":value};
+				ajax.get("data/alarm/getStation",data,function(reslut){
+					glayer.clear();
+					var p = new Point(reslut);
+					var textSymbol = new TextSymbol(reslut.count).setColor(
+						new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
+						new Font("12pt").setWeight(Font.WEIGHT_BOLD));
+					var graphic = new esri.Graphic(p, textSymbol);
+					var textsyboml = new esri.Graphic(p, pSymbol);
+					glayer.add(textsyboml);
+					glayer.add(graphic);
+					map.addLayer(glayer);
+				});
 			});
 			
 		}

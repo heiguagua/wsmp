@@ -5,20 +5,29 @@
 
 define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart" ,"home/alarm/hour_charts","bootstrap","home/alarm/level_charts"], function(ajax,echarts, month_charts, day_chart,hour_chart,bootstrap,level_charts) {
 	function init() {
+		$("#station_list").change(function() {
+//			var value = $(this).find('option:selected').val();
+//			var data = {"stationCode":value};
+//			ajax.get("data/alarm/getStation",data,function(reslut){
+//				$("#stationCode").val(reslut);
+//				console.log($("#stationCode").val());
+//			});
+			$("#illegal").click();
+		});
 		
-		var obj = $(this);
 		$("#warning_confirm").click(function() {
+			var obj = $(this);
 			if ($(this).hasClass("checked")) {
 				var data = {"frequency": "1","status":1};
 				console.log(data);
 				ajax.post("data/alarm/warringconfirm",data,function(){
 					obj.removeClass("checked");
+					//obj.addClass("checked");
 				});
 			} else {
-				
 				var data = {"frequency": "1","status":0};
-				console.log(data);
 				ajax.post("data/alarm/warringconfirm",data,function(){
+					obj.removeClass("checked");
 					obj.addClass("checked");
 				});
 			}
@@ -76,6 +85,7 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart" ,"h
 				$("#station_list").children().remove();
 				$("#station_list").load("alarmmanage/stationlist", function() {
 					$('.select2-picker').select2();
+					//$("#illegal").click();
 				});
 			}
 		});
@@ -87,6 +97,8 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart" ,"h
 			$("#station_list").children().remove();
 			$("#station_list").load("alarmmanage/stationlist", function() {
 				$('.select2-picker').select2();
+				$(".select2-selection select2-selection--single").click();
+				//$("#illegal").click();
 			});
 		});
 	}

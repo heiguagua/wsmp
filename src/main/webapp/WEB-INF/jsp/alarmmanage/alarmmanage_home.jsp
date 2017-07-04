@@ -149,6 +149,7 @@
       </div>
     </div>
   </div>
+  <input id = "stationCode" value="" style="display: none;">
 
   <script src="3.9/init.js"></script>
   <script type="text/javascript">

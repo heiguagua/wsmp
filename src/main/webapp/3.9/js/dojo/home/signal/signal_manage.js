@@ -23,6 +23,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 				$("#station_list").children().remove();
 				$("#station_list").load("signal/stationlist", function() {
 					$('.select2-picker').select2();
+					init_signal_detail();
 				});
 			}
 		});
@@ -34,6 +35,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 			$("#station_list").children().remove();
 			$("#station_list").load("signal/stationlist", function() {
 				$('.select2-picker').select2();
+				init_signal_detail();
 			});
 		});
 	}
