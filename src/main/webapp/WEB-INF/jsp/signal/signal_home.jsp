@@ -170,7 +170,7 @@
   </div>
   <script src="3.9/init.js"></script>
   <script type="text/javascript">
-    require([ "home/init","jquery","dojo/domReady!" ],
+    require([ "home/signal/signal_map_init","jquery","dojo/domReady!" ],
       function(init) {
         require(["bootstrap","echarts","select2","home/signal/signal_manage"], function(bootstrap,echarts,select2,signal_manage) {
              signal_manage.init();

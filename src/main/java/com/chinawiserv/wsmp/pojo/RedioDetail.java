@@ -7,7 +7,9 @@ public class RedioDetail {
 
 	private float centor;
 
-	private float band;
+	private double band;
+
+	private String type;
 
 	public String getName() {
 		return name;
@@ -17,13 +19,6 @@ public class RedioDetail {
 		this.name = name;
 	}
 
-	public float getBand() {
-		return band;
-	}
-
-	public void setBand(float band) {
-		this.band = band;
-	}
 
 	public float getCentor() {
 		return centor;
@@ -31,5 +26,21 @@ public class RedioDetail {
 
 	public void setCentor(float centor) {
 		this.centor = centor;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public double getBand() {
+		return band;
+	}
+
+	public void setBand(double band) {
+		this.band = band;
 	}
 }

@@ -1,10 +1,12 @@
 package com.chinawiserv.wsmp.controller.data;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.collect.Lists;
@@ -32,5 +34,21 @@ public class SiganlDataController {
 		reslut.add(map2);
 
 		return reslut;
+	}
+
+	@GetMapping("/station")
+	public Object getStationPiont(@RequestParam Map<String, Object> para) {
+		System.out.println(para);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("x", "104.06");
+		map.put("y", "30.67");
+		map.put("count", "45");
+		return map;
+	}
+
+	@GetMapping("/provisionaldegree")
+	public void provisionalDegree(@RequestParam Map<String, Object> para) {
+		System.out.println("provisionaldegree" + para);
+		System.out.println("waiting...");
 	}
 }
