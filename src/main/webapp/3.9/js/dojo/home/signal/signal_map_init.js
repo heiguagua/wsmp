@@ -96,8 +96,10 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 			
 			$("#station_list").change(function() {
 				var value = $('option:selected').val();
+				var kmz = $('#search').val();
 				var data = {
-					"stationCode" : value
+					"stationCode" : value,
+					"kmz" : kmz
 				};
 				
 				ajax.get("data/signal/station", data, function(reslut) {

@@ -95,7 +95,8 @@ define(["ajax","dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLaye
 		function signalClick(map,pSymbol,glayer){
 			$("#legal-normal").click(function() {
 				var value = $('option:selected').val();
-				var data = {"stationCode":value};
+				var kmz = $('#search').val();
+				var data = {"stationCode":value,"kmz":kmz};
 				ajax.get("data/alarm/getStation",data,function(reslut){
 					glayer.clear();
 					var p = new Point(reslut);
@@ -112,7 +113,8 @@ define(["ajax","dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLaye
 			
 			$("#legal-wrong").click(function() {
 				var value = $('option:selected').val();
-				var data = {"stationCode":value};
+				var kmz = $('#search').val();
+				var data = {"stationCode":value,"kmz":kmz};
 				ajax.get("data/alarm/getStation",data,function(reslut){
 					glayer.clear();
 					var p = new Point(reslut);
@@ -130,7 +132,8 @@ define(["ajax","dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLaye
 			
 			$("#legal").click(function() {
 				var value = $('option:selected').val();
-				var data = {"stationCode":value};
+				var kmz = $('#search').val();
+				var data = {"stationCode":value,"kmz":kmz};
 				ajax.get("data/alarm/getStation",data,function(reslut){
 					glayer.clear();
 					var p = new Point(reslut);
@@ -148,7 +151,8 @@ define(["ajax","dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLaye
 			
 			$("#illegal").click(function() {
 				var value = $('option:selected').val();
-				var data = {"stationCode":value};
+				var kmz = $('#search').val();
+				var data = {"stationCode":value,"kmz":kmz};
 				ajax.get("data/alarm/getStation",data,function(reslut){
 					glayer.clear();
 					var p = new Point(reslut);
@@ -165,7 +169,8 @@ define(["ajax","dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLaye
 			
 			$("#unknown").click(function() {
 				var value = $('option:selected').val();
-				var data = {"stationCode":value};
+				var kmz = $('#search').val();
+				var data = {"stationCode":value,"kmz":kmz};
 				ajax.get("data/alarm/getStation",data,function(reslut){
 					glayer.clear();
 					var p = new Point(reslut);
