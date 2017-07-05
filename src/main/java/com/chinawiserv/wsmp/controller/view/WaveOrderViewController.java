@@ -4,6 +4,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.chinawiserv.wsmp.pojo.RedioStatusCount;
+
+
 @Controller
 @RequestMapping("/waveorder")
 public class WaveOrderViewController {
@@ -20,6 +23,7 @@ public class WaveOrderViewController {
 
     @GetMapping(path = {"/", ""})
     public String home() {
+		RedioStatusCount redio = new RedioStatusCount();
         return "waveorder/waveorder_home";
     }
 }
