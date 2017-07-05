@@ -1,6 +1,7 @@
 package com.chinawiserv.wsmp.controller.view;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -22,8 +23,14 @@ public class WaveOrderViewController {
     }
 
     @GetMapping(path = {"/", ""})
-    public String home() {
+	public String home(Model model) {
 		RedioStatusCount redio = new RedioStatusCount();
+		redio.setIllegalSignal(10);
+		redio.setKonwStationNumber(10);
+		redio.setLegalNormalStationNumber(10);
+		redio.setLegalUnNormalStationNumber(10);
+		redio.setUnKonw(10);
+		model.addAttribute("redio", redio);
         return "waveorder/waveorder_home";
     }
 }
