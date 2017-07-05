@@ -42,12 +42,12 @@ public class SignalViewController {
     @GetMapping(path = {"/stationlist"})
 	public ModelAndView stationList(ModelAndView modelAndView) {
 
-		modelAndView.setViewName("signal/monitoring_station_list");
+		modelAndView.setViewName("signal/signal_list");
 		List<MonitoringStation> stations = new ArrayList<MonitoringStation>();
 		for (int i = 0; i < 4; i++) {
 			MonitoringStation station = new MonitoringStation();
 			station.setStationCode("dddd");
-			station.setStationName("dddd站2");
+			station.setStationName("信号1");
 			stations.add(station);
 		}
 		modelAndView.addObject("stations", stations);

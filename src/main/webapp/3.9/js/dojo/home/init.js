@@ -164,6 +164,10 @@ define(["ajax","dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLaye
 					glayer.add(textsyboml);
 					glayer.add(graphic);
 					map.addLayer(glayer);
+					console.log(map);
+					dojo.connect(map, "onClick", function(e){
+						  	console.log(e);
+					});  
 				});
 			});
 			

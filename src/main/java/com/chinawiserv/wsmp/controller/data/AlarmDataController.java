@@ -88,6 +88,7 @@ public class AlarmDataController {
 		map.put("x", "104.06");
 		map.put("y", "30.67");
 		map.put("count", "45");
+		map.put("stationId", "oopsoo");
 		return map;
 	}
 }
