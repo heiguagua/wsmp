@@ -5,15 +5,19 @@
 
 define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart" ,"home/alarm/hour_charts","bootstrap","home/alarm/level_charts"], function(ajax,echarts, month_charts, day_chart,hour_chart,bootstrap,level_charts) {
 	function init() {
-		$("#station_list").change(function() {
-//			var value = $(this).find('option:selected').val();
-//			var data = {"stationCode":value};
-//			ajax.get("data/alarm/getStation",data,function(reslut){
-//				$("#stationCode").val(reslut);
-//				console.log($("#stationCode").val());
-//			});
-			$("#illegal").click();
+		signal_list
+		
+		$("#signal_list").change(function() {
+			var value = $('option:selected').val();
+			alert(value);
+			data = {};
+			data.singalId = value;
+			$("#station_list").load("alarmmanage/stationlist",data,function() {
+				$('#station_picker').select2();
+			})
 		});
+		
+	
 		
 		$("#warning_confirm").click(function() {
 			var obj = $(this);
@@ -77,13 +81,15 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart" ,"h
 	}
 	
 	function init_select2() {
-		$('.select2-picker').select2();
+		$('.station-list').select2();
 		$("#search").keydown(function(e) {
 			if (e.keyCode == 13) {
 				var val = $(this).val();
 				console.log(val);
-				$("#station_list").children().remove();
-				$("#station_list").load("alarmmanage/stationlist", function() {
+				var data = {};
+				data.kmz = val;
+				$("#signal_list").children().remove();
+				$("#signal_list").load("alarmmanage/singal", data,function() {
 					$('.select2-picker').select2();
 					//$("#illegal").click();
 				});
@@ -94,8 +100,12 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart" ,"h
 		//		alert(val);
 
 		$(".search-icon").click(function() {
-			$("#station_list").children().remove();
-			$("#station_list").load("alarmmanage/stationlist", function() {
+			var val = $(this).val();
+			console.log(val);
+			var data = {};
+			data.kmz = val;
+			$("#signal_list").children().remove();
+			$("#signal_list").load("alarmmanage/singal",data ,function() {
 				$('.select2-picker').select2();
 				$(".select2-selection select2-selection--single").click();
 				//$("#illegal").click();

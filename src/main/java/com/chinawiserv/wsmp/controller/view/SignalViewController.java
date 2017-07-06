@@ -1,20 +1,19 @@
 package com.chinawiserv.wsmp.controller.view;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.chinawiserv.wsmp.pojo.MonitoringStation;
 import com.chinawiserv.wsmp.pojo.RedioDetail;
 import com.chinawiserv.wsmp.pojo.Signature;
+import com.chinawiserv.wsmp.pojo.Singal;
+import com.google.common.collect.Lists;
 
 @Controller
 @RequestMapping("/signal")
@@ -39,15 +38,15 @@ public class SignalViewController {
         return "signal/signal_detail";
     }
 
-    @GetMapping(path = {"/stationlist"})
-	public ModelAndView stationList(ModelAndView modelAndView) {
+	@PostMapping(path = "/singallist")
+	public ModelAndView stationList(ModelAndView modelAndView, @RequestParam Map<String, Object> param) {
 
 		modelAndView.setViewName("signal/signal_list");
-		List<MonitoringStation> stations = new ArrayList<MonitoringStation>();
+		List<Singal> stations = Lists.newArrayList();
 		for (int i = 0; i < 4; i++) {
-			MonitoringStation station = new MonitoringStation();
-			station.setStationCode("dddd");
-			station.setStationName("信号1");
+			Singal station = new Singal();
+			station.setContext("信号一 2017.6.7");
+			station.setId("dasww");
 			stations.add(station);
 		}
 		modelAndView.addObject("stations", stations);

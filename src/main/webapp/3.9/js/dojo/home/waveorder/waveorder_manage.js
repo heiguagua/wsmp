@@ -11,6 +11,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 			table_alarm_undealed(value);
 			table_alarm_dealed(value);
 			addPoint(map_arry, value);
+			redioType(value);
 		})
 
 		$("#tabs a").click(function(e) {
@@ -19,6 +20,14 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 			$(this).tab('show');
 
 		});
+	}
+
+	function redioType(value) {
+			var data = {};
+			data.areaCode = value;
+			$("#redioType").load("waveorder/redioType",data,function() {
+				
+			});
 	}
 
 	function addPoint(map_arry, value) {

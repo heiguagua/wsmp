@@ -27,7 +27,7 @@
       <input id='search' type='text' />
       <span class='search-icon'></span>
     </div>
-    <span id = "station_list" >
+    <span id = "singal_list" >
        <select class='station-list select2-picker'>
       </select>
     </span>

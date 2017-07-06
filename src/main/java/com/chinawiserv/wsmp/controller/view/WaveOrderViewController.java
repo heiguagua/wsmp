@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -39,8 +40,9 @@ public class WaveOrderViewController {
         return "waveorder/waveorder_home";
     }
 
-	@GetMapping("/redioType")
+	@PostMapping("/redioType")
 	public String redioType(Model model, @RequestParam Map<String, Object> map) {
+		System.out.println(map);
     	RedioStatusCount redio = new RedioStatusCount();
 		redio.setIllegalSignal(10);
 		redio.setKonwStationNumber(10);

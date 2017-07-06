@@ -25,11 +25,16 @@
   <div class='header-bar'>
     <span class='module-name'>告警管理</span>
     <div class='header-search'>
-      <input type='text' id = "search" />
+      <input type='text' id="search" />
       <span class='search-icon'></span>
     </div>
-     <span id = "station_list" >
-       <select class='station-list select2-picker'>
+    <span id="signal_list">
+      <select id = "singal_picker" class='station-list select2-picker'>
+      </select>
+    </span>
+    
+    <span id="station_list">
+      <select id = "station_picker" class='station-list select2-picker'>
       </select>
     </span>
   </div>
@@ -45,9 +50,9 @@
             </div>
             <p>告警确认</p>
           </div>
-          <div class='way-key flex1' id = "intensive_monitoring">
+          <div class='way-key flex1' id="intensive_monitoring">
             <div class='way-sign'>
-              <img src='images/way_2.png'  alt='重点监测' />
+              <img src='images/way_2.png' alt='重点监测' />
             </div>
             <p>重点监测</p>
           </div>
@@ -71,7 +76,7 @@
           </div>
           <div class="radio radio-primary flex1 ">
             <input type="radio" name="signal-type" id="legal">
-            <label for="legal">  ${redioType.llegalStation} </label>
+            <label for="legal"> ${redioType.llegalStation} </label>
           </div>
           <div class="radio radio-primary flex1 ">
             <input type="radio" name="signal-type" id="illegal" checked>
@@ -102,7 +107,7 @@
       <div class='box'>
         <div class='month-data flex-column'>
           <h4 class="text-center">电平峰值</h4>
-          <div id = "level" class='title' style="height: 100%"></div>
+          <div id="level" class='title' style="height: 100%"></div>
         </div>
       </div>
     </section>
@@ -110,7 +115,7 @@
       <div class='box'>
         <div class='month-data flex-column'>
           <h4 class="text-center">近3个月占用度（按天统计）</h4>
-          <div id = "month" class='title' style="height: 100%"></div>
+          <div id="month" class='title' style="height: 100%"></div>
         </div>
       </div>
     </section>
@@ -149,7 +154,7 @@
       </div>
     </div>
   </div>
-  <input id = "stationCode" value="" style="display: none;">
+  <input id="stationCode" value="" style="display: none;">
 
   <script src="3.9/init.js"></script>
   <script type="text/javascript">

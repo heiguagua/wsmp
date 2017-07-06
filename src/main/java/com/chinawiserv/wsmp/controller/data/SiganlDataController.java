@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,5 +52,11 @@ public class SiganlDataController {
 	public void provisionalDegree(@RequestParam Map<String, Object> para) {
 		System.out.println("provisionaldegree" + para);
 		System.out.println("waiting...");
+	}
+
+	@PutMapping("/signal")
+	public String insetSignal(@RequestParam Map<String, Object> para) {
+		System.out.println(para);
+		return null;
 	}
 }

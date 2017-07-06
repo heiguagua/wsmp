@@ -12,6 +12,27 @@ define(["ajax","dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLaye
 			parser.parse();
 			var map = mapInit();
 		}
+		
+		
+		function station_change(map,pSymbol,glayer){
+			$("#station_list").change(function() {
+				var value = $('option:selected').val();
+				var kmz = $('#search').val();
+				var data = {"stationCode":value,"kmz":kmz};
+				ajax.get("data/alarm/getStation",data,function(reslut){
+					glayer.clear();
+					var p = new Point(reslut);
+					var textSymbol = new TextSymbol(reslut.count).setColor(
+						new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
+						new Font("12pt").setWeight(Font.WEIGHT_BOLD));
+					var graphic = new esri.Graphic(p, textSymbol);
+					var textsyboml = new esri.Graphic(p, pSymbol);
+					glayer.add(textsyboml);
+					glayer.add(graphic);
+					map.addLayer(glayer);
+				});
+			});
+		}
 
 		//"http://127.0.0.1:8080/data/PBS/rest/services/MyPBSService1/MapServer"
 		function mapInit() {
@@ -40,6 +61,7 @@ define(["ajax","dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLaye
 			var ti = $("#warning_confirm").attr("class");
 			console.log(ti);
 			signalClick(map,pSymbol,glayer);
+			station_change(map,pSymbol,glayer);
 			//$("#illegal").click();
 			
 			

@@ -10,9 +10,11 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 		$("#search").keydown(function(e) {
 			if (e.keyCode == 13) {
 				var val = $(this).val();
+				var data = {};
+				data.kmz = val;
 				console.log(val);
-				$("#station_list").children().remove();
-				$("#station_list").load("signal/stationlist", function() {
+				$("#singal_picker").children().remove();
+				$("#singal_list").load("signal/singallist",data , function() {
 					$('.select2-picker').select2();
 
 				});
@@ -23,8 +25,12 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 		//		alert(val);
 
 		$(".search-icon").click(function() {
-			$("#station_list").children().remove();
-			$("#station_list").load("signal/stationlist", function() {
+			$("#singal_list").children().remove();
+			var val = $("#search").val();
+			var data = {};
+			data.kmz = val;
+			console.log(val);
+			$("#singal_list").load("signal/singallist",data ,function() {
 				$('.select2-picker').select2();
 
 			});

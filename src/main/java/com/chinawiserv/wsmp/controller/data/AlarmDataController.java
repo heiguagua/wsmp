@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -90,5 +91,15 @@ public class AlarmDataController {
 		map.put("count", "45");
 		map.put("stationId", "oopsoo");
 		return map;
+	}
+
+	@PostMapping("/alarm")
+	public String insterSingal(@RequestParam Map<String, Object> param) {
+		return null;
+	}
+
+	@PutMapping("/alarm")
+	public String updataSingal(@RequestParam Map<String, Object> param) {
+		return null;
 	}
 }

@@ -94,7 +94,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 
 		function select_change(map, pSymbol, glayer) {
 			
-			$("#station_list").change(function() {
+			$("#singal_list").change(function() {
 				var value = $('option:selected').val();
 				var kmz = $('#search').val();
 				var data = {
