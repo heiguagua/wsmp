@@ -98,16 +98,16 @@ define(["ajax","dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLaye
 				var kmz = $('#search').val();
 				var data = {"stationCode":value,"kmz":kmz};
 				ajax.get("data/alarm/getStation",data,function(reslut){
-					glayer.clear();
-					var p = new Point(reslut);
-					var textSymbol = new TextSymbol(reslut.count).setColor(
-						new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
-						new Font("12pt").setWeight(Font.WEIGHT_BOLD));
-					var graphic = new esri.Graphic(p, textSymbol);
-					var textsyboml = new esri.Graphic(p, pSymbol);
-					glayer.add(textsyboml);
-					glayer.add(graphic);
-					map.addLayer(glayer);
+//					glayer.clear();
+//					var p = new Point(reslut);
+//					var textSymbol = new TextSymbol(reslut.count).setColor(
+//						new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
+//						new Font("12pt").setWeight(Font.WEIGHT_BOLD));
+//					var graphic = new esri.Graphic(p, textSymbol);
+//					var textsyboml = new esri.Graphic(p, pSymbol);
+//					glayer.add(textsyboml);
+//					glayer.add(graphic);
+//					map.addLayer(glayer);
 				});
 			});
 			
@@ -116,16 +116,16 @@ define(["ajax","dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLaye
 				var kmz = $('#search').val();
 				var data = {"stationCode":value,"kmz":kmz};
 				ajax.get("data/alarm/getStation",data,function(reslut){
-					glayer.clear();
-					var p = new Point(reslut);
-					var textSymbol = new TextSymbol(reslut.count).setColor(
-						new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
-						new Font("12pt").setWeight(Font.WEIGHT_BOLD));
-					var graphic = new esri.Graphic(p, textSymbol);
-					var textsyboml = new esri.Graphic(p, pSymbol);
-					glayer.add(textsyboml);
-					glayer.add(graphic);
-					map.addLayer(glayer);
+//					glayer.clear();
+//					var p = new Point(reslut);
+//					var textSymbol = new TextSymbol(reslut.count).setColor(
+//						new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
+//						new Font("12pt").setWeight(Font.WEIGHT_BOLD));
+//					var graphic = new esri.Graphic(p, textSymbol);
+//					var textsyboml = new esri.Graphic(p, pSymbol);
+//					glayer.add(textsyboml);
+//					glayer.add(graphic);
+//					map.addLayer(glayer);
 				});
 			});
 			
@@ -135,16 +135,16 @@ define(["ajax","dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLaye
 				var kmz = $('#search').val();
 				var data = {"stationCode":value,"kmz":kmz};
 				ajax.get("data/alarm/getStation",data,function(reslut){
-					glayer.clear();
-					var p = new Point(reslut);
-					var textSymbol = new TextSymbol(reslut.count).setColor(
-						new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
-						new Font("12pt").setWeight(Font.WEIGHT_BOLD));
-					var graphic = new esri.Graphic(p, textSymbol);
-					var textsyboml = new esri.Graphic(p, pSymbol);
-					glayer.add(textsyboml);
-					glayer.add(graphic);
-					map.addLayer(glayer);
+//					glayer.clear();
+//					var p = new Point(reslut);
+//					var textSymbol = new TextSymbol(reslut.count).setColor(
+//						new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
+//						new Font("12pt").setWeight(Font.WEIGHT_BOLD));
+//					var graphic = new esri.Graphic(p, textSymbol);
+//					var textsyboml = new esri.Graphic(p, pSymbol);
+//					glayer.add(textsyboml);
+//					glayer.add(graphic);
+//					map.addLayer(glayer);
 				});
 				
 			});
@@ -154,20 +154,23 @@ define(["ajax","dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLaye
 				var kmz = $('#search').val();
 				var data = {"stationCode":value,"kmz":kmz};
 				ajax.get("data/alarm/getStation",data,function(reslut){
-					glayer.clear();
-					var p = new Point(reslut);
-					var textSymbol = new TextSymbol(reslut.count).setColor(
-						new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
-						new Font("12pt").setWeight(Font.WEIGHT_BOLD));
-					var graphic = new esri.Graphic(p, textSymbol);
-					var textsyboml = new esri.Graphic(p, pSymbol);
-					glayer.add(textsyboml);
-					glayer.add(graphic);
-					map.addLayer(glayer);
-					console.log(map);
-					dojo.connect(map, "onClick", function(e){
-						  	console.log(e);
-					});  
+//					glayer.clear();
+//					var p = new Point(reslut);
+//					var textSymbol = new TextSymbol(reslut.count).setColor(
+//						new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
+//						new Font("12pt").setWeight(Font.WEIGHT_BOLD));
+//					var graphic = new esri.Graphic(p, textSymbol);
+//					var textsyboml = new esri.Graphic(p, pSymbol);
+//					glayer.add(textsyboml);
+//					glayer.add(graphic);
+//					map.addLayer(glayer);
+//					console.log(map);
+//					dojo.connect(map, "onClick", function(e){
+//						  	console.log(e.graphic.geometry.type);
+//						  	if(e.graphic.geometry.type = 'point'){
+//						  		console.log(true);
+//						  	}
+//					});  
 				});
 			});
 			
@@ -176,16 +179,16 @@ define(["ajax","dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLaye
 				var kmz = $('#search').val();
 				var data = {"stationCode":value,"kmz":kmz};
 				ajax.get("data/alarm/getStation",data,function(reslut){
-					glayer.clear();
-					var p = new Point(reslut);
-					var textSymbol = new TextSymbol(reslut.count).setColor(
-						new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
-						new Font("12pt").setWeight(Font.WEIGHT_BOLD));
-					var graphic = new esri.Graphic(p, textSymbol);
-					var textsyboml = new esri.Graphic(p, pSymbol);
-					glayer.add(textsyboml);
-					glayer.add(graphic);
-					map.addLayer(glayer);
+//					glayer.clear();
+//					var p = new Point(reslut);
+//					var textSymbol = new TextSymbol(reslut.count).setColor(
+//						new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
+//						new Font("12pt").setWeight(Font.WEIGHT_BOLD));
+//					var graphic = new esri.Graphic(p, textSymbol);
+//					var textsyboml = new esri.Graphic(p, pSymbol);
+//					glayer.add(textsyboml);
+//					glayer.add(graphic);
+//					map.addLayer(glayer);
 				});
 			});
 			

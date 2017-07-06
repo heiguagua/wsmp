@@ -42,6 +42,7 @@ public class SiganlDataController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("x", "104.06");
 		map.put("y", "30.67");
+		map.put("stationId", "xxxxd");
 		map.put("count", "45");
 		return map;
 	}

@@ -98,7 +98,7 @@ public class CacheConfig {
 	}
 
 	@Bean(name = MAP_DATA)
-	public Object mapData() throws IOException {
+	public static Object mapData() throws IOException {
 
 		final File file = ResourceUtils.getFile("classpath:geoJson/Tianjin_Great.json");
 		final Type type = new TypeReference<LinkedHashMap<String, Object>>() {}.getType();
@@ -108,5 +108,9 @@ public class CacheConfig {
 			final LinkedHashMap<String, Object> map = JSON.parseObject(is, type);
 			return map.get("geometries");
 		}
+	}
+
+	public static void main(String[] args) throws IOException {
+		System.out.println(mapData());
 	}
 }
