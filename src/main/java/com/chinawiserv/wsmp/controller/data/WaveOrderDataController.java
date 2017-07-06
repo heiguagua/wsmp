@@ -29,6 +29,7 @@ public class WaveOrderDataController {
 		// offset 第几页
 		// limit=10, 个数
 		// areaCode=xxxx 区域代码
+		System.out.println(param);
 		final Map<String, Object> reslut = Maps.newHashMap();
 		final RedioStatusCount count = new RedioStatusCount();
 		count.setRedioName("广播");
@@ -53,8 +54,8 @@ public class WaveOrderDataController {
 		// limit=10, 个数
 		// areaCode=xxxx 区域代码
 		final Map<String, Object> reslut = Maps.newHashMap();
-		List<AlarmUnDealed> list = Lists.newLinkedList();
-		AlarmUnDealed alarmUnDealed = new AlarmUnDealed();
+		final List<AlarmUnDealed> list = Lists.newLinkedList();
+		final AlarmUnDealed alarmUnDealed = new AlarmUnDealed();
 		alarmUnDealed.setFirstTime("2017-06-13");
 		alarmUnDealed.setLastingTime("2017-06-27");
 		alarmUnDealed.setMark("猜猜看");
@@ -77,8 +78,8 @@ public class WaveOrderDataController {
 		// limit=10, 个数
 		// areaCode=xxxx 区域代码
 		final Map<String, Object> reslut = Maps.newHashMap();
-		List<AlarmUnDealed> list = Lists.newLinkedList();
-		AlarmUnDealed alarmUnDealed = new AlarmUnDealed();
+		final List<AlarmUnDealed> list = Lists.newLinkedList();
+		final AlarmUnDealed alarmUnDealed = new AlarmUnDealed();
 		alarmUnDealed.setFirstTime("2017-06-13");
 		alarmUnDealed.setLastingTime("2017-06-27");
 		alarmUnDealed.setMark("猜猜看11");

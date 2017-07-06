@@ -9,7 +9,8 @@ define(["dojo/parser","esri/map","esri/layers/ArcGISTiledMapServiceLayer","dojo/
     //config.defaults.io.corsEnabledServers.push("192.168.13.79:7080");
     function pares() {
             parser.parse();
-            var map =  mapInit();
+            var map_list =  mapInit();
+            return map_list;
     }
 
     //"http://127.0.0.1:8080/data/PBS/rest/services/MyPBSService1/MapServer"
@@ -34,51 +35,12 @@ define(["dojo/parser","esri/map","esri/layers/ArcGISTiledMapServiceLayer","dojo/
         map2.addLayer(agoLayer2);
         var glayer2 = new GraphicsLayer();
         map2.addLayer(glayer2);
-//        var scaleba = new Scalebar({
-//        	  map:map,
-//        	  attachTo:"bottom-left"
-//        	});
-        
-//        require(["dojo/request","home/geoJson2ArcJson","home/init","esri/geometry/Polygon","esri/graphic"], 
-//        		function(request,geoJson2ArcJson,init,Polygon){  
-//            request.get("../data/map/getGeoJson", {  
-//                data: {  
-//                    color: "blue",  
-//                    answer: 42  
-//                },  
-//                headers: {  
-//                    "X-Something": "A value"  
-//                }  
-//            }).then(function(text){
-//            	 //console.log(text);
-//            	 var obj=JSON.parse(text);
-////            	 var result = eval("("+text+")");  
-////            	 var jsonf = geoJson2ArcJson.init();
-////            	 var json = jsonf.toEsri(result);
-////            	 var features = json.rings;
-////            	 console.log("The server returned: ", json);
-////                 console.log("The server returned: ", features);
-//            	 var sfs = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID,
-//            	            new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_DASHDOT,
-//            	                new dojo.Color([255, 0, 0]), 2), new dojo.Color([255, 0, 0, 0.25])
-//            	        );
-//            	 //var feature = obj[0];
-//            	// console.log(feature);
-//            	 //console.log(feature.type);
-//            	 //console.log(feature.coordinates);
-//            	 for(var index = 0;index < obj.length;index++){
-//            		 var feature = obj[index];
-//            		 //console.log(feature);
-//            		 var polygon  = new Polygon(feature.coordinates);  
-//                     var graphic  = new esri.Graphic(polygon,sfs);
-//                     glayer.add(graphic);
-//            	 }
-//                 
-//                // map.addLayer(graphic);  
-//                
-//            });  
-//        });  
-        //return map;
+        var maps  = {};
+        maps.map1 = map1;
+        maps.glayer1 = glayer1;
+        maps.map2 = map2;
+        maps.glayer2 = glayer2;
+        return maps;
     }
     return {
         init : pares

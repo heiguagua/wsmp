@@ -1,5 +1,6 @@
 <%@ page language="java" isThreadSafe="true" pageEncoding="utf8"%>
 <%@ page contentType="text/html; charset=utf8"%>
+<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
 <!doctype html>
 <html>
 <head>
@@ -26,8 +27,10 @@
     <span class='module-name'>电波秩序管理</span>
     <div class='search-filters'>
       <select id='area_select' class='city-list select2-picker'>
-        <option value="xxxx">成都市</option>
-        <option value="yyyy">成都市1</option>
+        <option value=""></option>
+        <c:forEach var = "area" items = "${area}" step="1" begin="0">
+        <option value="${area.areaCode}">${area.name}</option>
+        </c:forEach>
       </select>
     </div>
     <div class="config pull-right">
@@ -46,7 +49,7 @@
         <span id="table_radio"></span>
       </div>
       <div class='box box-tabs'>
-        <ul class="nav nav-tabs" id ="tabs">
+        <ul class="nav nav-tabs" id="tabs">
           <li id='warningEnsure' role="presentation" class="active"><a href="#undeal">实时告警未确认</a></li>
           <li id='warningUnsure' role="presentation"><a href="#dealed">实时告警已确认</a></li>
         </ul>
@@ -66,44 +69,7 @@
     <!--信号监测-->
     <section class='flex-row'>
       <div class='box'>
-        <div class='signal-wrap'>
-          <label class='signal-detect'>信号监测</label>
-          <ul class='signal-category'>
-            <li class='item'>
-              <div class="radio radio-primary  ">
-                <input type="radio" name="signal-type" id="legal">
-                <label for="legal"> 合法信号</label>
-              </div> <span class='signal-sign legal'></span> <span class='number legal-number'>198</span>
-            </li>
-            <li class='item'>
-              <div class="radio radio-primary  ">
-                <input type="radio" name="signal-type" id="unregist">
-                <label for="unregist"> 未申报</label>
-              </div> <span class='signal-sign legal-wrong'></span> <span class='number legal-wrong-number'>198</span>
-            </li>
-            <li class='item'>
-              <div class="radio radio-primary  ">
-                <input type="radio" name="signal-type" id="otherStation">
-                <label for="otherStation"> 外地台</label>
-              </div> <span class='signal-sign known'></span> <span class='number known-number'>198</span>
-            </li>
-            <li class='item'>
-              <div class="radio radio-primary  ">
-                <input type="radio" name="signal-type" id="illegal">
-                <label for="illegal"> 非法信号</label>
-              </div> <span class='signal-sign illegal'></span> <span class='number illegal-number'>3</span>
-            </li>
-            <li class='item'>
-              <div class="radio radio-primary  ">
-                <input type="radio" name="signal-type" id="unknown">
-                <label for="unknown"> 不明信号</label>
-              </div> <span class='signal-sign unknown'></span> <span class='number unknown-number'>1</span>
-            </li>
-          </ul>
-          <a class='btn btn-default btn-refresh pull-right'>
-            <img src='images/refresh.png' />&nbsp;&nbsp;刷新
-          </a>
-        </div>
+        <div id='redioType'></div>
         <div id="mapDiv1"padding: 10px; height: 960px"></div>
       </div>
     </section>
@@ -266,7 +232,7 @@
 		require(
 				[ "home/waveorder/WaveorderMapInit", "jquery", "dojo/domReady!" ],
 				function(init) {
-					var map = init.init();
+					
 					require(
 							[ "bootstrap", "bootstrapTable", "select2" ],
 							function() {
@@ -276,7 +242,9 @@
 											require(
 													[ "home/waveorder/waveorder_manage" ],
 													function(wave_order) {
-														wave_order.init();
+                                                        var maps = init.init();
+                                                        console.log(maps)
+														wave_order.init(maps);
 													})
 										})
 							})
