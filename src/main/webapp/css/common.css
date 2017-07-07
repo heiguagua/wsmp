@@ -198,20 +198,20 @@ label, .control-label {
 	padding: 16px 20px;
 }
 
-.header-bar .header-search {
+ .header-search {
 	margin-left: 20px;
 	display: inline-block;
 	position: relative;
 }
 
-.header-bar .header-search input {
+ .header-search input {
 	padding: 2px 20px 2px 4px;
 	border: 1px solid #DAE5F0;
 	border-radius: 4px;
 	width: 130px;
 }
 
-.header-bar .header-search .search-icon {
+ .header-search .search-icon {
 	position: absolute;
 	cursor: pointer;
 	right: 2px;
@@ -496,4 +496,33 @@ label, .control-label {
 
 .datetimepicker table tr td span, .datetimepicker td {
 	text-align: center !important;
+}
+.btn{
+	font-size: 14px;
+	outline:none;
+}
+.btn-primary{
+	    background: #1893F7;
+    border-radius: 4px;
+    border-color: #1893F7;
+    padding: 3px 20px;
+    font-size: 14px;
+}
+.btn-primary:hover,.btn-primary:active,.btn-primary:focus,.btn-primary:active:focus{
+	    color: #ffffff;
+    background-color: #0187f5;
+    border-color: #0187f5;
+}
+.btn-default{
+	    background: #FFFFFF;
+    border: 1px solid #DAE5F0;
+    border-radius: 4px;
+    padding: 3px 20px;
+    font-size: 14px;
+    color: #6F7479;
+}
+.btn-default:hover,.btn-default:active,.btn-default:focus,.btn-default:active:focus{
+	    color: #7b7b7b;
+    background-color: #ececec;
+    border-color: #ececec;
 }

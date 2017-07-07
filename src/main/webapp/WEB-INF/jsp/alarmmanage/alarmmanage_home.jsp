@@ -154,6 +154,28 @@
       </div>
     </div>
   </div>
+  
+  <!-- Modal 台站列表-->
+  <div class="modal fade" id="modalStationAlarm" tabindex="-1" role="dialog" aria-labelledby="modalStationAlarmLabel">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title" id="modalStationAlarmLabel">台站列表</h4>
+        </div>
+        <div class="modal-body">
+          	<div id="stationWrap"></div>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-primary">提交</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left:15px">取消</button>
+      </div>
+      </div>
+    </div>
+  </div>
+  
   <input id="stationCode" value="" style="display: none;">
 
   <script src="3.9/init.js"></script>

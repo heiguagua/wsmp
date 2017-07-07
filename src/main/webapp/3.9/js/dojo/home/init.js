@@ -115,104 +115,217 @@ define(["ajax","dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLaye
 		}
 		
 		function signalClick(map,pSymbol,glayer){
-			$("#legal-normal").click(function() {
-				var value = $('option:selected').val();
-				var kmz = $('#search').val();
-				var data = {"stationCode":value,"kmz":kmz};
-				ajax.get("data/alarm/getStation",data,function(reslut){
-//					glayer.clear();
-//					var p = new Point(reslut);
-//					var textSymbol = new TextSymbol(reslut.count).setColor(
-//						new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
-//						new Font("12pt").setWeight(Font.WEIGHT_BOLD));
-//					var graphic = new esri.Graphic(p, textSymbol);
-//					var textsyboml = new esri.Graphic(p, pSymbol);
-//					glayer.add(textsyboml);
-//					glayer.add(graphic);
-//					map.addLayer(glayer);
-				});
-			});
+			require([ "bootstrap", "bootstrapTable"],function(){
+				require(["bootstrap_table_cn"],function(){
+					$("#legal-normal").click(function() {
+						var value = $('option:selected').val();
+						var kmz = $('#search').val();
+						var data = {"stationCode":value,"kmz":kmz};
+						ajax.get("data/alarm/getStation",data,function(reslut){
+							var temp = '<div class="header-search"><input type="text" placeholder="输入中心频率">'+
+										'<span class="search-icon"></span></div>'+
+										'<table class="table table-striped" id="table-station-list"></table>'+
+										'<div class="mark-content"><p>备注</p><textarea rows="5" placeholder="请输入备注信息"></textarea></div>';
+							$("#stationWrap").html("");
+							$("#stationWrap").html(temp);
+							$('#table-station-list').bootstrapTable({
+								method : 'get',
+								contentType : "application/x-www-form-urlencoded", //必须要有！！！！
+								url : "assets/json/station-data.json", //要请求数据的文件路径
+								striped : true, //是否显示行间隔色
+								dataField : "rows", //bootstrap table 可以前端分页也可以后端分页，这里
+								//我们使用的是后端分页，后端分页时需返回含有total：总记录数,这个键值好像是固定的
+								//rows： 记录集合 键值可以修改  dataField 自己定义成自己想要的就好
+								detailView : false,
+								pageNumber : 1, //初始化加载第一页，默认第一页
+								pagination : true, //是否分页
+								queryParamsType : 'limit', //查询参数组织方式
+								queryParams : function(params) {
+									params.areaCode = value;
+									return params
+								}, //请求服务器时所传的参数
+								sidePagination : 'server', //指定服务器端分页
+								pageSize : 7, //单页记录数
+								pageList : [ 5, 10, 20, 30 ], //分页步进值
+								clickToSelect : true, //是否启用点击选中行
+								responseHandler : function(res) {
+									console.log(res);
+									return res;
+								},
+								columns : [ {
+									field : 'station_name',
+									title : '台站名称'
+								}, {
+									field : 'center_frequency',
+									title : '中心频率（kHz）',
+									formatter : function(value, row, index) {
+										return '<a>' + value + '</a>';
+									}
+								}, {
+									field : 'tape_width',
+									title : '带宽（kHz）'
+								}]
+							});
+							
+							$('#table-station-list').on('click-row.bs.table', function (row, $element, field) {
+							    $('#table-station-list tr').removeClass("selected");
+							    field.addClass("selected");
+							});
+							
+							$("#modalStationAlarm").modal();
+						});
+					});
+					
+					$("#legal-wrong").click(function() {
+						var value = $('option:selected').val();
+						var kmz = $('#search').val();
+						var data = {"stationCode":value,"kmz":kmz};
+						ajax.get("data/alarm/getStation",data,function(reslut){
+							var temp = '<div class="header-search"><input type="text" placeholder="输入中心频率">'+
+							'<span class="search-icon"></span></div>'+
+							'<table class="table table-striped" id="table-station-list"></table>'+
+							'<div class="mark-content"><p>备注</p><textarea rows="5" placeholder="请输入备注信息"></textarea></div>';
+							$("#stationWrap").html("");
+							$("#stationWrap").html(temp);
+							$('#table-station-list').bootstrapTable({
+								method : 'get',
+								contentType : "application/x-www-form-urlencoded", //必须要有！！！！
+								url : "assets/json/station-data.json", //要请求数据的文件路径
+								striped : true, //是否显示行间隔色
+								dataField : "rows", //bootstrap table 可以前端分页也可以后端分页，这里
+								//我们使用的是后端分页，后端分页时需返回含有total：总记录数,这个键值好像是固定的
+								//rows： 记录集合 键值可以修改  dataField 自己定义成自己想要的就好
+								detailView : false,
+								pageNumber : 1, //初始化加载第一页，默认第一页
+								pagination : true, //是否分页
+								queryParamsType : 'limit', //查询参数组织方式
+								queryParams : function(params) {
+									params.areaCode = value;
+									return params
+								}, //请求服务器时所传的参数
+								sidePagination : 'server', //指定服务器端分页
+								pageSize : 7, //单页记录数
+								pageList : [ 5, 10, 20, 30 ], //分页步进值
+								clickToSelect : true, //是否启用点击选中行
+								responseHandler : function(res) {
+									console.log(res);
+									return res;
+								},
+								columns : [ {
+									field : 'station_name',
+									title : '台站名称'
+								}, {
+									field : 'center_frequency',
+									title : '中心频率（kHz）',
+									formatter : function(value, row, index) {
+										return '<a>' + value + '</a>';
+									}
+								}, {
+									field : 'tape_width',
+									title : '带宽（kHz）'
+								}]
+							});
+							
+							$('#table-station-list').on('click-row.bs.table', function (row, $element, field) {
+							    $('#table-station-list tr').removeClass("selected");
+							    field.addClass("selected");
+							});
+							
+							$("#modalStationAlarm").modal();
+						});
+					});
+					
+					
+					$("#legal").click(function() {
+						var value = $('option:selected').val();
+						var kmz = $('#search').val();
+						var data = {"stationCode":value,"kmz":kmz};
+						ajax.get("data/alarm/getStation",data,function(reslut){
+							var temp = '<div class="header-search"><input type="text" placeholder="输入中心频率">'+
+							'<span class="search-icon"></span></div>'+
+							'<table class="table table-striped" id="table-station-list"></table>'+
+							'<div class="mark-content"><p>备注</p><textarea rows="5" placeholder="请输入备注信息"></textarea></div>';
+							$("#stationWrap").html("");
+							$("#stationWrap").html(temp);
+							$('#table-station-list').bootstrapTable({
+								method : 'get',
+								contentType : "application/x-www-form-urlencoded", //必须要有！！！！
+								url : "assets/json/station-data.json", //要请求数据的文件路径
+								striped : true, //是否显示行间隔色
+								dataField : "rows", //bootstrap table 可以前端分页也可以后端分页，这里
+								//我们使用的是后端分页，后端分页时需返回含有total：总记录数,这个键值好像是固定的
+								//rows： 记录集合 键值可以修改  dataField 自己定义成自己想要的就好
+								detailView : false,
+								pageNumber : 1, //初始化加载第一页，默认第一页
+								pagination : true, //是否分页
+								queryParamsType : 'limit', //查询参数组织方式
+								queryParams : function(params) {
+									params.areaCode = value;
+									return params
+								}, //请求服务器时所传的参数
+								sidePagination : 'server', //指定服务器端分页
+								pageSize : 7, //单页记录数
+								pageList : [ 5, 10, 20, 30 ], //分页步进值
+								clickToSelect : true, //是否启用点击选中行
+								responseHandler : function(res) {
+									console.log(res);
+									return res;
+								},
+								columns : [ {
+									field : 'station_name',
+									title : '台站名称'
+								}, {
+									field : 'center_frequency',
+									title : '中心频率（kHz）',
+									formatter : function(value, row, index) {
+										return '<a>' + value + '</a>';
+									}
+								}, {
+									field : 'tape_width',
+									title : '带宽（kHz）'
+								}]
+							});
+							
+							$('#table-station-list').on('click-row.bs.table', function (row, $element, field) {
+							    $('#table-station-list tr').removeClass("selected");
+							    field.addClass("selected");
+							});
+							
+							$("#modalStationAlarm").modal();
+						});
+						
+					});
+					
+					$("#illegal").click(function() {
+						var value = $('option:selected').val();
+						var kmz = $('#search').val();
+						var data = {"stationCode":value,"kmz":kmz};
+						ajax.get("data/alarm/getStation",data,function(reslut){
+							var temp =
+							'<div class="mark-content"><p>备注</p><textarea rows="5" placeholder="请输入备注信息"></textarea></div>';
+							$("#stationWrap").html("");
+							$("#stationWrap").html(temp);
+							
+							$("#modalStationAlarm").modal();
+						});
+					});
+					
+					$("#unknown").click(function() {
+						var value = $('option:selected').val();
+						var kmz = $('#search').val();
+						var data = {"stationCode":value,"kmz":kmz};
+						ajax.get("data/alarm/getStation",data,function(reslut){
+							var temp =
+								'<div class="mark-content"><p>备注</p><textarea rows="5" placeholder="请输入备注信息"></textarea></div>';
+								$("#stationWrap").html("");
+								$("#stationWrap").html(temp);
+								
+								$("#modalStationAlarm").modal();
+						});
+					});
+				})
+			})
 			
-			$("#legal-wrong").click(function() {
-				var value = $('option:selected').val();
-				var kmz = $('#search').val();
-				var data = {"stationCode":value,"kmz":kmz};
-				ajax.get("data/alarm/getStation",data,function(reslut){
-//					glayer.clear();
-//					var p = new Point(reslut);
-//					var textSymbol = new TextSymbol(reslut.count).setColor(
-//						new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
-//						new Font("12pt").setWeight(Font.WEIGHT_BOLD));
-//					var graphic = new esri.Graphic(p, textSymbol);
-//					var textsyboml = new esri.Graphic(p, pSymbol);
-//					glayer.add(textsyboml);
-//					glayer.add(graphic);
-//					map.addLayer(glayer);
-				});
-			});
-			
-			
-			$("#legal").click(function() {
-				var value = $('option:selected').val();
-				var kmz = $('#search').val();
-				var data = {"stationCode":value,"kmz":kmz};
-				ajax.get("data/alarm/getStation",data,function(reslut){
-//					glayer.clear();
-//					var p = new Point(reslut);
-//					var textSymbol = new TextSymbol(reslut.count).setColor(
-//						new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
-//						new Font("12pt").setWeight(Font.WEIGHT_BOLD));
-//					var graphic = new esri.Graphic(p, textSymbol);
-//					var textsyboml = new esri.Graphic(p, pSymbol);
-//					glayer.add(textsyboml);
-//					glayer.add(graphic);
-//					map.addLayer(glayer);
-				});
-				
-			});
-			
-			$("#illegal").click(function() {
-				var value = $('option:selected').val();
-				var kmz = $('#search').val();
-				var data = {"stationCode":value,"kmz":kmz};
-				ajax.get("data/alarm/getStation",data,function(reslut){
-//					glayer.clear();
-//					var p = new Point(reslut);
-//					var textSymbol = new TextSymbol(reslut.count).setColor(
-//						new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
-//						new Font("12pt").setWeight(Font.WEIGHT_BOLD));
-//					var graphic = new esri.Graphic(p, textSymbol);
-//					var textsyboml = new esri.Graphic(p, pSymbol);
-//					glayer.add(textsyboml);
-//					glayer.add(graphic);
-//					map.addLayer(glayer);
-//					console.log(map);
-//					dojo.connect(map, "onClick", function(e){
-//						  	console.log(e.graphic.geometry.type);
-//						  	if(e.graphic.geometry.type = 'point'){
-//						  		console.log(true);
-//						  	}
-//					});  
-				});
-			});
-			
-			$("#unknown").click(function() {
-				var value = $('option:selected').val();
-				var kmz = $('#search').val();
-				var data = {"stationCode":value,"kmz":kmz};
-				ajax.get("data/alarm/getStation",data,function(reslut){
-//					glayer.clear();
-//					var p = new Point(reslut);
-//					var textSymbol = new TextSymbol(reslut.count).setColor(
-//						new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
-//						new Font("12pt").setWeight(Font.WEIGHT_BOLD));
-//					var graphic = new esri.Graphic(p, textSymbol);
-//					var textsyboml = new esri.Graphic(p, pSymbol);
-//					glayer.add(textsyboml);
-//					glayer.add(graphic);
-//					map.addLayer(glayer);
-				});
-			});
 			
 		}
 		

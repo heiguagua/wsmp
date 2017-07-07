@@ -1,0 +1,41 @@
+{
+  "total":12,
+  "rows":[
+    {
+      "station_name":"87.7",
+      "center_frequency":"调频广播",
+      "tape_width":"97"
+    },
+    {
+      "station_name":"87.7",
+      "center_frequency":"调频广播",
+      "tape_width":"95"
+    },
+    {
+      "station_name":"87.7",
+      "center_frequency":"调频广播",
+      "tape_width":"95"
+    },
+    {
+      "station_name":"87.7",
+      "center_frequency":"调频广播",
+      "tape_width":"96"
+    },
+    {
+      "station_name":"87.7",
+      "center_frequency":"调频广播",
+      "tape_width":"94"
+    },
+    {
+      "station_name":"87.7",
+      "center_frequency":"调频广播",
+      "tape_width":"97"
+    },
+    {
+      "station_name":"87.7",
+      "center_frequency":"调频广播",
+      "tape_width":"97"
+    }
+
+  ]
+}
