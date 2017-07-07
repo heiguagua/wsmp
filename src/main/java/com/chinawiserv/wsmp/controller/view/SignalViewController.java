@@ -40,7 +40,6 @@ public class SignalViewController {
 
 	@PostMapping(path = "/singallist")
 	public ModelAndView stationList(ModelAndView modelAndView, @RequestParam Map<String, Object> param) {
-
 		modelAndView.setViewName("signal/signal_list");
 		List<Singal> stations = Lists.newArrayList();
 		for (int i = 0; i < 4; i++) {
