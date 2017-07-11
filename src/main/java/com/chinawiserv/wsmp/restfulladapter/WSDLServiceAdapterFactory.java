@@ -51,7 +51,7 @@ public class WSDLServiceAdapterFactory {
 				final Path path = t;
 				try {
 					Files.readAllLines(path).stream().forEach(p -> {
-						Assert.hasLength(p, "注册地址为空,检查你的配置文件");
+						Assert.hasLength(p, "============注册地址为空===========");
 						this.registerService(serviceID, p.trim());
 					});
 				}
@@ -64,7 +64,7 @@ public class WSDLServiceAdapterFactory {
 		}
 		catch (Throwable e) {
 			// TODO: handle exception
-			Logger.error("{读取服务地址异常}", e);
+			Logger.error("==============读取服务地址异常==============", e);
 		}
 		;
 
