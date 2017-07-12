@@ -130,6 +130,8 @@
           <embeddedLaunchScriptProperties>
             <mode>service</mode>
             <confFolder>config</confFolder>
+            <pidFolder>config</pidFolder>
+            <pidFilename>${project.artifactId}.pid</pidFilename>
           </embeddedLaunchScriptProperties>
         </configuration>
       </plugin>
@@ -138,7 +140,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
         <configuration>
-          <packagingExcludes>**/*.properties,**/*.xml</packagingExcludes>
+          <packagingExcludes>**/*.properties,**/*.xml,**/*.conf</packagingExcludes>
         </configuration>
       </plugin>
 
