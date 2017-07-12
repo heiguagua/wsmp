@@ -63,7 +63,7 @@ public class AlarmManagerViewController {
 		singal.setContext("信号一 2017.7.6");
 		List<Singal> reslutList = Lists.newLinkedList();
 		reslutList.add(singal);
-		model.addAttribute("singal", reslutList);
+		model.addAttribute("stations", reslutList);
 		return "signal/signal_list";
 	}
 
