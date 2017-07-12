@@ -1,13 +1,14 @@
 package com.chinawiserv.wsmp;
 
-import org.mybatis.spring.annotation.MapperScan;
+import java.io.FileNotFoundException;
+
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 
-@SpringBootApplication
-@MapperScan("com.chinawiserv.wsmp.mapper")
+//@SpringBootApplication
+//@MapperScan("com.chinawiserv.wsmp.mapper")
+//@EnableAsync
 public class Start extends SpringBootServletInitializer {
 
 	@Override
@@ -15,7 +16,7 @@ public class Start extends SpringBootServletInitializer {
 		return builder.sources(Start.class);
 	}
 
-	public static void main(String[] args) {
-		SpringApplication.run(Start.class);
+	public static void main(String[] args) throws FileNotFoundException {
+		SpringApplication.run(Start.class, args);
 	}
 }

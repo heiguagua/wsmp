@@ -14,6 +14,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -23,7 +25,7 @@ import com.chinawiserv.apps.util.logger.Logger;
 import com.google.common.collect.Maps;
 
 @Component(WSDLServiceAdapterFactory.type)
-public class WSDLServiceAdapterFactory {
+public class WSDLServiceAdapterFactory implements ApplicationEventPublisherAware {
 
 	@Value("${service.home}")
 	private String service_home;
@@ -38,17 +40,28 @@ public class WSDLServiceAdapterFactory {
 
 	public final static String type = "wsdl";
 
+	private ApplicationEventPublisher publisher;
+
 	Map<String, String> serviceTypes = Maps.newConcurrentMap();
 
 	@Async
 	@EventListener(value = { ApplicationReadyEvent.class })
 	public void loadWSDLservice() throws IOException {
-		System.out.println(Paths.get(service_home).getFileName());
+
 		try {
+			Path file = Paths.get(service_home);
+
+			if (!Files.exists(file)) {
+				Logger.info("没有发现sevice缓存目录");
+				Path paths = Files.createDirectories(file);
+				Logger.info("创建service缓存目录".concat(paths.toAbsolutePath().toString()));
+			}
 
 			Files.list(Paths.get(service_home)).parallel().filter(p -> !Files.isDirectory(p)).forEach(t -> {
+
 				final String serviceID = t.getFileName().toString();
 				final Path path = t;
+
 				try {
 					Files.readAllLines(path).stream().forEach(p -> {
 						Assert.hasLength(p, "============注册地址为空===========");
@@ -61,17 +74,21 @@ public class WSDLServiceAdapterFactory {
 				}
 
 			});
+
 		}
 		catch (Throwable e) {
 			// TODO: handle exception
 			Logger.error("==============读取服务地址异常==============", e);
 		}
 		;
-
+		Logger.info("=========WSDLSevicer初始化完成===========");
+		publisher.publishEvent(new WSDLServiceAdapterFactoryReady(this));
 	}
 
 	public void registerService(String serviceID, String serviceUrl) {
+
 		System.out.println("注册的服务为  :   " + serviceID.concat(" : ").concat(serviceUrl));
+
 		try {
 			conection(serviceUrl);
 		}
@@ -83,29 +100,46 @@ public class WSDLServiceAdapterFactory {
 		WSDLService wsdlService = new WSDLService(serviceUrl);
 		wsdlService.init();
 
+		if (services.containsKey(serviceID)) {
+
+			services.remove(serviceID);
+			this.services.put(serviceID, wsdlService);
+
+		} else if (serverInfos.containsKey(serviceID)) {
+
+			serverInfos.remove(serviceID);
+			this.serverInfos.put(serviceID, wsdlService.getMethodInfos(this.serverInfo.concat(serviceID).concat("/")));
+
+		} else if (serviceTypes.containsKey(serviceID)) {
+
+			this.serviceTypes.remove(serviceID);
+			this.serviceTypes.put(serviceID, type);
+
+		}
+
 		this.services.put(serviceID, wsdlService);
 		this.serverInfos.put(serviceID, wsdlService.getMethodInfos(this.serverInfo.concat(serviceID).concat("/")));
-		serviceTypes.put(serviceID, type);
-
+		this.serviceTypes.put(serviceID, type);
 	}
 
 	private void conection(String serviceUrl) throws MalformedURLException, IOException {
+
 		URL url = new URL(serviceUrl);
 		URLConnection connection = url.openConnection();
+
 		connection.getContent();
-	}
-
-	public static void main(String[] args) {
-		String pathString = "G:/WorkSpace/wsmp/./services";
-		Path path = Paths.get(pathString);
-		System.out.println(path.getFileName());
-
 	}
 
 	public ServiceMethod getServiceMethod(String serviceId, String methodName) {
 
 		final WSDLService service = Optional.ofNullable(this.services.get(serviceId)).orElseGet(() -> optionalError("没有注册的服务 {}", serviceId));
 		return service.getMethod(methodName);
+	}
+
+	@Override
+	public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+
+		this.publisher = applicationEventPublisher;
 	}
 
 }
