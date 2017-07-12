@@ -10,6 +10,7 @@
 <link href='3.9/js/dojo/library/bootstrap/css/bootstrap.min.css' rel='stylesheet' />
 <link href='3.9/js/dojo/library/font-awesome/css/font-awesome.min.css' rel='stylesheet' />
 <link href='3.9/js/dojo/library/bootstrap/css/awesome-bootstrap-checkbox.css' rel='stylesheet' />
+<link href='3.9/js/dojo/library/select2/select2.min.css' rel='stylesheet' />
 <link href='css/common.css' rel='stylesheet' />
 <link href='css/alarm.css' rel='stylesheet' />
 <link rel="stylesheet" href="3.9/js/esri/css/esri.css">
@@ -24,9 +25,18 @@
   <div class='header-bar'>
     <span class='module-name'>告警管理</span>
     <div class='header-search'>
-      <input type='text' />
+      <input type='text' id="search" />
       <span class='search-icon'></span>
     </div>
+    <span id="signal_list">
+      <select id = "singal_picker" class='station-list select2-picker'>
+      </select>
+    </span>
+    
+    <span id="station_list">
+      <select id = "station_picker" class='station-list select2-picker'>
+      </select>
+    </span>
   </div>
 
   <!--content-->
@@ -40,7 +50,7 @@
             </div>
             <p>告警确认</p>
           </div>
-          <div class='way-key flex1 checked'>
+          <div class='way-key flex1' id="intensive_monitoring">
             <div class='way-sign'>
               <img src='images/way_2.png' alt='重点监测' />
             </div>
@@ -66,7 +76,7 @@
           </div>
           <div class="radio radio-primary flex1 ">
             <input type="radio" name="signal-type" id="legal">
-            <label for="legal">  ${redioType.llegalStation} </label>
+            <label for="legal"> ${redioType.llegalStation} </label>
           </div>
           <div class="radio radio-primary flex1 ">
             <input type="radio" name="signal-type" id="illegal" checked>
@@ -96,8 +106,16 @@
     <section class='flex-row'>
       <div class='box'>
         <div class='month-data flex-column'>
-          <h4>近3个月占用度（按天统计）</h4>
-          <h4 id = "month" class='title' style="height: 100%"></h4>
+          <h4 class="text-center">电平峰值</h4>
+          <div id="level" class='title' style="height: 100%"></div>
+        </div>
+      </div>
+    </section>
+    <section class='flex-row'>
+      <div class='box'>
+        <div class='month-data flex-column'>
+          <h4 class="text-center">近3个月占用度（按天统计）</h4>
+          <div id="month" class='title' style="height: 100%"></div>
         </div>
       </div>
     </section>
@@ -136,6 +154,29 @@
       </div>
     </div>
   </div>
+  
+  <!-- Modal 台站列表-->
+  <div class="modal fade" id="modalStationAlarm" tabindex="-1" role="dialog" aria-labelledby="modalStationAlarmLabel">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title" id="modalStationAlarmLabel">台站列表</h4>
+        </div>
+        <div class="modal-body">
+          	<div id="stationWrap"></div>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-primary">提交</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left:15px">取消</button>
+      </div>
+      </div>
+    </div>
+  </div>
+  
+  <input id="stationCode" value="" style="display: none;">
 
   <script src="3.9/init.js"></script>
   <script type="text/javascript">
@@ -143,7 +184,7 @@
     require([ "home/init", "jquery",
       "dojo/domReady!" ],
       function(init) {
-        require([ "bootstrap", "echarts", "home/alarm/alarm_manage" ], function(bootstrap, echarts, alarm_manage) {
+        require([ "bootstrap", "select2","echarts", "home/alarm/alarm_manage" ], function(bootstrap,select2,echarts, alarm_manage) {
           console.log(test);
           alarm_manage.init();
           var map = init.init();

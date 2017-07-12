@@ -27,7 +27,7 @@
       <input id='search' type='text' />
       <span class='search-icon'></span>
     </div>
-    <span id = "station_list" >
+    <span id = "singal_list" >
        <select class='station-list select2-picker'>
       </select>
     </span>
@@ -70,6 +70,14 @@
           </div>
         </div>
         <div id="mapDiv"padding: 10px; height: 960px"></div>
+      </div>
+    </section>
+    <section class='flex-row'>
+      <div class='box'>
+        <div class='month-data flex-column'>
+          <h4 class='title'>电平峰值</h4>
+          <div class='flex1' id='levelChart'></div>
+        </div>
       </div>
     </section>
     <section class='flex-row'>
@@ -162,7 +170,7 @@
   </div>
   <script src="3.9/init.js"></script>
   <script type="text/javascript">
-    require([ "home/init","jquery","dojo/domReady!" ],
+    require([ "home/signal/signal_map_init","jquery","dojo/domReady!" ],
       function(init) {
         require(["bootstrap","echarts","select2","home/signal/signal_manage"], function(bootstrap,echarts,select2,signal_manage) {
              signal_manage.init();

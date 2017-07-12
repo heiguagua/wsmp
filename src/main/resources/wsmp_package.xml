@@ -8,17 +8,17 @@
 	<includeBaseDirectory>false</includeBaseDirectory>
 	<files>
 		<file>
-			<source>${project.basedir}\target\${project.artifactId}.${project.packaging}</source>
+			<source>${project.basedir}/target/${project.artifactId}.${project.packaging}</source>
 			<outputDirectory>/${project.artifactId}</outputDirectory>
 		</file>
 	</files>
 	<fileSets>
 		<fileSet>
-			<directory>${project.basedir}\src\main\resources</directory>
+			<directory>${project.basedir}/src/main/resources</directory>
 			<outputDirectory>/${project.artifactId}/config</outputDirectory>
 		</fileSet>
 		<fileSet>
-			<directory>${project.basedir}\config</directory>
+			<directory>${project.basedir}/config</directory>
 			<outputDirectory>/${project.artifactId}/config</outputDirectory>
 		</fileSet>
 	</fileSets>

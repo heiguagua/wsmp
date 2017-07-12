@@ -53,6 +53,7 @@
 			<version>1.7</version>
 		</dependency>
 
+
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
@@ -117,7 +118,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
-					<packagingExcludes>**/*.properties,**/*.xml</packagingExcludes>
+					<packagingExcludes>**/*.properties,**/*.xml,**/*.conf</packagingExcludes>
 				</configuration>
 			</plugin>
 

@@ -58,3 +58,48 @@
 #alarm #dayChart, #alarm #hourChart {
   width: 100%;
   min-height: 300px; }
+#alarm .mark-content{
+	padding:10px;
+}
+#alarm .mark-content textarea{
+	width: 100%;
+    border: 1px solid #B8C9DA;
+    padding: 6px;
+    border-radius: 4px;
+}
+#stationWrap .pull-right.pagination{
+	    margin: 0;
+}
+#stationWrap .fixed-table-body{
+	padding-bottom: 0;
+}
+#stationWrap .fixed-table-pagination{
+	border:none;
+}
+#stationWrap .table{
+	margin-bottom:0;
+}
+#stationWrap .table tr{
+	cursor:pointer;
+}
+#stationWrap .table tr.selected{
+	background: antiquewhite;
+}
+#stationWrap .table tr.selected td{
+	position:relative;
+}
+#stationWrap .table tr.selected td:last-child:after{
+    content: '';
+    width: 24px;
+    height: 24px;
+    background: url(../images/tick.png) no-repeat center transparent;
+    display: inline-block;
+    position: absolute;
+    right: 6px;
+    top: 4px;
+}
+#modalStationAlarm .modal-footer{
+	    text-align: center;
+    padding: 0 0 40px 0;
+    border-top: none;
+}

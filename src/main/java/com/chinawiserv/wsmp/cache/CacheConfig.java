@@ -1,6 +1,7 @@
 package com.chinawiserv.wsmp.cache;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
@@ -9,10 +10,14 @@ import java.nio.file.Files;
 import java.util.LinkedHashMap;
 import java.util.Properties;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.EncodedResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
@@ -20,24 +25,30 @@ import org.springframework.util.ResourceUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.chinawiserv.apps.util.logger.Logger;
 import com.chinawiserv.wsmp.pojo.AlarmDealed;
 import com.chinawiserv.wsmp.pojo.AlarmUnDealed;
 import com.chinawiserv.wsmp.pojo.BandStatusTable;
 import com.chinawiserv.wsmp.pojo.RedioType;
 
 @Configuration
+@SpringBootApplication
 public class CacheConfig {
 
 	public final static String MAP_DATA = "mapData";
 
+	// @Value("${config.home}")
+	@Value("${config.home:classpath:}")
+	private String configHome;
+
 	@Autowired
-	private DefaultResourceLoader def;
+	private ApplicationContext def;
 
 	// 实时警告处理表头
 	@Bean
 	public AlarmDealed getAlarmDealed() throws IOException {
 
-		final Resource resource = this.def.getResource("classpath:table_column/alarm_dealed.properties");
+		final Resource resource = this.def.getResource(configHome.concat("table_column/alarm_dealed.properties"));
 		final EncodedResource encodedResource = new EncodedResource(resource, Charset.forName("utf-8"));
 		final Properties p = PropertiesLoaderUtils.loadProperties(encodedResource);
 		final String radio = p.getProperty("radio", "频率");
@@ -54,7 +65,7 @@ public class CacheConfig {
 	@Bean
 	public AlarmUnDealed getAlarmUnDealed() throws IOException {
 
-		final Resource resource = this.def.getResource("classpath:table_column/alarm_undealed.properties");
+		final Resource resource = this.def.getResource(configHome.concat("table_column/alarm_undealed.properties"));
 		EncodedResource encodedResource = new EncodedResource(resource, Charset.forName("utf-8"));
 		final Properties p = PropertiesLoaderUtils.loadProperties(encodedResource);
 		final String radio = p.getProperty("radio", "频率");
@@ -71,7 +82,7 @@ public class CacheConfig {
 	public BandStatusTable getBandStatusTable() throws IOException {
 
 		// DefaultResourceLoader loader = new DefaultResourceLoader();
-		final Resource resource = this.def.getResource("classpath:table_column/band_status.properties");
+		final Resource resource = this.def.getResource(configHome.concat("table_column/band_status.properties"));
 		final EncodedResource encodedResource = new EncodedResource(resource, Charset.forName("utf-8"));
 		final Properties p = PropertiesLoaderUtils.loadProperties(encodedResource);
 		final String radioName = p.getProperty("radio_name", "频段名称");
@@ -86,7 +97,7 @@ public class CacheConfig {
 	@Bean
 	public RedioType getRedioType() throws IOException {
 
-		final Resource resource = this.def.getResource("classpath:checkbox/RedioType.properties");
+		final Resource resource = this.def.getResource(configHome.concat("checkbox/RedioType.properties"));
 		final EncodedResource encodedResource = new EncodedResource(resource, Charset.forName("utf-8"));
 		final Properties p = PropertiesLoaderUtils.loadProperties(encodedResource);
 		final String legalNormalStation = p.getProperty("legalNormalStation", "合法台站正常");
@@ -99,8 +110,9 @@ public class CacheConfig {
 
 	@Bean(name = MAP_DATA)
 	public Object mapData() throws IOException {
-
-		final File file = ResourceUtils.getFile("classpath:geoJson/Tianjin_Great.json");
+		
+		final Resource resource = this.def.getResource(configHome.concat("geoJson/Tianjin_Great.json"));
+		final File file = resource.getFile();
 		final Type type = new TypeReference<LinkedHashMap<String, Object>>() {}.getType();
 
 		try (InputStream is = Files.newInputStream(file.toPath())) {
@@ -108,5 +120,12 @@ public class CacheConfig {
 			final LinkedHashMap<String, Object> map = JSON.parseObject(is, type);
 			return map.get("geometries");
 		}
+	}
+
+	@PostConstruct
+	public void init() throws FileNotFoundException {
+
+		this.configHome = "file:" + ResourceUtils.getFile(this.configHome).getAbsolutePath().concat("/");
+		Logger.info("config home is : {} ", this.configHome);
 	}
 }

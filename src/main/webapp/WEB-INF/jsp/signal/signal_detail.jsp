@@ -7,8 +7,8 @@
         <div class='signal-profile flex-row'>
           <div class='item info flex1 flex-column justify-center'>
             <div class='radio-info flex-row'>
-              <div class='r-i-item flex1 flex-column justify-center'>123.4MHz</div>
-              <div class='r-i-item flex1 flex-column justify-center'>100KHz</div>
+              <div class='r-i-item flex1 flex-column justify-center'>${redioDetail.centor}</div>
+              <div class='r-i-item flex1 flex-column justify-center'>${redioDetail.band}</div>
             </div>
             <div class='type-info flex-row'>
               <div class='t-i-item flex1 flex-column justify-center'>常发 / 偶发</div>
@@ -61,14 +61,14 @@
                 <label for="legal-normal"> 合法台站正常 </label>
               </div>
               <div class="radio radio-primary flex1 ">
-                <input type="radio" name="signal-type" id="legal-wrong">
-                <label for="legal-wrong"> 合法台站违规 </label>
+                <input type="radio" name="signal-type" id="undeclared">
+                <label for="legal-wrong"> 未申报 </label>
               </div>
             </div>
             <div class='flex1 flex-row align-center mrg-bottom15'>
               <div class="radio radio-primary flex1 ">
-                <input type="radio" name="signal-type" id="legal">
-                <label for="legal"> 合法站台 </label>
+                <input type="radio" name="signal-type" id="nonlocal_station">
+                <label for="legal"> 外地台 </label>
               </div>
               <div class="radio radio-primary flex1 ">
                 <input type="radio" name="signal-type" id="illegal" checked>
@@ -80,6 +80,7 @@
               </div>
             </div>
           </div>
+          <input id = "redio-type" style="display: none;" value = "${redioDetail.type}">
         </div>
       </div>
     </section>
