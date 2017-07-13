@@ -14,6 +14,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -21,10 +23,12 @@ import org.springframework.stereotype.Component;
 import com.chinawiserv.apps.util.logger.Logger;
 
 @Component
-public class ConfigLister {
+public class ConfigListener implements ApplicationEventPublisherAware {
 
 	@Value("${service.home}")
 	private String service_home;
+
+	private ApplicationEventPublisher EventPublisher;
 
 	@Autowired
 	@Qualifier(WSDLServiceAdapterFactory.type)
@@ -77,6 +81,12 @@ public class ConfigLister {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+		// TODO Auto-generated method stub
+		this.EventPublisher = applicationEventPublisher;
 	}
 
 }
