@@ -9,14 +9,47 @@ define(["ajax","dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLaye
 		//var map = null;
 		//config.defaults.io.corsEnabledServers.push("192.168.13.79:7080");
 		function pares() {
+			$("#submitButton").click(function() {
+				var stationID = $("#stationId").val();
+				var des = $("#des").val();
+				var centerFrq = $('#search').val();
+				var stationId = $('#station_list').find('option:selected').val();
+				var signalId = $('#signal_list').find('option:selected').val();
+				var typeCode = $('#typeCode').val();
+				var data = {};
+				var station = {};
+				var singal = {}
+				singal.stationId = stationId;
+				station.des = des;
+				if(typeCode == "1"){
+					station.radioStation = {"station":{"type":"L_B"}};
+					
+					station.stationKey = stationID;
+				}
+				
+				if(typeCode == "2"){
+					station.radioStation = {"station":{"type":"N_P"}}；
+					station.stationKey = stationID;
+				}
+			
+				data.station = station;
+				singal.warmingId = {"id" : signal_list};
+				singal.typeCode = typeCode;
+				data.sigal = singal;
+				ajax.post("data/alarm/instersingal",data,function(){
+					alert("成功");
+				});
+			});
+			
 			parser.parse();
 			var map = mapInit();
+			closeModal();
 		}
 		
 		
 		function station_change(map,pSymbol,glayer){
 			$("#station_list").change(function() {
-				var value = $('option:selected').val();
+				var value = $("#station_list").find('option:selected').val();
 				var kmz = $('#search').val();
 				var data = {"stationCode":value,"kmz":kmz};
 				ajax.get("data/alarm/getStation",data,function(reslut){
@@ -114,24 +147,34 @@ define(["ajax","dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLaye
 			return map;
 		}
 		
+		function closeModal(){
+			
+			$('#table-station-list').on('hide.bs.modal',function(){
+				$(".after_modal_colse").val('');
+			});
+			
+		}
+		
 		function signalClick(map,pSymbol,glayer){
 			require([ "bootstrap", "bootstrapTable"],function(){
 				require(["bootstrap_table_cn"],function(){
 					$("#legal-normal").click(function() {
-						var value = $('option:selected').val();
+//						var value = $('option:selected').val();
+						var value = $("#station_list").find('option:selected').text();
 						var kmz = $('#search').val();
-						var data = {"stationCode":value,"kmz":kmz};
-						ajax.get("data/alarm/getStation",data,function(reslut){
+						var data = {};
+						data.type = "none";
+						ajax.get("data/alarm/StationInfo",data,function(reslut){
 							var temp = '<div class="header-search"><input type="text" placeholder="输入中心频率">'+
 										'<span class="search-icon"></span></div>'+
 										'<table class="table table-striped" id="table-station-list"></table>'+
-										'<div class="mark-content"><p>备注</p><textarea rows="5" placeholder="请输入备注信息"></textarea></div>';
+										'<div class="mark-content"><p>备注</p><textarea id = "des" rows="5" placeholder="请输入备注信息"></textarea></div>';
 							$("#stationWrap").html("");
 							$("#stationWrap").html(temp);
 							$('#table-station-list').bootstrapTable({
 								method : 'get',
 								contentType : "application/x-www-form-urlencoded", //必须要有！！！！
-								url : "assets/json/station-data.json", //要请求数据的文件路径
+								data:reslut,
 								striped : true, //是否显示行间隔色
 								dataField : "rows", //bootstrap table 可以前端分页也可以后端分页，这里
 								//我们使用的是后端分页，后端分页时需返回含有total：总记录数,这个键值好像是固定的
@@ -144,6 +187,14 @@ define(["ajax","dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLaye
 									params.areaCode = value;
 									return params
 								}, //请求服务器时所传的参数
+								onClickRow: function(row){
+									//data.id = row.signalId;
+									console.log(row);
+									$("#stationId").val(row.id);
+//									ajax.post("data/alarm/instersingal",data,function(){
+//									
+//									});
+								},
 								sidePagination : 'server', //指定服务器端分页
 								pageSize : 7, //单页记录数
 								pageList : [ 5, 10, 20, 30 ], //分页步进值
@@ -153,16 +204,16 @@ define(["ajax","dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLaye
 									return res;
 								},
 								columns : [ {
-									field : 'station_name',
+									field : 'stationName',
 									title : '台站名称'
 								}, {
-									field : 'center_frequency',
+									field : 'centerFrequency',
 									title : '中心频率（kHz）',
 									formatter : function(value, row, index) {
 										return '<a>' + value + '</a>';
 									}
 								}, {
-									field : 'tape_width',
+									field : 'tapeWidth',
 									title : '带宽（kHz）'
 								}]
 							});
@@ -179,8 +230,11 @@ define(["ajax","dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLaye
 					$("#legal-wrong").click(function() {
 						var value = $('option:selected').val();
 						var kmz = $('#search').val();
-						var data = {"stationCode":value,"kmz":kmz};
-						ajax.get("data/alarm/getStation",data,function(reslut){
+						var data = {};
+						var typeCode =  $(this).val();
+						$("#typeCode").val(typeCode);
+						data.type = "none";
+						ajax.get("data/alarm/StationInfo",data,function(reslut){
 							var temp = '<div class="header-search"><input type="text" placeholder="输入中心频率">'+
 							'<span class="search-icon"></span></div>'+
 							'<table class="table table-striped" id="table-station-list"></table>'+
@@ -190,7 +244,7 @@ define(["ajax","dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLaye
 							$('#table-station-list').bootstrapTable({
 								method : 'get',
 								contentType : "application/x-www-form-urlencoded", //必须要有！！！！
-								url : "assets/json/station-data.json", //要请求数据的文件路径
+								data:reslut,
 								striped : true, //是否显示行间隔色
 								dataField : "rows", //bootstrap table 可以前端分页也可以后端分页，这里
 								//我们使用的是后端分页，后端分页时需返回含有total：总记录数,这个键值好像是固定的
@@ -203,6 +257,14 @@ define(["ajax","dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLaye
 									params.areaCode = value;
 									return params
 								}, //请求服务器时所传的参数
+								onClickRow: function(row){
+									//data.id = row.signalId;
+									console.log(row);
+									$("#stationId").val(row.id);
+//									ajax.post("data/alarm/instersingal",data,function(){
+//									
+//									});
+								},
 								sidePagination : 'server', //指定服务器端分页
 								pageSize : 7, //单页记录数
 								pageList : [ 5, 10, 20, 30 ], //分页步进值
@@ -212,16 +274,16 @@ define(["ajax","dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLaye
 									return res;
 								},
 								columns : [ {
-									field : 'station_name',
+									field : 'stationName',
 									title : '台站名称'
 								}, {
-									field : 'center_frequency',
+									field : 'centerFrequency',
 									title : '中心频率（kHz）',
 									formatter : function(value, row, index) {
 										return '<a>' + value + '</a>';
 									}
 								}, {
-									field : 'tape_width',
+									field : 'tapeWidth',
 									title : '带宽（kHz）'
 								}]
 							});

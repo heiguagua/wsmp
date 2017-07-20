@@ -1,22 +1,39 @@
 package com.chinawiserv.wsmp.controller.data;
 
+import static java.util.stream.Collectors.toList;
+
+import java.math.BigInteger;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.tempuri.FreqWarningDTO;
+import org.tempuri.FreqWarningOperationResponse;
+import org.tempuri.FreqWarningQueryRequest;
+import org.tempuri.FreqWarningQueryResponse;
+import org.tempuri.RStatQuerySignalsRequest;
+import org.tempuri.RStatQuerySignalsResponse2;
+import org.tempuri.RadioFreqDTO;
+import org.tempuri.RadioSignalDTO;
+import org.tempuri.RadioSignalOperationReponse;
+import org.tempuri.RadioStationDTO;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.chinawiserv.apps.util.logger.Logger;
+import com.chinawiserv.wsmp.client.WebServiceSoapFactory;
 import com.chinawiserv.wsmp.pojo.IntensiveMonitoring;
-import com.chinawiserv.wsmp.pojo.WarringConfirm;
+import com.chinawiserv.wsmp.pojo.Station;
 import com.chinawiserv.wsmp.service.impl.IntensiveMonitoringServiceImpl;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @RequestMapping("/data/alarm")
@@ -24,6 +41,16 @@ public class AlarmDataController {
 
 	@Autowired
 	IntensiveMonitoringServiceImpl iIntensiveMonitoringServicel;
+
+	@Autowired
+	WebServiceSoapFactory service;
+
+	private ObjectMapper mapper = new ObjectMapper();
+
+	public Object getStationInfo() {
+		return null;
+
+	}
 
 	@GetMapping("/dayCharts")
 	public Object dayCharts(@RequestParam Map<String, Object> param) {
@@ -78,8 +105,12 @@ public class AlarmDataController {
 	}
 
 	@PostMapping(path = "/warringconfirm")
-	public void warning_confirm(@RequestBody WarringConfirm warringConfirm) {
-		System.out.println("waiting...");
+	public void warning_confirm(@RequestBody String param) throws JsonProcessingException {
+
+		FreqWarningOperationResponse res = (FreqWarningOperationResponse) service.freqWarnServiceCall("update", param, FreqWarningDTO.class);
+		ObjectMapper mapper = new ObjectMapper();
+
+		Logger.info(mapper.writeValueAsString(res));
 	}
 
 	@GetMapping(path = "/getStation")
@@ -93,13 +124,65 @@ public class AlarmDataController {
 		return map;
 	}
 
-	@PostMapping("/alarm")
-	public String insterSingal(@RequestParam Map<String, Object> param) {
+	@PostMapping("/instersingal")
+	public String insterSingal(@RequestBody Map<String, Map<String, Object>> param) throws JsonProcessingException {
+
+		final Map<String, Object> signal = param.get("sigal");
+
+		final Map<String, Object> station = param.get("station");
+		final FreqWarningQueryResponse response = (FreqWarningQueryResponse) service.freqWarnServiceCall("query",
+				mapper.writeValueAsString(signal.get("warmingId")), FreqWarningQueryRequest.class);
+
+		final FreqWarningDTO t = response.getWarningInfos().getFreqWarningDTO().size() > 0 ? response.getWarningInfos().getFreqWarningDTO().get(0)
+				: new FreqWarningDTO();
+
+		final BigInteger bandWidth = t.getBandWidth();
+		final BigInteger centerFreq = t.getCenterFreq();
+
+		station.put("centerFreq", centerFreq);
+		station.put("bandWidth", bandWidth);
+
+		String stationId = (String) signal.get("stationId");
+
+		String typeCode = (String) signal.get("typeCode");
+
+		String areaCode = stationId.substring(0, 4);
+
+		station.put("stationKey", stationId);
+
+		station.put("typeCode", typeCode);
+
+		station.put("areaCode", areaCode);
+
+		final RadioSignalOperationReponse res = (RadioSignalOperationReponse) service.radioSignalServiceCall("insertRadioSignal",
+				mapper.writeValueAsString(station), RadioSignalDTO.class);
+
+		Logger.info(mapper.writeValueAsString(res));
 		return null;
 	}
 
-	@PutMapping("/alarm")
-	public String updataSingal(@RequestParam Map<String, Object> param) {
-		return null;
+	@GetMapping(path = { "/StationInfo" }, params = "type")
+	public Object stationList(@RequestParam Map<String, Object> map) throws JsonProcessingException {
+
+		final RStatQuerySignalsResponse2 response = (RStatQuerySignalsResponse2) service.radioStationServiceCall("rStatQuerySignals",
+				RStatQuerySignalsRequest.class);
+
+		List<Station> reslutDtos = response.getRStatSignalList().getRadioStationSignalDTO().stream().map(t -> {
+
+			final RadioStationDTO radioStationDTO = t.getStation();
+
+			final RadioFreqDTO radioFreqDTO = t.getFreq();
+
+			int centerFre = radioFreqDTO.getCenterFreq().intValue() / 1000000;
+			int tapeWidth = radioFreqDTO.getBandWidth().intValue() / 1000000;
+			String centerFreString = centerFre + "";
+			String tapeWidthString = tapeWidth + "";
+
+			final Station station = new Station(radioStationDTO.getID(), radioStationDTO.getName(), centerFreString, tapeWidthString);
+
+			return station;
+		}).collect(toList());
+
+		return reslutDtos;
 	}
 }

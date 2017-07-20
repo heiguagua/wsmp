@@ -2,9 +2,10 @@
   "total":12,
   "rows":[
     {
-      "station_name":"87.7",
+      "station_name":87.7,
       "center_frequency":"调频广播",
-      "tape_width":"97"
+      "tape_width":"97",
+      "signalId":"wqeqweq"
     },
     {
       "station_name":"87.7",

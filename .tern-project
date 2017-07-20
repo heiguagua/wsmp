@@ -1,0 +1,24 @@
+{
+  "ecmaVersion": 6,
+  "plugins": {
+    "requirejs": {
+      
+    },
+    "browser-extension": {
+      
+    },
+    "dojotoolkit1.10": {
+      
+    },
+    "requirejs-extension": {
+      
+    },
+    "jquery-extension": {
+      
+    }
+  },
+  "libs": [
+    "browser",
+    "jquery"
+  ]
+}

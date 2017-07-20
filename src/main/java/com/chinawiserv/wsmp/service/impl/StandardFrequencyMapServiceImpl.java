@@ -9,7 +9,7 @@ import com.chinawiserv.wsmp.service.IStandardFrequencyMapService;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author ${author}
@@ -17,5 +17,5 @@ import com.chinawiserv.wsmp.service.IStandardFrequencyMapService;
  */
 @Service
 public class StandardFrequencyMapServiceImpl extends ServiceImpl<StandardFrequencyMapMapper, StandardFrequencyMap> implements IStandardFrequencyMapService {
-	
+
 }

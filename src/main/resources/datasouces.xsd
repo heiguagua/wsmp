@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="druid-datasources">
+    <xs:annotation>
+      <xs:documentation>
+					<![CDATA[在定义多个数据库的时候注意设置默认数据源,只可以设置一个默认数据源]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="datasource" maxOccurs="unbounded" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:attributeGroup name="baseAttrib">
+    <xs:attribute name="name" type="noWhiteSpace" use="required">
+      <xs:annotation>
+        <xs:documentation>
+					<![CDATA[数据源的名称，spring对应的bean名称]]>
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="primary" type="xs:boolean" default="false">
+      <xs:annotation>
+        <xs:documentation>
+					<![CDATA[是否是默认数据源, spring中不声明数据源名称时候注入的数据源]]>
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="readOnly" type="xs:boolean" default="false">
+      <xs:annotation>
+        <xs:documentation>
+          <![CDATA[是否是只读]]>
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="dataSourceType" type="noWhiteSpace" default = "com.alibaba.druid.pool.DruidDataSource">
+      <xs:annotation>
+        <xs:documentation>
+          <![CDATA[数据源类型]]>
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attribute name="driverClassName" type="noWhiteSpace">
+    <xs:annotation>
+      <xs:documentation><![CDATA[实际数据库的驱动名称]]></xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+
+  <xs:simpleType name="noWhiteSpace">
+    <xs:annotation>
+      <xs:documentation>
+					<![CDATA[字符串类型,自动替换空格]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:whiteSpace value="replace" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="pool-config">
+    <xs:complexType>
+      <xs:annotation>
+        <xs:documentation><![CDATA[连接池配置]]></xs:documentation>
+      </xs:annotation>
+      <xs:attribute name="initialSize" type="xs:integer" default="10">
+        <xs:annotation>
+          <xs:documentation><![CDATA[当前数据库连接池的初始化连接数]]></xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="maxActive" type="xs:integer" default="100">
+        <xs:annotation>
+          <xs:documentation><![CDATA[当前数据库连接池的最大活动连接数]]></xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="minIdle" type="xs:integer" default="10">
+        <xs:annotation>
+          <xs:documentation><![CDATA[当前数据库连接池的最小活动连接数]]></xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="poolPreparedStatements" default="false" type="xs:boolean">
+        <xs:annotation>
+          <xs:documentation>
+						<![CDATA[
+							是否缓存preparedStatement，也就是PSCache。
+							PSCache对支持游标的数据库性能提升巨大，比如说oracle。
+							在mysql5.5以下的版本中没有PSCache功能，建议关闭掉。
+							5.5及以上版本有PSCache，建议开启。
+						]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="maxOpenPreparedStatements" default="-1" type="xs:integer">
+        <xs:annotation>
+          <xs:documentation>
+						<![CDATA[
+							 要启用PSCache，必须配置大于0，当大于0时，
+							poolPreparedStatements自动触发修改为true。
+							在Druid中，不会存在Oracle下PSCache占用内存过多的问题，
+							可以把这个数值配置大一些，比如说100  
+						]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="validationQuery" default="select 1" type="noWhiteSpace">
+        <xs:annotation>
+          <xs:documentation>
+						<![CDATA[
+							 用来检测连接是否有效的sql，要求是一个查询语句。
+							如果validationQuery为null，testOnBorrow、testOnReturn、
+							testWhileIdle都不会其作用。 
+						]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="testWhileIdle" default="true" type="xs:boolean">
+        <xs:annotation>
+          <xs:documentation>
+						<![CDATA[
+							建议配置为true，不影响性能，并且保证安全性。
+							申请连接的时候检测，如果空闲时间大于
+							timeBetweenEvictionRunsMillis，
+							执行validationQuery检测连接是否有效。 
+						]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="timeBetweenEvictionRunsMillis" default="60000" type="xs:long">
+        <xs:annotation>
+          <xs:documentation>
+						<![CDATA[
+							 有两个含义：
+								1) Destroy线程会检测连接的间隔时间
+								2) testWhileIdle的判断依据，详细看testWhileIdle属性的说明 
+						]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="filters" type="noWhiteSpace" default="stat">
+        <xs:annotation>
+          <xs:documentation>
+					<![CDATA[
+							三种选择,多个用,好隔开
+					        stat ：开启防御sql注入, 
+							log4j : 开启操作日志, 
+							wall : 开启监控统计]]>
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <!-- <xs:attribute name="removeAbandoned" type="xs:boolean" default="true"> <xs:annotation> <xs:documentation> <![CDATA[ 开启超时回收机制]]> </xs:documentation> 
+        </xs:annotation> </xs:attribute> <xs:attribute name="removeAbandonedTimeout" type="xs:long" default="180000"> <xs:annotation> <xs:documentation> 
+        <![CDATA[ 链接回收最短时间]]> </xs:documentation> </xs:annotation> </xs:attribute> -->
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="datasource">
+    <xs:annotation>
+      <xs:documentation>
+						<![CDATA[
+							定义一个数据源
+						]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:all minOccurs="0">
+        <xs:element name="url" type="noWhiteSpace" maxOccurs="1" minOccurs="1">
+          <xs:annotation>
+            <xs:documentation><![CDATA[数据库连接地址]]></xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="username" type="noWhiteSpace" maxOccurs="1" minOccurs="1">
+          <xs:annotation>
+            <xs:documentation><![CDATA[数据连接用户名]]></xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="password" type="noWhiteSpace" maxOccurs="1" minOccurs="1">
+          <xs:annotation>
+            <xs:documentation><![CDATA[数据库连接密码]]></xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="pool-config" />
+      </xs:all>
+      <xs:attributeGroup ref="baseAttrib" />
+      <xs:attribute ref="driverClassName" default="com.mysql.jdbc.Driver" />
+    </xs:complexType>
+  </xs:element>
+</xs:schema> 

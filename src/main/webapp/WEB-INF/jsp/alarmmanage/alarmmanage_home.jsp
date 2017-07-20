@@ -67,23 +67,23 @@
       <div class='box2'>
         <div class='flex-row radio-type-check align-center'>
           <div class="radio radio-primary flex1 ">
-            <input type="radio" name="signal-type" id="legal-normal">
+            <input type="radio" value="0" name="signal-type" id="legal-normal">
             <label for="legal-normal"> ${redioType.legalNormalStation} </label>
           </div>
           <div class="radio radio-primary flex1 ">
-            <input type="radio" name="signal-type" id="legal-wrong">
+            <input type="radio" value="1" RadioStionType ="L_B" name="signal-type" id="legal-wrong">
             <label for="legal-wrong"> ${redioType.illegalNormalStation} </label>
           </div>
           <div class="radio radio-primary flex1 ">
-            <input type="radio" name="signal-type" id="legal">
+            <input type="radio" value ="2" RadioStionType ="N_P" name="signal-type" id="legal">
             <label for="legal"> ${redioType.llegalStation} </label>
           </div>
           <div class="radio radio-primary flex1 ">
-            <input type="radio" name="signal-type" id="illegal" checked>
+            <input type="radio" value="3" name="signal-type" id="illegal" checked>
             <label for="illegal"> ${redioType.illegalSignal} </label>
           </div>
           <div class="radio radio-primary flex1 ">
-            <input type="radio" name="signal-type" id="unknown">
+            <input type="radio" value="4" name="signal-type" id="unknown">
             <label for="unknown"> ${redioType.unKonw} </label>
           </div>
         </div>
@@ -169,7 +169,7 @@
           	<div id="stationWrap"></div>
         </div>
         <div class="modal-footer">
-        <button type="button" class="btn btn-primary">提交</button>
+        <button id = "submitButton" type="button" class="btn btn-primary">提交</button>
         <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left:15px">取消</button>
       </div>
       </div>
@@ -177,7 +177,8 @@
   </div>
   
   <input id="stationCode" value="" style="display: none;">
-
+  <input id="stationId" class ="after_modal_colse" style="display: none;"  value="" >
+  <input id="typeCode" class ="after_modal_colse" style="display: none;"  value="" >
   <script src="3.9/init.js"></script>
   <script type="text/javascript">
     var test = 1;
@@ -185,7 +186,7 @@
       "dojo/domReady!" ],
       function(init) {
         require([ "bootstrap", "select2","echarts", "home/alarm/alarm_manage" ], function(bootstrap,select2,echarts, alarm_manage) {
-          console.log(test);
+            
           alarm_manage.init();
           var map = init.init();
         });

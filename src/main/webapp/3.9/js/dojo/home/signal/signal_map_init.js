@@ -39,7 +39,13 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 			map.addLayer(glayer);
 			var ti = $("#warning_confirm").attr("class");
 			console.log(ti);
+			
+			singal_select();
+			
 			select_change(map, pSymbol, glayer);
+			
+		
+			
 			//$("#illegal").click();
 
 
@@ -91,10 +97,23 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 				});
 			return map;
 		}
+		
+		function singal_select(){
+			
+			$("#signal_list1").change(function() {
+				var value = $('option:selected').val();
+				data = {};
+				data.singalId = value;
+				$("#station_list").load("signal/stationlist",data,function() {
+					$('#station_picker').select2();
+				})
+			});
+			
+		}
 
 		function select_change(map, pSymbol, glayer) {
 			
-			$("#singal_list").change(function() {
+			$("#station_list").change(function() {
 				var value = $('option:selected').val();
 				var kmz = $('#search').val();
 				var data = {

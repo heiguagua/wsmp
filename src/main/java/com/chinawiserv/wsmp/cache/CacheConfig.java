@@ -7,7 +7,9 @@ import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Properties;
 
 import javax.annotation.PostConstruct;
@@ -30,12 +32,18 @@ import com.chinawiserv.wsmp.pojo.AlarmDealed;
 import com.chinawiserv.wsmp.pojo.AlarmUnDealed;
 import com.chinawiserv.wsmp.pojo.BandStatusTable;
 import com.chinawiserv.wsmp.pojo.RedioType;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 @Configuration
 @SpringBootApplication
 public class CacheConfig {
 
 	public final static String MAP_DATA = "mapData";
+
+	public final static String USR_DATA = "userData";
+
+	public final static String DATA_LIST = "userData";
 
 	// @Value("${config.home}")
 	@Value("${config.home:classpath:}")
@@ -110,7 +118,7 @@ public class CacheConfig {
 
 	@Bean(name = MAP_DATA)
 	public Object mapData() throws IOException {
-		
+
 		final Resource resource = this.def.getResource(configHome.concat("geoJson/Tianjin_Great.json"));
 		final File file = resource.getFile();
 		final Type type = new TypeReference<LinkedHashMap<String, Object>>() {}.getType();
@@ -119,6 +127,49 @@ public class CacheConfig {
 
 			final LinkedHashMap<String, Object> map = JSON.parseObject(is, type);
 			return map.get("geometries");
+		}
+	}
+
+	@Bean(name = DATA_LIST)
+	public Object stationList() {
+		// final Resource resource =
+		// this.def.getResource(configHome.concat("geoJson/station-list.json"));
+		// final File file = resource.getFile();
+		// final Type type = new TypeReference<List<Map<String, String>>>()
+		// {}.getType();
+		//
+		// try (InputStream is = Files.newInputStream(file.toPath())) {
+		//
+		// final LinkedHashMap<String, Object> map = JSON.parseObject(is, type);
+		// return map;
+		// }
+
+		HashMap<String, String> map = Maps.newHashMap();
+		map.put("Num", "52010001");
+		map.put("Name", "监测站");
+
+		HashMap<String, String> map2 = Maps.newHashMap();
+		map2.put("Num", "52040003");
+		map2.put("Name", "监测站安顺");
+
+		List<HashMap<String, String>> list = Lists.newLinkedList();
+		list.add(map);
+		list.add(map2);
+
+		return list;
+	}
+
+	@Bean(name = USR_DATA)
+	public Object userData() throws IOException {
+
+		final Resource resource = this.def.getResource(configHome.concat("geoJson/user-info.json"));
+		final File file = resource.getFile();
+		final Type type = new TypeReference<LinkedHashMap<String, Object>>() {}.getType();
+
+		try (InputStream is = Files.newInputStream(file.toPath())) {
+
+			final LinkedHashMap<String, Object> map = JSON.parseObject(is, type);
+			return map;
 		}
 	}
 

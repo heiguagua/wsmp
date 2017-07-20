@@ -36,6 +36,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.chinawiserv.apps.util.logger.Logger;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 public class WSDLService {
 
@@ -44,6 +45,8 @@ public class WSDLService {
 	private Client client;
 
 	private LinkedHashMap<String, WSDLServiceMethod> methods;
+
+	private Map<Class<?>, LinkedHashMap<String, Object>> callChain = Maps.newConcurrentMap();
 
 	public WSDLService(String serviceUrl) {
 		super();
@@ -63,22 +66,23 @@ public class WSDLService {
 		return Optional.ofNullable(this.methods.get(methodName)).orElseGet(() -> Logger.optionalError("{} 没有发现 {} 服务", this.serviceUrl, methodName));
 	}
 
-	public String getType() {
-		return WSDLServiceAdapterFactory.type;
-	}
-
 	@Async
+
 	public void init() {
 
 		this.destroy();
 
-		this.client = JaxWsDynamicClientFactory.newInstance().createClient(this.serviceUrl);
+		final JaxWsDynamicClientFactory clientFactory = JaxWsDynamicClientFactory.newInstance();
+		// clientFactory.setAllowElementReferences(true);
+		// clientFactory.setSimpleBindingEnabled(true);
+
+		this.client = clientFactory.createClient(this.serviceUrl);
 
 		final Optional<ServiceInfo> opService = this.client.getEndpoint().getService().getServiceInfos().stream().findFirst();
-		final ServiceInfo serviceInfo = opService.orElseGet(() -> Logger.optionalError("没有发现服务信息", this.serviceUrl));
+		final ServiceInfo serviceInfo = opService.orElseGet(() -> Logger.optionalError("没有发现服务信息描述 {}", this.serviceUrl));
 
 		final Optional<BindingInfo> bdOptional = serviceInfo.getBindings().stream().findFirst();
-		final BindingInfo bindingInfo = bdOptional.orElseGet(() -> Logger.optionalError("没有发现绑定的服务", this.serviceUrl));
+		final BindingInfo bindingInfo = bdOptional.orElseGet(() -> Logger.optionalError("没有发现服务绑定描述 {}", this.serviceUrl));
 
 		final Collection<BindingOperationInfo> options = bindingInfo.getOperations();
 		final List<BindingOperationInfo> optionInfos = options.stream().map(op -> op.isUnwrapped() ? op.getWrappedOperation() : op.getUnwrappedOperation())
@@ -88,9 +92,8 @@ public class WSDLService {
 
 			final List<MessagePartInfo> inputInfos = op.getInput().getMessageParts();
 
-			final Map<String, Class<?>> inputClasses = inputInfos.stream().collect(toMap(mp -> mp.getName().getLocalPart(), mp -> mp.getTypeClass(), (k, v) -> {
-				return null;
-			}, LinkedHashMap::new));
+			final Map<String, Class<?>> inputClasses = inputInfos.stream()
+					.collect(toMap(mp -> mp.getName().getLocalPart(), mp -> mp.getTypeClass(), (k, v) -> null, LinkedHashMap::new));
 
 			final Map<String, Object> inputDescriptor = inputClasses.entrySet().stream()
 					.collect(toMap(e -> e.getKey(), e -> this.getClassDescriptor(e.getValue()), (k, u) -> null, LinkedHashMap::new));
@@ -100,6 +103,8 @@ public class WSDLService {
 			return new WSDLServiceMethod(op.getName(), inputClasses, inputDescriptor, outputDescriptor);
 
 		}).collect(toMap(m -> m.operationName.getLocalPart(), m -> m, (k, v) -> null, LinkedHashMap::new));
+
+		this.callChain.clear();
 	}
 
 	Map<String, Object> getMethodInfos(String serverInfo) {
@@ -115,19 +120,34 @@ public class WSDLService {
 
 	private Object getClassDescriptor(Class<?> clazz) {
 
-		if (clazz.equals(String.class) || Number.class.isAssignableFrom(clazz) || clazz.isPrimitive()) return clazz.getSimpleName();
+		if (this.callChain.containsKey(clazz)) return this.callChain.get(clazz).clone();
+
+		if (clazz.equals(String.class) || Number.class.isAssignableFrom(clazz) || clazz.isPrimitive() || clazz.equals(Boolean.class))
+			return clazz.getSimpleName();
 
 		if (clazz.isArray()) return Lists.newArrayList(this.getClassDescriptor(clazz.getComponentType()));
 
-		if (clazz.equals(XMLGregorianCalendar.class)) return "YYYY-MM-DD hh:ss:mm";
+		if (clazz.equals(XMLGregorianCalendar.class)) return "YYYY-MM-dd HH:ss:mm";
 
-		return stream(clazz.getDeclaredFields()).filter(f -> !Modifier.isStatic(f.getModifiers()))
-				.collect(toMap(this::getFieldName, this::getFieldDescriptor, (k, v) -> null, LinkedHashMap::new));
+		final LinkedHashMap<String, Object> map = Maps.newLinkedHashMap();
+		this.callChain.put(clazz, map);
+		for (Field field : clazz.getDeclaredFields()) {
+
+			if (Modifier.isStatic(field.getModifiers())) continue;
+
+			final String name = this.getFieldName(field);
+			final Object value = this.getFieldDescriptor(field);
+
+			map.put(name, value);
+		}
+		return map;
 	}
 
 	private Object getFieldDescriptor(Field field) {
 
 		final Class<?> clazz = field.getType();
+
+		if (this.callChain.containsKey(clazz)) return this.callChain.get(clazz).clone();
 
 		if (Object.class.equals(clazz)) return "AnyType";
 
@@ -192,7 +212,6 @@ public class WSDLService {
 
 		@Override
 		public Object doMethod(String paramString) throws Exception {
-
 			final Map<String, Object> paramMap = JSON.parseObject(paramString, this.typeReference);
 
 			final Object[] paramObjects = this.inputClasses.entrySet().stream().map(e -> {
@@ -201,7 +220,6 @@ public class WSDLService {
 				final Object obj = Optional.ofNullable(paramMap.get(key)).orElseGet(() -> Logger.optionalError("参数 [{}] 必须传递", key));
 
 				Logger.debug("参数 key {} 传递的值 {}", key, obj);
-
 				final Class<?> clazz = e.getValue();
 				return (String.class.isAssignableFrom(clazz)) ? obj : JSON.toJavaObject(JSON.class.cast(obj), clazz);
 

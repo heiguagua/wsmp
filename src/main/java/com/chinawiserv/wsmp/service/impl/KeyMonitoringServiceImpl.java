@@ -9,7 +9,7 @@ import com.chinawiserv.wsmp.service.IKeyMonitoringService;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author ${author}
@@ -17,5 +17,5 @@ import com.chinawiserv.wsmp.service.IKeyMonitoringService;
  */
 @Service
 public class KeyMonitoringServiceImpl extends ServiceImpl<KeyMonitoringMapper, KeyMonitoring> implements IKeyMonitoringService {
-	
+
 }

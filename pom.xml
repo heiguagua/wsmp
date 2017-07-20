@@ -139,6 +139,7 @@
         <configuration>
           <appendAssemblyId>false</appendAssemblyId>
           <recompressZippedFiles>true</recompressZippedFiles>
+           <encoding>${encoding}</encoding>
         </configuration>
         <executions>
           <execution>

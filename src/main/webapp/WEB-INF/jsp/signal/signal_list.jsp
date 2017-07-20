@@ -5,8 +5,7 @@
 <select class='station-list select2-picker'>
   <option class = "redio" style="display: none;"></option>
   <c:forEach var = "s" items = "${stations}" varStatus="vs" step="1" begin="0">
-       <option class = "redio" value="${s.id}">${s.context}</option>
+       <option class = "redio" stationId = "${s.listString}" value="${s.id}">${s.context}</option>
   </c:forEach>
 </select>
-
 </html>

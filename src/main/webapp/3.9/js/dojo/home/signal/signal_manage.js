@@ -2,6 +2,8 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 	function init() {
 
 		init_select2();
+		
+	
 
 	}
 
@@ -14,7 +16,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 				data.kmz = val;
 				console.log(val);
 				$("#singal_picker").children().remove();
-				$("#singal_list").load("signal/singallist",data , function() {
+				$("#signal_list1").load("signal/singallist",data , function() {
 					$('.select2-picker').select2();
 
 				});
@@ -30,7 +32,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 			var data = {};
 			data.kmz = val;
 			console.log(val);
-			$("#singal_list").load("signal/singallist",data ,function() {
+			$("#signal_list1").load("signal/singallist",data ,function() {
 				$('.select2-picker').select2();
 
 			});

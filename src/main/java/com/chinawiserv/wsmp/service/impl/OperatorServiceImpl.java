@@ -9,7 +9,7 @@ import com.chinawiserv.wsmp.service.IOperatorService;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author ${author}
@@ -17,5 +17,5 @@ import com.chinawiserv.wsmp.service.IOperatorService;
  */
 @Service
 public class OperatorServiceImpl extends ServiceImpl<OperatorMapper, Operator> implements IOperatorService {
-	
+
 }

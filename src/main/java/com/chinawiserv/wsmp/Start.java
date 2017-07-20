@@ -21,5 +21,6 @@ public class Start extends SpringBootServletInitializer {
 
 	public static void main(String[] args) throws FileNotFoundException {
 		SpringApplication.run(Start.class, args);
+
 	}
 }

@@ -1,6 +1,7 @@
 package com.chinawiserv.wsmp.restfulladapter;
 
 import static com.chinawiserv.apps.util.logger.Logger.optionalError;
+import static java.util.stream.Collectors.toList;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -9,6 +10,7 @@ import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -17,14 +19,11 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.context.event.EventListener;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 
 import com.chinawiserv.apps.util.logger.Logger;
 import com.google.common.collect.Maps;
 
-@Component(WSDLServiceAdapterFactory.type)
+//@Component(WSDLServiceAdapterFactory.type)
 public class WSDLServiceAdapterFactory implements ApplicationEventPublisherAware {
 
 	@Value("${service.home}")
@@ -40,54 +39,45 @@ public class WSDLServiceAdapterFactory implements ApplicationEventPublisherAware
 
 	public final static String type = "wsdl";
 
-	private ApplicationEventPublisher publisher;
+	private ApplicationEventPublisher EventPublisher;
 
 	Map<String, String> serviceTypes = Maps.newConcurrentMap();
 
-	@Async
 	@EventListener(value = { ApplicationReadyEvent.class })
 	public void loadWSDLservice() throws IOException {
 
-		try {
-			Path file = Paths.get(service_home);
+		Path file = Paths.get(service_home);
 
-			if (!Files.exists(file)) {
-				Logger.info("没有发现sevice缓存目录");
-				Path paths = Files.createDirectories(file);
-				Logger.info("创建service缓存目录".concat(paths.toAbsolutePath().toString()));
-			}
-
-			Files.list(Paths.get(service_home)).parallel().filter(p -> !Files.isDirectory(p)).forEach(t -> {
-
-				final String serviceID = t.getFileName().toString();
-				final Path path = t;
-
+		if (Files.exists(file)) {
+			List<RegistInfo> registInfos = Files.list(Paths.get(service_home)).parallel().filter(p -> !Files.isDirectory(p)).map(f -> {
+				final String serviceID = f.getFileName().toString();
+				final Path path = f;
+				String url = "";
 				try {
-					Files.readAllLines(path).stream().forEach(p -> {
-						Assert.hasLength(p, "============注册地址为空===========");
-						this.registerService(serviceID, p.trim());
-					});
+					url = Files.readAllLines(path).get(0);
 				}
 				catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				return new RegistInfo(serviceID, url);
+			}).collect(toList());
 
-			});
+			Logger.info("=========准备初始注册WSDLService===========");
+			EventPublisher.publishEvent(new WSDLServiceRegistByListEvents(registInfos));
+		} else {
+			Logger.info("没有发现sevice缓存目录");
+			Path paths = Files.createDirectories(file);
+			Logger.info("创建service缓存目录".concat(paths.toAbsolutePath().toString()));
+		}
 
-		}
-		catch (Throwable e) {
-			// TODO: handle exception
-			Logger.error("==============读取服务地址异常==============", e);
-		}
-		;
-		Logger.info("=========WSDLSevicer初始化完成===========");
-		publisher.publishEvent(new WSDLServiceAdapterFactoryReady(this));
+		EventPublisher.publishEvent(new WSDLServiceAdapterFactoryReady(this));
 	}
 
 	public void registerService(String serviceID, String serviceUrl) {
-
-		System.out.println("注册的服务为  :   " + serviceID.concat(" : ").concat(serviceUrl));
+		int index = serviceID.indexOf(".txt");
+		serviceID = serviceID.substring(0, index);
+		Logger.info("注册的服务为  :   " + serviceID.concat(" : ").concat(serviceUrl));
 
 		try {
 			conection(serviceUrl);
@@ -97,29 +87,34 @@ public class WSDLServiceAdapterFactory implements ApplicationEventPublisherAware
 			Logger.error("服务连接出错....", e);
 		}
 
-		WSDLService wsdlService = new WSDLService(serviceUrl);
+		final WSDLService wsdlService = new WSDLService(serviceUrl);
 		wsdlService.init();
 
 		if (services.containsKey(serviceID)) {
 
 			services.remove(serviceID);
 			this.services.put(serviceID, wsdlService);
+			return;
 
 		} else if (serverInfos.containsKey(serviceID)) {
 
 			serverInfos.remove(serviceID);
 			this.serverInfos.put(serviceID, wsdlService.getMethodInfos(this.serverInfo.concat(serviceID).concat("/")));
+			return;
 
 		} else if (serviceTypes.containsKey(serviceID)) {
 
 			this.serviceTypes.remove(serviceID);
 			this.serviceTypes.put(serviceID, type);
-
+			return;
 		}
 
 		this.services.put(serviceID, wsdlService);
 		this.serverInfos.put(serviceID, wsdlService.getMethodInfos(this.serverInfo.concat(serviceID).concat("/")));
 		this.serviceTypes.put(serviceID, type);
+		Logger.info("=========" + serviceID + " :  服务的详情" + "=========");
+		Logger.info(serverInfos.get(serviceID).toString());
+		Logger.info("==============================================");
 	}
 
 	private void conection(String serviceUrl) throws MalformedURLException, IOException {
@@ -139,7 +134,6 @@ public class WSDLServiceAdapterFactory implements ApplicationEventPublisherAware
 	@Override
 	public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
 
-		this.publisher = applicationEventPublisher;
+		this.EventPublisher = applicationEventPublisher;
 	}
-
 }

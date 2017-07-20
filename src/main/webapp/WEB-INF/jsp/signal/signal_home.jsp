@@ -27,10 +27,16 @@
       <input id='search' type='text' />
       <span class='search-icon'></span>
     </div>
-    <span id = "singal_list" >
+    <span id = "signal_list1" >
        <select class='station-list select2-picker'>
       </select>
     </span>
+    
+    <span id = "station_list" >
+       <select class='station-list select2-picker'>
+      </select>
+    </span>
+    
        <div class='config pull-right'>
       <a class='btn btn-default btn-config'>
         <img src='images/export.png' />&nbsp;&nbsp;导出报表

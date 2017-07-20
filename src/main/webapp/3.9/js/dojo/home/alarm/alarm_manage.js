@@ -7,33 +7,53 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart" ,"h
 	function init() {
 		signal_list
 		
-		$("#signal_list").change(function() {
-			var value = $('option:selected').val();
-			alert(value);
-			data = {};
-			data.singalId = value;
-			$("#station_list").load("alarmmanage/stationlist",data,function() {
-				$('#station_picker').select2();
-			})
+		$("#signal_list").change(function(e) {
+			$("#station_picker").children().remove();
+			var l = $('#signal_list').find('option:selected').attr("stationId");
+			var arryId = l.split(",");
+			console.log(arryId);
+			var value = $('#signal_list').find('option:selected').val();
+			var html="";
+			ajax.get("csdata/stationList",null,function(data){
+				 var rsize = data.length;
+				 var arryIdSize = arryId.length;
+				 var reslut = new Array();
+				 for(var i = 0; i < rsize; i++){
+					for(var j = 0; j <arryIdSize;j++){
+						var rcode = data[i].Num;
+						var arryCode = arryId[j];
+						if(rcode == arryCode){
+							var inerhtml = "<option style='width: 300px;' class='station' value = '"+data[i].Num+"'>"+data[i].Name+"</option>"
+							html +=inerhtml;
+						}
+					} 
+				 }
+				 console.log(html);
+				
+				$("#station_picker").append(html);
+				//$("#station_list").select2();
+			});
+		
+	          
+	          //console.log(xx);
+			
 		});
 		
 	
 		
 		$("#warning_confirm").click(function() {
 			var obj = $(this);
-			if ($(this).hasClass("checked")) {
-				var data = {"frequency": "1","status":1};
-				console.log(data);
-				ajax.post("data/alarm/warringconfirm",data,function(){
-					obj.removeClass("checked");
-					//obj.addClass("checked");
-				});
-			} else {
-				var data = {"frequency": "1","status":0};
+			if (!$(this).hasClass("checked")) {
+				var value = $("#signal_list").find('option:selected').val();
+				var data = {};
+				data.id = value;
+				data.status = 1;
 				ajax.post("data/alarm/warringconfirm",data,function(){
 					obj.removeClass("checked");
 					obj.addClass("checked");
 				});
+			} else {
+		
 			}
 		});
 		
@@ -87,7 +107,7 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart" ,"h
 				var val = $(this).val();
 				console.log(val);
 				var data = {};
-				data.kmz = val;
+				data.centerFreq = val;
 				$("#signal_list").children().remove();
 				$("#signal_list").load("alarmmanage/singal", data,function() {
 					$('.select2-picker').select2();
@@ -103,11 +123,10 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart" ,"h
 			var val = $(this).val();
 			console.log(val);
 			var data = {};
-			data.kmz = val;
+			data.centerFreq = val;
 			$("#signal_list").children().remove();
-			$("#signal_list").load("alarmmanage/singal",data ,function() {
+			$("#signal_list").load("alarmmanage/singal", data,function() {
 				$('.select2-picker').select2();
-				$(".select2-selection select2-selection--single").click();
 				//$("#illegal").click();
 			});
 		});
