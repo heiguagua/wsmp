@@ -24,7 +24,7 @@
   <div class='header-bar'>
     <span class='module-name'>信号管理</span>
     <div class='header-search'>
-      <input id='search' type='text' />
+      <input id='search' type='number' />
       <span class='search-icon'></span>
     </div>
     <span id = "signal_list1" >

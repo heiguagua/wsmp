@@ -77,6 +77,13 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
 			monthChart.on('click', function(params) {
 				$('#modalDay').modal();
 			})
+			
+			window.onresize = function(){
+				console.log(11);
+				monthChart.clear();
+				monthChart.resize();
+				monthChart.setOption(optionMonth);
+			}
 
 		});
 

@@ -48,12 +48,12 @@
         <p class='table-title'>频段状态</p>
         <span id="table_radio"></span>
       </div>
-      <div class='box box-tabs'>
+      <div class='box box-tabs flex-column'>
         <ul class="nav nav-tabs" id="tabs">
           <li id='warningEnsure' role="presentation" class="active"><a href="#undeal">实时告警未确认</a></li>
           <li id='warningUnsure' role="presentation"><a href="#dealed">实时告警已确认</a></li>
         </ul>
-        <div class="tab-content">
+        <div class="tab-content flex1">
           <div role="tabpanel" class="tab-pane active" id='undeal'>
             <table class="table table-striped text-center" id='table-alarm-undeal'>
             </table>

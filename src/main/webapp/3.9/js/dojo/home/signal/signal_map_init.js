@@ -205,6 +205,11 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 								};
 								var monthChart = echarts.init($('#monthChart')[0]);
 								monthChart.setOption(optionMonth);
+								
+								window.onresize = function(){
+									monthChart.clear();
+									monthChart.setOption(optionMonth);
+								}
 								monthChart.on('click', function(params) {
 									$('#modalDay').modal();
 								})
@@ -310,7 +315,11 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 			};
 			var myChart = echarts.init($('#radioChart')[0]);
 			myChart.setOption(option);
-
+			
+			window.onresize = function(){
+				myChart.clear();
+				myChart.setOption(option);
+			}
 			// draw month data chart
 			
 			
@@ -382,6 +391,11 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 				var dayChart = echarts.init($('#dayChart')[0]);
 				dayChart.setOption(optionDay);
 
+				window.onresize = function(){
+					dayChart.clear();
+					dayChart.setOption(optionDay);
+				}
+				
 				dayChart.on('click', function() {
 					$('#modalHour').modal()
 				});
@@ -453,6 +467,11 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 				};
 				var hourChart = echarts.init($('#hourChart')[0]);
 				hourChart.setOption(optionHour);
+				
+				window.onresize = function(){
+					hourChart.clear();
+					hourChart.setOption(optionHour);
+				}
 			})
 
 		}

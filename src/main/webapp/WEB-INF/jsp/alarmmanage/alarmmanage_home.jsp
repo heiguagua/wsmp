@@ -42,8 +42,8 @@
   <!--content-->
   <div class='content-wrap'>
     <section class='flex-row'>
-      <div class='box right10'>
-        <div class='detect-way flex-row'>
+      <div class='box right10 flex-column'>
+        <div class='detect-way flex-row flex1'>
           <div class='way-key flex1' id="warning_confirm">
             <div class='way-sign'>
               <img src='images/way_2.png' alt='告警确认' />
@@ -64,8 +64,8 @@
           </div>
         </div>
       </div>
-      <div class='box2'>
-        <div class='flex-row radio-type-check align-center'>
+      <div class='box2 flex-column'>
+        <div class='flex-row radio-type-check align-center flex1'>
           <div class="radio radio-primary flex1 ">
             <input type="radio" value="0" name="signal-type" id="legal-normal">
             <label for="legal-normal"> ${redioType.legalNormalStation} </label>
@@ -107,7 +107,7 @@
       <div class='box'>
         <div class='month-data flex-column'>
           <h4 class="text-center">电平峰值</h4>
-          <div id="level" class='title' style="height: 100%"></div>
+          <div id="level" class='title flex1 flex-column' style="height: 100%"></div>
         </div>
       </div>
     </section>
@@ -115,7 +115,7 @@
       <div class='box'>
         <div class='month-data flex-column'>
           <h4 class="text-center">近3个月占用度（按天统计）</h4>
-          <div id="month" class='title' style="height: 100%"></div>
+          <div id="month" class='title flex1 flex-column' style="height: 100%"></div>
         </div>
       </div>
     </section>

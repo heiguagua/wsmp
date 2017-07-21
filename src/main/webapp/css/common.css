@@ -6,6 +6,13 @@
 	box-sizing: border-box;
 }
 
+input::-webkit-inner-spin-button{
+	-webkit-appearance:none;
+}
+input::-webkit-outer-spin-button{
+	-webkit-appearance:none;
+}
+
 html {
 	height: 100%;
 }
@@ -37,7 +44,7 @@ input {
 }
 
 select {
-	min-width: 80px;
+	min-width: 120px;
 }
 
 .select2-container--default .select2-selection--single {
