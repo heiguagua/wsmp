@@ -28,7 +28,7 @@ define(["ajax","dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLaye
 				}
 				
 				if(typeCode == "2"){
-					station.radioStation = {"station":{"type":"N_P"}}；
+					station.radioStation = {"station":{"type":"N_P"}};
 					station.stationKey = stationID;
 				}
 			
