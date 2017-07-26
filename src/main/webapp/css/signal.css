@@ -205,3 +205,23 @@
 
 #signal .select2-container {
   min-width: 160px; }
+  .search-result-wrap{
+	position:relative;
+}
+#search-result{
+	position:absolute;
+	width:100%;
+	display:none;
+	padding: 0;
+    background: #FFF;
+    box-shadow: 0 10px 20px 0 rgba(0,0,0,0.16);
+    border-radius: 4px;
+}
+
+#search-result>li{
+	padding:4px 10px;
+	cursor:pointer;
+}
+#search-result>li:hover,#search-result>li.active{
+	background:#e5e5e5;
+}

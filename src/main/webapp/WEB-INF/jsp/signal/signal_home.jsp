@@ -24,8 +24,13 @@
   <div class='header-bar'>
     <span class='module-name'>信号管理</span>
     <div class='header-search'>
-      <input id='search' type='number' />
+      <input id='search' type='text' />
       <span class='search-icon'></span>
+      <div class='search-result-wrap'>
+            <ul id="search-result">
+              
+            </ul>
+       </div>
     </div>
     <span id = "signal_list1" >
        <select class='station-list select2-picker'>

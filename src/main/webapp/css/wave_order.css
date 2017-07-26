@@ -90,3 +90,12 @@
     #waveOrder .elect-evaluate-wrap .coverage-number {
       color: #37A5FF;
       font-size: 18px; }
+      .mark-title{
+      font-size:12px;}
+      .mark-info{
+          background: #FFFFFF;
+    border: 1px solid #B8C9DA;
+    border-radius: 4px;
+    width: 100%;
+    height: 100px;
+    padding: 10px;}
