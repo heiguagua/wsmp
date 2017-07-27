@@ -1,3 +1,15 @@
+::-webkit-input-placeholder {
+	font-size: 12px;
+	color: #8A9EB2;
+}
+::-moz-placeholder {
+	font-size: 12px;
+	color: #8A9EB2;
+}
+:-moz-placeholder {
+	font-size: 12px;
+	color: #8A9EB2;
+}
 #signal .header-search {
   margin-left: 20px;
   display: inline-block;
@@ -140,6 +152,14 @@
   #signal .data-play .module-name {
     font-size: 16px;
     color: #505363; }
+    #signal .data-type{
+    	    background: #37A5FF;
+    border-radius: 3px;
+    color: #FFF;
+    font-size: 14px;
+    padding: 2px 8px;
+    margin-left: 10px;
+    }
   #signal .data-play .btn-choose {
     padding: 2px 12px;
     background: #FFF;
@@ -195,13 +215,14 @@
   border: none; }
 
 #signal #modalConfig .config-left {
-  padding: 15px 0; }
+  padding: 10px 20px; }
 
 #signal #modalConfig .config-right {
   padding: 15px 0; }
 
 #signal #modalConfig .control-label {
-  padding: 4px 0 !important; }
+  padding: 4px 0 !important;
+  text-align:left; }
 
 #signal .select2-container {
   min-width: 160px; }
@@ -224,4 +245,71 @@
 }
 #search-result>li:hover,#search-result>li.active{
 	background:#e5e5e5;
+}
+#IQChart{
+	min-height:200px;
+}
+.form-box-wrap{
+	background: #FFFFFF;
+	border: 1px solid #DAE5F0;
+	border-radius: 4px;
+	overflow:hidden;
+	padding:10px 0;
+}
+.form-box-down{
+	margin-top:35px;
+	padding-top:20px;
+}
+.config-left .form-control{
+	padding: 4px 8px;
+    height: 30px;
+    border: 1px solid #DAE5F0;
+    border-radius: 4px !important;
+    box-shadow: none;
+}
+.config-left .date-control{
+	position: relative;
+    z-index: 2;
+    float: left;
+    width: 100%;
+    margin-bottom: 0;
+	padding: 4px 8px;
+    height: 30px;
+    border: 1px solid #DAE5F0;
+    border-radius: 4px;
+    border-right: 0;
+    box-shadow: none;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0
+}
+
+.config-left .form-horizontal .form-group{
+	margin-left:0;
+	margin-right:0;
+}
+.time-picker .input-group-addon {
+	    border: 1px solid #DAE5F0;
+    border-radius: 4px;
+    background: #FFF;
+    padding: 4px 8px;
+    border-left: 0;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+}
+.time-picker .input-group-addon img{
+	margin-bottom:2px;
+}
+.box-title-wrap{
+	top:20px;	
+}
+.box-title-wrap .wrap-title{
+    display: inline-block;
+    min-width: 40px;
+    padding: 0 7px;
+    top: -20px;
+    z-index: 999;
+    background: #FFF;
+}
+.padding_0_8{
+	padding:0 8px;
 }

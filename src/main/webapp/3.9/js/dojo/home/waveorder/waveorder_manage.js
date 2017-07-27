@@ -7,7 +7,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 
 			// e 的话就是一个对象 然后需要什么就 “e.参数” 形式 进行获取 
 			var value = e.target.value;
-			table_radio_init(true, value);
+			table_radio_init(false, value);
 			table_alarm_undealed(value);
 			table_alarm_dealed(value);
 			addPoint(map_arry, value);

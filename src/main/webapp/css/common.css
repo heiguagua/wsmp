@@ -506,7 +506,7 @@ label, .control-label {
 }
 
 .checkbox label:after, .radio label:after {
-	top: 2px;
+	/* top: 2px; */
 }
 
 .checkbox.radio-primary input[type="radio"]:checked+label::after, .radio.radio-primary input[type="radio"]:checked+label::after
