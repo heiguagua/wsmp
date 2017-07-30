@@ -16,7 +16,7 @@ define(["dojo/parser","esri/map","esri/layers/ArcGISTiledMapServiceLayer","dojo/
     //"http://127.0.0.1:8080/data/PBS/rest/services/MyPBSService1/MapServer"
     function mapInit(){
         var map1 = new Map("mapDiv1",{
-        	center :[104.06,30.67], 
+        	//center :[104.06,30.67], 
         	zoom : 10
         });
         var map2 = new Map("mapDiv2",{
@@ -25,7 +25,7 @@ define(["dojo/parser","esri/map","esri/layers/ArcGISTiledMapServiceLayer","dojo/
         });
         
         //var url = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer";
-        var url = "http://192.168.13.72:8083/PBS/rest/services/MyPBSService1/MapServer";
+        var url = "http://192.168.21.105:8081/PBS/rest/services/MyPBSService1/MapServer";
         var agoLayer1 = new ArcGISTiledMapServiceLayer(url,{ id: "街道地图" });
         var agoLayer2 = new ArcGISTiledMapServiceLayer(url,{ id: "街道地图" });
         map1.addLayer(agoLayer1);

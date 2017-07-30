@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified">
+	<xs:element name="mybatis-config">
+		<xs:annotation>
+			<xs:documentation>
+					<![CDATA[定义多个mybatis配置加载]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="mybatis" maxOccurs="unbounded" minOccurs="0" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:attributeGroup name="baseAttrs">
+		
+		<xs:attribute name="dataSourceName" type="noWhiteSpace" use="required">
+			<xs:annotation>
+				<xs:documentation>
+					<![CDATA[使用的数据源名称,Spring 注册的Bean]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		
+		<xs:attribute name="primary" type="xs:boolean" default="false" use="optional">
+			<xs:annotation>
+				<xs:documentation>
+					<![CDATA[是否是默认]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+			
+		<xs:attribute name="configLocationPath" type="noWhiteSpace" use="optional" default="">
+			<xs:annotation>
+				<xs:documentation>
+					<![CDATA[主配置文件的路径]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		
+		<xs:attribute name="mapperLocationsPath" type="noWhiteSpace" default="">
+			<xs:annotation>
+				<xs:documentation>
+					<![CDATA[映射类文件的路径]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		
+		<xs:attribute name="mapperPackages" type="noWhiteSpace" default="">
+			<xs:annotation>
+				<xs:documentation>
+					<![CDATA[映射类的路径]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		
+		<xs:attribute name="typeHandlersPackage" use="optional" type="noWhiteSpace" default="">
+			<xs:annotation>
+				<xs:documentation>
+					<![CDATA[]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		
+		<xs:attribute name="typeAliasesPackage" use="optional" type="noWhiteSpace" default="">
+			<xs:annotation>
+				<xs:documentation>
+					<![CDATA[]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		
+		<xs:attribute name="executorType" default="SIMPLE" type="executorType">
+			<xs:annotation>
+				<xs:documentation>
+					<![CDATA[允许自定义的头部，以逗号隔开，大小写不敏感]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		
+		<xs:attribute name="databaseIdProviderName" type="noWhiteSpace" default="">
+			<xs:annotation>
+				<xs:documentation>
+					<![CDATA[数据源切换的时候可以用,必须是spring托管的Bean]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="intercepterNames" type="noWhiteSpace" default="">
+			<xs:annotation>
+				<xs:documentation>
+					<![CDATA[所使用的拦截器，必须是spring托管的Bean，多个,号隔开]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+	<xs:simpleType name="noWhiteSpace">
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="replace" />
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="executorType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SIMPLE"/>
+			<xs:enumeration value="REUSE"/>
+			<xs:enumeration value="BATCH"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:element name="mybatis">
+		<xs:annotation>
+			<xs:documentation>
+					<![CDATA[定义多个mybatis配置加载]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType >
+			<xs:attributeGroup ref="baseAttrs" />
+		</xs:complexType>
+	</xs:element>
+	
+</xs:schema> 

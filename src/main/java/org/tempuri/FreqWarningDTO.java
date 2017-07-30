@@ -24,6 +24,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="CenterFreq" type="{http://www.w3.org/2001/XMLSchema}unsignedLong"/&gt;
  *         &lt;element name="BandWidth" type="{http://www.w3.org/2001/XMLSchema}unsignedLong"/&gt;
  *         &lt;element name="Status" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="AreaCode" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
  *         &lt;element name="Keyword" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="ELevel" type="{http://www.w3.org/2001/XMLSchema}unsignedLong"/&gt;
  *         &lt;element name="StationKey" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
@@ -46,6 +47,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "centerFreq",
     "bandWidth",
     "status",
+    "areaCode",
     "keyword",
     "eLevel",
     "stationKey",
@@ -67,6 +69,8 @@ public class FreqWarningDTO {
     protected BigInteger bandWidth;
     @XmlElement(name = "Status")
     protected int status;
+    @XmlElement(name = "AreaCode")
+    protected int areaCode;
     @XmlElement(name = "Keyword")
     protected String keyword;
     @XmlElement(name = "ELevel", required = true)
@@ -173,6 +177,22 @@ public class FreqWarningDTO {
      */
     public void setStatus(int value) {
         this.status = value;
+    }
+
+    /**
+     * 获取areaCode属性的值。
+     * 
+     */
+    public int getAreaCode() {
+        return areaCode;
+    }
+
+    /**
+     * 设置areaCode属性的值。
+     * 
+     */
+    public void setAreaCode(int value) {
+        this.areaCode = value;
     }
 
     /**

@@ -50,12 +50,13 @@ public class AlarmManagerViewController {
 	}
 
 	@PostMapping(path = { "/singal" })
-	public String singalList(Model model, @RequestParam Map<String, String> para) throws Exception {
+	public String singalList(Model model, @RequestParam Map<String, Object> para) throws Exception {
 
 		final ObjectMapper mapper = new ObjectMapper();
 		final String param = mapper.writeValueAsString(para);
 
 		final FreqWarningQueryResponse response = (FreqWarningQueryResponse) service.freqWarnServiceCall("query", param, FreqWarningQueryRequest.class);
+		System.out.println(mapper.writeValueAsString(response));
 		final List<Singal> reslutList = response.getWarningInfos().getFreqWarningDTO().stream().map(t -> {
 
 			final Singal singal = new Singal();
@@ -69,6 +70,11 @@ public class AlarmManagerViewController {
 
 			int id = t.getStatus();
 			singal.setStatus(id);
+
+			singal.setCentorFreq(t.getCenterFreq().toString());
+
+			String beginTime = t.getSaveDate().toString().replaceAll(":", "").replaceAll("T", "").replaceAll("-", "");
+			singal.setBeginTime(beginTime);
 
 			t.getStatList().getFreqWarningStatDTO().stream().map(m -> {
 				return m.getStationGUID();

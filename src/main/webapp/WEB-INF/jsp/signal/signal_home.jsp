@@ -28,12 +28,12 @@
       <span class='search-icon'></span>
     </div>
     <span id = "signal_list1" >
-       <select class='station-list select2-picker'>
+       <select  class='station-list select2-picker'>
       </select>
     </span>
     
     <span id = "station_list" >
-       <select class='station-list select2-picker'>
+       <select id = "signalpicker"  class='station-list select2-picker'>
       </select>
     </span>
     
@@ -174,6 +174,27 @@
       </div>
     </div>
   </div>
+  <div class="modal fade" id="modalStationAlarm" tabindex="-1" role="dialog" aria-labelledby="modalStationAlarmLabel">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title" id="modalStationAlarmLabel">台站列表</h4>
+        </div>
+        <div class="modal-body">
+          	<div id="stationWrap"></div>
+        </div>
+        <div class="modal-footer">
+        <button id = "submitButton" type="button" class="btn btn-primary">提交</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left:15px">取消</button>
+      </div>
+      </div>
+    </div>
+  </div>
+  <input id = 'typeCode' class = 'after_modal_colse'/>
+  <input id = 'stationKey' class = 'after_modal_colse'  style="display: none"/>
   <script src="3.9/init.js"></script>
   <script type="text/javascript">
     require([ "home/signal/signal_map_init","jquery","dojo/domReady!" ],

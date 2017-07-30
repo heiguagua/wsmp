@@ -41,6 +41,8 @@ public class WebServiceSoapFactory {
 
 	private RadioSignalWebServiceSoap radioSignalService;
 
+	private ObjectMapper mapper = new ObjectMapper();
+
 	@PostConstruct
 	public void init() {
 
@@ -62,11 +64,15 @@ public class WebServiceSoapFactory {
 	public Object radioSignalServiceCall(String methodName, String param, Class<?> parameterTypes) throws JsonProcessingException {
 		try {
 			Method method = radioSignalService.getClass().getMethod(methodName, parameterTypes);
-			System.out.println(parameterTypes);
+
 			Object object = parameterTypes.newInstance();
+
+			Logger.info("需要入参数".concat(mapper.writeValueAsString(object)));
+
 			object = parash(object, param);
-			ObjectMapper mapper = new ObjectMapper();
-			System.out.println(mapper.writeValueAsString(object));
+
+			Logger.info("实际入参数".concat(mapper.writeValueAsString(object)));
+
 			return method.invoke(radioSignalService, object);
 
 		}
@@ -97,12 +103,15 @@ public class WebServiceSoapFactory {
 		return null;
 	}
 
-	public Object radioStationServiceCall(String methodName, String param, Class<?> parameterTypes) {
+	public Object radioStationServiceCall(String methodName, String param, Class<?> parameterTypes) throws JsonProcessingException {
 		try {
 			Method method = radioStationService.getClass().getMethod(methodName, parameterTypes);
 			Object object = parameterTypes.newInstance();
+
+			System.out.println(mapper.writeValueAsString(object));
 			object = parash(object, param);
-			return method.invoke(freqWarnService, object);
+			System.out.println(mapper.writeValueAsString(object));
+			return method.invoke(radioStationService, object);
 
 		}
 		catch (NoSuchMethodException e) {
@@ -245,19 +254,5 @@ public class WebServiceSoapFactory {
 		return t;
 
 	}
-
-	// public static void main(String[] args) throws JsonProcessingException {
-	// Map<String, Object> testMap = Maps.newHashMap();
-	// testMap.put("centerFreq", 100000);
-	// ObjectMapper mapper = new ObjectMapper();
-	// String param = mapper.writeValueAsString(testMap);
-	// // final Type type = new TypeReference<FreqWarningQueryRequest>()
-	// // {}.getType();
-	// // FreqWarningQueryRequest freqWarningQueryRequest =
-	// // JSON.parseObject(param, type);
-	// FreqWarningQueryRequest f = new FreqWarningQueryRequest();
-	// //
-	// System.out.println(mapper.writeValueAsString(freqWarningQueryRequest));
-	// }
 
 }

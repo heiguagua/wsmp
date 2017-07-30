@@ -69,6 +69,11 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
 				};
 				var hourChart = echarts.init($('#hourChart')[0]);
 				hourChart.setOption(optionHour);
+				
+				window.onresize = function(){
+					hourChart.clear();
+					hourChart.setOption(optionHour);
+				}
 		});
 
 	}

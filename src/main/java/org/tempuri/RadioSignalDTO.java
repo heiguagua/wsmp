@@ -33,6 +33,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="IsInvalid" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
  *         &lt;element name="SaveDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
  *         &lt;element name="ExtendFields" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="WarningFreqID" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="InvalidDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
  *         &lt;element name="Des" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="AppendDTOs" type="{http://tempuri.org/}ArrayOfRadioSignalAppendDTO" minOccurs="0"/&gt;
@@ -62,6 +63,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "isInvalid",
     "saveDate",
     "extendFields",
+    "warningFreqID",
     "invalidDate",
     "des",
     "appendDTOs",
@@ -100,6 +102,8 @@ public class RadioSignalDTO {
     protected XMLGregorianCalendar saveDate;
     @XmlElement(name = "ExtendFields")
     protected String extendFields;
+    @XmlElement(name = "WarningFreqID")
+    protected String warningFreqID;
     @XmlElement(name = "InvalidDate", required = true)
     @XmlSchemaType(name = "dateTime")
     protected XMLGregorianCalendar invalidDate;
@@ -368,6 +372,30 @@ public class RadioSignalDTO {
      */
     public void setExtendFields(String value) {
         this.extendFields = value;
+    }
+
+    /**
+     * 获取warningFreqID属性的值。
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getWarningFreqID() {
+        return warningFreqID;
+    }
+
+    /**
+     * 设置warningFreqID属性的值。
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setWarningFreqID(String value) {
+        this.warningFreqID = value;
     }
 
     /**

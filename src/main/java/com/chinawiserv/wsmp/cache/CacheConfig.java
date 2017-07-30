@@ -43,9 +43,8 @@ public class CacheConfig {
 
 	public final static String USR_DATA = "userData";
 
-	public final static String DATA_LIST = "userData";
-
-	// @Value("${config.home}")
+	public final static String DATA_LIST = "dataList";
+	
 	@Value("${config.home:classpath:}")
 	private String configHome;
 
@@ -159,10 +158,10 @@ public class CacheConfig {
 		return list;
 	}
 
-	@Bean(name = USR_DATA)
+	// @Bean(name = USR_DATA)
 	public Object userData() throws IOException {
 
-		final Resource resource = this.def.getResource(configHome.concat("geoJson/user-info.json"));
+		final Resource resource = this.def.getResource("classpath:geoJson/user-info.json");
 		final File file = resource.getFile();
 		final Type type = new TypeReference<LinkedHashMap<String, Object>>() {}.getType();
 

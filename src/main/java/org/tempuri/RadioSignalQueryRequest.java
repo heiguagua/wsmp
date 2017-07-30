@@ -20,6 +20,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
+ *         &lt;element name="ID" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="BeginFreq" type="{http://www.w3.org/2001/XMLSchema}unsignedLong"/&gt;
  *         &lt;element name="EndFreq" type="{http://www.w3.org/2001/XMLSchema}unsignedLong"/&gt;
  *         &lt;element name="TypeCodes" type="{http://tempuri.org/}ArrayOfSignalTypeDTO" minOccurs="0"/&gt;
@@ -40,6 +41,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "RadioSignalQueryRequest", propOrder = {
+    "id",
     "beginFreq",
     "endFreq",
     "typeCodes",
@@ -53,6 +55,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
 })
 public class RadioSignalQueryRequest {
 
+    @XmlElement(name = "ID")
+    protected String id;
     @XmlElement(name = "BeginFreq", required = true, nillable = true)
     @XmlSchemaType(name = "unsignedLong")
     protected BigInteger beginFreq;
@@ -77,6 +81,30 @@ public class RadioSignalQueryRequest {
     protected Long count;
     @XmlElement(name = "IsReturnRadioStation")
     protected boolean isReturnRadioStation;
+
+    /**
+     * 获取id属性的值。
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getID() {
+        return id;
+    }
+
+    /**
+     * 设置id属性的值。
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setID(String value) {
+        this.id = value;
+    }
 
     /**
      * 获取beginFreq属性的值。

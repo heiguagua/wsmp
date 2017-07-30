@@ -214,6 +214,30 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link UpdateRadioSignalForRequest }
+     * 
+     */
+    public UpdateRadioSignalForRequest createUpdateRadioSignalForRequest() {
+        return new UpdateRadioSignalForRequest();
+    }
+
+    /**
+     * Create an instance of {@link RadioSignalUpdateRequest }
+     * 
+     */
+    public RadioSignalUpdateRequest createRadioSignalUpdateRequest() {
+        return new RadioSignalUpdateRequest();
+    }
+
+    /**
+     * Create an instance of {@link UpdateRadioSignalForRequestResponse }
+     * 
+     */
+    public UpdateRadioSignalForRequestResponse createUpdateRadioSignalForRequestResponse() {
+        return new UpdateRadioSignalForRequestResponse();
+    }
+
+    /**
      * Create an instance of {@link UpdateAbnormalHistory }
      * 
      */

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mybatis-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="mybatis.xsd">
+
+	<mybatis dataSourceName="datasource1" primary="true"
+		mapperLocationsPath="classpath:mapper/*.xml"
+		mapperPackages="com.chinawiserv.wsmp.mapper"
+		executorType="SIMPLE"
+	/>
+	
+	<!-- <mybatis dataSourceName="datasource2"
+        mapperLocationsPath="classpath:mapper/*.xml"
+        mapperPackages="com.chinawiserv.app.util.mapper"
+        executorType="SIMPLE"
+    /> -->
+		
+</mybatis-config>

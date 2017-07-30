@@ -1,10 +1,9 @@
 /**
  * 
  */
-define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
+define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart"], function(ajax, echarts, jquery,day_chart) {
 	function charts_init(data) {
 		ajax.get("data/alarm/monthCharts",data, function(reslut) {
-			console.log(reslut.xAxis);
 			var optionMonth = {
 				color : [ 'rgb(55,165,255)' ],
 				tooltip : {
@@ -39,6 +38,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
 				yAxis : {
 					type : 'value',
 					max : 100,
+					min : 0,
 					splitNumber : 10,
 					axisLine : {
 						lineStyle : {
@@ -71,12 +71,30 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
 					}
 				]
 			};
-			var monthChart = echarts.init($('#monthChart')[0]);
+			var monthChart = echarts.init($('.monthChart')[0]);
 			monthChart.setOption(optionMonth);
 
 			monthChart.on('click', function(params) {
 				$('#modalDay').modal();
+				
+				var statiocode  =$('#station_list').find('option:selected').val();
+				var beginTime = $('#signal_list').find('option:selected').attr("begintime");
+				var centorFreq = $('#signal_list').find('option:selected').attr("centorfreq");
+				
+				var data ={};					
+				data.stationCode = statiocode;
+				data.beginTime = beginTime;
+				data.centorFreq = centorFreq;
+				
+				day_chart.init(data);
 			})
+			
+			window.onresize = function(){
+				console.log(11);
+				monthChart.clear();
+				monthChart.resize();
+				monthChart.setOption(optionMonth);
+			}
 
 		});
 

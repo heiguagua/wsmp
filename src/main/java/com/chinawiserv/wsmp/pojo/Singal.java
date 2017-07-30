@@ -6,13 +6,21 @@ public class Singal {
 
 	private String context;
 
+	private String centorFreq;
+
+	private String text;
+
 	private String id;
 
 	private BigInteger integer;
 
 	private String listString;
 
+	private String endTime;
+
 	private int status;
+
+	private String beginTime;
 
 	public String getId() {
 		return id;
@@ -53,5 +61,37 @@ public class Singal {
 	public void setStatus(int i) {
 		// TODO Auto-generated method stub
 		this.status = i;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	public String getCentorFreq() {
+		return centorFreq;
+	}
+
+	public void setCentorFreq(String centorFreq) {
+		this.centorFreq = centorFreq;
+	}
+
+	public String getBeginTime() {
+		return beginTime;
+	}
+
+	public void setBeginTime(String beginTime) {
+		this.beginTime = beginTime;
+	}
+
+	public String getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
 	}
 }

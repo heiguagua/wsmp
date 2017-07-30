@@ -67,23 +67,23 @@
       <div class='box2'>
         <div class='flex-row radio-type-check align-center'>
           <div class="radio radio-primary flex1 ">
-            <input type="radio" value="0" name="signal-type" id="legal-normal">
+            <input class ="typeCode"  type="radio" value="0" name="signal-type" id="legal-normal">
             <label for="legal-normal"> ${redioType.legalNormalStation} </label>
           </div>
           <div class="radio radio-primary flex1 ">
-            <input type="radio" value="1" RadioStionType ="L_B" name="signal-type" id="legal-wrong">
+            <input class ="typeCode" type="radio" value="1" RadioStionType ="L_B" name="signal-type" id="legal-wrong">
             <label for="legal-wrong"> ${redioType.illegalNormalStation} </label>
           </div>
           <div class="radio radio-primary flex1 ">
-            <input type="radio" value ="2" RadioStionType ="N_P" name="signal-type" id="legal">
+            <input class ="typeCode" type="radio" value ="2" RadioStionType ="N_P" name="signal-type" id="legal">
             <label for="legal"> ${redioType.llegalStation} </label>
           </div>
           <div class="radio radio-primary flex1 ">
-            <input type="radio" value="3" name="signal-type" id="illegal" checked>
+            <input class ="typeCode" type="radio" value="3" name="signal-type" id="illegal" checked>
             <label for="illegal"> ${redioType.illegalSignal} </label>
           </div>
           <div class="radio radio-primary flex1 ">
-            <input type="radio" value="4" name="signal-type" id="unknown">
+            <input class ="typeCode" type="radio" value="4" name="signal-type" id="unknown">
             <label for="unknown"> ${redioType.unKonw} </label>
           </div>
         </div>
@@ -100,22 +100,22 @@
             <span class='coverage-number'>90%</span>
           </div>
         </div>
-        <div id="mapDiv"padding: 10px; height: 960px"></div>
+        <div id="mapDiv" style= "padding: 10px;"></div>
       </div>
     </section>
-    <section class='flex-row'>
-      <div class='box'>
-        <div class='month-data flex-column'>
-          <h4 class="text-center">电平峰值</h4>
-          <div id="level" class='title' style="height: 100%"></div>
-        </div>
-      </div>
-    </section>
-    <section class='flex-row'>
+	<section class='flex-row'>
+		<div class='box'>
+			<div class='month-data flex-column'>
+				<h4 class="text-center">电平峰值</h4>
+				<div id="level" class='title levelChart' style="height: 400px"></div>
+			</div>
+		</div>
+	</section>
+	<section class='flex-row'>
       <div class='box'>
         <div class='month-data flex-column'>
           <h4 class="text-center">近3个月占用度（按天统计）</h4>
-          <div id="month" class='title' style="height: 100%"></div>
+          <div id="month" class='title monthChart' style="height: 400px"></div>
         </div>
       </div>
     </section>
@@ -132,7 +132,9 @@
           <h4 class="modal-title" id="modalDayLabel" style="height: 100%">日占用度（按24小时统计）</h4>
         </div>
         <div class="modal-body">
-          <div id='day'></div>
+          <div id='day'>
+          	<div id = "dayChart" style="width: 700px;height: 300px"></div>
+          </div>
         </div>
       </div>
     </div>
