@@ -58,7 +58,7 @@ public class AlarmDataController {
 	@Autowired
 	WebApplicationContext applicationContext;
 
-	@Autowired
+	// @Autowired
 	HbaseClient hbaseClient;
 
 	@Value("${upperBound.value:5000000}")

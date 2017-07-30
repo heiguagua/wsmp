@@ -38,7 +38,7 @@ public class SignalViewController {
 
 	private ObjectMapper mapper = new ObjectMapper();
 
-	@Autowired
+	// @Autowired
 	HbaseClient hbaseClient;
 
 	@RequestMapping(path = { "/", "" })

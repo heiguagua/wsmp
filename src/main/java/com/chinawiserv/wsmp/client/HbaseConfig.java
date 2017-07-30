@@ -6,7 +6,6 @@ import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.EncodedResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
@@ -19,7 +18,7 @@ public class HbaseConfig {
 	@Autowired
 	private ApplicationContext applicationContext;
 
-	@Bean(name = "hbaseClient")
+	// @Bean(name = "hbaseClient")
 	public HbaseClient initHbaseClient() throws IOException {
 
 		final EncodedResource res = new EncodedResource(applicationContext.getResource("classpath:app.properties"), Charset.forName("utf-8"));

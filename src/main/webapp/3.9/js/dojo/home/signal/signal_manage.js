@@ -409,6 +409,8 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 				if (s_val) {
 					getStations(s_val);
 				}
+				
+				
 			});
 			
 			
@@ -518,7 +520,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 		})
 	}
 	
-	function initChart(reslut, data) {
+	function initChart(reslut) {
 		// draw radio pie chart
 		var option = {
 			color : [ 'rgb(44,205,125)', 'rgb(55,165,255)' ],
