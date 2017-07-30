@@ -26,6 +26,11 @@
     <div class='header-search'>
       <input id='search' type='text' />
       <span class='search-icon'></span>
+      <div class='search-result-wrap'>
+				<ul id="search-result">
+
+				</ul>
+			</div>
     </div>
     <span id = "signal_list1" >
        <select  class='station-list select2-picker'>
@@ -52,15 +57,27 @@
       <span id = "signal_detail"></span>
     <section class='flex-row'>
       <div class='box'>
-        <div class='data-play'>
-          <label class='module-name'>数据回放</label>
-          <a class='btn btn-default btn-choose pull-right'>选择数据</a>
-          <ul class="nav nav-pills pull-right">
-            <li role="presentation" class="active"><a href="#">音频</a></li>
-            <li role="presentation"><a href="#">IQ数据</a></li>
-            <li role="presentation"><a href="#">频谱</a></li>
-          </ul>
-        </div>
+        				<div class='data-play'>
+					<label class='module-name'>数据回放<span class="data-type">IQ数据</span></label>
+					<a class='btn btn-default btn-choose pull-right'>选择数据</a>
+					<ul class="nav nav-pills pull-right">
+						<li role="presentation"><a href="#">
+								<div class="checkbox checkbox-primary flex1 ">
+									<input type="checkbox" value="2" name="data-type" id="spectrum">
+									<label for="spectrum"> 频谱 </label>
+								</div>
+						</a></li>
+						<li role="presentation"><a href="#">
+								<div class="checkbox checkbox-primary flex1 ">
+									<input type="checkbox" value="3" name="data-type" id="audio">
+									<label for="audio"> 音频 </label>
+								</div>
+						</a></li>
+					</ul>
+				</div>
+				<div class="data-play-chart">
+					<div id="IQChart" style="width: 100%; height: 300px"></div>
+				</div>
       </div>
     </section>
 
@@ -131,49 +148,156 @@
   </div>
 
   <!-- Modal 重点监测参数配置-->
-  <div class="modal fade" id="modalConfig" tabindex="-1" role="dialog" aria-labelledby="modalConfigLabel">
-    <div class="modal-dialog " role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <h4 class="modal-title" id="modalConfigLabel">重点监测参数配置</h4>
-        </div>
-        <div class="modal-body">
-          <div role="tabpanel" class="tab-pane active " id="envim">
-            <div class='flex-row'>
-              <div class='flex1 config-left'>
-                <form class="form-horizontal ">
-                  <div class="form-group">
-                    <label for="" class="col-sm-3 control-label">设置监测站</label>
-                    <div class="col-sm-9">
-                      <select class='select2-picker'>
-                        <option></option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="" class="col-sm-3 control-label">选择监测时间</label>
-                    <div class="col-sm-9">
-                      <select class='select2-picker'>
-                        <option></option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="form-group ">
-                    <div class="col-sm-offset-3 col-sm-9 mrg-top15 text-right">
-                      <button type="submit" class="btn btn-default btn-apply">应用</button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <div class="modal fade" id="modalConfig" tabindex="-1" role="dialog"
+		aria-labelledby="modalConfigLabel">
+		<div class="modal-dialog " role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="modalConfigLabel">重点监测参数配置</h4>
+				</div>
+				<div class="modal-body">
+					<div role="tabpanel" class="tab-pane active " id="envim">
+						<div class='flex-row'>
+							<div class='flex1 config-left'>
+								<form class="form-horizontal ">
+									<div class="form-box-wrap">
+										<div class="form-group col-sm-6">
+											<label for="" class="col-sm-3 control-label">开始时间</label>
+											<div class="col-sm-9">
+												<div class="input-group date time-picker" id="startTime">
+													<input type="text" class=" date-control">
+													<span class="input-group-addon"> <img src="images/date.png" /></span>
+												</div>
+											</div>
+										</div>
+										<div class="form-group col-sm-6">
+											<label for="" class="col-sm-3 control-label">结束时间</label>
+											<div class="col-sm-9">
+												<div class="input-group date time-picker" id="endTime">
+													<input type="text" class="date-control "> 
+													<span class="input-group-addon"> <img src="images/date.png" /></span>
+												</div>
+											</div>
+										</div>
+										<div class="form-group col-sm-6">
+											<label for="" class="col-sm-3 control-label">循环周期</label>
+											<div class="col-sm-9">
+												<div class="input-group" >
+													<input type="text" class="form-control " placeholder="单位(分钟)"> 
+												</div>
+											</div>
+										</div>
+										<div class="form-group col-sm-6">
+											<label for="" class="col-sm-3 control-label">执行时长</label>
+											<div class="col-sm-9">
+												<div class="input-group" >
+													<input type="text" class="form-control " placeholder="单位(秒)">
+												</div>
+											</div>
+										</div>
+									</div>
+									
+									<div class="col-sm-6 box-title-wrap">
+											<label for="" class="col-sm-6 control-label"><span class="wrap-title">参数</span></label>
+										</div>
+										<div class="col-sm-6 box-title-wrap">
+											<label for="" class="col-sm-6 control-label"><span class="wrap-title">采集次数</span></label>
+										</div>
+									<div class="form-box-wrap form-box-down" >
+										<div class="form-group col-sm-6">
+											<label for="" class="col-sm-3 control-label">IQ帧数</label>
+											<div class="col-sm-9">
+												<div class="input-group" >
+													<input type="text" class="form-control " placeholder="单位(次)">
+												</div>
+											</div>
+										</div>
+										<div class="form-group col-sm-6">
+											<div class="col-sm-6 padding_0_8">
+												<div class="input-group" >
+													<input type="text" class="form-control " placeholder="单位(次)">
+												</div>
+											</div>
+										</div>
+										<div class="form-group col-sm-6">
+											<label for="" class="col-sm-3 control-label">频谱帧数</label>
+											<div class="col-sm-9">
+												<div class="input-group" >
+													<input type="text" class="form-control " placeholder="单位(次)">
+												</div>
+											</div>
+										</div>
+										<div class="form-group col-sm-6">
+											<div class="col-sm-6 padding_0_8">
+												<div class="input-group" >
+													<input type="text" class="form-control " placeholder="单位(次)">
+												</div>
+											</div>
+										</div>
+										<div class="form-group col-sm-6">
+											<label for="" class="col-sm-3 control-label">特征帧数</label>
+											<div class="col-sm-9">
+												<div class="input-group" >
+													<input type="text" class="form-control " placeholder="单位(次)">
+												</div>
+											</div>
+										</div>
+										<div class="form-group col-sm-6">
+											<div class="col-sm-6 padding_0_8">
+												<div class="input-group" >
+													<input type="text" class="form-control " placeholder="单位(次)">
+												</div>
+											</div>
+										</div>
+										<div class="form-group col-sm-6">
+											<label for="" class="col-sm-3 control-label">ITU帧数</label>
+											<div class="col-sm-9">
+												<div class="input-group" >
+													<input type="text" class="form-control " placeholder="单位(次)">
+												</div>
+											</div>
+										</div>
+										<div class="form-group col-sm-6">
+											<div class="col-sm-6 padding_0_8">
+												<div class="input-group" >
+													<input type="text" class="form-control " placeholder="单位(次)">
+												</div>
+											</div>
+										</div>
+										<div class="form-group col-sm-6">
+											<label for="" class="col-sm-3 control-label">声音时间</label>
+											<div class="col-sm-9">
+												<div class="input-group" >
+													<input type="text" class="form-control " placeholder="单位(秒)">
+												</div>
+											</div>
+										</div>
+										<div class="form-group col-sm-6">
+											<div class="col-sm-6 padding_0_8">
+												<div class="input-group" >
+													<input type="text" class="form-control " placeholder="单位(次)">
+												</div>
+											</div>
+										</div>
+									</div>
+										
+									<div class="form-group ">
+										<div class="col-sm-offset-3 col-sm-9 mrg-top15 text-right">
+											<button type="submit" class="btn btn-default btn-apply">应用</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
   <div class="modal fade" id="modalStationAlarm" tabindex="-1" role="dialog" aria-labelledby="modalStationAlarmLabel">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
