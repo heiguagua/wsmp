@@ -75,10 +75,10 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
 			var monthChart = echarts.init($('.levelChart')[0]);
 			monthChart.setOption(optionMonth);
 
-//			window.onresize = function(){
-//				monthChart.clear();
-//				monthChart.setOption(optionMonth);
-//			}
+			window.onresize = function(){
+				monthChart.clear();
+				monthChart.setOption(optionMonth);
+			}
 		});
 
 	}
