@@ -22,9 +22,11 @@
   <div class='header-bar'>
     <span class='module-name'>公众移动通信管理</span>
     <div class='search-filters'>
-      选择城市 <select class='city-list select2-picker'>
-        <option>成都市</option>
-      </select>
+  	    选择城市
+  	<span id = 'city_list'>
+  	     <select id = 'city-list' class='city-list select2-picker'>
+     	 </select>
+  	</span>
       <div class='time-wrap'>
         开始时间
         <div class='input-group date time-picker' id='startTime'>

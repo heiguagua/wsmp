@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:element name="datasources">
+		<xs:annotation>
+			<xs:documentation>
+					<![CDATA[在定义多个数据库的时候注意设置默认数据源,只可以设置一个默认数据源]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="datasource" maxOccurs="unbounded" minOccurs="0" />
+			</xs:sequence>
+			<xs:attribute name="ignores" type="noWhiteSpace" default="pool-config">
+				<xs:annotation>
+					<xs:documentation>
+					<![CDATA[忽略配置的字段]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:attributeGroup name="baseAttrib">
+		<xs:attribute name="name" type="noWhiteSpace" use="required">
+			<xs:annotation>
+				<xs:documentation>
+					<![CDATA[数据源的名称，spring对应的bean名称]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="primary" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>
+					<![CDATA[是否是默认数据源, spring中不声明数据源名称时候注入的数据源]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="readOnly" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+	<xs:attribute name="dataSourceType" type="noWhiteSpace">
+		<xs:annotation>
+			<xs:documentation><![CDATA[数据源实例]]></xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+
+	<xs:simpleType name="noWhiteSpace">
+		<xs:annotation>
+			<xs:documentation>
+					<![CDATA[字符串类型,自动替换空格]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="replace" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:element name="datasource">
+		<xs:annotation>
+			<xs:documentation>
+						<![CDATA[定义一个数据源,默认的数据源类型是 [com.alibaba.druid.pool.xa.DruidXADataSource]]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:all minOccurs="0">
+				<xs:element name='accessToUnderlyingConnectionAllowed' type='xs:boolean' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[boolean]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='asyncCloseConnectionEnable' type='xs:boolean' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[boolean]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='breakAfterAcquireFailure' type='xs:boolean' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[boolean]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='clearFiltersEnable' type='xs:boolean' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[boolean]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='connectionErrorRetryAttempts' type='xs:integer' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[int]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='connectionProperties' type='noWhiteSpace' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[String]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='dbType' type='noWhiteSpace' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[String]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='defaultAutoCommit' type='xs:boolean' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[boolean]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='defaultCatalog' type='noWhiteSpace' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[String]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='defaultTransactionIsolation' type='xs:integer' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[Integer]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='defaultReadOnly' type="xs:boolean" minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[Integer]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='driverClassName' type='noWhiteSpace' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[String]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='dupCloseLogEnable' type='xs:boolean' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[boolean]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='enable' type='xs:boolean' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[boolean]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='exceptionSorter' type='noWhiteSpace' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[String]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='exceptionSorterClassName' type='noWhiteSpace' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[String]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='failFast' type='xs:boolean' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[boolean]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='filters' type='noWhiteSpace' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[String]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='initGlobalVariants' type='xs:boolean' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[boolean]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='initVariants' type='xs:boolean' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[boolean]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='initialSize' type='xs:integer' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[int]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='keepAlive' type='xs:boolean' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[boolean]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='logAbandoned' type='xs:boolean' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[boolean]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='logDifferentThread' type='xs:boolean' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[boolean]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='loginTimeout' type='xs:integer' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[int]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='maxActive' type='xs:integer' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[int]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='maxCreateTaskCount' type='xs:integer' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[int]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='maxEvictableIdleTimeMillis' type='xs:long' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[long]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='maxIdle' type='xs:integer' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[int]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='maxOpenPreparedStatements' type='xs:integer' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[int]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='maxPoolPreparedStatementPerConnectionSize' type='xs:integer' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[int]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='maxWait' type='xs:long' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[long]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='maxWaitThreadCount' type='xs:integer' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[int]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='minEvictableIdleTimeMillis' type='xs:long' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[long]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='minIdle' type='xs:integer' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[int]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='notFullTimeoutRetryCount' type='xs:integer' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[int]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='numTestsPerEvictionRun' type='xs:integer' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[int]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='oracle' type='xs:boolean' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[boolean]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='password' type='noWhiteSpace' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[String]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='passwordCallbackClassName' type='noWhiteSpace' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[String]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='phyTimeoutMillis' type='xs:long' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[long]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='poolPreparedStatements' type='xs:boolean' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[boolean]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='queryTimeout' type='xs:integer' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[int]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='removeAbandoned' type='xs:boolean' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[boolean]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='removeAbandonedTimeout' type='xs:integer' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[int]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='removeAbandonedTimeoutMillis' type='xs:long' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[long]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='resetStatEnable' type='xs:boolean' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[boolean]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='sharePreparedStatements' type='xs:boolean' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[boolean]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='statLoggerClassName' type='noWhiteSpace' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[String]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='testOnBorrow' type='xs:boolean' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[boolean]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='testOnReturn' type='xs:boolean' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[boolean]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='testWhileIdle' type='xs:boolean' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[boolean]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='timeBetweenConnectErrorMillis' type='xs:long' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[long]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='timeBetweenEvictionRunsMillis' type='xs:long' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[long]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='timeBetweenLogStatsMillis' type='xs:long' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[long]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='transactionQueryTimeout' type='xs:integer' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[int]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='transactionThresholdMillis' type='xs:long' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[long]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='url' type='noWhiteSpace' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[String]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='useGlobalDataSourceStat' type='xs:boolean' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[boolean]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='useLocalSessionState' type='xs:boolean' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[boolean]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='useOracleImplicitCache' type='xs:boolean' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[boolean]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='useUnfairLock' type='xs:boolean' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[boolean]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='username' type='noWhiteSpace' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[String]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='validConnectionCheckerClassName' type='noWhiteSpace' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[String]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='validationQuery' type='noWhiteSpace' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[String]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name='validationQueryTimeout' type='xs:integer' minOccurs='0' maxOccurs='1'>
+					<xs:annotation>
+						<xs:documentation><![CDATA[Java字段类型[int]]]></xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:all>
+			<xs:attributeGroup ref="baseAttrib" />
+			<xs:attribute ref="dataSourceType" default="com.alibaba.druid.pool.DruidDataSource" />
+		</xs:complexType>
+	</xs:element>
+</xs:schema> 

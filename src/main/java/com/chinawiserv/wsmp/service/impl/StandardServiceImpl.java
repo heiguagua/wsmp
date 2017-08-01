@@ -9,7 +9,7 @@ import com.chinawiserv.wsmp.service.IStandardService;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author ${author}
@@ -17,5 +17,5 @@ import com.chinawiserv.wsmp.service.IStandardService;
  */
 @Service
 public class StandardServiceImpl extends ServiceImpl<StandardMapper, Standard> implements IStandardService {
-	
+
 }

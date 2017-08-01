@@ -9,7 +9,7 @@ import com.chinawiserv.wsmp.service.IRsbtFreqService;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author ${author}
@@ -17,5 +17,5 @@ import com.chinawiserv.wsmp.service.IRsbtFreqService;
  */
 @Service
 public class RsbtFreqServiceImpl extends ServiceImpl<RsbtFreqMapper, RsbtFreq> implements IRsbtFreqService {
-	
+
 }

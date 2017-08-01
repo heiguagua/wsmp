@@ -3,7 +3,7 @@
  */
 define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
 	function charts_init(data) {
-		ajax.get("data/alarm/levelCharts",data, function(reslut) {
+		ajax.get("data/alarm/maxlevel",data, function(reslut) {
 			console.log(reslut.xAxis);
 			var optionMonth = {
 				color : [ 'rgb(55,165,255)' ],
@@ -38,7 +38,8 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
 				},
 				yAxis : {
 					type : 'value',
-					max : 100,
+					max : 120,
+					min : -40,
 					splitNumber : 10,
 					axisLine : {
 						lineStyle : {
@@ -71,10 +72,13 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
 					}
 				]
 			};
-			var monthChart = echarts.init($('#levelChart')[0]);
+			var monthChart = echarts.init($('.levelChart')[0]);
 			monthChart.setOption(optionMonth);
 
-
+			window.onresize = function(){
+				monthChart.clear();
+				monthChart.setOption(optionMonth);
+			}
 		});
 
 	}

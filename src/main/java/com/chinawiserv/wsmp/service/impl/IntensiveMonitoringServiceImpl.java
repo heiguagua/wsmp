@@ -9,7 +9,7 @@ import com.chinawiserv.wsmp.service.IIntensiveMonitoringService;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author ${author}
@@ -17,6 +17,5 @@ import com.chinawiserv.wsmp.service.IIntensiveMonitoringService;
  */
 @Service
 public class IntensiveMonitoringServiceImpl extends ServiceImpl<IntensiveMonitoringMapper, IntensiveMonitoring> implements IIntensiveMonitoringService {
-	
 
 }

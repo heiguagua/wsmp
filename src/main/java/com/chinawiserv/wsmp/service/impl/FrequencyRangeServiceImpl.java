@@ -17,5 +17,5 @@ import com.chinawiserv.wsmp.service.IFrequencyRangeService;
  */
 @Service
 public class FrequencyRangeServiceImpl extends ServiceImpl<FrequencyRangeMapper, FrequencyRange> implements IFrequencyRangeService {
-	
+
 }

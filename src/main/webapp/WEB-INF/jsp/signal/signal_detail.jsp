@@ -7,12 +7,12 @@
         <div class='signal-profile flex-row'>
           <div class='item info flex1 flex-column justify-center'>
             <div class='radio-info flex-row'>
-              <div class='r-i-item flex1 flex-column justify-center'>${redioDetail.centor}</div>
-              <div class='r-i-item flex1 flex-column justify-center'>${redioDetail.band}</div>
+              <div class='r-i-item flex1 flex-column justify-center'>${redioDetail.centor}MHz</div>
+              <div class='r-i-item flex1 flex-column justify-center'>${redioDetail.band}KHz</div>
             </div>
             <div class='type-info flex-row'>
-              <div class='t-i-item flex1 flex-column justify-center'>常发 / 偶发</div>
-              <div class='t-i-item flex1 flex-column justify-center'>固定移动</div>
+            <!-- <div class='t-i-item flex1 flex-column justify-center'>常发 / 偶发</div>
+              <div class='t-i-item flex1 flex-column justify-center'>固定移动</div> -->
             </div>
           </div>
           <div class='item chart flex2'>
@@ -23,15 +23,15 @@
               <h4 class='title'>信号特征</h4>
               <ul class='features-list'>
                 <li><div class='item-name'>谱密度最大值</div>
-                  <div class='item-value'>${sigal.maxDensity}</div></li>
+                  <div class='item-value'>${redioDetail.rMax}</div></li>
                 <li><div class='item-name'>频谱周期性</div>
-                  <div class='item-value'>${sigal.s}</div></li>
+                  <div class='item-value'>${redioDetail.specT}</div></li>
                 <li><div class='item-name'>马速率</div>
-                  <div class='item-value'>${sigal.rate}</div></li>
+                  <div class='item-value'>${redioDetail.symRate}</div></li>
                 <li><div class='item-name'>功率谱平稳度指数</div>
-                  <div class='item-value'>${sigal.stationaryIndex}</div></li>
+                  <div class='item-value'>${redioDetail.flatDegree}</div></li>
                 <li><div class='item-name'>频率峰值个数(识别FSK和PSK)</div>
-                  <div class='item-value'>${sigal.frequencyPeaksNum}</div></li>
+                  <div class='item-value'>${redioDetail.freqPeakNumFSK}</div></li>
               </ul>
             </div>
           </div>
@@ -57,25 +57,25 @@
           <div class='signal-type flex1 flex-column justify-center'>
             <div class='flex1 flex-row align-center mrg-top15'>
               <div class="radio radio-primary flex1 ">
-                <input type="radio" name="signal-type" id="legal-normal">
+                <input type="radio" value = '0' name="signal-type" id="legal-normal">
                 <label for="legal-normal"> 合法台站正常 </label>
               </div>
               <div class="radio radio-primary flex1 ">
-                <input type="radio" name="signal-type" id="undeclared">
+                <input type="radio" value = '1' name="signal-type" id="undeclared">
                 <label for="legal-wrong"> 未申报 </label>
               </div>
             </div>
             <div class='flex1 flex-row align-center mrg-bottom15'>
               <div class="radio radio-primary flex1 ">
-                <input type="radio" name="signal-type" id="nonlocal_station">
+                <input type="radio" value = '2' name="signal-type" id="nonlocal_station">
                 <label for="legal"> 外地台 </label>
               </div>
               <div class="radio radio-primary flex1 ">
-                <input type="radio" name="signal-type" id="illegal" checked>
+                <input type="radio" value = '3' name="signal-type" id="illegal" checked>
                 <label for="illegal"> 非法信号 </label>
               </div>
               <div class="radio radio-primary flex1 ">
-                <input type="radio" name="signal-type" id="unknown">
+                <input type="radio" value = '4' name="signal-type" id="unknown">
                 <label for="unknown"> 不明信号 </label>
               </div>
             </div>

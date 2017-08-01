@@ -2,9 +2,9 @@
  * Created by wuhaoran on 2017/2/25.
  */
 //
-define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer", "dojo/request", "esri/layers/GraphicsLayer", "esri/dijit/Scalebar"
+define(["home/signal/signal_manage", "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer", "dojo/request", "esri/layers/GraphicsLayer", "esri/dijit/Scalebar"
 	, "esri/symbols/TextSymbol", "esri/geometry/Point", "esri/graphic", "esri/symbols/Font", "esri/symbols/SimpleMarkerSymbol", "echarts" ],
-	function(ajax, parser, Map, ArcGISTiledMapServiceLayer, request, GraphicsLayer, Scalebar, TextSymbol, Point, graphic, Font, SimpleMarkerSymbol, echarts) {
+	function(signal_manage,ajax, parser, Map, ArcGISTiledMapServiceLayer, request, GraphicsLayer, Scalebar, TextSymbol, Point, graphic, Font, SimpleMarkerSymbol, echarts) {
 		var testWidget = null;
 		//var map = null;
 		//config.defaults.io.corsEnabledServers.push("192.168.13.79:7080");
@@ -16,11 +16,12 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 		//"http://127.0.0.1:8080/data/PBS/rest/services/MyPBSService1/MapServer"
 		function mapInit() {
 			var map = new Map("mapDiv", {
-				center : [ 104.06, 30.67 ],
+				//center : [ 104.06, 30.67 ],
 				zoom : 10
 			});
 			//var url = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer";
-			var url = "http://192.168.13.72:8083/PBS/rest/services/MyPBSService1/MapServer";
+			//var url = "http://192.168.13.72:8083/PBS/rest/services/MyPBSService1/MapServer";
+			var url = "http://192.168.21.105:8081/PBS/rest/services/MyPBSService1/MapServer";
 			var agoLayer = new ArcGISTiledMapServiceLayer(url, {
 				id : "街道地图"
 			});
@@ -39,7 +40,13 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 			map.addLayer(glayer);
 			var ti = $("#warning_confirm").attr("class");
 			console.log(ti);
+			
+			singal_select();
+			
 			select_change(map, pSymbol, glayer);
+			
+		
+			
 			//$("#illegal").click();
 
 
@@ -91,17 +98,30 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 				});
 			return map;
 		}
+		
+		function singal_select(){
+			
+			$("#signal_list1").change(function() {
+				var value = $('option:selected').val();
+				data = {};
+				data.singalId = value;
+				$("#station_list").load("signal/stationlist",data,function() {
+					$('#station_picker').select2();
+				})
+			});
+			
+		}
 
 		function select_change(map, pSymbol, glayer) {
 			
-			$("#singal_list").change(function() {
+			$("#station_list").change(function() {
 				var value = $('option:selected').val();
 				var kmz = $('#search').val();
 				var data = {
 					"stationCode" : value,
 					"kmz" : kmz
 				};
-				
+				signal_manage.changeView();
 				ajax.get("data/signal/station", data, function(reslut) {
 					glayer.clear();
 					var p = new Point(reslut);
@@ -121,74 +141,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 					  		var id = e.graphic.geometry.stationId;
 					  		var data = {"stationId" : id}
 					  		ajax.get("data/signal/provisionaldegree", data, function() {
-								var optionMonth = {
-									color : [ 'rgb(55,165,255)' ],
-									tooltip : {
-										trigger : 'axis'
-									},
-									grid : {
-										left : '1%',
-										right : '1%',
-										bottom : '2%',
-										top : 30,
-										containLabel : true
-									},
-									xAxis : {
-										type : 'category',
-										boundaryGap : false,
-										axisLine : {
-											lineStyle : {
-												color : '#DAE5F0'
-											}
-										},
-										axisTick : {
-											show : false
-										},
-										axisLabel : {
-											textStyle : {
-												color : '#505363'
-											}
-										},
-										data : [ '0', '10', '20', '30', '40', '50', '60', '70', '80', '90' ]
-									},
-									yAxis : {
-										type : 'value',
-										max : 100,
-										splitNumber : 10,
-										axisLine : {
-											lineStyle : {
-												color : '#DAE5F0'
-											}
-										},
-										axisTick : {
-											show : false
-										},
-										axisLabel : {
-											textStyle : {
-												color : '#505363'
-											}
-										},
-										splitLine : {
-											lineStyle : {
-												color : '#DAE5F0'
-											}
-										}
-									},
-									series : [
-										{
-											name : '',
-											type : 'line',
-											showSymbol : false,
-											symbolSize : 6,
-											data : [ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, ]
-										}
-									]
-								};
-								var monthChart = echarts.init($('#monthChart')[0]);
-								monthChart.setOption(optionMonth);
-								monthChart.on('click', function(params) {
-									$('#modalDay').modal();
-								})
+								
 							});
 
 					  	}
@@ -197,36 +150,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 					
 				});
 
-				$("#signal_detail").load("signal/sigaldetail", data, function() {
-					
-					var type = $("#redio-type").val();
-					switch (type) {
-					case "1":
-						$("#legal-normal").click();
-						break;
-					case "2":
-						$("#undeclared").click();
-						break;
-					case "3":
-						$("#nonlocal_station").click();
-						break;
-					case "4":
-						$("#illegal").click();
-						break;
-					case "5":
-						$("#unknown").click();
-						break;
-					default:
-						break;
-					}
-
-					warning_confirm();
-					
-					ajax.get("data/signal/FmRate", data, function(reslut) {
-						initChart(reslut, data);
-					});
-					
-				});
+			
 			});
 
 		}
@@ -291,7 +215,11 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 			};
 			var myChart = echarts.init($('#radioChart')[0]);
 			myChart.setOption(option);
-
+			
+			window.onresize = function(){
+				myChart.clear();
+				myChart.setOption(option);
+			}
 			// draw month data chart
 			
 			
@@ -363,6 +291,11 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 				var dayChart = echarts.init($('#dayChart')[0]);
 				dayChart.setOption(optionDay);
 
+				window.onresize = function(){
+					dayChart.clear();
+					dayChart.setOption(optionDay);
+				}
+				
 				dayChart.on('click', function() {
 					$('#modalHour').modal()
 				});
@@ -434,6 +367,11 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 				};
 				var hourChart = echarts.init($('#hourChart')[0]);
 				hourChart.setOption(optionHour);
+				
+				window.onresize = function(){
+					hourChart.clear();
+					hourChart.setOption(optionHour);
+				}
 			})
 
 		}

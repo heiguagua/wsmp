@@ -96,9 +96,10 @@ public class WaveOrderDataController {
 	}
 
 	public Object get(@RequestParam RsbtStation station) {
-		EntityWrapper<RsbtStation> ew = new EntityWrapper<RsbtStation>(station);
+		EntityWrapper<RsbtStation> ew = new EntityWrapper<>(station);
 		ew.where("STAT_Type = {0}", station.getSTATType());
 		List<RsbtStation> stations = impl.selectList(ew);
 		return stations;
 	}
+
 }

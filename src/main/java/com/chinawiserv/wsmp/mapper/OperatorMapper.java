@@ -7,7 +7,7 @@ import com.chinawiserv.wsmp.pojo.Operator;
 
 /**
  * <p>
-  *  Mapper 接口
+ * Mapper 接口
  * </p>
  *
  * @author ${author}

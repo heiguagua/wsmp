@@ -16,13 +16,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
-import org.springframework.context.event.EventListener;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
 
 import com.chinawiserv.apps.util.logger.Logger;
 
-@Component
+//@Component
 public class ConfigListener implements ApplicationEventPublisherAware {
 
 	@Value("${service.home}")
@@ -34,8 +31,8 @@ public class ConfigListener implements ApplicationEventPublisherAware {
 	@Qualifier(WSDLServiceAdapterFactory.type)
 	public WSDLServiceAdapterFactory factory;
 
-	@Async
-	@EventListener(classes = WSDLServiceAdapterFactoryReady.class)
+	// @Async
+	// @EventListener(classes = WSDLServiceAdapterFactoryReady.class)
 	public void beginWork() {
 
 		try {
@@ -59,8 +56,15 @@ public class ConfigListener implements ApplicationEventPublisherAware {
 						try {
 							Path p = Paths.get(service_home, t.context().toString());
 
-							Files.readAllLines(p).forEach(z -> {
-								factory.registerService(p.getFileName().toString(), z);
+							Files.readAllLines(p).stream().forEach(z -> {
+								// factory.registerService(p.getFileName().toString(),
+								// z);
+								// registInfo.put("serviceID",
+								// p.getFileName().toString());
+								// registInfo.put("serviceUrl", z);
+								// EventPublisher.publishEvent(registInfo);
+								RegistInfo info = new RegistInfo(p.getFileName().toString(), z);
+								EventPublisher.publishEvent(new WSDLServiceRegistOneEvent(info));
 							});
 							Logger.info("=====新的服务已经注册完毕========");
 						}
