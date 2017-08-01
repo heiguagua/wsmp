@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
+//import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.context.event.EventListener;
@@ -43,7 +43,7 @@ public class WSDLServiceAdapterFactory implements ApplicationEventPublisherAware
 
 	Map<String, String> serviceTypes = Maps.newConcurrentMap();
 
-	@EventListener(value = { ApplicationReadyEvent.class })
+	//@EventListener(value = { ApplicationReadyEvent.class })
 	public void loadWSDLservice() throws IOException {
 
 		Path file = Paths.get(service_home);
