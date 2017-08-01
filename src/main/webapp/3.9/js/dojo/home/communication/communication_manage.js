@@ -28,17 +28,13 @@ define(function() {
 			for(var index = 0 ; index < citys.length ;index++){
 				var element = {}
 				element.id = citys[index].Code;
-				element.test = citys[index].Name;
+				element.text = citys[index].Name;
 				arry.push(element);
 			}
-			
-			$(".js-example-data-array").select2({
-				  data: arry
-			})
-			
 			console.log(arry);
-			console.log(html)
-			$("#city_list").append(html);
+			$("#city-list").select2({
+				  data: arry
+			});
 			
 		}else{
 			info.Name;

@@ -61,7 +61,7 @@ public class SiganlDataController {
 
 		long frequencyLong = Long.parseLong(frequency);
 
-		Tuple2InJava map = hbaseClient.queryItu(id, timeStart, timeStop, frequencyLong);
+		Tuple2InJava<Object, Object> map = hbaseClient.queryItu(id, timeStart, timeStop, frequencyLong);
 
 		final List<Map<String, Object>> reslut = Lists.newArrayListWithExpectedSize(2);
 
