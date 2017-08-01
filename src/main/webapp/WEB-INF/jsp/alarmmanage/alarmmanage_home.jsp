@@ -116,14 +116,6 @@
 			</div>
 		</div>
 	</section>
-	<section class='flex-row'>
-      <div class='box'>
-        <div class='month-data flex-column'>
-          <h4 class="text-center">电平峰值</h4>
-          <div id="level" class='title flex1 flex-column' style="height: 100%"></div>
-        </div>
-      </div>
-    </section>
     <section class='flex-row'>
       <div class='box'>
         <div class='month-data flex-column'>
