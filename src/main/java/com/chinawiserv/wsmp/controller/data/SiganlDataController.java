@@ -83,7 +83,7 @@ public class SiganlDataController {
 	@GetMapping("/station")
 	public Object getStationPiont(@RequestParam Map<String, Object> para) {
 		System.out.println(para);
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		map.put("x", "104.06");
 		map.put("y", "30.67");
 		map.put("stationId", "xxxxd");

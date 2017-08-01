@@ -2,6 +2,7 @@
 package org.tempuri;
 
 import java.math.BigInteger;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -11,9 +12,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * <p>FreqHistoryDTO complex type的 Java 类。
+ * <p>FreqHistoryDTO complex type锟斤拷 Java 锟洁。
  * 
- * <p>以下模式片段指定包含在此类中的预期内容。
+ * <p>锟斤拷锟斤拷模式片锟斤拷指锟斤拷锟斤拷锟斤拷锟节达拷锟斤拷锟叫碉拷预锟斤拷锟斤拷锟捷★拷
  * 
  * <pre>
  * &lt;complexType name="FreqHistoryDTO"&gt;
@@ -63,7 +64,7 @@ public class FreqHistoryDTO {
     protected XMLGregorianCalendar stopTime;
 
     /**
-     * 获取id属性的值。
+     * 锟斤拷取id锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -75,7 +76,7 @@ public class FreqHistoryDTO {
     }
 
     /**
-     * 设置id属性的值。
+     * 锟斤拷锟斤拷id锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -87,7 +88,7 @@ public class FreqHistoryDTO {
     }
 
     /**
-     * 获取centerFreq属性的值。
+     * 锟斤拷取centerFreq锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -99,7 +100,7 @@ public class FreqHistoryDTO {
     }
 
     /**
-     * 设置centerFreq属性的值。
+     * 锟斤拷锟斤拷centerFreq锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -111,7 +112,7 @@ public class FreqHistoryDTO {
     }
 
     /**
-     * 获取bandWidth属性的值。
+     * 锟斤拷取bandWidth锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -123,7 +124,7 @@ public class FreqHistoryDTO {
     }
 
     /**
-     * 设置bandWidth属性的值。
+     * 锟斤拷锟斤拷bandWidth锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -135,7 +136,7 @@ public class FreqHistoryDTO {
     }
 
     /**
-     * 获取stationID属性的值。
+     * 锟斤拷取stationID锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -147,7 +148,7 @@ public class FreqHistoryDTO {
     }
 
     /**
-     * 设置stationID属性的值。
+     * 锟斤拷锟斤拷stationID锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -159,7 +160,7 @@ public class FreqHistoryDTO {
     }
 
     /**
-     * 获取startTime属性的值。
+     * 锟斤拷取startTime锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -171,7 +172,7 @@ public class FreqHistoryDTO {
     }
 
     /**
-     * 设置startTime属性的值。
+     * 锟斤拷锟斤拷startTime锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -183,7 +184,7 @@ public class FreqHistoryDTO {
     }
 
     /**
-     * 获取stopTime属性的值。
+     * 锟斤拷取stopTime锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -195,7 +196,7 @@ public class FreqHistoryDTO {
     }
 
     /**
-     * 设置stopTime属性的值。
+     * 锟斤拷锟斤拷stopTime锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is

@@ -2,6 +2,7 @@
 package org.tempuri;
 
 import java.math.BigInteger;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -11,9 +12,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * <p>RadioSignalUpdateRequest complex type的 Java 类。
+ * <p>RadioSignalUpdateRequest complex type锟斤拷 Java 锟洁。
  * 
- * <p>以下模式片段指定包含在此类中的预期内容。
+ * <p>锟斤拷锟斤拷模式片锟斤拷指锟斤拷锟斤拷锟斤拷锟节达拷锟斤拷锟叫碉拷预锟斤拷锟斤拷锟捷★拷
  * 
  * <pre>
  * &lt;complexType name="RadioSignalUpdateRequest"&gt;
@@ -103,7 +104,7 @@ public class RadioSignalUpdateRequest {
     protected String des;
 
     /**
-     * 获取id属性的值。
+     * 锟斤拷取id锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -115,7 +116,7 @@ public class RadioSignalUpdateRequest {
     }
 
     /**
-     * 设置id属性的值。
+     * 锟斤拷锟斤拷id锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -127,7 +128,7 @@ public class RadioSignalUpdateRequest {
     }
 
     /**
-     * 获取name属性的值。
+     * 锟斤拷取name锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -139,7 +140,7 @@ public class RadioSignalUpdateRequest {
     }
 
     /**
-     * 设置name属性的值。
+     * 锟斤拷锟斤拷name锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -151,7 +152,7 @@ public class RadioSignalUpdateRequest {
     }
 
     /**
-     * 获取centerFreq属性的值。
+     * 锟斤拷取centerFreq锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -163,7 +164,7 @@ public class RadioSignalUpdateRequest {
     }
 
     /**
-     * 设置centerFreq属性的值。
+     * 锟斤拷锟斤拷centerFreq锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -175,7 +176,7 @@ public class RadioSignalUpdateRequest {
     }
 
     /**
-     * 获取bandWidth属性的值。
+     * 锟斤拷取bandWidth锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -187,7 +188,7 @@ public class RadioSignalUpdateRequest {
     }
 
     /**
-     * 设置bandWidth属性的值。
+     * 锟斤拷锟斤拷bandWidth锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -199,7 +200,7 @@ public class RadioSignalUpdateRequest {
     }
 
     /**
-     * 获取areaCode属性的值。
+     * 锟斤拷取areaCode锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -211,7 +212,7 @@ public class RadioSignalUpdateRequest {
     }
 
     /**
-     * 设置areaCode属性的值。
+     * 锟斤拷锟斤拷areaCode锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -223,7 +224,7 @@ public class RadioSignalUpdateRequest {
     }
 
     /**
-     * 获取typeCode属性的值。
+     * 锟斤拷取typeCode锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -235,7 +236,7 @@ public class RadioSignalUpdateRequest {
     }
 
     /**
-     * 设置typeCode属性的值。
+     * 锟斤拷锟斤拷typeCode锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -247,7 +248,7 @@ public class RadioSignalUpdateRequest {
     }
 
     /**
-     * 获取longitude属性的值。
+     * 锟斤拷取longitude锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -259,7 +260,7 @@ public class RadioSignalUpdateRequest {
     }
 
     /**
-     * 设置longitude属性的值。
+     * 锟斤拷锟斤拷longitude锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -271,7 +272,7 @@ public class RadioSignalUpdateRequest {
     }
 
     /**
-     * 获取latitude属性的值。
+     * 锟斤拷取latitude锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -283,7 +284,7 @@ public class RadioSignalUpdateRequest {
     }
 
     /**
-     * 设置latitude属性的值。
+     * 锟斤拷锟斤拷latitude锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -295,7 +296,7 @@ public class RadioSignalUpdateRequest {
     }
 
     /**
-     * 获取altitude属性的值。
+     * 锟斤拷取altitude锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -307,7 +308,7 @@ public class RadioSignalUpdateRequest {
     }
 
     /**
-     * 设置altitude属性的值。
+     * 锟斤拷锟斤拷altitude锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -319,7 +320,7 @@ public class RadioSignalUpdateRequest {
     }
 
     /**
-     * 获取stationKey属性的值。
+     * 锟斤拷取stationKey锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -331,7 +332,7 @@ public class RadioSignalUpdateRequest {
     }
 
     /**
-     * 设置stationKey属性的值。
+     * 锟斤拷锟斤拷stationKey锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -343,7 +344,7 @@ public class RadioSignalUpdateRequest {
     }
 
     /**
-     * 获取isInvalid属性的值。
+     * 锟斤拷取isInvalid锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -355,7 +356,7 @@ public class RadioSignalUpdateRequest {
     }
 
     /**
-     * 设置isInvalid属性的值。
+     * 锟斤拷锟斤拷isInvalid锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -367,7 +368,7 @@ public class RadioSignalUpdateRequest {
     }
 
     /**
-     * 获取saveDate属性的值。
+     * 锟斤拷取saveDate锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -379,7 +380,7 @@ public class RadioSignalUpdateRequest {
     }
 
     /**
-     * 设置saveDate属性的值。
+     * 锟斤拷锟斤拷saveDate锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -391,7 +392,7 @@ public class RadioSignalUpdateRequest {
     }
 
     /**
-     * 获取invalidDate属性的值。
+     * 锟斤拷取invalidDate锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -403,7 +404,7 @@ public class RadioSignalUpdateRequest {
     }
 
     /**
-     * 设置invalidDate属性的值。
+     * 锟斤拷锟斤拷invalidDate锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -415,7 +416,7 @@ public class RadioSignalUpdateRequest {
     }
 
     /**
-     * 获取warningFreqID属性的值。
+     * 锟斤拷取warningFreqID锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -427,7 +428,7 @@ public class RadioSignalUpdateRequest {
     }
 
     /**
-     * 设置warningFreqID属性的值。
+     * 锟斤拷锟斤拷warningFreqID锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -439,7 +440,7 @@ public class RadioSignalUpdateRequest {
     }
 
     /**
-     * 获取extendFields属性的值。
+     * 锟斤拷取extendFields锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -451,7 +452,7 @@ public class RadioSignalUpdateRequest {
     }
 
     /**
-     * 设置extendFields属性的值。
+     * 锟斤拷锟斤拷extendFields锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -463,7 +464,7 @@ public class RadioSignalUpdateRequest {
     }
 
     /**
-     * 获取des属性的值。
+     * 锟斤拷取des锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -475,7 +476,7 @@ public class RadioSignalUpdateRequest {
     }
 
     /**
-     * 设置des属性的值。
+     * 锟斤拷锟斤拷des锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is

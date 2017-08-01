@@ -2,6 +2,7 @@
 package org.tempuri;
 
 import java.math.BigInteger;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -10,9 +11,9 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>FreqWarningQueryRequest complex type的 Java 类。
+ * <p>FreqWarningQueryRequest complex type锟斤拷 Java 锟洁。
  * 
- * <p>以下模式片段指定包含在此类中的预期内容。
+ * <p>锟斤拷锟斤拷模式片锟斤拷指锟斤拷锟斤拷锟斤拷锟节达拷锟斤拷锟叫碉拷预锟斤拷锟斤拷锟捷★拷
  * 
  * <pre>
  * &lt;complexType name="FreqWarningQueryRequest"&gt;
@@ -67,7 +68,7 @@ public class FreqWarningQueryRequest {
     protected ArrayOfString stationIDs;
 
     /**
-     * 获取id属性的值。
+     * 锟斤拷取id锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -79,7 +80,7 @@ public class FreqWarningQueryRequest {
     }
 
     /**
-     * 设置id属性的值。
+     * 锟斤拷锟斤拷id锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -91,7 +92,7 @@ public class FreqWarningQueryRequest {
     }
 
     /**
-     * 获取centerFreq属性的值。
+     * 锟斤拷取centerFreq锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -103,7 +104,7 @@ public class FreqWarningQueryRequest {
     }
 
     /**
-     * 设置centerFreq属性的值。
+     * 锟斤拷锟斤拷centerFreq锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -115,7 +116,7 @@ public class FreqWarningQueryRequest {
     }
 
     /**
-     * 获取status属性的值。
+     * 锟斤拷取status锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -127,7 +128,7 @@ public class FreqWarningQueryRequest {
     }
 
     /**
-     * 设置status属性的值。
+     * 锟斤拷锟斤拷status锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -139,7 +140,7 @@ public class FreqWarningQueryRequest {
     }
 
     /**
-     * 获取areaCode属性的值。
+     * 锟斤拷取areaCode锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -151,7 +152,7 @@ public class FreqWarningQueryRequest {
     }
 
     /**
-     * 设置areaCode属性的值。
+     * 锟斤拷锟斤拷areaCode锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -163,7 +164,7 @@ public class FreqWarningQueryRequest {
     }
 
     /**
-     * 获取isInvalid属性的值。
+     * 锟斤拷取isInvalid锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -175,7 +176,7 @@ public class FreqWarningQueryRequest {
     }
 
     /**
-     * 设置isInvalid属性的值。
+     * 锟斤拷锟斤拷isInvalid锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -187,7 +188,7 @@ public class FreqWarningQueryRequest {
     }
 
     /**
-     * 获取startIndex属性的值。
+     * 锟斤拷取startIndex锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -199,7 +200,7 @@ public class FreqWarningQueryRequest {
     }
 
     /**
-     * 设置startIndex属性的值。
+     * 锟斤拷锟斤拷startIndex锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -211,7 +212,7 @@ public class FreqWarningQueryRequest {
     }
 
     /**
-     * 获取count属性的值。
+     * 锟斤拷取count锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -223,7 +224,7 @@ public class FreqWarningQueryRequest {
     }
 
     /**
-     * 设置count属性的值。
+     * 锟斤拷锟斤拷count锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -235,7 +236,7 @@ public class FreqWarningQueryRequest {
     }
 
     /**
-     * 获取stationIDs属性的值。
+     * 锟斤拷取stationIDs锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -247,7 +248,7 @@ public class FreqWarningQueryRequest {
     }
 
     /**
-     * 设置stationIDs属性的值。
+     * 锟斤拷锟斤拷stationIDs锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is

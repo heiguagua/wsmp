@@ -117,7 +117,7 @@ public class SignalViewController {
 	@PostMapping(path = { "/stationlist" })
 	public ModelAndView stationList(ModelAndView modelAndView, @RequestParam Map<String, Object> param) {
 		modelAndView.setViewName("signal/monitoring_station_list");
-		List<MonitoringStation> stations = new ArrayList<MonitoringStation>();
+		List<MonitoringStation> stations = new ArrayList<>();
 		modelAndView.addObject("stations", stations);
 		return modelAndView;
 	}

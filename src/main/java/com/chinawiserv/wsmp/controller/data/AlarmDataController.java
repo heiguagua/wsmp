@@ -155,7 +155,7 @@ public class AlarmDataController {
 
 		if (in.getStatus() == 0) {
 			// 需要取消对应的
-			EntityWrapper<IntensiveMonitoring> ew = new EntityWrapper<IntensiveMonitoring>(in);
+			EntityWrapper<IntensiveMonitoring> ew = new EntityWrapper<>(in);
 			ew.where("SINGAL_FREQUENCY = {0}", in.getSingalFrequency());
 			iIntensiveMonitoringServicel.delete(ew);
 		} else {
@@ -174,7 +174,7 @@ public class AlarmDataController {
 
 	@GetMapping(path = "/getStation")
 	public @ResponseBody Map<String, Object> getStationPiont(@RequestParam Map<String, Object> param) {
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		map.put("x", "104.06");
 		map.put("y", "30.67");
 		map.put("count", "45");

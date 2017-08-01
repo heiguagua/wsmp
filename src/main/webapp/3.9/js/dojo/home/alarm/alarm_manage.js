@@ -17,6 +17,7 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart" ,"h
 		$("#signal_list").change(function(e) {
 			
 			stationselectinit();
+			changeView();
 			
 		});
 		

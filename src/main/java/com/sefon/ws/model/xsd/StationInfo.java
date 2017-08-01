@@ -3,6 +3,7 @@ package com.sefon.ws.model.xsd;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -12,9 +13,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * <p>StationInfo complex type的 Java 类。
+ * <p>StationInfo complex type锟斤拷 Java 锟洁。
  * 
- * <p>以下模式片段指定包含在此类中的预期内容。
+ * <p>锟斤拷锟斤拷模式片锟斤拷指锟斤拷锟斤拷锟斤拷锟节达拷锟斤拷锟叫碉拷预锟斤拷锟斤拷锟捷★拷
  * 
  * <pre>
  * &lt;complexType name="StationInfo"&gt;
@@ -303,7 +304,7 @@ public class StationInfo {
     protected String stationID;
 
     /**
-     * 获取antGain属性的值。
+     * 锟斤拷取antGain锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -315,7 +316,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置antGain属性的值。
+     * 锟斤拷锟斤拷antGain锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -327,7 +328,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取antHight属性的值。
+     * 锟斤拷取antHight锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -339,7 +340,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置antHight属性的值。
+     * 锟斤拷锟斤拷antHight锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -351,7 +352,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取equauth属性的值。
+     * 锟斤拷取equauth锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -363,7 +364,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置equauth属性的值。
+     * 锟斤拷锟斤拷equauth锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -375,7 +376,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取equModel属性的值。
+     * 锟斤拷取equModel锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -387,7 +388,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置equModel属性的值。
+     * 锟斤拷锟斤拷equModel锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -399,7 +400,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取feedLose属性的值。
+     * 锟斤拷取feedLose锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -411,7 +412,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置feedLose属性的值。
+     * 锟斤拷锟斤拷feedLose锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -423,7 +424,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取feeguid属性的值。
+     * 锟斤拷取feeguid锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -435,7 +436,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置feeguid属性的值。
+     * 锟斤拷锟斤拷feeguid锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -447,7 +448,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取freqCode属性的值。
+     * 锟斤拷取freqCode锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -459,7 +460,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置freqCode属性的值。
+     * 锟斤拷锟斤拷freqCode锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -471,7 +472,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取freqefb属性的值。
+     * 锟斤拷取freqefb锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -483,7 +484,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置freqefb属性的值。
+     * 锟斤拷锟斤拷freqefb锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -495,7 +496,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取freqefe属性的值。
+     * 锟斤拷取freqefe锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -507,7 +508,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置freqefe属性的值。
+     * 锟斤拷锟斤拷freqefe锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -519,7 +520,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取freqeBand属性的值。
+     * 锟斤拷取freqeBand锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -531,7 +532,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置freqeBand属性的值。
+     * 锟斤拷锟斤拷freqeBand锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -543,7 +544,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取freqeBandStr属性的值。
+     * 锟斤拷取freqeBandStr锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -555,7 +556,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置freqeBandStr属性的值。
+     * 锟斤拷锟斤拷freqeBandStr锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -567,7 +568,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取freqlc属性的值。
+     * 锟斤拷取freqlc锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -579,7 +580,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置freqlc属性的值。
+     * 锟斤拷锟斤拷freqlc锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -591,7 +592,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取freqmb属性的值。
+     * 锟斤拷取freqmb锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -603,7 +604,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置freqmb属性的值。
+     * 锟斤拷锟斤拷freqmb锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -615,7 +616,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取freqmod属性的值。
+     * 锟斤拷取freqmod锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -627,7 +628,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置freqmod属性的值。
+     * 锟斤拷锟斤拷freqmod锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -639,7 +640,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取freqmodStr属性的值。
+     * 锟斤拷取freqmodStr锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -651,7 +652,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置freqmodStr属性的值。
+     * 锟斤拷锟斤拷freqmodStr锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -663,7 +664,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取freqType属性的值。
+     * 锟斤拷取freqType锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -675,7 +676,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置freqType属性的值。
+     * 锟斤拷锟斤拷freqType锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -687,7 +688,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取freqTypeStr属性的值。
+     * 锟斤拷取freqTypeStr锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -699,7 +700,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置freqTypeStr属性的值。
+     * 锟斤拷锟斤拷freqTypeStr锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -711,7 +712,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取frequc属性的值。
+     * 锟斤拷取frequc锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -723,7 +724,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置frequc属性的值。
+     * 锟斤拷锟斤拷frequc锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -735,7 +736,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取ftfreqepow属性的值。
+     * 锟斤拷取ftfreqepow锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -747,7 +748,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置ftfreqepow属性的值。
+     * 锟斤拷锟斤拷ftfreqepow锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -759,7 +760,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取ftfreqpowflag属性的值。
+     * 锟斤拷取ftfreqpowflag锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -771,7 +772,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置ftfreqpowflag属性的值。
+     * 锟斤拷锟斤拷ftfreqpowflag锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -783,7 +784,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取id属性的值。
+     * 锟斤拷取id锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -795,7 +796,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置id属性的值。
+     * 锟斤拷锟斤拷id锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -807,7 +808,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取memo属性的值。
+     * 锟斤拷取memo锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -819,7 +820,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置memo属性的值。
+     * 锟斤拷锟斤拷memo锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -831,7 +832,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取netArea属性的值。
+     * 锟斤拷取netArea锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -843,7 +844,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置netArea属性的值。
+     * 锟斤拷锟斤拷netArea锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -855,7 +856,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取netAreaStr属性的值。
+     * 锟斤拷取netAreaStr锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -867,7 +868,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置netAreaStr属性的值。
+     * 锟斤拷锟斤拷netAreaStr锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -879,7 +880,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取netBand属性的值。
+     * 锟斤拷取netBand锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -891,7 +892,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置netBand属性的值。
+     * 锟斤拷锟斤拷netBand锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -903,7 +904,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取netBandStr属性的值。
+     * 锟斤拷取netBandStr锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -915,7 +916,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置netBandStr属性的值。
+     * 锟斤拷锟斤拷netBandStr锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -927,7 +928,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取netConfirmDate属性的值。
+     * 锟斤拷取netConfirmDate锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -939,7 +940,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置netConfirmDate属性的值。
+     * 锟斤拷锟斤拷netConfirmDate锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -951,7 +952,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取netConfirmDateStr属性的值。
+     * 锟斤拷取netConfirmDateStr锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -963,7 +964,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置netConfirmDateStr属性的值。
+     * 锟斤拷锟斤拷netConfirmDateStr锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -975,7 +976,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取netExpiredDate属性的值。
+     * 锟斤拷取netExpiredDate锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -987,7 +988,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置netExpiredDate属性的值。
+     * 锟斤拷锟斤拷netExpiredDate锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -999,7 +1000,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取netExpiredDateStr属性的值。
+     * 锟斤拷取netExpiredDateStr锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1011,7 +1012,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置netExpiredDateStr属性的值。
+     * 锟斤拷锟斤拷netExpiredDateStr锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1023,7 +1024,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取netsp属性的值。
+     * 锟斤拷取netsp锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1035,7 +1036,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置netsp属性的值。
+     * 锟斤拷锟斤拷netsp锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1047,7 +1048,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取netspStr属性的值。
+     * 锟斤拷取netspStr锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1059,7 +1060,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置netspStr属性的值。
+     * 锟斤拷锟斤拷netspStr锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1071,7 +1072,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取netsvn属性的值。
+     * 锟斤拷取netsvn锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1083,7 +1084,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置netsvn属性的值。
+     * 锟斤拷锟斤拷netsvn锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1095,7 +1096,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取netStartDate属性的值。
+     * 锟斤拷取netStartDate锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1107,7 +1108,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置netStartDate属性的值。
+     * 锟斤拷锟斤拷netStartDate锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1119,7 +1120,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取netStartDateStr属性的值。
+     * 锟斤拷取netStartDateStr锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1131,7 +1132,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置netStartDateStr属性的值。
+     * 锟斤拷锟斤拷netStartDateStr锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1143,7 +1144,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取netts属性的值。
+     * 锟斤拷取netts锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1155,7 +1156,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置netts属性的值。
+     * 锟斤拷锟斤拷netts锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1167,7 +1168,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取nettsStr属性的值。
+     * 锟斤拷取nettsStr锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1179,7 +1180,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置nettsStr属性的值。
+     * 锟斤拷锟斤拷nettsStr锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1191,7 +1192,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取stataddr属性的值。
+     * 锟斤拷取stataddr锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1203,7 +1204,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置stataddr属性的值。
+     * 锟斤拷锟斤拷stataddr锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1215,7 +1216,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取statat属性的值。
+     * 锟斤拷取statat锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1227,7 +1228,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置statat属性的值。
+     * 锟斤拷锟斤拷statat锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1239,7 +1240,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取statAreaCode属性的值。
+     * 锟斤拷取statAreaCode锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1251,7 +1252,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置statAreaCode属性的值。
+     * 锟斤拷锟斤拷statAreaCode锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1263,7 +1264,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取statDateStart属性的值。
+     * 锟斤拷取statDateStart锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1275,7 +1276,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置statDateStart属性的值。
+     * 锟斤拷锟斤拷statDateStart锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1287,7 +1288,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取statDateStartStr属性的值。
+     * 锟斤拷取statDateStartStr锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1299,7 +1300,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置statDateStartStr属性的值。
+     * 锟斤拷锟斤拷statDateStartStr锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1311,7 +1312,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取statequsum属性的值。
+     * 锟斤拷取statequsum锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1323,7 +1324,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置statequsum属性的值。
+     * 锟斤拷锟斤拷statequsum锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1335,7 +1336,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取statla属性的值。
+     * 锟斤拷取statla锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1347,7 +1348,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置statla属性的值。
+     * 锟斤拷锟斤拷statla锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1359,7 +1360,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取statlg属性的值。
+     * 锟斤拷取statlg锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1371,7 +1372,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置statlg属性的值。
+     * 锟斤拷锟斤拷statlg锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1383,7 +1384,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取statName属性的值。
+     * 锟斤拷取statName锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1395,7 +1396,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置statName属性的值。
+     * 锟斤拷锟斤拷statName锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1407,7 +1408,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取statStatus属性的值。
+     * 锟斤拷取statStatus锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1419,7 +1420,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置statStatus属性的值。
+     * 锟斤拷锟斤拷statStatus锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1431,7 +1432,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取statStatusStr属性的值。
+     * 锟斤拷取statStatusStr锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1443,7 +1444,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置statStatusStr属性的值。
+     * 锟斤拷锟斤拷statStatusStr锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1455,7 +1456,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取statType属性的值。
+     * 锟斤拷取statType锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1467,7 +1468,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置statType属性的值。
+     * 锟斤拷锟斤拷statType锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1479,7 +1480,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取statTypeStr属性的值。
+     * 锟斤拷取statTypeStr锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1491,7 +1492,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置statTypeStr属性的值。
+     * 锟斤拷锟斤拷statTypeStr锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1503,7 +1504,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取statWork属性的值。
+     * 锟斤拷取statWork锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1515,7 +1516,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置statWork属性的值。
+     * 锟斤拷锟斤拷statWork锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1527,7 +1528,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取userName属性的值。
+     * 锟斤拷取userName锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1539,7 +1540,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置userName属性的值。
+     * 锟斤拷锟斤拷userName锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1551,7 +1552,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取bInitInfo属性的值。
+     * 锟斤拷取bInitInfo锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1563,7 +1564,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置bInitInfo属性的值。
+     * 锟斤拷锟斤拷bInitInfo锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1575,7 +1576,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取beginFreq属性的值。
+     * 锟斤拷取beginFreq锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1587,7 +1588,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置beginFreq属性的值。
+     * 锟斤拷锟斤拷beginFreq锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1599,7 +1600,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取centerFreq属性的值。
+     * 锟斤拷取centerFreq锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1611,7 +1612,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置centerFreq属性的值。
+     * 锟斤拷锟斤拷centerFreq锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1623,7 +1624,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取centerFreqStr属性的值。
+     * 锟斤拷取centerFreqStr锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1635,7 +1636,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置centerFreqStr属性的值。
+     * 锟斤拷锟斤拷centerFreqStr锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1647,7 +1648,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取endFreq属性的值。
+     * 锟斤拷取endFreq锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1659,7 +1660,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置endFreq属性的值。
+     * 锟斤拷锟斤拷endFreq锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1671,7 +1672,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取freqID属性的值。
+     * 锟斤拷取freqID锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1683,7 +1684,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置freqID属性的值。
+     * 锟斤拷锟斤拷freqID锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1695,7 +1696,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取imagePath属性的值。
+     * 锟斤拷取imagePath锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1707,7 +1708,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置imagePath属性的值。
+     * 锟斤拷锟斤拷imagePath锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1719,7 +1720,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取isLoad属性的值。
+     * 锟斤拷取isLoad锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1731,7 +1732,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置isLoad属性的值。
+     * 锟斤拷锟斤拷isLoad锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1743,7 +1744,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取netSVNStr属性的值。
+     * 锟斤拷取netSVNStr锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1755,7 +1756,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置netSVNStr属性的值。
+     * 锟斤拷锟斤拷netSVNStr锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1825,7 +1826,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取stationFreqID属性的值。
+     * 锟斤拷取stationFreqID锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1837,7 +1838,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置stationFreqID属性的值。
+     * 锟斤拷锟斤拷stationFreqID锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1849,7 +1850,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取stationFreqIdHash属性的值。
+     * 锟斤拷取stationFreqIdHash锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1861,7 +1862,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置stationFreqIdHash属性的值。
+     * 锟斤拷锟斤拷stationFreqIdHash锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -1873,7 +1874,7 @@ public class StationInfo {
     }
 
     /**
-     * 获取stationID属性的值。
+     * 锟斤拷取stationID锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -1885,7 +1886,7 @@ public class StationInfo {
     }
 
     /**
-     * 设置stationID属性的值。
+     * 锟斤拷锟斤拷stationID锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is

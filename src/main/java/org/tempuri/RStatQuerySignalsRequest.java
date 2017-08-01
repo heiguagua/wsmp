@@ -2,6 +2,7 @@
 package org.tempuri;
 
 import java.math.BigInteger;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -10,9 +11,9 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>RStatQuerySignalsRequest complex type的 Java 类。
+ * <p>RStatQuerySignalsRequest complex type锟斤拷 Java 锟洁。
  * 
- * <p>以下模式片段指定包含在此类中的预期内容。
+ * <p>锟斤拷锟斤拷模式片锟斤拷指锟斤拷锟斤拷锟斤拷锟节达拷锟斤拷锟叫碉拷预锟斤拷锟斤拷锟捷★拷
  * 
  * <pre>
  * &lt;complexType name="RStatQuerySignalsRequest"&gt;
@@ -60,7 +61,7 @@ public class RStatQuerySignalsRequest {
     protected int count;
 
     /**
-     * 获取statName属性的值。
+     * 锟斤拷取statName锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -72,7 +73,7 @@ public class RStatQuerySignalsRequest {
     }
 
     /**
-     * 设置statName属性的值。
+     * 锟斤拷锟斤拷statName锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -84,7 +85,7 @@ public class RStatQuerySignalsRequest {
     }
 
     /**
-     * 获取areaCodeList属性的值。
+     * 锟斤拷取areaCodeList锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -96,7 +97,7 @@ public class RStatQuerySignalsRequest {
     }
 
     /**
-     * 设置areaCodeList属性的值。
+     * 锟斤拷锟斤拷areaCodeList锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -108,7 +109,7 @@ public class RStatQuerySignalsRequest {
     }
 
     /**
-     * 获取beginFreq属性的值。
+     * 锟斤拷取beginFreq锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -120,7 +121,7 @@ public class RStatQuerySignalsRequest {
     }
 
     /**
-     * 设置beginFreq属性的值。
+     * 锟斤拷锟斤拷beginFreq锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -132,7 +133,7 @@ public class RStatQuerySignalsRequest {
     }
 
     /**
-     * 获取endFreq属性的值。
+     * 锟斤拷取endFreq锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -144,7 +145,7 @@ public class RStatQuerySignalsRequest {
     }
 
     /**
-     * 设置endFreq属性的值。
+     * 锟斤拷锟斤拷endFreq锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -156,7 +157,7 @@ public class RStatQuerySignalsRequest {
     }
 
     /**
-     * 获取index属性的值。
+     * 锟斤拷取index锟斤拷锟皆碉拷值锟斤拷
      * 
      */
     public int getIndex() {
@@ -164,7 +165,7 @@ public class RStatQuerySignalsRequest {
     }
 
     /**
-     * 设置index属性的值。
+     * 锟斤拷锟斤拷index锟斤拷锟皆碉拷值锟斤拷
      * 
      */
     public void setIndex(int value) {
@@ -172,7 +173,7 @@ public class RStatQuerySignalsRequest {
     }
 
     /**
-     * 获取count属性的值。
+     * 锟斤拷取count锟斤拷锟皆碉拷值锟斤拷
      * 
      */
     public int getCount() {
@@ -180,7 +181,7 @@ public class RStatQuerySignalsRequest {
     }
 
     /**
-     * 设置count属性的值。
+     * 锟斤拷锟斤拷count锟斤拷锟皆碉拷值锟斤拷
      * 
      */
     public void setCount(int value) {

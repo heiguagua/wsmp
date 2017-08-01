@@ -3,6 +3,7 @@ package com.sefon.ws.model.electric.level.xsd;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -12,9 +13,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * <p>FreqRangeQuerySpec complex type的 Java 类。
+ * <p>FreqRangeQuerySpec complex type锟斤拷 Java 锟洁。
  * 
- * <p>以下模式片段指定包含在此类中的预期内容。
+ * <p>锟斤拷锟斤拷模式片锟斤拷指锟斤拷锟斤拷锟斤拷锟节达拷锟斤拷锟叫碉拷预锟斤拷锟斤拷锟捷★拷
  * 
  * <pre>
  * &lt;complexType name="FreqRangeQuerySpec"&gt;
@@ -103,7 +104,7 @@ public class FreqRangeQuerySpec {
     }
 
     /**
-     * 获取beginDate属性的值。
+     * 锟斤拷取beginDate锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -115,7 +116,7 @@ public class FreqRangeQuerySpec {
     }
 
     /**
-     * 设置beginDate属性的值。
+     * 锟斤拷锟斤拷beginDate锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -127,7 +128,7 @@ public class FreqRangeQuerySpec {
     }
 
     /**
-     * 获取beginFreq属性的值。
+     * 锟斤拷取beginFreq锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -139,7 +140,7 @@ public class FreqRangeQuerySpec {
     }
 
     /**
-     * 设置beginFreq属性的值。
+     * 锟斤拷锟斤拷beginFreq锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -209,7 +210,7 @@ public class FreqRangeQuerySpec {
     }
 
     /**
-     * 获取dataType属性的值。
+     * 锟斤拷取dataType锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -221,7 +222,7 @@ public class FreqRangeQuerySpec {
     }
 
     /**
-     * 设置dataType属性的值。
+     * 锟斤拷锟斤拷dataType锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -233,7 +234,7 @@ public class FreqRangeQuerySpec {
     }
 
     /**
-     * 获取endDate属性的值。
+     * 锟斤拷取endDate锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -245,7 +246,7 @@ public class FreqRangeQuerySpec {
     }
 
     /**
-     * 设置endDate属性的值。
+     * 锟斤拷锟斤拷endDate锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -257,7 +258,7 @@ public class FreqRangeQuerySpec {
     }
 
     /**
-     * 获取endFreq属性的值。
+     * 锟斤拷取endFreq锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -269,7 +270,7 @@ public class FreqRangeQuerySpec {
     }
 
     /**
-     * 设置endFreq属性的值。
+     * 锟斤拷锟斤拷endFreq锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -281,7 +282,7 @@ public class FreqRangeQuerySpec {
     }
 
     /**
-     * 获取queryDateType属性的值。
+     * 锟斤拷取queryDateType锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -293,7 +294,7 @@ public class FreqRangeQuerySpec {
     }
 
     /**
-     * 设置queryDateType属性的值。
+     * 锟斤拷锟斤拷queryDateType锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
