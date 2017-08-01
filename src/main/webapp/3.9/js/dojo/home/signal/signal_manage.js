@@ -20,6 +20,56 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 		init_player();
 		
 		configModalSubmit();
+		
+		$("#audio").on("click",function(){
+			if($(this).is(":checked")) {
+				$("#audio-wrap").slideDown();
+			}
+			else{
+				$("#audio-wrap").slideUp();
+			}
+		})
+		
+		// 频谱数据选择数据按钮事件
+		$("#spectrum-choose-btn").on("click",function(ev){
+			if($("#spectrum-choose-list").is(":hidden")) {
+				$("#spectrum-choose-list").slideDown();
+				// 加载频谱数据
+				load_spectrum_data();
+			}
+			else {
+				$("#spectrum-choose-list").slideUp();
+			}
+			
+		})
+		
+		// 关闭频谱数据列表框
+		$("#data-list-close").on("click",function(){
+			$("#spectrum-choose-list").slideUp();
+		})
+		
+		// 音频选择数据按钮事件
+		$("#audio-choose-btn").on("click",function(){
+			if($("#audio-choose-list").is(":hidden")) {
+				$("#audio-choose-list").slideDown();
+				// 加载频谱数据
+				load_audio_data();
+			}
+			else {
+				$("#audio-choose-list").slideUp();
+			}
+		})
+		
+		// 关闭音频选择数据列表框
+		$("#audio-list-close").on("click",function(){
+			$("#audio-choose-list").slideUp();
+		})
+		
+		//关闭音频播放
+		$("#audio-close").on("click",function(){
+			$("#audio-wrap").slideUp();
+		})
+		
 	}
 	
 	
@@ -1222,6 +1272,103 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 	        });  
 	        return o;  
 	 }  
+	 
+		// 加载频谱数据
+		function load_spectrum_data() {
+			require([ "bootstrap", "bootstrapTable"],function(){
+				require(["bootstrap_table_cn"],function(){
+					$('#spectrum-table').bootstrapTable({
+						method : 'get',
+						contentType : "application/x-www-form-urlencoded", //必须要有！！！！
+						striped : true, 
+						dataField : "rows", 
+						detailView : false,
+						pageNumber : 1, //初始化加载第一页，默认第一页
+						pagination : true, //是否分页
+						url :"assets/json/spectrum-player-list.json",
+						queryParamsType : 'limit', //查询参数组织方式
+						queryParams : function(params) {
+							
+							return params
+						}, //请求服务器时所传的参数
+						onClickRow: function(row){
+						},
+						sidePagination : 'server', //指定服务器端分页
+						pageSize : 5, //单页记录数
+						pageList : [ 5, 10, 20, 30 ], //分页步进值
+						clickToSelect : true, //是否启用点击选中行
+						responseHandler : function(res) {
+							return res;
+						},
+						columns : [ {
+							checkbox:true,
+							title:"选中"
+						},{
+							field : 'station_name',
+							title : '监测站'
+						}, {
+							field : 'file_name',
+							title : '文件名称'
+						}, {
+							field : 'file_size',
+							title : '文件大小'
+						}, {
+							field : 'file_time',
+							title : '文件时间'
+						}]
+					});
+				})
+			})
+			
+		}
+		
+		// 加载音频数据
+		function load_audio_data(){
+			require([ "bootstrap", "bootstrapTable"],function(){
+				require(["bootstrap_table_cn"],function(){
+					$('#audio-table').bootstrapTable({
+						method : 'get',
+						contentType : "application/x-www-form-urlencoded", //必须要有！！！！
+						striped : true, 
+						dataField : "rows", 
+						detailView : false,
+						pageNumber : 1, //初始化加载第一页，默认第一页
+						pagination : true, //是否分页
+						url :"assets/json/spectrum-player-list.json",
+						queryParamsType : 'limit', //查询参数组织方式
+						queryParams : function(params) {
+							
+							return params
+						}, //请求服务器时所传的参数
+						onClickRow: function(row){
+						},
+						sidePagination : 'server', //指定服务器端分页
+						pageSize : 5, //单页记录数
+						pageList : [ 5, 10, 20, 30 ], //分页步进值
+						clickToSelect : true, //是否启用点击选中行
+						responseHandler : function(res) {
+							return res;
+						},
+						columns : [ {
+							checkbox:true,
+							title:"选中"
+						},{
+							field : 'station_name',
+							title : '监测站'
+						}, {
+							field : 'file_name',
+							title : '文件名称'
+						}, {
+							field : 'file_size',
+							title : '文件大小'
+						}, {
+							field : 'file_time',
+							title : '文件时间'
+						}]
+					});
+				})
+			})
+		}
 	
 	return {
 		init : init,

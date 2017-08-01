@@ -13,6 +13,7 @@
 <link href='3.9/js/dojo/library/select2/select2.min.css' rel='stylesheet' />
 <link href='css/common.css' rel='stylesheet' />
 <link href='css/signal.css' rel='stylesheet' />
+<link rel="stylesheet" href="css/audio_player.css">
 <link rel="stylesheet" href="3.9/js/esri/css/esri.css">
 <link rel="stylesheet" href="3.9/js/dojo/dijit/themes/tundra/tundra.css">
 <link rel="stylesheet" href="3.9/js/dojo/webgis/widgets/themes/darkangel/darkangel.css">
@@ -52,19 +53,24 @@
     </div>
   </div>
 
-  <!--content-->
-  <div class='content-wrap'>
-      <span id = "signal_detail"></span>
-    <section class='flex-row'>
-      <div class='box'>
-        				<div class='data-play'>
-					<label class='module-name'>数据回放<span class="data-type">IQ数据</span></label>
-					<a class='btn btn-default btn-choose pull-right'>选择数据</a>
+	<!--content-->
+	<div class='content-wrap'>
+		<span id="signal_detail"></span>
+		<section class='flex-row'>
+			<div class='box'>
+				<div class='data-play'>
+					<label class='module-name'>数据回放<span class="data-type">频谱</span></label>
+					<a class='btn btn-default btn-choose pull-right' id="spectrum-choose-btn">选择数据</a>
+					<div class="data-choose-list" id="spectrum-choose-list">
+						<div class="pull-right"><span id="data-list-close" class="ico-close">&times;</span></div>
+						<table class="table table-striped table-hover" id="spectrum-table">
+						</table>
+					</div>
 					<ul class="nav nav-pills pull-right">
 						<li role="presentation"><a href="#">
 								<div class="checkbox checkbox-primary flex1 ">
-									<input type="checkbox" value="2" name="data-type" id="spectrum">
-									<label for="spectrum"> 频谱 </label>
+									<input type="checkbox" value="2" name="data-type" id="IQ">
+									<label for="spectrum"> IQ数据 </label>
 								</div>
 						</a></li>
 						<li role="presentation"><a href="#">
@@ -81,37 +87,92 @@
       </div>
     </section>
 
-    <section class='flex-row'>
-      <div class='box'>
-        <div class='locate-coverage'>
-          <label class='module-name'>
-            <img src='images/locate.png' />&nbsp;&nbsp;成都某某站台
-          </label>
-          <div class='pull-right'>
-            电磁覆盖率:&nbsp;
-            <span class='coverage-number'>90%</span>
-          </div>
-        </div>
-        <div id="mapDiv"padding: 10px; height: 960px"></div>
-      </div>
-    </section>
-    <section class='flex-row'>
-      <div class='box'>
-        <div class='month-data flex-column'>
-          <h4 class='title'>电平峰值</h4>
-          <div class='flex1' id='levelChart'></div>
-        </div>
-      </div>
-    </section>
-    <section class='flex-row'>
-      <div class='box'>
-        <div class='month-data flex-column'>
-          <h4 class='title'>近3个月占用度（按天统计）</h4>
-          <div class='flex1' id='monthChart'></div>
-        </div>
-      </div>
-    </section>
-  </div>
+		<!-- 音频 -->
+		<section class="flex-row" style="display: none" id="audio-wrap">
+			<div class='box'>
+				<div class='data-play'>
+					<label class='module-name'>数据回放<span class="data-type">音频</span></label>
+					<a class="ico-close close-box " id="audio-close">&times;</a>
+					<a class='btn btn-default btn-choose pull-right' id="audio-choose-btn">选择数据</a>
+					 
+					<div class="data-choose-list" id="audio-choose-list">
+						<div class="pull-right"><span id="audio-list-close" class="ico-close">&times;</span></div>
+						<table class="table table-striped table-hover" id="audio-table">
+						</table>
+					</div>
+					<aside class="control">
+						<p class="winTitle">
+							<span title="close" id="close">X</span>
+						</p>
+						<ul id="controlPanel">
+							<li class='play'>
+								<div id="pre" class="controlBtn" title="previous">I&lt;</div>
+								<div id="playBtn" class="controlBtn" title="stop">O</div>
+								<div id="next" class="controlBtn" title="next">&gt;I</div>
+							</li>
+							
+							<li>
+								<div id="empty" title="清空列表">清空</div>
+							</li>
+							<li>
+								<div class="添加" title="添加文件，或者拖拽文件至列表">
+									<label for="addFiles">添加</label> 
+									<input type="file"	id="addFiles" multiple style="width:100px;opacity:0" />
+								</div>
+							</li>
+						</ul>
+						<div class="dividLine"></div>
+						<ol id="playlist">
+						</ol>
+					</aside>
+				</div>
+				<div class="data-play-chart">
+					<header>
+						<span id="showControl"></span> <span id="info">
+							音频播放</span>
+					</header>
+					<div class="wrapper">
+
+						<div id="visualizer">
+							<canvas width="800px" height="350" id="canvas">抱歉！您的浏览器不支持Canvas :(</canvas>
+							<div id="mirrorWrapper">
+								<canvas width="800px" height="250" id="mirror"></canvas>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class='flex-row'>
+			<div class='box'>
+				<div class='locate-coverage'>
+					<label class='module-name'> <img src='images/locate.png' />&nbsp;&nbsp;成都某某站台
+					</label>
+					<div class='pull-right'>
+						电磁覆盖率:&nbsp; <span class='coverage-number'>90%</span>
+					</div>
+				</div>
+				<div id="mapDiv"padding: 10px; height: 960px"></div>
+			</div>
+		</section>
+		<section class='flex-row'>
+			<div class='box'>
+				<div class='month-data flex-column'>
+					<h4 class='title'>电平峰值</h4>
+					<div class='flex1' id='levelChart'></div>
+				</div>
+			</div>
+		</section>
+		<section class='flex-row'>
+			<div class='box'>
+				<div class='month-data flex-column'>
+					<h4 class='title'>近3个月占用度（按天统计）</h4>
+					<div class='flex1' id='monthChart'></div>
+				</div>
+			</div>
+		</section>
+	</div>
 
   <!-- Modal 日占用度-->
   <div class="modal fade" id="modalDay" tabindex="-1" role="dialog" aria-labelledby="modalDayLabel">
@@ -321,7 +382,7 @@
   <input id = 'stationKey' class = 'after_modal_colse'  style="display: none"/>
   <script src="3.9/init.js"></script>
   <script type="text/javascript">
-    require([ "home/signal/signal_map_init","jquery","dojo/domReady!" ],
+    require([ "home/signal/signal_map_init","jquery","dojo/domReady!" ,"home/signal/audio_player"],
       function(init) {
         require(["bootstrap","echarts","select2","home/signal/signal_manage"], function(bootstrap,echarts,select2,signal_manage) {
              signal_manage.init();

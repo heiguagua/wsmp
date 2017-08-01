@@ -148,7 +148,8 @@
       font-size: 14px; }
 
 #signal .data-play {
-  padding: 15px; }
+  padding: 15px; 
+  position:relative;}
   #signal .data-play .module-name {
     font-size: 16px;
     color: #505363; }
@@ -248,4 +249,40 @@
 }
 #IQChart{
 	min-height:200px;
+}
+.data-choose-list{
+	display:none;
+	position: absolute;
+    right: 0;
+    width: 500px;
+    background: #FFF;
+    z-index: 99;
+    box-shadow: 0 0 12px #cecece;
+}
+.ico-close{
+	display: inline-block;
+    padding: 2px 12px;
+    font-size: 20px;
+    cursor: pointer;
+}
+.ico-close.close-box{
+	float:right;
+	margin-left: 10px;
+    position: relative;
+    top: -16px;
+    right:-16px;
+    text-decoration: none;
+}
+.ico-close:hover{
+	background:#eee;
+}
+
+td.bs-checkbox{
+	position:relative;
+}
+.data-choose-list .pagination{
+	margin:10px 0;
+}
+.data-choose-list .fixed-table-body{
+	padding:0 10px 0 15px;
 }
