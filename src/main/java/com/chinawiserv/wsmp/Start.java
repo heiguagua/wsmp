@@ -8,6 +8,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.scheduling.annotation.EnableAsync;
 
+//
 @SpringBootApplication
 // @MapperScan("com.chinawiserv.wsmp.mapper")
 @EnableAsync
