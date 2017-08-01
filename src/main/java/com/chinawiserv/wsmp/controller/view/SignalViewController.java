@@ -38,7 +38,8 @@ public class SignalViewController {
 	@Autowired
 	HbaseClient hbaseClient;
 
-	@RequestMapping(path = { "/", "" })
+	@RequestMapping(path = { "/", ""
+	})
 	public String home() {
 		return "signal/signal_home";
 	}
@@ -48,7 +49,7 @@ public class SignalViewController {
 			@RequestParam String areaCode, @RequestParam String stationCode, @RequestParam String id) throws Exception {
 
 		long frequency = Long.parseLong(centorfreq);
-		Map<String, Object> map = hbaseClient.queryFeaturePara(stationCode, beginTime, endTime, frequency);
+		Map<String, Object> map = hbaseClient.queryFeaturePara(stationCode, beginTime, frequency);
 
 		Map<String, Object> requestPara = Maps.newLinkedHashMap();
 
@@ -114,7 +115,8 @@ public class SignalViewController {
 		return modelAndView;
 	}
 
-	@PostMapping(path = { "/stationlist" })
+	@PostMapping(path = { "/stationlist"
+	})
 	public ModelAndView stationList(ModelAndView modelAndView, @RequestParam Map<String, Object> param) {
 		modelAndView.setViewName("signal/monitoring_station_list");
 		List<MonitoringStation> stations = new ArrayList<>();
