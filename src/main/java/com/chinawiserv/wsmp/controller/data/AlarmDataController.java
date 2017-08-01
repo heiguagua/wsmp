@@ -59,10 +59,10 @@ public class AlarmDataController {
 	@Autowired
 	WebApplicationContext applicationContext;
 
-	@Autowired
+	//@Autowired
 	HbaseClient hbaseClient;
 
-	@Autowired
+	//@Autowired
 	StationService stationService;
 
 	@Value("${upperBound.value:5000000}")
@@ -104,24 +104,31 @@ public class AlarmDataController {
 		return map;
 
 	}
-
-	@GetMapping(path = "/monthCharts")
-	public Object monthCharts(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
-		HashMap<String, Object> map = new HashMap<>();
+	
+	@GetMapping(path = "/secondLevelChart")
+	public Object secondLevelChart(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
+		
+		HashMap<String, Object> reslutMap = new HashMap<>();
 		try {
 
 			centorFreq = (long) (88.8 * 1000000);
-			OccAndMax reslutResponce = hbaseClient.queryOccDay("52010062", "20170717000000", 90, centorFreq);
+			OccAndMax reslutResponce = hbaseClient.queryOccDay("52010062", "20170717000000", 30, centorFreq);
+			Map<String, Object> Max = reslutResponce.getMax();
 			Map<String, Object> Occ = reslutResponce.getOcc();
 			if (Occ.size() == 0) {
+				
 				HashMap<String, Object> restlutHashMap = Maps.newHashMap();
+				
 				String[] xAxis = new String[] {};
 				double[] series = new double[] {};
+				
 				restlutHashMap.put("xAxis", xAxis);
 				restlutHashMap.put("series", series);
-				return restlutHashMap;
+				
+				reslutMap.put("dayOcc", restlutHashMap);
 			}
 			else {
+				
 				LinkedList<Object> xAxis = Lists.newLinkedList();
 				LinkedList<Object> series = Lists.newLinkedList();
 
@@ -139,9 +146,144 @@ public class AlarmDataController {
 
 				restlutHashMap.put("xAxis", xAxis);
 				restlutHashMap.put("series", series);
+				
+				reslutMap.put("dayOcc", restlutHashMap);
 			}
+			
+			if (Max.size() == 0) {
+				
+				HashMap<String, Object> restlutHashMap = Maps.newHashMap();
+				
+				String[] xAxis = new String[] {};
+				double[] series = new double[] {};
+				
+				restlutHashMap.put("xAxis", xAxis);
+				restlutHashMap.put("series", series);
+				
+				reslutMap.put("max", restlutHashMap);
+	
+			}else{
+				
+				LinkedList<Object> xAxis = Lists.newLinkedList();
+				LinkedList<Object> series = Lists.newLinkedList();
 
-			return map;
+				final double pow = Math.pow(10, 6);
+
+				Max.forEach((k, v) -> {
+
+					final double key = Double.parseDouble(k.toString()) / pow;
+
+					xAxis.add(key);
+					series.add(v);
+				});
+
+				HashMap<String, Object> restlutHashMap = Maps.newHashMap();
+
+				restlutHashMap.put("xAxis", xAxis);
+				restlutHashMap.put("series", series);
+				
+				reslutMap.put("max", restlutHashMap);
+				
+			}
+			
+			return reslutMap;
+		}
+		catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			HashMap<String, Object> restlutHashMap = Maps.newHashMap();
+			String[] xAxis = new String[] {};
+			double[] series = new double[] {};
+			restlutHashMap.put("xAxis", xAxis);
+			restlutHashMap.put("series", series);
+			return restlutHashMap;
+		}
+
+	}
+
+	
+	@GetMapping(path = "/firstLevelChart")
+	public Object firstLevelChart(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
+		
+		HashMap<String, Object> reslutMap = new HashMap<>();
+		try {
+
+			centorFreq = (long) (88.8 * 1000000);
+			OccAndMax reslutResponce = hbaseClient.queryOccDay("52010062", "20170717000000", 30, centorFreq);
+			Map<String, Object> Max = reslutResponce.getMax();
+			Map<String, Object> Occ = reslutResponce.getOcc();
+			if (Occ.size() == 0) {
+				
+				HashMap<String, Object> restlutHashMap = Maps.newHashMap();
+				
+				String[] xAxis = new String[] {};
+				double[] series = new double[] {};
+				
+				restlutHashMap.put("xAxis", xAxis);
+				restlutHashMap.put("series", series);
+				
+				reslutMap.put("monthOcc", restlutHashMap);
+			}
+			else {
+				
+				LinkedList<Object> xAxis = Lists.newLinkedList();
+				LinkedList<Object> series = Lists.newLinkedList();
+
+				final double pow = Math.pow(10, 6);
+
+				Occ.forEach((k, v) -> {
+
+					final double key = Double.parseDouble(k.toString()) / pow;
+
+					xAxis.add(key);
+					series.add(v);
+				});
+
+				HashMap<String, Object> restlutHashMap = Maps.newHashMap();
+
+				restlutHashMap.put("xAxis", xAxis);
+				restlutHashMap.put("series", series);
+				
+				reslutMap.put("monthOcc", restlutHashMap);
+			}
+			
+			if (Max.size() == 0) {
+				
+				HashMap<String, Object> restlutHashMap = Maps.newHashMap();
+				
+				String[] xAxis = new String[] {};
+				double[] series = new double[] {};
+				
+				restlutHashMap.put("xAxis", xAxis);
+				restlutHashMap.put("series", series);
+				
+				reslutMap.put("max", restlutHashMap);
+	
+			}else{
+				
+				LinkedList<Object> xAxis = Lists.newLinkedList();
+				LinkedList<Object> series = Lists.newLinkedList();
+
+				final double pow = Math.pow(10, 6);
+
+				Max.forEach((k, v) -> {
+
+					final double key = Double.parseDouble(k.toString()) / pow;
+
+					xAxis.add(key);
+					series.add(v);
+				});
+
+				HashMap<String, Object> restlutHashMap = Maps.newHashMap();
+
+				restlutHashMap.put("xAxis", xAxis);
+				restlutHashMap.put("series", series);
+				
+				reslutMap.put("max", restlutHashMap);
+				
+			}
+			
+			return reslutMap;
 		}
 		catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -325,7 +467,7 @@ public class AlarmDataController {
 		reslut.put("rows", reslutDtos);
 		return reslut;
 	}
-
+	
 	@GetMapping("/maxlevel")
 	public Object getMaxlevel(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
 		try {

@@ -2,8 +2,8 @@
  * 
  */
 define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart"], function(ajax, echarts, jquery,day_chart) {
-	function charts_init(data) {
-		ajax.get("data/alarm/monthCharts",data, function(reslut) {
+	function charts_init(reslut) {
+		
 			var optionMonth = {
 				color : [ 'rgb(55,165,255)' ],
 				tooltip : {
@@ -32,7 +32,7 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart"], function(ajax, ec
 							color : '#505363'
 						}
 					},
-					data : reslut.xAxis
+					data : reslut.monthOcc.xAxis
 						//
 				},
 				yAxis : {
@@ -65,7 +65,7 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart"], function(ajax, ec
 						type : 'line',
 						showSymbol : false,
 						symbolSize : 6,
-						data :reslut.series 
+						data : reslut.monthOcc.series 
 							// reslut.series 
 							//[ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, ]
 					}
@@ -77,16 +77,8 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart"], function(ajax, ec
 			monthChart.on('click', function(params) {
 				$('#modalDay').modal();
 				
-				var statiocode  =$('#station_list').find('option:selected').val();
-				var beginTime = $('#signal_list').find('option:selected').attr("begintime");
-				var centorFreq = $('#signal_list').find('option:selected').attr("centorfreq");
+				changeView();
 				
-				var data ={};					
-				data.stationCode = statiocode;
-				data.beginTime = beginTime;
-				data.centorFreq = centorFreq;
-				
-				day_chart.init(data);
 			})
 			
 			window.onresize = function(){
@@ -96,8 +88,31 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart"], function(ajax, ec
 				monthChart.setOption(optionMonth);
 			}
 
-		});
 
+	}
+	
+	
+function changeView(){
+		
+		var statiocode  =$('#station_list').find('option:selected').val();
+		var beginTime = $('#signal_list').find('option:selected').attr("begintime");
+		var centorFreq = $('#signal_list').find('option:selected').attr("centorfreq");
+		
+		var data ={};					
+		data.stationCode = statiocode;
+		data.beginTime = beginTime;
+		data.centorFreq = centorFreq;
+		
+		ajax.get("data/alarm/secondLevelChart",data,function(){
+			
+//			level_charts.init(reslut);
+//			
+//			month_charts.init(reslut);
+			
+			day_chart.init(data);
+			
+		});
+		
 	}
 
 	return {

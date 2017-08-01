@@ -15,7 +15,7 @@ public class WebServiceSeFonConfig {
 	@Value("${sefon.webservice.stationservice}")
 	private String url;
 
-	@Bean
+	//@Bean
 	public StationService initStationService() throws MalformedURLException {
 		URL wsdlLoction = new URL(url);
 		StationService stationService = new StationService(wsdlLoction);

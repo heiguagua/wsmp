@@ -556,24 +556,18 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 		
 		getSinalDetail(singalDetail);	
 		
-		var levelParam = {}
+		var fisrtLevel = {};
 		
-		levelParam.centorFreq = centorfreq;
-		levelParam.beginTime = beginTime;
-		levelParam.stationCode = stationcode;
+		fisrtLevel.stationCode = statiocode;
+		fisrtLevel.beginTime = beginTime;
+		fisrtLevel.centorFreq = centorfreq;
 		
-		
-		initMonthchart(levelParam);
-		
-		var maxleve = {}
-		
-		maxleve.centorFreq = centorfreq;
-		maxleve.beginTime = beginTime;
-		maxleve.stationCode = stationcode;
-		
-		maxlevelinit(maxleve);
-		
-		
+		ajax.get("data/alarm/firstLevelChart",fisrtLevel,function(){
+			
+			initMonthchart(data);
+			
+			maxlevelinit(data);
+		});
 		
 	}
 	
@@ -608,7 +602,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 							color : '#505363'
 						}
 					},
-					data : reslut.xAxis
+					data : reslut.max.xAxis
 						//
 				},
 				yAxis : {
@@ -641,7 +635,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 						type : 'line',
 						showSymbol : false,
 						symbolSize : 6,
-						data :reslut.series 
+						data :reslut.max.series 
 							// reslut.series 
 							//[ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, ]
 					}
@@ -659,8 +653,6 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 	
 	
 	function initMonthchart(levelParam){
-		
-		ajax.get("data/signal/monthCharts",levelParam,function(restlut){
 			
 			var optionMonth = {
 					color : [ 'rgb(55,165,255)' ],
@@ -690,7 +682,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 								color : '#505363'
 							}
 						},
-						data : restlut.xAxis
+						data : restlut.Occ.xAxis
 					},
 					yAxis : {
 						type : 'value',
@@ -721,7 +713,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 							type : 'line',
 							showSymbol : false,
 							symbolSize : 6,
-							data : restlut.series
+							data : restlut.Occ.series
 						}
 					]
 				};
@@ -734,12 +726,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 				}
 				monthChart.on('click', function(params) {
 					$('#modalDay').modal();
-				})
-			
-			
-			
-		});
-		
+				});
 		
 	}
 	
@@ -815,6 +802,20 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 		
 
 		$('#modalDay').on('shown.bs.modal', function(e) {
+			
+			var stationcode = $("#station_list").find('option:selected').val();
+	    	var centorfreq = $('#signal_list1').find('option:selected').attr("centorFreq");
+			var endTime = $('#signal_list1').find('option:selected').attr("endTime");
+			var beginTime = $('#signal_list1').find('option:selected').attr("beginTime");
+			
+			var secondLevel = {};
+			
+			secondLevel.stationCode = statiocode;
+			secondLevel.beginTime = beginTime;
+			secondLevel.centorFreq = centorfreq;
+			
+			ajax.get("data/alarm/secondLevelChart",secondLevel,function(reslut){
+				
 			var optionDay = {
 					color : [ 'rgb(55,165,255)' ],
 					tooltip : {
@@ -843,7 +844,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 								color : '#505363'
 							}
 						},
-						data : [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24' ]
+						data : reslut.dayOcc.xAxis
 					},
 					yAxis : {
 						type : 'value',
@@ -874,7 +875,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 							type : 'line',
 							showSymbol : false,
 							symbolSize : 6,
-							data : [ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, 51.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, 55.2, 58.4, 60.0, 58.1, 56.2, 58.9 ]
+							data : reslut.dayOcc.series
 						}
 					]
 				};
@@ -885,6 +886,8 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 					dayChart.clear();
 					dayChart.setOption(optionDay);
 				}
+				
+			});	
 
 		});
 	}
