@@ -11,6 +11,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,7 @@ import com.chinawiserv.apps.util.logger.Logger;
 import com.chinawiserv.wsmp.client.WebServiceSoapFactory;
 import com.chinawiserv.wsmp.hbase.HbaseClient;
 import com.chinawiserv.wsmp.pojo.Singal;
+import com.chinawiserv.wsmp.tuples.Tuple2InJava;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
@@ -39,7 +41,7 @@ public class SiganlDataController {
 
 	private ObjectMapper mapper = new ObjectMapper();
 
-	// @Autowired
+	@Autowired
 	HbaseClient hbaseClient;
 
 	@Value("${upperBound.value:5000000}")
@@ -48,17 +50,18 @@ public class SiganlDataController {
 	@Value("${upperBound.value:5000000}")
 	long lowerBound;
 
-	@GetMapping("/FmRate")
-	public Object getFMRate() {
+	@PostMapping("/insterConfig")
+	public void insterConfig(@RequestBody Map<String, String> param) {
+		System.out.println(param);
+	}
 
-		// String id = "52010062";
-		// long frequency = 4618795533551315130L;
-		// String timeStart = "20170728000000";
-		// String timeStop = "20170728000000";
-		// Tuple2InJava values = hbaseClient.queryItu(id, timeStart, timeStop,
-		// frequency);
-		// System.out.println(values._1);
-		// System.out.println(values._2);
+	@GetMapping("/FmRate")
+	public Object getFMRate(@RequestParam String id, @RequestParam String timeStart, @RequestParam String timeStop, @RequestParam String frequency)
+			throws Exception {
+
+		long frequencyLong = Long.parseLong(frequency);
+
+		Tuple2InJava map = hbaseClient.queryItu(id, timeStart, timeStop, frequencyLong);
 
 		final List<Map<String, Object>> reslut = Lists.newArrayListWithExpectedSize(2);
 
@@ -66,10 +69,10 @@ public class SiganlDataController {
 		final Map<String, Object> map2 = Maps.newLinkedHashMap();
 
 		map1.put("name", "AM");
-		map1.put("value", 20);
+		map1.put("value", map._1);
 
 		map2.put("name", "FM");
-		map2.put("value", 80);
+		map2.put("value", map._2);
 
 		reslut.add(map1);
 		reslut.add(map2);
@@ -197,6 +200,56 @@ public class SiganlDataController {
 			HashMap<String, Object> restlutHashMap = Maps.newHashMap();
 			restlutHashMap.put("xAxis", Collections.emptyList());
 			restlutHashMap.put("series", Collections.emptyList());
+			return restlutHashMap;
+		}
+
+	}
+
+	@GetMapping(path = "/monthCharts")
+	public Object monthCharts(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
+		HashMap<String, Object> map = new HashMap<>();
+		try {
+
+			centorFreq = (long) (88.8 * 1000000);
+			Map<String, Object> reslutResponce = hbaseClient.queryOccDay("52010062", "20170717000000", 90, centorFreq);
+
+			if (reslutResponce.size() == 0) {
+				HashMap<String, Object> restlutHashMap = Maps.newHashMap();
+				String[] xAxis = new String[] {};
+				double[] series = new double[] {};
+				restlutHashMap.put("xAxis", xAxis);
+				restlutHashMap.put("series", series);
+				return restlutHashMap;
+			} else {
+				LinkedList<Object> xAxis = Lists.newLinkedList();
+				LinkedList<Object> series = Lists.newLinkedList();
+
+				final double pow = Math.pow(10, 6);
+
+				reslutResponce.forEach((k, v) -> {
+
+					final double key = Double.parseDouble(k.toString()) / pow;
+
+					xAxis.add(key);
+					series.add(v);
+				});
+
+				HashMap<String, Object> restlutHashMap = Maps.newHashMap();
+
+				restlutHashMap.put("xAxis", xAxis);
+				restlutHashMap.put("series", series);
+			}
+
+			return map;
+		}
+		catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			HashMap<String, Object> restlutHashMap = Maps.newHashMap();
+			String[] xAxis = new String[] {};
+			double[] series = new double[] {};
+			restlutHashMap.put("xAxis", xAxis);
+			restlutHashMap.put("series", series);
 			return restlutHashMap;
 		}
 

@@ -2,9 +2,9 @@
  * Created by wuhaoran on 2017/2/25.
  */
 //
-define(["ajax","dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer", "dojo/request", "esri/layers/GraphicsLayer", "esri/dijit/Scalebar"
+define(["home/alarm/alarm_manage","ajax","dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer", "dojo/request", "esri/layers/GraphicsLayer", "esri/dijit/Scalebar"
 	, "esri/symbols/TextSymbol", "esri/geometry/Point", "esri/graphic", "esri/symbols/Font", "esri/symbols/SimpleMarkerSymbol" ],
-	function(ajax,parser, Map, ArcGISTiledMapServiceLayer, request, GraphicsLayer, Scalebar, TextSymbol, Point, graphic, Font, SimpleMarkerSymbol) {
+	function(alarm_manage,ajax,parser, Map, ArcGISTiledMapServiceLayer, request, GraphicsLayer, Scalebar, TextSymbol, Point, graphic, Font, SimpleMarkerSymbol) {
 		var testWidget = null;
 		//var map = null;
 		//config.defaults.io.corsEnabledServers.push("192.168.13.79:7080");
@@ -67,6 +67,7 @@ define(["ajax","dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLaye
 				var value = $("#station_list").find('option:selected').val();
 				var kmz = $('#search').val();
 				var data = {"stationCode":value,"kmz":kmz};
+				alarm_manage.changeView();
 				ajax.get("data/alarm/getStation",data,function(reslut){
 					glayer.clear();
 					var p = new Point(reslut);

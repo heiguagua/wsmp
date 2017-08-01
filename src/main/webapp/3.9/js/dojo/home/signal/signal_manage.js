@@ -8,21 +8,18 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 		// 信号列表change事件
 		$("#signal_list1 .select2-picker").change(function() {
 			var selected_val = $(this).val();
+			
 			getStations(selected_val);
 			
-			var data = {}
-			
-			data.id  = selected_val;
-			
-			getSinalDetail(data);
-			
-			submitButton();
-			
-			closeModal();
-		})
+		});
+		
+		submitButton();
+		
+		closeModal();
 		
 		init_player();
-
+		
+		configModalSubmit();
 	}
 	
 	
@@ -53,6 +50,23 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 				alert('sucssed');
 			});
 		});
+	}
+	
+	function configModalSubmit(){
+		
+		$("#appleyConfig").click(function() {
+			
+			 var params = $("#configFrom").serializeObject(); //将表单序列化为JSON对象   
+             ajax.post("data/signal/insterConfig",params,function(){
+            	 
+            	 alert("成功");
+            	 
+             });
+			
+		});
+		
+		
+		
 	}
 	
 	function signalClick(map,pSymbol,glayer){
@@ -349,6 +363,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 					var s_val = $('#signal_list1').find('option:selected').val();
 					if (s_val) {
 						getStations(s_val);
+						
 					}
 				});
 //				ajax.get("data/signal/singallist", data, function(result) {
@@ -415,28 +430,6 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 				
 			});
 			
-			
-//			ajax.get("data/signal/singallist", data, function(result) {
-//				var datas = [];
-//				for (var i = 0; i < result.length; i++) {
-//					datas.push({
-//						id : result[i].id,
-//						text : result[i].text
-//					});
-//				}
-//				$("#signal_list1 .select2-picker").select2({
-//					data : datas,
-//					language : 'zh-CN'
-//				});
-//			
-//				var s_val = $('#signal_list1').find('option:selected').val();
-//				
-//				if (s_val) {
-//					getStations(s_val);
-//				}
-//
-//
-//			})
 		});
 
 
@@ -454,19 +447,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 	}
 
 	function getStations(signal_id) {
-		$("#station_list .select2-picker").html('');
-		ajax.get("data/signal/stationList", {
-			id : signal_id
-		}, function(result) {
-			console.log(result);
-			var datas = [];
-			for (var i = 0; i < result.length; i++) {
-				datas.push({
-					id : result[i].id,
-					text : result[i].text
-				});
-			}
-			
+		$("#station-list2").children().remove();	
 			var info = Binding.getUser();
 	        console.log(info);
 	        info = JSON.parse(info);
@@ -475,15 +456,21 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 	          	
 	        var data = Binding.getMonitorNodes(code);
 	        data = JSON.parse(data);
-			
+	        
+	        var requsetparam = {}
+	        var id = $("#signal_list1").find('option:selected').val();
+	        requsetparam.id = id;
+	        
+			ajax.get("data/signal/stationList",requsetparam,function(reslut){
 				 var rsize = data.length;
-				 var arryIdSize = result.length;
-				 var reslut = new Array();
+				 var arryIdSize = reslut.length;
+				 console.log(reslut);
+				 console.log(data);
 				 html = ''
 				 for(var i = 0; i < rsize; i++){
 					for(var j = 0; j <arryIdSize;j++){
 						var rcode = data[i].Num;
-						var arryCode = result[j];
+						var arryCode = reslut[j];
 						if(rcode == arryCode){
 							var inerhtml = "<option style='width: 300px;' class='station' value = '"+data[i].Num+"'>"+data[i].Name+"</option>"
 							html +=inerhtml;
@@ -491,38 +478,224 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 					} 
 				 }
 				 console.log(html);
-				$("#signalpicker").children().remove();
-				$("#signalpicker").append(html);
-//					$("#station_list .select2-picker").select2({
-//						data : datas
-//					});
-				
-				
-//					var id = $("#signal_list1").find('option:selected').val();
-//					
-//					singalId = {}
-//					
-//					singalId.id = singalId;
-					
-					var stationcode = $("#station_list").find('option:selected').val();
-			    	var centorfreq = $('#signal_list1').find('option:selected').attr("centorFreq");
-					var endTime = $('#signal_list1').find('option:selected').attr("endTime");
-					var beginTime = $('#signal_list1').find('option:selected').attr("beginTime");
-			        
-					var singalDetail = {};
-					
-					singalDetail.stationcode  = stationcode;
-					singalDetail.areaCode = code;
-					singalDetail.centorfreq = centorfreq;
-					singalDetail.endTime = endTime;
-					singalDetail.beginTime = beginTime;
-					
-					getSinalDetail(singalDetail);	
-			
-		})
+				$("#station-list2").append(html);
+				changeView();
+			});
 	}
 	
+	function changeView(){
+		
+		var stationcode = $("#station_list").find('option:selected').val();
+    	var centorfreq = $('#signal_list1').find('option:selected').attr("centorFreq");
+		var endTime = $('#signal_list1').find('option:selected').attr("endTime");
+		var beginTime = $('#signal_list1').find('option:selected').attr("beginTime");
+        
+		var singalDetail = {};
+		
+		var info = Binding.getUser();
+        console.log(info);
+        info = JSON.parse(info);
+        var code = info.Area.Code;
+        
+		singalDetail.stationCode  = stationcode;
+		singalDetail.areaCode = code;
+		singalDetail.centorfreq = centorfreq;
+		singalDetail.endTime = endTime;
+		singalDetail.beginTime = beginTime;
+		singalDetail.id = $("#signal_list1").find('option:selected').val();
+		
+		getSinalDetail(singalDetail);	
+		
+		var levelParam = {}
+		
+		levelParam.centorFreq = centorfreq;
+		levelParam.beginTime = beginTime;
+		levelParam.stationCode = stationcode;
+		
+		
+		initMonthchart(levelParam);
+		
+		var maxleve = {}
+		
+		maxleve.centorFreq = centorfreq;
+		maxleve.beginTime = beginTime;
+		maxleve.stationCode = stationcode;
+		
+		maxlevelinit(maxleve);
+		
+		
+		
+	}
+	
+	function maxlevelinit(data) {
+		ajax.get("data/signal/maxlevel",data, function(reslut) {
+			console.log(reslut.xAxis);
+			var optionMonth = {
+				color : [ 'rgb(55,165,255)' ],
+				tooltip : {
+					trigger : 'axis'
+				},
+				grid : {
+					left : '1%',
+					right : '1%',
+					bottom : '2%',
+					top : 30,
+					containLabel : true
+				},
+				xAxis : {
+					type : 'category',
+					boundaryGap : false,
+					axisLine : {
+						lineStyle : {
+							color : '#DAE5F0'
+						}
+					},
+					axisTick : {
+						show : false
+					},
+					axisLabel : {
+						textStyle : {
+							color : '#505363'
+						}
+					},
+					data : reslut.xAxis
+						//
+				},
+				yAxis : {
+					type : 'value',
+					max : 120,
+					min : -40,
+					splitNumber : 10,
+					axisLine : {
+						lineStyle : {
+							color : '#DAE5F0'
+						}
+					},
+					axisTick : {
+						show : false
+					},
+					axisLabel : {
+						textStyle : {
+							color : '#505363'
+						}
+					},
+					splitLine : {
+						lineStyle : {
+							color : '#DAE5F0'
+						}
+					}
+				},
+				series : [
+					{
+						name : '',
+						type : 'line',
+						showSymbol : false,
+						symbolSize : 6,
+						data :reslut.series 
+							// reslut.series 
+							//[ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, ]
+					}
+				]
+			};
+			var maxlevelChart = echarts.init($('#levelChart')[0]);
+			maxlevelChart.setOption(optionMonth);
+
+			window.onresize = function(){
+				maxlevelChart.clear();
+				maxlevelChart.setOption(optionMonth);
+			}
+		});
+	}
+	
+	
+	function initMonthchart(levelParam){
+		
+		ajax.get("data/signal/monthCharts",levelParam,function(restlut){
+			
+			var optionMonth = {
+					color : [ 'rgb(55,165,255)' ],
+					tooltip : {
+						trigger : 'axis'
+					},
+					grid : {
+						left : '1%',
+						right : '1%',
+						bottom : '2%',
+						top : 30,
+						containLabel : true
+					},
+					xAxis : {
+						type : 'category',
+						boundaryGap : false,
+						axisLine : {
+							lineStyle : {
+								color : '#DAE5F0'
+							}
+						},
+						axisTick : {
+							show : false
+						},
+						axisLabel : {
+							textStyle : {
+								color : '#505363'
+							}
+						},
+						data : restlut.xAxis
+					},
+					yAxis : {
+						type : 'value',
+						max : 100,
+						splitNumber : 10,
+						axisLine : {
+							lineStyle : {
+								color : '#DAE5F0'
+							}
+						},
+						axisTick : {
+							show : false
+						},
+						axisLabel : {
+							textStyle : {
+								color : '#505363'
+							}
+						},
+						splitLine : {
+							lineStyle : {
+								color : '#DAE5F0'
+							}
+						}
+					},
+					series : [
+						{
+							name : '',
+							type : 'line',
+							showSymbol : false,
+							symbolSize : 6,
+							data : restlut.series
+						}
+					]
+				};
+				var monthChart = echarts.init($('#monthChart')[0]);
+				monthChart.setOption(optionMonth);
+				
+				window.onresize = function(){
+					monthChart.clear();
+					monthChart.setOption(optionMonth);
+				}
+				monthChart.on('click', function(params) {
+					$('#modalDay').modal();
+				})
+			
+			
+			
+		});
+		
+		
+	}
+	
+	
 	function initChart(reslut) {
+		
 		// draw radio pie chart
 		var option = {
 			color : [ 'rgb(44,205,125)', 'rgb(55,165,255)' ],
@@ -593,154 +766,77 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 
 		$('#modalDay').on('shown.bs.modal', function(e) {
 			var optionDay = {
-				color : [ 'rgb(55,165,255)' ],
-				tooltip : {
-					trigger : 'axis'
-				},
-				grid : {
-					left : '1%',
-					right : '2%',
-					bottom : '2%',
-					top : 30,
-					containLabel : true
-				},
-				xAxis : {
-					type : 'category',
-					boundaryGap : false,
-					axisLine : {
-						lineStyle : {
-							color : '#DAE5F0'
+					color : [ 'rgb(55,165,255)' ],
+					tooltip : {
+						trigger : 'axis'
+					},
+					grid : {
+						left : '1%',
+						right : '2%',
+						bottom : '2%',
+						top : 30,
+						containLabel : true
+					},
+					xAxis : {
+						type : 'category',
+						boundaryGap : false,
+						axisLine : {
+							lineStyle : {
+								color : '#DAE5F0'
+							}
+						},
+						axisTick : {
+							show : false
+						},
+						axisLabel : {
+							textStyle : {
+								color : '#505363'
+							}
+						},
+						data : [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24' ]
+					},
+					yAxis : {
+						type : 'value',
+						max : 100,
+						splitNumber : 10,
+						axisLine : {
+							lineStyle : {
+								color : '#DAE5F0'
+							}
+						},
+						axisTick : {
+							show : false
+						},
+						axisLabel : {
+							textStyle : {
+								color : '#505363'
+							}
+						},
+						splitLine : {
+							lineStyle : {
+								color : '#DAE5F0'
+							}
 						}
 					},
-					axisTick : {
-						show : false
-					},
-					axisLabel : {
-						textStyle : {
-							color : '#505363'
+					series : [
+						{
+							name : '',
+							type : 'line',
+							showSymbol : false,
+							symbolSize : 6,
+							data : [ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, 51.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, 55.2, 58.4, 60.0, 58.1, 56.2, 58.9 ]
 						}
-					},
-					data : [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24' ]
-				},
-				yAxis : {
-					type : 'value',
-					max : 100,
-					splitNumber : 10,
-					axisLine : {
-						lineStyle : {
-							color : '#DAE5F0'
-						}
-					},
-					axisTick : {
-						show : false
-					},
-					axisLabel : {
-						textStyle : {
-							color : '#505363'
-						}
-					},
-					splitLine : {
-						lineStyle : {
-							color : '#DAE5F0'
-						}
-					}
-				},
-				series : [
-					{
-						name : '',
-						type : 'line',
-						showSymbol : false,
-						symbolSize : 6,
-						data : [ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, 51.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, 55.2, 58.4, 60.0, 58.1, 56.2, 58.9 ]
-					}
-				]
-			};
-			var dayChart = echarts.init($('#dayChart')[0]);
-			dayChart.setOption(optionDay);
-
-			window.onresize = function(){
-				dayChart.clear();
+					]
+				};
+				var dayChart = echarts.init($('#dayChart')[0]);
 				dayChart.setOption(optionDay);
-			}
-			
-			dayChart.on('click', function() {
-				$('#modalHour').modal()
-			});
+
+				window.onresize = function(){
+					dayChart.clear();
+					dayChart.setOption(optionDay);
+				}
+
 		});
-
-		$('#modalHour').on('shown.bs.modal', function(e) {
-			var optionHour = {
-				color : [ 'rgb(55,165,255)' ],
-				tooltip : {
-					trigger : 'axis'
-				},
-				grid : {
-					left : '1%',
-					right : '2%',
-					bottom : '2%',
-					top : 30,
-					containLabel : true
-				},
-				xAxis : {
-					type : 'category',
-					boundaryGap : false,
-					axisLine : {
-						lineStyle : {
-							color : '#DAE5F0'
-						}
-					},
-					axisTick : {
-						show : false
-					},
-					axisLabel : {
-						textStyle : {
-							color : '#505363'
-						}
-					},
-					data : [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24' ]
-				},
-				yAxis : {
-					type : 'value',
-					max : 100,
-					splitNumber : 10,
-					axisLine : {
-						lineStyle : {
-							color : '#DAE5F0'
-						}
-					},
-					axisTick : {
-						show : false
-					},
-					axisLabel : {
-						textStyle : {
-							color : '#505363'
-						}
-					},
-					splitLine : {
-						lineStyle : {
-							color : '#DAE5F0'
-						}
-					}
-				},
-				series : [
-					{
-						name : '',
-						type : 'line',
-						showSymbol : false,
-						symbolSize : 6,
-						data : [ 55, 60.5, 60.0, 58.1, 56.2, 58.9, 58.2, 57.4, 58.0, 60.1, 59.1, 58.2, 58, 60.0, 58.1, 59.1, 57.9, 51.5, 55.2, 58.4, 58.2, 58, 57.9, 55.2, 58.4 ]
-					}
-				]
-			};
-			var hourChart = echarts.init($('#hourChart')[0]);
-			hourChart.setOption(optionHour);
-			
-			window.onresize = function(){
-				hourChart.clear();
-				hourChart.setOption(optionHour);
-			}
-		})
-
 	}
 	
 	function initSelect2() {
@@ -756,19 +852,19 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 			switch (type){
 				
 			case 0:
-				$("#legal-normal").click();
+				$("#legal-normal").attr("checked", "checked");
 				break;
 			case 1:
-				$("#undeclared").click();
+				$("#legal-normal").attr("checked", "checked");
 				break
 			case 2:
-				$("#nonlocal_station").click();
+				$("#legal-normal").attr("checked", "checked");
 				break
 			case 3:
-				$("#illegal").click();
+				$("#legal-normal").attr("checked", "checked");
 				break
 			case 4:
-				$("#unknown").click();
+				$("#legal-normal").attr("checked", "checked");
 				break;
 			}
 			
@@ -778,7 +874,17 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 			signalClick();
 			//radioTypeUpdataClick();
 			
-			ajax.get("data/signal/FmRate", data, function(reslut) {
+			var stationcode = $("#station_list").find('option:selected').val();
+	    	var centorfreq = $('#signal_list1').find('option:selected').attr("centorFreq");
+			var endTime = $('#signal_list1').find('option:selected').attr("endTime");
+			var beginTime = $('#signal_list1').find('option:selected').attr("beginTime");
+			
+			var para = {}
+			para.id = stationcode;
+			para.timeStop = endTime;
+			para.timeStart = beginTime;
+			para.frequency = centorfreq;
+			ajax.get("data/signal/FmRate", para, function(reslut) {
 				initChart(reslut, data);
 			});
 
@@ -1100,9 +1206,25 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 		var IQChart = echarts.init($('#IQChart')[0]);
 		IQChart.setOption(option);
 	}
-
+	
+	 $.fn.serializeObject = function() {  
+	        var o = {};  
+	        var a = this.serializeArray();  
+	        $.each(a, function() {  
+	            if (o[this.name]) {  
+	                if (!o[this.name].push) {  
+	                    o[this.name] = [ o[this.name] ];  
+	                }  
+	                o[this.name].push(this.value || '');  
+	            } else {  
+	                o[this.name] = this.value || '';  
+	            }  
+	        });  
+	        return o;  
+	 }  
 	
 	return {
-		init : init
+		init : init,
+		changeView : changeView
 	}
 })

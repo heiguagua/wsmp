@@ -7,6 +7,12 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart" ,"h
 	function init() {
 		signal_list
 
+		$("station_list").change(function(){
+			
+			changeView();
+			
+		});
+		
 		
 		$("#signal_list").change(function(e) {
 			
@@ -117,6 +123,24 @@ function stationselectinit(){
           //console.log(xx);
 		
 	}
+
+	function changeView(){
+		
+		var data ={};					
+		data.stationCode = statiocode;
+		data.beginTime = beginTime;
+		data.centorFreq = centorFreq;
+		
+		level_charts.init(data);
+		
+		var monthparam = {};
+		monthparam.stationCode = statiocode;
+		monthparam.beginTime = beginTime;
+		monthparam.centorFreq = centorFreq;
+		
+		month_charts.init(monthparam);
+		
+	}
 	
 	function init_select2() {
 		$('.station-list').select2();
@@ -150,19 +174,7 @@ function stationselectinit(){
 					var beginTime = $('#signal_list').find('option:selected').attr("begintime");
 					var centorFreq = $('#signal_list').find('option:selected').attr("centorfreq");
 					
-					var data ={};					
-					data.stationCode = statiocode;
-					data.beginTime = beginTime;
-					data.centorFreq = centorFreq;
-					
-					level_charts.init(data);
-					
-					var monthparam = {};
-					monthparam.stationCode = statiocode;
-					monthparam.beginTime = beginTime;
-					monthparam.centorFreq = centorFreq;
-					
-					month_charts.init(data);
+					changeView();
 					
 					//$("#illegal").click();
 				});
@@ -199,12 +211,7 @@ function stationselectinit(){
 				var beginTime = $("#signal_list").attr("beginTime");
 				var centorFreq = $("#signal_list").attr("centorFreq");
 				
-				var data ={};					
-				data.stationCode = statiocode;
-				data.beginTime = beginTime;
-				data.centorFreq = centorFreq;
-				
-				level_charts.init(data);
+				changeView();
 				//$("#illegal").click();
 			});
 		});
@@ -220,6 +227,7 @@ function stationselectinit(){
 	
 	
 	return {
-		init : init
+		init : init ,
+		changeView : changeView
 	}
 })

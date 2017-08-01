@@ -33,12 +33,12 @@
 			</div>
     </div>
     <span id = "signal_list1" >
-       <select  class='station-list select2-picker'>
+       <select class='station-list select2-picker'>
       </select>
     </span>
     
     <span id = "station_list" >
-       <select id = "signalpicker"  class='station-list select2-picker'>
+       <select id = "station-list2"  class='station-list2 select2-picker'>
       </select>
     </span>
     
@@ -163,13 +163,13 @@
 					<div role="tabpanel" class="tab-pane active " id="envim">
 						<div class='flex-row'>
 							<div class='flex1 config-left'>
-								<form class="form-horizontal ">
+								<form id = "configFrom" class="form-horizontal ">
 									<div class="form-box-wrap">
 										<div class="form-group col-sm-6">
 											<label for="" class="col-sm-3 control-label">开始时间</label>
 											<div class="col-sm-9">
 												<div class="input-group date time-picker" id="startTime">
-													<input type="text" class=" date-control">
+													<input name = "beginTime" type="text" class=" date-control">
 													<span class="input-group-addon"> <img src="images/date.png" /></span>
 												</div>
 											</div>
@@ -287,7 +287,7 @@
 										
 									<div class="form-group ">
 										<div class="col-sm-offset-3 col-sm-9 mrg-top15 text-right">
-											<button type="submit" class="btn btn-default btn-apply">应用</button>
+											<button id = "appleyConfig" type="button" class="btn btn-default btn-apply">应用</button>
 										</div>
 									</div>
 								</form>
@@ -317,7 +317,7 @@
       </div>
     </div>
   </div>
-  <input id = 'typeCode' class = 'after_modal_colse'/>
+  <input id = 'typeCode' class = 'after_modal_colse' style="display: none"/>
   <input id = 'stationKey' class = 'after_modal_colse'  style="display: none"/>
   <script src="3.9/init.js"></script>
   <script type="text/javascript">

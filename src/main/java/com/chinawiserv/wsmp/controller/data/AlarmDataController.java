@@ -58,8 +58,11 @@ public class AlarmDataController {
 	@Autowired
 	WebApplicationContext applicationContext;
 
-	// @Autowired
+	@Autowired
 	HbaseClient hbaseClient;
+
+	@Autowired
+	StationService stationService;
 
 	@Value("${upperBound.value:5000000}")
 	long upperBound;
@@ -106,17 +109,9 @@ public class AlarmDataController {
 			Map<String, Object> reslutResponce = hbaseClient.queryOccDay("52010062", "20170717000000", 90, centorFreq);
 
 			if (reslutResponce.size() == 0) {
-
-				// List<String> xAxis = Collections.emptyList();
-				// List<Double> series = Collections.emptyList();
-				//
-				// map.put("xAxis", xAxis);
-				// map.put("series", series);
 				HashMap<String, Object> restlutHashMap = Maps.newHashMap();
-				String[] xAxis = new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19",
-						"20", "21", "22", "23", "24" };
-				double[] series = new double[] { 55, 60.5, 60.0, 58.1, 56.2, 58.9, 58.2, 57.4, 58.0, 60.1, 59.1, 58.2, 58, 60.0, 58.1, 59.1, 57.9, 51.5, 55.2,
-						58.4, 58.2, 58, 57.9, 55.2, 58.4 };
+				String[] xAxis = new String[] {};
+				double[] series = new double[] {};
 				restlutHashMap.put("xAxis", xAxis);
 				restlutHashMap.put("series", series);
 				return restlutHashMap;
@@ -146,10 +141,8 @@ public class AlarmDataController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			HashMap<String, Object> restlutHashMap = Maps.newHashMap();
-			String[] xAxis = new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
-					"21", "22", "23", "24" };
-			double[] series = new double[] { 55, 60.5, 60.0, 58.1, 56.2, 58.9, 58.2, 57.4, 58.0, 60.1, 59.1, 58.2, 58, 60.0, 58.1, 59.1, 57.9, 51.5, 55.2, 58.4,
-					58.2, 58, 57.9, 55.2, 58.4 };
+			String[] xAxis = new String[] {};
+			double[] series = new double[] {};
 			restlutHashMap.put("xAxis", xAxis);
 			restlutHashMap.put("series", series);
 			return restlutHashMap;
@@ -181,7 +174,6 @@ public class AlarmDataController {
 
 	@GetMapping(path = "/getStation")
 	public @ResponseBody Map<String, Object> getStationPiont(@RequestParam Map<String, Object> param) {
-		System.out.println(param);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("x", "104.06");
 		map.put("y", "30.67");
@@ -192,8 +184,6 @@ public class AlarmDataController {
 
 	@GetMapping(path = "/stationsf")
 	public Object getStationBySF(@RequestParam Map<String, Object> param) {
-
-		StationService stationService = new StationService();
 
 		final Object offset = param.get("offset");
 		final Object limit = param.get("limit");
@@ -276,8 +266,6 @@ public class AlarmDataController {
 		radioSignalAbnormalHistoryDTO.put("radioSignalStationDTO", ids);
 
 		station.put("stationDTOs", radioSignalAbnormalHistoryDTO);
-
-		System.out.println(mapper.writeValueAsString(station));
 
 		final RadioSignalOperationReponse res = (RadioSignalOperationReponse) service.radioSignalServiceCall("insertRadioSignal",
 				mapper.writeValueAsString(station), RadioSignalDTO.class);

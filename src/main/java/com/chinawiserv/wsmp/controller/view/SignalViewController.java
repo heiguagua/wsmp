@@ -3,7 +3,6 @@ package com.chinawiserv.wsmp.controller.view;
 import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,11 +21,9 @@ import com.chinawiserv.wsmp.client.WebServiceSoapFactory;
 import com.chinawiserv.wsmp.hbase.HbaseClient;
 import com.chinawiserv.wsmp.pojo.MonitoringStation;
 import com.chinawiserv.wsmp.pojo.RedioDetail;
-import com.chinawiserv.wsmp.pojo.Signature;
 import com.chinawiserv.wsmp.pojo.Singal;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 @Controller
@@ -38,7 +35,7 @@ public class SignalViewController {
 
 	private ObjectMapper mapper = new ObjectMapper();
 
-	// @Autowired
+	@Autowired
 	HbaseClient hbaseClient;
 
 	@RequestMapping(path = { "/", "" })
@@ -48,36 +45,34 @@ public class SignalViewController {
 
 	@PostMapping(path = "/sigaldetail")
 	public String signal_detail(Model model, @RequestParam String centorfreq, @RequestParam String beginTime, @RequestParam String endTime,
-			@RequestParam String areaCode, @RequestParam String stationcode) throws Exception {
+			@RequestParam String areaCode, @RequestParam String stationCode, @RequestParam String id) throws Exception {
 
 		long frequency = Long.parseLong(centorfreq);
-		Map<String, Object> map = hbaseClient.queryFeaturePara(stationcode, beginTime, endTime, frequency);
-
-		model.addAttribute("sigal", new Signature(1, "xxxx", 5.02, 90.0, 30));
+		Map<String, Object> map = hbaseClient.queryFeaturePara(stationCode, beginTime, endTime, frequency);
 
 		Map<String, Object> requestPara = Maps.newLinkedHashMap();
 
-		requestPara.put("beginFreq", centorfreq);
-		requestPara.put("endFreq", centorfreq);
+		requestPara.put("id", id);
 
-		LinkedList<Integer> areaCodes = Lists.newLinkedList();
-		areaCodes.add(Integer.parseInt(areaCode));
-
-		Map<String, LinkedList<Integer>> arry = Maps.newHashMap();
-
-		arry.put("_int", areaCodes);
-
-		requestPara.put("areaCodes", arry);
 		RedioDetail redioDetail = new RedioDetail();
 		final RadioSignalQueryResponse responce = (RadioSignalQueryResponse) service.radioSignalServiceCall("queryRadioSignal",
 				mapper.writeValueAsString(requestPara), RadioSignalQueryRequest.class);
 
-		System.out.println(mapper.writeValueAsString(responce));
+		RadioSignalDTO radio = responce.getRadioSignals().getRadioSignalDTO().stream().findFirst().orElseGet(() -> {
 
-		RadioSignalDTO radio = responce.getRadioSignals().getRadioSignalDTO().get(0);
+			RadioSignalDTO dto = new RadioSignalDTO();
+			return dto;
+		});
 
-		int center = radio.getCenterFreq().intValue();
-		Long bandWidth = radio.getBandWidth();
+		radio = radio == null ? new RadioSignalDTO() : radio;
+
+		int center = 0;
+
+		if (radio.getCenterFreq() != null) {
+			center = radio.getCenterFreq().intValue();
+		}
+
+		long bandWidth = radio.getBandWidth();
 
 		redioDetail.setBand(center / 1000000);
 		redioDetail.setCentor(bandWidth / 1000000);
@@ -112,8 +107,10 @@ public class SignalViewController {
 
 			return singal;
 		}).collect(toList());
+
 		modelAndView.setViewName("signal/signal_list");
 		modelAndView.addObject("stations", redio);
+
 		return modelAndView;
 	}
 

@@ -13,8 +13,36 @@ define(function() {
 			    minView:2
 			  }	
 	}
+	 
+	 function initCityListValue(){
+		 
+		var info = Binding.getUser();
+			info = JSON.parse(info);
+			
+		var html = '';
+		if(info.AreaType == 'Province'){
+			
+			var citys = info.Area.Citys;
+			console.log(citys);
+			for(var index = 0 ; index < citys.length ;index++){
+				
+				html += "<option value = '"+citys[index].Code+"'>"+citys[index].Name+"</option>"
+			}
+			console.log(html)
+			$("#city_list").append(html);
+			
+		}else{
+			info.Name;
+			info.Code;
+			html += "<option"+info.Code+">"+info.Name+"</option>"
+			$("#city-list").append(html);
+		} 
+		 
+	 }
 	
 	 function init2(){
+		initCityListValue();
+		
 		$('.select2-picker').select2();
 
 		  $('.time-picker').datetimepicker({
