@@ -1,5 +1,7 @@
 package com.chinawiserv.wsmp.client;
 
+import static com.chinawiserv.apps.logger.Logger.errorThrow;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -16,7 +18,6 @@ import org.tempuri.RadioStationWebServiceSoap;
 import com.alibaba.fastjson.JSON;
 import com.chinawiserv.apps.util.logger.Logger;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
 public class WebServiceSoapFactory {
@@ -41,8 +42,6 @@ public class WebServiceSoapFactory {
 
 	private RadioSignalWebServiceSoap radioSignalService;
 
-	private ObjectMapper mapper = new ObjectMapper();
-
 	@PostConstruct
 	public void init() {
 
@@ -62,187 +61,69 @@ public class WebServiceSoapFactory {
 	}
 
 	public Object radioSignalServiceCall(String methodName, String param, Class<?> parameterTypes) throws JsonProcessingException {
+
 		try {
 			Method method = radioSignalService.getClass().getMethod(methodName, parameterTypes);
 
-			Object object = parameterTypes.newInstance();
-
-			Logger.info("需要入参数".concat(mapper.writeValueAsString(object)));
-
-			object = parash(object, param);
-
-			Logger.info("实际入参数".concat(mapper.writeValueAsString(object)));
+			Object object = JSON.parseObject(param, parameterTypes);
 
 			return method.invoke(radioSignalService, object);
-
 		}
-		catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			Logger.error("=============没有对应的方法==================", e);
+		catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			throw errorThrow("{} 没有对应的方法 {}", e, "radioSignalService", methodName);
 		}
-		catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			Logger.error("=============请勿调用私有的方法==================", e);
-		}
-		catch (InstantiationException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		catch (IllegalAccessException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
 	}
 
 	public Object radioStationServiceCall(String methodName, String param, Class<?> parameterTypes) throws JsonProcessingException {
+
 		try {
+
 			Method method = radioStationService.getClass().getMethod(methodName, parameterTypes);
-			Object object = parameterTypes.newInstance();
 
-			System.out.println(mapper.writeValueAsString(object));
-			object = parash(object, param);
-			System.out.println(mapper.writeValueAsString(object));
+			Object object = JSON.parseObject(param, parameterTypes);
+
 			return method.invoke(radioStationService, object);
-
 		}
-		catch (NoSuchMethodException e) {
+		catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			// TODO Auto-generated catch block
-			Logger.error("=============没有对应的方法==================", e);
-		}
-		catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			Logger.error("=============请勿调用私有的方法==================", e);
-		}
-		catch (InstantiationException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		catch (IllegalAccessException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public Object radioStationServiceCall(String methodName, Class<?> parameterTypes) {
-		try {
-			Method method = radioStationService.getClass().getMethod(methodName, parameterTypes);
-			Object object = parameterTypes.newInstance();
-			return method.invoke(radioStationService, object);
-
-		}
-		catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			Logger.error("=============没有对应的方法==================", e);
-		}
-		catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			Logger.error("=============请勿调用私有的方法==================", e);
-		}
-		catch (InstantiationException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		catch (IllegalAccessException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			errorThrow("{}方法{}调用错误   参数{}", methodName, param, parameterTypes);
 		}
 		return null;
 	}
 
 	public Object fregHistoryServiceCall(String methodName, String param, Class<?> parameterTypes) {
+
 		try {
 			Method method = fregHistoryService.getClass().getMethod(methodName, parameterTypes);
-			Object object = parameterTypes.newInstance();
-			object = parash(object, param);
+
+			Object object = JSON.parseObject(param, parameterTypes);
+
 			return method.invoke(freqWarnService, object);
 
 		}
-		catch (NoSuchMethodException e) {
+		catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			// TODO Auto-generated catch block
-			Logger.error("=============没有对应的方法==================", e);
+			errorThrow("{}方法{}调用错误   参数{}", methodName, param, parameterTypes);
 		}
-		catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			Logger.error("=============请勿调用私有的方法==================", e);
-		}
-		catch (InstantiationException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		catch (IllegalAccessException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 		return null;
 	}
 
 	public Object freqWarnServiceCall(String methodName, String param, Class<?> parameterTypes) {
+
 		try {
 			Method method = freqWarnService.getClass().getMethod(methodName, parameterTypes);
-			Object object = parameterTypes.newInstance();
-			object = parash(object, param);
-			// freqWarnService.query((FreqWarningQueryRequest) object);
+
+			Object object = JSON.parseObject(param, parameterTypes);
+
 			return method.invoke(freqWarnService, object);
 
 		}
-		catch (NoSuchMethodException e) {
+		catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			// TODO Auto-generated catch block
 			Logger.error("=============没有对应的方法==================", e);
 		}
-		catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			Logger.error("=============请勿调用私有的方法==================", e);
-		}
-		catch (InstantiationException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		catch (IllegalAccessException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 		return null;
 	}
 
