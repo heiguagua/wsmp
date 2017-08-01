@@ -59,10 +59,10 @@ public class AlarmDataController {
 	@Autowired
 	WebApplicationContext applicationContext;
 
-	//@Autowired
+	@Autowired
 	HbaseClient hbaseClient;
 
-	//@Autowired
+    @Autowired
 	StationService stationService;
 
 	@Value("${upperBound.value:5000000}")

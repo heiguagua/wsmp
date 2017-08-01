@@ -42,7 +42,7 @@ public class SiganlDataController {
 
 	private ObjectMapper mapper = new ObjectMapper();
 
-	//@Autowired
+	@Autowired
 	HbaseClient hbaseClient;
 
 	@Value("${upperBound.value:5000000}")
