@@ -25,6 +25,7 @@ import org.tempuri.RadioSignalQueryResponse;
 import com.chinawiserv.apps.util.logger.Logger;
 import com.chinawiserv.wsmp.client.WebServiceSoapFactory;
 import com.chinawiserv.wsmp.hbase.HbaseClient;
+import com.chinawiserv.wsmp.hbase.query.OccAndMax;
 import com.chinawiserv.wsmp.pojo.Singal;
 import com.chinawiserv.wsmp.tuples.Tuple2InJava;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -211,22 +212,23 @@ public class SiganlDataController {
 		try {
 
 			centorFreq = (long) (88.8 * 1000000);
-			Map<String, Object> reslutResponce = hbaseClient.queryOccDay("52010062", "20170717000000", 90, centorFreq);
-
-			if (reslutResponce.size() == 0) {
+			OccAndMax reslutResponce = hbaseClient.queryOccDay("52010062", "20170717000000", 90, centorFreq);
+			Map<String, Object> occMap = reslutResponce.getOcc();
+			if (occMap.size() == 0) {
 				HashMap<String, Object> restlutHashMap = Maps.newHashMap();
 				String[] xAxis = new String[] {};
 				double[] series = new double[] {};
 				restlutHashMap.put("xAxis", xAxis);
 				restlutHashMap.put("series", series);
 				return restlutHashMap;
-			} else {
+			}
+			else {
 				LinkedList<Object> xAxis = Lists.newLinkedList();
 				LinkedList<Object> series = Lists.newLinkedList();
 
 				final double pow = Math.pow(10, 6);
 
-				reslutResponce.forEach((k, v) -> {
+				occMap.forEach((k, v) -> {
 
 					final double key = Double.parseDouble(k.toString()) / pow;
 

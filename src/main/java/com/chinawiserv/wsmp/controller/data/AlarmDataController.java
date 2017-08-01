@@ -34,6 +34,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.chinawiserv.apps.util.logger.Logger;
 import com.chinawiserv.wsmp.client.WebServiceSoapFactory;
 import com.chinawiserv.wsmp.hbase.HbaseClient;
+import com.chinawiserv.wsmp.hbase.query.OccAndMax;
 import com.chinawiserv.wsmp.pojo.IntensiveMonitoring;
 import com.chinawiserv.wsmp.pojo.Station;
 import com.chinawiserv.wsmp.service.impl.IntensiveMonitoringServiceImpl;
@@ -77,9 +78,11 @@ public class AlarmDataController {
 		// Map<String, Object> map = hbaseClient.queryOccHour(stationCode,
 		// beginTime, centorFreq);
 		String[] xAxis = new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
-				"21", "22", "23", "24" };
+				"21", "22", "23", "24"
+		};
 		double[] series = new double[] { 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, 51.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, 55.2, 58.4,
-				60.0, 58.1, 56.2, 58.9 };
+				60.0, 58.1, 56.2, 58.9
+		};
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("xAxis", xAxis);
 		map.put("series", series);
@@ -90,9 +93,11 @@ public class AlarmDataController {
 	public Object hourCharts(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
 
 		String[] xAxis = new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
-				"21", "22", "23", "24" };
+				"21", "22", "23", "24"
+		};
 		double[] series = new double[] { 55, 60.5, 60.0, 58.1, 56.2, 58.9, 58.2, 57.4, 58.0, 60.1, 59.1, 58.2, 58, 60.0, 58.1, 59.1, 57.9, 51.5, 55.2, 58.4,
-				58.2, 58, 57.9, 55.2, 58.4 };
+				58.2, 58, 57.9, 55.2, 58.4
+		};
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("xAxis", xAxis);
 		map.put("series", series);
@@ -106,22 +111,23 @@ public class AlarmDataController {
 		try {
 
 			centorFreq = (long) (88.8 * 1000000);
-			Map<String, Object> reslutResponce = hbaseClient.queryOccDay("52010062", "20170717000000", 90, centorFreq);
-
-			if (reslutResponce.size() == 0) {
+			OccAndMax reslutResponce = hbaseClient.queryOccDay("52010062", "20170717000000", 90, centorFreq);
+			Map<String, Object> Occ = reslutResponce.getOcc();
+			if (Occ.size() == 0) {
 				HashMap<String, Object> restlutHashMap = Maps.newHashMap();
 				String[] xAxis = new String[] {};
 				double[] series = new double[] {};
 				restlutHashMap.put("xAxis", xAxis);
 				restlutHashMap.put("series", series);
 				return restlutHashMap;
-			} else {
+			}
+			else {
 				LinkedList<Object> xAxis = Lists.newLinkedList();
 				LinkedList<Object> series = Lists.newLinkedList();
 
 				final double pow = Math.pow(10, 6);
 
-				reslutResponce.forEach((k, v) -> {
+				Occ.forEach((k, v) -> {
 
 					final double key = Double.parseDouble(k.toString()) / pow;
 
@@ -158,7 +164,8 @@ public class AlarmDataController {
 			EntityWrapper<IntensiveMonitoring> ew = new EntityWrapper<>(in);
 			ew.where("SINGAL_FREQUENCY = {0}", in.getSingalFrequency());
 			iIntensiveMonitoringServicel.delete(ew);
-		} else {
+		}
+		else {
 			iIntensiveMonitoringServicel.insert(in);
 		}
 	}
@@ -274,7 +281,8 @@ public class AlarmDataController {
 		return null;
 	}
 
-	@GetMapping(path = { "/StationInfo" })
+	@GetMapping(path = { "/StationInfo"
+	})
 	public Object stationList(@RequestParam Map<String, Object> map) throws JsonProcessingException {
 
 		String index = (String) map.get("offset");

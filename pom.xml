@@ -106,7 +106,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
+		
 
 		<dependency>
 			<groupId>com.alibaba</groupId>
@@ -162,7 +162,13 @@
 
 	</dependencies>
 
-	
+	<repositories>
+		<repository>
+			<id>central_pengz</id>
+			<name>central_pengz</name>
+			<url>http://192.168.21.46:8081/nexus/content/groups/public</url>
+		</repository>
+	</repositories>
 
 
 	<build>
