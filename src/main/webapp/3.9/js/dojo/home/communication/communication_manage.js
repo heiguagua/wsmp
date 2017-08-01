@@ -24,10 +24,19 @@ define(function() {
 			
 			var citys = info.Area.Citys;
 			console.log(citys);
+			var arry = new Array();
 			for(var index = 0 ; index < citys.length ;index++){
-				
-				html += "<option value = '"+citys[index].Code+"'>"+citys[index].Name+"</option>"
+				var element = {}
+				element.id = citys[index].Code;
+				element.test = citys[index].Name;
+				arry.push(element);
 			}
+			
+			$(".js-example-data-array").select2({
+				  data: arry
+			})
+			
+			console.log(arry);
 			console.log(html)
 			$("#city_list").append(html);
 			

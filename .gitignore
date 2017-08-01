@@ -3,3 +3,11 @@
 /logs/
 /.settings/
 *.DS_Store
+/LOG_PATH_IS_UNDEFINED
+/logs
+.classpath
+.myumldata
+.project
+.springBeans
+.tern-project
+tsconfig.json

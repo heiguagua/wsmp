@@ -22,8 +22,9 @@
   <div class='header-bar'>
     <span class='module-name'>公众移动通信管理</span>
     <div class='search-filters'>
+  	    选择城市
   	<span id = 'city_list'>
-  	    选择城市 <select id = 'city-list' class='city-list select2-picker'>
+  	     <select id = 'city-list' class='city-list select2-picker'>
      	 </select>
   	</span>
       <div class='time-wrap'>
