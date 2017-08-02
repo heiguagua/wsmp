@@ -7,19 +7,19 @@
             <li class='item'>
               <div class="radio radio-primary  ">
                 <input type="radio" name="signal-type" id="legal">
-                <label for="legal"> 合法信号</label>
+                <label for="legal"> 合法正常信号</label>
               </div> <span class='signal-sign legal'></span> <span class='number legal-number'>${redio.legalNormalStationNumber}</span>
             </li>
             <li class='item'>
               <div class="radio radio-primary  ">
                 <input type="radio" name="signal-type" id="unregist">
-                <label for="unregist"> 未申报</label>
+                <label for="unregist"> 合法违规信号</label>
               </div> <span class='signal-sign legal-wrong'></span> <span class='number legal-wrong-number'>${redio.legalUnNormalStationNumber}</span>
             </li>
             <li class='item'>
               <div class="radio radio-primary  ">
                 <input type="radio" name="signal-type" id="otherStation">
-                <label for="otherStation"> 外地台</label>
+                <label for="otherStation"> 已知信号</label>
               </div> <span class='signal-sign known'></span> <span class='number known-number'>${redio.konwStationNumber}</span>
             </li>
             <li class='item'>
