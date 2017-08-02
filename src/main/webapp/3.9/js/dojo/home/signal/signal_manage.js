@@ -762,6 +762,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 				}
 				monthChart.on('click', function(params) {
 					$('#modalDay').modal();
+					changesecodView(params.name);
 				});
 		
 	}
@@ -835,9 +836,9 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 		}
 		// draw month data chart
 		
-		
-
-		$('#modalDay').on('shown.bs.modal', function(e) {
+	}
+	
+	function changesecodView(time){
 			
 			var stationcode = $("#station_list").find('option:selected').val();
 	    	var centorfreq = $('#signal_list1').find('option:selected').attr("centorFreq");
@@ -847,7 +848,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 			var secondLevel = {};
 			
 			secondLevel.stationCode = stationcode;
-			secondLevel.beginTime = beginTime;
+			secondLevel.beginTime = time;
 			secondLevel.centorFreq = centorfreq;
 			
 			ajax.get("data/alarm/secondLevelChart",secondLevel,function(reslut){
@@ -925,7 +926,6 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 				
 			});	
 
-		});
 	}
 	
 	function initSelect2() {
