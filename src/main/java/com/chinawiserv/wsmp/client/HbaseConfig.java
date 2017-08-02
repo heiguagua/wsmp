@@ -19,7 +19,7 @@ public class HbaseConfig {
 	@Autowired
 	private ApplicationContext applicationContext;
 
-	@Bean(name = "hbaseClient")
+	/*@Bean(name = "hbaseClient")
 	public HbaseClient initHbaseClient() throws IOException {
 
 		final EncodedResource res = new EncodedResource(applicationContext.getResource("classpath:app.properties"), Charset.forName("utf-8"));
@@ -27,6 +27,6 @@ public class HbaseConfig {
 		HbaseClient hbaseClient = HbaseClient.apply(propertice);
 		return hbaseClient;
 
-	}
+	}*/
 
 }
