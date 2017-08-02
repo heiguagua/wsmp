@@ -17,7 +17,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 		
 		closeModal();
 		
-		init_player();
+		//spectrum_player();
 		
 		configModalSubmit();
 		
@@ -105,6 +105,20 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 			$("#IQ-wrap").slideUp();
 			console.log($("#audio"));
 			$("#IQ").prop("checked",false);
+		})
+		
+		// 弹出框数据列表取消按钮点击事件
+		$(".data-choose-list .btn-cancel").each(function(){
+			$(this).on("click",function(){
+				$(this).parent().parent().slideUp();
+			})
+			
+		})
+		
+		// 频谱数据选择确定事件
+		$("#spectrum-confirm").on("click",function(){
+			spectrum_player();
+			$("#spectrum-choose-list").slideUp();
 		})
 	}
 	
@@ -983,7 +997,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 	
 
 	// 频谱播放器
-	function init_player(){
+	function spectrum_player(){
 		var option = {
 			    
 			    timeline: {
@@ -1115,7 +1129,40 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 			                }
 			            },
 			            'symbolSize':0,
-			            
+			            markLine: {
+			                symbol:"",
+			                
+			                label:{
+			                  normal:{
+			                      show:false
+			                  }  
+			                },
+			                data: [{
+			                    type:"average",
+			                    lineStyle:{
+			                      normal:{
+			                          color:"#ffa500",
+			                          type:"solid"
+			                      }  
+			                    },
+			                } ,{
+			                    type:"max",
+			                    lineStyle:{
+			                      normal:{
+			                          color:"#ff0000",
+			                          type:"solid"
+			                      }  
+			                    },
+			                },{
+			                    type:"min",
+			                    lineStyle:{
+			                      normal:{
+			                          color:"#0000ff",
+			                          type:"solid"
+			                      }  
+			                    },
+			                }]
+			            }
 			        }]
 			    }, {
 			        title: {
@@ -1273,6 +1320,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 	 }  
 	 
 		// 加载频谱数据
+	 	var spectrum_play_list = [];
 		function load_spectrum_data() {
 			require([ "bootstrap", "bootstrapTable"],function(){
 				require(["bootstrap_table_cn"],function(){
@@ -1291,6 +1339,17 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 							return params
 						}, //请求服务器时所传的参数
 						onClickRow: function(row){
+						},
+						onCheck:function(row){
+							console.log(row);
+							spectrum_play_list.push(row.task_id);
+							
+						},
+						onUncheck:function(row){
+						},
+						onCheckSome:function(rows){
+						},
+						onUncheckSome:function(rows){
 						},
 						sidePagination : 'server', //指定服务器端分页
 						pageSize : 5, //单页记录数

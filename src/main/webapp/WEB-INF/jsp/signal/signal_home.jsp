@@ -65,6 +65,7 @@
 						<div class="pull-right"><span id="data-list-close" class="ico-close">&times;</span></div>
 						<table class="table table-striped table-hover" id="spectrum-table">
 						</table>
+						<div class="text-center confirm-wrap"><a class="btn btn-confirm" id="spectrum-confirm">确定</a><a class="btn btn-cancel">取消</a></div>
 					</div>
 					<ul class="nav nav-pills pull-right">
 						<li role="presentation"><a href="#">
@@ -98,6 +99,7 @@
 						<div class="pull-right"><span id="IQ-list-close" class="ico-close">&times;</span></div>
 						<table class="table table-striped table-hover" id="IQ-table">
 						</table>
+						<div class="text-center confirm-wrap"><a class="btn btn-confirm">确定</a><a class="btn btn-cancel">取消</a></div>
 					</div>
 				</div>
 				<div class="data-play-chart">
@@ -119,6 +121,7 @@
 						<div class="pull-right"><span id="audio-list-close" class="ico-close">&times;</span></div>
 						<table class="table table-striped table-hover" id="audio-table">
 						</table>
+						<div class="text-center confirm-wrap"><a class="btn btn-confirm">确定</a><a class="btn btn-cancel">取消</a></div>
 					</div>
 					<aside class="control">
 						<p class="winTitle">
