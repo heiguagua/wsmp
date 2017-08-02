@@ -71,7 +71,7 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart"], function(ajax, ec
 					}
 				]
 			};
-			var monthChart = echarts.init($('.monthChart')[0]);
+			var monthChart = echarts.init($('#month')[0]);
 			monthChart.setOption(optionMonth);
 
 			monthChart.on('click', function(params) {

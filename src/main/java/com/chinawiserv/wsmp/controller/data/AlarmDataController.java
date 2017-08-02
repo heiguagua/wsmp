@@ -62,7 +62,7 @@ public class AlarmDataController {
 	@Autowired
 	HbaseClient hbaseClient;
 
-    @Autowired
+    //@Autowired
 	StationService stationService;
 
 	@Value("${upperBound.value:5000000}")
@@ -209,10 +209,10 @@ public class AlarmDataController {
 		try {
 
 			centorFreq = (long) (88.8 * 1000000);
-			OccAndMax reslutResponce = hbaseClient.queryOccDay("52010062", "20170717000000", 30, centorFreq);
-			Map<String, Object> Max = reslutResponce.getMax();
-			Map<String, Object> Occ = reslutResponce.getOcc();
-			if (Occ.size() == 0) {
+			OccAndMax reslutResponce = hbaseClient.queryOccDay("52010062", "20170728000000", 90, centorFreq);
+			Map<String, Object> max = reslutResponce.getMax();
+			Map<String, Object> occ = reslutResponce.getOcc();
+			if (occ.size() == 0) {
 				
 				HashMap<String, Object> restlutHashMap = Maps.newHashMap();
 				
@@ -231,7 +231,7 @@ public class AlarmDataController {
 
 				final double pow = Math.pow(10, 6);
 
-				Occ.forEach((k, v) -> {
+				occ.forEach((k, v) -> {
 
 					final double key = Double.parseDouble(k.toString()) / pow;
 
@@ -247,7 +247,7 @@ public class AlarmDataController {
 				reslutMap.put("monthOcc", restlutHashMap);
 			}
 			
-			if (Max.size() == 0) {
+			if (max.size() == 0) {
 				
 				HashMap<String, Object> restlutHashMap = Maps.newHashMap();
 				
@@ -266,7 +266,7 @@ public class AlarmDataController {
 
 				final double pow = Math.pow(10, 6);
 
-				Max.forEach((k, v) -> {
+				max.forEach((k, v) -> {
 
 					final double key = Double.parseDouble(k.toString()) / pow;
 
@@ -423,8 +423,7 @@ public class AlarmDataController {
 		return null;
 	}
 
-	@GetMapping(path = { "/StationInfo"
-	})
+	@GetMapping(path = { "/StationInfo"})
 	public Object stationList(@RequestParam Map<String, Object> map) throws JsonProcessingException {
 
 		String index = (String) map.get("offset");

@@ -136,8 +136,8 @@ function stationselectinit(){
 		data.beginTime = beginTime;
 		data.centorFreq = centorFreq;
 		
-		ajax.get("data/alarm/firstLevelChart",data,function(){
-			
+		ajax.get("data/alarm/firstLevelChart",data,function(reslut){
+			console.log(reslut);
 			level_charts.init(reslut);
 			
 			month_charts.init(reslut);
