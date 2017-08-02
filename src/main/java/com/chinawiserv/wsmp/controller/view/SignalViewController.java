@@ -39,8 +39,7 @@ public class SignalViewController {
 	@Autowired
 	HbaseClient hbaseClient;
 
-	@RequestMapping(path = { "/", ""
-	})
+	@RequestMapping(path = { "/", ""})
 	public String home() {
 		return "signal/signal_home";
 	}
