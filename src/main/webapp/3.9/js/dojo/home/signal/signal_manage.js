@@ -606,6 +606,12 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 		
 		getSinalDetail(singalDetail);	
 		
+		changeFirstChartView();
+		
+	}
+	
+	function changeFirstChartView(){
+		
 		var fisrtLevel = {};
 		
 		fisrtLevel.stationCode = stationcode;
