@@ -5,7 +5,7 @@
 
 define([ "ajax", "echarts", "jquery" ], function(ajax,echarts) {
 	function init_charts(data) {
-		
+			console.log(data);
 			var optionDay = {
 				color : [ 'rgb(55,165,255)' ],
 				tooltip : {

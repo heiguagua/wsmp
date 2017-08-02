@@ -558,21 +558,22 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 		
 		var fisrtLevel = {};
 		
-		fisrtLevel.stationCode = statiocode;
+		fisrtLevel.stationCode = stationcode;
 		fisrtLevel.beginTime = beginTime;
 		fisrtLevel.centorFreq = centorfreq;
 		
-		ajax.get("data/alarm/firstLevelChart",fisrtLevel,function(){
+		ajax.get("data/alarm/firstLevelChart",fisrtLevel,function(back){
 			
-			initMonthchart(data);
+			console.log(back);
 			
-			maxlevelinit(data);
+			initMonthchart(back);
+			
+			maxlevelinit(back);
 		});
 		
 	}
 	
-	function maxlevelinit(data) {
-		ajax.get("data/signal/maxlevel",data, function(reslut) {
+	function maxlevelinit(reslut) {
 			console.log(reslut.xAxis);
 			var optionMonth = {
 				color : [ 'rgb(55,165,255)' ],
@@ -648,7 +649,6 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 				maxlevelChart.clear();
 				maxlevelChart.setOption(optionMonth);
 			}
-		});
 	}
 	
 	
@@ -682,7 +682,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 								color : '#505363'
 							}
 						},
-						data : restlut.Occ.xAxis
+						data : levelParam.monthOcc.xAxis
 					},
 					yAxis : {
 						type : 'value',
@@ -713,7 +713,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 							type : 'line',
 							showSymbol : false,
 							symbolSize : 6,
-							data : restlut.Occ.series
+							data : levelParam.monthOcc.series
 						}
 					]
 				};
@@ -810,7 +810,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 			
 			var secondLevel = {};
 			
-			secondLevel.stationCode = statiocode;
+			secondLevel.stationCode = stationcode;
 			secondLevel.beginTime = beginTime;
 			secondLevel.centorFreq = centorfreq;
 			

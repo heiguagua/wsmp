@@ -21,7 +21,7 @@ define(["home/signal/signal_manage", "ajax", "dojo/parser", "esri/map", "esri/la
 			});
 			//var url = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer";
 			//var url = "http://192.168.13.72:8083/PBS/rest/services/MyPBSService1/MapServer";
-			var url = "http://192.168.21.105:8081/PBS/rest/services/MyPBSService1/MapServer";
+			var url = "http://192.168.21.105:8081/PBS/rest/services/guiyang/MapServer";
 			var agoLayer = new ArcGISTiledMapServiceLayer(url, {
 				id : "街道地图"
 			});

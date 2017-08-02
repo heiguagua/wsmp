@@ -108,7 +108,7 @@ function changeView(){
 //			level_charts.init(reslut);
 //			
 //			month_charts.init(reslut);
-			
+			console.log(data);
 			day_chart.init(data);
 			
 		});

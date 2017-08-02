@@ -90,7 +90,10 @@
       padding: 0;
       font-size: 12px; }
       #signal .signal-profile .features .features-list li {
-        margin-bottom: 8px; }
+        margin-bottom: 8px; 
+        white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;}
       #signal .signal-profile .features .features-list .item-name {
         display: inline-block;
         width: 80%; }

@@ -17,6 +17,7 @@ import org.tempuri.RadioSignalDTO;
 import org.tempuri.RadioSignalQueryRequest;
 import org.tempuri.RadioSignalQueryResponse;
 
+import com.chinawiserv.apps.util.logger.Logger;
 import com.chinawiserv.wsmp.client.WebServiceSoapFactory;
 import com.chinawiserv.wsmp.hbase.HbaseClient;
 import com.chinawiserv.wsmp.pojo.MonitoringStation;
@@ -46,45 +47,49 @@ public class SignalViewController {
 
 	@PostMapping(path = "/sigaldetail")
 	public String signal_detail(Model model, @RequestParam String centorfreq, @RequestParam String beginTime, @RequestParam String endTime,
-			@RequestParam String areaCode, @RequestParam String stationCode, @RequestParam String id) throws Exception {
+			@RequestParam String areaCode, @RequestParam String stationCode, @RequestParam String id)  {
 
-		long frequency = Long.parseLong(centorfreq);
-		Map<String, Object> map = hbaseClient.queryFeaturePara(stationCode, beginTime, frequency);
+		try {
+			long frequency = Long.parseLong(centorfreq);
+			Map<String, Object> map = hbaseClient.queryFeaturePara(stationCode, beginTime, frequency);
 
-		Map<String, Object> requestPara = Maps.newLinkedHashMap();
+			Map<String, Object> requestPara = Maps.newLinkedHashMap();
 
-		requestPara.put("id", id);
+			requestPara.put("id", id);
 
-		RedioDetail redioDetail = new RedioDetail();
-		final RadioSignalQueryResponse responce = (RadioSignalQueryResponse) service.radioSignalServiceCall("queryRadioSignal",
-				mapper.writeValueAsString(requestPara), RadioSignalQueryRequest.class);
+			RedioDetail redioDetail = new RedioDetail();
+			final RadioSignalQueryResponse responce = (RadioSignalQueryResponse) service.radioSignalServiceCall("queryRadioSignal",
+					mapper.writeValueAsString(requestPara), RadioSignalQueryRequest.class);
 
-		RadioSignalDTO radio = responce.getRadioSignals().getRadioSignalDTO().stream().findFirst().orElseGet(() -> {
+			RadioSignalDTO radio = responce.getRadioSignals().getRadioSignalDTO().stream().findFirst().orElseGet(() -> {
 
-			RadioSignalDTO dto = new RadioSignalDTO();
-			return dto;
-		});
+				RadioSignalDTO dto = new RadioSignalDTO();
+				return dto;
+			});
 
-		radio = radio == null ? new RadioSignalDTO() : radio;
+			radio = radio == null ? new RadioSignalDTO() : radio;
 
-		int center = 0;
+			int center = 0;
 
-		if (radio.getCenterFreq() != null) {
-			center = radio.getCenterFreq().intValue();
-		}
+			if (radio.getCenterFreq() != null) {
+				center = radio.getCenterFreq().intValue();
+			}
 
-		long bandWidth = radio.getBandWidth();
+			long bandWidth = radio.getBandWidth();
 
-		redioDetail.setBand(center / 1000000);
-		redioDetail.setCentor(bandWidth / 1000000);
-		redioDetail.setType(radio.getTypeCode() + "");
-		redioDetail.setrMax(map.get("rmax"));
-		redioDetail.setSpecT(map.get("specT"));
-		redioDetail.setSymRate(map.get("symRate"));
-		redioDetail.setFlatDegree(map.get("flatDegree"));
-		redioDetail.setFreqPeakNumFSK(map.get("freqPeakNumFSK"));
+			redioDetail.setBand(center / 1000000);
+			redioDetail.setCentor(bandWidth / 1000000);
+			redioDetail.setType(radio.getTypeCode() + "");
+			redioDetail.setrMax(map.get("rmax"));
+			redioDetail.setSpecT(map.get("specT"));
+			redioDetail.setSymRate(map.get("symRate"));
+			redioDetail.setFlatDegree(map.get("flatDegree"));
+			redioDetail.setFreqPeakNumFSK(map.get("freqPeakNumFSK"));
 
-		model.addAttribute("redioDetail", redioDetail);
+			model.addAttribute("redioDetail", redioDetail);
+		} catch (Exception e) {
+			Logger.errorThrow("方法 {} 请求异常  原因{}", "signal_detail",e);
+		} 
 
 		return "signal/signal_detail";
 	}
@@ -115,8 +120,7 @@ public class SignalViewController {
 		return modelAndView;
 	}
 
-	@PostMapping(path = { "/stationlist"
-	})
+	@PostMapping(path = { "/stationlist"})
 	public ModelAndView stationList(ModelAndView modelAndView, @RequestParam Map<String, Object> param) {
 		modelAndView.setViewName("signal/monitoring_station_list");
 		List<MonitoringStation> stations = new ArrayList<>();

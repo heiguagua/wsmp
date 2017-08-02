@@ -15,8 +15,8 @@
               <div class='t-i-item flex1 flex-column justify-center'>固定移动</div> -->
             </div>
           </div>
-          <div class='item chart flex2'>
-            <div class='radio-chart' id='radioChart'></div>
+          <div class='item chart flex2 flex-column'>
+            <div class='radio-chart flex1' id='radioChart'></div>
           </div>
           <div class='item feature flex3'>
             <div class='features'>
@@ -37,8 +37,8 @@
           </div>
         </div>
       </div>
-      <div class='box'>
-        <div class='singal-control flex-column justify-center'>
+      <div class='box flex-column'>
+        <div class='singal-control flex-column justify-center flex1'>
           <div class='detect-way flex1 flex-row'>
             <div id = "warning_confirm" class='way-key flex1 checked'>
               <div class='way-sign'>
