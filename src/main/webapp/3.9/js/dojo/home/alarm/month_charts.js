@@ -75,9 +75,10 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart"], function(ajax, ec
 			monthChart.setOption(optionMonth);
 
 			monthChart.on('click', function(params) {
+				
 				$('#modalDay').modal();
 				
-				changeView();
+				changeView(params.name);
 				
 			})
 			
@@ -92,24 +93,23 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart"], function(ajax, ec
 	}
 	
 	
-function changeView(){
+function changeView(time){
 		
 		var statiocode  =$('#station_list').find('option:selected').val();
-		var beginTime = $('#signal_list').find('option:selected').attr("begintime");
 		var centorFreq = $('#signal_list').find('option:selected').attr("centorfreq");
 		
 		var data ={};					
 		data.stationCode = statiocode;
-		data.beginTime = beginTime;
+		data.beginTime = time;
 		data.centorFreq = centorFreq;
 		
-		ajax.get("data/alarm/secondLevelChart",data,function(){
+		ajax.get("data/alarm/secondLevelChart",data,function(reslut){
 			
 //			level_charts.init(reslut);
 //			
 //			month_charts.init(reslut);
-			console.log(data);
-			day_chart.init(data);
+			console.log(reslut);
+			day_chart.init(reslut);
 			
 		});
 		

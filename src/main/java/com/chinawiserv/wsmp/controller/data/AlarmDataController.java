@@ -110,9 +110,13 @@ public class AlarmDataController {
 		
 		HashMap<String, Object> reslutMap = new HashMap<>();
 		try {
-
+			
+			if (beginTime.length() == 8) {
+				beginTime = beginTime.concat("000000");
+			}
+			
 			centorFreq = (long) (88.8 * 1000000);
-			OccAndMax reslutResponce = hbaseClient.queryOccDay("52010062", "20170717000000", 30, centorFreq);
+			OccAndMax reslutResponce = hbaseClient.queryOccHour("52010118", beginTime, centorFreq);
 			Map<String, Object> Max = reslutResponce.getMax();
 			Map<String, Object> Occ = reslutResponce.getOcc();
 			if (Occ.size() == 0) {
@@ -131,12 +135,9 @@ public class AlarmDataController {
 				
 				LinkedList<Object> xAxis = Lists.newLinkedList();
 				LinkedList<Object> series = Lists.newLinkedList();
-
-				final double pow = Math.pow(10, 6);
-
 				Occ.forEach((k, v) -> {
 
-					final double key = Double.parseDouble(k.toString()) / pow;
+					final String key = k.toString();
 
 					xAxis.add(key);
 					series.add(v);
@@ -208,10 +209,12 @@ public class AlarmDataController {
 		HashMap<String, Object> reslutMap = new HashMap<>();
 		try {
 
-			centorFreq = (long) (88.8 * 1000000);
-			OccAndMax reslutResponce = hbaseClient.queryOccDay("52010062", "20170728000000", 90, centorFreq);
-			Map<String, Object> max = reslutResponce.getMax();
-			Map<String, Object> occ = reslutResponce.getOcc();
+			long frequency = (long)(88.8 * 1000000);
+			long upperBound = 5000000L;
+			long lowerBound = 5000000L;
+			String dateTime = "20170803000000";
+			Map<Object, Object> max  = hbaseClient.queryMaxLevels("52010118", frequency, upperBound, lowerBound, dateTime);
+			Map<String, Object> occ  = hbaseClient.queryOccDay("52010118", dateTime, 90, frequency).getOcc();
 			if (occ.size() == 0) {
 				
 				HashMap<String, Object> restlutHashMap = Maps.newHashMap();
@@ -229,11 +232,9 @@ public class AlarmDataController {
 				LinkedList<Object> xAxis = Lists.newLinkedList();
 				LinkedList<Object> series = Lists.newLinkedList();
 
-				final double pow = Math.pow(10, 6);
-
 				occ.forEach((k, v) -> {
 
-					final double key = Double.parseDouble(k.toString()) / pow;
+					final String key = k.toString();
 
 					xAxis.add(key);
 					series.add(v);
