@@ -2,34 +2,49 @@
   "total":10,
   "rows":[
     {
-      "station_name":"107.7",
-      "file_name":"1002145441_1",
-      "file_size":"1.5M",
-      "file_time":"1254s"
+      "trans_no":"0001",
+      "task_id":"1002145441_1",
+      "task_start":"1.5M",
+      "task_end":"1254s",
+      "center_freq":"107.7",
+      "tape_width":"5",
+      "number":"12"
     },
     {
-      "station_name":"102.7",
-      "file_name":"1002145441_2",
-      "file_size":"1.52M",
-      "file_time":"1254s"
+       "trans_no":"0005",
+      "task_id":"1002145441_2",
+      "task_start":"1.5M",
+      "task_end":"1254s",
+      "center_freq":"107.7",
+      "tape_width":"5",
+      "number":"12"
     },
     {
-      "station_name":"103.17",
-      "file_name":"1002145441_3",
-      "file_size":"1.53M",
-      "file_time":"1254s"
+       "trans_no":"0003",
+      "task_id":"1002145441_3",
+      "task_start":"1.5M",
+      "task_end":"1254s",
+      "center_freq":"107.7",
+      "tape_width":"5",
+      "number":"12"
     },
     {
-      "station_name":"104.7",
-      "file_name":"1002145441_4",
-      "file_size":"1.54M",
-      "file_time":"1254s"
+       "trans_no":"0004",
+      "task_id":"1002145441_4",
+      "task_start":"1.5M",
+      "task_end":"1254s",
+      "center_freq":"107.7",
+      "tape_width":"5",
+      "number":"12"
     },
     {
-      "station_name":"107.5",
-      "file_name":"1002145441_5",
-      "file_size":"1.56M",
-      "file_time":"1254s"
+       "trans_no":"0002",
+      "task_id":"1002145441_5",
+      "task_start":"1.5M",
+      "task_end":"1254s",
+      "center_freq":"107.7",
+      "tape_width":"5",
+      "number":"12"
     }
   ]
 }

@@ -68,8 +68,44 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 		//关闭音频播放
 		$("#audio-close").on("click",function(){
 			$("#audio-wrap").slideUp();
+			console.log($("#audio"));
+			$("#audio").prop("checked",false);
 		})
 		
+		// 选择IQ数据
+		$("#IQ").on("click",function(){
+			if($(this).is(":checked")) {
+				$("#IQ-wrap").slideDown();
+			}
+			else{
+				$("#IQ-wrap").slideUp();
+			}
+		})
+		
+		// IQ数据选择数据按钮事件
+		$("#IQ-choose-btn").on("click",function(ev){
+			if($("#IQ-choose-list").is(":hidden")) {
+				$("#IQ-choose-list").slideDown();
+				// 加载频谱数据
+				load_IQ_data();
+			}
+			else {
+				$("#IQ-choose-list").slideUp();
+			}
+			
+		})
+		
+		// 关闭IQ数据列表框
+		$("#IQ-list-close").on("click",function(){
+			$("#IQ-choose-list").slideUp();
+		})
+		
+		//关闭IQ播放框
+		$("#IQ-close").on("click",function(){
+			$("#IQ-wrap").slideUp();
+			console.log($("#audio"));
+			$("#IQ").prop("checked",false);
+		})
 	}
 	
 	
@@ -952,11 +988,13 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 			    
 			    timeline: {
 			    	show:false,
+			    	y2:0,
 			        data: [
 			            '5：00', '6：00', '7：00', '8：00', '9：00', '10：00', '11：00', '12：00', '13：00', '14：00', '15：00', '16：00', '17：00', '18：00', '19：00', '20：00', '21：00', '22：00', '23：00'
 			        ],
 			        axisType: 'category',
 			        autoPlay: true,
+			        symbol: 'none',
 			        playInterval: 1000
 			    },
 			    options: [{
@@ -985,7 +1023,9 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 			        dataZoom: [{
 			            type: 'slider',
 			            start:0,
-			            end:20
+			            end:20,
+			            height:15,
+			            y:260
 			        }],
 			        xAxis: [{
 			            'type': 'category',
@@ -1074,46 +1114,8 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 			                    }
 			                }
 			            },
-			            'symbolSize':0
-			        },{
-			            'name': '',
-			            'yAxisIndex': 0,
-			            'type': 'line',
-			            'itemStyle':{
-			                normal:{
-			                    color:'#0000ff',
-			                    lineStyle:{
-			                        width:1
-			                    }
-			                }
-			            },
-			            'symbolSize':0
-			        },{
-			            'name': '',
-			            'yAxisIndex': 0,
-			            'type': 'line',
-			            'itemStyle':{
-			                normal:{
-			                    color:'#ff0000',
-			                    lineStyle:{
-			                        width:1
-			                    }
-			                }
-			            },
-			            'symbolSize':0
-			        },{
-			            'name': '',
-			            'yAxisIndex': 0,
-			            'type': 'line',
-			            'itemStyle':{
-			                normal:{
-			                    color:'#ffa500',
-			                    lineStyle:{
-			                        width:1
-			                    }
-			                }
-			            },
-			            'symbolSize':0
+			            'symbolSize':0,
+			            
 			        }]
 			    }, {
 			        title: {
@@ -1121,12 +1123,6 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 			        },
 			        series: [{
 			            'data': [5, 6, 0, 28, 8, 24, 11, 16, 14, 0, 31, 0, 2, 0, 4, 0, 3, 2, 6, 6, 7, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 10, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 8, 0]
-			        },{
-			            'data':[5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5]
-			        },{
-			            'data':[80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80,80]
-			        },{
-			            'data':[30.1,30.8,29.7,28.9,30.5,30.9,30.5,29.9,29.8,30.6,30.4,29.8,30.5,29.8,29.1,29.6,30.1,30.5,30.2,30.4,29.3,29.7,29.4,30.2,30.7,29.8,29.4,29.1,30.2,30.1,30,29.7,29.6,30,29.2,30.1,29.8,29.0,30,30.1,30,29.8,30,29.8,29.6,30.8,29.9,30.1,29.9,30.2,30.1,29.8,29.4,30.1,30.2,29.8,29.9,30.1,30]
 			        }]
 			    }, {
 			        title: {
@@ -1256,8 +1252,8 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 			        } ]
 			    }]
 			};
-		var IQChart = echarts.init($('#IQChart')[0]);
-		IQChart.setOption(option);
+		var spectrumChart = echarts.init($('#spectrumChart')[0]);
+		spectrumChart.setOption(option);
 	}
 	
 	 $.fn.serializeObject = function() {  
@@ -1307,17 +1303,26 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 							checkbox:true,
 							title:"选中"
 						},{
-							field : 'station_name',
-							title : '监测站'
+							field : 'trans_no',
+							title : '传感器编号'
 						}, {
-							field : 'file_name',
-							title : '文件名称'
+							field : 'task_id',
+							title : '任务唯一编号'
 						}, {
-							field : 'file_size',
-							title : '文件大小'
+							field : 'task_start',
+							title : '任务开始时间'
 						}, {
-							field : 'file_time',
-							title : '文件时间'
+							field : 'task_end',
+							title : '任务结束时间'
+						}, {
+							field : 'center_freq',
+							title : '中心频率'
+						}, {
+							field : 'tape_width',
+							title : '带宽'
+						},{
+							field:'number',
+							title:'频谱个（或点）数'
 						}]
 					});
 				})
@@ -1337,7 +1342,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 						detailView : false,
 						pageNumber : 1, //初始化加载第一页，默认第一页
 						pagination : true, //是否分页
-						url :"assets/json/spectrum-player-list.json",
+						url :"assets/json/audio-player-list.json",
 						queryParamsType : 'limit', //查询参数组织方式
 						queryParams : function(params) {
 							
@@ -1356,22 +1361,83 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 							checkbox:true,
 							title:"选中"
 						},{
-							field : 'station_name',
-							title : '监测站'
+							field : 'trans_no',
+							title : '传感器编号'
 						}, {
-							field : 'file_name',
-							title : '文件名称'
+							field : 'task_id',
+							title : '任务唯一编号'
 						}, {
-							field : 'file_size',
-							title : '文件大小'
+							field : 'task_start',
+							title : '任务开始时间'
 						}, {
-							field : 'file_time',
-							title : '文件时间'
+							field : 'task_end',
+							title : '任务结束时间'
+						}, {
+							field : 'center_freq',
+							title : '测量中心频率'
+						}, {
+							field : 'voice_length',
+							title : '声音数据长度'
 						}]
 					});
 				})
 			})
 		}
+		
+		// 加载IQ数据
+		function load_IQ_data(){
+			require([ "bootstrap", "bootstrapTable"],function(){
+				require(["bootstrap_table_cn"],function(){
+					$('#IQ-table').bootstrapTable({
+						method : 'get',
+						contentType : "application/x-www-form-urlencoded", //必须要有！！！！
+						striped : true, 
+						dataField : "rows", 
+						detailView : false,
+						pageNumber : 1, //初始化加载第一页，默认第一页
+						pagination : true, //是否分页
+						url :"assets/json/iq-player-list.json",
+						queryParamsType : 'limit', //查询参数组织方式
+						queryParams : function(params) {
+							
+							return params
+						}, //请求服务器时所传的参数
+						onClickRow: function(row){
+						},
+						sidePagination : 'server', //指定服务器端分页
+						pageSize : 5, //单页记录数
+						pageList : [ 5, 10, 20, 30 ], //分页步进值
+						clickToSelect : true, //是否启用点击选中行
+						responseHandler : function(res) {
+							return res;
+						},
+						columns : [ {
+							checkbox:true,
+							title:"选中"
+						},{
+							field : 'trans_no',
+							title : '传感器编号'
+						}, {
+							field : 'task_id',
+							title : '任务唯一编号'
+						}, {
+							field : 'task_start',
+							title : '任务开始时间'
+						}, {
+							field : 'task_end',
+							title : '任务结束时间'
+						},{
+							field:'center_freq',
+							title:'中心频率'
+						},{
+							field:'iq_number',
+							title:'I或Q数据个数'
+						}]
+					});
+				})
+			})
+		}
+	
 	
 	return {
 		init : init,

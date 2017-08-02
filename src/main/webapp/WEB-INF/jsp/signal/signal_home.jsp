@@ -82,10 +82,30 @@
 					</ul>
 				</div>
 				<div class="data-play-chart">
+					<div id="spectrumChart" style="width: 100%; height: 300px"></div>
+				</div>
+      </div>
+    </section>
+    
+    <!-- IQ数据 -->
+    <section class='flex-row' style="display: none" id="IQ-wrap">
+			<div class='box'>
+				<div class='data-play'>
+					<label class='module-name'>数据回放<span class="data-type">IQ数据</span></label>
+					<a class="ico-close close-box " id="IQ-close">&times;</a>
+					<a class='btn btn-default btn-choose pull-right' id="IQ-choose-btn">选择数据</a>
+					<div class="data-choose-list" id="IQ-choose-list">
+						<div class="pull-right"><span id="IQ-list-close" class="ico-close">&times;</span></div>
+						<table class="table table-striped table-hover" id="IQ-table">
+						</table>
+					</div>
+				</div>
+				<div class="data-play-chart">
 					<div id="IQChart" style="width: 100%; height: 300px"></div>
 				</div>
       </div>
     </section>
+    
 
 		<!-- 音频 -->
 		<section class="flex-row" style="display: none" id="audio-wrap">
