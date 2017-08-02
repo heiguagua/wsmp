@@ -612,6 +612,11 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 	
 	function changeFirstChartView(){
 		
+		var stationcode = $("#station_list").find('option:selected').val();
+    	var centorfreq = $('#signal_list1').find('option:selected').attr("centorFreq");
+		var endTime = $('#signal_list1').find('option:selected').attr("endTime");
+		var beginTime = $('#signal_list1').find('option:selected').attr("beginTime");
+		
 		var fisrtLevel = {};
 		
 		fisrtLevel.stationCode = stationcode;
