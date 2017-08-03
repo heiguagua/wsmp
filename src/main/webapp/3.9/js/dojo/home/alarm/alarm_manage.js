@@ -125,14 +125,21 @@ function stationselectinit(){
 		
 	}
 
-	function changeView(){
+	function changeView(code){
 		
-		var statiocode  =$('#station_list').find('option:selected').val();
+		
 		var beginTime = $('#signal_list').find('option:selected').attr("begintime");
 		var centorFreq = $('#signal_list').find('option:selected').attr("centorfreq");
 		
-		var data ={};					
-		data.stationCode = statiocode;
+		var data ={};		
+		
+		if(code){
+			data.stationCode = code;
+		}else{
+			var statiocode  =$('#station_list').find('option:selected').val();
+			data.stationCode = statiocode;
+		}
+		
 		data.beginTime = beginTime;
 		data.centorFreq = centorFreq;
 		
