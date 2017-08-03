@@ -455,13 +455,28 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 		        console.log(info);
 		        info = JSON.parse(info);
 		        
-		    	var list = new Array();
-
+		    	var list = [];
 		        var codes = info.Area.Code;
 	
-				list.push(codes);
 				
-				data.areaCodes._int = list;
+				
+				var areaCodes = {};
+				data.areaCodes = areaCodes;
+				if(info.AreaType == "Province"){
+					var citys = info.Area.Citys;
+					for(var index = 0;index < citys.length;index++){
+						 list.push(citys[index].Code);
+					
+					}
+					 data.areaCodes._int = list
+				}else{
+					list.push(codes);
+					data.areaCodes._int = list;
+				}
+				
+				
+				console.log(data);
+				
 				$("#signal_list1 .select2-picker").html('');
 
 				$("#signal_list1 .select2-picker").load("signal/singallist",data,function() {
