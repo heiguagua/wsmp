@@ -445,6 +445,18 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 				val = parseFloat(val) * 1000000;
 				data.beginFreq = val;
 				data.endFreq = val;
+				
+				var info = Binding.getUser();
+		        console.log(info);
+		        info = JSON.parse(info);
+		        
+		    	var list = new Array();
+
+		        var codes = info.Area.Code;
+	
+				list.push(codes);
+				
+				data.areaCodes._int = list;
 				$("#signal_list1 .select2-picker").html('');
 				
 				$("#signal_list1 .select2-picker").load("signal/singallist",data,function() {
