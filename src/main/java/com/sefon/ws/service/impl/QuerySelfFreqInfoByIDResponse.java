@@ -32,27 +32,27 @@ import com.sefon.ws.model.freq.xsd.FreqSelfInfo;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "_return"
+    "returns"
 })
 @XmlRootElement(name = "querySelfFreqInfoByIDResponse")
 public class QuerySelfFreqInfoByIDResponse {
 
     @XmlElement(name = "return", nillable = true)
-    protected List<FreqSelfInfo> _return;
+    protected List<FreqSelfInfo> returns;
 
     /**
-     * Gets the value of the return property.
+     * Gets the value of the returns property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the return property.
+     * This is why there is not a <CODE>set</CODE> method for the returns property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getReturn().add(newItem);
+     *    getReturns().add(newItem);
      * </pre>
      * 
      * 
@@ -62,11 +62,11 @@ public class QuerySelfFreqInfoByIDResponse {
      * 
      * 
      */
-    public List<FreqSelfInfo> getReturn() {
-        if (_return == null) {
-            _return = new ArrayList<FreqSelfInfo>();
+    public List<FreqSelfInfo> getReturns() {
+        if (returns == null) {
+            returns = new ArrayList<FreqSelfInfo>();
         }
-        return this._return;
+        return this.returns;
     }
 
 }

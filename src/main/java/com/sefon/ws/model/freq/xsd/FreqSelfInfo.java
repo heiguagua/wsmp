@@ -2,10 +2,10 @@
 package com.sefon.ws.model.freq.xsd;
 
 import java.math.BigDecimal;
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -59,42 +59,44 @@ import javax.xml.datatype.XMLGregorianCalendar;
 })
 public class FreqSelfInfo {
 
-    @XmlElementRef(name = "channelBandwidth", namespace = "http://freq.model.ws.sefon.com/xsd", type = JAXBElement.class)
-    protected JAXBElement<String> channelBandwidth;
-    @XmlElementRef(name = "deadTime", namespace = "http://freq.model.ws.sefon.com/xsd", type = JAXBElement.class)
-    protected JAXBElement<XMLGregorianCalendar> deadTime;
-    @XmlElementRef(name = "effectiveTime", namespace = "http://freq.model.ws.sefon.com/xsd", type = JAXBElement.class)
-    protected JAXBElement<XMLGregorianCalendar> effectiveTime;
-    @XmlElementRef(name = "freqDesc", namespace = "http://freq.model.ws.sefon.com/xsd", type = JAXBElement.class)
-    protected JAXBElement<String> freqDesc;
-    @XmlElementRef(name = "freqMax", namespace = "http://freq.model.ws.sefon.com/xsd", type = JAXBElement.class)
-    protected JAXBElement<BigDecimal> freqMax;
-    @XmlElementRef(name = "freqMin", namespace = "http://freq.model.ws.sefon.com/xsd", type = JAXBElement.class)
-    protected JAXBElement<BigDecimal> freqMin;
-    @XmlElementRef(name = "freqSection", namespace = "http://freq.model.ws.sefon.com/xsd", type = JAXBElement.class)
-    protected JAXBElement<String> freqSection;
-    @XmlElementRef(name = "id", namespace = "http://freq.model.ws.sefon.com/xsd", type = JAXBElement.class)
-    protected JAXBElement<String> id;
-    @XmlElementRef(name = "isManuallyAdd", namespace = "http://freq.model.ws.sefon.com/xsd", type = JAXBElement.class)
-    protected JAXBElement<String> isManuallyAdd;
-    @XmlElementRef(name = "isSeries", namespace = "http://freq.model.ws.sefon.com/xsd", type = JAXBElement.class)
-    protected JAXBElement<String> isSeries;
-    @XmlElementRef(name = "parentId", namespace = "http://freq.model.ws.sefon.com/xsd", type = JAXBElement.class)
-    protected JAXBElement<String> parentId;
-    @XmlElementRef(name = "serviceName", namespace = "http://freq.model.ws.sefon.com/xsd", type = JAXBElement.class)
-    protected JAXBElement<String> serviceName;
-    @XmlElementRef(name = "st", namespace = "http://freq.model.ws.sefon.com/xsd", type = JAXBElement.class)
-    protected JAXBElement<String> st;
+    @XmlElement(nillable = true)
+    protected String channelBandwidth;
+    @XmlElement(nillable = true)
+    @XmlSchemaType(name = "date")
+    protected XMLGregorianCalendar deadTime;
+    @XmlElement(nillable = true)
+    @XmlSchemaType(name = "date")
+    protected XMLGregorianCalendar effectiveTime;
+    @XmlElement(nillable = true)
+    protected String freqDesc;
+    @XmlElement(nillable = true)
+    protected BigDecimal freqMax;
+    @XmlElement(nillable = true)
+    protected BigDecimal freqMin;
+    @XmlElement(nillable = true)
+    protected String freqSection;
+    @XmlElement(nillable = true)
+    protected String id;
+    @XmlElement(nillable = true)
+    protected String isManuallyAdd;
+    @XmlElement(nillable = true)
+    protected String isSeries;
+    @XmlElement(nillable = true)
+    protected String parentId;
+    @XmlElement(nillable = true)
+    protected String serviceName;
+    @XmlElement(nillable = true)
+    protected String st;
 
     /**
      * 获取channelBandwidth属性的值。
      * 
      * @return
      *     possible object is
-     *     {@link JAXBElement }{@code <}{@link String }{@code >}
+     *     {@link String }
      *     
      */
-    public JAXBElement<String> getChannelBandwidth() {
+    public String getChannelBandwidth() {
         return channelBandwidth;
     }
 
@@ -103,10 +105,10 @@ public class FreqSelfInfo {
      * 
      * @param value
      *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link String }{@code >}
+     *     {@link String }
      *     
      */
-    public void setChannelBandwidth(JAXBElement<String> value) {
+    public void setChannelBandwidth(String value) {
         this.channelBandwidth = value;
     }
 
@@ -115,10 +117,10 @@ public class FreqSelfInfo {
      * 
      * @return
      *     possible object is
-     *     {@link JAXBElement }{@code <}{@link XMLGregorianCalendar }{@code >}
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public JAXBElement<XMLGregorianCalendar> getDeadTime() {
+    public XMLGregorianCalendar getDeadTime() {
         return deadTime;
     }
 
@@ -127,10 +129,10 @@ public class FreqSelfInfo {
      * 
      * @param value
      *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link XMLGregorianCalendar }{@code >}
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setDeadTime(JAXBElement<XMLGregorianCalendar> value) {
+    public void setDeadTime(XMLGregorianCalendar value) {
         this.deadTime = value;
     }
 
@@ -139,10 +141,10 @@ public class FreqSelfInfo {
      * 
      * @return
      *     possible object is
-     *     {@link JAXBElement }{@code <}{@link XMLGregorianCalendar }{@code >}
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public JAXBElement<XMLGregorianCalendar> getEffectiveTime() {
+    public XMLGregorianCalendar getEffectiveTime() {
         return effectiveTime;
     }
 
@@ -151,10 +153,10 @@ public class FreqSelfInfo {
      * 
      * @param value
      *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link XMLGregorianCalendar }{@code >}
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setEffectiveTime(JAXBElement<XMLGregorianCalendar> value) {
+    public void setEffectiveTime(XMLGregorianCalendar value) {
         this.effectiveTime = value;
     }
 
@@ -163,10 +165,10 @@ public class FreqSelfInfo {
      * 
      * @return
      *     possible object is
-     *     {@link JAXBElement }{@code <}{@link String }{@code >}
+     *     {@link String }
      *     
      */
-    public JAXBElement<String> getFreqDesc() {
+    public String getFreqDesc() {
         return freqDesc;
     }
 
@@ -175,10 +177,10 @@ public class FreqSelfInfo {
      * 
      * @param value
      *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link String }{@code >}
+     *     {@link String }
      *     
      */
-    public void setFreqDesc(JAXBElement<String> value) {
+    public void setFreqDesc(String value) {
         this.freqDesc = value;
     }
 
@@ -187,10 +189,10 @@ public class FreqSelfInfo {
      * 
      * @return
      *     possible object is
-     *     {@link JAXBElement }{@code <}{@link BigDecimal }{@code >}
+     *     {@link BigDecimal }
      *     
      */
-    public JAXBElement<BigDecimal> getFreqMax() {
+    public BigDecimal getFreqMax() {
         return freqMax;
     }
 
@@ -199,10 +201,10 @@ public class FreqSelfInfo {
      * 
      * @param value
      *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link BigDecimal }{@code >}
+     *     {@link BigDecimal }
      *     
      */
-    public void setFreqMax(JAXBElement<BigDecimal> value) {
+    public void setFreqMax(BigDecimal value) {
         this.freqMax = value;
     }
 
@@ -211,10 +213,10 @@ public class FreqSelfInfo {
      * 
      * @return
      *     possible object is
-     *     {@link JAXBElement }{@code <}{@link BigDecimal }{@code >}
+     *     {@link BigDecimal }
      *     
      */
-    public JAXBElement<BigDecimal> getFreqMin() {
+    public BigDecimal getFreqMin() {
         return freqMin;
     }
 
@@ -223,10 +225,10 @@ public class FreqSelfInfo {
      * 
      * @param value
      *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link BigDecimal }{@code >}
+     *     {@link BigDecimal }
      *     
      */
-    public void setFreqMin(JAXBElement<BigDecimal> value) {
+    public void setFreqMin(BigDecimal value) {
         this.freqMin = value;
     }
 
@@ -235,10 +237,10 @@ public class FreqSelfInfo {
      * 
      * @return
      *     possible object is
-     *     {@link JAXBElement }{@code <}{@link String }{@code >}
+     *     {@link String }
      *     
      */
-    public JAXBElement<String> getFreqSection() {
+    public String getFreqSection() {
         return freqSection;
     }
 
@@ -247,10 +249,10 @@ public class FreqSelfInfo {
      * 
      * @param value
      *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link String }{@code >}
+     *     {@link String }
      *     
      */
-    public void setFreqSection(JAXBElement<String> value) {
+    public void setFreqSection(String value) {
         this.freqSection = value;
     }
 
@@ -259,10 +261,10 @@ public class FreqSelfInfo {
      * 
      * @return
      *     possible object is
-     *     {@link JAXBElement }{@code <}{@link String }{@code >}
+     *     {@link String }
      *     
      */
-    public JAXBElement<String> getId() {
+    public String getId() {
         return id;
     }
 
@@ -271,10 +273,10 @@ public class FreqSelfInfo {
      * 
      * @param value
      *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link String }{@code >}
+     *     {@link String }
      *     
      */
-    public void setId(JAXBElement<String> value) {
+    public void setId(String value) {
         this.id = value;
     }
 
@@ -283,10 +285,10 @@ public class FreqSelfInfo {
      * 
      * @return
      *     possible object is
-     *     {@link JAXBElement }{@code <}{@link String }{@code >}
+     *     {@link String }
      *     
      */
-    public JAXBElement<String> getIsManuallyAdd() {
+    public String getIsManuallyAdd() {
         return isManuallyAdd;
     }
 
@@ -295,10 +297,10 @@ public class FreqSelfInfo {
      * 
      * @param value
      *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link String }{@code >}
+     *     {@link String }
      *     
      */
-    public void setIsManuallyAdd(JAXBElement<String> value) {
+    public void setIsManuallyAdd(String value) {
         this.isManuallyAdd = value;
     }
 
@@ -307,10 +309,10 @@ public class FreqSelfInfo {
      * 
      * @return
      *     possible object is
-     *     {@link JAXBElement }{@code <}{@link String }{@code >}
+     *     {@link String }
      *     
      */
-    public JAXBElement<String> getIsSeries() {
+    public String getIsSeries() {
         return isSeries;
     }
 
@@ -319,10 +321,10 @@ public class FreqSelfInfo {
      * 
      * @param value
      *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link String }{@code >}
+     *     {@link String }
      *     
      */
-    public void setIsSeries(JAXBElement<String> value) {
+    public void setIsSeries(String value) {
         this.isSeries = value;
     }
 
@@ -331,10 +333,10 @@ public class FreqSelfInfo {
      * 
      * @return
      *     possible object is
-     *     {@link JAXBElement }{@code <}{@link String }{@code >}
+     *     {@link String }
      *     
      */
-    public JAXBElement<String> getParentId() {
+    public String getParentId() {
         return parentId;
     }
 
@@ -343,10 +345,10 @@ public class FreqSelfInfo {
      * 
      * @param value
      *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link String }{@code >}
+     *     {@link String }
      *     
      */
-    public void setParentId(JAXBElement<String> value) {
+    public void setParentId(String value) {
         this.parentId = value;
     }
 
@@ -355,10 +357,10 @@ public class FreqSelfInfo {
      * 
      * @return
      *     possible object is
-     *     {@link JAXBElement }{@code <}{@link String }{@code >}
+     *     {@link String }
      *     
      */
-    public JAXBElement<String> getServiceName() {
+    public String getServiceName() {
         return serviceName;
     }
 
@@ -367,10 +369,10 @@ public class FreqSelfInfo {
      * 
      * @param value
      *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link String }{@code >}
+     *     {@link String }
      *     
      */
-    public void setServiceName(JAXBElement<String> value) {
+    public void setServiceName(String value) {
         this.serviceName = value;
     }
 
@@ -379,10 +381,10 @@ public class FreqSelfInfo {
      * 
      * @return
      *     possible object is
-     *     {@link JAXBElement }{@code <}{@link String }{@code >}
+     *     {@link String }
      *     
      */
-    public JAXBElement<String> getSt() {
+    public String getSt() {
         return st;
     }
 
@@ -391,10 +393,10 @@ public class FreqSelfInfo {
      * 
      * @param value
      *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link String }{@code >}
+     *     {@link String }
      *     
      */
-    public void setSt(JAXBElement<String> value) {
+    public void setSt(String value) {
         this.st = value;
     }
 

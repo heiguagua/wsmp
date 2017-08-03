@@ -1,10 +1,9 @@
 
 package com.sefon.ws.service.impl;
 
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -35,18 +34,18 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "querySelfFreqInfoByID")
 public class QuerySelfFreqInfoByID {
 
-    @XmlElementRef(name = "id", namespace = "http://impl.service.ws.sefon.com", type = JAXBElement.class)
-    protected JAXBElement<String> id;
+    @XmlElement(nillable = true)
+    protected String id;
 
     /**
      * 获取id属性的值。
      * 
      * @return
      *     possible object is
-     *     {@link JAXBElement }{@code <}{@link String }{@code >}
+     *     {@link String }
      *     
      */
-    public JAXBElement<String> getId() {
+    public String getId() {
         return id;
     }
 
@@ -55,10 +54,10 @@ public class QuerySelfFreqInfoByID {
      * 
      * @param value
      *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link String }{@code >}
+     *     {@link String }
      *     
      */
-    public void setId(JAXBElement<String> value) {
+    public void setId(String value) {
         this.id = value;
     }
 
