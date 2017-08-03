@@ -8,7 +8,6 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 		// 信号列表change事件
 		$("#signal_list1 .select2-picker").change(function() {
 			var selected_val = $(this).val();
-			
 			getStations(selected_val);
 			
 		});
@@ -68,7 +67,6 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 		//关闭音频播放
 		$("#audio-close").on("click",function(){
 			$("#audio-wrap").slideUp();
-			console.log($("#audio"));
 			$("#audio").prop("checked",false);
 		})
 		
@@ -103,7 +101,6 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 		//关闭IQ播放框
 		$("#IQ-close").on("click",function(){
 			$("#IQ-wrap").slideUp();
-			console.log($("#audio"));
 			$("#IQ").prop("checked",false);
 		})
 		
@@ -199,7 +196,6 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 							queryParamsType : 'limit', //查询参数组织方式
 							queryParams : function(params) {
 								var info = Binding.getUser();
-						        console.log(info);
 						        info = JSON.parse(info);
 						        if(info.AreaType != "Province"){
 						        	 var code = info.Area.Code;
@@ -209,7 +205,6 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 							}, //请求服务器时所传的参数
 							onClickRow: function(row){
 								//data.id = row.signalId;
-								console.log(row);
 								$("#stationKey").val(row.id);
 //								ajax.post("data/alarm/instersingal",data,function(){
 //								
@@ -220,7 +215,6 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 							pageList : [ 5, 10, 20, 30 ], //分页步进值
 							clickToSelect : true, //是否启用点击选中行
 							responseHandler : function(res) {
-								console.log(res);
 								return res;
 							},
 							columns : [ {
@@ -274,7 +268,6 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 							queryParamsType : 'limit', //查询参数组织方式
 							queryParams : function(params) {
 								var info = Binding.getUser();
-						        console.log(info);
 						        info = JSON.parse(info);
 			
 						        var code = info.Area.Code;
@@ -284,7 +277,6 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 							}, //请求服务器时所传的参数
 							onClickRow: function(row){
 								//data.id = row.signalId;
-								console.log(row);
 								$("#stationId").val(row.id);
 //								ajax.post("data/alarm/instersingal",data,function(){
 //								
@@ -295,7 +287,6 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 							pageList : [ 5, 10, 20, 30 ], //分页步进值
 							clickToSelect : true, //是否启用点击选中行
 							responseHandler : function(res) {
-								console.log(res);
 								return res;
 							},
 							columns : [ {
@@ -349,7 +340,6 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 							queryParamsType : 'limit', //查询参数组织方式
 							queryParams : function(params) {
 								var info = Binding.getUser();
-						        console.log(info);
 						        info = JSON.parse(info);
 						        var code = info.Area.Code;
 								 params.areaCode = code;
@@ -358,7 +348,6 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 							}, //请求服务器时所传的参数
 							onClickRow: function(row){
 								//data.id = row.signalId;
-								console.log(row);
 								$("#stationId").val(row.id);
 //								ajax.post("data/alarm/instersingal",data,function(){
 //								
@@ -369,7 +358,6 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 							pageList : [ 5, 10, 20, 30 ], //分页步进值
 							clickToSelect : true, //是否启用点击选中行
 							responseHandler : function(res) {
-								console.log(res);
 								return res;
 							},
 							columns : [ {
@@ -549,7 +537,6 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 	function getStations(signal_id) {
 		$("#station-list2").children().remove();	
 			var info = Binding.getUser();
-	        console.log(info);
 	        info = JSON.parse(info);
 	        
 	        var code = info.Area.Code;
@@ -564,8 +551,6 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 			ajax.get("data/signal/stationList",requsetparam,function(reslut){
 				 var rsize = data.length;
 				 var arryIdSize = reslut.length;
-				 console.log(reslut);
-				 console.log(data);
 				 html = ''
 				 for(var i = 0; i < rsize; i++){
 					for(var j = 0; j <arryIdSize;j++){
@@ -579,6 +564,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 				 }
 				 console.log(html);
 				$("#station-list2").append(html);
+				console.log($("#station-list2"));
 				changeView();
 			});
 	}
@@ -593,7 +579,6 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 		var singalDetail = {};
 		
 		var info = Binding.getUser();
-        console.log(info);
         info = JSON.parse(info);
         var code = info.Area.Code;
         
@@ -624,8 +609,6 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 		
 		ajax.get("data/alarm/firstLevelChart",fisrtLevel,function(back){
 			
-			console.log(back);
-			
 			initMonthchart(back);
 			
 			maxlevelinit(back);
@@ -634,7 +617,6 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 	}
 	
 	function maxlevelinit(reslut) {
-			console.log(reslut.xAxis);
 			var optionMonth = {
 				color : [ 'rgb(55,165,255)' ],
 				tooltip : {
@@ -1351,7 +1333,6 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 						onClickRow: function(row){
 						},
 						onCheck:function(row){
-							console.log(row);
 							spectrum_play_list.push(row.task_id);
 							
 						},
