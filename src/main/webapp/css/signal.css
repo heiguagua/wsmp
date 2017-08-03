@@ -320,3 +320,19 @@ td.bs-checkbox{
 .data-choose-list .btn-cancel:hover,.data-choose-list .btn-cancel:active{
 	color:#333 !important;
 }
+.gate-filter{
+	display: inline-block;
+    vertical-align: bottom;
+	padding: 2px 20px 2px 4px;
+    border: 1px solid #DAE5F0;
+    border-radius: 4px;
+    width: 130px;
+}
+.btn-submit{
+	padding: 4px 18px;
+    border-radius: 4px;
+    background: #37a5ff;
+    color: #FFF;
+    border: none;
+    margin-right: 10px;
+}
