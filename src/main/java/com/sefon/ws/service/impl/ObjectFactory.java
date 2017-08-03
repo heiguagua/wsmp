@@ -1,7 +1,10 @@
 
 package com.sefon.ws.service.impl;
 
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.annotation.XmlElementDecl;
 import javax.xml.bind.annotation.XmlRegistry;
+import javax.xml.namespace.QName;
 
 
 /**
@@ -21,6 +24,7 @@ import javax.xml.bind.annotation.XmlRegistry;
 @XmlRegistry
 public class ObjectFactory {
 
+    private final static QName _QuerySelfFreqInfoByIDId_QNAME = new QName("http://impl.service.ws.sefon.com", "id");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: com.sefon.ws.service.impl
@@ -30,51 +34,28 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link QueryStationWithPagination }
+     * Create an instance of {@link QuerySelfFreqInfoByID }
      * 
      */
-    public QueryStationWithPagination createQueryStationWithPagination() {
-        return new QueryStationWithPagination();
+    public QuerySelfFreqInfoByID createQuerySelfFreqInfoByID() {
+        return new QuerySelfFreqInfoByID();
     }
 
     /**
-     * Create an instance of {@link QueryStationWithPaginationResponse }
+     * Create an instance of {@link QuerySelfFreqInfoByIDResponse }
      * 
      */
-    public QueryStationWithPaginationResponse createQueryStationWithPaginationResponse() {
-        return new QueryStationWithPaginationResponse();
+    public QuerySelfFreqInfoByIDResponse createQuerySelfFreqInfoByIDResponse() {
+        return new QuerySelfFreqInfoByIDResponse();
     }
 
     /**
-     * Create an instance of {@link GetStationById }
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
      * 
      */
-    public GetStationById createGetStationById() {
-        return new GetStationById();
-    }
-
-    /**
-     * Create an instance of {@link GetStationByIdResponse }
-     * 
-     */
-    public GetStationByIdResponse createGetStationByIdResponse() {
-        return new GetStationByIdResponse();
-    }
-
-    /**
-     * Create an instance of {@link QueryStation }
-     * 
-     */
-    public QueryStation createQueryStation() {
-        return new QueryStation();
-    }
-
-    /**
-     * Create an instance of {@link QueryStationResponse }
-     * 
-     */
-    public QueryStationResponse createQueryStationResponse() {
-        return new QueryStationResponse();
+    @XmlElementDecl(namespace = "http://impl.service.ws.sefon.com", name = "id", scope = QuerySelfFreqInfoByID.class)
+    public JAXBElement<String> createQuerySelfFreqInfoByIDId(String value) {
+        return new JAXBElement<String>(_QuerySelfFreqInfoByIDId_QNAME, String.class, QuerySelfFreqInfoByID.class, value);
     }
 
 }

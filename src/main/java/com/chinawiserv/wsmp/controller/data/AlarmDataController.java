@@ -115,8 +115,7 @@ public class AlarmDataController {
 				beginTime = beginTime.concat("000000");
 			}
 			
-			centorFreq = (long) (88.8 * 1000000);
-			OccAndMax reslutResponce = hbaseClient.queryOccHour("52010118", beginTime, centorFreq);
+			OccAndMax reslutResponce = hbaseClient.queryOccHour(stationCode, beginTime, centorFreq);
 			Map<String, Object> Max = reslutResponce.getMax();
 			Map<String, Object> Occ = reslutResponce.getOcc();
 			if (Occ.size() == 0) {
@@ -209,12 +208,8 @@ public class AlarmDataController {
 		HashMap<String, Object> reslutMap = new HashMap<>();
 		try {
 
-			long frequency = (long)(88.8 * 1000000);
-			long upperBound = 5000000L;
-			long lowerBound = 5000000L;
-			String dateTime = "20170803000000";
-			Map<Object, Object> max  = hbaseClient.queryMaxLevels("52010118", frequency, upperBound, lowerBound, dateTime);
-			Map<String, Object> occ  = hbaseClient.queryOccDay("52010118", dateTime, 90, frequency).getOcc();
+			Map<Object, Object> max  = hbaseClient.queryMaxLevels(stationCode, centorFreq, upperBound, lowerBound, beginTime);
+			Map<String, Object> occ  = hbaseClient.queryOccDay(stationCode, beginTime, 90, centorFreq).getOcc();
 			if (occ.size() == 0) {
 				
 				HashMap<String, Object> restlutHashMap = Maps.newHashMap();
