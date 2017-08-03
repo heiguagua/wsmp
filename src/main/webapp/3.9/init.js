@@ -606,7 +606,8 @@
         datetimepicker : "../library/timepicker/js/bootstrap-datetimepicker.min",
         moment : "../library/timepicker/moment.min",
         datetimepicker_cn : "../library/timepicker/bootstrap-datetimepicker.zh-CN",
-        ajax : "../library/util/ajax"
+        ajax : "../library/util/ajax",
+        wave_suffer:"../library/wavesuffer/wavesuffer.min"
     },
     shim : {
         bootstrap : {deps : ["jquery"]},
