@@ -62,7 +62,7 @@ public class AlarmDataController {
 	@Autowired
 	HbaseClient hbaseClient;
 
-    //@Autowired
+	@Autowired
 	StationService stationService;
 
 	@Value("${upperBound.value:5000000}")
@@ -74,15 +74,14 @@ public class AlarmDataController {
 	private ObjectMapper mapper = new ObjectMapper();
 
 	@GetMapping("/dayCharts")
-	public Object dayCharts(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
+	public Object dayCharts(@RequestParam String beginTime, @RequestParam long centorFreq,
+			@RequestParam String stationCode) {
 		// Map<String, Object> map = hbaseClient.queryOccHour(stationCode,
 		// beginTime, centorFreq);
-		String[] xAxis = new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
-				"21", "22", "23", "24"
-		};
-		double[] series = new double[] { 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, 51.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, 55.2, 58.4,
-				60.0, 58.1, 56.2, 58.9
-		};
+		String[] xAxis = new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14",
+				"15", "16", "17", "18", "19", "20", "21", "22", "23", "24" };
+		double[] series = new double[] { 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, 51.5, 55.2, 58.4, 60.0,
+				58.1, 59.1, 58.2, 58, 57.9, 55.2, 58.4, 60.0, 58.1, 56.2, 58.9 };
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("xAxis", xAxis);
 		map.put("series", series);
@@ -90,48 +89,47 @@ public class AlarmDataController {
 	}
 
 	@GetMapping("/hourCharts")
-	public Object hourCharts(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
+	public Object hourCharts(@RequestParam String beginTime, @RequestParam long centorFreq,
+			@RequestParam String stationCode) {
 
-		String[] xAxis = new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
-				"21", "22", "23", "24"
-		};
-		double[] series = new double[] { 55, 60.5, 60.0, 58.1, 56.2, 58.9, 58.2, 57.4, 58.0, 60.1, 59.1, 58.2, 58, 60.0, 58.1, 59.1, 57.9, 51.5, 55.2, 58.4,
-				58.2, 58, 57.9, 55.2, 58.4
-		};
+		String[] xAxis = new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14",
+				"15", "16", "17", "18", "19", "20", "21", "22", "23", "24" };
+		double[] series = new double[] { 55, 60.5, 60.0, 58.1, 56.2, 58.9, 58.2, 57.4, 58.0, 60.1, 59.1, 58.2, 58, 60.0,
+				58.1, 59.1, 57.9, 51.5, 55.2, 58.4, 58.2, 58, 57.9, 55.2, 58.4 };
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("xAxis", xAxis);
 		map.put("series", series);
 		return map;
 
 	}
-	
+
 	@GetMapping(path = "/secondLevelChart")
-	public Object secondLevelChart(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
-		
+	public Object secondLevelChart(@RequestParam String beginTime, @RequestParam long centorFreq,
+			@RequestParam String stationCode) {
+
 		HashMap<String, Object> reslutMap = new HashMap<>();
 		try {
-			
+
 			if (beginTime.length() == 8) {
 				beginTime = beginTime.concat("000000");
 			}
-			
+
 			OccAndMax reslutResponce = hbaseClient.queryOccHour(stationCode, beginTime, centorFreq);
 			Map<String, Object> Max = reslutResponce.getMax();
 			Map<String, Object> Occ = reslutResponce.getOcc();
 			if (Occ.size() == 0) {
-				
+
 				HashMap<String, Object> restlutHashMap = Maps.newHashMap();
-				
+
 				String[] xAxis = new String[] {};
 				double[] series = new double[] {};
-				
+
 				restlutHashMap.put("xAxis", xAxis);
 				restlutHashMap.put("series", series);
-				
+
 				reslutMap.put("dayOcc", restlutHashMap);
-			}
-			else {
-				
+			} else {
+
 				LinkedList<Object> xAxis = Lists.newLinkedList();
 				LinkedList<Object> series = Lists.newLinkedList();
 				Occ.forEach((k, v) -> {
@@ -146,24 +144,24 @@ public class AlarmDataController {
 
 				restlutHashMap.put("xAxis", xAxis);
 				restlutHashMap.put("series", series);
-				
+
 				reslutMap.put("dayOcc", restlutHashMap);
 			}
-			
+
 			if (Max.size() == 0) {
-				
+
 				HashMap<String, Object> restlutHashMap = Maps.newHashMap();
-				
+
 				String[] xAxis = new String[] {};
 				double[] series = new double[] {};
-				
+
 				restlutHashMap.put("xAxis", xAxis);
 				restlutHashMap.put("series", series);
-				
+
 				reslutMap.put("max", restlutHashMap);
-	
-			}else{
-				
+
+			} else {
+
 				LinkedList<Object> xAxis = Lists.newLinkedList();
 				LinkedList<Object> series = Lists.newLinkedList();
 
@@ -181,14 +179,13 @@ public class AlarmDataController {
 
 				restlutHashMap.put("xAxis", xAxis);
 				restlutHashMap.put("series", series);
-				
+
 				reslutMap.put("max", restlutHashMap);
-				
+
 			}
-			
+
 			return reslutMap;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			HashMap<String, Object> restlutHashMap = Maps.newHashMap();
@@ -201,29 +198,29 @@ public class AlarmDataController {
 
 	}
 
-	
 	@GetMapping(path = "/firstLevelChart")
-	public Object firstLevelChart(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
-		
+	public Object firstLevelChart(@RequestParam String beginTime, @RequestParam long centorFreq,
+			@RequestParam String stationCode) {
+
 		HashMap<String, Object> reslutMap = new HashMap<>();
 		try {
 
-			Map<Object, Object> max  = hbaseClient.queryMaxLevels(stationCode, centorFreq, upperBound, lowerBound, beginTime);
-			Map<String, Object> occ  = hbaseClient.queryOccDay(stationCode, beginTime, 90, centorFreq).getOcc();
+			Map<Object, Object> max = hbaseClient.queryMaxLevels(stationCode, centorFreq, upperBound, lowerBound,
+					beginTime);
+			Map<String, Object> occ = hbaseClient.queryOccDay(stationCode, beginTime, 90, centorFreq).getOcc();
 			if (occ.size() == 0) {
-				
+
 				HashMap<String, Object> restlutHashMap = Maps.newHashMap();
-				
+
 				String[] xAxis = new String[] {};
 				double[] series = new double[] {};
-				
+
 				restlutHashMap.put("xAxis", xAxis);
 				restlutHashMap.put("series", series);
-				
+
 				reslutMap.put("monthOcc", restlutHashMap);
-			}
-			else {
-				
+			} else {
+
 				LinkedList<Object> xAxis = Lists.newLinkedList();
 				LinkedList<Object> series = Lists.newLinkedList();
 
@@ -239,24 +236,24 @@ public class AlarmDataController {
 
 				restlutHashMap.put("xAxis", xAxis);
 				restlutHashMap.put("series", series);
-				
+
 				reslutMap.put("monthOcc", restlutHashMap);
 			}
-			
+
 			if (max.size() == 0) {
-				
+
 				HashMap<String, Object> restlutHashMap = Maps.newHashMap();
-				
+
 				String[] xAxis = new String[] {};
 				double[] series = new double[] {};
-				
+
 				restlutHashMap.put("xAxis", xAxis);
 				restlutHashMap.put("series", series);
-				
+
 				reslutMap.put("max", restlutHashMap);
-	
-			}else{
-				
+
+			} else {
+
 				LinkedList<Object> xAxis = Lists.newLinkedList();
 				LinkedList<Object> series = Lists.newLinkedList();
 
@@ -274,14 +271,13 @@ public class AlarmDataController {
 
 				restlutHashMap.put("xAxis", xAxis);
 				restlutHashMap.put("series", series);
-				
+
 				reslutMap.put("max", restlutHashMap);
-				
+
 			}
-			
+
 			return reslutMap;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			HashMap<String, Object> restlutHashMap = Maps.newHashMap();
@@ -302,8 +298,7 @@ public class AlarmDataController {
 			EntityWrapper<IntensiveMonitoring> ew = new EntityWrapper<>(in);
 			ew.where("SINGAL_FREQUENCY = {0}", in.getSingalFrequency());
 			iIntensiveMonitoringServicel.delete(ew);
-		}
-		else {
+		} else {
 			iIntensiveMonitoringServicel.insert(in);
 		}
 	}
@@ -311,7 +306,8 @@ public class AlarmDataController {
 	@PostMapping(path = "/warringconfirm")
 	public void warning_confirm(@RequestBody String param) throws JsonProcessingException {
 
-		FreqWarningOperationResponse res = (FreqWarningOperationResponse) service.freqWarnServiceCall("update", param, FreqWarningDTO.class);
+		FreqWarningOperationResponse res = (FreqWarningOperationResponse) service.freqWarnServiceCall("update", param,
+				FreqWarningDTO.class);
 		ObjectMapper mapper = new ObjectMapper();
 
 		Logger.info(mapper.writeValueAsString(res));
@@ -347,7 +343,8 @@ public class AlarmDataController {
 
 		info.setAreaCodes(areaCodesList);
 
-		StationInfoPagedResult reslut = stationService.getStationServiceHttpSoap11Endpoint().queryStationWithPagination(info, pageNumber, limitNumber);
+		StationInfoPagedResult reslut = stationService.getStationServiceHttpSoap11Endpoint()
+				.queryStationWithPagination(info, pageNumber, limitNumber);
 
 		Map<String, Object> hasMap = Maps.newLinkedHashMap();
 		int totlal = reslut.getPageInfo().getTotalPages();
@@ -379,17 +376,18 @@ public class AlarmDataController {
 		final FreqWarningQueryResponse response = (FreqWarningQueryResponse) service.freqWarnServiceCall("query",
 				mapper.writeValueAsString(signal.get("warmingId")), FreqWarningQueryRequest.class);
 
-		final FreqWarningDTO t = response.getWarningInfos().getFreqWarningDTO().size() > 0 ? response.getWarningInfos().getFreqWarningDTO().get(0)
-				: new FreqWarningDTO();
+		final FreqWarningDTO t = response.getWarningInfos().getFreqWarningDTO().size() > 0
+				? response.getWarningInfos().getFreqWarningDTO().get(0) : new FreqWarningDTO();
 
 		final BigInteger bandWidth = t.getBandWidth();
 		final BigInteger centerFreq = t.getCenterFreq();
 
-		List<Map<String, String>> ids = response.getWarningInfos().getFreqWarningDTO().get(0).getStatList().getFreqWarningStatDTO().stream().map(m -> {
-			HashMap<String, String> map = Maps.newHashMap();
-			map.put("stationNumber", m.getStationGUID());
-			return map;
-		}).collect(toList());
+		List<Map<String, String>> ids = response.getWarningInfos().getFreqWarningDTO().get(0).getStatList()
+				.getFreqWarningStatDTO().stream().map(m -> {
+					HashMap<String, String> map = Maps.newHashMap();
+					map.put("stationNumber", m.getStationGUID());
+					return map;
+				}).collect(toList());
 
 		station.put("centerFreq", centerFreq);
 		station.put("bandWidth", bandWidth);
@@ -412,14 +410,14 @@ public class AlarmDataController {
 
 		station.put("stationDTOs", radioSignalAbnormalHistoryDTO);
 
-		final RadioSignalOperationReponse res = (RadioSignalOperationReponse) service.radioSignalServiceCall("insertRadioSignal",
-				mapper.writeValueAsString(station), RadioSignalDTO.class);
+		final RadioSignalOperationReponse res = (RadioSignalOperationReponse) service
+				.radioSignalServiceCall("insertRadioSignal", mapper.writeValueAsString(station), RadioSignalDTO.class);
 
 		Logger.info(mapper.writeValueAsString(res));
 		return null;
 	}
 
-	@GetMapping(path = { "/StationInfo"})
+	@GetMapping(path = { "/StationInfo" })
 	public Object stationList(@RequestParam Map<String, Object> map) throws JsonProcessingException {
 
 		String index = (String) map.get("offset");
@@ -437,8 +435,8 @@ public class AlarmDataController {
 		list.put("string", areaCodeList);
 		requestParam.put("areaCodeList", list);
 
-		final RStatQuerySignalsResponse2 response = (RStatQuerySignalsResponse2) service.radioStationServiceCall("rStatQuerySignals",
-				mapper.writeValueAsString(requestParam), RStatQuerySignalsRequest.class);
+		final RStatQuerySignalsResponse2 response = (RStatQuerySignalsResponse2) service.radioStationServiceCall(
+				"rStatQuerySignals", mapper.writeValueAsString(requestParam), RStatQuerySignalsRequest.class);
 
 		List<Station> reslutDtos = response.getRStatSignalList().getRadioStationSignalDTO().stream().map(t -> {
 
@@ -451,7 +449,8 @@ public class AlarmDataController {
 			final String centerFreString = centerFre + "";
 			final String tapeWidthString = tapeWidth + "";
 
-			final Station station = new Station(radioStationDTO.getID(), radioStationDTO.getName(), centerFreString, tapeWidthString);
+			final Station station = new Station(radioStationDTO.getID(), radioStationDTO.getName(), centerFreString,
+					tapeWidthString);
 
 			return station;
 		}).collect(toList());
@@ -462,12 +461,14 @@ public class AlarmDataController {
 		reslut.put("rows", reslutDtos);
 		return reslut;
 	}
-	
+
 	@GetMapping("/maxlevel")
-	public Object getMaxlevel(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
+	public Object getMaxlevel(@RequestParam String beginTime, @RequestParam long centorFreq,
+			@RequestParam String stationCode) {
 		try {
 
-			Map<Object, Object> reponceReslut = hbaseClient.queryMaxLevels(stationCode, centorFreq, upperBound, lowerBound, beginTime);
+			Map<Object, Object> reponceReslut = hbaseClient.queryMaxLevels(stationCode, centorFreq, upperBound,
+					lowerBound, beginTime);
 
 			LinkedList<Object> xAxis = Lists.newLinkedList();
 			LinkedList<Object> series = Lists.newLinkedList();
@@ -489,8 +490,7 @@ public class AlarmDataController {
 
 			return restlutHashMap;
 
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			Logger.error("峰值查询异常", e);
 

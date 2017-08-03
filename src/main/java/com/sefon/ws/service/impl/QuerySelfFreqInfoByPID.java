@@ -6,7 +6,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import com.sefon.ws.model.freq.xsd.FreqSelfInfo;
 
 
 /**
@@ -19,7 +18,7 @@ import com.sefon.ws.model.freq.xsd.FreqSelfInfo;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="return" type="{http://freq.model.ws.sefon.com/xsd}FreqSelfInfo" minOccurs="0"/&gt;
+ *         &lt;element name="pid" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -30,36 +29,36 @@ import com.sefon.ws.model.freq.xsd.FreqSelfInfo;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "_return"
+    "pid"
 })
-@XmlRootElement(name = "querySelfFreqInfoByIDResponse")
-public class QuerySelfFreqInfoByIDResponse {
+@XmlRootElement(name = "querySelfFreqInfoByPID")
+public class QuerySelfFreqInfoByPID {
 
-    @XmlElement(name = "return", nillable = true)
-    protected FreqSelfInfo _return;
+    @XmlElement(nillable = true)
+    protected String pid;
 
     /**
-     * 获取return属性的值。
+     * 获取pid属性的值。
      * 
      * @return
      *     possible object is
-     *     {@link FreqSelfInfo }
+     *     {@link String }
      *     
      */
-    public FreqSelfInfo getReturn() {
-        return _return;
+    public String getPid() {
+        return pid;
     }
 
     /**
-     * 设置return属性的值。
+     * 设置pid属性的值。
      * 
      * @param value
      *     allowed object is
-     *     {@link FreqSelfInfo }
+     *     {@link String }
      *     
      */
-    public void setReturn(FreqSelfInfo value) {
-        this._return = value;
+    public void setPid(String value) {
+        this.pid = value;
     }
 
 }

@@ -45,4 +45,20 @@ public class ObjectFactory {
         return new QuerySelfFreqInfoByIDResponse();
     }
 
+    /**
+     * Create an instance of {@link QuerySelfFreqInfoByPID }
+     * 
+     */
+    public QuerySelfFreqInfoByPID createQuerySelfFreqInfoByPID() {
+        return new QuerySelfFreqInfoByPID();
+    }
+
+    /**
+     * Create an instance of {@link QuerySelfFreqInfoByPIDResponse }
+     * 
+     */
+    public QuerySelfFreqInfoByPIDResponse createQuerySelfFreqInfoByPIDResponse() {
+        return new QuerySelfFreqInfoByPIDResponse();
+    }
+
 }
