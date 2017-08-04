@@ -46,7 +46,7 @@ public class WaveOrderDataController {
 		//根据用户ID查询自定义频段
 		FreqService service = new FreqService();
 		ObjectFactory obj = new ObjectFactory();
-		FrequencyRangeQuerySpec model = obj.createFrequencyRangeQuerySpec();
+		FrequencyRangeQuerySpec model = new FrequencyRangeQuerySpec();
 		model.setUserId(param.get("userID").toString());
 		List<FrequencyRangeInfo> response = service.getFreqServiceHttpSoap12Endpoint().queryFrequencyRange(model);
 		//System.out.println("=======================response:"+JSON.toJSONString(response));
