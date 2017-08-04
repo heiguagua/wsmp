@@ -17,7 +17,7 @@ import javax.xml.ws.ResponseWrapper;
  * 
  */
 @WebService(targetNamespace = "http://impl.service.ws.sefon.com", name = "FreqServicePortType")
-@XmlSeeAlso({ObjectFactory.class, com.sefon.ws.model.freq.xsd.ObjectFactory.class, com.sefon.ws.model.electric.level.xsd.ObjectFactory.class})
+@XmlSeeAlso({ObjectFactory.class, com.sefon.ws.model.xsd.ObjectFactory.class, com.sefon.ws.model.electric.level.xsd.ObjectFactory.class})
 public interface FreqServicePortType {
 
     @WebMethod(operationName = "QueryFreqRangeDateOcc", action = "urn:QueryFreqRangeDateOcc")

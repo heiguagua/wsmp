@@ -15,8 +15,8 @@
               <div class='t-i-item flex1 flex-column justify-center'>固定移动</div> -->
             </div>
           </div>
-          <div class='item chart flex2'>
-            <div class='radio-chart' id='radioChart'></div>
+          <div class='item chart flex2 flex-column'>
+            <div class='radio-chart flex1' id='radioChart'></div>
           </div>
           <div class='item feature flex3'>
             <div class='features'>
@@ -37,8 +37,8 @@
           </div>
         </div>
       </div>
-      <div class='box'>
-        <div class='singal-control flex-column justify-center'>
+      <div class='box flex-column'>
+        <div class='singal-control flex-column justify-center flex1'>
           <div class='detect-way flex1 flex-row'>
             <div id = "warning_confirm" class='way-key flex1 checked'>
               <div class='way-sign'>
@@ -58,17 +58,17 @@
             <div class='flex1 flex-row align-center mrg-top15'>
               <div class="radio radio-primary flex1 ">
                 <input type="radio" value = '0' name="signal-type" id="legal-normal">
-                <label for="legal-normal"> 合法台站正常 </label>
+                <label for="legal-normal"> 合法正常信号 </label>
               </div>
               <div class="radio radio-primary flex1 ">
                 <input type="radio" value = '1' name="signal-type" id="undeclared">
-                <label for="legal-wrong"> 未申报 </label>
+                <label for="legal-wrong"> 合法违规信号 </label>
               </div>
             </div>
             <div class='flex1 flex-row align-center mrg-bottom15'>
               <div class="radio radio-primary flex1 ">
                 <input type="radio" value = '2' name="signal-type" id="nonlocal_station">
-                <label for="legal"> 外地台 </label>
+                <label for="legal"> 已知信号 </label>
               </div>
               <div class="radio radio-primary flex1 ">
                 <input type="radio" value = '3' name="signal-type" id="illegal" checked>

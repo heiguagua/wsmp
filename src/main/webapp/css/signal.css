@@ -90,7 +90,10 @@
       padding: 0;
       font-size: 12px; }
       #signal .signal-profile .features .features-list li {
-        margin-bottom: 8px; }
+        margin-bottom: 8px; 
+        white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;}
       #signal .signal-profile .features .features-list .item-name {
         display: inline-block;
         width: 80%; }
@@ -254,7 +257,7 @@
 	display:none;
 	position: absolute;
     right: 0;
-    width: 500px;
+    width: 800px;
     background: #FFF;
     z-index: 99;
     box-shadow: 0 0 12px #cecece;
@@ -281,8 +284,55 @@ td.bs-checkbox{
 	position:relative;
 }
 .data-choose-list .pagination{
-	margin:10px 0;
+	margin: 0;
 }
 .data-choose-list .fixed-table-body{
 	padding:0 10px 0 15px;
+}
+.data-choose-list .fixed-table-pagination{
+	border-top:0;
+}
+.data-choose-list .confirm-wrap{
+	border-top: 1px solid #EEE;
+    margin-top: 10px;
+    padding: 10px;
+}
+.data-choose-list .btn-confirm{
+	padding: 4px 28px;
+    border-radius: 4px;
+    background: #37a5ff;
+    color: #FFF;
+    border: none;
+    box-shadow:none;
+}
+.data-choose-list .btn-cancel{
+    padding: 4px 28px;
+    border-radius: 4px;
+    background: #FFF;
+    color: #333;
+    border: 1px solid #DDD;
+    margin-left: 15px;
+    box-shadow:none;
+}
+.data-choose-list .btn-confirm:hover,.data-choose-list .btn-confirm:active{
+	color:#FFF !important;
+}
+.data-choose-list .btn-cancel:hover,.data-choose-list .btn-cancel:active{
+	color:#333 !important;
+}
+.gate-filter{
+	display: inline-block;
+    vertical-align: bottom;
+	padding: 2px 20px 2px 4px;
+    border: 1px solid #DAE5F0;
+    border-radius: 4px;
+    width: 130px;
+}
+.btn-submit{
+	padding: 4px 18px;
+    border-radius: 4px;
+    background: #37a5ff;
+    color: #FFF;
+    border: none;
+    margin-right: 10px;
 }

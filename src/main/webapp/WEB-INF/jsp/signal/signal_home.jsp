@@ -65,6 +65,7 @@
 						<div class="pull-right"><span id="data-list-close" class="ico-close">&times;</span></div>
 						<table class="table table-striped table-hover" id="spectrum-table">
 						</table>
+						<div class="text-center confirm-wrap"><a class="btn btn-confirm" id="spectrum-confirm">确定</a><a class="btn btn-cancel">取消</a></div>
 					</div>
 					<ul class="nav nav-pills pull-right">
 						<li role="presentation"><a href="#">
@@ -82,10 +83,31 @@
 					</ul>
 				</div>
 				<div class="data-play-chart">
+					<div id="spectrumChart" style="width: 100%; height: 300px"></div>
+				</div>
+      </div>
+    </section>
+    
+    <!-- IQ数据 -->
+    <section class='flex-row' style="display: none" id="IQ-wrap">
+			<div class='box'>
+				<div class='data-play'>
+					<label class='module-name'>数据回放<span class="data-type">IQ数据</span></label>
+					<a class="ico-close close-box " id="IQ-close">&times;</a>
+					<a class='btn btn-default btn-choose pull-right' id="IQ-choose-btn">选择数据</a>
+					<div class="data-choose-list" id="IQ-choose-list">
+						<div class="pull-right"><span id="IQ-list-close" class="ico-close">&times;</span></div>
+						<table class="table table-striped table-hover" id="IQ-table">
+						</table>
+						<div class="text-center confirm-wrap"><a class="btn btn-confirm">确定</a><a class="btn btn-cancel">取消</a></div>
+					</div>
+				</div>
+				<div class="data-play-chart">
 					<div id="IQChart" style="width: 100%; height: 300px"></div>
 				</div>
       </div>
     </section>
+    
 
 		<!-- 音频 -->
 		<section class="flex-row" style="display: none" id="audio-wrap">
@@ -99,6 +121,7 @@
 						<div class="pull-right"><span id="audio-list-close" class="ico-close">&times;</span></div>
 						<table class="table table-striped table-hover" id="audio-table">
 						</table>
+						<div class="text-center confirm-wrap"><a class="btn btn-confirm">确定</a><a class="btn btn-cancel">取消</a></div>
 					</div>
 					<aside class="control">
 						<p class="winTitle">
@@ -150,7 +173,7 @@
 					<label class='module-name'> <img src='images/locate.png' />&nbsp;&nbsp;成都某某站台
 					</label>
 					<div class='pull-right'>
-						电磁覆盖率:&nbsp; <span class='coverage-number'>90%</span>
+						<input type="text" class="gate-filter" placeholder="请输入门阀" /> <button class="btn btn-submit" id="gate-btn">提交</button>电磁覆盖率:&nbsp; <span class='coverage-number'>90%</span>
 					</div>
 				</div>
 				<div id="mapDiv"padding: 10px; height: 960px"></div>

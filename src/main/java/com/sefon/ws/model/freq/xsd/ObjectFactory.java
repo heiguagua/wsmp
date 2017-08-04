@@ -30,19 +30,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link FrequencyRangeQuerySpec }
+     * Create an instance of {@link FreqSelfInfo }
      * 
      */
-    public FrequencyRangeQuerySpec createFrequencyRangeQuerySpec() {
-        return new FrequencyRangeQuerySpec();
-    }
-
-    /**
-     * Create an instance of {@link FrequencyRangeInfo }
-     * 
-     */
-    public FrequencyRangeInfo createFrequencyRangeInfo() {
-        return new FrequencyRangeInfo();
+    public FreqSelfInfo createFreqSelfInfo() {
+        return new FreqSelfInfo();
     }
 
 }

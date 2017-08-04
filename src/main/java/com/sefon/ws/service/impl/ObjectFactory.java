@@ -30,51 +30,35 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link QueryStationWithPagination }
+     * Create an instance of {@link QuerySelfFreqInfoByID }
      * 
      */
-    public QueryStationWithPagination createQueryStationWithPagination() {
-        return new QueryStationWithPagination();
+    public QuerySelfFreqInfoByID createQuerySelfFreqInfoByID() {
+        return new QuerySelfFreqInfoByID();
     }
 
     /**
-     * Create an instance of {@link QueryStationWithPaginationResponse }
+     * Create an instance of {@link QuerySelfFreqInfoByIDResponse }
      * 
      */
-    public QueryStationWithPaginationResponse createQueryStationWithPaginationResponse() {
-        return new QueryStationWithPaginationResponse();
+    public QuerySelfFreqInfoByIDResponse createQuerySelfFreqInfoByIDResponse() {
+        return new QuerySelfFreqInfoByIDResponse();
     }
 
     /**
-     * Create an instance of {@link GetStationById }
+     * Create an instance of {@link QuerySelfFreqInfoByPID }
      * 
      */
-    public GetStationById createGetStationById() {
-        return new GetStationById();
+    public QuerySelfFreqInfoByPID createQuerySelfFreqInfoByPID() {
+        return new QuerySelfFreqInfoByPID();
     }
 
     /**
-     * Create an instance of {@link GetStationByIdResponse }
+     * Create an instance of {@link QuerySelfFreqInfoByPIDResponse }
      * 
      */
-    public GetStationByIdResponse createGetStationByIdResponse() {
-        return new GetStationByIdResponse();
-    }
-
-    /**
-     * Create an instance of {@link QueryStation }
-     * 
-     */
-    public QueryStation createQueryStation() {
-        return new QueryStation();
-    }
-
-    /**
-     * Create an instance of {@link QueryStationResponse }
-     * 
-     */
-    public QueryStationResponse createQueryStationResponse() {
-        return new QueryStationResponse();
+    public QuerySelfFreqInfoByPIDResponse createQuerySelfFreqInfoByPIDResponse() {
+        return new QuerySelfFreqInfoByPIDResponse();
     }
 
 }

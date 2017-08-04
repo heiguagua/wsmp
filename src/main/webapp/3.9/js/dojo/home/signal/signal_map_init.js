@@ -21,7 +21,7 @@ define(["home/signal/signal_manage", "ajax", "dojo/parser", "esri/map", "esri/la
 			});
 			//var url = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer";
 			//var url = "http://192.168.13.72:8083/PBS/rest/services/MyPBSService1/MapServer";
-			var url = "http://192.168.21.105:8081/PBS/rest/services/MyPBSService1/MapServer";
+			var url = "http://192.168.21.105:8081/PBS/rest/services/guiyang/MapServer";
 			var agoLayer = new ArcGISTiledMapServiceLayer(url, {
 				id : "街道地图"
 			});
@@ -40,8 +40,6 @@ define(["home/signal/signal_manage", "ajax", "dojo/parser", "esri/map", "esri/la
 			map.addLayer(glayer);
 			var ti = $("#warning_confirm").attr("class");
 			console.log(ti);
-			
-			singal_select();
 			
 			select_change(map, pSymbol, glayer);
 			
@@ -99,18 +97,6 @@ define(["home/signal/signal_manage", "ajax", "dojo/parser", "esri/map", "esri/la
 			return map;
 		}
 		
-		function singal_select(){
-			
-			$("#signal_list1").change(function() {
-				var value = $('option:selected').val();
-				data = {};
-				data.singalId = value;
-				$("#station_list").load("signal/stationlist",data,function() {
-					$('#station_picker').select2();
-				})
-			});
-			
-		}
 
 		function select_change(map, pSymbol, glayer) {
 			

@@ -125,21 +125,30 @@ function stationselectinit(){
 		
 	}
 
-	function changeView(){
+	function changeView(code){
 		
-		var data ={};					
-		data.stationCode = statiocode;
+		
+		var beginTime = $('#signal_list').find('option:selected').attr("begintime");
+		var centorFreq = $('#signal_list').find('option:selected').attr("centorfreq");
+		
+		var data ={};		
+		
+		if(code){
+			data.stationCode = code;
+		}else{
+			var statiocode  =$('#station_list').find('option:selected').val();
+			data.stationCode = statiocode;
+		}
+		
 		data.beginTime = beginTime;
 		data.centorFreq = centorFreq;
 		
-		level_charts.init(data);
-		
-		var monthparam = {};
-		monthparam.stationCode = statiocode;
-		monthparam.beginTime = beginTime;
-		monthparam.centorFreq = centorFreq;
-		
-		month_charts.init(monthparam);
+		ajax.get("data/alarm/firstLevelChart",data,function(reslut){
+			console.log(reslut);
+			level_charts.init(reslut);
+			
+			month_charts.init(reslut);
+		});
 		
 	}
 	
@@ -170,10 +179,6 @@ function stationselectinit(){
 				$("#signal_list").load("alarmmanage/singal", data,function() {
 					stationselectinit();
 					$('.select2-picker').select2();
-					
-					var statiocode  =$('#station_list').find('option:selected').val();
-					var beginTime = $('#signal_list').find('option:selected').attr("begintime");
-					var centorFreq = $('#signal_list').find('option:selected').attr("centorfreq");
 					
 					changeView();
 					
