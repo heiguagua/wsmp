@@ -9,12 +9,11 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
+
 /**
- * <p>
- * ArrayOfInt complex type�� Java �ࡣ
+ * <p>ArrayOfInt complex type�� Java �ࡣ
  * 
- * <p>
- * ����ģʽƬ��ָ�������ڴ����е�Ԥ�����ݡ�
+ * <p>����ģʽƬ��ָ�������ڴ����е�Ԥ�����ݡ�
  * 
  * <pre>
  * &lt;complexType name="ArrayOfInt"&gt;
@@ -31,43 +30,49 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ArrayOfInt", propOrder = { "_int" })
+@XmlType(name = "ArrayOfInt", propOrder = {
+    "_int"
+})
 public class ArrayOfInt {
 
     @XmlElement(name = "int", type = Integer.class)
     protected List<Integer> _int;
 
-    public void set_int(List<Integer> _int) {
-	this._int = _int;
-    }
+    public List<Integer> get_int() {
+		return _int;
+	}
 
-    /**
+	public void set_int(List<Integer> _int) {
+		this._int = _int;
+	}
+
+	/**
      * Gets the value of the int property.
      * 
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the int property.
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the int property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
-     * 
      * <pre>
-     * getInt().add(newItem);
+     *    getInt().add(newItem);
      * </pre>
      * 
      * 
      * <p>
-     * Objects of the following type(s) are allowed in the list {@link Integer }
+     * Objects of the following type(s) are allowed in the list
+     * {@link Integer }
      * 
      * 
      */
     public List<Integer> getInt() {
-	if (_int == null) {
-	    _int = new ArrayList<Integer>();
-	}
-	return this._int;
+        if (_int == null) {
+            _int = new ArrayList<Integer>();
+        }
+        return this._int;
     }
 
 }

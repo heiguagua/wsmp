@@ -2,7 +2,8 @@ package com.chinawiserv.wsmp.pojo;
 
 import java.util.List;
 
-public class AlarmDealed {
+public class Alarm {
+
 	private String radio;
 
 	private String firstTime;
@@ -19,11 +20,11 @@ public class AlarmDealed {
 	
 	private List<String> stationID;
 
-	public AlarmDealed() {
+	public Alarm() {
 
 	}
 
-	public AlarmDealed(String radio, String firstTime, String lastingTime, String radioType, String station, String radioStatus, String mark) {
+	public Alarm(String radio, String firstTime, String lastingTime, String radioType, String station, String radioStatus, String mark) {
 		super();
 		this.radio = radio;
 		this.firstTime = firstTime;
@@ -97,4 +98,5 @@ public class AlarmDealed {
 	public void setStationID(List<String> stationID) {
 		this.stationID = stationID;
 	}
+
 }
