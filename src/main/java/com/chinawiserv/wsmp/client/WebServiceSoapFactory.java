@@ -42,66 +42,16 @@ public class WebServiceSoapFactory {
 
 	private RadioSignalWebServiceSoap radioSignalService;
 
-	@PostConstruct
-	public void init() {
-
-		final JaxWsProxyFactoryBean factoryBean = new JaxWsProxyFactoryBean();
-
-		factoryBean.setAddress(wsdlFreWarning);
-		this.freqWarnService = factoryBean.create(FreqWarningWebServiceSoap.class);
-
-		factoryBean.setAddress(wsdlFregHistory);
-		this.fregHistoryService = factoryBean.create(FreqHistoryWebServiceSoap.class);
-
-		factoryBean.setAddress(wsdlradioStation);
-		this.radioStationService = factoryBean.create(RadioStationWebServiceSoap.class);
-
-		factoryBean.setAddress(radioSignal);
-		this.radioSignalService = factoryBean.create(RadioSignalWebServiceSoap.class);
-	}
-
-	public Object radioSignalServiceCall(String methodName, String param, Class<?> parameterTypes) throws JsonProcessingException {
-
-		try {
-			Method method = radioSignalService.getClass().getMethod(methodName, parameterTypes);
-
-			Object object = JSON.parseObject(param, parameterTypes);
-
-			return method.invoke(radioSignalService, object);
-		}
-		catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			throw errorThrow("{} 没有对应的方法 {}", e, "radioSignalService", methodName);
-		}
-	}
-
-	public Object radioStationServiceCall(String methodName, String param, Class<?> parameterTypes) throws JsonProcessingException {
-
-		try {
-
-			Method method = radioStationService.getClass().getMethod(methodName, parameterTypes);
-
-			Object object = JSON.parseObject(param, parameterTypes);
-
-			return method.invoke(radioStationService, object);
-		}
-		catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			errorThrow("{}方法{}调用错误   参数{}", methodName, param, parameterTypes);
-		}
-		return null;
-	}
-
 	public Object fregHistoryServiceCall(String methodName, String param, Class<?> parameterTypes) {
 
 		try {
-			Method method = fregHistoryService.getClass().getMethod(methodName, parameterTypes);
+			Method method = this.fregHistoryService.getClass().getMethod(methodName, parameterTypes);
 
 			Object object = JSON.parseObject(param, parameterTypes);
 
-			return method.invoke(freqWarnService, object);
+			return method.invoke(this.freqWarnService, object);
 
-		}
-		catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+		} catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			// TODO Auto-generated catch block
 			errorThrow("{}方法{}调用错误   参数{}", methodName, param, parameterTypes);
 		}
@@ -112,19 +62,36 @@ public class WebServiceSoapFactory {
 	public Object freqWarnServiceCall(String methodName, String param, Class<?> parameterTypes) {
 
 		try {
-			Method method = freqWarnService.getClass().getMethod(methodName, parameterTypes);
+			Method method = this.freqWarnService.getClass().getMethod(methodName, parameterTypes);
 
 			Object object = JSON.parseObject(param, parameterTypes);
 
-			return method.invoke(freqWarnService, object);
+			return method.invoke(this.freqWarnService, object);
 
-		}
-		catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+		} catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			// TODO Auto-generated catch block
 			Logger.error("=============没有对应的方法==================", e);
 		}
 
 		return null;
+	}
+
+	@PostConstruct
+	public void init() {
+
+		final JaxWsProxyFactoryBean factoryBean = new JaxWsProxyFactoryBean();
+
+		factoryBean.setAddress(this.wsdlFreWarning);
+		this.freqWarnService = factoryBean.create(FreqWarningWebServiceSoap.class);
+
+		factoryBean.setAddress(this.wsdlFregHistory);
+		this.fregHistoryService = factoryBean.create(FreqHistoryWebServiceSoap.class);
+
+		factoryBean.setAddress(this.wsdlradioStation);
+		this.radioStationService = factoryBean.create(RadioStationWebServiceSoap.class);
+
+		factoryBean.setAddress(this.radioSignal);
+		this.radioSignalService = factoryBean.create(RadioSignalWebServiceSoap.class);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -134,6 +101,35 @@ public class WebServiceSoapFactory {
 		t = (T) JSON.parseObject(param, t.getClass());
 		return t;
 
+	}
+
+	public Object radioSignalServiceCall(String methodName, String param, Class<?> parameterTypes) throws JsonProcessingException {
+
+		try {
+			Method method = this.radioSignalService.getClass().getMethod(methodName, parameterTypes);
+
+			Object object = JSON.parseObject(param, parameterTypes);
+
+			return method.invoke(this.radioSignalService, object);
+		} catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			throw errorThrow("{} 没有对应的方法 {}", e, "radioSignalService", methodName);
+		}
+	}
+
+	public Object radioStationServiceCall(String methodName, String param, Class<?> parameterTypes) throws JsonProcessingException {
+
+		try {
+
+			Method method = this.radioStationService.getClass().getMethod(methodName, parameterTypes);
+
+			Object object = JSON.parseObject(param, parameterTypes);
+
+			return method.invoke(this.radioStationService, object);
+		} catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			errorThrow("{}方法{}调用错误   参数{}", methodName, param, parameterTypes);
+		}
+		return null;
 	}
 
 }

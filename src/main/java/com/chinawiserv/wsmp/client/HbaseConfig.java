@@ -22,11 +22,10 @@ public class HbaseConfig {
 	@Bean(name = "hbaseClient")
 	public HbaseClient initHbaseClient() throws IOException {
 
-		final EncodedResource res = new EncodedResource(applicationContext.getResource("classpath:app.properties"), Charset.forName("utf-8"));
+		final EncodedResource res = new EncodedResource(this.applicationContext.getResource("classpath:app.properties"), Charset.forName("utf-8"));
 		final Properties propertice = PropertiesLoaderUtils.loadProperties(res);
 		HbaseClient hbaseClient = HbaseClient.apply(propertice);
 		return hbaseClient;
-
 	}
 
 }
