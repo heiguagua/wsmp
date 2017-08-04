@@ -99,7 +99,7 @@
 						<div class="pull-right"><span id="IQ-list-close" class="ico-close">&times;</span></div>
 						<table class="table table-striped table-hover" id="IQ-table">
 						</table>
-						<div class="text-center confirm-wrap"><a class="btn btn-confirm">确定</a><a class="btn btn-cancel">取消</a></div>
+						<div class="text-center confirm-wrap"><a class="btn btn-confirm" id="iq-confirm">确定</a><a class="btn btn-cancel">取消</a></div>
 					</div>
 				</div>
 				<div class="data-play-chart">
@@ -111,6 +111,7 @@
 
 		<!-- 音频 -->
 		<section class="flex-row" style="display: none" id="audio-wrap">
+		<audio src="69123.wav" controls="control">hhh</audio>
 			<div class='box'>
 				<div class='data-play'>
 					<label class='module-name'>数据回放<span class="data-type">音频</span></label>
