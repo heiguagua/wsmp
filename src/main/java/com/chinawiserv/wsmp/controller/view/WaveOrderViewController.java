@@ -43,7 +43,7 @@ public class WaveOrderViewController {
 	@PostMapping("/redioType")
 	public String redioType(Model model, @RequestBody Map<String, Object> map) {
 		//根据监测站查询信号类型统计
-		//System.out.println("================================map:"+map);
+//		System.out.println("================================map:"+map);
 		RadioSignalWebService service = new RadioSignalWebService();
 		RadioSignalClassifiedQueryRequest request = new RadioSignalClassifiedQueryRequest();
 		ArrayOfString value = new ArrayOfString();

@@ -40,10 +40,9 @@
 
 		</div>
 		<div class="config pull-right">
-			<a class="btn btn-default btn-evaluate" data-toggle="modal"
-				data-target="#modalEvaluate"> <i class="fa fa-eye"></i>&nbsp;&nbsp;电磁环境评估
-			</a> <a class='btn btn-default btn-config' data-toggle="modal"
-				data-target="#modalConfig"> <img src='images/config.png' />&nbsp;&nbsp;配置
+			<a class="btn btn-default btn-evaluate" data-toggle="modal" data-target="#modalEvaluate" >
+			
+			<i class="fa fa-eye"></i>&nbsp;&nbsp;电磁环境评估
 			</a>
 		</div>
 	</div>
