@@ -5,15 +5,13 @@ import java.math.BigDecimal;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * <p>FreqSelfInfo complex typeµÄ Java Àà¡£
+ * <p>FreqSelfInfo complex typeçš„ Java ç±»ã€‚
  * 
- * <p>ÒÔÏÂÄ£Ê½Æ¬¶ÎÖ¸¶¨°üº¬ÔÚ´ËÀàÖĞµÄÔ¤ÆÚÄÚÈİ¡£
+ * <p>ä»¥ä¸‹æ¨¡å¼ç‰‡æ®µæŒ‡å®šåŒ…å«åœ¨æ­¤ç±»ä¸­çš„é¢„æœŸå†…å®¹ã€‚
  * 
  * <pre>
  * &lt;complexType name="FreqSelfInfo"&gt;
@@ -21,8 +19,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
  *         &lt;element name="channelBandwidth" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="deadTime" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/&gt;
- *         &lt;element name="effectiveTime" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/&gt;
+ *         &lt;element name="deadTime" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="effectiveTime" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="freqDesc" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="freqMax" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/&gt;
  *         &lt;element name="freqMin" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/&gt;
@@ -62,11 +60,9 @@ public class FreqSelfInfo {
     @XmlElement(nillable = true)
     protected String channelBandwidth;
     @XmlElement(nillable = true)
-    @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar deadTime;
+    protected String deadTime;
     @XmlElement(nillable = true)
-    @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar effectiveTime;
+    protected String effectiveTime;
     @XmlElement(nillable = true)
     protected String freqDesc;
     @XmlElement(nillable = true)
@@ -89,7 +85,7 @@ public class FreqSelfInfo {
     protected String st;
 
     /**
-     * »ñÈ¡channelBandwidthÊôĞÔµÄÖµ¡£
+     * è·å–channelBandwidthå±æ€§çš„å€¼ã€‚
      * 
      * @return
      *     possible object is
@@ -101,7 +97,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * ÉèÖÃchannelBandwidthÊôĞÔµÄÖµ¡£
+     * è®¾ç½®channelBandwidthå±æ€§çš„å€¼ã€‚
      * 
      * @param value
      *     allowed object is
@@ -113,55 +109,55 @@ public class FreqSelfInfo {
     }
 
     /**
-     * »ñÈ¡deadTimeÊôĞÔµÄÖµ¡£
+     * è·å–deadTimeå±æ€§çš„å€¼ã€‚
      * 
      * @return
      *     possible object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link String }
      *     
      */
-    public XMLGregorianCalendar getDeadTime() {
+    public String getDeadTime() {
         return deadTime;
     }
 
     /**
-     * ÉèÖÃdeadTimeÊôĞÔµÄÖµ¡£
+     * è®¾ç½®deadTimeå±æ€§çš„å€¼ã€‚
      * 
      * @param value
      *     allowed object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link String }
      *     
      */
-    public void setDeadTime(XMLGregorianCalendar value) {
+    public void setDeadTime(String value) {
         this.deadTime = value;
     }
 
     /**
-     * »ñÈ¡effectiveTimeÊôĞÔµÄÖµ¡£
+     * è·å–effectiveTimeå±æ€§çš„å€¼ã€‚
      * 
      * @return
      *     possible object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link String }
      *     
      */
-    public XMLGregorianCalendar getEffectiveTime() {
+    public String getEffectiveTime() {
         return effectiveTime;
     }
 
     /**
-     * ÉèÖÃeffectiveTimeÊôĞÔµÄÖµ¡£
+     * è®¾ç½®effectiveTimeå±æ€§çš„å€¼ã€‚
      * 
      * @param value
      *     allowed object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link String }
      *     
      */
-    public void setEffectiveTime(XMLGregorianCalendar value) {
+    public void setEffectiveTime(String value) {
         this.effectiveTime = value;
     }
 
     /**
-     * »ñÈ¡freqDescÊôĞÔµÄÖµ¡£
+     * è·å–freqDescå±æ€§çš„å€¼ã€‚
      * 
      * @return
      *     possible object is
@@ -173,7 +169,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * ÉèÖÃfreqDescÊôĞÔµÄÖµ¡£
+     * è®¾ç½®freqDescå±æ€§çš„å€¼ã€‚
      * 
      * @param value
      *     allowed object is
@@ -185,7 +181,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * »ñÈ¡freqMaxÊôĞÔµÄÖµ¡£
+     * è·å–freqMaxå±æ€§çš„å€¼ã€‚
      * 
      * @return
      *     possible object is
@@ -197,7 +193,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * ÉèÖÃfreqMaxÊôĞÔµÄÖµ¡£
+     * è®¾ç½®freqMaxå±æ€§çš„å€¼ã€‚
      * 
      * @param value
      *     allowed object is
@@ -209,7 +205,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * »ñÈ¡freqMinÊôĞÔµÄÖµ¡£
+     * è·å–freqMinå±æ€§çš„å€¼ã€‚
      * 
      * @return
      *     possible object is
@@ -221,7 +217,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * ÉèÖÃfreqMinÊôĞÔµÄÖµ¡£
+     * è®¾ç½®freqMinå±æ€§çš„å€¼ã€‚
      * 
      * @param value
      *     allowed object is
@@ -233,7 +229,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * »ñÈ¡freqSectionÊôĞÔµÄÖµ¡£
+     * è·å–freqSectionå±æ€§çš„å€¼ã€‚
      * 
      * @return
      *     possible object is
@@ -245,7 +241,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * ÉèÖÃfreqSectionÊôĞÔµÄÖµ¡£
+     * è®¾ç½®freqSectionå±æ€§çš„å€¼ã€‚
      * 
      * @param value
      *     allowed object is
@@ -257,7 +253,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * »ñÈ¡idÊôĞÔµÄÖµ¡£
+     * è·å–idå±æ€§çš„å€¼ã€‚
      * 
      * @return
      *     possible object is
@@ -269,7 +265,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * ÉèÖÃidÊôĞÔµÄÖµ¡£
+     * è®¾ç½®idå±æ€§çš„å€¼ã€‚
      * 
      * @param value
      *     allowed object is
@@ -281,7 +277,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * »ñÈ¡isManuallyAddÊôĞÔµÄÖµ¡£
+     * è·å–isManuallyAddå±æ€§çš„å€¼ã€‚
      * 
      * @return
      *     possible object is
@@ -293,7 +289,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * ÉèÖÃisManuallyAddÊôĞÔµÄÖµ¡£
+     * è®¾ç½®isManuallyAddå±æ€§çš„å€¼ã€‚
      * 
      * @param value
      *     allowed object is
@@ -305,7 +301,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * »ñÈ¡isSeriesÊôĞÔµÄÖµ¡£
+     * è·å–isSerieså±æ€§çš„å€¼ã€‚
      * 
      * @return
      *     possible object is
@@ -317,7 +313,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * ÉèÖÃisSeriesÊôĞÔµÄÖµ¡£
+     * è®¾ç½®isSerieså±æ€§çš„å€¼ã€‚
      * 
      * @param value
      *     allowed object is
@@ -329,7 +325,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * »ñÈ¡parentIdÊôĞÔµÄÖµ¡£
+     * è·å–parentIdå±æ€§çš„å€¼ã€‚
      * 
      * @return
      *     possible object is
@@ -341,7 +337,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * ÉèÖÃparentIdÊôĞÔµÄÖµ¡£
+     * è®¾ç½®parentIdå±æ€§çš„å€¼ã€‚
      * 
      * @param value
      *     allowed object is
@@ -353,7 +349,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * »ñÈ¡serviceNameÊôĞÔµÄÖµ¡£
+     * è·å–serviceNameå±æ€§çš„å€¼ã€‚
      * 
      * @return
      *     possible object is
@@ -365,7 +361,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * ÉèÖÃserviceNameÊôĞÔµÄÖµ¡£
+     * è®¾ç½®serviceNameå±æ€§çš„å€¼ã€‚
      * 
      * @param value
      *     allowed object is
@@ -377,7 +373,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * »ñÈ¡stÊôĞÔµÄÖµ¡£
+     * è·å–stå±æ€§çš„å€¼ã€‚
      * 
      * @return
      *     possible object is
@@ -389,7 +385,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * ÉèÖÃstÊôĞÔµÄÖµ¡£
+     * è®¾ç½®stå±æ€§çš„å€¼ã€‚
      * 
      * @param value
      *     allowed object is

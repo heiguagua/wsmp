@@ -67,4 +67,9 @@ public class ArrayOfSignalTypeDTO {
         return this.signalTypeDTO;
     }
 
+	public void setSignalTypeDTO(List<SignalTypeDTO> signalTypeDTO) {
+		this.signalTypeDTO = signalTypeDTO;
+		
+	}
+
 }

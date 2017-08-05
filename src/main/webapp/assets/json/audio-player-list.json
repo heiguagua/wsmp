@@ -1,42 +1,32 @@
 [
     {
-      "trans_no":"0001",
-      "task_id":"1002145441_1",
-      "task_start":"1.5M",
-      "task_end":"1254s",
-      "center_freq":"107.7",
-      "voice_length":"12"
+        "id": "52010118",
+        "taskId": "{64095CF6-2019-41A6-8F87-7A64A59DF04",
+        "timeStart": 1501669536000,
+        "timeStop": 1501669536000,
+        "centerFreq": 10740000,
+        "rowKey": "10740000000000:19220626180525",
+        "audioLength": 323584,
+        "dataUrl": "52010118/10740000000000:19220626180525"
     },
     {
-       "trans_no":"0005",
-      "task_id":"1002145441_1",
-      "task_start":"1.5M",
-      "task_end":"1254s",
-      "center_freq":"107.7",
-      "voice_length":"12"
+        "id": "52010118",
+        "taskId": "{64095CF6-2019-41A6-8F87-7A64A59DF04",
+        "timeStart": 1501669536000,
+        "timeStop": 1501669536000,
+        "centerFreq": 10740000,
+        "rowKey": "10740000000000:19220626180535",
+        "audioLength": 442368,
+        "dataUrl": "52010118/10740000000000:19220626180535"
     },
     {
-       "trans_no":"0003",
-      "task_id":"1002145441_1",
-      "task_start":"1.5M",
-      "task_end":"1254s",
-      "center_freq":"107.7",
-      "voice_length":"12"
-    },
-    {
-       "trans_no":"0004",
-      "task_id":"1002145441_1",
-      "task_start":"1.5M",
-      "task_end":"1254s",
-      "center_freq":"107.7",
-      "voice_length":"12"
-    },
-    {
-       "trans_no":"0002",
-      "task_id":"1002145441_1",
-      "task_start":"1.5M",
-      "task_end":"1254s",
-      "center_freq":"107.7",
-      "voice_length":"12"
+        "id": "52010118",
+        "taskId": "{64095CF6-2019-41A6-8F87-7A64A59DF04",
+        "timeStart": 1501669536000,
+        "timeStop": 1501669536000,
+        "centerFreq": 10740000,
+        "rowKey": "10740000000000:19220626180545",
+        "audioLength": 442368,
+        "dataUrl": "52010118/10740000000000:19220626180545"
     }
-  ]
+]

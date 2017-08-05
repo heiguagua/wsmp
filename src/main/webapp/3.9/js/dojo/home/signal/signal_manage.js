@@ -4,6 +4,15 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 
 
 		init_select2();
+		
+		// 加载频谱数据
+		load_spectrum_data();
+		
+		// 加载IQ数据
+		load_iq_data();
+		
+		// 加载音频数据
+		load_audio_data();
 
 		// 信号列表change事件
 		$("#signal_list1 .select2-picker").change(function() {
@@ -1525,24 +1534,37 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 						title:"选中"
 					},{
 						field : 'id',
-						title : '传感器编号'
+						title : '传感器编号',
+						width:'80px'
 					}, {
 						field : 'taskId',
-						title : '任务唯一编号'
+						title : '任务唯一编号',
+						width:'20%'
 					}, {
 						field : 'timeStart',
-						title : '任务开始时间'
+						title : '任务开始时间',
+						width : '140px',
+						formatter:function(value){
+							return new Date(value).format('yyyy-MM-dd hh:mm:ss');
+						}
 					}, {
 						field : 'timeStop',
-						title : '任务结束时间'
+						title : '任务结束时间',
+						width : '140px',
+						formatter:function(value){
+							return new Date(value).format('yyyy-MM-dd hh:mm:ss');
+						}
 					}, {
 						field : 'centerFreq',
-						title : '中心频率'
+						title : '中心频率',
+						width:'80px'
 					}, {
 						field : 'spectrumSpan',
-						title : '带宽'
+						title : '带宽',
+						width:'60px'
 					},{
 						field:'totalLength',
+						width:'120px',
 						title:'频谱个（或点）数'
 					}]
 				});
@@ -1552,6 +1574,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 		}
 
 		// 加载音频数据
+		var audio_play_list = [];
 		function load_audio_data(){
 			var stationcode = $("#station_list").find('option:selected').val();
 	    	var centorfreq = $('#signal_list1').find('option:selected').attr("centorFreq");
@@ -1583,26 +1606,54 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 					responseHandler : function(res) {
 						return res;
 					},
+					onCheck:function(row){
+						audio_play_list.push(row);
+					},
+					onUncheck:function(row){
+						for(var i=0; i<audio_play_list.length; i++) {
+							if(row == audio_play_list[i]) {
+								audio_play_list.splice(i, 1);
+							}
+						}
+						
+					},
+					onCheckAll:function(rows){
+						audio_play_list = rows;
+					},
+					onUncheckAll:function(rows){
+						audio_play_list = [];
+					},
 					columns : [ {
 						checkbox:true,
 						title:"选中"
 					},{
-						field : 'trans_no',
-						title : '传感器编号'
+						field : 'id',
+						title : '传感器编号',
+						width:'80px'
 					}, {
-						field : 'task_id',
-						title : '任务唯一编号'
+						field : 'taskId',
+						title : '任务唯一编号',
+						width:'20%'
 					}, {
-						field : 'task_start',
-						title : '任务开始时间'
+						field : 'timeStart',
+						title : '任务开始时间',
+						width : '140px',
+						formatter:function(value){
+							return new Date(value).format('yyyy-MM-dd hh:mm:ss');
+						}
 					}, {
-						field : 'task_end',
-						title : '任务结束时间'
+						field : 'timeStop',
+						title : '任务结束时间',
+						width : '140px',
+						formatter:function(value){
+							return new Date(value).format('yyyy-MM-dd hh:mm:ss');
+						}
 					}, {
-						field : 'center_freq',
-						title : '测量中心频率'
+						field : 'centerFreq',
+						title : '测量中心频率',
+						width:'90px'
 					}, {
-						field : 'voice_length',
+						field : 'audioLength',
 						title : '声音数据长度'
 					}]
 				});
@@ -1667,22 +1718,39 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 						title:"选中"
 					},{
 						field : 'id',
-						title : '传感器编号'
+						title : '传感器编号',
+						width:'80px'
 					}, {
 						field : 'taskId',
-						title : '任务唯一编号'
+						title : '任务唯一编号',
+						width : '20%',
+						formatter:function(value){
+							console.log($(this));
+							$(this).attr("title",value);
+							return value;
+						}
 					}, {
 						field : 'timeStart',
-						title : '任务开始时间'
+						title : '任务开始时间',
+						width : '140px',
+						formatter:function(value){
+							return new Date(value).format('yyyy-MM-dd hh:mm:ss');
+						}
 					}, {
 						field : 'timeStop',
-						title : '任务结束时间'
+						title : '任务结束时间',
+						width : '140px',
+						formatter:function(value){
+							return new Date(value).format('yyyy-MM-dd hh:mm:ss');
+						}
 					},{
 						field:'centerFreq',
-						title:'中心频率'
+						title:'中心频率',
+						width:'80px'
 					},{
 						field:'nmber',
-						title:'I或Q数据个数'
+						title:'I或Q数据个数',
+						width:'90px'
 					}]
 				});
 			})
@@ -1690,7 +1758,35 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 					
 		}
 
-
+		Date.prototype.format = function(format) {  
+		    /* 
+		     * eg:format="yyyy-MM-dd hh:mm:ss"; 
+		     */  
+		    var o = {  
+		        "M+" : this.getMonth() + 1, // month  
+		        "d+" : this.getDate(), // day  
+		        "h+" : this.getHours(), // hour  
+		        "m+" : this.getMinutes(), // minute  
+		        "s+" : this.getSeconds(), // second  
+		        "q+" : Math.floor((this.getMonth() + 3) / 3), // quarter  
+		        "S" : this.getMilliseconds()  
+		        // millisecond  
+		    };  
+		  
+		    if (/(y+)/.test(format)) {  
+		        format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4  
+		                        - RegExp.$1.length));  
+		    }  
+		  
+		    for (var k in o) {  
+		        if (new RegExp("(" + k + ")").test(format)) {  
+		            format = format.replace(RegExp.$1, RegExp.$1.length == 1  
+		                            ? o[k]  
+		                            : ("00" + o[k]).substr(("" + o[k]).length));  
+		        }  
+		    }  
+		    return format;  
+		};
 	return {
 		init : init,
 		changeView : changeView

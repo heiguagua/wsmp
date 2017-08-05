@@ -38,7 +38,11 @@ public class ArrayOfString {
     @XmlElement(nillable = true)
     protected List<String> string;
 
-    /**
+    public void setString(List<String> string) {
+		this.string = string;
+	}
+
+	/**
      * Gets the value of the string property.
      * 
      * <p>

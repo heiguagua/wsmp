@@ -8,13 +8,21 @@ public class CommiucationTableTop {
 
     private String channel;
 
+    private String beginTime;
+
+    private String endTime;
+
+    private long fregMixLong;
+
+    private long fregMaxLong;
+
     private String tech_way;
 
-    private long channel_use;
+    private String channel_use;
 
-    private String info_use;
+    private float info_use;
 
-    private String detect_coverage;
+    private float detect_coverage;
 
     private String comm_coverage;
 
@@ -50,22 +58,6 @@ public class CommiucationTableTop {
 	this.tech_way = tech_way;
     }
 
-    public String getInfo_use() {
-	return info_use;
-    }
-
-    public void setInfo_use(String info_use) {
-	this.info_use = info_use;
-    }
-
-    public String getDetect_coverage() {
-	return detect_coverage;
-    }
-
-    public void setDetect_coverage(String detect_coverage) {
-	this.detect_coverage = detect_coverage;
-    }
-
     public String getComm_coverage() {
 	return comm_coverage;
     }
@@ -74,11 +66,59 @@ public class CommiucationTableTop {
 	this.comm_coverage = comm_coverage;
     }
 
-    public long getChannel_use() {
+    public long getFregMixLong() {
+	return fregMixLong;
+    }
+
+    public void setFregMixLong(long fregMixLong) {
+	this.fregMixLong = fregMixLong;
+    }
+
+    public long getFregMaxLong() {
+	return fregMaxLong;
+    }
+
+    public void setFregMaxLong(long fregMaxLong) {
+	this.fregMaxLong = fregMaxLong;
+    }
+
+    public float getDetect_coverage() {
+	return detect_coverage;
+    }
+
+    public void setDetect_coverage(float detect_coverage) {
+	this.detect_coverage = detect_coverage;
+    }
+
+    public float getInfo_use() {
+	return info_use;
+    }
+
+    public void setInfo_use(float info_use) {
+	this.info_use = info_use;
+    }
+
+    public String getBeginTime() {
+	return beginTime;
+    }
+
+    public void setBeginTime(String beginTime) {
+	this.beginTime = beginTime;
+    }
+
+    public String getEndTime() {
+	return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+	this.endTime = endTime;
+    }
+
+    public String getChannel_use() {
 	return channel_use;
     }
 
-    public void setChannel_use(long channel_use) {
+    public void setChannel_use(String channel_use) {
 	this.channel_use = channel_use;
     }
 

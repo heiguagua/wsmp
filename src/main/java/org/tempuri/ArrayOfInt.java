@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.XmlType;
 public class ArrayOfInt {
 
     @XmlElement(name = "int", type = Integer.class)
-    protected List<Integer> _int;
+	private List<Integer> _int;
 
     /**
      * Gets the value of the int property.
@@ -62,9 +62,13 @@ public class ArrayOfInt {
      */
     public List<Integer> getInt() {
         if (_int == null) {
-            _int = new ArrayList<Integer>();
+            set_int(new ArrayList<Integer>());
         }
         return this._int;
     }
+
+	public void set_int(List<Integer> _int) {
+		this._int = _int;
+	}
 
 }
