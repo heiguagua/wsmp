@@ -5,6 +5,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 
 		init_select2();
 
+
 		// 信号列表change事件
 		$("#signal_list1 .select2-picker").change(function() {
 			var selected_val = $(this).val();
@@ -50,8 +51,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 		$("#audio-choose-btn").on("click",function(){
 			if($("#audio-choose-list").is(":hidden")) {
 				$("#audio-choose-list").slideDown();
-				// 加载数据
-				load_audio_data();
+				
 			}
 			else {
 				$("#audio-choose-list").slideUp();
@@ -120,6 +120,12 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 			iq_player();
 			$("#IQ-choose-list").slideUp();
 		})
+		
+		// 音频数据选择确定事件
+		$("#audio-confirm").on("click",function(){
+			audio_player();
+			$("#audio-choose-list").slideUp();
+		})
 
 		// 门阀输入提交事件
 		$("#gate-btn").on("click",function(ev){
@@ -175,8 +181,6 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 	}
 
 	function signalClick(map,pSymbol,glayer){
-		require([ "bootstrap", "bootstrapTable"],function(){
-			require(["bootstrap_table_cn"],function(){
 				$("#legal-normal").click(function() {
 //					var value = $('option:selected').val();
 					var value = $("#station_list").find('option:selected').text();
@@ -419,8 +423,6 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 							$("#modalStationAlarm").modal();
 
 				});
-			})
-		})
 	}
 
 
@@ -453,9 +455,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 				val = parseFloat(val) * 1000000;
 				data.beginFreq = val;
 				data.endFreq = val;
-<<<<<<< HEAD
-=======
-				
+
 				var info = Binding.getUser();
 		        console.log(info);
 		        info = JSON.parse(info);
@@ -482,7 +482,6 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 				
 				console.log(data);
 				
->>>>>>> ec829823cee3e8704fa969c2cedcc2c02bac1219
 				$("#signal_list1 .select2-picker").html('');
 
 				$("#signal_list1 .select2-picker").load("signal/singallist",data,function() {
@@ -636,6 +635,9 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 		
 		// 加载IQ数据
 		load_iq_data();
+		
+		// 加载音频数据
+		load_audio_data();
 	}
 
 	function changeFirstChartView(stationcode){
@@ -1039,7 +1041,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 		}
 		var option = {
 			    timeline: {
-			    	show:true,
+			    	show:false,
 			    	y2:0,
 			        data: timeline_length,
 			        axisType: 'category',
@@ -1073,7 +1075,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 			        dataZoom: [{
 			            type: 'slider',
 			            start:0,
-			            end:20,
+			            end:100,
 			            height:15,
 			            y:260
 			        }],
@@ -1108,12 +1110,13 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 			        yAxis: [{
 			            'type': 'value',
 			            'name': '电平(dBμV)',
-			            //'max': 100,
-			            //'min':-40,
+			            'max': 100,
+			            'min':-40,
+			            'onZero':false,
 			            'splitNumber':6,
 			            'axisLabel': {
 			               // 'interval': 0
-			               margin:30,
+			               margin:10,
 			               textStyle:{
 			                  color:"rgb(183,183,183)"
 			               }
@@ -1427,6 +1430,11 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 //				iqChart.resize();
 //			})
 	}
+	
+	// 音频数据播放
+	function audio_player(){
+		
+	}
 
 	 $.fn.serializeObject = function() {
 	        var o = {};
@@ -1447,144 +1455,152 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 		// 加载频谱数据
 	 	var spectrum_play_list = [];
 		function load_spectrum_data() {
-			require([ "bootstrap", "bootstrapTable"],function(){
-				require(["bootstrap_table_cn"],function(){
-					$('#spectrum-table').bootstrapTable({
-						method : 'get',
-						contentType : "application/x-www-form-urlencoded", //必须要有！！！！
-						striped : true,
-						dataField : "rows",
-						detailView : false,
-						pageNumber : 1, //初始化加载第一页，默认第一页
-						pagination : true, //是否分页
-						//url :"assets/json/spectrum-player-list.json",
-						url :"assets/json/spectrum-player-list.json",
-						queryParamsType : 'limit', //查询参数组织方式
-						queryParams : function(params) {
-							var stationcode = $("#station_list").find('option:selected').val();
-					    	var centorfreq = $('#signal_list1').find('option:selected').attr("centorFreq");
-					    	var beginTime = $('#signal_list1').find('option:selected').attr("beginTime");
-							var endTime = $('#signal_list1').find('option:selected').attr("endTime");
-							params.stationcode = stationcode;
-							params.centorfreq = centorfreq;
-							params.beginTime = beginTime;
-							params.endTime = endTime;
-							return params;
-						}, //请求服务器时所传的参数
-						onClickRow: function(row){
-						},
-						onCheck:function(row){
-							console.log("checked");
-							spectrum_play_list.push(row);
+			var data = null;
+			var stationcode = $("#station_list").find('option:selected').val();
+	    	var centorfreq = $('#signal_list1').find('option:selected').attr("centorFreq");
+	    	var beginTime = $('#signal_list1').find('option:selected').attr("beginTime");
+			var endTime = $('#signal_list1').find('option:selected').attr("endTime");
+			//var url = "assets/json/spectrum-player-list.json"+stationcode+"/"+centorfreq+"/"+beginTime+"/"+endTime;
+			var url = "assets/json/spectrum-player-list.json";
+			ajax.get(url,null,function(result){
+				data = result;
+				$('#spectrum-table').bootstrapTable({
+					//method : 'get',
+					contentType : "application/x-www-form-urlencoded", //必须要有！！！！
+					striped : true,
+					//dataField : "rows",
+					detailView : false,
+					pageNumber : 1, //初始化加载第一页，默认第一页
+					pagination : true, //是否分页
+					sidePagination : 'client', //指定服务器端分页
+					pageSize : 5, //单页记录数
+					clickToSelect : true, //是否启用点击选中行
+					data:data,
+					//url :"assets/json/spectrum-player-list.json",
+//					queryParams : function(params) {
+//						var stationcode = $("#station_list").find('option:selected').val();
+//				    	var centorfreq = $('#signal_list1').find('option:selected').attr("centorFreq");
+//				    	var beginTime = $('#signal_list1').find('option:selected').attr("beginTime");
+//						var endTime = $('#signal_list1').find('option:selected').attr("endTime");
+//						params.stationcode = stationcode;
+//						params.centorfreq = centorfreq;
+//						params.beginTime = beginTime;
+//						params.endTime = endTime;
+//						return params;
+//					}, //请求服务器时所传的参数
+					onClickRow: function(row){
+					},
+					onCheck:function(row){
+						console.log("checked");
+						spectrum_play_list.push(row);
 
-						},
-						onUncheck:function(row){
-							for(var i=0; i<spectrum_play_list.length; i++) {
-								if(row == spectrum_play_list[i]) {
-									spectrum_play_list.splice(i, 1);
-								}
+					},
+					onUncheck:function(row){
+						for(var i=0; i<spectrum_play_list.length; i++) {
+							if(row == spectrum_play_list[i]) {
+								spectrum_play_list.splice(i, 1);
 							}
-							
-						},
-						onCheckAll:function(rows){
-							spectrum_play_list = rows;
-						},
-						onUncheckAll:function(rows){
-							spectrum_play_list = [];
-						},
-						sidePagination : 'server', //指定服务器端分页
-						pageSize : 5, //单页记录数
-						pageList : [ 5, 10, 20, 30 ], //分页步进值
-						clickToSelect : true, //是否启用点击选中行
-						responseHandler : function(res) {
-							var data = {};
-							data.rows = res;
-							data.total = 10;
-							return data;
-						},
-						columns : [ {
-							checkbox:true,
-							title:"选中"
-						},{
-							field : 'id',
-							title : '传感器编号'
-						}, {
-							field : 'taskId',
-							title : '任务唯一编号'
-						}, {
-							field : 'timeStart',
-							title : '任务开始时间'
-						}, {
-							field : 'timeStop',
-							title : '任务结束时间'
-						}, {
-							field : 'centerFreq',
-							title : '中心频率'
-						}, {
-							field : 'spectrumSpan',
-							title : '带宽'
-						},{
-							field:'totalLength',
-							title:'频谱个（或点）数'
-						}]
-					});
-				})
+						}
+						
+					},
+					onCheckAll:function(rows){
+						spectrum_play_list = rows;
+					},
+					onUncheckAll:function(rows){
+						spectrum_play_list = [];
+					},
+					
+					responseHandler : function(res) {
+						return res;
+					},
+					columns : [ {
+						checkbox:true,
+						title:"选中"
+					},{
+						field : 'id',
+						title : '传感器编号'
+					}, {
+						field : 'taskId',
+						title : '任务唯一编号'
+					}, {
+						field : 'timeStart',
+						title : '任务开始时间'
+					}, {
+						field : 'timeStop',
+						title : '任务结束时间'
+					}, {
+						field : 'centerFreq',
+						title : '中心频率'
+					}, {
+						field : 'spectrumSpan',
+						title : '带宽'
+					},{
+						field:'totalLength',
+						title:'频谱个（或点）数'
+					}]
+				});
 			})
+					
 
 		}
 
 		// 加载音频数据
 		function load_audio_data(){
-			require([ "bootstrap", "bootstrapTable"],function(){
-				require(["bootstrap_table_cn"],function(){
-					$('#audio-table').bootstrapTable({
-						method : 'get',
-						contentType : "application/x-www-form-urlencoded", //必须要有！！！！
-						striped : true,
-						dataField : "rows",
-						detailView : false,
-						pageNumber : 1, //初始化加载第一页，默认第一页
-						pagination : true, //是否分页
-						url :"assets/json/audio-player-list.json",
-						queryParamsType : 'limit', //查询参数组织方式
-						queryParams : function(params) {
-
-							return params
-						}, //请求服务器时所传的参数
-						onClickRow: function(row){
-						},
-						sidePagination : 'server', //指定服务器端分页
-						pageSize : 5, //单页记录数
-						pageList : [ 5, 10, 20, 30 ], //分页步进值
-						clickToSelect : true, //是否启用点击选中行
-						responseHandler : function(res) {
-							return res;
-						},
-						columns : [ {
-							checkbox:true,
-							title:"选中"
-						},{
-							field : 'trans_no',
-							title : '传感器编号'
-						}, {
-							field : 'task_id',
-							title : '任务唯一编号'
-						}, {
-							field : 'task_start',
-							title : '任务开始时间'
-						}, {
-							field : 'task_end',
-							title : '任务结束时间'
-						}, {
-							field : 'center_freq',
-							title : '测量中心频率'
-						}, {
-							field : 'voice_length',
-							title : '声音数据长度'
-						}]
-					});
-				})
-			});
+			var stationcode = $("#station_list").find('option:selected').val();
+	    	var centorfreq = $('#signal_list1').find('option:selected').attr("centorFreq");
+	    	var beginTime = $('#signal_list1').find('option:selected').attr("beginTime");
+			var endTime = $('#signal_list1').find('option:selected').attr("endTime");
+			//var url = "assets/json/audio-player-list.json"+stationcode+"/"+centorfreq+"/"+beginTime+"/"+endTime;;
+			var url = "assets/json/audio-player-list.json";
+			ajax.get(url,null,function(result){
+				var data = result;
+				$('#audio-table').bootstrapTable({
+					method : 'get',
+					contentType : "application/x-www-form-urlencoded", //必须要有！！！！
+					striped : true,
+					dataField : "rows",
+					detailView : false,
+					pageNumber : 1, //初始化加载第一页，默认第一页
+					pagination : true, //是否分页
+					data:data,
+//					url :"assets/json/audio-player-list.json",
+					queryParamsType : 'limit', //查询参数组织方式
+					queryParams : function(params) {
+						return params
+					}, //请求服务器时所传的参数
+					onClickRow: function(row){
+					},
+					sidePagination : 'client', //指定服务器端分页
+					pageSize : 5, //单页记录数
+					clickToSelect : true, //是否启用点击选中行
+					responseHandler : function(res) {
+						return res;
+					},
+					columns : [ {
+						checkbox:true,
+						title:"选中"
+					},{
+						field : 'trans_no',
+						title : '传感器编号'
+					}, {
+						field : 'task_id',
+						title : '任务唯一编号'
+					}, {
+						field : 'task_start',
+						title : '任务开始时间'
+					}, {
+						field : 'task_end',
+						title : '任务结束时间'
+					}, {
+						field : 'center_freq',
+						title : '测量中心频率'
+					}, {
+						field : 'voice_length',
+						title : '声音数据长度'
+					}]
+				});
+			})
+					
 
 
 		}
@@ -1592,77 +1608,79 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 		var iq_play_list = [];
 		// 加载IQ数据
 		function load_iq_data(){
-			require([ "bootstrap", "bootstrapTable"],function(){
-				require(["bootstrap_table_cn"],function(){
-					$('#IQ-table').bootstrapTable({
-						method : 'get',
-						contentType : "application/x-www-form-urlencoded", //必须要有！！！！
-						striped : true,
-						dataField : "rows",
-						detailView : false,
-						pageNumber : 1, //初始化加载第一页，默认第一页
-						pagination : true, //是否分页
-						url :"assets/json/iq-player-list.json",
-						queryParamsType : 'limit', //查询参数组织方式
-						queryParams : function(params) {
+			var stationcode = $("#station_list").find('option:selected').val();
+	    	var centorfreq = $('#signal_list1').find('option:selected').attr("centorFreq");
+	    	var beginTime = $('#signal_list1').find('option:selected').attr("beginTime");
+			var endTime = $('#signal_list1').find('option:selected').attr("endTime");
+			//var url = "assets/json/iq-player-list.json"+stationcode+"/"+centorfreq+"/"+beginTime+"/"+endTime;;
+			var url = "assets/json/iq-player-list.json";
+			ajax.get(url,null,function(result){
+				$('#IQ-table').bootstrapTable({
+					method : 'get',
+					contentType : "application/x-www-form-urlencoded", //必须要有！！！！
+					striped : true,
+					pageNumber : 1, //初始化加载第一页，默认第一页
+					pagination : true, //是否分页
+					data:result,
+//					url :"assets/json/iq-player-list.json",
+					queryParamsType : 'limit', //查询参数组织方式
+					sidePagination : 'client', //指定服务器端分页
+					pageSize : 5, //单页记录数
+					clickToSelect : true, //是否启用点击选中行
+					queryParams : function(params) {
 
-							return params
-						}, //请求服务器时所传的参数
-						onClickRow: function(row){
-						},
-						onCheck:function(row){
-							iq_play_list.push(row);
+						return params
+					}, //请求服务器时所传的参数
+					onClickRow: function(row){
+					},
+					onCheck:function(row){
+						iq_play_list.push(row);
 
-						},
-						onUncheck:function(row){
-							for(var i=0; i<iq_play_list.length; i++) {
-								if(row == iq_play_list[i]) {
-									iq_play_list.splice(i, 1);
-								}
+					},
+					onUncheck:function(row){
+						for(var i=0; i<iq_play_list.length; i++) {
+							if(row == iq_play_list[i]) {
+								iq_play_list.splice(i, 1);
 							}
-							
-						},
-						onCheckAll:function(rows){
-							iq_play_list = rows;
-						},
-						onUncheckAll:function(rows){
-							iq_play_list = [];
-						},
-						sidePagination : 'server', //指定服务器端分页
-						pageSize : 5, //单页记录数
-						pageList : [ 5, 10, 20, 30 ], //分页步进值
-						clickToSelect : true, //是否启用点击选中行
-						responseHandler : function(res) {
-							var data = {};
-							data.rows = res;
-							data.total = 10;
-							return data;
-						},
-						columns : [ {
-							checkbox:true,
-							title:"选中"
-						},{
-							field : 'id',
-							title : '传感器编号'
-						}, {
-							field : 'taskId',
-							title : '任务唯一编号'
-						}, {
-							field : 'timeStart',
-							title : '任务开始时间'
-						}, {
-							field : 'timeStop',
-							title : '任务结束时间'
-						},{
-							field:'centerFreq',
-							title:'中心频率'
-						},{
-							field:'nmber',
-							title:'I或Q数据个数'
-						}]
-					});
-				})
+						}
+						
+					},
+					onCheckAll:function(rows){
+						iq_play_list = rows;
+					},
+					onUncheckAll:function(rows){
+						iq_play_list = [];
+					},
+					
+					responseHandler : function(res) {
+						return res;
+					},
+					columns : [ {
+						checkbox:true,
+						title:"选中"
+					},{
+						field : 'id',
+						title : '传感器编号'
+					}, {
+						field : 'taskId',
+						title : '任务唯一编号'
+					}, {
+						field : 'timeStart',
+						title : '任务开始时间'
+					}, {
+						field : 'timeStop',
+						title : '任务结束时间'
+					},{
+						field:'centerFreq',
+						title:'中心频率'
+					},{
+						field:'nmber',
+						title:'I或Q数据个数'
+					}]
+				});
 			})
+			
+					
 		}
 
 

@@ -336,3 +336,6 @@ td.bs-checkbox{
     border: none;
     margin-right: 10px;
 }
+.fixed-table-loading{
+	display:none;
+}
