@@ -1083,7 +1083,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 			        dataZoom: [{
 			            type: 'slider',
 			            start:0,
-			            end:50,
+			            end:100,
 			            height:15,
 			            y:260
 			        }],
@@ -1231,16 +1231,16 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 
 		var spectrumChart = echarts.init($('#spectrumChart')[0]);
 		spectrumChart.setOption(option);
-		var option_temp = option;
-		spectrumChart.on("timelinechanged", function(paramA) {
-			console.log(paramA);
-			console.log(option);
-			//option_res.xAxis[0].data = paramB.component.timeline.options[paramA.currentIndex].xAxis.data;
-			option.options[0].xAxis[0].data = option_temp.options[0].xAxis[paramA.currentIndex-1].data;
-			console.log(option);
-			spectrumChart.setOption(option);
-			spectrumChart.resize();
-		})
+//		var option_temp = option;
+//		spectrumChart.on("timelinechanged", function(paramA) {
+//			console.log(paramA);
+//			console.log(option);
+//			//option_res.xAxis[0].data = paramB.component.timeline.options[paramA.currentIndex].xAxis.data;
+//			option.options[0].xAxis[0].data = option_temp.options[0].xAxis[paramA.currentIndex-1].data;
+//			console.log(option);
+//			spectrumChart.setOption(option);
+//			spectrumChart.resize();
+//		})
 	}
 	
 	// IQ数据播放
@@ -1476,7 +1476,8 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 	    	var centorfreq = $('#signal_list1').find('option:selected').attr("centorFreq");
 	    	var beginTime = $('#signal_list1').find('option:selected').attr("beginTime");
 			var endTime = $('#signal_list1').find('option:selected').attr("endTime");
-			//var url = "assets/json/spectrum-player-list.json"+stationcode+"/"+centorfreq+"/"+beginTime+"/"+endTime;
+			//var url = "asiq/spectrum/"+stationcode+"/"+centorfreq+"/"+beginTime+"/"+endTime;
+			//var url = "asiq/spectrum/52010118/101700000/20170802130012/20170802130012";
 			var url = "assets/json/spectrum-player-list.json";
 			ajax.get(url,null,function(result){
 				data = result;
@@ -1580,7 +1581,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 	    	var centorfreq = $('#signal_list1').find('option:selected').attr("centorFreq");
 	    	var beginTime = $('#signal_list1').find('option:selected').attr("beginTime");
 			var endTime = $('#signal_list1').find('option:selected').attr("endTime");
-			//var url = "assets/json/audio-player-list.json"+stationcode+"/"+centorfreq+"/"+beginTime+"/"+endTime;;
+			//var url = "asiq/audio/52010118/10740000000000/20170802182536/20170802182536";
 			var url = "assets/json/audio-player-list.json";
 			ajax.get(url,null,function(result){
 				var data = result;
@@ -1670,7 +1671,8 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 	    	var centorfreq = $('#signal_list1').find('option:selected').attr("centorFreq");
 	    	var beginTime = $('#signal_list1').find('option:selected').attr("beginTime");
 			var endTime = $('#signal_list1').find('option:selected').attr("endTime");
-			//var url = "assets/json/iq-player-list.json"+stationcode+"/"+centorfreq+"/"+beginTime+"/"+endTime;;
+			//var url = "asiq/iq/"+stationcode+"/"+centorfreq+"/"+beginTime+"/"+endTime;;
+			//var url = "asiq/iq/52010118/101700000/20170802130012/20170802130012";
 			var url = "assets/json/iq-player-list.json";
 			ajax.get(url,null,function(result){
 				$('#IQ-table').bootstrapTable({
@@ -1724,11 +1726,6 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 						field : 'taskId',
 						title : '任务唯一编号',
 						width : '20%',
-						formatter:function(value){
-							console.log($(this));
-							$(this).attr("title",value);
-							return value;
-						}
 					}, {
 						field : 'timeStart',
 						title : '任务开始时间',
