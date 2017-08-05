@@ -15,17 +15,17 @@
 		<testWhileIdle>true</testWhileIdle>
 	</datasource>
 
-	<!-- <datasource name="datasource2">
+	<datasource name="datasource2">
 		<url>
-		<![CDATA[jdbc:oracle:thin:@localhost:1521:xe]]>
-		</url
-		<username>root</username>
-		<password>root</password>
+		<![CDATA[jdbc:oracle:thin:@192.168.21.105:1521:xe]]>
+		</url>
+		<username>station_gy</username>
+		<password>oracle</password>
 		<validationQuery>select 1</validationQuery>
 		<removeAbandoned>true</removeAbandoned>
 		<removeAbandonedTimeout>6000</removeAbandonedTimeout>
 		<testWhileIdle>true</testWhileIdle>
 		<dbType>oracle</dbType>
-	</datasource> -->
+	</datasource>
 
 </datasources>
