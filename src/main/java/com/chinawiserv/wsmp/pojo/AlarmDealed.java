@@ -1,8 +1,8 @@
 package com.chinawiserv.wsmp.pojo;
 
-import java.util.List;
 
 public class AlarmDealed {
+
 	private String radio;
 
 	private String firstTime;
@@ -16,8 +16,6 @@ public class AlarmDealed {
 	private String radioStatus;
 
 	private String mark;
-	
-	private List<String> stationID;
 
 	public AlarmDealed() {
 
@@ -90,11 +88,4 @@ public class AlarmDealed {
 		this.mark = mark;
 	}
 
-	public List<String> getStationID() {
-		return stationID;
-	}
-
-	public void setStationID(List<String> stationID) {
-		this.stationID = stationID;
-	}
 }

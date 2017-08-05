@@ -549,10 +549,6 @@ label, .control-label {
 }
 .dpopover{
 	display:inline-block;
-	    width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }
 .popover{
 	background: #FFFFFF;
@@ -560,7 +556,7 @@ border: 1px solid #DAE5F0;
 border-radius: 4px;
 }
 .popover.top{
-	    min-width: 160px;
+	    min-width: 60px;
     margin-left: 50px;
 }
 .popover.top>.arrow{
@@ -574,16 +570,12 @@ border-radius: 4px;
 }
 .popover-content{
 	color:#333;
-	    max-height: 200px;
-    overflow-y: auto;
-    
 }
 .popover-item{
 	font-size: 12px;
     padding: 4px 0;
         color: #505363;
     font-weight: normal;
-        white-space: nowrap;
 }
 #modalStation{
 	z-index:1060;

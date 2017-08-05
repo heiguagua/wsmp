@@ -5,7 +5,7 @@
 
 	<datasource name="datasource1" primary="true" >
 		<url>
-		<![CDATA[jdbc:mysql://192.168.21.105/radio?characterEncoding=UTF-8&allowMultiQueries=true]]>
+		<![CDATA[jdbc:mysql://127.0.0.1/radio?characterEncoding=UTF-8&allowMultiQueries=true]]>
 		</url>
 		<username>root</username>
 		<password>root</password>

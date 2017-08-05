@@ -16,18 +16,17 @@ import com.chinawiserv.wsmp.hbase.HbaseClient;
 @Configuration
 public class HbaseConfig {
 
-    @Autowired
-    private ApplicationContext applicationContext;
+	@Autowired
+	private ApplicationContext applicationContext;
 
-    @Bean(name = "hbaseClient")
-    public HbaseClient initHbaseClient() throws IOException {
+	@Bean(name = "hbaseClient")
+	public HbaseClient initHbaseClient() throws IOException {
 
-	final EncodedResource res = new EncodedResource(applicationContext.getResource("classpath:app.properties"),
-		Charset.forName("utf-8"));
-	final Properties propertice = PropertiesLoaderUtils.loadProperties(res);
-	HbaseClient hbaseClient = HbaseClient.apply(propertice);
-	return hbaseClient;
+		final EncodedResource res = new EncodedResource(applicationContext.getResource("classpath:app.properties"), Charset.forName("utf-8"));
+		final Properties propertice = PropertiesLoaderUtils.loadProperties(res);
+		HbaseClient hbaseClient = HbaseClient.apply(propertice);
+		return hbaseClient;
 
-    }
+	}
 
 }

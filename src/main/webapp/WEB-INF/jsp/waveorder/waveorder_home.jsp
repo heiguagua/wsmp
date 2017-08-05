@@ -36,13 +36,19 @@
 		<span class='module-name'>电波秩序管理</span>
 		<div class='search-filters'>
 			<select id='area_select' class='city-list select2-picker'>
+				<option value=""></option>
+				<c:forEach var="area" items="${area}" step="1" begin="0">
+					<option value="${area.areaCode}">${area.name}</option>
+				</c:forEach>
 			</select>
 
 		</div>
 		<div class="config pull-right">
-			<a class="btn btn-default btn-evaluate" data-toggle="modal" data-target="#modalEvaluate" >
-			
-			<i class="fa fa-eye"></i>&nbsp;&nbsp;电磁环境评估
+			<a class="btn btn-default btn-evaluate" data-toggle="modal"
+				data-target="#modalEvaluate"> <i class="fa fa-eye"></i>&nbsp;&nbsp;电磁环境评估
+			</a>
+			<a class='btn btn-default btn-config' data-toggle="modal"
+				data-target="#modalConfig"> <img src='images/config.png' />&nbsp;&nbsp;配置
 			</a>
 		</div>
 	</div>
@@ -99,7 +105,7 @@
 					</button>
 					<h4 class="modal-title" id="modalStationLabel">台站列表</h4>
 				</div>
-				<div class="modal-body " style="padding-bottom: 0">
+				<div class="modal-body " style="padding-bottom:0">
 					<div class="header-search" style="margin-left: 0">
 						<input type="text" placeholder="输入中心频率"> <span
 							class="search-icon"></span>
@@ -259,9 +265,9 @@
 			</div>
 		</div>
 	</div>
-
-
-	<!-- Modal 重点监测参数配置-->
+	
+	  
+  <!-- Modal 重点监测参数配置-->
 	<div class="modal fade" id="modalConfig" tabindex="-1" role="dialog"
 		aria-labelledby="modalConfigLabel">
 		<div class="modal-dialog " role="document">
@@ -274,7 +280,7 @@
 					<h4 class="modal-title" id="modalConfigLabel">重点监测参数配置</h4>
 				</div>
 				<div class="modal-body">
-					<div role="tabpanel" class="tab-pane active ">
+					<div role="tabpanel" class="tab-pane active " >
 						<div class='flex-row'>
 							<div class='flex1 config-left'>
 								<form class="form-horizontal ">
@@ -283,9 +289,8 @@
 											<label for="" class="col-sm-3 control-label">开始时间</label>
 											<div class="col-sm-9">
 												<div class="input-group date time-picker" id="startTime">
-													<input type="text" class=" date-control"> <span
-														class="input-group-addon"> <img
-														src="images/date.png" /></span>
+													<input type="text" class=" date-control">
+													<span class="input-group-addon"> <img src="images/date.png" /></span>
 												</div>
 											</div>
 										</div>
@@ -293,128 +298,113 @@
 											<label for="" class="col-sm-3 control-label">结束时间</label>
 											<div class="col-sm-9">
 												<div class="input-group date time-picker" id="endTime">
-													<input type="text" class="date-control "> <span
-														class="input-group-addon"> <img
-														src="images/date.png" /></span>
+													<input type="text" class="date-control "> 
+													<span class="input-group-addon"> <img src="images/date.png" /></span>
 												</div>
 											</div>
 										</div>
 										<div class="form-group col-sm-6">
 											<label for="" class="col-sm-3 control-label">循环周期</label>
 											<div class="col-sm-9">
-												<div class="input-group">
-													<input type="text" class="form-control "
-														placeholder="单位(分钟)">
+												<div class="input-group" >
+													<input type="text" class="form-control " placeholder="单位(分钟)"> 
 												</div>
 											</div>
 										</div>
 										<div class="form-group col-sm-6">
 											<label for="" class="col-sm-3 control-label">执行时长</label>
 											<div class="col-sm-9">
-												<div class="input-group">
-													<input type="text" class="form-control "
-														placeholder="单位(秒)">
+												<div class="input-group" >
+													<input type="text" class="form-control " placeholder="单位(秒)">
 												</div>
 											</div>
 										</div>
 									</div>
-
+									
 									<div class="col-sm-6 box-title-wrap">
-										<label for="" class="col-sm-6 control-label"><span
-											class="wrap-title">参数</span></label>
-									</div>
-									<div class="col-sm-6 box-title-wrap">
-										<label for="" class="col-sm-6 control-label"><span
-											class="wrap-title">采集次数</span></label>
-									</div>
-									<div class="form-box-wrap form-box-down">
+											<label for="" class="col-sm-6 control-label"><span class="wrap-title">参数</span></label>
+										</div>
+										<div class="col-sm-6 box-title-wrap">
+											<label for="" class="col-sm-6 control-label"><span class="wrap-title">采集次数</span></label>
+										</div>
+									<div class="form-box-wrap form-box-down" >
 										<div class="form-group col-sm-6">
 											<label for="" class="col-sm-3 control-label">IQ帧数</label>
 											<div class="col-sm-9">
-												<div class="input-group">
-													<input type="text" class="form-control "
-														placeholder="单位(次)">
+												<div class="input-group" >
+													<input type="text" class="form-control " placeholder="单位(次)">
 												</div>
 											</div>
 										</div>
 										<div class="form-group col-sm-6">
 											<div class="col-sm-6 padding_0_8">
-												<div class="input-group">
-													<input type="text" class="form-control "
-														placeholder="单位(次)">
+												<div class="input-group" >
+													<input type="text" class="form-control " placeholder="单位(次)">
 												</div>
 											</div>
 										</div>
 										<div class="form-group col-sm-6">
 											<label for="" class="col-sm-3 control-label">频谱帧数</label>
 											<div class="col-sm-9">
-												<div class="input-group">
-													<input type="text" class="form-control "
-														placeholder="单位(次)">
+												<div class="input-group" >
+													<input type="text" class="form-control " placeholder="单位(次)">
 												</div>
 											</div>
 										</div>
 										<div class="form-group col-sm-6">
 											<div class="col-sm-6 padding_0_8">
-												<div class="input-group">
-													<input type="text" class="form-control "
-														placeholder="单位(次)">
+												<div class="input-group" >
+													<input type="text" class="form-control " placeholder="单位(次)">
 												</div>
 											</div>
 										</div>
 										<div class="form-group col-sm-6">
 											<label for="" class="col-sm-3 control-label">特征帧数</label>
 											<div class="col-sm-9">
-												<div class="input-group">
-													<input type="text" class="form-control "
-														placeholder="单位(次)">
+												<div class="input-group" >
+													<input type="text" class="form-control " placeholder="单位(次)">
 												</div>
 											</div>
 										</div>
 										<div class="form-group col-sm-6">
 											<div class="col-sm-6 padding_0_8">
-												<div class="input-group">
-													<input type="text" class="form-control "
-														placeholder="单位(次)">
+												<div class="input-group" >
+													<input type="text" class="form-control " placeholder="单位(次)">
 												</div>
 											</div>
 										</div>
 										<div class="form-group col-sm-6">
 											<label for="" class="col-sm-3 control-label">ITU帧数</label>
 											<div class="col-sm-9">
-												<div class="input-group">
-													<input type="text" class="form-control "
-														placeholder="单位(次)">
+												<div class="input-group" >
+													<input type="text" class="form-control " placeholder="单位(次)">
 												</div>
 											</div>
 										</div>
 										<div class="form-group col-sm-6">
 											<div class="col-sm-6 padding_0_8">
-												<div class="input-group">
-													<input type="text" class="form-control "
-														placeholder="单位(次)">
+												<div class="input-group" >
+													<input type="text" class="form-control " placeholder="单位(次)">
 												</div>
 											</div>
 										</div>
 										<div class="form-group col-sm-6">
 											<label for="" class="col-sm-3 control-label">声音时间</label>
 											<div class="col-sm-9">
-												<div class="input-group">
-													<input type="text" class="form-control "
-														placeholder="单位(秒)">
+												<div class="input-group" >
+													<input type="text" class="form-control " placeholder="单位(秒)">
 												</div>
 											</div>
 										</div>
 										<div class="form-group col-sm-6">
 											<div class="col-sm-6 padding_0_8">
-												<div class="input-group">
-													<input type="text" class="form-control "
-														placeholder="单位(次)">
+												<div class="input-group" >
+													<input type="text" class="form-control " placeholder="单位(次)">
 												</div>
 											</div>
 										</div>
 									</div>
-
+										
 									<div class="form-group ">
 										<div class="col-sm-offset-3 col-sm-9 mrg-top15 text-right">
 											<button type="submit" class="btn btn-default btn-apply">应用</button>

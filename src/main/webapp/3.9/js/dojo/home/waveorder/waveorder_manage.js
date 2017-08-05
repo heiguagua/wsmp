@@ -1,23 +1,19 @@
 define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer", "dojo/request", "esri/layers/GraphicsLayer", "esri/dijit/Scalebar"
 	, "esri/symbols/TextSymbol", "esri/geometry/Point", "esri/graphic", "esri/symbols/Font", "esri/symbols/SimpleMarkerSymbol" ], function(ajax, parser, Map, ArcGISTiledMapServiceLayer, request, GraphicsLayer, Scalebar, TextSymbol, Point, graphic, Font, SimpleMarkerSymbol) {
 	function wo_init(map_arry) {
-		var user = getUser();
-		getArea(user);
-
 		$('.select2-picker').select2();
+		//table_radio_init(true);
 		$(".select2-picker").on("select2:select", function(e) {
+
 			// e 的话就是一个对象 然后需要什么就 “e.参数” 形式 进行获取 
-			var areaCode = e.target.value;
-			var user = getUser();
-			var userID = user.ID;
-			table_radio_init(true, areaCode,userID);
-			var monitors = getMonitors(areaCode);
-			table_alarm_undealed(areaCode,monitors);
-			table_alarm_dealed(areaCode,monitors);
-			addPoint(map_arry, areaCode);
-			redioType(monitors);
+			var value = e.target.value;
+			table_radio_init(false, value);
+			table_alarm_undealed(value);
+			table_alarm_dealed(value);
+			addPoint(map_arry, value);
+			redioType(value);
 		})
-		
+
 		$("#tabs a").click(function(e) {
 			console.log(111);
 			e.preventDefault();
@@ -25,49 +21,39 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 
 		});
 		
-		$("#modalSignal").on("shown.bs.modal",function(e){
-			var a = $(e.relatedTarget);
-        	var areaCode = a.data('areacode');//data()函数里面要取小写
-        	var beginFreq = a.data('beginfreq');
-        	var endFreq = a.data('endfreq');
-        	var radioType = a.data('radiotype');
-        	console.log(beginFreq);
-        	$('#table-signal-list').bootstrapTable("destroy");
+		$("#modalSignal").on("shown.bs.modal",function(){
 			$('#table-signal-list').bootstrapTable({
 				method : 'get',
-				cache : false,
 				contentType : "application/x-www-form-urlencoded", //必须要有！！！！
-				//url : "assets/json/signal-list.json", //要请求数据的文件路径 TODO 修改为真实url地址
-				url : "data/waveorder/radioDetail",
+				url : "assets/json/signal-list.json", //要请求数据的文件路径 TODO 修改为真实url地址
 				striped : true, //是否显示行间隔色
-				dataField : "data", 
+				dataField : "rows", //bootstrap table 可以前端分页也可以后端分页，这里
+				//我们使用的是后端分页，后端分页时需返回含有total：总记录数,这个键值好像是固定的
+				//rows： 记录集合 键值可以修改  dataField 自己定义成自己想要的就好
 				detailView : false,
 				pageNumber : 1, //初始化加载第一页，默认第一页
 				pagination : true, //是否分页
 				queryParamsType : 'limit', //查询参数组织方式
 				queryParams : function(params) {
-					params.beginFreq = beginFreq;
-					params.endFreq = endFreq;
-					params.radioType = radioType;
-					params.areaCode = areaCode;
 					return params
 				}, //请求服务器时所传的参数
-				sidePagination : 'client', //指定服务器端分页
+				sidePagination : 'server', //指定服务器端分页
 				pageSize : 10, //单页记录数
 				pageList : [ 5, 10, 20, 30 ], //分页步进值
 				clickToSelect : true, //是否启用点击选中行
 				responseHandler : function(res) {
+					console.log(res);
 					return res;
 				},
 				columns: [{
-	                field: 'centor',
+	                field: 'radio',
 	                title: '频率(kHz)',
 	                width:'18%',
 	                formatter:function(value,row,index) {
 	                  return '<a>'+value+'</a>';
 	                }
 	            }, {
-	                field: 'band',
+	                field: 'tape_width',
 	                title: '带宽(kHz)',
 	                width:'15%',
 	            }, {
@@ -75,28 +61,18 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 	                title: '监测发射成功率',
 	                width:'18%',
 	            }, {
-	                field: 'monitorID',
+	                field: 'station',
 	                title: '监测站',
 	                width:'25%',
-	                formatter : function(value, row, index) {
-	                	var monitors = getMonitors(areaCode);
-	                	var content = "";
-						for(var i=0;i<value.length;i++) {
-							for(var j=0;j<monitors.length;j++){
-								if(value[i] == monitors[j].Num) {
-									value[i] = monitors[j].Name;
-									var sub_content = "<div class='popover-item'>"+value[i]+"</div>";
-									content += sub_content;
-								}
-							}
-						}	
-						return '<div class="dpopover" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'+content+'">'+value+'</div>';
-					},
+	                formatter:function(value,row,index) {
+	                	var content = "<div class='popover-item'>成都某某监测站</div><div class='popover-item'>成都某某监测站</div><div class='popover-item'>成都某某监测站</div>";
+		                return '<div class="dpopover" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'+content+'">'+value+'</div>';
+		            },
 		            events:{
 		            	
 		            }
 	            }, {
-	                field: 'station',
+	                field: 'emitter',
 	                title: '发射源',
 	                width:'24%',
 	                formatter:function(value,row,index) {
@@ -115,71 +91,13 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 		// popover
 		
 	}
-	function getUser() {
-		var userStr = Binding.getUser();
-		var user = JSON.parse(userStr);
-		return user;
-	}
-	
-	function getArea(user) {
-		if(user.AreaType == "Province"){
-			//显示省级选项
-			var province = user.Area;
-			var option = document.createElement("option");
-			option.setAttribute("value",province.Code);
-			option.setAttribute("id","option");
-			//option.innerHTML = province_name;//此时就设置innerHTML的话会报错，因为<option>标签还没渲染出来
-			console.log(option);
-			$("#area_select").append(option);
-			$("#option").append(province.Name);
-			var citys = province.Citys;
-			console.log(citys);
-			//显示市级选项
-			for(var i=0;i<citys.length;i++){
-				var option_city = document.createElement("option");
-				option_city.setAttribute("value",citys[i].Code);
-				option_city.setAttribute("id","option_city"+i);
-				console.log(option_city);
-				$("#area_select").append(option_city);
-				$("#option_city"+i).append(citys[i].Name);
-			}
-		}else{
-			//市级用户就只有一个市级选项
-			var city = user.City;
-			var option_city = document.createElement("option");
-			option_city.setAttribute("value",city.Code);
-			option_city.setAttribute("id","option_city");
-			console.log(option_city);
-			$("#area_select").append(option_city);
-			$("#option_city").append(city.Name);
-		}
-	}
-	
-	function getMonitors(areaCode) {
-		var monitorsStr = Binding.getMonitorNodes(Number(areaCode));
-		var monitors = JSON.parse(monitorsStr);
-		return monitors;
-	}
-	
 
-	function redioType(monitors) {
-		var data = {};
-		data.monitorsNum = [];
-		for(var i=0;i<monitors.length;i++) {
-			data.monitorsNum[i] = monitors[i].Num;
-		}
-		var str = JSON.stringify(data);
-		$.ajax({
-			url : 'waveorder/redioType',
-			type : 'post',
-			data : str,//传输数据
-			contentType : 'application/json',//传输数据类型
-			dataType : 'html',//返回数据类型
-			success : function (html) {
-				$("#redioType").html(html);
-			}
-		})
-		
+	function redioType(value) {
+			var data = {};
+			data.areaCode = value;
+			$("#redioType").load("waveorder/redioType",data,function() {
+				
+			});
 	}
 
 	function addPoint(map_arry, value) {
@@ -226,27 +144,29 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 
 	}
 
-	function table_alarm_dealed(areaCode,monitors) {
-		$('#table-alarm-dealed').bootstrapTable("destroy");
+	function table_alarm_dealed(value) {
 		$('#table-alarm-dealed').bootstrapTable({
 			method : 'get',
 			contentType : "application/x-www-form-urlencoded", //必须要有！！！！
 			url : "data/waveorder/alarmdealed", //要请求数据的文件路径
 			striped : true, //是否显示行间隔色
-			dataField : "data", 
+			dataField : "rows", //bootstrap table 可以前端分页也可以后端分页，这里
+			//我们使用的是后端分页，后端分页时需返回含有total：总记录数,这个键值好像是固定的
+			//rows： 记录集合 键值可以修改  dataField 自己定义成自己想要的就好
 			detailView : false,
 			pageNumber : 1, //初始化加载第一页，默认第一页
 			pagination : true, //是否分页
 			queryParamsType : 'limit', //查询参数组织方式
 			queryParams : function(params) {
-				params.areaCode = areaCode;
+				params.areaCode = value;
 				return params
 			}, //请求服务器时所传的参数
-			sidePagination : 'client', //指定服务器端分页
-			pageSize : 16, //单页记录数
+			sidePagination : 'server', //指定服务器端分页
+			pageSize : 10, //单页记录数
 			pageList : [ 5, 10, 20, 30 ], //分页步进值
 			clickToSelect : true, //是否启用点击选中行
 			responseHandler : function(res) {
+				console.log(res);
 				return res;
 			},
 			columns : [ {
@@ -262,51 +182,41 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 				field : 'lastingTime',
 				title : '持续时间'
 			}, {
-				field : 'stationID',
-				title : '监测站',
-				formatter : function(value, row, index) {
-					var content = "";
-					for(var i=0;i<value.length;i++) {
-						for(var j=0;j<monitors.length;j++){
-							if(value[i] == monitors[j].Num) {
-								value[i] = monitors[j].Name;
-								var sub_content = "<div class='popover-item'>"+value[i]+"</div>";
-								content += sub_content;
-							}
-						}
-					}
-					return '<div class="dpopover" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'+content+'">'+value+'</div>';
-				}
+				field : 'radioType',
+				title : '类型'
+			}, {
+				field : 'station',
+				title : '监测站'
+			}, {
+				field : 'radioStatus',
+				title : '状态'
 			}, {
 				field : 'mark',
 				title : '备注',
-			} ],
-			onLoadSuccess:function(){
-	            	$("#table-alarm-dealed").find(".dpopover").popover({
-	            		html: true
-	            	});
-	        }
+			} ]
 		});
 	}
 
-	function table_alarm_undealed(areaCode,monitors) {
-		$('#table-alarm-undeal').bootstrapTable("destroy");
+	function table_alarm_undealed(value) {
 		var option = {
 			method : 'get',
 			contentType : "application/x-www-form-urlencoded", //必须要有！！！！
 			url : "data/waveorder/alarmundealed", //要请求数据的文件路径
 			striped : true, //是否显示行间隔色
-			dataField : "data", 
-			sidePagination : 'client',
+			dataField : "rows", //bootstrap table 可以前端分页也可以后端分页，这里
+			//我们使用的是后端分页，后端分页时需返回含有total：总记录数,这个键值好像是固定的
+			//rows： 记录集合 键值可以修改  dataField 自己定义成自己想要的就好
+			sidePagination : 'server',
 			detailView : false,
 			pageNumber : 1, //初始化加载第一页，默认第一页
 			pagination : true, //是否分页
 			queryParamsType : 'limit', //查询参数组织方式
 			queryParams : function(params) {
-				params.areaCode = areaCode;
+				params.areaCode = value;
 				return params
 			}, //请求服务器时所传的参数
-			pageSize : 16, //单页记录数
+			sidePagination : 'server', //指定服务器端分页
+			pageSize : 10, //单页记录数
 			pageList : [ 5, 10, 20, 30 ], //分页步进值
 			clickToSelect : true, //是否启用点击选中行
 			responseHandler : function(res) {
@@ -325,54 +235,44 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 				field : 'lastingTime',
 				title : '持续时间'
 			}, {
-				field : 'stationID',
-				title : '监测站',
-				formatter : function(value, row, index) {
-					var content = "";
-					for(var i=0;i<value.length;i++) {
-						for(var j=0;j<monitors.length;j++){
-							if(value[i] == monitors[j].Num) {
-								value[i] = monitors[j].Name;
-								var sub_content = "<div class='popover-item'>"+value[i]+"</div>";
-								content += sub_content;
-							}
-						}
-					}	
-					return '<div class="dpopover" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'+content+'">'+value+'</div>';
-				}
+				field : 'radioType',
+				title : '类型'
+			}, {
+				field : 'station',
+				title : '监测站'
+			}, {
+				field : 'radioStatus',
+				title : '状态'
 			}, {
 				field : 'mark',
 				title : '备注',
-			}], 
-			onLoadSuccess:function(){
-            	$("#table-alarm-undeal").find(".dpopover").popover({
-            		html: true
-            	});
-            }
+			} ]
 		};
 
 		$('#table-alarm-undeal').bootstrapTable(option)
 	}
 
-	function table_radio_init(bool, areaCode,userID) {
+	function table_radio_init(b, value) {
 		$("#table_radio").load("waveorder/frequencyrange", function() {
-			if (bool) {
+			if (b) {
 				$('#table-radio').bootstrapTable({
 					method : 'get',
 					contentType : "application/x-www-form-urlencoded", //必须要有！！！！
 					url : "data/waveorder/rediostatus", //要请求数据的文件路径
 					striped : true, //是否显示行间隔色
-					dataField : "data",
+					dataField : "rows", //bootstrap table 可以前端分页也可以后端分页，这里
+					//我们使用的是后端分页，后端分页时需返回含有total：总记录数,这个键值好像是固定的
+					//rows： 记录集合 键值可以修改  dataField 自己定义成自己想要的就好
 					detailView : false,
-					sidePagination : 'client',
+					sidePagination : 'server',
 					pageNumber : 1, //初始化加载第一页，默认第一页
 					pagination : true, //是否分页
 					queryParamsType : 'limit', //查询参数组织方式
 					queryParams : function(params) {
-						params.areaCode = areaCode;
-						params.userID = userID;
+						params.areaCode = value;
 						return params
 					},
+					sidePagination : 'server', //指定服务器端分页
 					pageSize : 10, //单页记录数
 					pageList : [ 5, 10, 20, 30 ], //分页步进值
 					clickToSelect : true, //是否启用点击选中行
@@ -387,40 +287,35 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 						}
 					}, {
 						field : 'legalNormalStationNumber',
-						title : '合法正常信号',
+						title : '合法正常台站',
 						formatter : function(value, row, index) {
-							return '<a data-toggle="modal" data-target="#modalSignal" data-areaCode="'+areaCode+'" data-radioType="0" data-beginFreq="'+row.beginFreq+'" data-endFreq="'+row.endFreq+'">' + value + '</a>';
+							return '<a data-toggle="modal" data-target="#modalStation">' + value + '</a>';
 						}
 					}, {
 						field : 'legalUnNormalStationNumber',
-						title : '合法违规信号',
+						title : '合法违规台站',
 						formatter : function(value, row, index) {
-							return '<a data-toggle="modal" data-target="#modalSignal" data-areaCode="'+areaCode+'" data-radioType="1" data-beginFreq="'+row.beginFreq+'" data-endFreq="'+row.endFreq+'">' + value + '</a>';
+							return '<a data-toggle="modal" data-target="#modalStation">' + value + '</a>';
 						}
 					}, {
 						field : 'konwStationNumber',
 						title : '已知信号',
 						formatter : function(value, row, index) {
-							return '<a data-toggle="modal" data-target="#modalSignal" data-areaCode="'+areaCode+'" data-radioType="2" data-beginFreq="'+row.beginFreq+'" data-endFreq="'+row.endFreq+'">' + value + '</a>';
+							return '<a data-toggle="modal" data-target="#modalSignal">' + value + '</a>';
 						}
 					}, {
 						field : 'unKonw',
 						title : '不明信号',
 						formatter : function(value, row, index) {
-							return '<a data-toggle="modal" data-target="#modalSignal" data-areaCode="'+areaCode+'" data-radioType="3" data-beginFreq="'+row.beginFreq+'" data-endFreq="'+row.endFreq+'">' + value + '</a>';
+							return '<a data-toggle="modal" data-target="#modalSignal">' + value + '</a>';
 						}
 					}, {
 						field : 'illegalSignal',
 						title : '非法信号',
 						formatter : function(value, row, index) {
-							return '<a data-toggle="modal" data-target="#modalSignal" data-areaCode="'+areaCode+'" data-radioType="4" data-beginFreq="'+row.beginFreq+'" data-endFreq="'+row.endFreq+'">' + value + '</a>';
+							return '<a data-toggle="modal" data-target="#modalSignal">' + value + '</a>';
 						}
-					}, {
-						title : '重点监测',
-						formatter : function(value, row, index) {
-							return '<a data-toggle="modal" data-target="#modalConfig"> <img src="images/Fill 29.png"> </img></a>';
-						}
-					}  ]
+					} ]
 				});
 			} else {
 				$('#table-radio').bootstrapTable({
@@ -428,17 +323,18 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 					contentType : "application/x-www-form-urlencoded", //必须要有！！！！
 					url : "data/waveorder/rediostatus", //要请求数据的文件路径
 					striped : true, //是否显示行间隔色
-					dataField : "data",
+					dataField : "rows", //bootstrap table 可以前端分页也可以后端分页，这里
+					//我们使用的是后端分页，后端分页时需返回含有total：总记录数,这个键值好像是固定的
+					//rows： 记录集合 键值可以修改  dataField 自己定义成自己想要的就好
 					detailView : false,
 					pageNumber : 1, //初始化加载第一页，默认第一页
 					pagination : true, //是否分页
 					queryParamsType : 'limit', //查询参数组织方式
 					queryParams : function(params) {
-						params.areaCode = areaCode;
-						params.userID = userID;
+						params.areaCode = value;
 						return params
 					}, //请求服务器时所传的参数
-					sidePagination : 'client', //指定服务器端分页
+					sidePagination : 'server', //指定服务器端分页
 					pageSize : 10, //单页记录数
 					pageList : [ 5, 10, 20, 30 ], //分页步进值
 					clickToSelect : true, //是否启用点击选中行
@@ -453,13 +349,13 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 						}
 					}, {
 						field : 'legalNormalStationNumber',
-						title : '合法正常信号',
+						title : '合法正常台站',
 						formatter : function(value, row, index) {
 							return '<a data-toggle="modal" data-target="#modalStation">' + value + '</a>';
 						}
 					}, {
 						field : 'legalUnNormalStationNumber',
-						title : '合法违规信号',
+						title : '合法违规台站',
 						formatter : function(value, row, index) {
 							return '<a>' + value + '</a>';
 						}
@@ -480,11 +376,6 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 						title : '非法信号',
 						formatter : function(value, row, index) {
 							return '<a>' + value + '</a>';
-						}
-					}, {
-						title : '重点监测',
-						formatter : function(value, row, index) {
-							return '<a data-toggle="modal" data-target="#modalConfig"> <img src="images/Fill 29.png"> </img></a>';
 						}
 					} ]
 				});

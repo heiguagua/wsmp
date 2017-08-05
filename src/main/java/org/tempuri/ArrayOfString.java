@@ -67,8 +67,4 @@ public class ArrayOfString {
         return this.string;
     }
 
-	public void setString(List<String> string) {
-		this.string = string;
-	}
-
 }

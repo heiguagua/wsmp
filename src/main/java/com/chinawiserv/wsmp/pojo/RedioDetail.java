@@ -1,7 +1,5 @@
 package com.chinawiserv.wsmp.pojo;
 
-import java.util.List;
-
 public class RedioDetail {
 
 	private String name;
@@ -21,10 +19,6 @@ public class RedioDetail {
 	private Object flatDegree;
 
 	private Object freqPeakNumFSK;
-	
-	private List<String> monitorID;
-	
-	private String station;
 
 	public String getName() {
 		return name;
@@ -96,21 +90,5 @@ public class RedioDetail {
 
 	public void setrMax(Object rMax) {
 		this.rMax = rMax;
-	}
-
-	public List<String> getMonitorID() {
-		return monitorID;
-	}
-
-	public void setMonitorID(List<String> monitorID) {
-		this.monitorID = monitorID;
-	}
-
-	public String getStation() {
-		return station;
-	}
-
-	public void setStation(String station) {
-		this.station = station;
 	}
 }

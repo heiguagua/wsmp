@@ -38,15 +38,7 @@ public class ArrayOfInt {
     @XmlElement(name = "int", type = Integer.class)
     protected List<Integer> _int;
 
-    public List<Integer> get_int() {
-		return _int;
-	}
-
-	public void set_int(List<Integer> _int) {
-		this._int = _int;
-	}
-
-	/**
+    /**
      * Gets the value of the int property.
      * 
      * <p>

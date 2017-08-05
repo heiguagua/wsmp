@@ -99,7 +99,7 @@
 						<div class="pull-right"><span id="IQ-list-close" class="ico-close">&times;</span></div>
 						<table class="table table-striped table-hover" id="IQ-table">
 						</table>
-						<div class="text-center confirm-wrap"><a class="btn btn-confirm">确定</a><a class="btn btn-cancel">取消</a></div>
+						<div class="text-center confirm-wrap"><a class="btn btn-confirm" id="iq-confirm">确定</a><a class="btn btn-cancel">取消</a></div>
 					</div>
 				</div>
 				<div class="data-play-chart">
@@ -121,7 +121,7 @@
 						<div class="pull-right"><span id="audio-list-close" class="ico-close">&times;</span></div>
 						<table class="table table-striped table-hover" id="audio-table">
 						</table>
-						<div class="text-center confirm-wrap"><a class="btn btn-confirm">确定</a><a class="btn btn-cancel">取消</a></div>
+						<div class="text-center confirm-wrap"><a class="btn btn-confirm" id="audio-confirm">确定</a><a class="btn btn-cancel">取消</a></div>
 					</div>
 					<aside class="control">
 						<p class="winTitle">
@@ -405,9 +405,9 @@
   <input id = 'stationKey' class = 'after_modal_colse'  style="display: none"/>
   <script src="3.9/init.js"></script>
   <script type="text/javascript">
-    require([ "home/signal/signal_map_init","jquery","dojo/domReady!" ,"home/signal/audio_player"],
+    require([ "home/signal/signal_map_init","jquery","dojo/domReady!" ,"home/signal/audio_player","bootstrap", "bootstrapTable"],
       function(init) {
-        require(["bootstrap","echarts","select2","home/signal/signal_manage"], function(bootstrap,echarts,select2,signal_manage) {
+        require(["bootstrap","echarts","select2","home/signal/signal_manage","bootstrap_table_cn"], function(bootstrap,echarts,select2,signal_manage) {
              signal_manage.init();
         	 var map = init.init();
         })

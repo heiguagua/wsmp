@@ -5,7 +5,9 @@ import java.math.BigDecimal;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
@@ -19,8 +21,8 @@ import javax.xml.bind.annotation.XmlType;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
  *         &lt;element name="channelBandwidth" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="deadTime" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="effectiveTime" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="deadTime" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/&gt;
+ *         &lt;element name="effectiveTime" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/&gt;
  *         &lt;element name="freqDesc" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="freqMax" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/&gt;
  *         &lt;element name="freqMin" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/&gt;
@@ -60,9 +62,11 @@ public class FreqSelfInfo {
     @XmlElement(nillable = true)
     protected String channelBandwidth;
     @XmlElement(nillable = true)
-    protected String deadTime;
+    @XmlSchemaType(name = "date")
+    protected XMLGregorianCalendar deadTime;
     @XmlElement(nillable = true)
-    protected String effectiveTime;
+    @XmlSchemaType(name = "date")
+    protected XMLGregorianCalendar effectiveTime;
     @XmlElement(nillable = true)
     protected String freqDesc;
     @XmlElement(nillable = true)
@@ -113,10 +117,10 @@ public class FreqSelfInfo {
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public String getDeadTime() {
+    public XMLGregorianCalendar getDeadTime() {
         return deadTime;
     }
 
@@ -125,10 +129,10 @@ public class FreqSelfInfo {
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setDeadTime(String value) {
+    public void setDeadTime(XMLGregorianCalendar value) {
         this.deadTime = value;
     }
 
@@ -137,10 +141,10 @@ public class FreqSelfInfo {
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public String getEffectiveTime() {
+    public XMLGregorianCalendar getEffectiveTime() {
         return effectiveTime;
     }
 
@@ -149,10 +153,10 @@ public class FreqSelfInfo {
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setEffectiveTime(String value) {
+    public void setEffectiveTime(XMLGregorianCalendar value) {
         this.effectiveTime = value;
     }
 
