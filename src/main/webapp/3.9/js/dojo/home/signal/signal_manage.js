@@ -5,7 +5,6 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 
 		init_select2();
 
-
 		// 信号列表change事件
 		$("#signal_list1 .select2-picker").change(function() {
 			var selected_val = $(this).val();
@@ -1075,7 +1074,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 			        dataZoom: [{
 			            type: 'slider',
 			            start:0,
-			            end:100,
+			            end:50,
 			            height:15,
 			            y:260
 			        }],
@@ -1263,9 +1262,13 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 				            'trigger': 'axis'
 				        },
 				        legend: {
-				            "show": true,
+				            show: true,
 				            x: 'right',
-				            'data': ['I','Q']
+				            padding:10,
+				            data: ['I','Q'],
+				            textStyle:{
+				            	color:"#DDD"
+				            }
 				        },
 
 				        calculable: true,
@@ -1293,7 +1296,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 				        xAxis: [{
 				        	'gridIndex':0,
 				        	'type': 'value',
-				            'min':0,
+				            'splitNumber':4,
 				            'axisTick':{
 				              show:true
 				            },
@@ -1414,10 +1417,14 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 					}
 					single_ser.series.push({data:i_data},{data:q_data},{data:iq_data});
 					option.options.push(single_ser);
+					option.options[0].xAxis[0].min = 0;
+					option.options[0].xAxis[0].max = iq_play_list[i].nmber-1;
+					option.options[0].xAxis[0].interval = (iq_play_list[i].nmber-1)/4;
+					option.options[0].xAxis[0].axisLabel.formatter = function(value){
+						return value.toFixed(0);
+					}
 				}
 				
-				console.log(option);
-
 			var iqChart = echarts.init($('#IQChart')[0]);
 			iqChart.setOption(option);
 //			var option_temp = option;
