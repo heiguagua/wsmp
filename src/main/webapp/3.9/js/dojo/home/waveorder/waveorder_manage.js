@@ -377,7 +377,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 						params.userID = userID;
 						return params
 					},
-					pageSize : 10, //单页记录数
+					pageSize : 9, //单页记录数
 					pageList : [ 5, 10, 20, 30 ], //分页步进值
 					clickToSelect : true, //是否启用点击选中行
 					responseHandler : function(res) {
@@ -443,7 +443,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 						return params
 					}, //请求服务器时所传的参数
 					sidePagination : 'client', //指定服务器端分页
-					pageSize : 10, //单页记录数
+					pageSize : 9, //单页记录数
 					pageList : [ 5, 10, 20, 30 ], //分页步进值
 					clickToSelect : true, //是否启用点击选中行
 					responseHandler : function(res) {
