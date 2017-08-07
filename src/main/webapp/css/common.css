@@ -548,7 +548,10 @@ label, .control-label {
     border-color: #ececec;
 }
 .dpopover{
-	display:inline-block;
+	display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .popover{
 	background: #FFFFFF;
