@@ -18,7 +18,7 @@ var MmPlayer = function() {
     this.title = this.APP_NAME, //the app title on the top of the page, will upgrade when songs playing
     this.audioContext = null;
     this.source = null;
-    this.playlist = [];
+    this.playlist = loadSound("69123.wav");
     this.currentOrderNum = 0; //orderNum starts from 0
     this.currentFileName = null;
     this.timeContainer = document.getElementById('time');
@@ -31,6 +31,16 @@ var MmPlayer = function() {
     this.titleUpdateId = null;
     this.forceStop = false;
     this.processing=false;
+}
+function loadSound(url) {
+	   var request = new XMLHttpRequest(); //建立一个请求
+	   request.open('GET', url, true); //配置好请求类型，文件路径等
+	   request.responseType = 'arraybuffer'; //配置数据返回类型
+	   // 一旦获取完成，对音频进行进一步操作，比如解码
+	   request.onload = function() {
+	     var arraybuffer = request.response;
+	  }
+	  request.send();
 }
 MmPlayer.prototype = {
     ini: function() {

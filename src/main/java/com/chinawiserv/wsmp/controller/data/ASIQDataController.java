@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.chinawiserv.wsmp.hbase.HbaseClient;
-
-//import com.chinawiserv.wsmp.hbase.query.AudioData;
+import com.chinawiserv.wsmp.hbase.query.AudioData;
 import com.google.common.net.HttpHeaders;
 
 @RestController
@@ -42,8 +41,10 @@ public class ASIQDataController {
 	public Object queryAudio(@PathVariable String id, @PathVariable long centerFreq, @PathVariable String timeStart,
 	        @PathVariable String timeStop) {
 
-		final long timeStartLong = LocalDateTime.parse(timeStart, this.formatter).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-		final long timeStopLong = LocalDateTime.parse(timeStart, this.formatter).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+		final long timeStartLong = LocalDateTime.parse(timeStart,
+		        this.formatter).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+		final long timeStopLong = LocalDateTime.parse(timeStart,
+		        this.formatter).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 		return this.client.queryAudio(id, centerFreq, timeStartLong, timeStopLong);
 	}
 
@@ -57,16 +58,16 @@ public class ASIQDataController {
 	 * @return
 	 * @throws IOException
 	 */
-//	@GetMapping("/audio/{id}/{rowKey}")
-//	public Object queryAudio(@PathVariable String id, @PathVariable String rowKey) throws IOException {
-//
-//		final AudioData aduioData = this.client.queryAudioData(id, rowKey);
-//		final byte[] bytes = aduioData.getAudioData();
-//		return ResponseEntity.ok()
-//		        .header(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=\"%s\"", "test.wav"))
-//		        .contentType(MediaType.APPLICATION_OCTET_STREAM)
-//		        .body(bytes);
-//	}
+	@GetMapping("/audio/{id}/{rowKey}")
+	public Object queryAudio(@PathVariable String id, @PathVariable String rowKey) throws IOException {
+
+		final AudioData aduioData = this.client.queryAudioData(id, rowKey);
+		final byte[] bytes = aduioData.getAudioData();
+		return ResponseEntity.ok()
+		        .header(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment;filename=\"%s\"", "test.wav"))
+		        .contentType(MediaType.APPLICATION_OCTET_STREAM)
+		        .body(bytes);
+	}
 
 	/**
 	 * 查询IQ数据
@@ -78,10 +79,13 @@ public class ASIQDataController {
 	 * @return
 	 */
 	@GetMapping("/iq/{id}/{centerFreq}/{timeStart}/{timeStop}")
-	public Object queryIQ(@PathVariable String id, @PathVariable long centerFreq, @PathVariable String timeStart, @PathVariable String timeStop) {
+	public Object queryIQ(@PathVariable String id, @PathVariable long centerFreq,
+	        @PathVariable String timeStart, @PathVariable String timeStop) {
 
-		final long timeStartLong = LocalDateTime.parse(timeStart, this.formatter).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-		final long timeStopLong = LocalDateTime.parse(timeStart, this.formatter).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+		final long timeStartLong = LocalDateTime.parse(timeStart,
+		        this.formatter).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+		final long timeStopLong = LocalDateTime.parse(timeStart,
+		        this.formatter).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 		return this.client.queryIQ(id, centerFreq, timeStartLong, timeStopLong);
 	}
 
@@ -98,8 +102,11 @@ public class ASIQDataController {
 	public Object querySpectrum(@PathVariable String id, @PathVariable long centerFreq, @PathVariable String timeStart,
 	        @PathVariable String timeStop) {
 
-		final long timeStartLong = LocalDateTime.parse(timeStart, this.formatter).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-		final long timeStopLong = LocalDateTime.parse(timeStart, this.formatter).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-		return this.client.querySpectrum(id, centerFreq, timeStartLong, timeStopLong);
+		final long timeStartLong = LocalDateTime.parse(timeStart,
+		        this.formatter).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+		final long timeStopLong = LocalDateTime.parse(timeStart,
+		        this.formatter).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+		return this.client.querySpectrum(id, centerFreq, timeStartLong,
+		        timeStopLong);
 	}
 }
