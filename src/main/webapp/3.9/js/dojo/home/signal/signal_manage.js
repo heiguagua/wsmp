@@ -1,7 +1,5 @@
-define([ "jquery", "bootstrap", "echarts", "ajax" ,"wave_suffer"], function(jquery, bootstrap, echarts, ajax,wave_suffer) {
+define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap, echarts, ajax) {
 	function init() {
-
-		console.log(wave_suffer);
 
 		init_select2();
 		
@@ -1047,9 +1045,15 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ,"wave_suffer"], function(jque
 	// 频谱播放器
 	function spectrum_player(){
 		var timeline_length = [];
-		for(var i=0; i<spectrum_play_list.length; i++ ) {
-			timeline_length.push(i+1);
+		if(spectrum_play_list.length == 1) {
+			timeline_length = [0,1];
 		}
+		else{
+			for(var i=0; i<spectrum_play_list.length; i++ ) {
+				timeline_length.push(i+1);
+			}
+		}
+		
 		var option = {
 			    timeline: {
 			    	show:false,
@@ -1248,12 +1252,16 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ,"wave_suffer"], function(jque
 	
 	// IQ数据播放
 	function iq_player(){
-		console.log(iq_play_list);
-		
 			var timeline_length = [];
-			for(var i=0; i<iq_play_list.length; i++ ) {
-				timeline_length.push(i+1);
+			if(iq_play_list.length == 1) {
+				timeline_length = [0,1];
 			}
+			else{
+				for(var i=0; i<iq_play_list.length; i++ ) {
+					timeline_length.push(i+1);
+				}
+			}
+			
 			var option = {
 				    timeline: {
 				    	show:false,
@@ -1713,7 +1721,8 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ,"wave_suffer"], function(jque
 						width:'90px'
 					}, {
 						field : 'audioLength',
-						title : '声音数据长度'
+						title : '声音数据长度',
+						width:'90px'
 					}]
 				});
 			})
