@@ -1,3 +1,4 @@
+
 package com.chinawiserv.wsmp.controller.data;
 
 import java.math.BigInteger;
@@ -38,7 +39,6 @@ import com.chinawiserv.wsmp.hbase.HbaseClient;
 import com.chinawiserv.wsmp.hbase.query.OccAndMax;
 import com.chinawiserv.wsmp.pojo.IntensiveMonitoring;
 import com.chinawiserv.wsmp.pojo.Station;
-import com.chinawiserv.wsmp.service.impl.IntensiveMonitoringServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
@@ -52,9 +52,6 @@ import static java.util.stream.Collectors.toList;
 @RestControllerAdvice
 @RequestMapping("/data/alarm")
 public class AlarmDataController {
-
-    @Autowired
-    IntensiveMonitoringServiceImpl iIntensiveMonitoringServicel;
 
     @Autowired
     WebServiceSoapFactory service;
@@ -328,9 +325,8 @@ public class AlarmDataController {
 	    // 需要取消对应的
 	    EntityWrapper<IntensiveMonitoring> ew = new EntityWrapper<>(in);
 	    ew.where("SINGAL_FREQUENCY = {0}", in.getSingalFrequency());
-	    iIntensiveMonitoringServicel.delete(ew);
 	} else {
-	    iIntensiveMonitoringServicel.insert(in);
+
 	}
     }
 
@@ -509,7 +505,7 @@ public class AlarmDataController {
 	    String last = timeformatter.format(time);
 	    beginTime = first + last;
 
-	    String id = "52010118";
+	    // String id = "52010118";
 	    long frequency = (long) (88.8 * 1000000);
 
 	    Map<Object, Object> reponceReslut = hbaseClient.queryMaxLevels(stationCode, frequency, upperBound,
@@ -547,3 +543,4 @@ public class AlarmDataController {
 
     }
 }
+

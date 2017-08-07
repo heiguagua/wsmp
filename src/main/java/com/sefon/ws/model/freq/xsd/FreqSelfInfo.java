@@ -9,9 +9,9 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>FreqSelfInfo complex typeµÄ Java Àà¡£
+ * <p>FreqSelfInfo complex typeçš„ Java ç±»ã€‚
  * 
- * <p>ÒÔÏÂÄ£Ê½Æ¬¶ÎÖ¸¶¨°üº¬ÔÚ´ËÀàÖĞµÄÔ¤ÆÚÄÚÈİ¡£
+ * <p>ä»¥ä¸‹æ¨¡å¼ç‰‡æ®µæŒ‡å®šåŒ…å«åœ¨æ­¤ç±»ä¸­çš„é¢„æœŸå†…å®¹ã€‚
  * 
  * <pre>
  * &lt;complexType name="FreqSelfInfo"&gt;
@@ -85,7 +85,7 @@ public class FreqSelfInfo {
     protected String st;
 
     /**
-     * »ñÈ¡channelBandwidthÊôĞÔµÄÖµ¡£
+     * è·å–channelBandwidthå±æ€§çš„å€¼ã€‚
      * 
      * @return
      *     possible object is
@@ -97,7 +97,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * ÉèÖÃchannelBandwidthÊôĞÔµÄÖµ¡£
+     * è®¾ç½®channelBandwidthå±æ€§çš„å€¼ã€‚
      * 
      * @param value
      *     allowed object is
@@ -109,7 +109,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * »ñÈ¡deadTimeÊôĞÔµÄÖµ¡£
+     * è·å–deadTimeå±æ€§çš„å€¼ã€‚
      * 
      * @return
      *     possible object is
@@ -121,7 +121,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * ÉèÖÃdeadTimeÊôĞÔµÄÖµ¡£
+     * è®¾ç½®deadTimeå±æ€§çš„å€¼ã€‚
      * 
      * @param value
      *     allowed object is
@@ -133,7 +133,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * »ñÈ¡effectiveTimeÊôĞÔµÄÖµ¡£
+     * è·å–effectiveTimeå±æ€§çš„å€¼ã€‚
      * 
      * @return
      *     possible object is
@@ -145,7 +145,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * ÉèÖÃeffectiveTimeÊôĞÔµÄÖµ¡£
+     * è®¾ç½®effectiveTimeå±æ€§çš„å€¼ã€‚
      * 
      * @param value
      *     allowed object is
@@ -157,7 +157,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * »ñÈ¡freqDescÊôĞÔµÄÖµ¡£
+     * è·å–freqDescå±æ€§çš„å€¼ã€‚
      * 
      * @return
      *     possible object is
@@ -169,7 +169,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * ÉèÖÃfreqDescÊôĞÔµÄÖµ¡£
+     * è®¾ç½®freqDescå±æ€§çš„å€¼ã€‚
      * 
      * @param value
      *     allowed object is
@@ -181,7 +181,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * »ñÈ¡freqMaxÊôĞÔµÄÖµ¡£
+     * è·å–freqMaxå±æ€§çš„å€¼ã€‚
      * 
      * @return
      *     possible object is
@@ -193,7 +193,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * ÉèÖÃfreqMaxÊôĞÔµÄÖµ¡£
+     * è®¾ç½®freqMaxå±æ€§çš„å€¼ã€‚
      * 
      * @param value
      *     allowed object is
@@ -205,7 +205,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * »ñÈ¡freqMinÊôĞÔµÄÖµ¡£
+     * è·å–freqMinå±æ€§çš„å€¼ã€‚
      * 
      * @return
      *     possible object is
@@ -217,7 +217,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * ÉèÖÃfreqMinÊôĞÔµÄÖµ¡£
+     * è®¾ç½®freqMinå±æ€§çš„å€¼ã€‚
      * 
      * @param value
      *     allowed object is
@@ -229,7 +229,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * »ñÈ¡freqSectionÊôĞÔµÄÖµ¡£
+     * è·å–freqSectionå±æ€§çš„å€¼ã€‚
      * 
      * @return
      *     possible object is
@@ -241,7 +241,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * ÉèÖÃfreqSectionÊôĞÔµÄÖµ¡£
+     * è®¾ç½®freqSectionå±æ€§çš„å€¼ã€‚
      * 
      * @param value
      *     allowed object is
@@ -253,7 +253,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * »ñÈ¡idÊôĞÔµÄÖµ¡£
+     * è·å–idå±æ€§çš„å€¼ã€‚
      * 
      * @return
      *     possible object is
@@ -265,7 +265,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * ÉèÖÃidÊôĞÔµÄÖµ¡£
+     * è®¾ç½®idå±æ€§çš„å€¼ã€‚
      * 
      * @param value
      *     allowed object is
@@ -277,7 +277,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * »ñÈ¡isManuallyAddÊôĞÔµÄÖµ¡£
+     * è·å–isManuallyAddå±æ€§çš„å€¼ã€‚
      * 
      * @return
      *     possible object is
@@ -289,7 +289,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * ÉèÖÃisManuallyAddÊôĞÔµÄÖµ¡£
+     * è®¾ç½®isManuallyAddå±æ€§çš„å€¼ã€‚
      * 
      * @param value
      *     allowed object is
@@ -301,7 +301,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * »ñÈ¡isSeriesÊôĞÔµÄÖµ¡£
+     * è·å–isSerieså±æ€§çš„å€¼ã€‚
      * 
      * @return
      *     possible object is
@@ -313,7 +313,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * ÉèÖÃisSeriesÊôĞÔµÄÖµ¡£
+     * è®¾ç½®isSerieså±æ€§çš„å€¼ã€‚
      * 
      * @param value
      *     allowed object is
@@ -325,7 +325,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * »ñÈ¡parentIdÊôĞÔµÄÖµ¡£
+     * è·å–parentIdå±æ€§çš„å€¼ã€‚
      * 
      * @return
      *     possible object is
@@ -337,7 +337,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * ÉèÖÃparentIdÊôĞÔµÄÖµ¡£
+     * è®¾ç½®parentIdå±æ€§çš„å€¼ã€‚
      * 
      * @param value
      *     allowed object is
@@ -349,7 +349,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * »ñÈ¡serviceNameÊôĞÔµÄÖµ¡£
+     * è·å–serviceNameå±æ€§çš„å€¼ã€‚
      * 
      * @return
      *     possible object is
@@ -361,7 +361,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * ÉèÖÃserviceNameÊôĞÔµÄÖµ¡£
+     * è®¾ç½®serviceNameå±æ€§çš„å€¼ã€‚
      * 
      * @param value
      *     allowed object is
@@ -373,7 +373,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * »ñÈ¡stÊôĞÔµÄÖµ¡£
+     * è·å–stå±æ€§çš„å€¼ã€‚
      * 
      * @return
      *     possible object is
@@ -385,7 +385,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * ÉèÖÃstÊôĞÔµÄÖµ¡£
+     * è®¾ç½®stå±æ€§çš„å€¼ã€‚
      * 
      * @param value
      *     allowed object is

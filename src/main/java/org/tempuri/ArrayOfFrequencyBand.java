@@ -67,8 +67,9 @@ public class ArrayOfFrequencyBand {
         return this.frequencyBand;
     }
 
-	public void setFrequencyBand(List<FrequencyBand> frequencyBand) {
-		this.frequencyBand = frequencyBand;
+	public void setFrequencyBand(List<FrequencyBand> freqList) {
+		this.frequencyBand = freqList;
+		
 	}
 
 }

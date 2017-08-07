@@ -1,3 +1,4 @@
+
 package com.chinawiserv.wsmp.controller.view;
 
 import java.util.List;
@@ -107,3 +108,4 @@ public class WaveOrderViewController {
 		return "waveorder/redio_type_list";
 	}
 }
+
