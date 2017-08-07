@@ -1,3 +1,4 @@
+
 package com.chinawiserv.wsmp.client;
 
 import java.io.IOException;
@@ -29,3 +30,4 @@ public class HbaseConfig {
     }
 
 }
+

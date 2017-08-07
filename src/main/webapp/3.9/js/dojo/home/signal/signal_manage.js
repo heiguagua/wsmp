@@ -1,7 +1,7 @@
-define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap, echarts, ajax) {
+define([ "jquery", "bootstrap", "echarts", "ajax" ,"wave_suffer"], function(jquery, bootstrap, echarts, ajax,wave_suffer) {
 	function init() {
 
-
+		console.log(wave_suffer);
 
 		init_select2();
 		
@@ -35,6 +35,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 			}
 			else{
 				$("#audio-wrap").slideUp();
+				wavesurfer.destroy();
 			}
 		})
 
@@ -75,6 +76,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 		$("#audio-close").on("click",function(){
 			$("#audio-wrap").slideUp();
 			$("#audio").prop("checked",false);
+			wavesurfer.destroy();
 		})
 
 		// 选择IQ数据
@@ -131,8 +133,9 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 		
 		// 音频数据选择确定事件
 		$("#audio-confirm").on("click",function(){
-			audio_player();
+			
 			$("#audio-choose-list").slideUp();
+			audio_player();
 		})
 
 		// 门阀输入提交事件
@@ -1448,8 +1451,63 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 	}
 	
 	// 音频数据播放
+	var wavesurfer ;
 	function audio_player(){
-		
+		document.querySelector('#visualizer').innerHTML = '';
+		wavesurfer = WaveSurfer.create({
+	        container: document.querySelector('#visualizer'),
+	        waveColor: '#00ff00',
+	        progressColor: '#038E03',
+	        splitChannels: true
+	    });
+
+	    // Load audio from URL
+	    wavesurfer.load(audio_play_list[0].href);
+
+	    // Play/pause on button press
+	    document.querySelector('[data-action="play"]').addEventListener(
+	        'click', wavesurfer.playPause.bind(wavesurfer)
+	    );
+	    
+	    var links = audio_play_list;
+	    var currentTrack = 0;
+
+	    // Load a track by index and highlight the corresponding link
+	    var setCurrentSong = function (index) {
+	        currentTrack = index;
+	        wavesurfer.load(links[currentTrack].href);
+	    };
+	    
+	    var progressDiv = $('#progress-bar');
+        var progressBar = $('.progress-bar');
+
+        var showProgress = function (percent) {
+            progressDiv.show();
+            progressBar.css({"width":percent + '%'})
+            //progressBar.style.width = percent + '%';
+        };
+
+        var hideProgress = function () {
+        	progressDiv.hide();
+        };
+
+        wavesurfer.on('loading', showProgress);
+        wavesurfer.on('destroy', hideProgress);
+        wavesurfer.on('error', hideProgress);
+	    
+	    wavesurfer.on('finish',function(){
+	    	setCurrentSong((currentTrack + 1) % links.length);
+	    })
+	    
+	    // Play on audio load
+	    wavesurfer.on('ready', function () {
+	    	hideProgress();
+	        wavesurfer.play();
+	    });
+
+	    
+	    
+
 	}
 
 	 $.fn.serializeObject = function() {

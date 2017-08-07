@@ -1,3 +1,4 @@
+
 define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer", "dojo/request", "esri/layers/GraphicsLayer", "esri/dijit/Scalebar"
 	, "esri/symbols/TextSymbol", "esri/geometry/Point", "esri/graphic", "esri/symbols/Font", "esri/symbols/SimpleMarkerSymbol" ], function(ajax, parser, Map, ArcGISTiledMapServiceLayer, request, GraphicsLayer, Scalebar, TextSymbol, Point, graphic, Font, SimpleMarkerSymbol) {
 	function wo_init(map_arry) {
@@ -16,13 +17,19 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 			table_alarm_dealed(areaCode,monitors);
 			addPoint(map_arry, areaCode);
 			redioType(monitors);
-		})
+		});
 		
 		$("#tabs a").click(function(e) {
 			console.log(111);
 			e.preventDefault();
 			$(this).tab('show');
 
+		});
+		
+		$("#modalConfig").on("shown.bs.modal",function(e){
+			var a = $(e.relatedTarget);
+        	var beginFreq = a.data('beginfreq');
+        	var endFreq = a.data('endfreq');
 		});
 		
 		$("#modalSignal").on("shown.bs.modal",function(e){
@@ -109,12 +116,9 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 	            	});
 	            }
 			});
-	
-		})
-		
-		// popover
-		
+		});
 	}
+	
 	function getUser() {
 		var userStr = Binding.getUser();
 		var user = JSON.parse(userStr);
@@ -373,7 +377,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 						params.userID = userID;
 						return params
 					},
-					pageSize : 10, //单页记录数
+					pageSize : 9, //单页记录数
 					pageList : [ 5, 10, 20, 30 ], //分页步进值
 					clickToSelect : true, //是否启用点击选中行
 					responseHandler : function(res) {
@@ -418,7 +422,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 					}, {
 						title : '重点监测',
 						formatter : function(value, row, index) {
-							return '<a data-toggle="modal" data-target="#modalConfig"> <img src="images/Fill 29.png"> </img></a>';
+							return '<a data-toggle="modal" data-target="#modalConfig" data-beginFreq="'+row.beginFreq+'" data-endFreq="'+row.endFreq+'"> <img src="images/Fill 29.png"> </img></a>';
 						}
 					}  ]
 				});
@@ -439,7 +443,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 						return params
 					}, //请求服务器时所传的参数
 					sidePagination : 'client', //指定服务器端分页
-					pageSize : 10, //单页记录数
+					pageSize : 9, //单页记录数
 					pageList : [ 5, 10, 20, 30 ], //分页步进值
 					clickToSelect : true, //是否启用点击选中行
 					responseHandler : function(res) {

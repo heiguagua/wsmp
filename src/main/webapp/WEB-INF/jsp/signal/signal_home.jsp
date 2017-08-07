@@ -18,6 +18,7 @@
 <link rel="stylesheet" href="3.9/js/dojo/dijit/themes/tundra/tundra.css">
 <link rel="stylesheet" href="3.9/js/dojo/webgis/widgets/themes/darkangel/darkangel.css">
 <link rel="stylesheet" href="3.9/js/dojo/webgis/widgets/themes/darkangel/override.css">
+<script src="3.9/js/dojo/library/wavesuffer/wavesuffer.js"></script>
 </head>
 
 <body id='signal'>
@@ -123,7 +124,7 @@
 						</table>
 						<div class="text-center confirm-wrap"><a class="btn btn-confirm" id="audio-confirm">确定</a><a class="btn btn-cancel">取消</a></div>
 					</div>
-					<aside class="control">
+					<aside class="control" style="display:none">
 						<p class="winTitle">
 							<span title="close" id="close">X</span>
 						</p>
@@ -150,18 +151,30 @@
 					</aside>
 				</div>
 				<div class="data-play-chart">
-					<header>
+					<header style="display:none">
 						<span id="showControl"></span> <span id="info">
 							音频播放</span>
 					</header>
 					<div class="wrapper">
 
 						<div id="visualizer">
-							<canvas width="800px" height="350" id="canvas">抱歉！您的浏览器不支持Canvas :(</canvas>
+						<div class="progress progress-striped active" id="progress-bar">
+                        <div class="progress-bar progress-bar-info"></div>
+                    </div>
+							<!-- <canvas width="800px" height="350" id="canvas">抱歉！您的浏览器不支持Canvas :(</canvas>
 							<div id="mirrorWrapper">
 								<canvas width="800px" height="250" id="mirror"></canvas>
-							</div>
+							</div> -->
 						</div>
+						<div class="controls">
+                    <button class="btn btn-primary" data-action="play">
+                        <i class="glyphicon glyphicon-play"></i>
+                        Play
+                        /
+                        <i class="glyphicon glyphicon-pause"></i>
+                        Pause
+                    </button>
+                </div>
 					</div>
 				</div>
 			</div>
@@ -405,12 +418,15 @@
   <input id = 'stationKey' class = 'after_modal_colse'  style="display: none"/>
   <script src="3.9/init.js"></script>
   <script type="text/javascript">
-    require([ "home/signal/signal_map_init","jquery","dojo/domReady!" ,"home/signal/audio_player","bootstrap", "bootstrapTable"],
+    require([ "home/signal/signal_map_init","jquery","dojo/domReady!"],
       function(init) {
-        require(["bootstrap","echarts","select2","home/signal/signal_manage","bootstrap_table_cn"], function(bootstrap,echarts,select2,signal_manage) {
-             signal_manage.init();
-        	 var map = init.init();
-        })
+    	require(["bootstrap", "bootstrapTable"],function(){
+    		 require(["echarts","select2","home/signal/signal_manage","bootstrap_table_cn"], function(echarts,select2,signal_manage) {
+                 signal_manage.init();
+            	 var map = init.init();
+            })
+    	})
+       
        
       });
   </script>
