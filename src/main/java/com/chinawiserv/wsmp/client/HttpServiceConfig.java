@@ -1,4 +1,3 @@
-
 package com.chinawiserv.wsmp.client;
 
 import org.springframework.context.annotation.Configuration;
@@ -18,4 +17,3 @@ public class HttpServiceConfig {
 	// }
 
 }
-
