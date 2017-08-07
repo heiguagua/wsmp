@@ -75,7 +75,7 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 					  var radius = 1000000000;  
 				      var circle = new Circle(p,{  
 				            geodesic: true,  
-				            radius: 100000  
+				            radius: 10000  
 				        });  
 				    var symbol = new SimpleFillSymbol().setColor(null).outline.setColor("red")
 					var textSymbol = new TextSymbol(reslut.count).setColor(
