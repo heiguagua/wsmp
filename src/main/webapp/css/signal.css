@@ -257,7 +257,7 @@
 	display:none;
 	position: absolute;
     right: 0;
-    width: 800px;
+    width: 90%;
     background: #FFF;
     z-index: 99;
     box-shadow: 0 0 12px #cecece;
@@ -335,4 +335,7 @@ td.bs-checkbox{
     color: #FFF;
     border: none;
     margin-right: 10px;
+}
+.fixed-table-loading{
+	display:none;
 }

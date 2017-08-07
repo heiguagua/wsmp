@@ -36,4 +36,13 @@ public class WebServiceSeFonConfig {
 
 	}
 
+	// @Bean
+	@Bean
+	public StationService initStationService1() throws MalformedURLException {
+		URL wsdlLoction = new URL(this.url);
+		StationService stationService = new StationService(wsdlLoction);
+		return stationService;
+
+	}
+
 }

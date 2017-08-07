@@ -9,11 +9,12 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>ArrayOfFreqBandDTO complex type�� Java �ࡣ
+ * <p>
+ * ArrayOfFreqBandDTO complex type�� Java �ࡣ
  * 
- * <p>����ģʽƬ��ָ�������ڴ����е�Ԥ�����ݡ�
+ * <p>
+ * ����ģʽƬ��ָ�������ڴ����е�Ԥ�����ݡ�
  * 
  * <pre>
  * &lt;complexType name="ArrayOfFreqBandDTO"&gt;
@@ -30,41 +31,41 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ArrayOfFreqBandDTO", propOrder = {
-    "freqBandDTO"
+@XmlType(name = "ArrayOfFreqBandDTO", propOrder = { "freqBandDTO"
 })
 public class ArrayOfFreqBandDTO {
 
-    @XmlElement(name = "FreqBandDTO", nillable = true)
-    protected List<FreqBandDTO> freqBandDTO;
+	@XmlElement(name = "FreqBandDTO", nillable = true)
+	protected List<FreqBandDTO> freqBandDTO;
 
-    /**
-     * Gets the value of the freqBandDTO property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the freqBandDTO property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getFreqBandDTO().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link FreqBandDTO }
-     * 
-     * 
-     */
-    public List<FreqBandDTO> getFreqBandDTO() {
-        if (freqBandDTO == null) {
-            freqBandDTO = new ArrayList<FreqBandDTO>();
-        }
-        return this.freqBandDTO;
-    }
+	/**
+	 * Gets the value of the freqBandDTO property.
+	 * 
+	 * <p>
+	 * This accessor method returns a reference to the live list, not a
+	 * snapshot. Therefore any modification you make to the returned list will
+	 * be present inside the JAXB object. This is why there is not a
+	 * <CODE>set</CODE> method for the freqBandDTO property.
+	 * 
+	 * <p>
+	 * For example, to add a new item, do as follows:
+	 * 
+	 * <pre>
+	 * getFreqBandDTO().add(newItem);
+	 * </pre>
+	 * 
+	 * 
+	 * <p>
+	 * Objects of the following type(s) are allowed in the list
+	 * {@link FreqBandDTO }
+	 * 
+	 * 
+	 */
+	public List<FreqBandDTO> getFreqBandDTO() {
+		if (freqBandDTO == null) {
+			freqBandDTO = new ArrayList<>();
+		}
+		return this.freqBandDTO;
+	}
 
 }

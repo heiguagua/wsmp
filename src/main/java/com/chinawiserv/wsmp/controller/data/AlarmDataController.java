@@ -1,7 +1,5 @@
 package com.chinawiserv.wsmp.controller.data;
 
-import static java.util.stream.Collectors.toList;
-
 import java.math.BigInteger;
 import java.util.Collections;
 import java.util.HashMap;

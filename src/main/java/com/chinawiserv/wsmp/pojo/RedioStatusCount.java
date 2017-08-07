@@ -1,10 +1,17 @@
 package com.chinawiserv.wsmp.pojo;
 
+import java.math.BigInteger;
 
 public class RedioStatusCount {
 
 	// 频段名称
 	private String redioName;
+	
+	// 频段起始频率
+	private BigInteger beginFreq;
+	
+	// 频段结束频率
+	private BigInteger endFreq;
 
 	// 合法正常台站
 	private int legalNormalStationNumber;
@@ -67,6 +74,22 @@ public class RedioStatusCount {
 
 	public void setIllegalSignal(int illegalSignal) {
 		this.illegalSignal = illegalSignal;
+	}
+
+	public BigInteger getBeginFreq() {
+		return beginFreq;
+	}
+
+	public BigInteger getEndFreq() {
+		return endFreq;
+	}
+
+	public void setBeginFreq(BigInteger beginFreq) {
+		this.beginFreq = beginFreq;
+	}
+
+	public void setEndFreq(BigInteger endFreq) {
+		this.endFreq = endFreq;
 	}
 
 }

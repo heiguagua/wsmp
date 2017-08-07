@@ -20,18 +20,18 @@ define(["dojo/parser","esri/map","esri/layers/ArcGISTiledMapServiceLayer","dojo/
         	zoom : 10
         });
         var map2 = new Map("mapDiv2",{
-        	center :[104.06,30.67], 
+        	//center :[104.06,30.67], 
         	zoom : 10
         });
         
         //var url = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer";
-        var url = "http://192.168.21.105:8081/PBS/rest/services/MyPBSService1/MapServer";
+        var url = "http://192.168.21.105:8081/PBS/rest/services/guiyang/MapServer";
         var agoLayer1 = new ArcGISTiledMapServiceLayer(url,{ id: "街道地图" });
         var agoLayer2 = new ArcGISTiledMapServiceLayer(url,{ id: "街道地图" });
         map1.addLayer(agoLayer1);
         var glayer1 = new GraphicsLayer();
-        map1.addLayer(glayer2);
-        
+        map1.addLayer(glayer1);
+       
         map2.addLayer(agoLayer2);
         var glayer2 = new GraphicsLayer();
         map2.addLayer(glayer2);
