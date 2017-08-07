@@ -56,7 +56,7 @@
 
 		<dependency>
 			<groupId>com.chinawiserv.wsmp</groupId>
-			<artifactId>LevelLocate</artifactId>
+			<artifactId>wsmp-level-locate</artifactId>
 			<version>2.1.0</version>
 		</dependency>
 			
@@ -79,7 +79,8 @@
 					<groupId>org.slf4j</groupId>
 					<artifactId>slf4j-api</artifactId>
 				</exclusion>
-				<!-- <exclusion> <groupId>org.slf4j</groupId> <artifactId>slf4j-log4j12</artifactId> </exclusion> -->
+				<!-- <exclusion> <groupId>org.slf4j</groupId> <artifactId>slf4j-log4j12</artifactId> 
+					</exclusion> -->
 				<exclusion>
 					<groupId>org.mortbay.jetty</groupId>
 					<artifactId>jetty-util</artifactId>
