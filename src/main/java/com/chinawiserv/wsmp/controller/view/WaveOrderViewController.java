@@ -16,34 +16,33 @@ import org.tempuri.RadioSignalClassifiedQueryRequest;
 import org.tempuri.RadioSignalClassifiedQueryResponse;
 import org.tempuri.RadioSignalWebService;
 
-import com.alibaba.fastjson.JSON;
 import com.chinawiserv.wsmp.pojo.RedioStatusCount;
-
 
 @Controller
 @RequestMapping("/waveorder")
 public class WaveOrderViewController {
 
-    @GetMapping("/ssss")
-    public String alarmDealed() {
-        return null;
-    }
+	@GetMapping("/ssss")
+	public String alarmDealed() {
+		return null;
+	}
 
-    @GetMapping("/frequencyrange")
-    public String frequencyRange() {
-        return "waveorder/table_radio";
-    }
+	@GetMapping("/frequencyrange")
+	public String frequencyRange() {
+		return "waveorder/table_radio";
+	}
 
-    @GetMapping(path = {"/", ""})
+	@GetMapping(path = { "/", ""
+	})
 	public String home(Model model, @RequestParam Map<String, Object> map) {
-		
-        return "waveorder/waveorder_home";
-    }
+
+		return "waveorder/waveorder_home";
+	}
 
 	@PostMapping("/redioType")
 	public String redioType(Model model, @RequestBody Map<String, Object> map) {
-		//根据监测站查询信号类型统计
-//		System.out.println("================================map:"+map);
+		// 根据监测站查询信号类型统计
+		// System.out.println("================================map:"+map);
 		RadioSignalWebService service = new RadioSignalWebService();
 		RadioSignalClassifiedQueryRequest request = new RadioSignalClassifiedQueryRequest();
 		ArrayOfString value = new ArrayOfString();
@@ -52,8 +51,8 @@ public class WaveOrderViewController {
 		value.setString(monitorsNum);
 		request.setStationNumber(value);
 		RadioSignalClassifiedQueryResponse response = service.getRadioSignalWebServiceSoap().queryRadioSignalClassified(request);
-		//System.out.println("===============================response:"+JSON.toJSONString(response));
-		
+		// System.out.println("===============================response:"+JSON.toJSONString(response));
+
 		RedioStatusCount rsCountTotal = new RedioStatusCount();
 		AtomicInteger index0 = new AtomicInteger();
 		AtomicInteger index1 = new AtomicInteger();
@@ -65,7 +64,7 @@ public class WaveOrderViewController {
 			t.getSignalStaticsLst().getSignalStatics().forEach(t1 -> {
 				int type = t1.getSignalType();
 				int count = t1.getCount();
-				switch(type) {
+				switch (type) {
 				case 0:
 					rsCount.setLegalNormalStationNumber(count);
 					break;
@@ -81,8 +80,7 @@ public class WaveOrderViewController {
 				case 4:
 					rsCount.setIllegalSignal(count);
 					break;
-				default:
-					;
+				default:;
 				}
 			});
 			index0.getAndAdd(rsCount.getLegalNormalStationNumber());
