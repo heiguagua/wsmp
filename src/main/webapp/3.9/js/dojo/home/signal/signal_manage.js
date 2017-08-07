@@ -818,11 +818,15 @@ define(["jquery", "bootstrap", "echarts", "ajax"], function(jquery, bootstrap, e
             monthChart.setOption(optionMonth);
         }
         monthChart.on('click', function(params) {
-            $('#modalDay').modal();
-            changesecodView(params.name);
+        	$('#modalDay').modal();
+            
         });
 
     }
+    
+    $('#modalDay').on("shown.bs.modal",function(){
+    	changesecodView(params.name);
+    })
 
 
     function initChart(reslut) {
@@ -909,7 +913,7 @@ define(["jquery", "bootstrap", "echarts", "ajax"], function(jquery, bootstrap, e
         secondLevel.centorFreq = centorfreq;
 
         ajax.get("data/alarm/secondLevelChart", secondLevel, function(reslut) {
-
+        	console.log(reslut);
             var optionDay = {
                 color : ['rgb(55,165,255)'],
                 tooltip : {
@@ -973,13 +977,9 @@ define(["jquery", "bootstrap", "echarts", "ajax"], function(jquery, bootstrap, e
                     }
                 ]
             };
-            var dayChart = echarts.init($('#dayChart')[0]);
+            var element = document.getElementById("dayChart");
+            var dayChart = echarts.init(element);
             dayChart.setOption(optionDay);
-
-            window.onresize = function() {
-                dayChart.clear();
-                dayChart.setOption(optionDay);
-            }
 
         });
 

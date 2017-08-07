@@ -80,13 +80,13 @@ public class SiganlDataController {
 
 		Map<String, Object> map = hbaseClient.queryModulationMode(ID, TimeStart, TimeStop, Frequency);
 		List<String> lists = Lists.newLinkedList();
-		double sum = (double) map.values().stream().reduce((a, b) -> {
+		Integer sum = (Integer) map.values().stream().reduce((a, b) -> {
 			return (Integer) a + (Integer) b;
 		}).get();
 
 		List<Object> reslut = map.entrySet().stream().map(m -> {
 			HashMap<String, Double> mapReslut = Maps.newHashMap();
-			mapReslut.put(m.getKey(), ((Integer) m.getValue() / sum));
+			mapReslut.put(m.getKey(), (double) ((Integer) m.getValue() / sum));
 			lists.add(m.getKey());
 			return mapReslut;
 		}).collect(toList());
