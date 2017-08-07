@@ -843,7 +843,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ,"wave_suffer"], function(jque
 				show : false,
 				orient : 'vertical',
 				x : 'left',
-				data : [ 'AM', 'FM' ]
+				data :reslut.name
 			},
 			series : [
 				{
@@ -875,7 +875,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ,"wave_suffer"], function(jque
 							length2 : 0
 						}
 					},
-					data : reslut
+					data : reslut.value
 				//						[
 				//						{
 				//							value : 20,

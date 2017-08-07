@@ -1,3 +1,4 @@
+
 package com.chinawiserv.wsmp.client;
 
 import java.net.MalformedURLException;
@@ -14,27 +15,36 @@ import com.sefon.ws.service.impl.StationService;
 @Configuration
 public class WebServiceSeFonConfig {
 
-    @Value("${sefon.webservice.stationservice}")
-    private String url;
+	@Value("${sefon.webservice.stationservice}")
+	private String url;
 
-    @Value("${sefon.webservice.queryToolservice}")
-    private String queryToolsUrl;
+	@Value("${sefon.webservice.queryToolservice}")
+	private String queryToolsUrl;
 
-    @Bean
-    public StationService initStationService() throws MalformedURLException {
-	URL wsdlLoction = new URL(url);
-	StationService stationService = new StationService(wsdlLoction);
-	return stationService;
+	// @Bean
+	public QueryToolsServicePortType initQueryToolsServicePortType() throws MalformedURLException {
+		URL wsdlLocation = new URL(this.queryToolsUrl);
+		QueryToolsService service = new QueryToolsService(wsdlLocation);
+		QueryToolsServicePortType quertToolservice = service.getQueryToolsServiceHttpSoap11Endpoint();
+		return quertToolservice;
+	}
 
-    }
+	// @Bean
+	public StationService initStationService() throws MalformedURLException {
+		URL wsdlLoction = new URL(this.url);
+		StationService stationService = new StationService(wsdlLoction);
+		return stationService;
 
-    // @Bean
-    public QueryToolsServicePortType initQueryToolsServicePortType() throws MalformedURLException {
-	URL wsdlLocation = new URL(queryToolsUrl);
-	QueryToolsService service = new QueryToolsService(wsdlLocation);
-	QueryToolsServicePortType quertToolservice = service.getQueryToolsServiceHttpSoap11Endpoint();
-	return quertToolservice;
+	}
 
-    }
+	// @Bean
+	@Bean
+	public StationService initStationService1() throws MalformedURLException {
+		URL wsdlLoction = new URL(this.url);
+		StationService stationService = new StationService(wsdlLoction);
+		return stationService;
+
+	}
 
 }
+

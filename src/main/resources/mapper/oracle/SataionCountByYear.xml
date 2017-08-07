@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinawiserv.wsmp.mapper.oracle.StationCountMapper">
+<select id ="countByYear" resultType = "java.util.Map" parameterType  = "java.util.Map">
+SELECT
+	NET_TS,
+	ORG_SYS_CODE,
+	COUNT (1) as num
+FROM
+	(
+		SELECT
+			tb.NET_TS,
+			RO.ORG_SYS_CODE
+		FROM
+			(
+				SELECT
+					*
+				FROM
+					RSBT_ORG
+				WHERE
+					RSBT_ORG.ORG_SYS_CODE = '529'
+				OR RSBT_ORG.ORG_SYS_CODE = '535'
+				OR RSBT_ORG.ORG_SYS_CODE = '536'
+			) RO
+		LEFT JOIN (
+			SELECT
+				*
+			FROM
+				RSBT_NET
+			WHERE
+				NET_TS IN (
+					'LY0101',
+					'LY0102',
+					'LY0103',
+					'LY0104'
+				) AND NET_START_DATE BETWEEN (SELECT trunc(sysdate,'yyyy') FROM dual) and (SELECT LAST_DAY(ADD_MONTHS(TRUNC(sysdate,'y'),11))FROM dual)
+		) tb ON tb.ORG_GUID = RO.GUID
+		LEFT JOIN RSBT_STATION ON RO.GUID = RSBT_STATION.NET_GUID
+		WHERE
+			NET_TS IS NOT NULL
+	)
+GROUP BY
+	NET_TS,
+	ORG_SYS_CODE
+</select>
+
+</mapper>
