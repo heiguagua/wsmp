@@ -63,31 +63,79 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 		
 		
 		function station_change(map,pSymbol,glayer){
-			
+				
 				var value = $("#station_list").find('option:selected').val();
 				var kmz = $('#search').val();
-				var data = {"stationCode":value,"kmz":kmz};
+				
+				var l = $('#signal_list').find('option:selected').attr("stationId");
+				var centorFreq = $('#signal_list').find('option:selected').attr("centorFreq");
+				var beginTime = $('#signal_list').find('option:selected').attr("beginTime");
+				
+				var arryId = l.split(",");
+				
+				var data = {"stationcode":arryId,"frequency":centorFreq,"beginTime":beginTime};
 				//alarm_manage.changeView();
-				ajax.get("data/alarm/getStation",data,function(reslut){
+				ajax.post("data/alarm/getStation",data,function(reslut){
 					glayer.clear();
-					var p = new Point(reslut);
 					
-					  var radius = 1000000000;  
-				      var circle = new Circle(p,{  
-				            geodesic: true,  
-				            radius: 10000  
-				        });  
-				    var symbol = new SimpleFillSymbol().setColor(null).outline.setColor("red")
-					var textSymbol = new TextSymbol(reslut.count).setColor(
-						new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
-						new Font("12pt").setWeight(Font.WEIGHT_BOLD));
-					var graphic = new esri.Graphic(p, textSymbol);
-					var textsyboml = new esri.Graphic(p, pSymbol);
-					var circleGrap = new esri.Graphic(circle, symbol);
-					glayer.add(textsyboml);
-					glayer.add(graphic);
-					glayer.add(circleGrap);
+					var arryOfStation = reslut.stationPiont;
+					var arryOfLevel = reslut.levelPoint;
+					
+					int stationSize = arryOfStation.length;
+					int LevelSize = arryOfLevel.length;
+					
+					
+					for (var index = 0; int < LevelSize; index++) {
+						
+						var p = new Point(arryOfStation[index]);
+						
+						var textSymbol = new TextSymbol(reslut.count).setColor(
+								new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
+								new Font("12pt").setWeight(Font.WEIGHT_BOLD));
+						
+						var graphic = new esri.Graphic(p, textSymbol);
+						var textsyboml = new esri.Graphic(p, pSymbol);
+						
+						glayer.add(textsyboml);
+						glayer.add(graphic);
+						
+					}	
+					
+					
+					for(var index = 0 ; index < stationSize;index++){
+						
+						var p = new Point(arryOfLevel[index]);
+					      var circle = new Circle(p,{  
+					            geodesic: true,  
+					            radius: arryOfLevel[index].radius  
+					        });
+					      
+					      var symbol = new SimpleFillSymbol().setColor(null).outline.setColor("red");
+					      var circleGrap = new esri.Graphic(circle, symbol);
+					      glayer.add(circleGrap);
+					      
+					}
+					
 					map.addLayer(glayer);
+					
+//					var p = new Point(reslut);
+//					
+//					  var radius = 1000000000;  
+//				      var circle = new Circle(p,{  
+//				            geodesic: true,  
+//				            radius: 10000  
+//				        });  
+//				    var symbol = new SimpleFillSymbol().setColor(null).outline.setColor("red");
+//					var textSymbol = new TextSymbol(reslut.count).setColor(
+//						new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
+//						new Font("12pt").setWeight(Font.WEIGHT_BOLD));
+//					var graphic = new esri.Graphic(p, textSymbol);
+//					var textsyboml = new esri.Graphic(p, pSymbol);
+//					var circleGrap = new esri.Graphic(circle, symbol);
+//					glayer.add(textsyboml);
+//					glayer.add(graphic);
+//					glayer.add(circleGrap);
+//					map.addLayer(glayer);
 				});
 			
 		}
@@ -117,7 +165,6 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 			var glayer = new GraphicsLayer();
 			map.addLayer(glayer);
 			var ti = $("#warning_confirm").attr("class");
-			console.log(ti);
 			signalClick(map,pSymbol,glayer);
 			station_change(map,pSymbol,glayer);
 			//$("#illegal").click();

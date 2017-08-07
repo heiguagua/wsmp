@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,6 +39,9 @@ import com.chinawiserv.apps.util.logger.Logger;
 import com.chinawiserv.wsmp.client.WebServiceSoapFactory;
 import com.chinawiserv.wsmp.hbase.HbaseClient;
 import com.chinawiserv.wsmp.hbase.query.OccAndMax;
+import com.chinawiserv.wsmp.levellocate.socket.model.Params;
+import com.chinawiserv.wsmp.levellocate.socket.model.Result;
+import com.chinawiserv.wsmp.model.LevelLocate;
 import com.chinawiserv.wsmp.pojo.IntensiveMonitoring;
 import com.chinawiserv.wsmp.pojo.Station;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -61,8 +65,11 @@ public class AlarmDataController {
 	@Autowired
 	HbaseClient hbaseClient;
 
-	// @Autowired
+	@Autowired
 	StationService stationService;
+
+	@Autowired
+	com.chinawiserv.wsmp.levellocate.LevelLocate Locate;
 
 	@Value("${upperBound.value:5000000}")
 	long upperBound;
@@ -345,13 +352,94 @@ public class AlarmDataController {
 		Logger.info(mapper.writeValueAsString(res));
 	}
 
-	@GetMapping(path = "/getStation")
-	public @ResponseBody Map<String, Object> getStationPiont(@RequestParam Map<String, Object> param) {
+	@PostMapping(path = "/getStation")
+	public @ResponseBody Map<String, Object> getStationPiont(@RequestParam List<String> stationcode, @RequestParam String frequency,
+			@RequestParam String beginTime) {
+
+		long centerFreq = (long) (88.8 * 1000000);
+		String dateTime = "20170803000000";
+
+		List<LevelLocate> reslut = hbaseClient.queryLevelLocate(dateTime, centerFreq);
+
+		Stream<LevelLocate> stream = reslut.stream();
+
+		stationcode.stream().forEach(code -> {
+
+			stream.filter(t -> {
+
+				return code.equals(t.getId());
+
+			});
+
+		});
+
+		List<LevelLocate> mapPoint = stream.collect(toList());
+
+		List<Map<String, Object>> levelPoint = Lists.newLinkedList();
+
+		int[] ids = reslut.stream().mapToInt(m -> {
+			return Integer.parseInt(m.getId());
+		}).toArray();
+
+		Params params = new Params();
+
+		double[] flon = new double[1];
+		double[] flat = new double[1];
+		double[] level = new double[1];
+
+		mapPoint.stream().forEach(l -> {
+
+			params.setSid("" + System.currentTimeMillis());// sid能够表该次计算的唯一标识
+			params.setStype((byte) 3);// 固定3，标识计算类型为场强计算
+			params.setDistanceTh(10d);// 距离门限，单位km，值是界面传递进来的
+			params.setNum(10);// 传感器数
+			params.setWarningId(10000004);// 告警传感器id
+			params.setIds(ids);// 所有传感器
+
+			flon[0] = l.getFlon();
+			flat[0] = l.getFlat();
+			level[0] = Double.longBitsToDouble(l.getLevel());
+
+			params.setLon(flon);// 每个传感器的经度
+			params.setLat(flat);// 每个传感器的纬度
+			params.setLevel(level);// 每个传感器的均值
+
+			try {
+				Result result = Locate.execute(params);
+
+				Map<String, Object> map = Maps.newHashMap();
+
+				map.put("x", result.getOutLon());
+				map.put("y", result.getOutLat());
+				map.put("radius", result.getRangeR());
+				map.put("stationId", result.getSid());
+				levelPoint.add(map);
+			}
+			catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		});
+
+		List<Map<String, String>> stationPiont = mapPoint.stream().map(station -> {
+			HashMap<String, String> element = Maps.newHashMap();
+			element.put("x", station.getFlon() + "");
+			element.put("y", station.getFlat() + "");
+			element.put("count", Double.longBitsToDouble(station.getLevel()) + "");
+			element.put("stationId", station.getId());
+			return element;
+		}).collect(toList());
+
 		Map<String, Object> map = new HashMap<>();
-		map.put("x", "106.709177096");
-		map.put("y", "26.6299067414");
-		map.put("count", "45");
-		map.put("stationId", "oopsoo");
+
+		map.put("stationPiont", stationPiont);
+		map.put("levelPoint", levelPoint);
+
+		// map.put("x", "106.709177096");
+		// map.put("y", "26.6299067414");
+		// map.put("count", "45");
+		// map.put("stationId", "oopsoo");
 		return map;
 	}
 

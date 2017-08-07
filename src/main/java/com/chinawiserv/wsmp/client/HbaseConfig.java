@@ -14,6 +14,7 @@ import org.springframework.core.io.support.EncodedResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 import com.chinawiserv.wsmp.hbase.HbaseClient;
+import com.chinawiserv.wsmp.levellocate.LevelLocate;
 
 @Configuration
 public class HbaseConfig {
@@ -31,6 +32,12 @@ public class HbaseConfig {
 		final Properties propertice = PropertiesLoaderUtils.loadProperties(res);
 		HbaseClient hbaseClient = HbaseClient.apply(propertice);
 		return hbaseClient;
+	}
+
+	@Bean
+	public LevelLocate initLevelLocate() {
+		LevelLocate levelLocate = new LevelLocate("192.168.21.104", 8444);
+		return levelLocate;
 	}
 
 }
