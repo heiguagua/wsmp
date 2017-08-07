@@ -10,12 +10,13 @@ import com.chinawiserv.wsmp.service.StationCountService;
 @RequestMapping("/communication")
 public class CommunicationViewController {
 
-    @Autowired
-    StationCountService station;
+	@Autowired
+	StationCountService station;
 
-    @RequestMapping(path = { "/", "" })
-    public String communication() {
-	station.getCount();
-	return "communication/communication_home";
-    }
+	@RequestMapping(path = { "/", ""
+	})
+	public String communication() {
+		// station.getCount();
+		return "communication/communication_home";
+	}
 }

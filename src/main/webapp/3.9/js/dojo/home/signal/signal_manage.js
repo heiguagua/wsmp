@@ -840,7 +840,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 				show : false,
 				orient : 'vertical',
 				x : 'left',
-				data : [ 'AM', 'FM' ]
+				data :reslut.name
 			},
 			series : [
 				{
@@ -872,7 +872,7 @@ define([ "jquery", "bootstrap", "echarts", "ajax" ], function(jquery, bootstrap,
 							length2 : 0
 						}
 					},
-					data : reslut
+					data : reslut.value
 				//						[
 				//						{
 				//							value : 20,
