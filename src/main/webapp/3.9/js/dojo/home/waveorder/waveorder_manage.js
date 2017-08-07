@@ -16,13 +16,19 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 			table_alarm_dealed(areaCode,monitors);
 			addPoint(map_arry, areaCode);
 			redioType(monitors);
-		})
+		});
 		
 		$("#tabs a").click(function(e) {
 			console.log(111);
 			e.preventDefault();
 			$(this).tab('show');
 
+		});
+		
+		$("#modalConfig").on("shown.bs.modal",function(e){
+			var a = $(e.relatedTarget);
+        	var beginFreq = a.data('beginfreq');
+        	var endFreq = a.data('endfreq');
 		});
 		
 		$("#modalSignal").on("shown.bs.modal",function(e){
@@ -109,12 +115,9 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 	            	});
 	            }
 			});
-	
-		})
-		
-		// popover
-		
+		});
 	}
+	
 	function getUser() {
 		var userStr = Binding.getUser();
 		var user = JSON.parse(userStr);
@@ -418,7 +421,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 					}, {
 						title : '重点监测',
 						formatter : function(value, row, index) {
-							return '<a data-toggle="modal" data-target="#modalConfig"> <img src="images/Fill 29.png"> </img></a>';
+							return '<a data-toggle="modal" data-target="#modalConfig" data-beginFreq="'+row.beginFreq+'" data-endFreq="'+row.endFreq+'"> <img src="images/Fill 29.png"> </img></a>';
 						}
 					}  ]
 				});

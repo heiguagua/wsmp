@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.tempuri.ArrayOfString;
 import org.tempuri.RadioSignalClassifiedQueryRequest;
 import org.tempuri.RadioSignalClassifiedQueryResponse;
@@ -38,6 +39,12 @@ public class WaveOrderViewController {
 	public String home(Model model, @RequestParam Map<String, Object> map) {
 		
         return "waveorder/waveorder_home";
+    }
+    
+    @PostMapping("/importantMonitor")
+    public String importantMonitor(Model model,@RequestBody Map<String,Object> map) {
+    	//根据频段查询重点监测，返回页面
+    	return "waveorder/impotant_monitor";
     }
 
 	@PostMapping("/redioType")
@@ -97,6 +104,6 @@ public class WaveOrderViewController {
 		rsCountTotal.setUnKonw(index3.get());
 		rsCountTotal.setIllegalSignal(index4.get());
 		model.addAttribute("redio", rsCountTotal);
-		return "waveorder/Redio_type_list";
+		return "waveorder/redio_type_list";
 	}
 }
