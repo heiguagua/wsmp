@@ -264,7 +264,7 @@
 	<!-- Modal 重点监测参数配置-->
 	<div class="modal fade" id="modalConfig" tabindex="-1" role="dialog"
 		aria-labelledby="modalConfigLabel">
-		<div class="modal-dialog " role="document">
+		 <div class="modal-dialog " role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"
@@ -273,8 +273,8 @@
 					</button>
 					<h4 class="modal-title" id="modalConfigLabel">重点监测参数配置</h4>
 				</div>
-				<div class="modal-body">
-					<div role="tabpanel" class="tab-pane active ">
+				<div id="important_monitor"></div>
+					<!-- <div role="tabpanel" class="tab-pane active ">
 						<div class='flex-row'>
 							<div class='flex1 config-left'>
 								<form class="form-horizontal ">
@@ -423,10 +423,10 @@
 								</form>
 							</div>
 						</div>
-					</div>
+					</div> -->
 				</div>
 			</div>
-		</div>
+		</div> 
 	</div>
 
 	<script src="3.9/init.js"></script>

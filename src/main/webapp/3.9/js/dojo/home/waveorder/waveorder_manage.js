@@ -30,6 +30,21 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 			var a = $(e.relatedTarget);
         	var beginFreq = a.data('beginfreq');
         	var endFreq = a.data('endfreq');
+        	var data = {};
+        	data.beginFreq = beginFreq;
+        	data.endFreq = endFreq;
+        	var str = JSON.stringify(data);
+        	$.ajax({
+    			url : 'waveorder/importantMonitor',
+    			type : 'post',
+    			data : str,//传输数据
+    			contentType : 'application/json',//传输数据类型
+    			dataType : 'html',//返回数据类型
+    			success : function (html) {
+    				$("#important_monitor").html(html);
+    			}
+    		})
+        	
 		});
 		
 		$("#modalSignal").on("shown.bs.modal",function(e){
