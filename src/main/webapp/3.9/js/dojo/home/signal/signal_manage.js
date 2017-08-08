@@ -818,11 +818,15 @@ define(["jquery", "bootstrap", "echarts", "ajax"], function(jquery, bootstrap, e
             monthChart.setOption(optionMonth);
         }
         monthChart.on('click', function(params) {
-            $('#modalDay').modal();
-            changesecodView(params.name);
+        	$('#modalDay').modal();
+            
         });
 
     }
+    
+    $('#modalDay').on("shown.bs.modal",function(){
+    	changesecodView(params.name);
+    })
 
 
     function initChart(reslut) {
@@ -909,7 +913,7 @@ define(["jquery", "bootstrap", "echarts", "ajax"], function(jquery, bootstrap, e
         secondLevel.centorFreq = centorfreq;
 
         ajax.get("data/alarm/secondLevelChart", secondLevel, function(reslut) {
-
+        	console.log(reslut);
             var optionDay = {
                 color : ['rgb(55,165,255)'],
                 tooltip : {
@@ -973,13 +977,9 @@ define(["jquery", "bootstrap", "echarts", "ajax"], function(jquery, bootstrap, e
                     }
                 ]
             };
-            var dayChart = echarts.init($('#dayChart')[0]);
+            var element = document.getElementById("dayChart");
+            var dayChart = echarts.init(element);
             dayChart.setOption(optionDay);
-
-            window.onresize = function() {
-                dayChart.clear();
-                dayChart.setOption(optionDay);
-            }
 
         });
 
@@ -1466,7 +1466,10 @@ define(["jquery", "bootstrap", "echarts", "ajax"], function(jquery, bootstrap, e
     var wavesurfer;
     function audio_player() {
 
-        document.querySelector('#visualizer').innerHTML = '';
+        if (wavesurfer) {
+            wavesurfer.destroy();
+        }
+
         wavesurfer = WaveSurfer.create({
             container : document.querySelector('#visualizer'),
             waveColor : '#00ff00',
@@ -1550,7 +1553,7 @@ define(["jquery", "bootstrap", "echarts", "ajax"], function(jquery, bootstrap, e
         var centorfreq = $('#signal_list1').find('option:selected').attr("centorFreq");
         var beginTime = $('#signal_list1').find('option:selected').attr("beginTime");
         var endTime = $('#signal_list1').find('option:selected').attr("endTime");
-        //var url = "asiq/spectrum/"+stationcode+"/"+centorfreq+"/"+beginTime+"/"+endTime;
+        //var url = "data/asiq/spectrum/" + stationcode + "/" + centorfreq + "/" + beginTime + "/" + endTime;
         var url = "data/asiq/spectrum/52010118/101700000/20170802130012/20170802130012";
         //var url = "assets/json/spectrum-player-list.json";
         ajax.get(url, null, function(result) {
@@ -1655,6 +1658,7 @@ define(["jquery", "bootstrap", "echarts", "ajax"], function(jquery, bootstrap, e
         var centorfreq = $('#signal_list1').find('option:selected').attr("centorFreq");
         var beginTime = $('#signal_list1').find('option:selected').attr("beginTime");
         var endTime = $('#signal_list1').find('option:selected').attr("endTime");
+        //var url = "data/asiq/audio/" + stationcode + "/" + centorfreq + "/" + beginTime + "/" + endTime;
         var url = "data/asiq/audio/52010118/10740000000000/20170802182536/20170802182536";
         //var url = "assets/json/audio-player-list.json";
         ajax.get(url, null, function(result) {
@@ -1746,7 +1750,7 @@ define(["jquery", "bootstrap", "echarts", "ajax"], function(jquery, bootstrap, e
         var centorfreq = $('#signal_list1').find('option:selected').attr("centorFreq");
         var beginTime = $('#signal_list1').find('option:selected').attr("beginTime");
         var endTime = $('#signal_list1').find('option:selected').attr("endTime");
-        //var url = "asiq/iq/"+stationcode+"/"+centorfreq+"/"+beginTime+"/"+endTime;;
+        //var url = "data/asiq/iq/" + stationcode + "/" + centorfreq + "/" + beginTime + "/" + endTime;
         var url = "data/asiq/iq/52010118/101700000/20170802130012/20170802130012";
         //var url = "assets/json/iq-player-list.json";
         ajax.get(url, null, function(result) {
