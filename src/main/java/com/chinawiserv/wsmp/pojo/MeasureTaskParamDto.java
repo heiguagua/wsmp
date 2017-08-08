@@ -1,21 +1,18 @@
 package com.chinawiserv.wsmp.pojo;
 
-import java.util.Date;
-import java.util.UUID;
-
 public class MeasureTaskParamDto {
 	
-	private UUID ID;
+	private String ID;
 	private String warnID;
 	private double beginFreq;
 	private double endFreq;
 	//执行时长(秒)
-	private int Duration;
-	private String BeginTime;
+	private int duration;
+	private String beginTime;
 	private String endTime;
 	//循环周期(分钟)
-	private int CycleStep;
-	private boolean isFreqRange;
+	private int cycleStep;
+	private boolean freqRange;
 	//每次IQ帧数
 	private int IQCount;
 	//每次频谱帧数
@@ -27,15 +24,21 @@ public class MeasureTaskParamDto {
 	//每次特征帧数
 	private int featureCount;
 	//总IQ帧数
-	private int totalIQCout;
+	private int totalIQCount;
 	//总频谱帧数
-	private int totalSpecCout;
+	private int totalSpecCount;
 	//总声音时间
 	private int totalAudioTimespan;
 	//总ITU帧数
 	private int totalITUCount;
 	//总特征数
-	private int totalFreatureCount;
+	private int totalFeatureCount;
+	public String getID() {
+		return ID;
+	}
+	public String getWarnID() {
+		return warnID;
+	}
 	public double getBeginFreq() {
 		return beginFreq;
 	}
@@ -43,19 +46,16 @@ public class MeasureTaskParamDto {
 		return endFreq;
 	}
 	public int getDuration() {
-		return Duration;
+		return duration;
 	}
 	public String getBeginTime() {
-		return BeginTime;
+		return beginTime;
 	}
 	public String getEndTime() {
 		return endTime;
 	}
 	public int getCycleStep() {
-		return CycleStep;
-	}
-	public boolean isFreqRange() {
-		return isFreqRange;
+		return cycleStep;
 	}
 	public int getIQCount() {
 		return IQCount;
@@ -69,35 +69,21 @@ public class MeasureTaskParamDto {
 	public int getITUCount() {
 		return ITUCount;
 	}
-	public UUID getID() {
-		return ID;
-	}
-	public String getWarnID() {
-		return warnID;
-	}
-	public void setID(UUID iD) {
-		ID = iD;
-	}
-	public void setWarnID(String warnID) {
-		this.warnID = warnID;
-	}
 	public int getFeatureCount() {
 		return featureCount;
 	}
-	public int getTotalIQCout() {
-		return totalIQCout;
-	}
-	public int getTotalSpecCout() {
-		return totalSpecCout;
-	}
+
 	public int getTotalAudioTimespan() {
 		return totalAudioTimespan;
 	}
 	public int getTotalITUCount() {
 		return totalITUCount;
 	}
-	public int getTotalFreatureCount() {
-		return totalFreatureCount;
+	public void setID(String iD) {
+		ID = iD;
+	}
+	public void setWarnID(String warnID) {
+		this.warnID = warnID;
 	}
 	public void setBeginFreq(double beginFreq) {
 		this.beginFreq = beginFreq;
@@ -106,19 +92,16 @@ public class MeasureTaskParamDto {
 		this.endFreq = endFreq;
 	}
 	public void setDuration(int duration) {
-		Duration = duration;
+		this.duration = duration;
 	}
 	public void setBeginTime(String beginTime) {
-		BeginTime = beginTime;
+		this.beginTime = beginTime;
 	}
 	public void setEndTime(String endTime) {
 		this.endTime = endTime;
 	}
 	public void setCycleStep(int cycleStep) {
-		CycleStep = cycleStep;
-	}
-	public void setFreqRange(boolean isFreqRange) {
-		this.isFreqRange = isFreqRange;
+		this.cycleStep = cycleStep;
 	}
 	public void setIQCount(int iQCount) {
 		IQCount = iQCount;
@@ -135,20 +118,36 @@ public class MeasureTaskParamDto {
 	public void setFeatureCount(int featureCount) {
 		this.featureCount = featureCount;
 	}
-	public void setTotalIQCout(int totalIQCout) {
-		this.totalIQCout = totalIQCout;
-	}
-	public void setTotalSpecCout(int totalSpecCout) {
-		this.totalSpecCout = totalSpecCout;
-	}
+
 	public void setTotalAudioTimespan(int totalAudioTimespan) {
 		this.totalAudioTimespan = totalAudioTimespan;
 	}
 	public void setTotalITUCount(int totalITUCount) {
 		this.totalITUCount = totalITUCount;
 	}
-	public void setTotalFreatureCount(int totalFreatureCount) {
-		this.totalFreatureCount = totalFreatureCount;
+	public boolean isFreqRange() {
+		return freqRange;
+	}
+	public void setFreqRange(boolean freqRange) {
+		this.freqRange = freqRange;
+	}
+	public int getTotalIQCount() {
+		return totalIQCount;
+	}
+	public void setTotalIQCount(int totalIQCount) {
+		this.totalIQCount = totalIQCount;
+	}
+	public int getTotalSpecCount() {
+		return totalSpecCount;
+	}
+	public void setTotalSpecCount(int totalSpecCount) {
+		this.totalSpecCount = totalSpecCount;
+	}
+	public int getTotalFeatureCount() {
+		return totalFeatureCount;
+	}
+	public void setTotalFeatureCount(int totalFeatureCount) {
+		this.totalFeatureCount = totalFeatureCount;
 	}
 	
 }

@@ -5,6 +5,7 @@ import java.lang.reflect.Type;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,8 @@ import org.tempuri.RadioSignalClassifiedQueryResponse;
 import org.tempuri.RadioSignalWebService;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.chinawiserv.wsmp.pojo.MeasureTaskParamDto;
 import com.chinawiserv.wsmp.pojo.RedioStatusCount;
@@ -50,19 +53,33 @@ public class WaveOrderViewController {
     
     @PostMapping("/importantMonitor")
     public String importantMonitor(Model model,@RequestBody Map<String,Object> map) {
-    	//根据频段查询重点监测，返回页面
-    	System.out.println("=================================map:"+map);
+    	//根据频段查询重点监测，返回页面和对象
+    	//System.out.println("=================================map:"+map);
     	ImportFreqRangeManageService service = new ImportFreqRangeManageService();
 		IImportFreqRangeManageService service2 = service.getBasicHttpBindingIImportFreqRangeManageService();
-		String result = service2.findAllFreq();
-		
-		final Type type = new TypeReference<LinkedHashMap<String, Object>>() {}.getType();
-		System.out.println("=================================result:"+result);
-		LinkedHashMap<String, Object>  map2 = JSON.parseObject(result, type);
-		System.out.println(map2);
-//		System.out.println("=================================dto:"+dto);
-//		model.addAttribute("important",dto);
+		String result = service2.findAllFreqRange();
+		//System.out.println("=================================result:"+result);
+		final Type type = new TypeReference<List<MeasureTaskParamDto>>() {}.getType();
+		@SuppressWarnings("unchecked")
+		List<MeasureTaskParamDto> resultList = (List<MeasureTaskParamDto>) JSON.parseObject(result,type);
+		//System.out.println("====================================resultList:"+resultList);
+		resultList.stream().filter(dto -> Double.valueOf(map.get("beginFreq").toString()) >= dto.getBeginFreq() &&
+				Double.valueOf(map.get("endFreq").toString()) <= dto.getEndFreq()).forEach(t -> {
+					System.out.println("=============================================="+JSON.toJSONString(t));
+					model.addAttribute("dto",t);
+					
+				});
+
     	return "waveorder/important_monitor";
+    }
+    
+    @PostMapping("/importantMonitorOperation")
+    public String importantMonitorOperation(MeasureTaskParamDto dto,String operation) {
+    	//或者直接用模型接受参数MeasureTaskParamDto.java
+    	System.out.println("==========================================dto:"+JSON.toJSONString(dto));
+    	System.out.println("==========================================operation:"+operation);
+    	
+    	return null;
     }
 
 	@PostMapping("/redioType")
