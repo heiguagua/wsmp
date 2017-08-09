@@ -26,18 +26,18 @@ import static java.util.stream.Collectors.toList;
 public class SiganlDataController {
 
 	@Autowired
-	WebServiceSoapFactory service;
+	private WebServiceSoapFactory service;
 
 	private ObjectMapper mapper = new ObjectMapper();
 
 	@Autowired
-	HbaseClient hbaseClient;
+    private HbaseClient hbaseClient;
 
 	@Value("${upperBound.value:5000000}")
-	long upperBound;
+    private long upperBound;
 
 	@Value("${upperBound.value:5000000}")
-	long lowerBound;
+    private long lowerBound;
 
 	@PostMapping("/insterConfig")
 	public void insterConfig(@RequestBody Map<String, String> param) {
@@ -69,9 +69,7 @@ public class SiganlDataController {
 
 		Map<String, Object> map = hbaseClient.queryModulationMode(ID, TimeStart, TimeStop, Frequency);
 		List<String> lists = Lists.newLinkedList();
-		Integer sum = (Integer) map.values().stream().reduce((a, b) -> {
-			return (Integer) a + (Integer) b;
-		}).get();
+		Integer sum = (Integer) map.values().stream().reduce(0,(a, b) -> (Integer) a + (Integer) b);
 
 		List<Object> reslut = map.entrySet().stream().map(m -> {
 			HashMap<String, Double> mapReslut = Maps.newHashMap();
@@ -115,7 +113,8 @@ public class SiganlDataController {
 		final RadioSignalQueryResponse responce = (RadioSignalQueryResponse) service.radioSignalServiceCall("queryRadioSignal",
 				mapper.writeValueAsString(param), RadioSignalQueryRequest.class);
 		System.out.println(mapper.writeValueAsString(responce));
-		final List<Singal> redio = responce.getRadioSignals().getRadioSignalDTO().stream().map(t -> {
+
+		return responce.getRadioSignals().getRadioSignalDTO().stream().map(t -> {
 
 			final Singal singal = new Singal();
 			final String id = t.getID();
@@ -126,8 +125,6 @@ public class SiganlDataController {
 
 			return singal;
 		}).collect(toList());
-
-		return redio;
 	}
 
 	@GetMapping(path = "/stationList", params = "id")
@@ -139,11 +136,7 @@ public class SiganlDataController {
 		final List<String> reslutList = Lists.newLinkedList();
 		List<String> list = Lists.newLinkedList();
 
-		responce.getRadioSignals().getRadioSignalDTO().forEach(z -> {
-			z.getStationDTOs().getRadioSignalStationDTO().forEach(f -> {
-				reslutList.add(f.getStationNumber());
-			});
-		});
+		responce.getRadioSignals().getRadioSignalDTO().forEach(z -> z.getStationDTOs().getRadioSignalStationDTO().forEach(f -> reslutList.add(f.getStationNumber())));
 
 		list = reslutList.size() != 0 ? reslutList : Collections.emptyList();
 
@@ -157,9 +150,8 @@ public class SiganlDataController {
 				mapper.writeValueAsString(param), RadioSignalQueryRequest.class);
 
 		final List<RadioSignalDTO> radioSignals = responce.getRadioSignals().getRadioSignalDTO();
-		RadioSignalDTO dto = radioSignals.size() > 0 ? radioSignals.get(0) : new RadioSignalDTO();
 
-		return dto;
+		return radioSignals.size() > 0 ? radioSignals.get(0) : new RadioSignalDTO();
 	}
 
 	@PutMapping(path = "/one/update")
@@ -174,12 +166,15 @@ public class SiganlDataController {
 
 	@GetMapping("/maxlevel")
 	public Object getMaxlevel(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
+
+		HashMap<String, Object> restlutHashMap = Maps.newHashMap();
 		try {
 
 			Map<Object, Object> reponceReslut = hbaseClient.queryMaxLevels(stationCode, centorFreq, upperBound, lowerBound, beginTime);
 
 			LinkedList<Object> xAxis = Lists.newLinkedList();
 			LinkedList<Object> series = Lists.newLinkedList();
+
 
 			final double pow = Math.pow(10, 6);
 
@@ -191,7 +186,7 @@ public class SiganlDataController {
 				series.add(v);
 			});
 
-			HashMap<String, Object> restlutHashMap = Maps.newHashMap();
+
 
 			restlutHashMap.put("xAxis", xAxis);
 			restlutHashMap.put("series", series);
@@ -203,7 +198,6 @@ public class SiganlDataController {
 			// TODO Auto-generated catch block
 			Logger.error("峰值查询异常", e);
 
-			HashMap<String, Object> restlutHashMap = Maps.newHashMap();
 			restlutHashMap.put("xAxis", Collections.emptyList());
 			restlutHashMap.put("series", Collections.emptyList());
 			return restlutHashMap;
@@ -213,7 +207,7 @@ public class SiganlDataController {
 
 	@GetMapping(path = "/monthCharts")
 	public Object monthCharts(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
-		HashMap<String, Object> map = new HashMap<>();
+		HashMap<String, Object> resoluteHashMap = Maps.newHashMap();
 		try {
 
 			centorFreq = (long) (88.8 * 1000000);
@@ -235,19 +229,19 @@ public class SiganlDataController {
 
 				occMap.forEach((k, v) -> {
 
-					final double key = Double.parseDouble(k.toString()) / pow;
+					final double key = Double.parseDouble(k) / pow;
 
 					xAxis.add(key);
 					series.add(v);
 				});
 
-				HashMap<String, Object> restlutHashMap = Maps.newHashMap();
 
-				restlutHashMap.put("xAxis", xAxis);
-				restlutHashMap.put("series", series);
+
+				resoluteHashMap.put("xAxis", xAxis);
+				resoluteHashMap.put("series", series);
 			}
 
-			return map;
+			return resoluteHashMap;
 		}
 		catch (Exception e) {
 			// TODO Auto-generated catch block

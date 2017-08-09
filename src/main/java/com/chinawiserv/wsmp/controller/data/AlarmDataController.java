@@ -35,569 +35,539 @@ import static java.util.stream.Collectors.toList;
 @RequestMapping("/data/alarm")
 public class AlarmDataController {
 
-	@Autowired
-	WebServiceSoapFactory service;
-
-	@Autowired
-	WebApplicationContext applicationContext;
-
-	@Autowired
-	HbaseClient hbaseClient;
-
-	@Autowired
-	StationService stationService;
-
-	@Autowired
-	com.chinawiserv.wsmp.levellocate.LevelLocate Locate;
-
-	@Value("${upperBound.value:5000000}")
-	long upperBound;
-
-	@Value("${upperBound.value:5000000}")
-	long lowerBound;
-
-	private ObjectMapper mapper = new ObjectMapper();
-
-	@GetMapping("/dayCharts")
-	public Object dayCharts(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
-		// Map<String, Object> map = hbaseClient.queryOccHour(stationCode,
-		// beginTime, centorFreq);
-		String[] xAxis = new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
-				"21", "22", "23", "24"
-		};
-		double[] series = new double[] { 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, 51.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, 55.2, 58.4,
-				60.0, 58.1, 56.2, 58.9
-		};
-		HashMap<String, Object> map = new HashMap<>();
-		map.put("xAxis", xAxis);
-		map.put("series", series);
-		return map;
-	}
+    @Autowired
+    private WebServiceSoapFactory service;
+
+    @Autowired
+    private WebApplicationContext applicationContext;
+
+    @Autowired
+    private HbaseClient hbaseClient;
+
+    @Autowired
+    private StationService stationService;
+
+    @Autowired
+    private com.chinawiserv.wsmp.levellocate.LevelLocate Locate;
+
+    @Value("${upperBound.value:5000000}")
+    long upperBound;
+
+    @Value("${upperBound.value:5000000}")
+    long lowerBound;
+
+    private ObjectMapper mapper = new ObjectMapper();
+
+    @GetMapping("/dayCharts")
+    public Object dayCharts(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
+        // Map<String, Object> map = hbaseClient.queryOccHour(stationCode,
+        // beginTime, centorFreq);
+        String[] xAxis = new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
+                "21", "22", "23", "24"
+        };
+        double[] series = new double[]{55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, 51.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, 55.2, 58.4,
+                60.0, 58.1, 56.2, 58.9
+        };
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("xAxis", xAxis);
+        map.put("series", series);
+        return map;
+    }
 
-	@GetMapping("/hourCharts")
-	public Object hourCharts(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
+    @GetMapping("/hourCharts")
+    public Object hourCharts(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
 
-		String[] xAxis = new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
-				"21", "22", "23", "24"
-		};
-		double[] series = new double[] { 55, 60.5, 60.0, 58.1, 56.2, 58.9, 58.2, 57.4, 58.0, 60.1, 59.1, 58.2, 58, 60.0, 58.1, 59.1, 57.9, 51.5, 55.2, 58.4,
-				58.2, 58, 57.9, 55.2, 58.4
-		};
-		HashMap<String, Object> map = new HashMap<>();
-		map.put("xAxis", xAxis);
-		map.put("series", series);
-		return map;
+        String[] xAxis = new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
+                "21", "22", "23", "24"
+        };
+        double[] series = new double[]{55, 60.5, 60.0, 58.1, 56.2, 58.9, 58.2, 57.4, 58.0, 60.1, 59.1, 58.2, 58, 60.0, 58.1, 59.1, 57.9, 51.5, 55.2, 58.4,
+                58.2, 58, 57.9, 55.2, 58.4
+        };
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("xAxis", xAxis);
+        map.put("series", series);
+        return map;
 
-	}
+    }
 
-	@GetMapping(path = "/secondLevelChart")
-	public Object secondLevelChart(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
+    @GetMapping(path = "/secondLevelChart")
+    public Object secondLevelChart(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
 
-		HashMap<String, Object> reslutMap = new HashMap<>();
-		//
-		// LocalDate loacl = LocalDate.now();
-		//
-		// DateTimeFormatter yearformatter =
-		// DateTimeFormatter.ofPattern("yyyyMMdd");
-		// String first = loacl.format(yearformatter);
-		//
-		// LocalDateTime time = LocalDateTime.now();
-		//
-		// DateTimeFormatter timeformatter =
-		// DateTimeFormatter.ofPattern("HHmmss");
-		// String last = timeformatter.format(time);
-		// beginTime = first + last;
+        HashMap<String, Object> reslutMap = new HashMap<>();
+        //
+        // LocalDate loacl = LocalDate.now();
+        //
+        // DateTimeFormatter yearformatter =
+        // DateTimeFormatter.ofPattern("yyyyMMdd");
+        // String first = loacl.format(yearformatter);
+        //
+        // LocalDateTime time = LocalDateTime.now();
+        //
+        // DateTimeFormatter timeformatter =
+        // DateTimeFormatter.ofPattern("HHmmss");
+        // String last = timeformatter.format(time);
+        // beginTime = first + last;
 
-		String id = "52010126";
-		long frequency = (long) (88.8 * 1000000);
+        String id = "52010126";
+        long frequency = (long) (88.8 * 1000000);
 
-		try {
+        try {
 
-			if (beginTime.length() == 8) {
-				beginTime = beginTime.concat("000000");
-			}
+            if (beginTime.length() == 8) {
+                beginTime = beginTime.concat("000000");
+            }
 
-			OccAndMax reslutResponce = hbaseClient.queryOccHour(id, beginTime, frequency);
-			Map<String, Object> Max = reslutResponce.getMax();
-			Map<String, Object> Occ = reslutResponce.getOcc();
-			if (Occ.size() == 0) {
+            OccAndMax reslutResponce = hbaseClient.queryOccHour(id, beginTime, frequency);
+            Map<String, Object> Max = reslutResponce.getMax();
+            Map<String, Object> Occ = reslutResponce.getOcc();
+            if (Occ.size() == 0) {
 
-				HashMap<String, Object> resoluteHashMap = Maps.newHashMap();
+                HashMap<String, Object> resoluteHashMap = Maps.newHashMap();
 
-				String[] xAxis = new String[] {};
-				double[] series = new double[] {};
+                String[] xAxis = new String[]{};
+                double[] series = new double[]{};
 
-				resoluteHashMap.put("xAxis", xAxis);
-				resoluteHashMap.put("series", series);
+                resoluteHashMap.put("xAxis", xAxis);
+                resoluteHashMap.put("series", series);
 
-				reslutMap.put("dayOcc", resoluteHashMap);
-			}
-			else {
+                reslutMap.put("dayOcc", resoluteHashMap);
+            } else {
 
-				LinkedList<Object> xAxis = Lists.newLinkedList();
-				LinkedList<Object> series = Lists.newLinkedList();
-				Occ.forEach((k, v) -> {
+                LinkedList<Object> xAxis = Lists.newLinkedList();
+                LinkedList<Object> series = Lists.newLinkedList();
+                Occ.forEach((k, v) -> {
+                    xAxis.add(k);
+                    series.add(v);
+                });
 
-					final String key = k.toString();
+                HashMap<String, Object> restlutHashMap = Maps.newHashMap();
 
-					xAxis.add(key);
-					series.add(v);
-				});
+                restlutHashMap.put("xAxis", xAxis);
+                restlutHashMap.put("series", series);
 
-				HashMap<String, Object> restlutHashMap = Maps.newHashMap();
+                reslutMap.put("dayOcc", restlutHashMap);
+            }
 
-				restlutHashMap.put("xAxis", xAxis);
-				restlutHashMap.put("series", series);
+            if (Max.size() == 0) {
 
-				reslutMap.put("dayOcc", restlutHashMap);
-			}
+                HashMap<String, Object> resoluteHashMap = Maps.newHashMap();
 
-			if (Max.size() == 0) {
+                String[] xAxis = new String[]{};
+                double[] series = new double[]{};
 
-				HashMap<String, Object> resoluteHashMap = Maps.newHashMap();
+                resoluteHashMap.put("xAxis", xAxis);
+                resoluteHashMap.put("series", series);
 
-				String[] xAxis = new String[] {};
-				double[] series = new double[] {};
+                reslutMap.put("max", resoluteHashMap);
 
-				resoluteHashMap.put("xAxis", xAxis);
-				resoluteHashMap.put("series", series);
+            } else {
 
-				reslutMap.put("max", resoluteHashMap);
+                LinkedList<Object> xAxis = Lists.newLinkedList();
+                LinkedList<Object> series = Lists.newLinkedList();
 
-			}  else {
+                final double pow = Math.pow(10, 6);
 
-				LinkedList<Object> xAxis = Lists.newLinkedList();
-				LinkedList<Object> series = Lists.newLinkedList();
+                Max.forEach((k, v) -> {
 
-				final double pow = Math.pow(10, 6);
+                    final double key = Double.parseDouble(k) / pow;
 
-				Max.forEach((k, v) -> {
+                    xAxis.add(key);
+                    series.add(v);
+                });
 
-					final double key = Double.parseDouble(k.toString()) / pow;
+                HashMap<String, Object> restlutHashMap = Maps.newHashMap();
 
-					xAxis.add(key);
-					series.add(v);
-				});
+                restlutHashMap.put("xAxis", xAxis);
+                restlutHashMap.put("series", series);
 
-				HashMap<String, Object> restlutHashMap = Maps.newHashMap();
+                reslutMap.put("max", restlutHashMap);
 
-				restlutHashMap.put("xAxis", xAxis);
-				restlutHashMap.put("series", series);
+            }
 
-				reslutMap.put("max", restlutHashMap);
+            return reslutMap;
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
 
-			}
+        }
 
-			return reslutMap;
-		}
-		catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			HashMap<String, Object> restlutHashMap = Maps.newHashMap();
-			String[] xAxis = new String[] {};
-			double[] series = new double[] {};
-			restlutHashMap.put("xAxis", xAxis);
-			restlutHashMap.put("series", series);
-			return restlutHashMap;
-		}
+        return Maps.newHashMap();
+    }
 
-	}
+    @GetMapping(path = "/firstLevelChart")
+    public Object firstLevelChart(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
 
-	@GetMapping(path = "/firstLevelChart")
-	public Object firstLevelChart(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
+        LocalDate loacl = LocalDate.now();
 
-		LocalDate loacl = LocalDate.now();
+        DateTimeFormatter yearformatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String first = loacl.format(yearformatter);
 
-		DateTimeFormatter yearformatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-		String first = loacl.format(yearformatter);
+        LocalDateTime time = LocalDateTime.now();
 
-		LocalDateTime time = LocalDateTime.now();
+        DateTimeFormatter timeformatter = DateTimeFormatter.ofPattern("HHmmss");
+        String last = timeformatter.format(time);
+        beginTime = first + last;
 
-		DateTimeFormatter timeformatter = DateTimeFormatter.ofPattern("HHmmss");
-		String last = timeformatter.format(time);
-		beginTime = first + last;
+        HashMap<String, Object> reslutMap = new HashMap<>();
 
-		HashMap<String, Object> reslutMap = new HashMap<>();
-		try {
+        HashMap<String, Object> resoluteHashMap = Maps.newHashMap();
+        try {
 
-			String id = "52010126";
-			long frequency = (long) (88.8 * 1000000);
+            String id = "52010126";
+            long frequency = (long) (88.8 * 1000000);
 
-			Map<Object, Object> max = hbaseClient.queryMaxLevels(id, frequency, upperBound, lowerBound, beginTime);
-			Map<String, Object> occ = hbaseClient.queryOccDay(id, beginTime, 90, frequency).getOcc();
-			if (occ.size() == 0) {
+            Map<Object, Object> max = hbaseClient.queryMaxLevels(id, frequency, upperBound, lowerBound, beginTime);
+            Map<String, Object> occ = hbaseClient.queryOccDay(id, beginTime, 90, frequency).getOcc();
+            if (occ.size() == 0) {
 
-				HashMap<String, Object> restlutHashMap = Maps.newHashMap();
+                HashMap<String, Object> restlutHashMap = Maps.newHashMap();
 
-				String[] xAxis = new String[] {};
-				double[] series = new double[] {};
+                String[] xAxis = new String[]{};
+                double[] series = new double[]{};
 
-				restlutHashMap.put("xAxis", xAxis);
-				restlutHashMap.put("series", series);
+                restlutHashMap.put("xAxis", xAxis);
+                restlutHashMap.put("series", series);
 
-				reslutMap.put("monthOcc", restlutHashMap);
-			}
-			else {
+                reslutMap.put("monthOcc", restlutHashMap);
+            } else {
 
-				LinkedList<Object> xAxis = Lists.newLinkedList();
-				LinkedList<Object> series = Lists.newLinkedList();
+                LinkedList<Object> xAxis = Lists.newLinkedList();
+                LinkedList<Object> series = Lists.newLinkedList();
 
-				occ.forEach((k, v) -> {
+                occ.forEach((k, v) -> {
+                    xAxis.add(k);
+                    series.add(v);
+                });
 
-					final String key = k.toString();
 
-					xAxis.add(key);
-					series.add(v);
-				});
+                resoluteHashMap.put("xAxis", xAxis);
+                resoluteHashMap.put("series", series);
 
-				HashMap<String, Object> resoluteHashMap = Maps.newHashMap();
+                reslutMap.put("monthOcc", resoluteHashMap);
+            }
 
-				resoluteHashMap.put("xAxis", xAxis);
-				resoluteHashMap.put("series", series);
+            if (max.size() == 0) {
 
-				reslutMap.put("monthOcc", resoluteHashMap);
-			}
+                String[] xAxis = new String[]{};
+                double[] series = new double[]{};
 
-			if (max.size() == 0) {
+                resoluteHashMap.put("xAxis", xAxis);
+                resoluteHashMap.put("series", series);
 
-				HashMap<String, Object> resoluteHashMap = Maps.newHashMap();
+                reslutMap.put("max", resoluteHashMap);
 
-				String[] xAxis = new String[] {};
-				double[] series = new double[] {};
+            } else {
 
-				resoluteHashMap.put("xAxis", xAxis);
-				resoluteHashMap.put("series", series);
+                LinkedList<Object> xAxis = Lists.newLinkedList();
+                LinkedList<Object> series = Lists.newLinkedList();
 
-				reslutMap.put("max", resoluteHashMap);
+                final double pow = Math.pow(10, 6);
 
-			}
-			else {
+                max.forEach((k, v) -> {
 
-				LinkedList<Object> xAxis = Lists.newLinkedList();
-				LinkedList<Object> series = Lists.newLinkedList();
+                    final double key = Double.parseDouble(k.toString()) / pow;
 
-				final double pow = Math.pow(10, 6);
+                    xAxis.add(key);
+                    series.add(v);
+                });
 
-				max.forEach((k, v) -> {
 
-					final double key = Double.parseDouble(k.toString()) / pow;
+                resoluteHashMap.put("xAxis", xAxis);
+                resoluteHashMap.put("series", series);
 
-					xAxis.add(key);
-					series.add(v);
-				});
+                reslutMap.put("max", resoluteHashMap);
 
-				HashMap<String, Object> restlutHashMap = Maps.newHashMap();
+            }
 
-				restlutHashMap.put("xAxis", xAxis);
-				restlutHashMap.put("series", series);
+            return reslutMap;
+        } catch (Exception e) {
+            e.printStackTrace();
 
-				reslutMap.put("max", restlutHashMap);
+        }
+        return Maps.newHashMap();
+    }
 
-			}
+    @PostMapping(path = "/intensivemonitoring")
+    public void intensivemonitoring(@RequestBody IntensiveMonitoring in) {
 
-			return reslutMap;
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			HashMap<String, Object> restlutHashMap = Maps.newHashMap();
-			String[] xAxis = new String[] {};
-			double[] series = new double[] {};
-			restlutHashMap.put("xAxis", xAxis);
-			restlutHashMap.put("series", series);
-			return restlutHashMap;
-		}
+        if (in.getStatus() == 0) {
+            // 需要取消对应的
+            EntityWrapper<IntensiveMonitoring> ew = new EntityWrapper<>(in);
+            ew.where("SINGAL_FREQUENCY = {0}", in.getSingalFrequency());
+        }
 
-	}
+    }
 
-	@PostMapping(path = "/intensivemonitoring")
-	public void intensivemonitoring(@RequestBody IntensiveMonitoring in) {
+    @PostMapping(path = "/warringconfirm")
+    public void warning_confirm(@RequestBody String param) throws JsonProcessingException {
 
-		if (in.getStatus() == 0) {
-			// 需要取消对应的
-			EntityWrapper<IntensiveMonitoring> ew = new EntityWrapper<>(in);
-			ew.where("SINGAL_FREQUENCY = {0}", in.getSingalFrequency());
-		}
+        FreqWarningOperationResponse res = (FreqWarningOperationResponse) service.freqWarnServiceCall("update", param, FreqWarningDTO.class);
+        ObjectMapper mapper = new ObjectMapper();
 
-	}
+        Logger.info(mapper.writeValueAsString(res));
+    }
 
-	@PostMapping(path = "/warringconfirm")
-	public void warning_confirm(@RequestBody String param) throws JsonProcessingException {
+    @PostMapping(path = "/getStation")
+    public @ResponseBody
+    Map<String, Object> getStationPiont(@RequestBody Map<String, Object> param) {
 
-		FreqWarningOperationResponse res = (FreqWarningOperationResponse) service.freqWarnServiceCall("update", param, FreqWarningDTO.class);
-		ObjectMapper mapper = new ObjectMapper();
+        long centerFreq = (long) (88.8 * 1000000);
+        String dateTime = "20170803000000";
 
-		Logger.info(mapper.writeValueAsString(res));
-	}
+        List<LevelLocate> relate = hbaseClient.queryLevelLocate(dateTime, centerFreq);
 
-	@PostMapping(path = "/getStation")
-	public @ResponseBody Map<String, Object> getStationPiont(@RequestBody Map<String,Object> param) {
+        //List<String> stationcode = (List<String>) param.get("stationcode");
 
-		long centerFreq = (long) (88.8 * 1000000);
-		String dateTime = "20170803000000";
+        List<String> stationcode = Lists.newLinkedList();
 
-		List<LevelLocate> reslut = hbaseClient.queryLevelLocate(dateTime, centerFreq);
+        stationcode.add("52010120");
+        stationcode.add("52010126");
+        List<LevelLocate> mapPoint = relate.stream().filter(t -> stationcode.contains(t.getId())).collect(toList());
 
-		 //List<String> stationcode = (List<String>) param.get("stationcode");
+        List<Map<String, Object>> levelPoint = Lists.newLinkedList();
 
-		List<String> stationcode = Lists.newLinkedList();
+        int[] ids = relate.stream().mapToInt(m -> Integer.parseInt(m.getId())).toArray();
 
-		stationcode.add("52010120");
-		stationcode.add("52010126");
-		List<LevelLocate> mapPoint  = reslut.stream().filter(t -> stationcode.contains(t.getId())).collect(toList());
+        Params params = new Params();
 
-		List<Map<String, Object>> levelPoint = Lists.newLinkedList();
+        double[] flon = new double[1];
+        double[] flat = new double[1];
+        double[] level = new double[1];
 
-		int[] ids = reslut.stream().mapToInt(m -> {
-			return Integer.parseInt(m.getId());
-		}).toArray();
+        mapPoint.stream().forEach(l -> {
 
-		Params params = new Params();
+            params.setSid("" + System.currentTimeMillis());// sid能够表该次计算的唯一标识
+            params.setStype((byte) 3);// 固定3，标识计算类型为场强计算
+            params.setDistanceTh(10d);// 距离门限，单位km，值是界面传递进来的
+            params.setNum(10);// 传感器数
+            params.setWarningId(10000004);// 告警传感器id
+            params.setIds(ids);// 所有传感器
 
-		double[] flon = new double[1];
-		double[] flat = new double[1];
-		double[] level = new double[1];
+            flon[0] = l.getFlon();
+            flat[0] = l.getFlat();
+            level[0] = Double.longBitsToDouble(l.getLevel());
 
-		mapPoint.stream().forEach(l -> {
+            params.setLon(flon);// 每个传感器的经度
+            params.setLat(flat);// 每个传感器的纬度
+            params.setLevel(level);// 每个传感器的均值
 
-			params.setSid("" + System.currentTimeMillis());// sid能够表该次计算的唯一标识
-			params.setStype((byte) 3);// 固定3，标识计算类型为场强计算
-			params.setDistanceTh(10d);// 距离门限，单位km，值是界面传递进来的
-			params.setNum(10);// 传感器数
-			params.setWarningId(10000004);// 告警传感器id
-			params.setIds(ids);// 所有传感器
+            try {
+                Result result = Locate.execute(params);
 
-			flon[0] = l.getFlon();
-			flat[0] = l.getFlat();
-			level[0] = Double.longBitsToDouble(l.getLevel());
+                Map<String, Object> map = Maps.newHashMap();
 
-			params.setLon(flon);// 每个传感器的经度
-			params.setLat(flat);// 每个传感器的纬度
-			params.setLevel(level);// 每个传感器的均值
+                map.put("x", result.getOutLon());
+                map.put("y", result.getOutLat());
+                map.put("radius", result.getRangeR());
+                map.put("stationId", result.getSid());
+                levelPoint.add(map);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
 
-			try {
-				Result result = Locate.execute(params);
+        });
 
-				Map<String, Object> map = Maps.newHashMap();
+        List<Map<String, String>> stationPiont = mapPoint.stream().map(station -> {
+            HashMap<String, String> element = Maps.newHashMap();
+            element.put("x", station.getFlon() + "");
+            element.put("y", station.getFlat() + "");
+            element.put("count", Double.longBitsToDouble(station.getLevel()) + "");
+            element.put("stationId", station.getId());
+            return element;
+        }).collect(toList());
 
-				map.put("x", result.getOutLon());
-				map.put("y", result.getOutLat());
-				map.put("radius", result.getRangeR());
-				map.put("stationId", result.getSid());
-				levelPoint.add(map);
-			}
-			catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+        Map<String, Object> map = new HashMap<>();
 
-		});
+        map.put("stationPiont", stationPiont);
+        map.put("levelPoint", levelPoint);
 
-		List<Map<String, String>> stationPiont = mapPoint.stream().map(station -> {
-			HashMap<String, String> element = Maps.newHashMap();
-			element.put("x", station.getFlon() + "");
-			element.put("y", station.getFlat() + "");
-			element.put("count", Double.longBitsToDouble(station.getLevel()) + "");
-			element.put("stationId", station.getId());
-			return element;
-		}).collect(toList());
+        // map.put("x", "106.709177096");
+        // map.put("y", "26.6299067414");
+        // map.put("count", "45");
+        // map.put("stationId", "oopsoo");
+        return map;
+    }
 
-		Map<String, Object> map = new HashMap<>();
+    @GetMapping(path = "/stationsf")
+    public Object getStationBySF(@RequestParam Map<String, Object> param) {
 
-		map.put("stationPiont", stationPiont);
-		map.put("levelPoint", levelPoint);
+        final Object offset = param.get("offset");
+        final Object limit = param.get("limit");
+        final Object areaCode = param.get("areaCode");
 
-		// map.put("x", "106.709177096");
-		// map.put("y", "26.6299067414");
-		// map.put("count", "45");
-		// map.put("stationId", "oopsoo");
-		return map;
-	}
+        StationQuerySpecInfo info = new StationQuerySpecInfo();
 
-	@GetMapping(path = "/stationsf")
-	public Object getStationBySF(@RequestParam Map<String, Object> param) {
+        int pageNumber = Integer.parseInt(offset.toString());
+        int limitNumber = Integer.parseInt(limit.toString());
 
-		final Object offset = param.get("offset");
-		final Object limit = param.get("limit");
-		final Object areaCode = param.get("areaCode");
+        List<String> areaCodesList = Lists.newLinkedList();
 
-		StationQuerySpecInfo info = new StationQuerySpecInfo();
+        if (areaCode != null) {
+            areaCodesList.add(areaCode.toString());
+        }
 
-		int pageNumber = Integer.parseInt(offset.toString());
-		int limitNumber = Integer.parseInt(limit.toString());
+        info.setAreaCodes(areaCodesList);
 
-		List<String> areaCodesList = Lists.newLinkedList();
+        StationInfoPagedResult reslut = stationService.getStationServiceHttpSoap11Endpoint().queryStationWithPagination(info, pageNumber, limitNumber);
 
-		if (areaCode != null) {
-			areaCodesList.add(areaCode.toString());
-		}
+        Map<String, Object> hasMap = Maps.newLinkedHashMap();
+        int totlal = reslut.getPageInfo().getTotalPages();
 
-		info.setAreaCodes(areaCodesList);
+        List<Station> stations = reslut.getStations().stream().map(s -> {
 
-		StationInfoPagedResult reslut = stationService.getStationServiceHttpSoap11Endpoint().queryStationWithPagination(info, pageNumber, limitNumber);
+            String id = s.getStationID();
+            String stationName = s.getSTATName();
+            String centerFreqStr = s.getFREQLC() + "";
+            String bandWidth = s.getNETBand() + "";
+            return new Station(id, stationName, centerFreqStr, bandWidth);
 
-		Map<String, Object> hasMap = Maps.newLinkedHashMap();
-		int totlal = reslut.getPageInfo().getTotalPages();
+        }).collect(toList());
 
-		List<Station> stations = reslut.getStations().stream().map(s -> {
+        hasMap.put("total", totlal);
+        hasMap.put("rows", stations);
 
-			String id = s.getStationID();
-			String stationName = s.getSTATName();
-			String centerFreqStr = s.getFREQLC() + "";
-			String bandWidth = s.getNETBand() + "";
-			Station station = new Station(id, stationName, centerFreqStr, bandWidth);
+        return hasMap;
 
-			return station;
-		}).collect(toList());
+    }
 
-		hasMap.put("total", totlal);
-		hasMap.put("rows", stations);
+    @PostMapping("/instersingal")
+    public String insterSingal(@RequestBody Map<String, Map<String, Object>> param) throws JsonProcessingException {
 
-		return hasMap;
+        final Map<String, Object> signal = param.get("sigal");
 
-	}
+        final Map<String, Object> station = param.get("station");
+        final FreqWarningQueryResponse response = (FreqWarningQueryResponse) service.freqWarnServiceCall("query",
+                mapper.writeValueAsString(signal.get("warmingId")), FreqWarningQueryRequest.class);
 
-	@PostMapping("/instersingal")
-	public String insterSingal(@RequestBody Map<String, Map<String, Object>> param) throws JsonProcessingException {
+        final FreqWarningDTO t = response.getWarningInfos().getFreqWarningDTO().size() > 0 ? response.getWarningInfos().getFreqWarningDTO().get(0)
+                : new FreqWarningDTO();
 
-		final Map<String, Object> signal = param.get("sigal");
+        final BigInteger bandWidth = t.getBandWidth();
+        final BigInteger centerFreq = t.getCenterFreq();
 
-		final Map<String, Object> station = param.get("station");
-		final FreqWarningQueryResponse response = (FreqWarningQueryResponse) service.freqWarnServiceCall("query",
-				mapper.writeValueAsString(signal.get("warmingId")), FreqWarningQueryRequest.class);
+        List<Map<String, String>> ids = response.getWarningInfos().getFreqWarningDTO().get(0).getStatList().getFreqWarningStatDTO().stream().map(m -> {
+            HashMap<String, String> map = Maps.newHashMap();
+            map.put("stationNumber", m.getStationGUID());
+            return map;
+        }).collect(toList());
 
-		final FreqWarningDTO t = response.getWarningInfos().getFreqWarningDTO().size() > 0 ? response.getWarningInfos().getFreqWarningDTO().get(0)
-				: new FreqWarningDTO();
+        station.put("centerFreq", centerFreq);
+        station.put("bandWidth", bandWidth);
 
-		final BigInteger bandWidth = t.getBandWidth();
-		final BigInteger centerFreq = t.getCenterFreq();
+        String stationId = (String) signal.get("stationId");
 
-		List<Map<String, String>> ids = response.getWarningInfos().getFreqWarningDTO().get(0).getStatList().getFreqWarningStatDTO().stream().map(m -> {
-			HashMap<String, String> map = Maps.newHashMap();
-			map.put("stationNumber", m.getStationGUID());
-			return map;
-		}).collect(toList());
+        String typeCode = (String) signal.get("typeCode");
 
-		station.put("centerFreq", centerFreq);
-		station.put("bandWidth", bandWidth);
+        String areaCode = stationId.substring(0, 4);
 
-		String stationId = (String) signal.get("stationId");
+        station.put("stationKey", station.get("stationKey"));
 
-		String typeCode = (String) signal.get("typeCode");
+        station.put("typeCode", typeCode);
 
-		String areaCode = stationId.substring(0, 4);
+        station.put("areaCode", areaCode);
 
-		station.put("stationKey", station.get("stationKey"));
+        Map<String, Object> radioSignalAbnormalHistoryDTO = Maps.newHashMap();
 
-		station.put("typeCode", typeCode);
+        radioSignalAbnormalHistoryDTO.put("radioSignalStationDTO", ids);
 
-		station.put("areaCode", areaCode);
+        station.put("stationDTOs", radioSignalAbnormalHistoryDTO);
 
-		Map<String, Object> radioSignalAbnormalHistoryDTO = Maps.newHashMap();
+        final RadioSignalOperationReponse res = (RadioSignalOperationReponse) service.radioSignalServiceCall("insertRadioSignal",
+                mapper.writeValueAsString(station), RadioSignalDTO.class);
 
-		radioSignalAbnormalHistoryDTO.put("radioSignalStationDTO", ids);
+        Logger.info(mapper.writeValueAsString(res));
+        return null;
+    }
 
-		station.put("stationDTOs", radioSignalAbnormalHistoryDTO);
+    @GetMapping(path = {"/StationInfo"
+    })
+    public Object stationList(@RequestParam Map<String, Object> map) throws JsonProcessingException {
 
-		final RadioSignalOperationReponse res = (RadioSignalOperationReponse) service.radioSignalServiceCall("insertRadioSignal",
-				mapper.writeValueAsString(station), RadioSignalDTO.class);
+        String index = (String) map.get("offset");
+        String limit = (String) map.get("limit");
+        String areaCode = (String) map.get("areaCode");
 
-		Logger.info(mapper.writeValueAsString(res));
-		return null;
-	}
+        List<String> areaCodeList = Lists.newLinkedList();
+        areaCodeList.add(areaCode);
 
-	@GetMapping(path = { "/StationInfo"
-	})
-	public Object stationList(@RequestParam Map<String, Object> map) throws JsonProcessingException {
+        Map<String, Object> requestParam = Maps.newLinkedHashMap();
+        requestParam.put("index", index);
+        requestParam.put("count", limit);
 
-		String index = (String) map.get("offset");
-		String limit = (String) map.get("limit");
-		String areaCode = (String) map.get("areaCode");
+        Map<String, Object> list = Maps.newLinkedHashMap();
+        list.put("string", areaCodeList);
+        requestParam.put("areaCodeList", list);
 
-		List<String> areaCodeList = Lists.newLinkedList();
-		areaCodeList.add(areaCode);
+        final RStatQuerySignalsResponse2 response = (RStatQuerySignalsResponse2) service.radioStationServiceCall("rStatQuerySignals",
+                mapper.writeValueAsString(requestParam), RStatQuerySignalsRequest.class);
 
-		Map<String, Object> requestParam = Maps.newLinkedHashMap();
-		requestParam.put("index", index);
-		requestParam.put("count", limit);
+        List<Station> reslutDtos = response.getRStatSignalList().getRadioStationSignalDTO().stream().map(t -> {
 
-		Map<String, Object> list = Maps.newLinkedHashMap();
-		list.put("string", areaCodeList);
-		requestParam.put("areaCodeList", list);
+            final RadioStationDTO radioStationDTO = t.getStation();
 
-		final RStatQuerySignalsResponse2 response = (RStatQuerySignalsResponse2) service.radioStationServiceCall("rStatQuerySignals",
-				mapper.writeValueAsString(requestParam), RStatQuerySignalsRequest.class);
+            final RadioFreqDTO radioFreqDTO = t.getFreq();
 
-		List<Station> reslutDtos = response.getRStatSignalList().getRadioStationSignalDTO().stream().map(t -> {
+            int centerFre = radioFreqDTO.getCenterFreq().intValue() / 1000000;
+            int tapeWidth = radioFreqDTO.getBandWidth().intValue() / 1000000;
+            final String centerFreString = centerFre + "";
+            final String tapeWidthString = tapeWidth + "";
 
-			final RadioStationDTO radioStationDTO = t.getStation();
+            return new Station(radioStationDTO.getID(), radioStationDTO.getName(), centerFreString, tapeWidthString);
+        }).collect(toList());
 
-			final RadioFreqDTO radioFreqDTO = t.getFreq();
+        Map<String, Object> reslut = Maps.newHashMap();
 
-			int centerFre = radioFreqDTO.getCenterFreq().intValue() / 1000000;
-			int tapeWidth = radioFreqDTO.getBandWidth().intValue() / 1000000;
-			final String centerFreString = centerFre + "";
-			final String tapeWidthString = tapeWidth + "";
+        reslut.put("total", response.getTotalNum());
+        reslut.put("rows", reslutDtos);
+        return reslut;
+    }
 
-			return new Station(radioStationDTO.getID(), radioStationDTO.getName(), centerFreString, tapeWidthString);
-		}).collect(toList());
+    @GetMapping("/maxlevel")
+    public Object getMaxlevel(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
+        try {
 
-		Map<String, Object> reslut = Maps.newHashMap();
+            LocalDate loacl = LocalDate.now();
 
-		reslut.put("total", response.getTotalNum());
-		reslut.put("rows", reslutDtos);
-		return reslut;
-	}
+            DateTimeFormatter yearformatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+            String first = loacl.format(yearformatter);
 
-	@GetMapping("/maxlevel")
-	public Object getMaxlevel(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
-		try {
+            LocalDateTime time = LocalDateTime.now();
 
-			LocalDate loacl = LocalDate.now();
+            DateTimeFormatter timeformatter = DateTimeFormatter.ofPattern("HHmmss");
+            String last = timeformatter.format(time);
+            beginTime = first + last;
 
-			DateTimeFormatter yearformatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-			String first = loacl.format(yearformatter);
+            String id = "52010118";
+            long frequency = (long) (88.8 * 1000000);
 
-			LocalDateTime time = LocalDateTime.now();
+            Map<Object, Object> reponceReslut = hbaseClient.queryMaxLevels(stationCode, frequency, upperBound, lowerBound, beginTime);
 
-			DateTimeFormatter timeformatter = DateTimeFormatter.ofPattern("HHmmss");
-			String last = timeformatter.format(time);
-			beginTime = first + last;
+            LinkedList<Object> xAxis = Lists.newLinkedList();
+            LinkedList<Object> series = Lists.newLinkedList();
 
-			String id = "52010118";
-			long frequency = (long) (88.8 * 1000000);
+            final double pow = Math.pow(10, 6);
 
-			Map<Object, Object> reponceReslut = hbaseClient.queryMaxLevels(stationCode, frequency, upperBound, lowerBound, beginTime);
+            reponceReslut.forEach((k, v) -> {
 
-			LinkedList<Object> xAxis = Lists.newLinkedList();
-			LinkedList<Object> series = Lists.newLinkedList();
+                final double key = Double.parseDouble(k.toString()) / pow;
 
-			final double pow = Math.pow(10, 6);
+                xAxis.add(key);
+                series.add(v);
+            });
 
-			reponceReslut.forEach((k, v) -> {
+            HashMap<String, Object> restlutHashMap = Maps.newHashMap();
 
-				final double key = Double.parseDouble(k.toString()) / pow;
+            restlutHashMap.put("xAxis", xAxis);
+            restlutHashMap.put("series", series);
 
-				xAxis.add(key);
-				series.add(v);
-			});
+            return restlutHashMap;
 
-			HashMap<String, Object> restlutHashMap = Maps.newHashMap();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            Logger.error("峰值查询异常", e);
+        }
 
-			restlutHashMap.put("xAxis", xAxis);
-			restlutHashMap.put("series", series);
-
-			return restlutHashMap;
-
-		}
-		catch (Exception e) {
-			// TODO Auto-generated catch block
-			Logger.error("峰值查询异常", e);
-
-			HashMap<String, Object> restlutHashMap = Maps.newHashMap();
-			restlutHashMap.put("xAxis", Collections.emptyList());
-			restlutHashMap.put("series", Collections.emptyList());
-			return restlutHashMap;
-		}
-
-	}
+        return Maps.newHashMap();
+    }
 }
