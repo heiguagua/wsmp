@@ -199,10 +199,9 @@ public class AlarmDataController {
 
             reslutMap.put("max", resoluteHashMap);
 
+            return  reslutMap;
 
         }
-
-        return Maps.newHashMap();
     }
 
     @GetMapping(path = "/firstLevelChart")
@@ -266,7 +265,7 @@ public class AlarmDataController {
                 resoluteHashMap.put("series", series);
 
                 reslutMap.put("max", resoluteHashMap);
-
+                return  reslutMap;
             } else {
 
                 LinkedList<Object> xAxis = Lists.newLinkedList();
@@ -293,9 +292,15 @@ public class AlarmDataController {
             return reslutMap;
         } catch (Exception e) {
             e.printStackTrace();
+            String[] xAxis = new String[]{};
+            double[] series = new double[]{};
 
+            resoluteHashMap.put("xAxis", xAxis);
+            resoluteHashMap.put("series", series);
+
+            reslutMap.put("max", resoluteHashMap);
+            return  reslutMap;
         }
-        return Maps.newHashMap();
     }
 
     @PostMapping(path = "/intensivemonitoring")
