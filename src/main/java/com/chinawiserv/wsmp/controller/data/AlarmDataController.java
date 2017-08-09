@@ -1,39 +1,5 @@
 package com.chinawiserv.wsmp.controller.data;
 
-import static java.util.stream.Collectors.toList;
-
-import java.math.BigInteger;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.context.WebApplicationContext;
-import org.tempuri.FreqWarningDTO;
-import org.tempuri.FreqWarningOperationResponse;
-import org.tempuri.FreqWarningQueryRequest;
-import org.tempuri.FreqWarningQueryResponse;
-import org.tempuri.RStatQuerySignalsRequest;
-import org.tempuri.RStatQuerySignalsResponse2;
-import org.tempuri.RadioFreqDTO;
-import org.tempuri.RadioSignalDTO;
-import org.tempuri.RadioSignalOperationReponse;
-import org.tempuri.RadioStationDTO;
-
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.chinawiserv.apps.util.logger.Logger;
 import com.chinawiserv.wsmp.client.WebServiceSoapFactory;
@@ -51,6 +17,19 @@ import com.google.common.collect.Maps;
 import com.sefon.ws.model.xsd.StationInfoPagedResult;
 import com.sefon.ws.model.xsd.StationQuerySpecInfo;
 import com.sefon.ws.service.impl.StationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.WebApplicationContext;
+import org.tempuri.*;
+
+import java.math.BigInteger;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+
+import static java.util.stream.Collectors.toList;
 
 @RestControllerAdvice
 @RequestMapping("/data/alarm")
@@ -129,7 +108,7 @@ public class AlarmDataController {
 		// String last = timeformatter.format(time);
 		// beginTime = first + last;
 
-		String id = "52010118";
+		String id = "52010126";
 		long frequency = (long) (88.8 * 1000000);
 
 		try {
@@ -143,15 +122,15 @@ public class AlarmDataController {
 			Map<String, Object> Occ = reslutResponce.getOcc();
 			if (Occ.size() == 0) {
 
-				HashMap<String, Object> restlutHashMap = Maps.newHashMap();
+				HashMap<String, Object> resoluteHashMap = Maps.newHashMap();
 
 				String[] xAxis = new String[] {};
 				double[] series = new double[] {};
 
-				restlutHashMap.put("xAxis", xAxis);
-				restlutHashMap.put("series", series);
+				resoluteHashMap.put("xAxis", xAxis);
+				resoluteHashMap.put("series", series);
 
-				reslutMap.put("dayOcc", restlutHashMap);
+				reslutMap.put("dayOcc", resoluteHashMap);
 			}
 			else {
 
@@ -175,18 +154,17 @@ public class AlarmDataController {
 
 			if (Max.size() == 0) {
 
-				HashMap<String, Object> restlutHashMap = Maps.newHashMap();
+				HashMap<String, Object> resoluteHashMap = Maps.newHashMap();
 
 				String[] xAxis = new String[] {};
 				double[] series = new double[] {};
 
-				restlutHashMap.put("xAxis", xAxis);
-				restlutHashMap.put("series", series);
+				resoluteHashMap.put("xAxis", xAxis);
+				resoluteHashMap.put("series", series);
 
-				reslutMap.put("max", restlutHashMap);
+				reslutMap.put("max", resoluteHashMap);
 
-			}
-			else {
+			}  else {
 
 				LinkedList<Object> xAxis = Lists.newLinkedList();
 				LinkedList<Object> series = Lists.newLinkedList();
@@ -242,7 +220,7 @@ public class AlarmDataController {
 		HashMap<String, Object> reslutMap = new HashMap<>();
 		try {
 
-			String id = "52010118";
+			String id = "52010126";
 			long frequency = (long) (88.8 * 1000000);
 
 			Map<Object, Object> max = hbaseClient.queryMaxLevels(id, frequency, upperBound, lowerBound, beginTime);
@@ -272,25 +250,25 @@ public class AlarmDataController {
 					series.add(v);
 				});
 
-				HashMap<String, Object> restlutHashMap = Maps.newHashMap();
+				HashMap<String, Object> resoluteHashMap = Maps.newHashMap();
 
-				restlutHashMap.put("xAxis", xAxis);
-				restlutHashMap.put("series", series);
+				resoluteHashMap.put("xAxis", xAxis);
+				resoluteHashMap.put("series", series);
 
-				reslutMap.put("monthOcc", restlutHashMap);
+				reslutMap.put("monthOcc", resoluteHashMap);
 			}
 
 			if (max.size() == 0) {
 
-				HashMap<String, Object> restlutHashMap = Maps.newHashMap();
+				HashMap<String, Object> resoluteHashMap = Maps.newHashMap();
 
 				String[] xAxis = new String[] {};
 				double[] series = new double[] {};
 
-				restlutHashMap.put("xAxis", xAxis);
-				restlutHashMap.put("series", series);
+				resoluteHashMap.put("xAxis", xAxis);
+				resoluteHashMap.put("series", series);
 
-				reslutMap.put("max", restlutHashMap);
+				reslutMap.put("max", resoluteHashMap);
 
 			}
 			else {
@@ -320,7 +298,6 @@ public class AlarmDataController {
 			return reslutMap;
 		}
 		catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			HashMap<String, Object> restlutHashMap = Maps.newHashMap();
 			String[] xAxis = new String[] {};
@@ -340,7 +317,7 @@ public class AlarmDataController {
 			EntityWrapper<IntensiveMonitoring> ew = new EntityWrapper<>(in);
 			ew.where("SINGAL_FREQUENCY = {0}", in.getSingalFrequency());
 		}
-		else {}
+
 	}
 
 	@PostMapping(path = "/warringconfirm")
@@ -353,27 +330,20 @@ public class AlarmDataController {
 	}
 
 	@PostMapping(path = "/getStation")
-	public @ResponseBody Map<String, Object> getStationPiont(@RequestParam List<String> stationcode, @RequestParam String frequency,
-			@RequestParam String beginTime) {
+	public @ResponseBody Map<String, Object> getStationPiont(@RequestBody Map<String,Object> param) {
 
 		long centerFreq = (long) (88.8 * 1000000);
 		String dateTime = "20170803000000";
 
 		List<LevelLocate> reslut = hbaseClient.queryLevelLocate(dateTime, centerFreq);
 
-		Stream<LevelLocate> stream = reslut.stream();
+		 //List<String> stationcode = (List<String>) param.get("stationcode");
 
-		stationcode.stream().forEach(code -> {
+		List<String> stationcode = Lists.newLinkedList();
 
-			stream.filter(t -> {
-
-				return code.equals(t.getId());
-
-			});
-
-		});
-
-		List<LevelLocate> mapPoint = stream.collect(toList());
+		stationcode.add("52010120");
+		stationcode.add("52010126");
+		List<LevelLocate> mapPoint  = reslut.stream().filter(t -> stationcode.contains(t.getId())).collect(toList());
 
 		List<Map<String, Object>> levelPoint = Lists.newLinkedList();
 
@@ -568,9 +538,7 @@ public class AlarmDataController {
 			final String centerFreString = centerFre + "";
 			final String tapeWidthString = tapeWidth + "";
 
-			final Station station = new Station(radioStationDTO.getID(), radioStationDTO.getName(), centerFreString, tapeWidthString);
-
-			return station;
+			return new Station(radioStationDTO.getID(), radioStationDTO.getName(), centerFreString, tapeWidthString);
 		}).collect(toList());
 
 		Map<String, Object> reslut = Maps.newHashMap();

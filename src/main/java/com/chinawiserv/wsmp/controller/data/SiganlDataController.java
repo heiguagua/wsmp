@@ -1,27 +1,5 @@
 package com.chinawiserv.wsmp.controller.data;
 
-import static java.util.stream.Collectors.toList;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.tempuri.RadioSignalDTO;
-import org.tempuri.RadioSignalOperationReponse;
-import org.tempuri.RadioSignalQueryRequest;
-import org.tempuri.RadioSignalQueryResponse;
-
 import com.chinawiserv.apps.util.logger.Logger;
 import com.chinawiserv.wsmp.client.WebServiceSoapFactory;
 import com.chinawiserv.wsmp.hbase.HbaseClient;
@@ -31,6 +9,17 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.*;
+import org.tempuri.RadioSignalDTO;
+import org.tempuri.RadioSignalOperationReponse;
+import org.tempuri.RadioSignalQueryRequest;
+import org.tempuri.RadioSignalQueryResponse;
+
+import java.util.*;
+
+import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequestMapping("/data/signal")
@@ -69,14 +58,14 @@ public class SiganlDataController {
 	public Object getFMRate(@RequestParam String id, @RequestParam String timeStart, @RequestParam String timeStop, @RequestParam String frequency)
 			throws Exception {
 
-		String ID = "52010118";
+		String ID = "52010126";
 		long Frequency = 10740000000000L;
 		String TimeStart = "20170128000000";
 		String TimeStop = "20170804000000";
 
 		// long frequencyLong = Long.parseLong(frequency);
 
-		Map<String, Object> reslutMap = Maps.newHashMap();
+		Map<String, Object> resluteMap = Maps.newHashMap();
 
 		Map<String, Object> map = hbaseClient.queryModulationMode(ID, TimeStart, TimeStop, Frequency);
 		List<String> lists = Lists.newLinkedList();
@@ -91,10 +80,10 @@ public class SiganlDataController {
 			return mapReslut;
 		}).collect(toList());
 
-		reslutMap.put("name", lists);
-		reslutMap.put("value", reslut);
+		resluteMap.put("name", lists);
+		resluteMap.put("value", reslut);
 
-		return reslutMap;
+		return resluteMap;
 	}
 
 	@GetMapping("/station")

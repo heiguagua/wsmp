@@ -63,13 +63,13 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 			});
 			
 			parser.parse();
-			 mapInit();
+			mapInit();
 			closeModal();
 		}
 		
 		
-		function station_change(map,pSymbol,glayer){
-				
+		function station_change(){
+
 				var value = $("#station_list").find('option:selected').val();
 				var kmz = $('#search').val();
 				
@@ -95,7 +95,7 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 					var LevelSize = arryOfLevel.length;
 					
 					
-					for (var index = 0; int < LevelSize; index++) {
+					for (var index = 0; index < LevelSize; index++) {
 						
 						var p = new Point(arryOfStation[index]);
 						
@@ -152,6 +152,7 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 
 		//"http://127.0.0.1:8080/data/PBS/rest/services/MyPBSService1/MapServer"
 		function mapInit() {
+			alert(11);
 			map = new Map("mapDiv", {
 				//center : [ 104.06, 30.67 ],
 				zoom : 10
@@ -167,12 +168,14 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 				"Plant" : "Mesa Mint"
 			};
 
+			glayer = new GraphicsLayer();
+
 			pSymbol = new SimpleMarkerSymbol();
 			pSymbol.style = SimpleMarkerSymbol.STYLE_CIRCLE; //设置点的类型为圆形
 			pSymbol.setSize(12); //设置点的大小为12像素
 			pSymbol.setColor(new dojo.Color("#FFFFCC")); //设置点的颜色
 			map.addLayer(agoLayer);
-			glayer = new GraphicsLayer();
+
 			map.addLayer(glayer);
 			var ti = $("#warning_confirm").attr("class");
 			signalClick(map,pSymbol,glayer);
@@ -505,7 +508,7 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 			
 			
 		}
-		
+
 		return {
 			init : pares ,
             stationChange : station_change

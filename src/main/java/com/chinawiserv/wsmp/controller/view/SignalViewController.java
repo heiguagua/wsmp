@@ -1,11 +1,14 @@
 package com.chinawiserv.wsmp.controller.view;
 
-import static java.util.stream.Collectors.toList;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
+import com.chinawiserv.apps.util.logger.Logger;
+import com.chinawiserv.wsmp.client.WebServiceSoapFactory;
+import com.chinawiserv.wsmp.hbase.HbaseClient;
+import com.chinawiserv.wsmp.pojo.MonitoringStation;
+import com.chinawiserv.wsmp.pojo.RedioDetail;
+import com.chinawiserv.wsmp.pojo.Singal;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,15 +20,11 @@ import org.tempuri.RadioSignalDTO;
 import org.tempuri.RadioSignalQueryRequest;
 import org.tempuri.RadioSignalQueryResponse;
 
-import com.chinawiserv.apps.util.logger.Logger;
-import com.chinawiserv.wsmp.client.WebServiceSoapFactory;
-import com.chinawiserv.wsmp.hbase.HbaseClient;
-import com.chinawiserv.wsmp.pojo.MonitoringStation;
-import com.chinawiserv.wsmp.pojo.RedioDetail;
-import com.chinawiserv.wsmp.pojo.Singal;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Maps;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import static java.util.stream.Collectors.toList;
 
 @Controller
 @RequestMapping("/signal")
@@ -49,7 +48,7 @@ public class SignalViewController {
 	public String signal_detail(Model model, @RequestParam String centorfreq, @RequestParam String beginTime, @RequestParam String endTime,
 			@RequestParam String areaCode, @RequestParam String stationCode, @RequestParam String id) {
 
-		String Id = "52010118";
+		String Id = "52010126";
 		long frequency = 4617175546033143373L;
 		String timeStart = "20170802125344";
 
