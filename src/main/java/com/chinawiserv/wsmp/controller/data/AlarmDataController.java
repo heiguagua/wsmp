@@ -189,6 +189,17 @@ public class AlarmDataController {
             // TODO Auto-generated catch block
             e.printStackTrace();
 
+            HashMap<String, Object> resoluteHashMap = Maps.newHashMap();
+
+            String[] xAxis = new String[]{};
+            double[] series = new double[]{};
+
+            resoluteHashMap.put("xAxis", xAxis);
+            resoluteHashMap.put("series", series);
+
+            reslutMap.put("max", resoluteHashMap);
+
+
         }
 
         return Maps.newHashMap();
@@ -334,7 +345,7 @@ public class AlarmDataController {
         double[] flat = new double[1];
         double[] level = new double[1];
 
-        mapPoint.stream().forEach(l -> {
+        mapPoint.forEach(l -> {
 
             params.setSid("" + System.currentTimeMillis());// sid能够表该次计算的唯一标识
             params.setStype((byte) 3);// 固定3，标识计算类型为场强计算
