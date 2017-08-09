@@ -134,13 +134,10 @@ public class SiganlDataController {
 				mapper.writeValueAsString(param), RadioSignalQueryRequest.class);
 
 		final List<String> reslutList = Lists.newLinkedList();
-		List<String> list = Lists.newLinkedList();
 
 		responce.getRadioSignals().getRadioSignalDTO().forEach(z -> z.getStationDTOs().getRadioSignalStationDTO().forEach(f -> reslutList.add(f.getStationNumber())));
 
-		list = reslutList.size() != 0 ? reslutList : Collections.emptyList();
-
-		return list;
+        return reslutList.size() != 0 ? reslutList : Collections.emptyList();
 	}
 
 	@GetMapping(path = "/one", params = "id")
