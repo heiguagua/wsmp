@@ -40,9 +40,8 @@
 
 		</div>
 		<div class="config pull-right">
-			<a class="btn btn-default btn-evaluate" data-toggle="modal" data-target="#modalEvaluate" >
-			
-			<i class="fa fa-eye"></i>&nbsp;&nbsp;电磁环境评估
+			<a class="btn btn-default btn-evaluate" data-toggle="modal"
+				data-target="#modalEvaluate"> <i class="fa fa-eye"></i>&nbsp;&nbsp;电磁环境评估
 			</a>
 		</div>
 	</div>
@@ -273,7 +272,32 @@
 					</button>
 					<h4 class="modal-title" id="modalConfigLabel">重点监测参数配置</h4>
 				</div>
-				<div id="important_monitor"></div>
+				<div>
+					<div role="tabpanel" class="tab-pane active ">
+						<div class='flex-row'>
+							<div class='flex1 config-left' id="important_monitor"></div>
+						</div>
+						<div class="form-group ">
+							<div class="col-sm-offset-3 col-sm-9 mrg-top15 text-right">
+								<button type="button" id='buttonUpdate'
+									class="btn btn-default btn-apply">更新</button>
+							</div>
+						</div>
+						<div class="form-group ">
+							<div class="col-sm-offset-3 col-sm-9 mrg-top15 text-right">
+								<button type="button" id='buttonDelete'
+									class="btn btn-default btn-apply">删除</button>
+							</div>
+						</div>
+						<div class="form-group ">
+							<div class="col-sm-offset-3 col-sm-9 mrg-top15 text-right">
+								<button type="button" id='buttonInsert'
+									class="btn btn-default btn-apply">添加</button>
+							</div>
+						</div>
+					</div>
+
+				</div>
 			</div>
 		</div>
 	</div>

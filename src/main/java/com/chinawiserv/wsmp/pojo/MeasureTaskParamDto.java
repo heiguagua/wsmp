@@ -4,48 +4,48 @@ public class MeasureTaskParamDto {
 	
 	private String ID;
 	private String warnID;
-	private double beginFreq;
-	private double endFreq;
+	private Double beginFreq;
+	private Double endFreq;
 	//执行时长(秒)
-	private int duration;
+	private Integer duration;
 	private String beginTime;
 	private String endTime;
 	//循环周期(分钟)
-	private int cycleStep;
-	private boolean freqRange;
+	private Integer cycleStep;
+	private Boolean freqRange;
 	//每次IQ帧数
-	private int IQCount;
+	private Integer IQCount;
 	//每次频谱帧数
-	private int specCount;
+	private Integer specCount;
 	//每次声音时间
-	private int audioTimespan;
+	private Integer audioTimespan;
 	//每次ITU帧数
-	private int ITUCount;
+	private Integer ITUCount;
 	//每次特征帧数
-	private int featureCount;
+	private Integer featureCount;
 	//总IQ帧数
-	private int totalIQCount;
+	private Integer totalIQCount;
 	//总频谱帧数
-	private int totalSpecCount;
+	private Integer totalSpecCount;
 	//总声音时间
-	private int totalAudioTimespan;
+	private Integer totalAudioTimespan;
 	//总ITU帧数
-	private int totalITUCount;
+	private Integer totalITUCount;
 	//总特征数
-	private int totalFeatureCount;
+	private Integer totalFeatureCount;
 	public String getID() {
 		return ID;
 	}
 	public String getWarnID() {
 		return warnID;
 	}
-	public double getBeginFreq() {
+	public Double getBeginFreq() {
 		return beginFreq;
 	}
-	public double getEndFreq() {
+	public Double getEndFreq() {
 		return endFreq;
 	}
-	public int getDuration() {
+	public Integer getDuration() {
 		return duration;
 	}
 	public String getBeginTime() {
@@ -54,44 +54,55 @@ public class MeasureTaskParamDto {
 	public String getEndTime() {
 		return endTime;
 	}
-	public int getCycleStep() {
+	public Integer getCycleStep() {
 		return cycleStep;
 	}
-	public int getIQCount() {
+	public Boolean isFreqRange() {
+		return freqRange;
+	}
+	public Integer getIQCount() {
 		return IQCount;
 	}
-	public int getSpecCount() {
+	public Integer getSpecCount() {
 		return specCount;
 	}
-	public int getAudioTimespan() {
+	public Integer getAudioTimespan() {
 		return audioTimespan;
 	}
-	public int getITUCount() {
+	public Integer getITUCount() {
 		return ITUCount;
 	}
-	public int getFeatureCount() {
+	public Integer getFeatureCount() {
 		return featureCount;
 	}
-
-	public int getTotalAudioTimespan() {
+	public Integer getTotalIQCount() {
+		return totalIQCount;
+	}
+	public Integer getTotalSpecCount() {
+		return totalSpecCount;
+	}
+	public Integer getTotalAudioTimespan() {
 		return totalAudioTimespan;
 	}
-	public int getTotalITUCount() {
+	public Integer getTotalITUCount() {
 		return totalITUCount;
 	}
+	public Integer getTotalFeatureCount() {
+		return totalFeatureCount;
+	}
 	public void setID(String iD) {
-		ID = iD;
+		this.ID = iD;
 	}
 	public void setWarnID(String warnID) {
 		this.warnID = warnID;
 	}
-	public void setBeginFreq(double beginFreq) {
+	public void setBeginFreq(Double beginFreq) {
 		this.beginFreq = beginFreq;
 	}
-	public void setEndFreq(double endFreq) {
+	public void setEndFreq(Double endFreq) {
 		this.endFreq = endFreq;
 	}
-	public void setDuration(int duration) {
+	public void setDuration(Integer duration) {
 		this.duration = duration;
 	}
 	public void setBeginTime(String beginTime) {
@@ -100,53 +111,40 @@ public class MeasureTaskParamDto {
 	public void setEndTime(String endTime) {
 		this.endTime = endTime;
 	}
-	public void setCycleStep(int cycleStep) {
+	public void setCycleStep(Integer cycleStep) {
 		this.cycleStep = cycleStep;
 	}
-	public void setIQCount(int iQCount) {
-		IQCount = iQCount;
-	}
-	public void setSpecCount(int specCount) {
-		this.specCount = specCount;
-	}
-	public void setAudioTimespan(int audioTimespan) {
-		this.audioTimespan = audioTimespan;
-	}
-	public void setITUCount(int iTUCount) {
-		ITUCount = iTUCount;
-	}
-	public void setFeatureCount(int featureCount) {
-		this.featureCount = featureCount;
-	}
-
-	public void setTotalAudioTimespan(int totalAudioTimespan) {
-		this.totalAudioTimespan = totalAudioTimespan;
-	}
-	public void setTotalITUCount(int totalITUCount) {
-		this.totalITUCount = totalITUCount;
-	}
-	public boolean isFreqRange() {
-		return freqRange;
-	}
-	public void setFreqRange(boolean freqRange) {
+	public void setFreqRange(Boolean freqRange) {
 		this.freqRange = freqRange;
 	}
-	public int getTotalIQCount() {
-		return totalIQCount;
+	public void setIQCount(Integer iQCount) {
+		IQCount = iQCount;
 	}
-	public void setTotalIQCount(int totalIQCount) {
+	public void setSpecCount(Integer specCount) {
+		this.specCount = specCount;
+	}
+	public void setAudioTimespan(Integer audioTimespan) {
+		this.audioTimespan = audioTimespan;
+	}
+	public void setITUCount(Integer iTUCount) {
+		ITUCount = iTUCount;
+	}
+	public void setFeatureCount(Integer featureCount) {
+		this.featureCount = featureCount;
+	}
+	public void setTotalIQCount(Integer totalIQCount) {
 		this.totalIQCount = totalIQCount;
 	}
-	public int getTotalSpecCount() {
-		return totalSpecCount;
-	}
-	public void setTotalSpecCount(int totalSpecCount) {
+	public void setTotalSpecCount(Integer totalSpecCount) {
 		this.totalSpecCount = totalSpecCount;
 	}
-	public int getTotalFeatureCount() {
-		return totalFeatureCount;
+	public void setTotalAudioTimespan(Integer totalAudioTimespan) {
+		this.totalAudioTimespan = totalAudioTimespan;
 	}
-	public void setTotalFeatureCount(int totalFeatureCount) {
+	public void setTotalITUCount(Integer totalITUCount) {
+		this.totalITUCount = totalITUCount;
+	}
+	public void setTotalFeatureCount(Integer totalFeatureCount) {
 		this.totalFeatureCount = totalFeatureCount;
 	}
 	
