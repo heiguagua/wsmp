@@ -199,7 +199,7 @@ public class AlarmDataController {
 
             reslutMap.put("max", resoluteHashMap);
 
-            return  reslutMap;
+            return reslutMap;
 
         }
     }
@@ -265,7 +265,7 @@ public class AlarmDataController {
                 resoluteHashMap.put("series", series);
 
                 reslutMap.put("max", resoluteHashMap);
-                return  reslutMap;
+                return reslutMap;
             } else {
 
                 LinkedList<Object> xAxis = Lists.newLinkedList();
@@ -299,7 +299,7 @@ public class AlarmDataController {
             resoluteHashMap.put("series", series);
 
             reslutMap.put("max", resoluteHashMap);
-            return  reslutMap;
+            return reslutMap;
         }
     }
 
