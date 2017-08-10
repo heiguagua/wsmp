@@ -35,7 +35,7 @@ public class HbaseConfig {
 
 	@Bean
 	public LevelLocate initLevelLocate() {
-		LevelLocate levelLocate = new LevelLocate("192.168.13.199", 8888);
+		LevelLocate levelLocate = new LevelLocate("192.168.21.104", 8444);
 		return levelLocate;
 	}
 
