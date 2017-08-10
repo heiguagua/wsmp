@@ -187,45 +187,7 @@
 				</div>
 				<div class="modal-body padding20">
 					<table class="table table-striped" id='table-signal-list'>
-						<!--         <thead>
-              <tr>
-                <th title='频率（kHz）' width='18%'>频率（kHz）</th>
-                <th title='带宽' width='15%'>带宽</th>
-                <th title='监测发生成功率' width='25%'>监测发生成功率</th>
-                <th title='监测' width='20%'>监测站</th>
-                <th title='发射源' width='22%'>发射源</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><a>87.7</a></td>
-                <td>200</td>
-                <td>100</td>
-                <td>成都某某监测站</td>
-                <td><a data-toggle="modal" data-target="#modalStation">成都某某站台</a></td>
-              </tr>
-              <tr>
-                <td><a>87.7</a></td>
-                <td>200</td>
-                <td>100</td>
-                <td>成都某某监测站</td>
-                <td><a data-toggle="modal" data-target="#modalStation">成都某某站台</a></td>
-              </tr>
-              <tr>
-                <td><a>87.7</a></td>
-                <td>200</td>
-                <td>100</td>
-                <td>成都某某监测站</td>
-                <td><a data-toggle="modal" data-target="#modalStation">成都某某站台</a></td>
-              </tr>
-              <tr>
-                <td><a>87.7</a></td>
-                <td>200</td>
-                <td>100</td>
-                <td>成都某某监测站</td>
-                <td><a data-toggle="modal" data-target="#modalStation">成都某某站台</a></td>
-              </tr>
-            </tbody> -->
+						
 					</table>
 				</div>
 			</div>
@@ -277,24 +239,7 @@
 						<div class='flex-row'>
 							<div class='flex1 config-left' id="important_monitor"></div>
 						</div>
-						<div class="form-group ">
-							<div class="col-sm-offset-3 col-sm-9 mrg-top15 text-right">
-								<button type="button" id='buttonUpdate'
-									class="btn btn-default btn-apply">更新</button>
-							</div>
-						</div>
-						<div class="form-group ">
-							<div class="col-sm-offset-3 col-sm-9 mrg-top15 text-right">
-								<button type="button" id='buttonDelete'
-									class="btn btn-default btn-apply">删除</button>
-							</div>
-						</div>
-						<div class="form-group ">
-							<div class="col-sm-offset-3 col-sm-9 mrg-top15 text-right">
-								<button type="button" id='buttonInsert'
-									class="btn btn-default btn-apply">添加</button>
-							</div>
-						</div>
+						
 					</div>
 
 				</div>

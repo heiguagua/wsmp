@@ -2,17 +2,22 @@ package com.chinawiserv.wsmp.controller.data;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.tempuri.ArrayOfFrequencyBand;
 import org.tempuri.ArrayOfInt;
 import org.tempuri.ArrayOfSignalTypeDTO;
+import org.tempuri.ArrayOfString;
 import org.tempuri.FreqWarningQueryRequest;
 import org.tempuri.FreqWarningQueryResponse;
 import org.tempuri.FreqWarningWebService;
@@ -21,13 +26,17 @@ import org.tempuri.RadioSignalClassifiedQueryRequest;
 import org.tempuri.RadioSignalClassifiedQueryResponse;
 import org.tempuri.RadioSignalQueryRequest;
 import org.tempuri.RadioSignalQueryResponse;
+import org.tempuri.RadioSignalStationDTO;
 import org.tempuri.RadioSignalWebService;
 import org.tempuri.SignalTypeDTO;
 
+import com.alibaba.fastjson.JSON;
+import com.chinawiserv.apps.logger.Logger;
 import com.chinawiserv.wsmp.pojo.Alarm;
 import com.chinawiserv.wsmp.pojo.RedioDetail;
 import com.chinawiserv.wsmp.pojo.RedioStatusCount;
 import com.chinawiserv.wsmp.pojo.RsbtStation;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.sefon.ws.model.freq.xsd.FrequencyRangeInfo;
@@ -128,7 +137,9 @@ public class WaveOrderDataController {
 		List<Alarm> alarmRows = Lists.newArrayList();
 		response.getWarningInfos().getFreqWarningDTO().stream().forEach(t -> {
 			Alarm alarm = new Alarm();
-			alarm.setRadio(t.getCenterFreq().toString());
+			BigDecimal certerFreq = new BigDecimal(t.getCenterFreq());
+			BigDecimal divisor = new BigDecimal(1000000);
+			alarm.setRadio(certerFreq.divide(divisor).toString());
 			alarm.setFirstTime(t.getSaveDate().toString());
 			alarm.setLastingTime(t.getInvalidDate().toString());
 			alarm.setMark(t.getDescription());
@@ -158,7 +169,9 @@ public class WaveOrderDataController {
 		List<Alarm> alarmRows = Lists.newArrayList();
 		response.getWarningInfos().getFreqWarningDTO().stream().forEach(t -> {
 			Alarm alarm = new Alarm();
-			alarm.setRadio(t.getCenterFreq().toString());
+			BigDecimal certerFreq = new BigDecimal(t.getCenterFreq());
+			BigDecimal divisor = new BigDecimal(1000000);
+			alarm.setRadio(certerFreq.divide(divisor).toString());
 			alarm.setFirstTime(t.getSaveDate().toString());
 			alarm.setLastingTime(t.getInvalidDate().toString());
 			alarm.setMark(t.getDescription());
@@ -177,6 +190,7 @@ public class WaveOrderDataController {
 
 	@GetMapping("/radioDetail")
 	public Map<String, Object> getRedioDetail(@RequestParam Map<String, Object> param) {
+		
 		// System.out.println("==================param:"+param);
 		RadioSignalWebService service = new RadioSignalWebService();
 		RadioSignalQueryRequest request = new RadioSignalQueryRequest();
@@ -227,13 +241,50 @@ public class WaveOrderDataController {
 		return result;
 	}
 
-	public Object get(@RequestParam RsbtStation station) {
-		/*
-		 * EntityWrapper<RsbtStation> ew = new EntityWrapper<>(station);
-		 * ew.where("STAT_Type = {0}", station.getSTATType()); List<RsbtStation>
-		 * stations = impl.selectList(ew);
-		 */
-		return null;
+	@PostMapping("/monitorsPoint")
+	public List<Map<String, ?>> getMonitorsPoint(@RequestBody Map<String,Object> param) {
+		
+		//请求参数为监测站ID列表,和信号类型值。
+		Logger.debug("=======================================param {}",  param);
+		
+		final List<?> monitorsID = (List<?>) param.get("monitorsNum");
+		System.out.println("=========================================monitorsList:"+monitorsID);
+		
+		//根据信号类型，监测站列表（id or name）查询能够监测到该信号的监测站ID和个数，和每个监测站的该信号个数。
+		RadioSignalWebService service = new RadioSignalWebService();
+		RadioSignalQueryRequest request = new RadioSignalQueryRequest();
+		// 设置信号类型
+		// ArrayOfSignalTypeDTO value = new ArrayOfSignalTypeDTO();
+		// List<SignalTypeDTO> signalTypeDTO = Lists.newArrayList();
+		// SignalTypeDTO dto = new SignalTypeDTO();
+		// dto.setSignalType(1);
+		// signalTypeDTO.add(dto);
+		// value.setSignalTypeDTO(signalTypeDTO );
+		// request.setTypeCodes(value );
+//		 设置监测站，过滤有信号的监测站ID
+		ArrayOfString value1 = new ArrayOfString();
+		List<String> string = monitorsID.stream().map(o -> o.toString()).collect(Collectors.toList());
+		value1.setString(string);
+		request.setStationIDs(value1);
+		RadioSignalQueryResponse response = service.getRadioSignalWebServiceSoap().queryRadioSignal(request);
+		System.out.println("====================:" + JSON.toJSONString(response));
+		Map<String, List<RadioSignalStationDTO>> map1 = response.getRadioSignals().getRadioSignalDTO().stream()
+				.flatMap(t -> t.getStationDTOs().getRadioSignalStationDTO().stream())
+				.collect(Collectors.groupingBy(RadioSignalStationDTO::getStationNumber));
+		
+//		List<Map<String,Object>> resultList = Lists.newArrayList();
+		final List<Map<String,?>> resultList = map1.entrySet().stream()
+			.map(e -> ImmutableMap.of("monitorID", e.getKey(), "count", Integer.valueOf(e.getValue().size())))
+			.collect(Collectors.toList());
+		
+		System.out.println("===================:"+resultList);
+
+//		Map<String, Object> map = Maps.newHashMap();
+//		map.put("x", "103.1");//longitude
+//		map.put("y", "30.1");//latitude
+//		map.put("count", "45");
+//		map.put("stationId", "oopsoo");
+		return resultList;
 	}
 
 }

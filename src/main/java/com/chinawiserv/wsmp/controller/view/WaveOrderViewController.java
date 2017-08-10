@@ -77,46 +77,55 @@ public class WaveOrderViewController {
 		dto.setBeginFreq(Double.valueOf(beginFreq.divide(divisor).toString()));
 		dto.setEndFreq(Double.valueOf(endFreq.divide(divisor).toString()));
 		dto.setFreqRange(true);
+		System.out.println("===================================================没有数据传入model:"+JSON.toJSONString(dto));
 		model.addAttribute("dto",dto);
 		return "waveorder/important_monitor_insert";
     }
     
-    @ResponseBody
     @PostMapping("/importantMonitorCreateOrUpdate")
-    public String importantMonitorCreateOrUpdate(MeasureTaskParamDto dto) {
+    public String importantMonitorCreateOrUpdate(MeasureTaskParamDto dto,Model model) {
     	//或者直接用模型接受参数MeasureTaskParamDto.java
-    	System.out.println("==========================================前端传参dto:"+JSON.toJSONString(dto));
+    	System.out.println("===================更新或添加=======================前端传参dto:"+JSON.toJSONString(dto));
     	if(dto.getID().equals("")) {
     		dto.setID(null);
     	}
     	//System.out.println("==========================================前端传参operation:"+operation);
     	ImportFreqRangeManageService service = new ImportFreqRangeManageService();
 		IImportFreqRangeManageService service2 = service.getBasicHttpBindingIImportFreqRangeManageService();
-    		//更新或添加重点监测，进行更新或添加操作，只管操作成功与否，因为前端每次都会去根据频段来重新查询model和页面。
+    		//更新或添加重点监测，进行更新或添加操作，只管操作成功与否.
     		String json = JSON.toJSONString(dto);
     		String resultDTOJson = service2.createOrUpdate(json);
+    		final Type type = new TypeReference<MeasureTaskParamDto>() {}.getType();
+    		MeasureTaskParamDto resultDTO = (MeasureTaskParamDto) JSON.parseObject(resultDTOJson,type);
     		if(resultDTOJson != null) {
     			System.out.println("====================================更新或添加成功");
-    			return "true";
+    			System.out.println("====================================更新或添加model:"+JSON.toJSONString(resultDTO));
+    			model.addAttribute("dto",resultDTO);
+    			return "waveorder/important_monitor";
     		}else{
     			System.out.println("====================================更新或添加失败");
     			return "false";
     		}
     }
     
-    @ResponseBody
+    
     @PostMapping("/importantMonitorDelete")
-    public String importantMonitorDelete(MeasureTaskParamDto dto) {
+    public String importantMonitorDelete(MeasureTaskParamDto dto,Model model) {
     	//或者直接用模型接受参数MeasureTaskParamDto.java
-    	System.out.println("==========================================前端传参dto:"+JSON.toJSONString(dto));
-    	//System.out.println("==========================================前端传参operation:"+operation);
+    	System.out.println("==================删除========================前端传参dto:"+JSON.toJSONString(dto));
     	ImportFreqRangeManageService service = new ImportFreqRangeManageService();
 		IImportFreqRangeManageService service2 = service.getBasicHttpBindingIImportFreqRangeManageService();
 
 		Boolean resultDTOJson = service2.removeById(dto.getID());
 		if(resultDTOJson) {
 			System.out.println("==========================================删除成功!");
-			return "true";
+			MeasureTaskParamDto modelDTO = new MeasureTaskParamDto();
+			modelDTO.setBeginFreq(dto.getBeginFreq());
+			modelDTO.setEndFreq(dto.getEndFreq());
+			modelDTO.setFreqRange(true);
+			System.out.println("==========================================删除成功传入model:"+JSON.toJSONString(modelDTO));
+			model.addAttribute("dto",modelDTO);
+			return "waveorder/important_monitor_insert";
 			//成功返回空白页面
 		}else {
 			System.out.println("==========================================删除失败!");

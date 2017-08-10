@@ -13,9 +13,10 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 			var userID = user.ID;
 			table_radio_init(true, areaCode,userID);
 			var monitors = getMonitors(areaCode);
+			console.log(monitors);
 			table_alarm_undealed(areaCode,monitors);
 			table_alarm_dealed(areaCode,monitors);
-			addPoint(map_arry, areaCode);
+			addPoint(map_arry, monitors);
 			redioType(monitors);
 		});
 		
@@ -72,69 +73,90 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 //	        // always return false to prevent standard browser submit and page navigation 
 //	        return false; 
 //	    }); 
-
-		$("#buttonInsert").click(function(event) {
-//			event.preventDefault();
-//			console.log("阻止表单提交");
-//			console.log(event);
+		$("#table-alarm-undeal").on("click",".centerFreqA",function(e) {
+			console.log(e.target.text);//中心频率
+			var freq = e.target.text;
+			console.log(freq);
+			const urlObj = {
+	                ServerName: 'host1',// 跳四方用host1,跳自己这边用host2
+	                DisplayName: '单频率',
+	                MultiTabable: false,
+	                ReflushIfExist: true,
+	                Url: '#/FrequencySingle/'+freq,
+	            };
+	        Binding.openUrl(JSON.stringify(urlObj));
 			
+		})
+		
+		$("#table-alarm-dealed").on("click",".centerFreqA",function(e) {
+			console.log(e.target.text);//中心频率
+			var freq = e.target.text;
+			console.log(freq);
+			const urlObj = {
+	                ServerName: 'host1',// 跳四方用host1,跳自己这边用host2
+	                DisplayName: '单频率',
+	                MultiTabable: false,
+	                ReflushIfExist: true,
+	                Url: '#/FrequencySingle/'+freq,
+	            };
+	        Binding.openUrl(JSON.stringify(urlObj));
+		})
+		
+		$("#important_monitor").on("click","#buttonUpdate",function(e) {
 			var str = $("#important-monitor-form").serialize();
 			console.log(str);
 			$.ajax({
 				url : 'waveorder/importantMonitorCreateOrUpdate',
 				type : 'post',
 				data : str,
-				dataType : 'text',// 只返回bool值
-				success : function(str) {
-					if (str=="true") {
+				dataType : 'html',// 只返回bool值
+				success : function(html) {
+					if (html != null) {
+						alert("更新成功！");
+						$("#important_monitor").html(html);
 						
+					} else {
+						alert("更新失败！");
+					}
+				}
+			})
+		});
+		$("#important_monitor").on("click","#buttonInsert",function(e) {
+			var str = $("#important-monitor-form").serialize();
+			console.log(str);
+			$.ajax({
+				url : 'waveorder/importantMonitorCreateOrUpdate',
+				type : 'post',
+				data : str,
+				dataType : 'html',// 只返回bool值
+				success : function(html) {
+					if (html != null) {
 						alert("添加成功！");
+						$("#important_monitor").html(html);
 					} else {
 						alert("添加失败！");
 					}
 				}
 			})
 		});
-			$("#buttonUpdate").click(function(event) {
-			
-
-					var str = $("#important-monitor-form").serialize();
-					console.log(str);
-					$.ajax({
-						url : 'waveorder/importantMonitorCreateOrUpdate',
-						type : 'post',
-						data : str,
-						dataType : 'text',// 只返回bool值
-						success : function(str) {
-							if (str=="true") {
-
-								alert("更新成功！");
-							} else {
-								alert("更新失败！");
-							}
-						}
-					})
-				});
-			
-			$("#buttonDelete").click(function(event) {
-			
-				var str = $("#important-monitor-form").serialize();
-				console.log(str);
-				$.ajax({
-					url : 'waveorder/importantMonitorDelete',
-					type : 'post',
-					data : str,
-					dataType : 'text',// 只返回bool值
-					success : function(bool) {
-						if (bool=="true") {
-							alert("删除成功！");
-						} else {
-							alert("删除失败！");
-						}
+		$("#important_monitor").on("click","#buttonDelete",function(e) {
+			var str = $("#important-monitor-form").serialize();
+			console.log(str);
+			$.ajax({
+				url : 'waveorder/importantMonitorDelete',
+				type : 'post',
+				data : str,
+				dataType : 'html',// 只返回bool值
+				success : function(html) {
+					if (html != null) {
+						alert("删除成功！");
+						$("#important_monitor").html(html);
+					} else {
+						alert("删除失败！");
 					}
-				})
-			});
-		
+				}
+			})
+		});	
 		
 		$("#modalSignal").on("shown.bs.modal",function(e){
 			var a = $(e.relatedTarget);
@@ -290,47 +312,74 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 		
 	}
 
-	function addPoint(map_arry, value) {
-		console.log(map_arry);
-		var value = $('option:selected').val();
-		var kmz = $('#search').val();
-		var data = {
-			"stationCode" : value,
-			"kmz" : kmz
-		};
+	function addPoint(map_arry, monitors) {
+		
+		console.info(map_arry);
+		var data = {};
+		data.monitorsNum = [];
+		for(var i=0;i<monitors.length;i++) {
+			data.monitorsNum[i] = monitors[i].Num;
+		}
+		console.log(data);
 		var pSymbol = new SimpleMarkerSymbol();
 		pSymbol.style = SimpleMarkerSymbol.STYLE_CIRCLE; //设置点的类型为圆形
-		pSymbol.setSize(12); //设置点的大小为12像素
+		pSymbol.setSize(20); //设置点的大小为20像素
 		pSymbol.setColor(new dojo.Color("#FFFFCC")); //设置点的颜色
-		ajax.get("data/alarm/getStation", data, function(reslut) {
+		ajax.post("data/waveorder/monitorsPoint", data, function(result) {
+			console.log(result);
 			var glayer = map_arry.glayer1;
 			var map = map_arry.map1;
 			glayer.clear();
-			var p = new Point(reslut);
-			var textSymbol = new TextSymbol(reslut.count).setColor(
-				new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
-				new Font("12pt").setWeight(Font.WEIGHT_BOLD));
-			var graphic = new esri.Graphic(p, textSymbol);
-			var textsyboml = new esri.Graphic(p, pSymbol);
-			glayer.add(textsyboml);
-			glayer.add(graphic);
+			for(var i=0;i<result.length;i++) {
+				for(var j=0;j<monitors.length && result[i].monitorID != monitors[j];j++) {
+					
+						var obj = {};
+						obj.x = monitors[j].lontitude;
+						obj.y = monitors[j].latitude;
+						obj.count = result[i].count;
+						obj.monitorID = result[i].monitorID;
+						var p = new Point(obj);
+						var textSymbol = new TextSymbol(result.count).setColor(
+								new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
+								new Font("12pt").setWeight(Font.WEIGHT_BOLD));
+							var graphic = new esri.Graphic(p, textSymbol);
+							var textsyboml = new esri.Graphic(p, pSymbol);
+							glayer.add(textsyboml);
+							glayer.add(graphic);
+					
+				}
+			}
 			map.addLayer(glayer);
+			
+			
+//			var glayer = map_arry.glayer1;
+//			var map = map_arry.map1;
+//			glayer.clear();
+//			var p = new Point(result);
+//			var textSymbol = new TextSymbol(result.count).setColor(
+//				new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
+//				new Font("12pt").setWeight(Font.WEIGHT_BOLD));
+//			var graphic = new esri.Graphic(p, textSymbol);
+//			var textsyboml = new esri.Graphic(p, pSymbol);
+//			glayer.add(textsyboml);
+//			glayer.add(graphic);
+//			map.addLayer(glayer);
 		});
 
-		ajax.get("data/alarm/getStation", data, function(reslut) {
-			var glayer = map_arry.glayer2;
-			var map = map_arry.map2;
-			glayer.clear();
-			var p = new Point(reslut);
-			var textSymbol = new TextSymbol(reslut.count).setColor(
-				new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
-				new Font("12pt").setWeight(Font.WEIGHT_BOLD));
-			var graphic = new esri.Graphic(p, textSymbol);
-			var textsyboml = new esri.Graphic(p, pSymbol);
-			glayer.add(textsyboml);
-			glayer.add(graphic);
-			map.addLayer(glayer);
-		});
+//		ajax.post("data/waveorder/monitorsPoint", data, function(reslut) {
+//			var glayer = map_arry.glayer2;
+//			var map = map_arry.map2;
+//			glayer.clear();
+//			var p = new Point(reslut);
+//			var textSymbol = new TextSymbol(reslut.count).setColor(
+//				new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
+//				new Font("12pt").setWeight(Font.WEIGHT_BOLD));
+//			var graphic = new esri.Graphic(p, textSymbol);
+//			var textsyboml = new esri.Graphic(p, pSymbol);
+//			glayer.add(textsyboml);
+//			glayer.add(graphic);
+//			map.addLayer(glayer);
+//		});
 
 	}
 
@@ -361,7 +410,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 				field : 'radio',
 				title : '频率',
 				formatter : function(value, row, index) {
-					return '<a>' + value + '</a>';
+					return '<a class="centerFreqA">' + value + '</a>';
 				}
 			}, {
 				field : 'firstTime',
@@ -397,6 +446,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 		});
 	}
 
+	
 	function table_alarm_undealed(areaCode,monitors) {
 		$('#table-alarm-undeal').bootstrapTable("destroy");
 		var option = {
@@ -424,7 +474,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 				field : 'radio',
 				title : '频率',
 				formatter : function(value, row, index) {
-					return '<a>' + value + '</a>';
+					return '<a class="centerFreqA">' + value + '</a>';
 				}
 			}, {
 				field : 'firstTime',

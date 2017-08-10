@@ -31,7 +31,9 @@
 			<charset>utf8</charset>
 		</encoder>
 	</appender>
-
+        
+     <!--    <logger name ="com.chinawiserv.wsmp.controller.data", level="debug"></logger> -->
+        
 	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<encoder>
 			<pattern>${FILE_LOG_PATTERN}</pattern>

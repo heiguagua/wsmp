@@ -143,7 +143,13 @@
 		</div>
 	</div>
 
-	
+	<div class="form-group ">
+		<div class="col-sm-12 mrg-top15 text-right">
+			<button type="button" id="buttonInsert" class="btn btn-default btn-apply">添加</button>
+		</div>
+	</div>
+
+
 	<input name="ID" value="${dto.getID()}" hidden="true"> 
 	<input name="freqRange" value="${dto.isFreqRange()}" hidden="true">
 	<input name="beginFreq" value="${dto.getBeginFreq()}" hidden="true">

@@ -143,7 +143,16 @@
 		</div>
 	</div>
 
-	
+	<div class="form-group ">
+		<div class="col-sm-9 mrg-top15 text-right">
+			<button type="button" id="buttonUpdate" class="btn btn-default btn-apply">更新</button>
+		</div>
+		<div class="col-sm-3  mrg-top15 text-left">
+			<button type="button" id="buttonDelete" class="btn btn-default btn-apply">删除</button>
+		</div>
+	</div>
+
+
 	<input name="ID" value="${dto.getID()}" hidden="true"> 
 	<input name="freqRange" value="${dto.isFreqRange()}" hidden="true">
 	<input name="beginFreq" value="${dto.getBeginFreq()}" hidden="true">
