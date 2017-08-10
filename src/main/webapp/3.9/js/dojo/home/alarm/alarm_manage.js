@@ -121,7 +121,7 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                 }
             }
 
-            var html = "<option style='width: 300px;' class='station' value = '" + 52010123 + "'>" + '监测站123' + "</option>"
+           // var html = "<option style='width: 300px;' class='station' value = '" + 52010123 + "'>" + '监测站123' + "</option>"
 
             console.log(html);
             $("#station_picker").append(html);

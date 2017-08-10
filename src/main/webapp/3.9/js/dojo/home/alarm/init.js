@@ -31,28 +31,28 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 				var singal = {}
 				singal.stationId = stationId;
 				station.des = des;
-				
+
 				station.warningFreqID = warningFreqID;
-				
+
 				station.radioStation ={};
-				
+
 				station.radioStation.station ={};
-				
+
 				station.radioStation.station.id = stationID;
-				
+
 				if(typeCode == "1"){
-					
+
 					station.radioStation.station.type = "L_B";
-					
+
 				}
-				
+
 				if(typeCode == "2"){
-					
+
 					station.radioStation.station.type = "N_P";
-					
+
 				}
-				
-				station.stationKey = stationID;	
+
+				station.stationKey = stationID;
 				data.station = station;
 				singal.warmingId = {"id" : signalId};
 				singal.typeCode = typeCode;
@@ -61,18 +61,18 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 					alert("成功");
 				});
 			});
-			
+
 			parser.parse();
 			mapInit();
 			closeModal();
 		}
-		
-		
+
+
 		function station_change(){
 
 				var value = $("#station_list").find('option:selected').val();
 				var kmz = $('#search').val();
-				
+
 				var l = $('#signal_list').find('option:selected').attr("stationId");
 				var centorFreq = $('#signal_list').find('option:selected').attr("centorFreq");
 				var beginTime = $('#signal_list').find('option:selected').attr("beginTime");
@@ -82,59 +82,59 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 				}
 
 				var arryId = l.split(",");
-				
+
 				var data = {"stationcode":arryId,"frequency":centorFreq,"beginTime":beginTime};
 				//alarm_manage.changeView();
 				ajax.post("data/alarm/getStation",data,function(reslut){
 					glayer.clear();
-					
+
 					var arryOfStation = reslut.stationPiont;
 					var arryOfLevel = reslut.levelPoint;
-					
+
 					var stationSize = arryOfStation.length;
 					var LevelSize = arryOfLevel.length;
-					
-					
+
+
 					for (var index = 0; index < LevelSize; index++) {
-						
+
 						var p = new Point(arryOfStation[index]);
-						
-						var textSymbol = new TextSymbol(reslut.count).setColor(
+
+						var textSymbol = new TextSymbol(arryOfStation[index].count).setColor(
 								new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
 								new Font("12pt").setWeight(Font.WEIGHT_BOLD));
-						
+
 						var graphic = new esri.Graphic(p, textSymbol);
 						var textsyboml = new esri.Graphic(p, pSymbol);
-						
+
 						glayer.add(textsyboml);
 						glayer.add(graphic);
-						
-					}	
-					
-					
+
+					}
+
+
 					for(var index = 0 ; index < stationSize;index++){
-						
+
 						var p = new Point(arryOfLevel[index]);
-					      var circle = new Circle(p,{  
-					            geodesic: true,  
-					            radius: arryOfLevel[index].radius  
+					      var circle = new Circle(p,{
+					            geodesic: true,
+					            radius: arryOfLevel[index].radius
 					        });
-					      
+
 					      var symbol = new SimpleFillSymbol().setColor(null).outline.setColor("red");
 					      var circleGrap = new esri.Graphic(circle, symbol);
 					      glayer.add(circleGrap);
-					      
+
 					}
-					
+
 					map.addLayer(glayer);
-					
+
 //					var p = new Point(reslut);
-//					
-//					  var radius = 1000000000;  
-//				      var circle = new Circle(p,{  
-//				            geodesic: true,  
-//				            radius: 10000  
-//				        });  
+//
+//					  var radius = 1000000000;
+//				      var circle = new Circle(p,{
+//				            geodesic: true,
+//				            radius: 10000
+//				        });
 //				    var symbol = new SimpleFillSymbol().setColor(null).outline.setColor("red");
 //					var textSymbol = new TextSymbol(reslut.count).setColor(
 //						new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
@@ -147,12 +147,12 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 //					glayer.add(circleGrap);
 //					map.addLayer(glayer);
 				});
-			
+
 		}
 
 		//"http://127.0.0.1:8080/data/PBS/rest/services/MyPBSService1/MapServer"
 		function mapInit() {
-			alert(11);
+
 			map = new Map("mapDiv", {
 				//center : [ 104.06, 30.67 ],
 				zoom : 10
@@ -181,8 +181,8 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 			signalClick(map,pSymbol,glayer);
 			station_change(map,pSymbol,glayer);
 			//$("#illegal").click();
-			
-			
+
+
 			//        var scaleba = new Scalebar({
 			//        	  map:map,
 			//        	  attachTo:"bottom-left"
@@ -190,18 +190,18 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 
 			require([ "dojo/request", "home/geoJson2ArcJson", "home/init", "esri/geometry/Polygon", "esri/graphic" ],
 				function(request, geoJson2ArcJson, init, Polygon) {
-					//            request.get("../data/map/getGeoJson", {  
-					//                data: {  
-					//                    color: "blue",  
-					//                    answer: 42  
-					//                },  
-					//                headers: {  
-					//                    "X-Something": "A value"  
-					//                }  
+					//            request.get("../data/map/getGeoJson", {
+					//                data: {
+					//                    color: "blue",
+					//                    answer: 42
+					//                },
+					//                headers: {
+					//                    "X-Something": "A value"
+					//                }
 					//            }).then(function(text){
 					//            	 //console.log(text);
 					//            	 var obj=JSON.parse(text);
-					////            	 var result = eval("("+text+")");  
+					////            	 var result = eval("("+text+")");
 					////            	 var jsonf = geoJson2ArcJson.init();
 					////            	 var json = jsonf.toEsri(result);
 					////            	 var features = json.rings;
@@ -218,28 +218,28 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 					//            	 for(var index = 0;index < obj.length;index++){
 					//            		 var feature = obj[index];
 					//            		 //console.log(feature);
-					//            		 var polygon  = new Polygon(feature.coordinates);  
+					//            		 var polygon  = new Polygon(feature.coordinates);
 					//                     var graphic  = new esri.Graphic(polygon,sfs);
 					//                     glayer.add(graphic);
 					//            	 }
-					//                 
-					//                // map.addLayer(graphic);  
-					//                
-					//            });  
+					//
+					//                // map.addLayer(graphic);
+					//
+					//            });
 
 
 				});
 			return map;
 		}
-		
+
 		function closeModal(){
-			
+
 			$('#table-station-list').on('hide.bs.modal',function(){
 				$(".after_modal_colse").val('');
 			});
-			
+
 		}
-		
+
 		function signalClick(map,pSymbol,glayer){
 			require([ "bootstrap", "bootstrapTable"],function(){
 				require(["bootstrap_table_cn"],function(){
@@ -249,7 +249,7 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 						var kmz = $('#search').val();
 						var data = {};
 						data.type = "none";
-						
+
 							var temp = '<div class="header-search"><input type="text" placeholder="输入中心频率">'+
 										'<span class="search-icon"></span></div>'+
 										'<table class="table table-striped" id="table-station-list"></table>'+
@@ -269,7 +269,7 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 								pagination : true, //是否分页
 								queryParamsType : 'limit', //查询参数组织方式
 								queryParams : function(params) {
-									
+
 									var info = Binding.getUser();
 							        console.log(info);
 							        info = JSON.parse(info);
@@ -309,15 +309,15 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 									title : '带宽（kHz）'
 								}]
 							});
-							
+
 							$('#table-station-list').on('click-row.bs.table', function (row, $element, field) {
 							    $('#table-station-list tr').removeClass("selected");
 							    field.addClass("selected");
 							});
-							
+
 							$("#modalStationAlarm").modal();
 					});
-					
+
 					$("#legal-wrong").click(function() {
 						var value = $('option:selected').val();
 						var kmz = $('#search').val();
@@ -345,13 +345,13 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 								pagination : true, //是否分页
 								queryParamsType : 'limit', //查询参数组织方式
 								queryParams : function(params) {
-									
+
 									var info = Binding.getUser();
 							        console.log(info);
 							        info = JSON.parse(info);
 							        var code = info.Area.Code;
 									params.areaCode = code;
-									
+
 									return params
 								}, //请求服务器时所传的参数
 								onClickRow: function(row){
@@ -384,17 +384,17 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 									title : '带宽（kHz）'
 								}]
 							});
-							
+
 							$('#table-station-list').on('click-row.bs.table', function (row, $element, field) {
 							    $('#table-station-list tr').removeClass("selected");
 							    field.addClass("selected");
 							});
-							
+
 							$("#modalStationAlarm").modal();
-							
+
 					});
-					
-					
+
+
 					$("#legal").click(function() {
 						var value = $('option:selected').val();
 						var kmz = $('#search').val();
@@ -422,18 +422,18 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 								pagination : true, //是否分页
 								queryParamsType : 'limit', //查询参数组织方式
 								queryParams : function(params) {
-									
+
 									var info = Binding.getUser();
 							        console.log(info);
 							        info = JSON.parse(info);
 							        var code = info.Area.Code;
 							        var areaCodes = new Array();
 							        areaCodes.push(areaCode);
-							        
+
 							        var arrayOfString = {};
 							        arrayOfString.string = areaCodes;
 									params.areaCodeList = arrayOfString;
-									
+
 									return params
 								}, //请求服务器时所传的参数
 								onClickRow: function(row){
@@ -466,47 +466,44 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 									title : '带宽（kHz）'
 								}]
 							});
-							
+
 							$('#table-station-list').on('click-row.bs.table', function (row, $element, field) {
 							    $('#table-station-list tr').removeClass("selected");
 							    field.addClass("selected");
 							});
-							
+
 							$("#modalStationAlarm").modal();
-						
+
 					});
-					
+
 					$("#illegal").click(function() {
 						var value = $('option:selected').val();
 						var kmz = $('#search').val();
 						var data = {"stationCode":value,"kmz":kmz};
-						ajax.get("data/alarm/getStation",data,function(reslut){
 							var temp =
 							'<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息"></textarea></div>';
 							$("#stationWrap").html("");
 							$("#stationWrap").html(temp);
-							
+
 							$("#modalStationAlarm").modal();
-						});
 					});
-					
+
 					$("#unknown").click(function() {
 						var value = $('option:selected').val();
 						var kmz = $('#search').val();
 						var data = {"stationCode":value,"kmz":kmz};
-						ajax.get("data/alarm/getStation",data,function(reslut){
 							var temp =
 								'<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息"></textarea></div>';
 								$("#stationWrap").html("");
 								$("#stationWrap").html(temp);
-								
+
 								$("#modalStationAlarm").modal();
-						});
+
 					});
 				})
 			})
-			
-			
+
+
 		}
 
 		return {

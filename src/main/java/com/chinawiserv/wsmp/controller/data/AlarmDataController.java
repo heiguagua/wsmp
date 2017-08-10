@@ -1,5 +1,6 @@
 package com.chinawiserv.wsmp.controller.data;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.chinawiserv.apps.util.logger.Logger;
 import com.chinawiserv.wsmp.client.WebServiceSoapFactory;
@@ -27,7 +28,10 @@ import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import static java.util.stream.Collectors.toList;
 
@@ -57,38 +61,6 @@ public class AlarmDataController {
     long lowerBound;
 
     private ObjectMapper mapper = new ObjectMapper();
-
-    @GetMapping("/dayCharts")
-    public Object dayCharts(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
-        // Map<String, Object> map = hbaseClient.queryOccHour(stationCode,
-        // beginTime, centorFreq);
-        String[] xAxis = new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
-                "21", "22", "23", "24"
-        };
-        double[] series = new double[]{55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, 51.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, 55.2, 58.4,
-                60.0, 58.1, 56.2, 58.9
-        };
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("xAxis", xAxis);
-        map.put("series", series);
-        return map;
-    }
-
-    @GetMapping("/hourCharts")
-    public Object hourCharts(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
-
-        String[] xAxis = new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
-                "21", "22", "23", "24"
-        };
-        double[] series = new double[]{55, 60.5, 60.0, 58.1, 56.2, 58.9, 58.2, 57.4, 58.0, 60.1, 59.1, 58.2, 58, 60.0, 58.1, 59.1, 57.9, 51.5, 55.2, 58.4,
-                58.2, 58, 57.9, 55.2, 58.4
-        };
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("xAxis", xAxis);
-        map.put("series", series);
-        return map;
-
-    }
 
     @GetMapping(path = "/secondLevelChart")
     public Object secondLevelChart(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
@@ -140,12 +112,12 @@ public class AlarmDataController {
                     series.add(v);
                 });
 
-                HashMap<String, Object> restlutHashMap = Maps.newHashMap();
+                HashMap<String, Object> restlutdayOccHashMap = Maps.newHashMap();
 
-                restlutHashMap.put("xAxis", xAxis);
-                restlutHashMap.put("series", series);
+                restlutdayOccHashMap.put("xAxis", xAxis);
+                restlutdayOccHashMap.put("series", series);
 
-                reslutMap.put("dayOcc", restlutHashMap);
+                reslutMap.put("dayOcc", restlutdayOccHashMap);
             }
 
             if (Max.size() == 0) {
@@ -221,6 +193,8 @@ public class AlarmDataController {
         HashMap<String, Object> reslutMap = new HashMap<>();
 
         HashMap<String, Object> resoluteHashMap = Maps.newHashMap();
+
+        HashMap<String, Object> occReslute = Maps.newHashMap();
         try {
 
             String id = "52010126";
@@ -250,10 +224,10 @@ public class AlarmDataController {
                 });
 
 
-                resoluteHashMap.put("xAxis", xAxis);
-                resoluteHashMap.put("series", series);
+                occReslute.put("xAxis", xAxis);
+                occReslute.put("series", series);
 
-                reslutMap.put("monthOcc", resoluteHashMap);
+                reslutMap.put("monthOcc", occReslute);
             }
 
             if (max.size() == 0) {
@@ -340,35 +314,41 @@ public class AlarmDataController {
         stationcode.add("52010126");
         List<LevelLocate> mapPoint = relate.stream().filter(t -> stationcode.contains(t.getId())).collect(toList());
 
+        mapPoint.get(0).setFlon(105.080555555556);
+        mapPoint.get(0).setFlat(26.6838888888889);
+
+        mapPoint.get(1).setFlon(106.098333333333);
+        mapPoint.get(1).setFlat(26.6636111111111);
+
         List<Map<String, Object>> levelPoint = Lists.newLinkedList();
 
         int[] ids = relate.stream().mapToInt(m -> Integer.parseInt(m.getId())).toArray();
 
         Params params = new Params();
 
-        double[] flon = new double[1];
-        double[] flat = new double[1];
-        double[] level = new double[1];
+        double[] flon = mapPoint.stream().mapToDouble(LevelLocate::getFlon).toArray();
+        double[] flat = mapPoint.stream().mapToDouble(LevelLocate::getFlat).toArray();
+        double[] level = mapPoint.stream().mapToDouble(LevelLocate::getLevel).toArray();
 
-        mapPoint.forEach(l -> {
+        params.setSid("" + System.currentTimeMillis());// sid能够表该次计算的唯一标识
+        params.setStype((byte) 3);// 固定3，标识计算类型为场强计算
+        params.setDistanceTh(10d);// 距离门限，单位km，值是界面传递进来的
+        params.setNum(mapPoint.size());// 传感器数
 
-            params.setSid("" + System.currentTimeMillis());// sid能够表该次计算的唯一标识
-            params.setStype((byte) 3);// 固定3，标识计算类型为场强计算
-            params.setDistanceTh(10d);// 距离门限，单位km，值是界面传递进来的
-            params.setNum(10);// 传感器数
-            params.setWarningId(10000004);// 告警传感器id
-            params.setIds(ids);// 所有传感器
+        params.setIds(ids);// 所有传感器
 
-            flon[0] = l.getFlon();
-            flat[0] = l.getFlat();
-            level[0] = Double.longBitsToDouble(l.getLevel());
+        params.setLon(flon);// 每个传感器的经度
+        params.setLat(flat);// 每个传感器的纬度
+        params.setLevel(level);// 每个传感器的均值
 
-            params.setLon(flon);// 每个传感器的经度
-            params.setLat(flat);// 每个传感器的纬度
-            params.setLevel(level);// 每个传感器的均值
+        try {
 
-            try {
+            for (String code : stationcode) {
+
+                params.setWarningId(Integer.parseInt(code));// 告警传感器id
                 Result result = Locate.execute(params);
+
+                System.out.println(JSON.toJSON(result));
 
                 Map<String, Object> map = Maps.newHashMap();
 
@@ -377,12 +357,13 @@ public class AlarmDataController {
                 map.put("radius", result.getRangeR());
                 map.put("stationId", result.getSid());
                 levelPoint.add(map);
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
             }
 
-        });
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         List<Map<String, String>> stationPiont = mapPoint.stream().map(station -> {
             HashMap<String, String> element = Maps.newHashMap();
