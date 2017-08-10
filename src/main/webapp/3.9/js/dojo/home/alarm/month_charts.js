@@ -3,7 +3,7 @@
  */
 define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart"], function(ajax, echarts, jquery,day_chart) {
 	function charts_init(reslut) {
-		
+			console.log(reslut);
 			var optionMonth = {
 				color : [ 'rgb(55,165,255)' ],
 				tooltip : {
@@ -75,7 +75,7 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart"], function(ajax, ec
 			monthChart.setOption(optionMonth);
 
 			monthChart.on('click', function(params) {
-				
+				console.log(params)
 				$('#modalDay').modal();
 				
 				changeView(params.name);

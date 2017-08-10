@@ -1,10 +1,8 @@
 
 package com.chinawiserv.wsmp.client;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.Properties;
-
+import com.chinawiserv.wsmp.hbase.HbaseClient;
+import com.chinawiserv.wsmp.levellocate.LevelLocate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -13,8 +11,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.EncodedResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 
-import com.chinawiserv.wsmp.hbase.HbaseClient;
-import com.chinawiserv.wsmp.levellocate.LevelLocate;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.Properties;
 
 @Configuration
 public class HbaseConfig {

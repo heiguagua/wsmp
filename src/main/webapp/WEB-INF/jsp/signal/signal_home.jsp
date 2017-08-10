@@ -419,11 +419,12 @@
   <script src="3.9/init.js"></script>
   <script type="text/javascript">
     require([ "home/signal/signal_map_init","jquery","dojo/domReady!"],
-      function(init) {
+      function(mapInit) {
     	require(["bootstrap", "bootstrapTable"],function(){
     		 require(["echarts","select2","home/signal/signal_manage","bootstrap_table_cn"], function(echarts,select2,signal_manage) {
                  signal_manage.init();
-            	 var map = init.init();
+            	 var map = mapInit.init();
+                 signal_manage.set(mapInit);
             })
     	})
        

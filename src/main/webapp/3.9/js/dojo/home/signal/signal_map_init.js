@@ -2,10 +2,16 @@
  * Created by wuhaoran on 2017/2/25.
  */
 //
-define(["home/signal/signal_manage", "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer", "dojo/request", "esri/layers/GraphicsLayer", "esri/dijit/Scalebar"
+define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/signal/signal_manage", "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer", "dojo/request", "esri/layers/GraphicsLayer", "esri/dijit/Scalebar"
 	, "esri/symbols/TextSymbol", "esri/geometry/Point", "esri/graphic", "esri/symbols/Font", "esri/symbols/SimpleMarkerSymbol", "echarts" ],
-	function(signal_manage,ajax, parser, Map, ArcGISTiledMapServiceLayer, request, GraphicsLayer, Scalebar, TextSymbol, Point, graphic, Font, SimpleMarkerSymbol, echarts) {
+	function(SimpleFillSymbol,Circle,signal_manage,ajax, parser, Map, ArcGISTiledMapServiceLayer, request, GraphicsLayer, Scalebar, TextSymbol, Point, graphic, Font, SimpleMarkerSymbol, echarts) {
 		var testWidget = null;
+
+        var pSymbol = null;
+
+        var glayer = null;
+
+        var map = null;
 		//var map = null;
 		//config.defaults.io.corsEnabledServers.push("192.168.13.79:7080");
 		function pares() {
@@ -15,7 +21,7 @@ define(["home/signal/signal_manage", "ajax", "dojo/parser", "esri/map", "esri/la
 
 		//"http://127.0.0.1:8080/data/PBS/rest/services/MyPBSService1/MapServer"
 		function mapInit() {
-			var map = new Map("mapDiv", {
+			map = new Map("mapDiv", {
 				//center : [ 104.06, 30.67 ],
 				zoom : 10
 			});
@@ -31,17 +37,17 @@ define(["home/signal/signal_manage", "ajax", "dojo/parser", "esri/map", "esri/la
 				"Plant" : "Mesa Mint"
 			};
 
-			var pSymbol = new SimpleMarkerSymbol();
+			pSymbol = new SimpleMarkerSymbol();
 			pSymbol.style = SimpleMarkerSymbol.STYLE_CIRCLE; //设置点的类型为圆形
 			pSymbol.setSize(12); //设置点的大小为12像素
 			pSymbol.setColor(new dojo.Color("#FFFFCC")); //设置点的颜色
 			map.addLayer(agoLayer);
-			var glayer = new GraphicsLayer();
+			glayer = new GraphicsLayer();
 			map.addLayer(glayer);
 			var ti = $("#warning_confirm").attr("class");
 			console.log(ti);
 			
-			select_change(map, pSymbol, glayer);
+			select_change();
 			
 		
 			
@@ -98,46 +104,85 @@ define(["home/signal/signal_manage", "ajax", "dojo/parser", "esri/map", "esri/la
 		}
 		
 
-		function select_change(map, pSymbol, glayer) {
-			
-			$("#station_list").change(function() {
-				var value = $('option:selected').val();
-				var kmz = $('#search').val();
-				var data = {
-					"stationCode" : value,
-					"kmz" : kmz
-				};
-				signal_manage.changeView();
-				ajax.get("data/signal/station", data, function(reslut) {
-					glayer.clear();
-					var p = new Point(reslut);
-					var textSymbol = new TextSymbol(reslut.count).setColor(
-						new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
-						new Font("12pt").setWeight(Font.WEIGHT_BOLD));
-					var graphic = new esri.Graphic(p, textSymbol);
-					var textsyboml = new esri.Graphic(p, pSymbol);
-					glayer.add(textsyboml);
-					glayer.add(graphic);
-					map.addLayer(glayer);
-					
-					dojo.connect(map, "onClick", function(e){
-					  	console.log(e.graphic.geometry);
-					  	if(e.graphic.geometry.type = 'point'){
-					  		console.log(true);
-					  		var id = e.graphic.geometry.stationId;
-					  		var data = {"stationId" : id}
-					  		ajax.get("data/signal/provisionaldegree", data, function() {
-								
-							});
+		function select_change() {
 
-					  	}
-					});  
-					
-					
+				//signal_manage.changeView();
+
+                var requsetparam = {}
+                var id = $("#signal_list1").find('option:selected').val();
+                requsetparam.id = id;
+
+				if (id == null){
+					return ;
+				}
+
+                ajax.get("data/signal/stationList", requsetparam, function(codes) {
+
+                    var centorfreq = $('#signal_list1').find('option:selected').attr("centorFreq");
+
+                    var beginTime = $('#signal_list1').find('option:selected').attr("beginTime");
+
+                    var data = {"stationcode":codes,"frequency":centorfreq,"beginTime":beginTime};
+
+                    ajax.post("data/alarm/getStation", data, function(reslut) {
+                        glayer.clear();
+
+                        var arryOfStation = reslut.stationPiont;
+                        var arryOfLevel = reslut.levelPoint;
+
+                        var stationSize = arryOfStation.length;
+                        var LevelSize = arryOfLevel.length;
+
+
+                        for (var index = 0; index < stationSize; index++) {
+
+                            var p = new Point(arryOfStation[index]);
+
+                            var textSymbol = new TextSymbol(arryOfStation[index].count).setColor(
+                                new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
+                                new Font("12pt").setWeight(Font.WEIGHT_BOLD));
+
+                            var graphic = new esri.Graphic(p, textSymbol);
+                            var textsyboml = new esri.Graphic(p, pSymbol);
+
+                            glayer.add(textsyboml);
+                            glayer.add(graphic);
+
+                        }
+
+
+                        for(var index = 0 ; index < LevelSize;index++){
+							console.log(arryOfLevel[index]);
+                            var p = new Point(arryOfLevel[index]);
+                            var circle = new Circle(p,{
+                                geodesic: true,
+                                radius: arryOfLevel[index].radius
+                            });
+
+                            var symbol = new SimpleFillSymbol().setColor(null).outline.setColor("red");
+                            var circleGrap = new esri.Graphic(circle, symbol);
+                            glayer.add(circleGrap);
+
+                        }
+
+                        //map.addLayer(glayer);
+
+                        dojo.connect(map, "onClick", function(e){
+                            console.log(e.graphic.geometry);
+                            if(e.graphic.geometry.type = 'point'){
+                                console.log(true);
+                                var id = e.graphic.geometry.stationId;
+                                var data = {"stationId" : id}
+                                ajax.get("data/signal/provisionaldegree", data, function() {
+
+                                });
+
+                            }
+                        });
+
+
+                    });
 				});
-
-			
-			});
 
 		}
 
@@ -373,6 +418,7 @@ define(["home/signal/signal_manage", "ajax", "dojo/parser", "esri/map", "esri/la
 		}
 
 		return {
-			init : pares
+			init : pares,
+            select_change : select_change
 		}
 	});

@@ -1,20 +1,18 @@
 
 package com.sefon.ws.model.xsd;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
- * <p>
- * StationQuerySpecInfo complex type�� Java �ࡣ
+ * <p>StationQuerySpecInfo complex type�� Java �ࡣ
  * 
- * <p>
- * ����ģʽƬ��ָ�������ڴ����е�Ԥ�����ݡ�
+ * <p>����ģʽƬ��ָ�������ڴ����е�Ԥ�����ݡ�
  * 
  * <pre>
  * &lt;complexType name="StationQuerySpecInfo"&gt;
@@ -38,237 +36,247 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "StationQuerySpecInfo", propOrder = { "areaCodes", "beginDate", "endDate", "freqRanges", "isLoad", "signalFreq", "statStatuses",
-		"techSystems" })
+@XmlType(name = "StationQuerySpecInfo", propOrder = {
+    "areaCodes",
+    "beginDate",
+    "endDate",
+    "freqRanges",
+    "isLoad",
+    "signalFreq",
+    "statStatuses",
+    "techSystems"
+})
 public class StationQuerySpecInfo {
 
-	@XmlElement(nillable = true)
-	protected List<String> areaCodes;
+    @XmlElement(nillable = true)
+    protected List<String> areaCodes;
+    @XmlElement(nillable = true)
+    protected String beginDate;
+    @XmlElement(nillable = true)
+    protected String endDate;
+    @XmlElement(nillable = true)
+    protected List<QueryFreqRangeInfo> freqRanges;
+    protected Boolean isLoad;
+    @XmlElement(nillable = true)
+    protected Double signalFreq;
+    @XmlElement(name = "statStatus", nillable = true)
+    protected List<Short> statStatuses;
+    @XmlElement(nillable = true)
+    protected List<String> techSystems;
 
-	@XmlElement(nillable = true)
-	protected String beginDate;
+    /**
+     * Gets the value of the areaCodes property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the areaCodes property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getAreaCodes().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link String }
+     * 
+     * 
+     */
+    public List<String> getAreaCodes() {
+        if (areaCodes == null) {
+            areaCodes = new ArrayList<String>();
+        }
+        return this.areaCodes;
+    }
 
-	@XmlElement(nillable = true)
-	protected String endDate;
+    /**
+     * ��ȡbeginDate���Ե�ֵ��
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getBeginDate() {
+        return beginDate;
+    }
 
-	@XmlElement(nillable = true)
-	protected List<QueryFreqRangeInfo> freqRanges;
+    /**
+     * ����beginDate���Ե�ֵ��
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setBeginDate(String value) {
+        this.beginDate = value;
+    }
 
-	protected Boolean isLoad;
+    /**
+     * ��ȡendDate���Ե�ֵ��
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getEndDate() {
+        return endDate;
+    }
 
-	@XmlElement(nillable = true)
-	protected Double signalFreq;
+    /**
+     * ����endDate���Ե�ֵ��
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setEndDate(String value) {
+        this.endDate = value;
+    }
 
-	@XmlElement(name = "statStatus", nillable = true)
-	protected List<Short> statStatuses;
+    /**
+     * Gets the value of the freqRanges property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the freqRanges property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getFreqRanges().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link QueryFreqRangeInfo }
+     * 
+     * 
+     */
+    public List<QueryFreqRangeInfo> getFreqRanges() {
+        if (freqRanges == null) {
+            freqRanges = new ArrayList<QueryFreqRangeInfo>();
+        }
+        return this.freqRanges;
+    }
 
-	@XmlElement(nillable = true)
-	protected List<String> techSystems;
+    /**
+     * ��ȡisLoad���Ե�ֵ��
+     * 
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *     
+     */
+    public Boolean isIsLoad() {
+        return isLoad;
+    }
 
-	/**
-	 * Gets the value of the areaCodes property.
-	 * 
-	 * <p>
-	 * This accessor method returns a reference to the live list, not a
-	 * snapshot. Therefore any modification you make to the returned list will
-	 * be present inside the JAXB object. This is why there is not a
-	 * <CODE>set</CODE> method for the areaCodes property.
-	 * 
-	 * <p>
-	 * For example, to add a new item, do as follows:
-	 * 
-	 * <pre>
-	 * getAreaCodes().add(newItem);
-	 * </pre>
-	 * 
-	 * 
-	 * <p>
-	 * Objects of the following type(s) are allowed in the list {@link String }
-	 * 
-	 * 
-	 */
+    /**
+     * ����isLoad���Ե�ֵ��
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *     
+     */
+    public void setIsLoad(Boolean value) {
+        this.isLoad = value;
+    }
 
-	public List<String> getAreaCodes() {
-		if (areaCodes == null) {
-			areaCodes = new ArrayList<String>();
-		}
-		return this.areaCodes;
-	}
+    /**
+     * ��ȡsignalFreq���Ե�ֵ��
+     * 
+     * @return
+     *     possible object is
+     *     {@link Double }
+     *     
+     */
+    public Double getSignalFreq() {
+        return signalFreq;
+    }
 
-	public void setAreaCodes(List<String> areaCodes) {
-		this.areaCodes = areaCodes;
-	}
+    /**
+     * ����signalFreq���Ե�ֵ��
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Double }
+     *     
+     */
+    public void setSignalFreq(Double value) {
+        this.signalFreq = value;
+    }
 
-	/**
-	 * ��ȡbeginDate���Ե�ֵ��
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getBeginDate() {
-		return beginDate;
-	}
+    /**
+     * Gets the value of the statStatuses property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the statStatuses property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getStatStatuses().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link Short }
+     * 
+     * 
+     */
+    public List<Short> getStatStatuses() {
+        if (statStatuses == null) {
+            statStatuses = new ArrayList<Short>();
+        }
+        return this.statStatuses;
+    }
 
-	/**
-	 * ����beginDate���Ե�ֵ��
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setBeginDate(String value) {
-		this.beginDate = value;
-	}
+    /**
+     * Gets the value of the techSystems property.
+     *
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the techSystems property.
+     *
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getTechSystems().add(newItem);
+     * </pre>
+     *
+     *
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link String }
+     *
+     *
+     */
+    public List<String> getTechSystems() {
+        if (techSystems == null) {
+            techSystems = new ArrayList<String>();
+        }
+        return this.techSystems;
+    }
 
-	/**
-	 * ��ȡendDate���Ե�ֵ��
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getEndDate() {
-		return endDate;
-	}
-
-	/**
-	 * ����endDate���Ե�ֵ��
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setEndDate(String value) {
-		this.endDate = value;
-	}
-
-	/**
-	 * Gets the value of the freqRanges property.
-	 * 
-	 * <p>
-	 * This accessor method returns a reference to the live list, not a
-	 * snapshot. Therefore any modification you make to the returned list will
-	 * be present inside the JAXB object. This is why there is not a
-	 * <CODE>set</CODE> method for the freqRanges property.
-	 * 
-	 * <p>
-	 * For example, to add a new item, do as follows:
-	 * 
-	 * <pre>
-	 * getFreqRanges().add(newItem);
-	 * </pre>
-	 * 
-	 * 
-	 * <p>
-	 * Objects of the following type(s) are allowed in the list
-	 * {@link QueryFreqRangeInfo }
-	 * 
-	 * 
-	 */
-	public List<QueryFreqRangeInfo> getFreqRanges() {
-		if (freqRanges == null) {
-			freqRanges = new ArrayList<QueryFreqRangeInfo>();
-		}
-		return this.freqRanges;
-	}
-
-	/**
-	 * ��ȡisLoad���Ե�ֵ��
-	 * 
-	 * @return possible object is {@link Boolean }
-	 * 
-	 */
-	public Boolean isIsLoad() {
-		return isLoad;
-	}
-
-	/**
-	 * ����isLoad���Ե�ֵ��
-	 * 
-	 * @param value
-	 *            allowed object is {@link Boolean }
-	 * 
-	 */
-	public void setIsLoad(Boolean value) {
-		this.isLoad = value;
-	}
-
-	/**
-	 * ��ȡsignalFreq���Ե�ֵ��
-	 * 
-	 * @return possible object is {@link Double }
-	 * 
-	 */
-	public Double getSignalFreq() {
-		return signalFreq;
-	}
-
-	/**
-	 * ����signalFreq���Ե�ֵ��
-	 * 
-	 * @param value
-	 *            allowed object is {@link Double }
-	 * 
-	 */
-	public void setSignalFreq(Double value) {
-		this.signalFreq = value;
-	}
-
-	/**
-	 * Gets the value of the statStatuses property.
-	 * 
-	 * <p>
-	 * This accessor method returns a reference to the live list, not a
-	 * snapshot. Therefore any modification you make to the returned list will
-	 * be present inside the JAXB object. This is why there is not a
-	 * <CODE>set</CODE> method for the statStatuses property.
-	 * 
-	 * <p>
-	 * For example, to add a new item, do as follows:
-	 * 
-	 * <pre>
-	 * getStatStatuses().add(newItem);
-	 * </pre>
-	 * 
-	 * 
-	 * <p>
-	 * Objects of the following type(s) are allowed in the list {@link Short }
-	 * 
-	 * 
-	 */
-	public List<Short> getStatStatuses() {
-		if (statStatuses == null) {
-			statStatuses = new ArrayList<Short>();
-		}
-		return this.statStatuses;
-	}
-
-	/**
-	 * Gets the value of the techSystems property.
-	 * 
-	 * <p>
-	 * This accessor method returns a reference to the live list, not a
-	 * snapshot. Therefore any modification you make to the returned list will
-	 * be present inside the JAXB object. This is why there is not a
-	 * <CODE>set</CODE> method for the techSystems property.
-	 * 
-	 * <p>
-	 * For example, to add a new item, do as follows:
-	 * 
-	 * <pre>
-	 * getTechSystems().add(newItem);
-	 * </pre>
-	 * 
-	 * 
-	 * <p>
-	 * Objects of the following type(s) are allowed in the list {@link String }
-	 * 
-	 * 
-	 */
-	public List<String> getTechSystems() {
-		if (techSystems == null) {
-			techSystems = new ArrayList<String>();
-		}
-		return this.techSystems;
-	}
-
+    public void setAreaCodes(List<String> areaCodes) {
+        this.areaCodes = areaCodes;
+    }
 }
