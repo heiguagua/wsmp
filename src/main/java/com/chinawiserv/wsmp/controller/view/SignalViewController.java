@@ -92,7 +92,7 @@ public class SignalViewController {
 			model.addAttribute("redioDetail", redioDetail);
 		}
 		catch (Exception e) {
-			Logger.errorThrow("方法 {} 请求异常  原因{}", "signal_detail", e);
+			Logger.error("方法 {} 请求异常  原因{}", "signal_detail", e);
 		}
 
 		return "signal/signal_detail";
