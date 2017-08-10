@@ -339,7 +339,7 @@ td.bs-checkbox{
 .fixed-table-loading{
 	display:none;
 }
-.cover-rect{
+.cover-rect,.iq-cover-rect{
 	width:0;
 	height:0;
     top: 0;
