@@ -345,7 +345,7 @@ td.bs-checkbox{
     top: 0;
     left: 0;
     position: absolute;
-    border: 1px solid #DDD;
+    border: 1px solid rgba(221, 221, 221, 0.48);
     border-top:0;
     border-bottom:0;
     overflow: hidden;
