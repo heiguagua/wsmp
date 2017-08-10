@@ -40,9 +40,8 @@
 
 		</div>
 		<div class="config pull-right">
-			<a class="btn btn-default btn-evaluate" data-toggle="modal" data-target="#modalEvaluate" >
-			
-			<i class="fa fa-eye"></i>&nbsp;&nbsp;电磁环境评估
+			<a class="btn btn-default btn-evaluate" data-toggle="modal"
+				data-target="#modalEvaluate"> <i class="fa fa-eye"></i>&nbsp;&nbsp;电磁环境评估
 			</a>
 		</div>
 	</div>
@@ -273,160 +272,35 @@
 					</button>
 					<h4 class="modal-title" id="modalConfigLabel">重点监测参数配置</h4>
 				</div>
-				<div class="modal-body">
+				<div>
 					<div role="tabpanel" class="tab-pane active ">
 						<div class='flex-row'>
-							<div class='flex1 config-left'>
-								<form class="form-horizontal ">
-									<div class="form-box-wrap">
-										<div class="form-group col-sm-6">
-											<label for="" class="col-sm-3 control-label">开始时间</label>
-											<div class="col-sm-9">
-												<div class="input-group date time-picker" id="startTime">
-													<input type="text" class=" date-control"> <span
-														class="input-group-addon"> <img
-														src="images/date.png" /></span>
-												</div>
-											</div>
-										</div>
-										<div class="form-group col-sm-6">
-											<label for="" class="col-sm-3 control-label">结束时间</label>
-											<div class="col-sm-9">
-												<div class="input-group date time-picker" id="endTime">
-													<input type="text" class="date-control "> <span
-														class="input-group-addon"> <img
-														src="images/date.png" /></span>
-												</div>
-											</div>
-										</div>
-										<div class="form-group col-sm-6">
-											<label for="" class="col-sm-3 control-label">循环周期</label>
-											<div class="col-sm-9">
-												<div class="input-group">
-													<input type="text" class="form-control "
-														placeholder="单位(分钟)">
-												</div>
-											</div>
-										</div>
-										<div class="form-group col-sm-6">
-											<label for="" class="col-sm-3 control-label">执行时长</label>
-											<div class="col-sm-9">
-												<div class="input-group">
-													<input type="text" class="form-control "
-														placeholder="单位(秒)">
-												</div>
-											</div>
-										</div>
-									</div>
-
-									<div class="col-sm-6 box-title-wrap">
-										<label for="" class="col-sm-6 control-label"><span
-											class="wrap-title">参数</span></label>
-									</div>
-									<div class="col-sm-6 box-title-wrap">
-										<label for="" class="col-sm-6 control-label"><span
-											class="wrap-title">采集次数</span></label>
-									</div>
-									<div class="form-box-wrap form-box-down">
-										<div class="form-group col-sm-6">
-											<label for="" class="col-sm-3 control-label">IQ帧数</label>
-											<div class="col-sm-9">
-												<div class="input-group">
-													<input type="text" class="form-control "
-														placeholder="单位(次)">
-												</div>
-											</div>
-										</div>
-										<div class="form-group col-sm-6">
-											<div class="col-sm-6 padding_0_8">
-												<div class="input-group">
-													<input type="text" class="form-control "
-														placeholder="单位(次)">
-												</div>
-											</div>
-										</div>
-										<div class="form-group col-sm-6">
-											<label for="" class="col-sm-3 control-label">频谱帧数</label>
-											<div class="col-sm-9">
-												<div class="input-group">
-													<input type="text" class="form-control "
-														placeholder="单位(次)">
-												</div>
-											</div>
-										</div>
-										<div class="form-group col-sm-6">
-											<div class="col-sm-6 padding_0_8">
-												<div class="input-group">
-													<input type="text" class="form-control "
-														placeholder="单位(次)">
-												</div>
-											</div>
-										</div>
-										<div class="form-group col-sm-6">
-											<label for="" class="col-sm-3 control-label">特征帧数</label>
-											<div class="col-sm-9">
-												<div class="input-group">
-													<input type="text" class="form-control "
-														placeholder="单位(次)">
-												</div>
-											</div>
-										</div>
-										<div class="form-group col-sm-6">
-											<div class="col-sm-6 padding_0_8">
-												<div class="input-group">
-													<input type="text" class="form-control "
-														placeholder="单位(次)">
-												</div>
-											</div>
-										</div>
-										<div class="form-group col-sm-6">
-											<label for="" class="col-sm-3 control-label">ITU帧数</label>
-											<div class="col-sm-9">
-												<div class="input-group">
-													<input type="text" class="form-control "
-														placeholder="单位(次)">
-												</div>
-											</div>
-										</div>
-										<div class="form-group col-sm-6">
-											<div class="col-sm-6 padding_0_8">
-												<div class="input-group">
-													<input type="text" class="form-control "
-														placeholder="单位(次)">
-												</div>
-											</div>
-										</div>
-										<div class="form-group col-sm-6">
-											<label for="" class="col-sm-3 control-label">声音时间</label>
-											<div class="col-sm-9">
-												<div class="input-group">
-													<input type="text" class="form-control "
-														placeholder="单位(秒)">
-												</div>
-											</div>
-										</div>
-										<div class="form-group col-sm-6">
-											<div class="col-sm-6 padding_0_8">
-												<div class="input-group">
-													<input type="text" class="form-control "
-														placeholder="单位(次)">
-												</div>
-											</div>
-										</div>
-									</div>
-
-									<div class="form-group ">
-										<div class="col-sm-offset-3 col-sm-9 mrg-top15 text-right">
-											<button type="submit" class="btn btn-default btn-apply">应用</button>
-										</div>
-									</div>
-								</form>
+							<div class='flex1 config-left' id="important_monitor"></div>
+						</div>
+						<div class="form-group ">
+							<div class="col-sm-offset-3 col-sm-9 mrg-top15 text-right">
+								<button type="button" id='buttonUpdate'
+									class="btn btn-default btn-apply">更新</button>
+							</div>
+						</div>
+						<div class="form-group ">
+							<div class="col-sm-offset-3 col-sm-9 mrg-top15 text-right">
+								<button type="button" id='buttonDelete'
+									class="btn btn-default btn-apply">删除</button>
+							</div>
+						</div>
+						<div class="form-group ">
+							<div class="col-sm-offset-3 col-sm-9 mrg-top15 text-right">
+								<button type="button" id='buttonInsert'
+									class="btn btn-default btn-apply">添加</button>
 							</div>
 						</div>
 					</div>
+
 				</div>
 			</div>
 		</div>
+	</div>
 	</div>
 
 	<script src="3.9/init.js"></script>

@@ -30,7 +30,111 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 			var a = $(e.relatedTarget);
         	var beginFreq = a.data('beginfreq');
         	var endFreq = a.data('endfreq');
+        	var data = {};
+        	data.beginFreq = beginFreq;
+        	data.endFreq = endFreq;
+        	var str = JSON.stringify(data);
+        	$.ajax({
+    			url : 'waveorder/importantMonitor',
+    			type : 'post',
+    			data : str,//传输数据
+    			contentType : 'application/json',//传输数据类型
+    			dataType : 'html',//返回数据类型
+    			success : function (html) {
+    				$("#important_monitor").html(html);
+    			}
+    		})
 		});
+		
+//		$('#important-monitor-form').submit(function() { 
+//			var options = { 
+////			        target:        '#output2',   // target element(s) to be updated with server response 
+////			        beforeSubmit:  showRequest,  // pre-submit callback 
+//			        success: function(){
+//			        	alert("success!");
+//			        },  // post-submit callback 
+//			 
+//			        // other available options: 
+//			        url : 'waveorder/importantMonitorOperation',       // override for form's 'action' attribute 
+//			        type: 'post',        // 'get' or 'post', override for form's 'method' attribute 
+//			        //dataType:  null        // 'xml', 'script', or 'json' (expected server response type) 
+//			        //clearForm: true        // clear all form fields after successful submit 
+//			        //resetForm: true        // reset the form after successful submit 
+//			 
+//			        // $.ajax options can be used here too, for example: 
+//			        //timeout:   3000 
+//			    }; 
+//	        // inside event callbacks 'this' is the DOM element so we first 
+//	        // wrap it in a jQuery object and then invoke ajaxSubmit 
+//	        $(this).ajaxSubmit(options); 
+//	 
+//	        // !!! Important !!! 
+//	        // always return false to prevent standard browser submit and page navigation 
+//	        return false; 
+//	    }); 
+
+		$("#buttonInsert").click(function(event) {
+//			event.preventDefault();
+//			console.log("阻止表单提交");
+//			console.log(event);
+			
+			var str = $("#important-monitor-form").serialize();
+			console.log(str);
+			$.ajax({
+				url : 'waveorder/importantMonitorCreateOrUpdate',
+				type : 'post',
+				data : str,
+				dataType : 'text',// 只返回bool值
+				success : function(str) {
+					if (str=="true") {
+						
+						alert("添加成功！");
+					} else {
+						alert("添加失败！");
+					}
+				}
+			})
+		});
+			$("#buttonUpdate").click(function(event) {
+			
+
+					var str = $("#important-monitor-form").serialize();
+					console.log(str);
+					$.ajax({
+						url : 'waveorder/importantMonitorCreateOrUpdate',
+						type : 'post',
+						data : str,
+						dataType : 'text',// 只返回bool值
+						success : function(str) {
+							if (str=="true") {
+
+								alert("更新成功！");
+							} else {
+								alert("更新失败！");
+							}
+						}
+					})
+				});
+			
+			$("#buttonDelete").click(function(event) {
+			
+				var str = $("#important-monitor-form").serialize();
+				console.log(str);
+				$.ajax({
+					url : 'waveorder/importantMonitorDelete',
+					type : 'post',
+					data : str,
+					dataType : 'text',// 只返回bool值
+					success : function(bool) {
+						if (bool=="true") {
+							alert("删除成功！");
+						} else {
+							alert("删除失败！");
+						}
+					}
+				})
+			});
+		
 		
 		$("#modalSignal").on("shown.bs.modal",function(e){
 			var a = $(e.relatedTarget);

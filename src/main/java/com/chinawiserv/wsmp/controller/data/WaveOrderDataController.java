@@ -206,7 +206,7 @@ public class WaveOrderDataController {
 			// System.out.println("====信号频率："+t.getCenterFreq());
 			RedioDetail redio = new RedioDetail();
 			BigDecimal cFreq = new BigDecimal(t.getCenterFreq());
-			BigDecimal divisor = new BigDecimal(100000);
+			BigDecimal divisor = new BigDecimal(1000000);
 			redio.setCentor(Float.valueOf((cFreq.divide(divisor).toString())));
 			redio.setBand(t.getBandWidth());
 			// 设置监测站

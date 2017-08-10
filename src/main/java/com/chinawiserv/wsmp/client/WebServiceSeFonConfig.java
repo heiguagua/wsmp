@@ -1,15 +1,14 @@
 package com.chinawiserv.wsmp.client;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
+import com.sefon.ws.service.impl.QueryToolsService;
+import com.sefon.ws.service.impl.QueryToolsServicePortType;
+import com.sefon.ws.service.impl.StationService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.sefon.ws.service.impl.QueryToolsService;
-import com.sefon.ws.service.impl.QueryToolsServicePortType;
-import com.sefon.ws.service.impl.StationService;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 @Configuration
 public class WebServiceSeFonConfig {
@@ -20,7 +19,7 @@ public class WebServiceSeFonConfig {
     @Value("${sefon.webservice.queryToolservice}")
     private String queryToolsUrl;
 
-    //@Bean
+    @Bean
     public StationService initStationService() throws MalformedURLException {
 	URL wsdlLoction = new URL(url);
 	StationService stationService = new StationService(wsdlLoction);
