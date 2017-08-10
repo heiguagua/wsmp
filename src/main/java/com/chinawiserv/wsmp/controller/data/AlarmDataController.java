@@ -1,13 +1,11 @@
 package com.chinawiserv.wsmp.controller.data;
 
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.chinawiserv.apps.util.logger.Logger;
 import com.chinawiserv.wsmp.client.WebServiceSoapFactory;
 import com.chinawiserv.wsmp.hbase.HbaseClient;
 import com.chinawiserv.wsmp.hbase.query.OccAndMax;
 import com.chinawiserv.wsmp.levellocate.socket.model.Params;
-import com.chinawiserv.wsmp.levellocate.socket.model.Result;
 import com.chinawiserv.wsmp.model.LevelLocate;
 import com.chinawiserv.wsmp.pojo.IntensiveMonitoring;
 import com.chinawiserv.wsmp.pojo.Station;
@@ -306,19 +304,20 @@ public class AlarmDataController {
 
         List<LevelLocate> relate = hbaseClient.queryLevelLocate(dateTime, centerFreq);
 
+        relate.get(0).setFlon(105.080555555556);
+        relate.get(0).setFlat(26.6838888888889);
+
+        relate.get(1).setFlon(106.098333333333);
+        relate.get(1).setFlat(26.6636111111111);
+
         //List<String> stationcode = (List<String>) param.get("stationcode");
 
         List<String> stationcode = Lists.newLinkedList();
 
         stationcode.add("52010120");
         stationcode.add("52010126");
+
         List<LevelLocate> mapPoint = relate.stream().filter(t -> stationcode.contains(t.getId())).collect(toList());
-
-        mapPoint.get(0).setFlon(105.080555555556);
-        mapPoint.get(0).setFlat(26.6838888888889);
-
-        mapPoint.get(1).setFlon(106.098333333333);
-        mapPoint.get(1).setFlat(26.6636111111111);
 
         List<Map<String, Object>> levelPoint = Lists.newLinkedList();
 
@@ -326,14 +325,14 @@ public class AlarmDataController {
 
         Params params = new Params();
 
-        double[] flon = mapPoint.stream().mapToDouble(LevelLocate::getFlon).toArray();
-        double[] flat = mapPoint.stream().mapToDouble(LevelLocate::getFlat).toArray();
-        double[] level = mapPoint.stream().mapToDouble(LevelLocate::getLevel).toArray();
+        double[] flon = relate.stream().mapToDouble(LevelLocate::getFlon).toArray();
+        double[] flat = relate.stream().mapToDouble(LevelLocate::getFlat).toArray();
+        double[] level = relate.stream().mapToDouble(LevelLocate::getLevel).toArray();
 
         params.setSid("" + System.currentTimeMillis());// sid能够表该次计算的唯一标识
         params.setStype((byte) 3);// 固定3，标识计算类型为场强计算
         params.setDistanceTh(10d);// 距离门限，单位km，值是界面传递进来的
-        params.setNum(mapPoint.size());// 传感器数
+        params.setNum(relate.size());// 传感器数
 
         params.setIds(ids);// 所有传感器
 
@@ -341,29 +340,47 @@ public class AlarmDataController {
         params.setLat(flat);// 每个传感器的纬度
         params.setLevel(level);// 每个传感器的均值
 
-        try {
+        Map<String, Object> map = Maps.newHashMap();
 
-            for (String code : stationcode) {
+        map.put("x", 105.080555555556);
+        map.put("y", 27.6838888888889);
+        map.put("radius",10000);
+        map.put("stationId", "xxxxx");
 
-                params.setWarningId(Integer.parseInt(code));// 告警传感器id
-                Result result = Locate.execute(params);
+        Map<String, Object> map1 = Maps.newHashMap();
 
-                System.out.println(JSON.toJSON(result));
+        map1.put("x", 105.080555555556);
+        map1.put("y", 25.6838888888889);
+        map1.put("radius",40000);
+        map1.put("stationId", "xxxxx");
 
-                Map<String, Object> map = Maps.newHashMap();
+        levelPoint.add(map);
+        levelPoint.add(map1);
 
-                map.put("x", result.getOutLon());
-                map.put("y", result.getOutLat());
-                map.put("radius", result.getRangeR());
-                map.put("stationId", result.getSid());
-                levelPoint.add(map);
-            }
-
-
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+//        try {
+//
+//            for (LevelLocate levelLocate : mapPoint) {
+//
+//                params.setWarningId(Integer.parseInt(levelLocate.getId()));// 告警传感器id
+//                Result result = Locate.execute(params);
+//
+//                System.out.println(JSON.toJSON(result));
+//
+//                Map<String, Object> map = Maps.newHashMap();
+//
+//                map.put("x", result.getOutLon());
+//                map.put("y", result.getOutLat());
+//                map.put("radius", result.getRangeR());
+//                map.put("stationId", result.getSid());
+//
+//                levelPoint.add(map);
+//            }
+//
+//
+//        } catch (Exception e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
 
         List<Map<String, String>> stationPiont = mapPoint.stream().map(station -> {
             HashMap<String, String> element = Maps.newHashMap();
@@ -374,16 +391,16 @@ public class AlarmDataController {
             return element;
         }).collect(toList());
 
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> mapPiont = new HashMap<>();
 
-        map.put("stationPiont", stationPiont);
-        map.put("levelPoint", levelPoint);
+        mapPiont.put("stationPiont", stationPiont);
+        mapPiont.put("levelPoint", levelPoint);
 
         // map.put("x", "106.709177096");
         // map.put("y", "26.6299067414");
         // map.put("count", "45");
         // map.put("stationId", "oopsoo");
-        return map;
+        return mapPiont;
     }
 
     @GetMapping(path = "/stationsf")

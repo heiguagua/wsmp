@@ -2,9 +2,9 @@
  * Created by wuhaoran on 2017/2/25.
  */
 //
-define(["home/signal/signal_manage", "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer", "dojo/request", "esri/layers/GraphicsLayer", "esri/dijit/Scalebar"
+define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/signal/signal_manage", "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer", "dojo/request", "esri/layers/GraphicsLayer", "esri/dijit/Scalebar"
 	, "esri/symbols/TextSymbol", "esri/geometry/Point", "esri/graphic", "esri/symbols/Font", "esri/symbols/SimpleMarkerSymbol", "echarts" ],
-	function(signal_manage,ajax, parser, Map, ArcGISTiledMapServiceLayer, request, GraphicsLayer, Scalebar, TextSymbol, Point, graphic, Font, SimpleMarkerSymbol, echarts) {
+	function(SimpleFillSymbol,Circle,signal_manage,ajax, parser, Map, ArcGISTiledMapServiceLayer, request, GraphicsLayer, Scalebar, TextSymbol, Point, graphic, Font, SimpleMarkerSymbol, echarts) {
 		var testWidget = null;
 
         var pSymbol = null;
@@ -134,7 +134,7 @@ define(["home/signal/signal_manage", "ajax", "dojo/parser", "esri/map", "esri/la
                         var LevelSize = arryOfLevel.length;
 
 
-                        for (var index = 0; index < LevelSize; index++) {
+                        for (var index = 0; index < stationSize; index++) {
 
                             var p = new Point(arryOfStation[index]);
 
@@ -151,8 +151,8 @@ define(["home/signal/signal_manage", "ajax", "dojo/parser", "esri/map", "esri/la
                         }
 
 
-                        for(var index = 0 ; index < stationSize;index++){
-
+                        for(var index = 0 ; index < LevelSize;index++){
+							console.log(arryOfLevel[index]);
                             var p = new Point(arryOfLevel[index]);
                             var circle = new Circle(p,{
                                 geodesic: true,
@@ -164,6 +164,8 @@ define(["home/signal/signal_manage", "ajax", "dojo/parser", "esri/map", "esri/la
                             glayer.add(circleGrap);
 
                         }
+
+                        //map.addLayer(glayer);
 
                         dojo.connect(map, "onClick", function(e){
                             console.log(e.graphic.geometry);
