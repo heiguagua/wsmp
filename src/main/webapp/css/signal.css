@@ -339,3 +339,13 @@ td.bs-checkbox{
 .fixed-table-loading{
 	display:none;
 }
+.cover-rect{
+	width:0;
+	height:0;
+    top: 0;
+    left: 0;
+    position: absolute;
+    border: 1px solid #949494;
+    overflow: hidden;
+    background: rgba(239, 239, 239, 0.18);
+    }
