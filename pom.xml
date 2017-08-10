@@ -55,7 +55,7 @@
 
 		<dependency>
 			<groupId>com.chinawiserv.wsmp</groupId>
-			<artifactId>LevelLocate</artifactId>
+			<artifactId>wsmp-level-locate</artifactId>
 			<version>2.1.0</version>
 		</dependency>
 

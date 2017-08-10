@@ -124,7 +124,7 @@ define(["home/signal/signal_manage", "ajax", "dojo/parser", "esri/map", "esri/la
 
                     var data = {"stationcode":codes,"frequency":centorfreq,"beginTime":beginTime};
 
-                    ajax.get("data/alarm/getStation", data, function(reslut) {
+                    ajax.post("data/alarm/getStation", data, function(reslut) {
                         glayer.clear();
 
                         var arryOfStation = reslut.stationPiont;
@@ -416,6 +416,7 @@ define(["home/signal/signal_manage", "ajax", "dojo/parser", "esri/map", "esri/la
 		}
 
 		return {
-			init : pares
+			init : pares,
+            select_change : select_change
 		}
 	});

@@ -1,4 +1,13 @@
 define(["jquery", "bootstrap", "echarts", "ajax"], function(jquery, bootstrap, echarts, ajax) {
+
+    var initMap = null
+
+    function setMap(init){
+
+        console.log(init);
+        initMap = init;
+    }
+
     function init() {
 
         init_select2();
@@ -643,6 +652,9 @@ define(["jquery", "bootstrap", "echarts", "ajax"], function(jquery, bootstrap, e
 
         // 加载音频数据
         load_audio_data();
+
+        console.log(initMap);
+        initMap.select_change();
     }
 
     function changeFirstChartView(stationcode) {
@@ -2138,6 +2150,7 @@ define(["jquery", "bootstrap", "echarts", "ajax"], function(jquery, bootstrap, e
     };
     return {
         init : init,
-        changeView : changeView
+        changeView : changeView,
+        set:setMap
     }
 })
