@@ -1198,12 +1198,8 @@ define(["jquery", "bootstrap", "echarts", "ajax"], function(jquery, bootstrap, e
     function spectrum_player() {
 
         var timeline_length = [];
-        if (spectrum_play_list.length == 1) {
-            timeline_length = [0, 1];
-        } else {
-            for (var i = 0; i < spectrum_play_list.length; i++) {
-                timeline_length.push(i + 1);
-            }
+        for (var i = 0; i < spectrum_play_list.length; i++) {
+            timeline_length.push(i + 1);
         }
 
         var option = {
@@ -1535,12 +1531,8 @@ define(["jquery", "bootstrap", "echarts", "ajax"], function(jquery, bootstrap, e
     function iq_player() {
 
         var timeline_length = [];
-        if (iq_play_list.length == 1) {
-            timeline_length = [0, 1];
-        } else {
-            for (var i = 0; i < iq_play_list.length; i++) {
-                timeline_length.push(i + 1);
-            }
+        for (var i = 0; i < iq_play_list.length; i++) {
+            timeline_length.push(i + 1);
         }
 
         var option = {
