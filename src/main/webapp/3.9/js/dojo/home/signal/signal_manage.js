@@ -1283,6 +1283,9 @@ define(["jquery", "bootstrap", "echarts", "ajax"], function(jquery, bootstrap, e
                 yAxis : [{
                     'type' : 'value',
                     'name' : '电平(dBμV)',
+                    'nameRotate':90,
+                    'nameLocation':'middle',
+                    'nameGap':30,
                     'max' : 100,
                     'min' : -40,
                     'onZero' : false,
