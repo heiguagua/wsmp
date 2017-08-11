@@ -3,8 +3,8 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
     var audio_play_list = [];
     function load_audio_data(stationcode,centorfreq,beginTime,endTime) {
 
-        //var url = "data/asiq/audio/" + stationcode + "/" + centorfreq + "/" + beginTime + "/" + endTime;
-        var url = "data/asiq/audio/52010126/10040000000000/20170810135330/20170810135330";
+        var url = "data/asiq/audio/" + stationcode + "/" + centorfreq + "/" + beginTime + "/" + endTime;
+        //var url = "data/asiq/audio/52010126/10040000000000/20170810135330/20170810135330";
         //var url = "assets/json/audio-player-list.json";
         ajax.get(url, null, function(result) {
             var data = result;

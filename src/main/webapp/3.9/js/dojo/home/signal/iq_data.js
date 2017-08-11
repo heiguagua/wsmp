@@ -2,8 +2,8 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
 	var iq_play_list = [];
     // 加载IQ数据
     function load_iq_data(stationcode,centorfreq,beginTime,endTime) {
-        //var url = "data/asiq/iq/" + stationcode + "/" + centorfreq + "/" + beginTime + "/" + endTime;
-        var url = "data/asiq/iq/52010126/80000000/20170810144216/20170810144216";
+        var url = "data/asiq/iq/" + stationcode + "/" + centorfreq + "/" + beginTime + "/" + endTime;
+        //var url = "data/asiq/iq/52010126/80000000/20170810144216/20170810144216";
         //var url = "assets/json/iq-player-list.json";
         ajax.get(url, null, function(result) {
             $('#IQ-table').bootstrapTable({

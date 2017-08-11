@@ -9,8 +9,8 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
     function load_spectrum_data(stationcode,centorfreq,beginTime,endTime) {
 
         var data = null;
-        //var url = "data/asiq/spectrum/" + stationcode + "/" + centorfreq + "/" + beginTime + "/" + endTime;
-        var url = "data/asiq/spectrum/52010126/80000000/20170810144216/20170810144216";
+        var url = "data/asiq/spectrum/" + stationcode + "/" + centorfreq + "/" + beginTime + "/" + endTime;
+        //var url = "data/asiq/spectrum/52010126/80000000/20170810144216/20170810144216";
         //var url = "assets/json/spectrum-player-list.json";
         ajax.get(url, null, function(result) {
             data = result;
