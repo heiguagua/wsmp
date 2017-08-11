@@ -671,3 +671,15 @@ border-radius: 4px;
 .padding_0_8{
 	padding:0 8px;
 }
+.maxlevel-cover-rect{
+	width:0;
+	height:0;
+    top: 0;
+    left: 0;
+    position: absolute;
+    border: 1px solid rgba(221, 221, 221, 0.68);
+    border-top:0;
+    border-bottom:0;
+    overflow: hidden;
+    background: rgba(239, 239, 239, 0.48);
+}

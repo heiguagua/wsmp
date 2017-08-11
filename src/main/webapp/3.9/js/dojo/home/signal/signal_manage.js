@@ -794,10 +794,10 @@ define(["jquery", "bootstrap", "echarts", "ajax"], function(jquery, bootstrap, e
                 var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
                 var scrollLeft = document.body.scrollLeft || document.documentElement.scrollLeft;
                 startX = evt.clientX + scrollLeft;
-                startY = evt.pageY - evt.offsetY;
+                startY = evt.pageY - evt.offsetY +30;
                // startY = evt.clientY + scrollTop;
                 var div = $('<div class="maxlevel-cover-rect"></div>');
-                div.css({"margin-left":startX+"px","margin-top":startY+"px","height":evt.target.height +"px"});
+                div.css({"margin-left":startX+"px","margin-top":startY+"px","height":evt.target.height - 56 +"px"});
                 div.appendTo('body');
             }
             else if(e.which == 3) {// 鼠标右键点击
@@ -871,13 +871,13 @@ define(["jquery", "bootstrap", "echarts", "ajax"], function(jquery, bootstrap, e
     	          var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
     	          var scrollLeft = document.body.scrollLeft || document.documentElement.scrollLeft;
     	          retcLeft = (startX - evt.clientX - scrollLeft > 0 ? evt.clientX + scrollLeft : startX) + "px";
-    	          retcTop = evt.pageY - evt.offsetY +  "px";
+    	          retcTop = evt.pageY - evt.offsetY + 30+  "px";
     	          retcHeight = Math.abs(startY - evt.clientY - scrollTop) + "px";
     	          retcWidth = Math.abs(startX - evt.clientX - scrollLeft) + "px";
     	          $(".maxlevel-cover-rect").css({"margin-left":retcLeft});
     	          $(".maxlevel-cover-rect").css({"margin-top":retcTop});
     	          $(".maxlevel-cover-rect").css({"width":retcWidth});
-    	          $(".maxlevel-cover-rect").css({"height":evt.target.height +"px"});
+    	          $(".maxlevel-cover-rect").css({"height":evt.target.height-56 +"px"});
     	      }
     	      else if(right_keydown_flag) {// 右键已被按下
     	          
