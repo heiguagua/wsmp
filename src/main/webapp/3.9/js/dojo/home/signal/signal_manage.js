@@ -1229,14 +1229,14 @@ define(["jquery", "bootstrap", "echarts", "ajax"], function(jquery, bootstrap, e
                 },
                 legend : {
                     "show" : true,
-                    x : 'right',
+                    x : 'left',
                     'data' : ['']
                 },
 
                 calculable : true,
                 grid : {
                     'y' : 40,
-                    'y2' : 80,
+                    'y2' : 40,
                     'x' : 60,
                     'x2' : 10
                 },
@@ -1561,7 +1561,7 @@ define(["jquery", "bootstrap", "echarts", "ajax"], function(jquery, bootstrap, e
                 },
                 legend : {
                     show : true,
-                    x : 'right',
+                    x : 'left',
                     padding : 10,
                     data : ['I', 'Q'],
                     textStyle : {
