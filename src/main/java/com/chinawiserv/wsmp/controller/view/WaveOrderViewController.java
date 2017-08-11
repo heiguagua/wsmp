@@ -25,6 +25,7 @@ import org.tempuri.RadioSignalWebService;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.chinawiserv.apps.logger.Logger;
 import com.chinawiserv.wsmp.pojo.MeasureTaskParamDto;
 import com.chinawiserv.wsmp.pojo.RedioStatusCount;
 
@@ -193,5 +194,6 @@ public class WaveOrderViewController {
 		model.addAttribute("redio", rsCountTotal);
 		return "waveorder/redio_type_list";
 	}
+
 }
 

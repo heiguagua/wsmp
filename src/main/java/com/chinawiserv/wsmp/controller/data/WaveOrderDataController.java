@@ -245,29 +245,29 @@ public class WaveOrderDataController {
 	public List<Map<String, ?>> getMonitorsPoint(@RequestBody Map<String,Object> param) {
 		
 		//请求参数为监测站ID列表,和信号类型值。
-		Logger.info("=======================================param {}",  param);
+//		Logger.info("============监测站地图===========================param {}",  param);
 		
 		final List<?> monitorsID = (List<?>) param.get("monitorsNum");
-		System.out.println("=========================================monitorsList:"+monitorsID);
+//		System.out.println("=========================================monitorsList:"+monitorsID);
 		
 		//根据信号类型，监测站列表（id or name）查询能够监测到该信号的监测站ID和个数，和每个监测站的该信号个数。
 		RadioSignalWebService service = new RadioSignalWebService();
 		RadioSignalQueryRequest request = new RadioSignalQueryRequest();
 //		 设置信号类型
-		 ArrayOfSignalTypeDTO value = new ArrayOfSignalTypeDTO();
-		 List<SignalTypeDTO> signalTypeDTO = Lists.newArrayList();
-		 SignalTypeDTO dto = new SignalTypeDTO();
-		 dto.setSignalType(Integer.valueOf(param.get("signalType").toString()));
-		 signalTypeDTO.add(dto);
-		 value.setSignalTypeDTO(signalTypeDTO );
-		 request.setTypeCodes(value );
+		ArrayOfSignalTypeDTO value = new ArrayOfSignalTypeDTO();
+		List<SignalTypeDTO> signalTypeDTO = Lists.newArrayList();
+		SignalTypeDTO dto = new SignalTypeDTO();
+		dto.setSignalType(Integer.valueOf(param.get("signalType").toString()));
+		signalTypeDTO.add(dto);
+		value.setSignalTypeDTO(signalTypeDTO);
+		request.setTypeCodes(value);
 //		 设置监测站，过滤有信号的监测站ID
 		ArrayOfString value1 = new ArrayOfString();
 		List<String> string = monitorsID.stream().map(o -> o.toString()).collect(Collectors.toList());
 		value1.setString(string);
 		request.setStationIDs(value1);
 		RadioSignalQueryResponse response = service.getRadioSignalWebServiceSoap().queryRadioSignal(request);
-		System.out.println("====================:" + JSON.toJSONString(response));
+//		System.out.println("====================:" + JSON.toJSONString(response));
 		Map<String, List<RadioSignalStationDTO>> map1 = response.getRadioSignals().getRadioSignalDTO().stream()
 				.flatMap(t -> t.getStationDTOs().getRadioSignalStationDTO().stream())
 				.collect(Collectors.groupingBy(RadioSignalStationDTO::getStationNumber));
@@ -276,7 +276,7 @@ public class WaveOrderDataController {
 			.map(e -> ImmutableMap.of("monitorID", e.getKey(), "count", Integer.valueOf(e.getValue().size())))
 			.collect(Collectors.toList());
 		
-		System.out.println("===================:"+resultList);
+//		System.out.println("===================:"+resultList);
 		return resultList;
 	}
 

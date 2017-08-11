@@ -19,10 +19,10 @@ define(["dojo/parser","esri/map","esri/layers/ArcGISTiledMapServiceLayer","dojo/
         	//center :[104.06,30.67], 
         	zoom : 10
         });
-        var map2 = new Map("mapDiv2",{
-        	//center :[104.06,30.67], 
-        	zoom : 10
-        });
+//        var map2 = new Map("mapDiv2",{
+//        	//center :[104.06,30.67], 
+//        	zoom : 10
+//        });
         
         //var url = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer";
         var url = "http://192.168.21.105:8081/PBS/rest/services/guiyang/MapServer";
@@ -32,14 +32,14 @@ define(["dojo/parser","esri/map","esri/layers/ArcGISTiledMapServiceLayer","dojo/
         var glayer1 = new GraphicsLayer();
         map1.addLayer(glayer1);
        
-        map2.addLayer(agoLayer2);
-        var glayer2 = new GraphicsLayer();
-        map2.addLayer(glayer2);
+//        map2.addLayer(agoLayer2);
+//        var glayer2 = new GraphicsLayer();
+//        map2.addLayer(glayer2);
         var maps  = {};
         maps.map1 = map1;
         maps.glayer1 = glayer1;
-        maps.map2 = map2;
-        maps.glayer2 = glayer2;
+//        maps.map2 = map2;
+//        maps.glayer2 = glayer2;
         return maps;
     }
     return {

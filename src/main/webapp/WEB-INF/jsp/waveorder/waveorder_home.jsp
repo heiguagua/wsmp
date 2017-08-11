@@ -79,7 +79,7 @@
 		<section class='flex-row'>
 			<div class='box'>
 				<div id='redioType'></div>
-				<div id="mapDiv1"padding: 10px; height: 960px"></div>
+				<div id="mapDiv1"padding: 10px; height: 960px></div>
 			</div>
 		</section>
 
@@ -264,7 +264,7 @@
 													[ "home/waveorder/waveorder_manage" ],
 													function(wave_order) {
 														var maps = init.init();
-														console.log(maps)
+														console.log(maps);
 														wave_order.init(maps);
 													})
 										})

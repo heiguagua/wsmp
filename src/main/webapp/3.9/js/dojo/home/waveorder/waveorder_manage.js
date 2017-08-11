@@ -78,6 +78,22 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 //	        // always return false to prevent standard browser submit and page navigation 
 //	        return false; 
 //	    }); 
+		
+		
+		$("#table-signal-list").on("click",".centerFreqA",function(e) {
+			console.log(e.target.text);//中心频率
+			var freq = e.target.text;
+			console.log(freq);
+			const urlObj = {
+					ServerName: 'host1',// 跳四方用host1,跳自己这边用host2
+					DisplayName: '单频率',
+					MultiTabable: false,
+					ReflushIfExist: true,
+					Url: '#/FrequencySingle/'+freq,
+			};
+			Binding.openUrl(JSON.stringify(urlObj));
+			
+		})
 		$("#table-alarm-undeal").on("click",".centerFreqA",function(e) {
 			console.log(e.target.text);//中心频率
 			var freq = e.target.text;
@@ -202,7 +218,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 	                title: '频率(kHz)',
 	                width:'18%',
 	                formatter:function(value,row,index) {
-	                  return '<a>'+value+'</a>';
+	                  return '<a class="centerFreqA">'+value+'</a>';
 	                }
 	            }, {
 	                field: 'band',
@@ -534,7 +550,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 						field : 'redioName',
 						title : '频段名称',
 						formatter : function(value, row, index) {
-							return '<a>' + value + '</a>';
+							return  value;
 						}
 					}, {
 						field : 'legalNormalStationNumber',
@@ -600,7 +616,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 						field : 'redioName',
 						title : '频段名称',
 						formatter : function(value, row, index) {
-							return '<a>' + value + '</a>';
+							return  value ;
 						}
 					}, {
 						field : 'legalNormalStationNumber',
