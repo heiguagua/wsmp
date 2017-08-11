@@ -245,7 +245,7 @@ public class WaveOrderDataController {
 	public List<Map<String, ?>> getMonitorsPoint(@RequestBody Map<String,Object> param) {
 		
 		//请求参数为监测站ID列表,和信号类型值。
-		Logger.debug("=======================================param {}",  param);
+		Logger.info("=======================================param {}",  param);
 		
 		final List<?> monitorsID = (List<?>) param.get("monitorsNum");
 		System.out.println("=========================================monitorsList:"+monitorsID);
@@ -253,14 +253,14 @@ public class WaveOrderDataController {
 		//根据信号类型，监测站列表（id or name）查询能够监测到该信号的监测站ID和个数，和每个监测站的该信号个数。
 		RadioSignalWebService service = new RadioSignalWebService();
 		RadioSignalQueryRequest request = new RadioSignalQueryRequest();
-		// 设置信号类型
-		// ArrayOfSignalTypeDTO value = new ArrayOfSignalTypeDTO();
-		// List<SignalTypeDTO> signalTypeDTO = Lists.newArrayList();
-		// SignalTypeDTO dto = new SignalTypeDTO();
-		// dto.setSignalType(1);
-		// signalTypeDTO.add(dto);
-		// value.setSignalTypeDTO(signalTypeDTO );
-		// request.setTypeCodes(value );
+//		 设置信号类型
+		 ArrayOfSignalTypeDTO value = new ArrayOfSignalTypeDTO();
+		 List<SignalTypeDTO> signalTypeDTO = Lists.newArrayList();
+		 SignalTypeDTO dto = new SignalTypeDTO();
+		 dto.setSignalType(Integer.valueOf(param.get("signalType").toString()));
+		 signalTypeDTO.add(dto);
+		 value.setSignalTypeDTO(signalTypeDTO );
+		 request.setTypeCodes(value );
 //		 设置监测站，过滤有信号的监测站ID
 		ArrayOfString value1 = new ArrayOfString();
 		List<String> string = monitorsID.stream().map(o -> o.toString()).collect(Collectors.toList());
@@ -272,18 +272,11 @@ public class WaveOrderDataController {
 				.flatMap(t -> t.getStationDTOs().getRadioSignalStationDTO().stream())
 				.collect(Collectors.groupingBy(RadioSignalStationDTO::getStationNumber));
 		
-//		List<Map<String,Object>> resultList = Lists.newArrayList();
 		final List<Map<String,?>> resultList = map1.entrySet().stream()
 			.map(e -> ImmutableMap.of("monitorID", e.getKey(), "count", Integer.valueOf(e.getValue().size())))
 			.collect(Collectors.toList());
 		
 		System.out.println("===================:"+resultList);
-
-//		Map<String, Object> map = Maps.newHashMap();
-//		map.put("x", "103.1");//longitude
-//		map.put("y", "30.1");//latitude
-//		map.put("count", "45");
-//		map.put("stationId", "oopsoo");
 		return resultList;
 	}
 
