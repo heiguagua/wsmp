@@ -16,6 +16,25 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
 
         });
 
+        $("#singletonFreq").click(function () {
+
+            var reopenParam = {};
+
+            reopenParam.ServerName = "host";
+            reopenParam.DisplayName = "单频测量";
+            reopenParam.MultiTabable = "False";
+            reopenParam.ReflushIfExist = "False";
+
+            var statiocode = $('#station_list').find('option:selected').val();
+            var centFreq = $("#search").val();
+
+            reopenParam.Url = "FIXFQViewModel?SerialNumber="+statiocode+"&TaskType=FIXFQ&frequency="+centFreq;
+           var  paramStr = JSON.stringify(reopenParam)
+            console.log(paramStr)
+            Binding.openUrl(paramStr);
+
+        });
+
 
         $("#signal_list").change(function (e) {
 
@@ -174,16 +193,34 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                 console.log(info);
                 info = JSON.parse(info);
 
+                var info = Binding.getUser();
+                info = JSON.parse(info);
+
+                var code = info.Area.Code;
+
+                var stations = Binding.getMonitorNodes(code);
+                stations = JSON.parse(stations);
+
                 var arrys = new Array();
 
                 var codes = info.Area.Code;
+                var stationList = [];
 
-                data.areaCode = codes;
+                for (var index = 0;index<stations.length;index++){
+                    console.log(stations[index].Num);
+                    stationList.push(stations[index].Num);
+                }
+
+                var stationCodeList = {};
+                stationCodeList.string = stationList;
+
                 data.centerFreq = centerFrq;
-                console.log(data);
+                data.stationIDs = stationCodeList;
 
+                console.log(data);
+                data = JSON.stringify(data);
                 $("#signal_list").children().remove();
-                $("#signal_list").load("alarmmanage/singal", data, function () {
+                $("#signal_list").load("alarmmanage/singal",{param : data} , function () {
                     stationselectinit();
                     $('.select2-picker').select2();
 

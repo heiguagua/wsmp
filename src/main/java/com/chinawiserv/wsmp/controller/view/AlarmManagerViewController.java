@@ -1,27 +1,23 @@
 package com.chinawiserv.wsmp.controller.view;
 
-import static java.util.stream.Collectors.toList;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
-import org.tempuri.FreqWarningQueryRequest;
-import org.tempuri.FreqWarningQueryResponse;
-
 import com.chinawiserv.wsmp.client.WebServiceSoapFactory;
 import com.chinawiserv.wsmp.pojo.RedioType;
 import com.chinawiserv.wsmp.pojo.Singal;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.tempuri.FreqWarningQueryRequest;
+import org.tempuri.FreqWarningQueryResponse;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
+import static java.util.stream.Collectors.toList;
 
 @Controller
 @RequestMapping("/alarmmanage")
@@ -54,7 +50,7 @@ public class AlarmManagerViewController {
 	public String singalList(Model model, @RequestParam Map<String, Object> para) throws Exception {
 
 		final ObjectMapper mapper = new ObjectMapper();
-		final String param = mapper.writeValueAsString(para);
+		final String param = para.get("param").toString();
 
 		final FreqWarningQueryResponse response = (FreqWarningQueryResponse) service.freqWarnServiceCall("query", param, FreqWarningQueryRequest.class);
 		System.out.println(mapper.writeValueAsString(response));

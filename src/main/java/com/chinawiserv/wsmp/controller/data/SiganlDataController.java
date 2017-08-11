@@ -48,9 +48,10 @@ public class SiganlDataController {
 	public Object getFMRate(@RequestParam String id, @RequestParam String timeStart, @RequestParam String frequency) throws Exception {
 
 		long frequencyLong = Long.parseLong(frequency);
-
-		Map<String, Object> map = hbaseClient.queryFeaturePara(id, timeStart, frequencyLong);
-
+		Map<String, Object> map = Maps.newHashMap();
+		//Map<String, Object> map = hbaseClient.queryFeaturePara(id, timeStart, frequencyLong);
+		map.put("noise ",4);
+		map.put("normal",7);
 		return map;
 	}
 

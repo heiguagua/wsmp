@@ -2,6 +2,8 @@ define(["jquery", "bootstrap", "echarts", "ajax"], function(jquery, bootstrap, e
 
     var initMap = null
 
+    var time = null;
+
     function setMap(init){
 
         console.log(init);
@@ -968,6 +970,7 @@ define(["jquery", "bootstrap", "echarts", "ajax"], function(jquery, bootstrap, e
             monthChart.setOption(optionMonth);
         }
         monthChart.on('click', function(params) {
+            time = params.name;
         	$('#modalDay').modal();
             
         });
@@ -975,7 +978,7 @@ define(["jquery", "bootstrap", "echarts", "ajax"], function(jquery, bootstrap, e
     }
     
     $('#modalDay').on("shown.bs.modal",function(){
-    	changesecodView(params.name);
+    	changesecodView(time);
     })
 
 

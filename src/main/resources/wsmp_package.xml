@@ -10,6 +10,7 @@
 		<file>
 			<source>${project.basedir}/target/${project.artifactId}.${project.packaging}</source>
 			<outputDirectory>/${project.artifactId}</outputDirectory>
+			<fileMode>755</fileMode>
 		</file>
 	</files>
 	<fileSets>

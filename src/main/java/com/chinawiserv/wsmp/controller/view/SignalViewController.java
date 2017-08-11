@@ -49,8 +49,8 @@ public class SignalViewController {
 			@RequestParam String areaCode, @RequestParam String stationCode, @RequestParam String id) {
 
 		String Id = "52010126";
-		long frequency = 4617175546033143373L;
-		String timeStart = "20170802125344";
+		long frequency = 0L;
+		String timeStart = "20170812125344";
 
 		try {
 			// long frequency = Long.parseLong(centorfreq);
