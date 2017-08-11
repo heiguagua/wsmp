@@ -4,11 +4,12 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 	function wo_init(map_arry) {
 		var user = getUser();
 		getArea(user);
+		var AREACODE = null;
 
 		$('.select2-picker').select2();
 		$(".select2-picker").on("select2:select", function(e) {
-			// e 的话就是一个对象 然后需要什么就 “e.参数” 形式 进行获取 
 			var areaCode = e.target.value;
+			AREACODE = areaCode;
 			var user = getUser();
 			var userID = user.ID;
 			table_radio_init(true, areaCode,userID);
@@ -16,15 +17,19 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 			console.log(monitors);
 			table_alarm_undealed(areaCode,monitors);
 			table_alarm_dealed(areaCode,monitors);
-			addPoint(map_arry, monitors);
+			addPoint(map_arry, monitors,0);//默认选中0
 			redioType(monitors);
 		});
 		
 		$("#tabs a").click(function(e) {
-			console.log(111);
 			e.preventDefault();
 			$(this).tab('show');
 
+		});
+		
+		$("#redioType").on("click","input",function(e){
+			var monitors = getMonitors(AREACODE);
+			addPoint(map_arry, monitors,e.target.value);
 		});
 		
 		$("#modalConfig").on("shown.bs.modal",function(e){
@@ -312,11 +317,11 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 		
 	}
 
-	function addPoint(map_arry, monitors) {
-		
+	function addPoint(map_arry, monitors,signalType) {
 		console.info(map_arry);
 		var data = {};
 		data.monitorsNum = [];
+		data.signalType = signalType;
 		for(var i=0;i<monitors.length;i++) {
 			data.monitorsNum[i] = monitors[i].Num;
 		}
@@ -331,39 +336,27 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 			var map = map_arry.map1;
 			glayer.clear();
 			for(var i=0;i<result.length;i++) {
-				for(var j=0;j<monitors.length && result[i].monitorID != monitors[j];j++) {
-					
+				for(var j=0;j<monitors.length;j++) {
+					if(result[i].monitorID == monitors[j].Num) {
 						var obj = {};
-						obj.x = monitors[j].lontitude;
-						obj.y = monitors[j].latitude;
+						obj.x = monitors[j].Longitude;
+						obj.y = monitors[j].Latitude;
 						obj.count = result[i].count;
 						obj.monitorID = result[i].monitorID;
 						var p = new Point(obj);
-						var textSymbol = new TextSymbol(result.count).setColor(
+						var textSymbol = new TextSymbol(p.count).setColor(
 								new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
-								new Font("12pt").setWeight(Font.WEIGHT_BOLD));
-							var graphic = new esri.Graphic(p, textSymbol);
-							var textsyboml = new esri.Graphic(p, pSymbol);
-							glayer.add(textsyboml);
-							glayer.add(graphic);
+										new Font("12pt").setWeight(Font.WEIGHT_BOLD));
+						var textsyboml = new esri.Graphic(p, textSymbol);//文本
+						var graphic = new esri.Graphic(p, pSymbol);//点
+						glayer.add(graphic);//要先加图
+						glayer.add(textsyboml);//再加文本
+						break;
+					}
 					
 				}
 			}
 			map.addLayer(glayer);
-			
-			
-//			var glayer = map_arry.glayer1;
-//			var map = map_arry.map1;
-//			glayer.clear();
-//			var p = new Point(result);
-//			var textSymbol = new TextSymbol(result.count).setColor(
-//				new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
-//				new Font("12pt").setWeight(Font.WEIGHT_BOLD));
-//			var graphic = new esri.Graphic(p, textSymbol);
-//			var textsyboml = new esri.Graphic(p, pSymbol);
-//			glayer.add(textsyboml);
-//			glayer.add(graphic);
-//			map.addLayer(glayer);
 		});
 
 //		ajax.post("data/waveorder/monitorsPoint", data, function(reslut) {
