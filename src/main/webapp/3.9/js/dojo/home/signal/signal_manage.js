@@ -785,8 +785,8 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                   return;
               }
               else{
-                  var start_percent = (start_index/maxlevel_total_length)*100;
-                  var end_percent = (month_end_index/maxlevel_total_length)*100;
+                  var start_percent = (start_index/month_total_length)*100;
+                  var end_percent = (month_end_index/month_total_length)*100;
                   if(start_percent == end_percent) {
                       return;
                   }
