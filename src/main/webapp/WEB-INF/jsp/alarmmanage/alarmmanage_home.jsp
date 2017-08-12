@@ -134,11 +134,12 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-          <h4 class="modal-title" id="modalDayLabel" style="height: 100%">日占用度（按24小时统计）</h4>
+          <h4 class="modal-title" id="modalDayLabel" style="height: 100%">峰值与日占用度（按24小时统计）</h4>
         </div>
         <div class="modal-body">
           <div id='day'>
-          	<div id = "dayChart" style="width: 700px;height: 300px"></div>
+			  <div id = "dayLevelChart" style="width: 700px;height: 300px"></div>
+          	  <div id = "dayChart" style="width: 700px;height: 300px"></div>
           </div>
         </div>
       </div>

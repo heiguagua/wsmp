@@ -17,9 +17,9 @@ public class CommunicationViewController {
 	})
 	public String communication() {
 
-		station.getCurrentYearCount();
-
-		station.getLastYearCount();
+//		station.getCurrentYearCount();
+//
+//		station.getLastYearCount();
 
 		return "communication/communication_home";
 	}

@@ -104,7 +104,6 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/signal/sign
 				});
 			return map;
 		}
-		
 
 		function select_change() {
 
