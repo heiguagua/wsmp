@@ -61,8 +61,7 @@ public class WebServiceSoapFactory {
 
 		try {
 			Method method = this.freqWarnService.getClass().getMethod(methodName, parameterTypes);
-			final String jsonStr = param.replace("\\","");
-			final JSON json =  (JSON)JSON.parse(jsonStr);
+			final JSON json =  (JSON)JSON.parse(param);
 			Object object = JSON.toJavaObject(json, parameterTypes);
 
 			return method.invoke(this.freqWarnService, object);

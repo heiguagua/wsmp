@@ -1,32 +1,21 @@
 
 package com.chinawiserv.wsmp.controller.view;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
+import com.chinawiserv.wsmp.pojo.MeasureTaskParamDto;
+import com.chinawiserv.wsmp.pojo.RedioStatusCount;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.tempuri.*;
+
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.tempuri.ArrayOfString;
-import org.tempuri.IImportFreqRangeManageService;
-import org.tempuri.ImportFreqRangeManageService;
-import org.tempuri.RadioSignalClassifiedQueryRequest;
-import org.tempuri.RadioSignalClassifiedQueryResponse;
-import org.tempuri.RadioSignalWebService;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
-import com.chinawiserv.wsmp.pojo.MeasureTaskParamDto;
-import com.chinawiserv.wsmp.pojo.RedioStatusCount;
 
  
 @Controller
@@ -193,5 +182,6 @@ public class WaveOrderViewController {
 		model.addAttribute("redio", rsCountTotal);
 		return "waveorder/redio_type_list";
 	}
+
 }
 

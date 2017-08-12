@@ -300,15 +300,9 @@ public class AlarmDataController {
     Map<String, Object> getStationPiont(@RequestBody Map<String, Object> param) {
 
         long centerFreq = (long) (88.8 * 1000000);
-        String dateTime = "20170810000000";
+        String dateTime = "20170810235959";
 
         List<LevelLocate> relate = hbaseClient.queryLevelLocate(dateTime, centerFreq);
-
-        relate.get(0).setFlon(105.080555555556);
-        relate.get(0).setFlat(26.6838888888889);
-
-        relate.get(1).setFlon(106.098333333333);
-        relate.get(1).setFlat(26.6636111111111);
 
         //List<String> stationcode = (List<String>) param.get("stationcode");
 

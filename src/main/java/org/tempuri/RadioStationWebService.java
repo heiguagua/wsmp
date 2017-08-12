@@ -16,7 +16,7 @@ import javax.xml.ws.WebServiceFeature;
  * 
  */
 @WebServiceClient(name = "RadioStationWebService", 
-                  wsdlLocation = "http://192.168.21.2:8000/RadioStationWebService.asmx?wsdl",
+                  wsdlLocation = "http://192.168.21.106:8192/RadioStationWebService.asmx?wsdl",
                   targetNamespace = "http://tempuri.org/") 
 public class RadioStationWebService extends Service {
 
@@ -28,11 +28,11 @@ public class RadioStationWebService extends Service {
     static {
         URL url = null;
         try {
-            url = new URL("http://192.168.21.2:8000/RadioStationWebService.asmx?wsdl");
+            url = new URL("http://192.168.21.106:8192/RadioStationWebService.asmx?wsdl");
         } catch (MalformedURLException e) {
             java.util.logging.Logger.getLogger(RadioStationWebService.class.getName())
                 .log(java.util.logging.Level.INFO, 
-                     "Can not initialize the default wsdl from {0}", "http://192.168.21.2:8000/RadioStationWebService.asmx?wsdl");
+                     "Can not initialize the default wsdl from {0}", "http://192.168.21.106:8192/RadioStationWebService.asmx?wsdl");
         }
         WSDL_LOCATION = url;
     }

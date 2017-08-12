@@ -3,12 +3,14 @@ package com.chinawiserv.wsmp.controller.view;
 import com.chinawiserv.wsmp.client.WebServiceSoapFactory;
 import com.chinawiserv.wsmp.pojo.RedioType;
 import com.chinawiserv.wsmp.pojo.Singal;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.tempuri.FreqWarningQueryRequest;
 import org.tempuri.FreqWarningQueryResponse;
@@ -49,11 +51,11 @@ public class AlarmManagerViewController {
 	})
 	public String singalList(Model model, @RequestParam Map<String, Object> para) throws Exception {
 
-		final ObjectMapper mapper = new ObjectMapper();
 		final String param = para.get("param").toString();
 
-		final FreqWarningQueryResponse response = (FreqWarningQueryResponse) service.freqWarnServiceCall("query", param, FreqWarningQueryRequest.class);
-		System.out.println(mapper.writeValueAsString(response));
+		final String jsonStr = param.replace("\\","");
+		final FreqWarningQueryResponse response = (FreqWarningQueryResponse) service.freqWarnServiceCall("query", jsonStr, FreqWarningQueryRequest.class);
+
 		final List<Singal> reslutList = response.getWarningInfos().getFreqWarningDTO().stream().map(t -> {
 
 			final Singal singal = new Singal();

@@ -113,7 +113,6 @@ public class SiganlDataController {
 
 		final RadioSignalQueryResponse responce = (RadioSignalQueryResponse) service.radioSignalServiceCall("queryRadioSignal",
 				mapper.writeValueAsString(param), RadioSignalQueryRequest.class);
-		System.out.println(mapper.writeValueAsString(responce));
 
 		return responce.getRadioSignals().getRadioSignalDTO().stream().map(t -> {
 

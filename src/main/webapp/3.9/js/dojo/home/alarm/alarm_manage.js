@@ -201,7 +201,7 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                 var stations = Binding.getMonitorNodes(code);
                 stations = JSON.parse(stations);
 
-                var arrys = new Array();
+                console.log(stations);
 
                 var codes = info.Area.Code;
                 var stationList = [];
@@ -236,7 +236,7 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
         //		alert(val);
 
         $(".search-icon").click(function () {
-            var centerFrq = $(this).val();
+            var centerFrq = $("#search").val();
             console.log(centerFrq);
             var data = {};
             if (!isNaN(centerFrq)) {
