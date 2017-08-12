@@ -12,6 +12,8 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/signal/sign
         var glayer = null;
 
         var map = null;
+
+        var mapUtl = $("#mapUrl").val();
 		//var map = null;
 		//config.defaults.io.corsEnabledServers.push("192.168.13.79:7080");
 		function pares() {
@@ -27,7 +29,7 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/signal/sign
 			});
 			//var url = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer";
 			//var url = "http://192.168.13.72:8083/PBS/rest/services/MyPBSService1/MapServer";
-			var url = "http://192.168.21.105:8081/PBS/rest/services/guiyang/MapServer";
+			var url = mapUtl;
 			var agoLayer = new ArcGISTiledMapServiceLayer(url, {
 				id : "街道地图"
 			});

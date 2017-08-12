@@ -10,6 +10,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,9 +39,14 @@ public class SignalViewController {
 	@Autowired
 	HbaseClient hbaseClient;
 
+	@Value("${mapservice.wdsl}")
+	private String mapUrl;
+
 	@RequestMapping(path = { "/", ""
 	})
-	public String home() {
+	public String home(Model model) {
+
+		model.addAttribute("mapUrl",mapUrl);
 		return "signal/signal_home";
 	}
 

@@ -5,6 +5,7 @@ import com.chinawiserv.wsmp.pojo.RedioType;
 import com.chinawiserv.wsmp.pojo.Singal;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +31,9 @@ public class AlarmManagerViewController {
 
 	@Autowired
 	WebServiceSoapFactory service;
+
+	@Value("${mapservice.wdsl}")
+	private String mapUrl;
 
 	@GetMapping(path = "/dayCharts")
 	public String dayCharts(@RequestParam Map<String, Object> params) {
@@ -107,6 +111,7 @@ public class AlarmManagerViewController {
 	public ModelAndView test(ModelAndView modelAndView) throws IOException {
 		modelAndView.setViewName("alarmmanage/alarmmanage_home");
 		modelAndView.addObject("redioType", redioType);
+		modelAndView.addObject("mapUrl",mapUrl);
 		return modelAndView;
 	}
 }

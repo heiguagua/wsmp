@@ -338,6 +338,7 @@
   <input id="stationCode" value="" style="display: none;">
   <input id="stationId" class ="after_modal_colse" style="display: none;"  value="" >
   <input id="typeCode" class ="after_modal_colse" style="display: none;"  value="" >
+  <input id ='mapUrl' value="${mapUrl}" />
   <script src="3.9/init.js"></script>
   <script type="text/javascript">
     var test = 1;
