@@ -314,9 +314,9 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
         iqChart.setOption(option);
         
         iqChart.on('timelinechanged', function (p1) {
-            var current_index = p1.currentIndex;
-            //option.options[current_index].xAxis.data = spectrum_play_list[current_index].freqData;
-            iq_total_length = iq_play_list[current_index-1].nmber;
+            var current_index = p1.currentIndex-1;
+            option.options[current_index].xAxis.data = iq_play_list[current_index].freqData;
+            iq_total_length = iq_play_list[current_index].nmber;
             iqChart.setOption(option); 
         });
         

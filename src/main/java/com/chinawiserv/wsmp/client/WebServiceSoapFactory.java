@@ -1,12 +1,8 @@
 package com.chinawiserv.wsmp.client;
 
-import static com.chinawiserv.apps.logger.Logger.errorThrow;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
-import javax.annotation.PostConstruct;
-
+import com.alibaba.fastjson.JSON;
+import com.chinawiserv.apps.util.logger.Logger;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -15,9 +11,11 @@ import org.tempuri.FreqWarningWebServiceSoap;
 import org.tempuri.RadioSignalWebServiceSoap;
 import org.tempuri.RadioStationWebServiceSoap;
 
-import com.alibaba.fastjson.JSON;
-import com.chinawiserv.apps.util.logger.Logger;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import javax.annotation.PostConstruct;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import static com.chinawiserv.apps.logger.Logger.errorThrow;
 
 @Component
 public class WebServiceSoapFactory {
@@ -63,8 +61,8 @@ public class WebServiceSoapFactory {
 
 		try {
 			Method method = this.freqWarnService.getClass().getMethod(methodName, parameterTypes);
-
-			Object object = JSON.parseObject(param, parameterTypes);
+			final JSON json =  (JSON)JSON.parse(param);
+			Object object = JSON.toJavaObject(json, parameterTypes);
 
 			return method.invoke(this.freqWarnService, object);
 
@@ -108,7 +106,8 @@ public class WebServiceSoapFactory {
 		try {
 			Method method = this.radioSignalService.getClass().getMethod(methodName, parameterTypes);
 
-			Object object = JSON.parseObject(param, parameterTypes);
+			final JSON json =  (JSON)JSON.parse(param);
+			Object object = JSON.toJavaObject(json, parameterTypes);
 
 			return method.invoke(this.radioSignalService, object);
 		} catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {

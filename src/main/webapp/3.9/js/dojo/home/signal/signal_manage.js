@@ -21,6 +21,11 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 
         });
 
+        $("#station_list").change(function () {
+            var stationCode = $(this).val();
+            changeView(stationCode);
+        });
+
         submitButton();
 
         closeModal();
@@ -472,31 +477,32 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 console.log(info);
                 info = JSON.parse(info);
 
-                var list = [];
+                var stationList = [];
                 var codes = info.Area.Code;
 
+                var stations = Binding.getMonitorNodes(codes);
+                stations = JSON.parse(stations);
 
+                console.log(stations);
 
-                var areaCodes = {};
-                data.areaCodes = areaCodes;
-                if (info.AreaType == "Province") {
-                    var citys = info.Area.Citys;
-                    for (var index = 0; index < citys.length; index++) {
-                        list.push(citys[index].Code);
+                var stationCodeList = {};
+                stationCodeList.string = stationList;
 
-                    }
-                    data.areaCodes._int = list
-                } else {
-                    list.push(codes);
-                    data.areaCodes._int = list;
+                for (var index = 0;index<stations.length;index++){
+                    console.log(stations[index].Num);
+                    stationList.push(stations[index].Num);
                 }
+
+                data.stationIDs = stationCodeList;
+
+                $("#signal_list1 .select2-picker").html('');
 
 
                 console.log(data);
 
                 $("#signal_list1 .select2-picker").html('');
-
-                $("#signal_list1 .select2-picker").load("signal/singallist", data, function() {
+                data = JSON.stringify(data);
+                $("#signal_list1 .select2-picker").load("signal/singallist",{param:data}, function() {
                     var s_val = $('#signal_list1').find('option:selected').val();
                     if (s_val) {
                         getStations(s_val);
@@ -510,15 +516,43 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 
         $(".search-icon").click(function() {
             $("#singal_list").children().remove();
-            var val = $("#search").val();
+            var val = $(this).val();
             var data = {};
             if (isNaN(val)) {
                 alert("请输入数字");
                 return;
             }
-            val = val * 1000000;
+            val = parseFloat(val) * 1000000;
             data.beginFreq = val;
             data.endFreq = val;
+
+            var info = Binding.getUser();
+            console.log(info);
+            info = JSON.parse(info);
+
+            var stationList = [];
+            var codes = info.Area.Code;
+
+            var stations = Binding.getMonitorNodes(codes);
+            stations = JSON.parse(stations);
+
+            console.log(stations);
+
+            var stationCodeList = {};
+            stationCodeList.string = stationList;
+
+            for (var index = 0;index<stations.length;index++){
+                console.log(stations[index].Num);
+                stationList.push(stations[index].Num);
+            }
+
+            data.stationIDs = stationCodeList;
+
+            $("#signal_list1 .select2-picker").html('');
+
+
+            console.log(data);
+
             $("#signal_list1 .select2-picker").html('');
 
             $("#signal_list1 .select2-picker").load("signal/singallist", data, function() {
@@ -584,9 +618,13 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
         });
     }
 
-    function changeView() {
+    function changeView(staCode) {
 
         var stationcode = $("#station_list").find('option:selected').val();
+        if (staCode){
+            stationcode = staCode;
+        }
+
         var centorfreq = $('#signal_list1').find('option:selected').attr("centorFreq");
         var endTime = $('#signal_list1').find('option:selected').attr("endTime");
         var beginTime = $('#signal_list1').find('option:selected').attr("beginTime");

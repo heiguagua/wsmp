@@ -95,7 +95,7 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 					var LevelSize = arryOfLevel.length;
 
 
-					for (var index = 0; index < LevelSize; index++) {
+					for (var index = 0; index < stationSize; index++) {
 
 						var p = new Point(arryOfStation[index]);
 
@@ -112,7 +112,7 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 					}
 
 
-					for(var index = 0 ; index < stationSize;index++){
+					for(var index = 0 ; index < LevelSize;index++){
 
 						var p = new Point(arryOfLevel[index]);
 					      var circle = new Circle(p,{
@@ -127,6 +127,16 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 					}
 
 					map.addLayer(glayer);
+
+                    dojo.connect(map, "onClick", function(e){
+                        console.log(e.graphic.geometry);
+                        if(e.graphic.geometry.type = 'point'){
+                            console.log(true);
+                            var id = e.graphic.geometry.stationId;
+                            var data = {"stationId" : id}
+							alarm_manage.changeView(id);
+                        }
+                    });
 
 //					var p = new Point(reslut);
 //
@@ -411,7 +421,6 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 							$('#table-station-list').bootstrapTable({
 								method : 'get',
 								contentType : "application/x-www-form-urlencoded", //必须要有！！！！
-								data:reslut,
 								striped : true, //是否显示行间隔色
 								dataField : "rows", //bootstrap table 可以前端分页也可以后端分页，这里
 								url : "data/alarm/StationInfo",
@@ -423,18 +432,13 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 								queryParamsType : 'limit', //查询参数组织方式
 								queryParams : function(params) {
 
-									var info = Binding.getUser();
-							        console.log(info);
-							        info = JSON.parse(info);
-							        var code = info.Area.Code;
-							        var areaCodes = new Array();
-							        areaCodes.push(areaCode);
+                                    var info = Binding.getUser();
+                                    console.log(info);
+                                    info = JSON.parse(info);
+                                    var code = info.Area.Code;
+                                    params.areaCode = code;
 
-							        var arrayOfString = {};
-							        arrayOfString.string = areaCodes;
-									params.areaCodeList = arrayOfString;
-
-									return params
+                                    return params;
 								}, //请求服务器时所传的参数
 								onClickRow: function(row){
 									//data.id = row.signalId;

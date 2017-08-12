@@ -49,8 +49,8 @@ public class SignalViewController {
 			@RequestParam String areaCode, @RequestParam String stationCode, @RequestParam String id) {
 
 		String Id = "52010126";
-		long frequency = 4617175546033143373L;
-		String timeStart = "20170802125344";
+		long frequency = 0L;
+		String timeStart = "20170812125344";
 
 		try {
 			// long frequency = Long.parseLong(centorfreq);
@@ -99,10 +99,13 @@ public class SignalViewController {
 	}
 
 	@PostMapping(path = "/singallist")
-	public Object singalList(@RequestParam Map<String, String> param, ModelAndView modelAndView) throws JsonProcessingException {
+	public Object singalList(@RequestParam Map<String, String> para, ModelAndView modelAndView) throws JsonProcessingException {
+
+		final String param = para.get("param").toString();
+		final String jsonStr = param.replace("\\","");
 
 		final RadioSignalQueryResponse responce = (RadioSignalQueryResponse) service.radioSignalServiceCall("queryRadioSignal",
-				mapper.writeValueAsString(param), RadioSignalQueryRequest.class);
+				jsonStr, RadioSignalQueryRequest.class);
 
 		final List<Singal> redio = responce.getRadioSignals().getRadioSignalDTO().stream().map(t -> {
 

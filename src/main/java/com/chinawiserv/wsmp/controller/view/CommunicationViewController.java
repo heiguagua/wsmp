@@ -16,7 +16,11 @@ public class CommunicationViewController {
 	@RequestMapping(path = { "/", ""
 	})
 	public String communication() {
-		// station.getCount();
+
+		station.getCurrentYearCount();
+
+		station.getLastYearCount();
+
 		return "communication/communication_home";
 	}
 }

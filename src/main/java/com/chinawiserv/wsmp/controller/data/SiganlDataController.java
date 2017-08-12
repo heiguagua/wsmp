@@ -48,9 +48,10 @@ public class SiganlDataController {
 	public Object getFMRate(@RequestParam String id, @RequestParam String timeStart, @RequestParam String frequency) throws Exception {
 
 		long frequencyLong = Long.parseLong(frequency);
-
-		Map<String, Object> map = hbaseClient.queryFeaturePara(id, timeStart, frequencyLong);
-
+		Map<String, Object> map = Maps.newHashMap();
+		//Map<String, Object> map = hbaseClient.queryFeaturePara(id, timeStart, frequencyLong);
+		map.put("noise ",4);
+		map.put("normal",7);
 		return map;
 	}
 
@@ -67,7 +68,8 @@ public class SiganlDataController {
 
 		Map<String, Object> resluteMap = Maps.newHashMap();
 
-		Map<String, Object> map = hbaseClient.queryModulationMode(ID, TimeStart, TimeStop, Frequency);
+		Map<String, Object> map = hbaseClient.queryModulationMode(id, timeStart, timeStop, Long.parseLong(frequency));
+		//Map<String, Object> map = hbaseClient.queryModulationMode(id, timeStart, timeStop, Long.parseLong(frequency));
 		List<String> lists = Lists.newLinkedList();
 		Integer sum = (Integer) map.values().stream().reduce(0,(a, b) -> (Integer) a + (Integer) b);
 
@@ -112,7 +114,6 @@ public class SiganlDataController {
 
 		final RadioSignalQueryResponse responce = (RadioSignalQueryResponse) service.radioSignalServiceCall("queryRadioSignal",
 				mapper.writeValueAsString(param), RadioSignalQueryRequest.class);
-		System.out.println(mapper.writeValueAsString(responce));
 
 		return responce.getRadioSignals().getRadioSignalDTO().stream().map(t -> {
 
@@ -208,7 +209,7 @@ public class SiganlDataController {
 		try {
 
 			centorFreq = (long) (88.8 * 1000000);
-			OccAndMax reslutResponce = hbaseClient.queryOccDay("52010062", "20170717000000", 90, centorFreq);
+			OccAndMax reslutResponce = hbaseClient.queryOccDay("52010062", beginTime, 90, centorFreq);
 			Map<String, Object> occMap = reslutResponce.getOcc();
 			if (occMap.size() == 0) {
 				HashMap<String, Object> restlutHashMap = Maps.newHashMap();
