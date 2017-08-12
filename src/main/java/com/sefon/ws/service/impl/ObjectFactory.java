@@ -30,51 +30,51 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetStationById }
+     * Create an instance of {@link QueryFreqRangeDateOcc }
      * 
      */
-    public GetStationById createGetStationById() {
-        return new GetStationById();
+    public QueryFreqRangeDateOcc createQueryFreqRangeDateOcc() {
+        return new QueryFreqRangeDateOcc();
     }
 
     /**
-     * Create an instance of {@link GetStationByIdResponse }
+     * Create an instance of {@link QueryFreqRangeDateOccResponse }
      * 
      */
-    public GetStationByIdResponse createGetStationByIdResponse() {
-        return new GetStationByIdResponse();
+    public QueryFreqRangeDateOccResponse createQueryFreqRangeDateOccResponse() {
+        return new QueryFreqRangeDateOccResponse();
     }
 
     /**
-     * Create an instance of {@link QueryStation }
+     * Create an instance of {@link QueryFrequencyRange }
      * 
      */
-    public QueryStation createQueryStation() {
-        return new QueryStation();
+    public QueryFrequencyRange createQueryFrequencyRange() {
+        return new QueryFrequencyRange();
     }
 
     /**
-     * Create an instance of {@link QueryStationResponse }
+     * Create an instance of {@link QueryFrequencyRangeResponse }
      * 
      */
-    public QueryStationResponse createQueryStationResponse() {
-        return new QueryStationResponse();
+    public QueryFrequencyRangeResponse createQueryFrequencyRangeResponse() {
+        return new QueryFrequencyRangeResponse();
     }
 
     /**
-     * Create an instance of {@link QueryStationWithPagination }
+     * Create an instance of {@link QueryContinuousFreqncyRange }
      * 
      */
-    public QueryStationWithPagination createQueryStationWithPagination() {
-        return new QueryStationWithPagination();
+    public QueryContinuousFreqncyRange createQueryContinuousFreqncyRange() {
+        return new QueryContinuousFreqncyRange();
     }
 
     /**
-     * Create an instance of {@link QueryStationWithPaginationResponse }
+     * Create an instance of {@link QueryContinuousFreqncyRangeResponse }
      * 
      */
-    public QueryStationWithPaginationResponse createQueryStationWithPaginationResponse() {
-        return new QueryStationWithPaginationResponse();
+    public QueryContinuousFreqncyRangeResponse createQueryContinuousFreqncyRangeResponse() {
+        return new QueryContinuousFreqncyRangeResponse();
     }
 
 }

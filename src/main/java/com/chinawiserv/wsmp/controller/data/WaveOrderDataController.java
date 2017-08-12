@@ -43,7 +43,6 @@ public class WaveOrderDataController {
 	public Map<String, Object> getRedioStatus(@RequestParam Map<String, Object> param) throws MalformedURLException {
 		// System.out.println("======================"+param);
 		// 根据用户ID查询自定义频段
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!url:"+urlRadioSignal);
 		URL url1 = new URL(urlFreq);
 		FreqService service = new FreqService(url1);
 		// ObjectFactory obj = new ObjectFactory();

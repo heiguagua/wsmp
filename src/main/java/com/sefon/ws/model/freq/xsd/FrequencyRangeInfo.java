@@ -10,9 +10,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * <p>FrequencyRangeInfo complex type锟斤拷 Java 锟洁。
+ * <p>FrequencyRangeInfo complex type的 Java 类。
  * 
- * <p>锟斤拷锟斤拷模式片锟斤拷指锟斤拷锟斤拷锟斤拷锟节达拷锟斤拷锟叫碉拷预锟斤拷锟斤拷锟捷★拷
+ * <p>以下模式片段指定包含在此类中的预期内容。
  * 
  * <pre>
  * &lt;complexType name="FrequencyRangeInfo"&gt;
@@ -27,6 +27,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="isLocal" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/&gt;
  *         &lt;element name="level" type="{http://www.w3.org/2001/XMLSchema}byte" minOccurs="0"/&gt;
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="oprType" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="parentId" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="startUsingDate" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/&gt;
  *         &lt;element name="stopUsingDate" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/&gt;
@@ -49,6 +50,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "isLocal",
     "level",
     "name",
+    "oprType",
     "parentId",
     "startUsingDate",
     "stopUsingDate",
@@ -73,6 +75,8 @@ public class FrequencyRangeInfo {
     @XmlElement(nillable = true)
     protected String name;
     @XmlElement(nillable = true)
+    protected String oprType;
+    @XmlElement(nillable = true)
     protected String parentId;
     @XmlElement(nillable = true)
     @XmlSchemaType(name = "date")
@@ -84,7 +88,7 @@ public class FrequencyRangeInfo {
     protected String updateTime;
 
     /**
-     * 锟斤拷取id锟斤拷锟皆碉拷值锟斤拷
+     * 获取id属性的值。
      * 
      * @return
      *     possible object is
@@ -96,7 +100,7 @@ public class FrequencyRangeInfo {
     }
 
     /**
-     * 锟斤拷锟斤拷id锟斤拷锟皆碉拷值锟斤拷
+     * 设置id属性的值。
      * 
      * @param value
      *     allowed object is
@@ -108,7 +112,7 @@ public class FrequencyRangeInfo {
     }
 
     /**
-     * 锟斤拷取beginFreq锟斤拷锟皆碉拷值锟斤拷
+     * 获取beginFreq属性的值。
      * 
      * @return
      *     possible object is
@@ -116,14 +120,11 @@ public class FrequencyRangeInfo {
      *     
      */
     public Double getBeginFreq() {
-    	if(beginFreq == null) {
-    		return 0.0; 
-    	}
         return beginFreq;
     }
 
     /**
-     * 锟斤拷锟斤拷beginFreq锟斤拷锟皆碉拷值锟斤拷
+     * 设置beginFreq属性的值。
      * 
      * @param value
      *     allowed object is
@@ -135,7 +136,7 @@ public class FrequencyRangeInfo {
     }
 
     /**
-     * 锟斤拷取description锟斤拷锟皆碉拷值锟斤拷
+     * 获取description属性的值。
      * 
      * @return
      *     possible object is
@@ -147,7 +148,7 @@ public class FrequencyRangeInfo {
     }
 
     /**
-     * 锟斤拷锟斤拷description锟斤拷锟皆碉拷值锟斤拷
+     * 设置description属性的值。
      * 
      * @param value
      *     allowed object is
@@ -159,7 +160,7 @@ public class FrequencyRangeInfo {
     }
 
     /**
-     * 锟斤拷取endFreq锟斤拷锟皆碉拷值锟斤拷
+     * 获取endFreq属性的值。
      * 
      * @return
      *     possible object is
@@ -167,14 +168,11 @@ public class FrequencyRangeInfo {
      *     
      */
     public Double getEndFreq() {
-    	if(endFreq == null) {
-    		return 0.0;
-    	}
         return endFreq;
     }
 
     /**
-     * 锟斤拷锟斤拷endFreq锟斤拷锟皆碉拷值锟斤拷
+     * 设置endFreq属性的值。
      * 
      * @param value
      *     allowed object is
@@ -186,7 +184,7 @@ public class FrequencyRangeInfo {
     }
 
     /**
-     * 锟斤拷取isContinue锟斤拷锟皆碉拷值锟斤拷
+     * 获取isContinue属性的值。
      * 
      * @return
      *     possible object is
@@ -198,7 +196,7 @@ public class FrequencyRangeInfo {
     }
 
     /**
-     * 锟斤拷锟斤拷isContinue锟斤拷锟皆碉拷值锟斤拷
+     * 设置isContinue属性的值。
      * 
      * @param value
      *     allowed object is
@@ -210,7 +208,7 @@ public class FrequencyRangeInfo {
     }
 
     /**
-     * 锟斤拷取isLocal锟斤拷锟皆碉拷值锟斤拷
+     * 获取isLocal属性的值。
      * 
      * @return
      *     possible object is
@@ -222,7 +220,7 @@ public class FrequencyRangeInfo {
     }
 
     /**
-     * 锟斤拷锟斤拷isLocal锟斤拷锟皆碉拷值锟斤拷
+     * 设置isLocal属性的值。
      * 
      * @param value
      *     allowed object is
@@ -234,7 +232,7 @@ public class FrequencyRangeInfo {
     }
 
     /**
-     * 锟斤拷取level锟斤拷锟皆碉拷值锟斤拷
+     * 获取level属性的值。
      * 
      * @return
      *     possible object is
@@ -246,7 +244,7 @@ public class FrequencyRangeInfo {
     }
 
     /**
-     * 锟斤拷锟斤拷level锟斤拷锟皆碉拷值锟斤拷
+     * 设置level属性的值。
      * 
      * @param value
      *     allowed object is
@@ -258,7 +256,7 @@ public class FrequencyRangeInfo {
     }
 
     /**
-     * 锟斤拷取name锟斤拷锟皆碉拷值锟斤拷
+     * 获取name属性的值。
      * 
      * @return
      *     possible object is
@@ -270,7 +268,7 @@ public class FrequencyRangeInfo {
     }
 
     /**
-     * 锟斤拷锟斤拷name锟斤拷锟皆碉拷值锟斤拷
+     * 设置name属性的值。
      * 
      * @param value
      *     allowed object is
@@ -282,7 +280,31 @@ public class FrequencyRangeInfo {
     }
 
     /**
-     * 锟斤拷取parentId锟斤拷锟皆碉拷值锟斤拷
+     * 获取oprType属性的值。
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getOprType() {
+        return oprType;
+    }
+
+    /**
+     * 设置oprType属性的值。
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setOprType(String value) {
+        this.oprType = value;
+    }
+
+    /**
+     * 获取parentId属性的值。
      * 
      * @return
      *     possible object is
@@ -294,7 +316,7 @@ public class FrequencyRangeInfo {
     }
 
     /**
-     * 锟斤拷锟斤拷parentId锟斤拷锟皆碉拷值锟斤拷
+     * 设置parentId属性的值。
      * 
      * @param value
      *     allowed object is
@@ -306,7 +328,7 @@ public class FrequencyRangeInfo {
     }
 
     /**
-     * 锟斤拷取startUsingDate锟斤拷锟皆碉拷值锟斤拷
+     * 获取startUsingDate属性的值。
      * 
      * @return
      *     possible object is
@@ -318,7 +340,7 @@ public class FrequencyRangeInfo {
     }
 
     /**
-     * 锟斤拷锟斤拷startUsingDate锟斤拷锟皆碉拷值锟斤拷
+     * 设置startUsingDate属性的值。
      * 
      * @param value
      *     allowed object is
@@ -330,7 +352,7 @@ public class FrequencyRangeInfo {
     }
 
     /**
-     * 锟斤拷取stopUsingDate锟斤拷锟皆碉拷值锟斤拷
+     * 获取stopUsingDate属性的值。
      * 
      * @return
      *     possible object is
@@ -342,7 +364,7 @@ public class FrequencyRangeInfo {
     }
 
     /**
-     * 锟斤拷锟斤拷stopUsingDate锟斤拷锟皆碉拷值锟斤拷
+     * 设置stopUsingDate属性的值。
      * 
      * @param value
      *     allowed object is
@@ -354,7 +376,7 @@ public class FrequencyRangeInfo {
     }
 
     /**
-     * 锟斤拷取updateTime锟斤拷锟皆碉拷值锟斤拷
+     * 获取updateTime属性的值。
      * 
      * @return
      *     possible object is
@@ -366,7 +388,7 @@ public class FrequencyRangeInfo {
     }
 
     /**
-     * 锟斤拷锟斤拷updateTime锟斤拷锟皆碉拷值锟斤拷
+     * 设置updateTime属性的值。
      * 
      * @param value
      *     allowed object is

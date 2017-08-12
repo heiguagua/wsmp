@@ -3,19 +3,16 @@ package com.sefon.ws.model.electric.level.xsd;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * <p>FreqRangeQuerySpec complex typeï¿½ï¿½ Java ï¿½à¡£
+ * <p>FreqRangeQuerySpec complex typeµÄ Java Àà¡£
  * 
- * <p>ï¿½ï¿½ï¿½ï¿½Ä£Ê½Æ¬ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½ï¿½ï¿½ï¿½Ðµï¿½Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½Ý¡ï¿½
+ * <p>ÒÔÏÂÄ£Ê½Æ¬¶ÎÖ¸¶¨°üº¬ÔÚ´ËÀàÖÐµÄÔ¤ÆÚÄÚÈÝ¡£
  * 
  * <pre>
  * &lt;complexType name="FreqRangeQuerySpec"&gt;
@@ -23,12 +20,12 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
  *         &lt;element name="areaCodes" type="{http://www.w3.org/2001/XMLSchema}short" maxOccurs="unbounded" minOccurs="0"/&gt;
- *         &lt;element name="beginDate" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/&gt;
+ *         &lt;element name="beginDate" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="beginFreq" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
  *         &lt;element name="dataNodeIdList" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/&gt;
  *         &lt;element name="dataNodeIdNameList" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/&gt;
  *         &lt;element name="dataType" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/&gt;
- *         &lt;element name="endDate" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/&gt;
+ *         &lt;element name="endDate" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="endFreq" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
  *         &lt;element name="queryDateType" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
@@ -56,8 +53,7 @@ public class FreqRangeQuerySpec {
     @XmlElement(nillable = true)
     protected List<Short> areaCodes;
     @XmlElement(nillable = true)
-    @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar beginDate;
+    protected String beginDate;
     @XmlElement(nillable = true)
     protected Long beginFreq;
     @XmlElement(name = "dataNodeIdList", nillable = true)
@@ -67,8 +63,7 @@ public class FreqRangeQuerySpec {
     @XmlElement(nillable = true)
     protected Integer dataType;
     @XmlElement(nillable = true)
-    @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar endDate;
+    protected String endDate;
     @XmlElement(nillable = true)
     protected Long endFreq;
     @XmlElement(nillable = true)
@@ -104,31 +99,31 @@ public class FreqRangeQuerySpec {
     }
 
     /**
-     * ï¿½ï¿½È¡beginDateï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
+     * »ñÈ¡beginDateÊôÐÔµÄÖµ¡£
      * 
      * @return
      *     possible object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link String }
      *     
      */
-    public XMLGregorianCalendar getBeginDate() {
+    public String getBeginDate() {
         return beginDate;
     }
 
     /**
-     * ï¿½ï¿½ï¿½ï¿½beginDateï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
+     * ÉèÖÃbeginDateÊôÐÔµÄÖµ¡£
      * 
      * @param value
      *     allowed object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link String }
      *     
      */
-    public void setBeginDate(XMLGregorianCalendar value) {
+    public void setBeginDate(String value) {
         this.beginDate = value;
     }
 
     /**
-     * ï¿½ï¿½È¡beginFreqï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
+     * »ñÈ¡beginFreqÊôÐÔµÄÖµ¡£
      * 
      * @return
      *     possible object is
@@ -140,7 +135,7 @@ public class FreqRangeQuerySpec {
     }
 
     /**
-     * ï¿½ï¿½ï¿½ï¿½beginFreqï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
+     * ÉèÖÃbeginFreqÊôÐÔµÄÖµ¡£
      * 
      * @param value
      *     allowed object is
@@ -210,7 +205,7 @@ public class FreqRangeQuerySpec {
     }
 
     /**
-     * ï¿½ï¿½È¡dataTypeï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
+     * »ñÈ¡dataTypeÊôÐÔµÄÖµ¡£
      * 
      * @return
      *     possible object is
@@ -222,7 +217,7 @@ public class FreqRangeQuerySpec {
     }
 
     /**
-     * ï¿½ï¿½ï¿½ï¿½dataTypeï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
+     * ÉèÖÃdataTypeÊôÐÔµÄÖµ¡£
      * 
      * @param value
      *     allowed object is
@@ -234,31 +229,31 @@ public class FreqRangeQuerySpec {
     }
 
     /**
-     * ï¿½ï¿½È¡endDateï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
+     * »ñÈ¡endDateÊôÐÔµÄÖµ¡£
      * 
      * @return
      *     possible object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link String }
      *     
      */
-    public XMLGregorianCalendar getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
     /**
-     * ï¿½ï¿½ï¿½ï¿½endDateï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
+     * ÉèÖÃendDateÊôÐÔµÄÖµ¡£
      * 
      * @param value
      *     allowed object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link String }
      *     
      */
-    public void setEndDate(XMLGregorianCalendar value) {
+    public void setEndDate(String value) {
         this.endDate = value;
     }
 
     /**
-     * ï¿½ï¿½È¡endFreqï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
+     * »ñÈ¡endFreqÊôÐÔµÄÖµ¡£
      * 
      * @return
      *     possible object is
@@ -270,7 +265,7 @@ public class FreqRangeQuerySpec {
     }
 
     /**
-     * ï¿½ï¿½ï¿½ï¿½endFreqï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
+     * ÉèÖÃendFreqÊôÐÔµÄÖµ¡£
      * 
      * @param value
      *     allowed object is
@@ -282,7 +277,7 @@ public class FreqRangeQuerySpec {
     }
 
     /**
-     * ï¿½ï¿½È¡queryDateTypeï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
+     * »ñÈ¡queryDateTypeÊôÐÔµÄÖµ¡£
      * 
      * @return
      *     possible object is
@@ -294,7 +289,7 @@ public class FreqRangeQuerySpec {
     }
 
     /**
-     * ï¿½ï¿½ï¿½ï¿½queryDateTypeï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
+     * ÉèÖÃqueryDateTypeÊôÐÔµÄÖµ¡£
      * 
      * @param value
      *     allowed object is
