@@ -6,6 +6,7 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart"], function(ajax, ec
     var maxlevel_start_index_temp = 0;
     var maxlevel_end_index = 0;        // mouseup时的x轴index
     var maxlevel_total_length = 0;     // x轴数据总数
+    var drag_flag = false;             // 月占用度是否拖拽
 	function charts_init(reslut) {
 			console.log(reslut);
 			var optionMonth = {
@@ -148,7 +149,7 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart"], function(ajax, ec
                 }
             }
     	}
-    	var drag_flag = false;
+    	
     	var mouseup = function(){
     		var evt = window.event || e;
         	evt.preventDefault();
