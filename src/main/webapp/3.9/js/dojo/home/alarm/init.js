@@ -95,7 +95,7 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 					var LevelSize = arryOfLevel.length;
 
 
-					for (var index = 0; index < LevelSize; index++) {
+					for (var index = 0; index < stationSize; index++) {
 
 						var p = new Point(arryOfStation[index]);
 
@@ -112,7 +112,7 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 					}
 
 
-					for(var index = 0 ; index < stationSize;index++){
+					for(var index = 0 ; index < LevelSize;index++){
 
 						var p = new Point(arryOfLevel[index]);
 					      var circle = new Circle(p,{
@@ -127,6 +127,16 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 					}
 
 					map.addLayer(glayer);
+
+                    dojo.connect(map, "onClick", function(e){
+                        console.log(e.graphic.geometry);
+                        if(e.graphic.geometry.type = 'point'){
+                            console.log(true);
+                            var id = e.graphic.geometry.stationId;
+                            var data = {"stationId" : id}
+							alarm_manage.changeView(id);
+                        }
+                    });
 
 //					var p = new Point(reslut);
 //

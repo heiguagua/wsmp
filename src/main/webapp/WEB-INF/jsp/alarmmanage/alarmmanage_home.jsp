@@ -49,18 +49,18 @@
     <section class='flex-row'>
       <div class='box right10 flex-column'>
         <div class='detect-way flex-row flex1'>
-          <div class='way-key flex1' id="warning_confirm">
-            <div class='way-sign'>
-              <img src='images/way_2.png' alt='告警确认' />
-            </div>
-            <p>告警确认</p>
-          </div>
-          <div class='way-key flex1' id="intensive_monitoring">
-            <div class='way-sign'>
-              <img src='images/way_2.png' alt='重点监测' />
-            </div>
-            <p>重点监测</p>
-          </div>
+          <%--<div class='way-key flex1' id="warning_confirm">--%>
+            <%--<div class='way-sign'>--%>
+              <%--<img src='images/way_2.png' alt='告警确认' />--%>
+            <%--</div>--%>
+            <%--<p>告警确认</p>--%>
+          <%--</div>--%>
+          <%--<div class='way-key flex1' id="intensive_monitoring">--%>
+            <%--<div class='way-sign'>--%>
+              <%--<img src='images/way_2.png' alt='重点监测' />--%>
+            <%--</div>--%>
+            <%--<p>重点监测</p>--%>
+          <%--</div>--%>
           <div id="singletonFreq" class='way-single flex1'>
             <div class='way-sign'>
               <img src='images/way_1.png' alt='单频测量' />
