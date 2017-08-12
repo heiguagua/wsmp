@@ -3,11 +3,14 @@ package com.chinawiserv.wsmp.controller.view;
 
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.tempuri.ArrayOfString;
 import org.tempuri.IImportFreqRangeManageService;
 import org.tempuri.ImportFreqRangeManageService;
@@ -25,7 +27,6 @@ import org.tempuri.RadioSignalWebService;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.chinawiserv.apps.logger.Logger;
 import com.chinawiserv.wsmp.pojo.MeasureTaskParamDto;
 import com.chinawiserv.wsmp.pojo.RedioStatusCount;
 
@@ -33,6 +34,18 @@ import com.chinawiserv.wsmp.pojo.RedioStatusCount;
 @Controller
 @RequestMapping("/waveorder")
 public class WaveOrderViewController {
+	
+	@Value("${freqWarningWebService.wsdl}")
+	private String urlFreqWarning;
+
+	@Value("${radioSignalWebService.wsdl}")
+	private String urlRadioSignal;
+	
+	@Value("${sefon.webservice.freqservice}")
+	private String urlFreq;
+	
+	@Value("${importFreqRangeManageService.wsdl}")
+	private String urlImportFreqRange;
 
     @GetMapping("/ssss")
     public String alarmDealed() {
@@ -51,13 +64,14 @@ public class WaveOrderViewController {
     }
     
     @PostMapping("/importantMonitor")
-    public String importantMonitor(Model model,@RequestBody Map<String,Object> map) {
+    public String importantMonitor(Model model,@RequestBody Map<String,Object> map) throws MalformedURLException {
     	//根据频段查询重点监测，返回页面和对象
     	//System.out.println("=================================map:"+map);
     	BigDecimal beginFreq = new BigDecimal(map.get("beginFreq").toString());
 		BigDecimal endFreq = new BigDecimal(map.get("endFreq").toString());
 		BigDecimal divisor = new BigDecimal(1000000);
-    	ImportFreqRangeManageService service = new ImportFreqRangeManageService();
+		URL url = new URL(urlImportFreqRange);
+    	ImportFreqRangeManageService service = new ImportFreqRangeManageService(url);
 		IImportFreqRangeManageService service2 = service.getBasicHttpBindingIImportFreqRangeManageService();
 		String result = service2.findAllFreqRange();
 		//System.out.println("=================================result:"+result);
@@ -84,14 +98,15 @@ public class WaveOrderViewController {
     }
     
     @PostMapping("/importantMonitorCreateOrUpdate")
-    public String importantMonitorCreateOrUpdate(MeasureTaskParamDto dto,Model model) {
+    public String importantMonitorCreateOrUpdate(MeasureTaskParamDto dto,Model model) throws MalformedURLException {
     	//或者直接用模型接受参数MeasureTaskParamDto.java
     	System.out.println("===================更新或添加=======================前端传参dto:"+JSON.toJSONString(dto));
     	if(dto.getID().equals("")) {
     		dto.setID(null);
     	}
     	//System.out.println("==========================================前端传参operation:"+operation);
-    	ImportFreqRangeManageService service = new ImportFreqRangeManageService();
+    	URL url = new URL(urlImportFreqRange);
+    	ImportFreqRangeManageService service = new ImportFreqRangeManageService(url);
 		IImportFreqRangeManageService service2 = service.getBasicHttpBindingIImportFreqRangeManageService();
     		//更新或添加重点监测，进行更新或添加操作，只管操作成功与否.
     		String json = JSON.toJSONString(dto);
@@ -111,10 +126,11 @@ public class WaveOrderViewController {
     
     
     @PostMapping("/importantMonitorDelete")
-    public String importantMonitorDelete(MeasureTaskParamDto dto,Model model) {
+    public String importantMonitorDelete(MeasureTaskParamDto dto,Model model) throws MalformedURLException {
     	//或者直接用模型接受参数MeasureTaskParamDto.java
     	System.out.println("==================删除========================前端传参dto:"+JSON.toJSONString(dto));
-    	ImportFreqRangeManageService service = new ImportFreqRangeManageService();
+    	URL url = new URL(urlImportFreqRange);
+    	ImportFreqRangeManageService service = new ImportFreqRangeManageService(url);
 		IImportFreqRangeManageService service2 = service.getBasicHttpBindingIImportFreqRangeManageService();
 
 		Boolean resultDTOJson = service2.removeById(dto.getID());
@@ -136,10 +152,11 @@ public class WaveOrderViewController {
     }
 
 	@PostMapping("/redioType")
-	public String redioType(Model model, @RequestBody Map<String, Object> map) {
+	public String redioType(Model model, @RequestBody Map<String, Object> map) throws MalformedURLException {
 		//根据监测站查询信号类型统计
 //		System.out.println("================================map:"+map);
-		RadioSignalWebService service = new RadioSignalWebService();
+		URL url = new URL(urlRadioSignal);
+		RadioSignalWebService service = new RadioSignalWebService(url);
 		RadioSignalClassifiedQueryRequest request = new RadioSignalClassifiedQueryRequest();
 		ArrayOfString value = new ArrayOfString();
 		@SuppressWarnings("unchecked")
@@ -195,10 +212,11 @@ public class WaveOrderViewController {
 		return "waveorder/redio_type_list";
 	}
 	@PostMapping("/redioTypeForSiFon")
-	public String redioTypeForSiFon(Model model, @RequestBody Map<String, Object> map) {
+	public String redioTypeForSiFon(Model model, @RequestBody Map<String, Object> map) throws MalformedURLException {
 		//根据监测站查询信号类型统计
 //		System.out.println("================================map:"+map);
-		RadioSignalWebService service = new RadioSignalWebService();
+		URL url = new URL(urlRadioSignal);
+		RadioSignalWebService service = new RadioSignalWebService(url);
 		RadioSignalClassifiedQueryRequest request = new RadioSignalClassifiedQueryRequest();
 		ArrayOfString value = new ArrayOfString();
 		@SuppressWarnings("unchecked")

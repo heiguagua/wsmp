@@ -9,11 +9,15 @@ import com.google.common.collect.Maps;
 import com.sefon.ws.model.freq.xsd.FrequencyRangeInfo;
 import com.sefon.ws.model.freq.xsd.FrequencyRangeQuerySpec;
 import com.sefon.ws.service.impl.FreqService;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.tempuri.*;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -22,12 +26,26 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/data/waveorder")
 public class WaveOrderDataController {
+	
+	@Value("${freqWarningWebService.wsdl}")
+	private String urlFreqWarning;
+
+	@Value("${radioSignalWebService.wsdl}")
+	private String urlRadioSignal;
+	
+	@Value("${sefon.webservice.freqservice}")
+	private String urlFreq;
+	
+	@Value("${importFreqRangeManageService.wsdl}")
+	private String urlImportFreqRange;
 
 	@GetMapping("/rediostatus")
-	public Map<String, Object> getRedioStatus(@RequestParam Map<String, Object> param) {
+	public Map<String, Object> getRedioStatus(@RequestParam Map<String, Object> param) throws MalformedURLException {
 		// System.out.println("======================"+param);
 		// 根据用户ID查询自定义频段
-		FreqService service = new FreqService();
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!url:"+urlRadioSignal);
+		URL url1 = new URL(urlFreq);
+		FreqService service = new FreqService(url1);
 		// ObjectFactory obj = new ObjectFactory();
 		FrequencyRangeQuerySpec model = new FrequencyRangeQuerySpec();
 		model.setUserId(param.get("userID").toString());
@@ -48,7 +66,8 @@ public class WaveOrderDataController {
 			freqList.add(freq);
 		});
 		// 根据自定义频段和区域码查询信号类型
-		RadioSignalWebService service2 = new RadioSignalWebService();
+		URL url2 = new URL(urlRadioSignal);
+		RadioSignalWebService service2 = new RadioSignalWebService(url2);
 		RadioSignalClassifiedQueryRequest request2 = new RadioSignalClassifiedQueryRequest();
 		ArrayOfFrequencyBand array = new ArrayOfFrequencyBand();
 		array.setFrequencyBand(freqList);
@@ -101,10 +120,11 @@ public class WaveOrderDataController {
 	}
 
 	@GetMapping("/alarmundealed")
-	public Map<String, Object> getAlarmUnDealed(@RequestParam Map<String, Object> param) {
+	public Map<String, Object> getAlarmUnDealed(@RequestParam Map<String, Object> param) throws MalformedURLException {
 		// System.out.println("=============================param:"+param);
 		// 根据未确认和区域码查询告警
-		FreqWarningWebService freqWarningWS = new FreqWarningWebService();
+		URL url = new URL(urlFreqWarning);
+		FreqWarningWebService freqWarningWS = new FreqWarningWebService(url);
 		FreqWarningQueryRequest request = new FreqWarningQueryRequest();
 		request.setAreaCode(Integer.valueOf(param.get("areaCode").toString()));
 		request.setIsInvalid(false);
@@ -133,10 +153,11 @@ public class WaveOrderDataController {
 	}
 
 	@GetMapping("/alarmdealed")
-	public Map<String, Object> getAlarmDealed(@RequestParam Map<String, Object> param) {
+	public Map<String, Object> getAlarmDealed(@RequestParam Map<String, Object> param) throws MalformedURLException {
 		// System.out.println("=============================param:"+param);
 		// 根据未确认和区域码查询告警
-		FreqWarningWebService freqWarningWS = new FreqWarningWebService();
+		URL url = new URL(urlFreqWarning);
+		FreqWarningWebService freqWarningWS = new FreqWarningWebService(url);
 		FreqWarningQueryRequest request = new FreqWarningQueryRequest();
 		request.setAreaCode(Integer.valueOf(param.get("areaCode").toString()));
 		request.setIsInvalid(true);
@@ -165,10 +186,11 @@ public class WaveOrderDataController {
 	}
 
 	@GetMapping("/radioDetail")
-	public Map<String, Object> getRedioDetail(@RequestParam Map<String, Object> param) {
+	public Map<String, Object> getRedioDetail(@RequestParam Map<String, Object> param) throws MalformedURLException {
 		
 		// System.out.println("==================param:"+param);
-		RadioSignalWebService service = new RadioSignalWebService();
+		URL url = new URL(urlRadioSignal);
+		RadioSignalWebService service = new RadioSignalWebService(url);
 		RadioSignalQueryRequest request = new RadioSignalQueryRequest();
 		// 入参：区域码
 		ArrayOfInt value = new ArrayOfInt();
@@ -218,7 +240,7 @@ public class WaveOrderDataController {
 	}
 
 	@PostMapping("/monitorsPoint")
-	public List<Map<String, ?>> getMonitorsPoint(@RequestBody Map<String,Object> param) {
+	public List<Map<String, ?>> getMonitorsPoint(@RequestBody Map<String,Object> param) throws MalformedURLException {
 		
 		//请求参数为监测站ID列表,和信号类型值。
 //		Logger.info("============监测站地图===========================param {}",  param);
@@ -227,7 +249,8 @@ public class WaveOrderDataController {
 //		System.out.println("=========================================monitorsList:"+monitorsID);
 		
 		//根据信号类型，监测站列表（id or name）查询能够监测到该信号的监测站ID和个数，和每个监测站的该信号个数。
-		RadioSignalWebService service = new RadioSignalWebService();
+		URL url = new URL(urlRadioSignal);
+		RadioSignalWebService service = new RadioSignalWebService(url);
 		RadioSignalQueryRequest request = new RadioSignalQueryRequest();
 //		 设置信号类型
 		ArrayOfSignalTypeDTO value = new ArrayOfSignalTypeDTO();
@@ -255,5 +278,5 @@ public class WaveOrderDataController {
 //		System.out.println("===================:"+resultList);
 		return resultList;
 	}
-
+	
 }
