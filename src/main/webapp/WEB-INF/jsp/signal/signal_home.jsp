@@ -416,7 +416,7 @@
   </div>
   <input id = 'typeCode' class = 'after_modal_colse' style="display: none"/>
   <input id = 'stationKey' class = 'after_modal_colse'  style="display: none"/>
-  <input id ='mapUrl' value="${mapUrl}" />
+  <input style="display: none" id ='mapUrl' value="${mapUrl}" />
   <script src="3.9/init.js"></script>
   <script type="text/javascript">
     require([ "home/signal/signal_map_init","jquery","dojo/domReady!"],

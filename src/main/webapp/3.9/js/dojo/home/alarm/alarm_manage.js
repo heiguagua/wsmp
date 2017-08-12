@@ -236,6 +236,7 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
         //		alert(val);
 
         $(".search-icon").click(function () {
+
             var centerFrq = $("#search").val();
             console.log(centerFrq);
             var data = {};
@@ -247,22 +248,40 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
             console.log(info);
             info = JSON.parse(info);
 
-            var arrys = new Array();
+            var info = Binding.getUser();
+            info = JSON.parse(info);
+
+            var code = info.Area.Code;
+
+            var stations = Binding.getMonitorNodes(code);
+            stations = JSON.parse(stations);
+
+            console.log(stations);
 
             var codes = info.Area.Code;
+            var stationList = [];
 
-            data.areaCode = codes;
+            for (var index = 0;index<stations.length;index++){
+                console.log(stations[index].Num);
+                stationList.push(stations[index].Num);
+            }
+
+            var stationCodeList = {};
+            stationCodeList.string = stationList;
+
             data.centerFreq = centerFrq;
+            data.stationIDs = stationCodeList;
+
             console.log(data);
+            data = JSON.stringify(data);
             $("#signal_list").children().remove();
-            $("#signal_list").load("alarmmanage/singal", data, function () {
+            $("#signal_list").load("alarmmanage/singal",{param : data} , function () {
                 stationselectinit();
                 $('.select2-picker').select2();
-                var statiocode = $("#station_list").val();
-                var beginTime = $("#signal_list").attr("beginTime");
-                var centorFreq = $("#signal_list").attr("centorFreq");
 
                 changeView();
+                console.log(mapinit);
+                mapinit.stationChange();
                 //$("#illegal").click();
             });
         });
