@@ -43,7 +43,7 @@ public class AlarmDataController {
     @Autowired
     private HbaseClient hbaseClient;
 
-    @Autowired
+   // @Autowired
     private StationService stationService;
 
     @Autowired

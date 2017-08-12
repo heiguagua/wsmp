@@ -44,21 +44,6 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
         });
 
 
-        $("#warning_confirm").click(function () {
-            var obj = $(this);
-            if (!$(this).hasClass("checked")) {
-                var value = $("#signal_list").find('option:selected').val();
-                var data = {};
-                data.id = value;
-                data.status = 1;
-                ajax.post("data/alarm/warringconfirm", data, function () {
-                    obj.removeClass("checked");
-                    obj.addClass("checked");
-                });
-            } else {
-
-            }
-        });
 
         $("#intensive_monitoring").click(function () {
             var obj = $(this);

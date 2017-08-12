@@ -1,6 +1,8 @@
-define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","home/signal/iq_data","home/signal/audio_data","home/signal/maxlevel_chart"], function(jquery, bootstrap, echarts, ajax,spectrum_data,iq_data,audio_data,maxlevel_chart) {
+define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","home/signal/iq_data","home/signal/audio_data","home/signal/maxlevel_chart","home/signal/daylevel_chart"], function(jquery, bootstrap, echarts, ajax,spectrum_data,iq_data,audio_data,maxlevel_chart,daylevel_chart) {
 
     var initMap = null
+
+    var time = null;
 
     function setMap(init){
 
@@ -781,8 +783,9 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
         		drag_flag = false;
         		return;
         	}
+        	time = params.name;
         	$('#modalDay').modal();
-            
+
         });
 
     }
@@ -906,7 +909,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
     }
     
     $('#modalDay').on("shown.bs.modal",function(){
-    	changesecodView(params.name);
+    	changesecodView(time);
     })
 
 
@@ -984,7 +987,6 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 
         var stationcode = $("#station_list").find('option:selected').val();
         var centorfreq = $('#signal_list1').find('option:selected').attr("centorFreq");
-        var endTime = $('#signal_list1').find('option:selected').attr("endTime");
         var beginTime = $('#signal_list1').find('option:selected').attr("beginTime");
 
         var secondLevel = {};
@@ -1061,7 +1063,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             var element = document.getElementById("dayChart");
             var dayChart = echarts.init(element);
             dayChart.setOption(optionDay);
-
+            daylevel_chart.init(reslut);
         });
 
     }

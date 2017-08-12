@@ -61,6 +61,7 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 				data.sigal = singal;
 				ajax.post("data/alarm/instersingal",data,function(){
 					alert("成功");
+                    warnig_confirm();
 				});
 			});
 
@@ -69,6 +70,16 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 			closeModal();
 		}
 
+        function  warnig_confirm() {
+            var value = $("#signal_list").find('option:selected').val();
+            var data = {};
+            data.id = value;
+            data.status = 1;
+            ajax.post("data/alarm/warringconfirm", data, function () {
+                obj.removeClass("checked");
+                obj.addClass("checked");
+            });
+        }
 
 		function station_change(){
 

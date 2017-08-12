@@ -1,7 +1,7 @@
 /**
  * 
  */
-define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart"], function(ajax, echarts, jquery,day_chart) {
+define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_levelcharts"], function(ajax, echarts, jquery,day_chart,day_levelcharts) {
 	var monthChart = null;
     var maxlevel_start_index_temp = 0;
     var maxlevel_end_index = 0;        // mouseup时的x轴index
@@ -254,7 +254,7 @@ function changeView(time){
 //			month_charts.init(reslut);
 			console.log(reslut);
 			day_chart.init(reslut);
-			
+            day_levelcharts.init(reslut);
 		});
 		
 	}
