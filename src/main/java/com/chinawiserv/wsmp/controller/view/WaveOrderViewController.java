@@ -194,6 +194,65 @@ public class WaveOrderViewController {
 		model.addAttribute("redio", rsCountTotal);
 		return "waveorder/redio_type_list";
 	}
+	@PostMapping("/redioTypeForSiFon")
+	public String redioTypeForSiFon(Model model, @RequestBody Map<String, Object> map) {
+		//根据监测站查询信号类型统计
+//		System.out.println("================================map:"+map);
+		RadioSignalWebService service = new RadioSignalWebService();
+		RadioSignalClassifiedQueryRequest request = new RadioSignalClassifiedQueryRequest();
+		ArrayOfString value = new ArrayOfString();
+		@SuppressWarnings("unchecked")
+		List<String> monitorsNum = (List<String>) map.get("monitorsNum");
+		value.setString(monitorsNum);
+		request.setStationNumber(value);
+		RadioSignalClassifiedQueryResponse response = service.getRadioSignalWebServiceSoap().queryRadioSignalClassified(request);
+		//System.out.println("===============================response:"+JSON.toJSONString(response));
+		
+		RedioStatusCount rsCountTotal = new RedioStatusCount();
+		AtomicInteger index0 = new AtomicInteger();
+		AtomicInteger index1 = new AtomicInteger();
+		AtomicInteger index2 = new AtomicInteger();
+		AtomicInteger index3 = new AtomicInteger();
+		AtomicInteger index4 = new AtomicInteger();
+		response.getLstOnStation().getSignalStaticsOnStation().stream().forEach(t -> {
+			RedioStatusCount rsCount = new RedioStatusCount();
+			t.getSignalStaticsLst().getSignalStatics().forEach(t1 -> {
+				int type = t1.getSignalType();
+				int count = t1.getCount();
+				switch(type) {
+				case 0:
+					rsCount.setLegalNormalStationNumber(count);
+					break;
+				case 1:
+					rsCount.setLegalUnNormalStationNumber(count);
+					break;
+				case 2:
+					rsCount.setKonwStationNumber(count);
+					break;
+				case 3:
+					rsCount.setUnKonw(count);
+					break;
+				case 4:
+					rsCount.setIllegalSignal(count);
+					break;
+				default:
+					;
+				}
+			});
+			index0.getAndAdd(rsCount.getLegalNormalStationNumber());
+			index1.getAndAdd(rsCount.getLegalUnNormalStationNumber());
+			index2.getAndAdd(rsCount.getKonwStationNumber());
+			index3.getAndAdd(rsCount.getUnKonw());
+			index4.getAndAdd(rsCount.getIllegalSignal());
+		});
+		rsCountTotal.setLegalNormalStationNumber(index0.get());
+		rsCountTotal.setLegalUnNormalStationNumber(index1.get());
+		rsCountTotal.setKonwStationNumber(index2.get());
+		rsCountTotal.setUnKonw(index3.get());
+		rsCountTotal.setIllegalSignal(index4.get());
+		model.addAttribute("redio", rsCountTotal);
+		return "waveorder/redio_type_list_to_sifon";
+	}
 
 }
 

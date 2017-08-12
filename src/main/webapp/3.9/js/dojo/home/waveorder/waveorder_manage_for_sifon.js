@@ -37,7 +37,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 		}
 		var str = JSON.stringify(data);
 		$.ajax({
-			url : 'waveorder/redioType',
+			url : 'waveorder/redioTypeForSiFon',
 			type : 'post',
 			data : str,//传输数据
 			contentType : 'application/json',//传输数据类型

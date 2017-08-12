@@ -16,7 +16,7 @@ import javax.xml.ws.WebServiceFeature;
  * 
  */
 @WebServiceClient(name = "FreqService", 
-                  wsdlLocation = "http://192.168.21.105:7080/ws/services/FreqService?wsdl",
+                  wsdlLocation = "http://192.168.21.68:8080/ws/services/FreqService?wsdl",
                   targetNamespace = "http://impl.service.ws.sefon.com") 
 public class FreqService extends Service {
 
@@ -29,11 +29,11 @@ public class FreqService extends Service {
     static {
         URL url = null;
         try {
-            url = new URL("http://192.168.21.105:7080/ws/services/FreqService?wsdl");
+            url = new URL("http://192.168.21.68:8080/ws/services/FreqService?wsdl");
         } catch (MalformedURLException e) {
             java.util.logging.Logger.getLogger(FreqService.class.getName())
                 .log(java.util.logging.Level.INFO, 
-                     "Can not initialize the default wsdl from {0}", "http://192.168.21.105:7080/ws/services/FreqService?wsdl");
+                     "Can not initialize the default wsdl from {0}", "http://192.168.21.68:8080/ws/services/FreqService?wsdl");
         }
         WSDL_LOCATION = url;
     }

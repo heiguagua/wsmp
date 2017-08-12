@@ -7,6 +7,18 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 		var AREACODE = null;
 
 		$('.select2-picker').select2();
+		var areaCode = $(".select2-picker").val(); 
+		AREACODE = areaCode;
+		var user = getUser();
+		var userID = user.ID;
+		table_radio_init(true, areaCode,userID);
+		var monitors = getMonitors(areaCode);
+		console.log(monitors);
+		table_alarm_undealed(areaCode,monitors);
+		table_alarm_dealed(areaCode,monitors);
+		addPoint(map_arry, monitors,0);//默认选中0
+		redioType(monitors);
+		
 		$(".select2-picker").on("select2:select", function(e) {
 			var areaCode = e.target.value;
 			AREACODE = areaCode;
@@ -51,34 +63,6 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
     			}
     		})
 		});
-		
-//		$('#important-monitor-form').submit(function() { 
-//			var options = { 
-////			        target:        '#output2',   // target element(s) to be updated with server response 
-////			        beforeSubmit:  showRequest,  // pre-submit callback 
-//			        success: function(){
-//			        	alert("success!");
-//			        },  // post-submit callback 
-//			 
-//			        // other available options: 
-//			        url : 'waveorder/importantMonitorOperation',       // override for form's 'action' attribute 
-//			        type: 'post',        // 'get' or 'post', override for form's 'method' attribute 
-//			        //dataType:  null        // 'xml', 'script', or 'json' (expected server response type) 
-//			        //clearForm: true        // clear all form fields after successful submit 
-//			        //resetForm: true        // reset the form after successful submit 
-//			 
-//			        // $.ajax options can be used here too, for example: 
-//			        //timeout:   3000 
-//			    }; 
-//	        // inside event callbacks 'this' is the DOM element so we first 
-//	        // wrap it in a jQuery object and then invoke ajaxSubmit 
-//	        $(this).ajaxSubmit(options); 
-//	 
-//	        // !!! Important !!! 
-//	        // always return false to prevent standard browser submit and page navigation 
-//	        return false; 
-//	    }); 
-		
 		
 		$("#table-signal-list").on("click",".centerFreqA",function(e) {
 			console.log(e.target.text);//中心频率
@@ -279,6 +263,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 			var option = document.createElement("option");
 			option.setAttribute("value",province.Code);
 			option.setAttribute("id","option");
+			//option.setAttribute("selected","selected");
 			//option.innerHTML = province_name;//此时就设置innerHTML的话会报错，因为<option>标签还没渲染出来
 			console.log(option);
 			$("#area_select").append(option);
@@ -296,7 +281,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 			}
 		}else{
 			//市级用户就只有一个市级选项
-			var city = user.City;
+			var city = user.Area;
 			var option_city = document.createElement("option");
 			option_city.setAttribute("value",city.Code);
 			option_city.setAttribute("id","option_city");

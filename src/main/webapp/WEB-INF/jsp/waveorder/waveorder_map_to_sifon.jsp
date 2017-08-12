@@ -53,7 +53,7 @@
 		
 	
 		require(
-				[ "home/waveorder/WaveorderMapInit", "jquery", "dojo/domReady!" ],
+				[ "home/waveorder/WaveorderMapInit_for_sifon", "jquery", "dojo/domReady!" ],
 				function(init) {
 
 					require(
