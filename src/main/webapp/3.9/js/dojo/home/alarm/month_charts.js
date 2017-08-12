@@ -94,6 +94,10 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart"], function(ajax, ec
 
 			monthChart.on('click', function(params) {
 				console.log(params)
+				if(drag_flag){
+	        		drag_flag = false;
+	        		return;
+	        	}
 				$('#modalDay').modal();
 				
 				changeView(params.name);
@@ -144,6 +148,7 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart"], function(ajax, ec
                 }
             }
     	}
+    	var drag_flag = false;
     	var mouseup = function(){
     		var evt = window.event || e;
         	evt.preventDefault();
@@ -170,6 +175,7 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart"], function(ajax, ec
                   })
 
                   retcWidth = "0px";
+                  drag_flag = true;
               }
           }
           else if(right_keydown_flag){
@@ -214,6 +220,7 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart"], function(ajax, ec
     	          $(".maxlevel-cover-rect").css({"margin-top":retcTop});
     	          $(".maxlevel-cover-rect").css({"width":retcWidth});
     	          $(".maxlevel-cover-rect").css({"height":(evt.target.height-56) +"px"});
+    	          $(".maxlevel-cover-rect").css({"z-index":99});
     	      }
     	      else if(right_keydown_flag) {// 右键已被按下
     	          

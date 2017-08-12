@@ -776,6 +776,10 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             monthChart.setOption(optionMonth);
         }
         monthChart.on('click', function(params) {
+        	if(drag_flag){
+        		drag_flag = false;
+        		return;
+        	}
         	$('#modalDay').modal();
             
         });
@@ -813,6 +817,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 }
             }
     	}
+    	var drag_flag = false;
     	var mouseup = function(){
     		var evt = window.event || e;
         	evt.preventDefault();
@@ -839,6 +844,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                   })
 
                   retcWidth = "0px";
+                  drag_flag = true;
               }
           }
           else if(right_keydown_flag){
@@ -883,6 +889,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
     	          $(".maxlevel-cover-rect").css({"margin-top":retcTop});
     	          $(".maxlevel-cover-rect").css({"width":retcWidth});
     	          $(".maxlevel-cover-rect").css({"height":(evt.target.height-56) +"px"});
+    	          $(".maxlevel-cover-rect").css({"z-index":99});
     	      }
     	      else if(right_keydown_flag) {// 右键已被按下
     	          
