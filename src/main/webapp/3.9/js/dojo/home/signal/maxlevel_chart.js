@@ -117,7 +117,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                 startX = evt.clientX + scrollLeft;
                 startY = evt.pageY - evt.offsetY +30;
                // startY = evt.clientY + scrollTop;
-                var div = $('<div class="maxlevel-cover-rect"></div>');
+                var div = $('<div class="cover-rect"></div>');
                 div.css({"margin-left":startX+"px","margin-top":startY+"px","height":evt.target.height - 56 +"px"});
                 div.appendTo('body');
             }
@@ -134,7 +134,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
         	evt.preventDefault();
           if(left_keydown_flag) {
               left_keydown_flag = false;
-              $(".maxlevel-cover-rect").remove();
+              $(".cover-rect").remove();
               if(retcWidth == "0px") {
                   return;
               }
@@ -195,16 +195,16 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
     	          retcTop = evt.pageY - evt.offsetY + 30+  "px";
     	          retcHeight = Math.abs(startY - evt.clientY - scrollTop) + "px";
     	          retcWidth = Math.abs(startX - evt.clientX - scrollLeft) + "px";
-    	          $(".maxlevel-cover-rect").css({"margin-left":retcLeft});
-    	          $(".maxlevel-cover-rect").css({"margin-top":retcTop});
-    	          $(".maxlevel-cover-rect").css({"width":retcWidth});
-    	          $(".maxlevel-cover-rect").css({"height":evt.target.height-56 +"px"});
+    	          $(".cover-rect").css({"margin-left":retcLeft});
+    	          $(".cover-rect").css({"margin-top":retcTop});
+    	          $(".cover-rect").css({"width":retcWidth});
+    	          $(".cover-rect").css({"height":evt.target.height-56 +"px"});
     	      }
     	      else if(right_keydown_flag) {// 右键已被按下
     	          
     	      }
     	      else{
-    	    	  $(".maxlevel-cover-rect").remove();
+    	    	  $(".cover-rect").remove();
     	          return;
     	      }
     	}
