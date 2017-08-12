@@ -68,7 +68,8 @@ public class SiganlDataController {
 
 		Map<String, Object> resluteMap = Maps.newHashMap();
 
-		Map<String, Object> map = hbaseClient.queryModulationMode(ID, TimeStart, TimeStop, Frequency);
+		Map<String, Object> map = hbaseClient.queryModulationMode(id, timeStart, timeStop, Long.parseLong(frequency));
+		//Map<String, Object> map = hbaseClient.queryModulationMode(id, timeStart, timeStop, Long.parseLong(frequency));
 		List<String> lists = Lists.newLinkedList();
 		Integer sum = (Integer) map.values().stream().reduce(0,(a, b) -> (Integer) a + (Integer) b);
 
@@ -208,7 +209,7 @@ public class SiganlDataController {
 		try {
 
 			centorFreq = (long) (88.8 * 1000000);
-			OccAndMax reslutResponce = hbaseClient.queryOccDay("52010062", "20170717000000", 90, centorFreq);
+			OccAndMax reslutResponce = hbaseClient.queryOccDay("52010062", beginTime, 90, centorFreq);
 			Map<String, Object> occMap = reslutResponce.getOcc();
 			if (occMap.size() == 0) {
 				HashMap<String, Object> restlutHashMap = Maps.newHashMap();

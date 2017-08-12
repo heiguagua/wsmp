@@ -23,9 +23,6 @@ import org.springframework.web.context.WebApplicationContext;
 import org.tempuri.*;
 
 import java.math.BigInteger;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -87,7 +84,8 @@ public class AlarmDataController {
                 beginTime = beginTime.concat("000000");
             }
 
-            OccAndMax reslutResponce = hbaseClient.queryOccHour(id, beginTime, frequency);
+            OccAndMax reslutResponce = hbaseClient.queryOccHour(stationCode, beginTime, centorFreq);
+            //OccAndMax reslutResponce = hbaseClient.queryOccHour(stationCode, beginTime, centorFreq);
             Map<String, Object> Max = reslutResponce.getMax();
             Map<String, Object> Occ = reslutResponce.getOcc();
             if (Occ.size() == 0) {
@@ -177,16 +175,16 @@ public class AlarmDataController {
     @GetMapping(path = "/firstLevelChart")
     public Object firstLevelChart(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
 
-        LocalDate loacl = LocalDate.now();
-
-        DateTimeFormatter yearformatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        String first = loacl.format(yearformatter);
-
-        LocalDateTime time = LocalDateTime.now();
-
-        DateTimeFormatter timeformatter = DateTimeFormatter.ofPattern("HHmmss");
-        String last = timeformatter.format(time);
-        beginTime = first + last;
+//        LocalDate loacl = LocalDate.now();
+//
+//        DateTimeFormatter yearformatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+//         String first = loacl.format(yearformatter);
+//
+//        LocalDateTime time = LocalDateTime.now();
+//
+//        DateTimeFormatter timeformatter = DateTimeFormatter.ofPattern("HHmmss");
+//        String last = timeformatter.format(time);
+//        beginTime = first + last;
 
         HashMap<String, Object> reslutMap = new HashMap<>();
 
@@ -197,9 +195,13 @@ public class AlarmDataController {
 
             String id = "52010126";
             long frequency = (long) (88.8 * 1000000);
+            //测试或者正式环境使用
+//            Map<Object, Object> max = hbaseClient.queryMaxLevels(stationCode, centorFreq, upperBound, lowerBound, beginTime);
+//            Map<String, Object> occ = hbaseClient.queryOccDay(stationCode, beginTime, 90, centorFreq).getOcc();
 
-            Map<Object, Object> max = hbaseClient.queryMaxLevels(id, frequency, upperBound, lowerBound, beginTime);
-            Map<String, Object> occ = hbaseClient.queryOccDay(id, beginTime, 90, frequency).getOcc();
+            Map<Object, Object> max = hbaseClient.queryMaxLevels(stationCode, centorFreq, upperBound, lowerBound, beginTime);
+            Map<String, Object> occ = hbaseClient.queryOccDay(stationCode, beginTime, 90, centorFreq).getOcc();
+
             if (occ.size() == 0) {
 
                 HashMap<String, Object> restlutHashMap = Maps.newHashMap();
@@ -302,11 +304,16 @@ public class AlarmDataController {
         long centerFreq = (long) (88.8 * 1000000);
         String dateTime = "20170810235959";
 
+//        测试或正式环境使用
+//        Long frequency = Long.parseLong((String) param.get("frequency"));
+//        List<LevelLocate> relate = hbaseClient.queryLevelLocate((String) param.get("beginTime"), frequency );
         List<LevelLocate> relate = hbaseClient.queryLevelLocate(dateTime, centerFreq);
 
+        //测试或正式环境使用
         //List<String> stationcode = (List<String>) param.get("stationcode");
 
         List<String> stationcode = Lists.newLinkedList();
+
 
         stationcode.add("52010120");
         stationcode.add("52010126");
@@ -322,7 +329,7 @@ public class AlarmDataController {
         double[] flon = relate.stream().mapToDouble(LevelLocate::getFlon).toArray();
         double[] flat = relate.stream().mapToDouble(LevelLocate::getFlat).toArray();
         double[] level = relate.stream().mapToDouble(LevelLocate::getLevel).toArray();
-
+        //至少要五个点才能计算出来
         params.setSid("" + System.currentTimeMillis());// sid能够表该次计算的唯一标识
         params.setStype((byte) 3);// 固定3，标识计算类型为场强计算
         params.setDistanceTh(10d);// 距离门限，单位km，值是界面传递进来的
@@ -336,7 +343,7 @@ public class AlarmDataController {
 
         Map<String, Object> map = Maps.newHashMap();
 
-        map.put("x", 105.080555555556);
+        map.put("x", 103.080555555556);
         map.put("y", 27.6838888888889);
         map.put("radius",10000);
         map.put("stationId", "xxxxx");
@@ -350,6 +357,14 @@ public class AlarmDataController {
 
         levelPoint.add(map);
         levelPoint.add(map1);
+
+        Map<String,Object> stations = Maps.newHashMap();
+        stations.put("x", 106.080555555556);
+        stations.put("y", 27.6838888888889);
+        stations.put("count",40000);
+        stations.put("stationId", "52010121");
+        List< Map<String,Object>> listest = Lists.newLinkedList();
+        listest.add(stations);
 
 //        try {
 //
@@ -387,7 +402,8 @@ public class AlarmDataController {
 
         Map<String, Object> mapPiont = new HashMap<>();
 
-        mapPiont.put("stationPiont", stationPiont);
+        //mapPiont.put("stationPiont", stationPiont);
+        mapPiont.put("stationPiont", listest);
         mapPiont.put("levelPoint", levelPoint);
 
         // map.put("x", "106.709177096");
@@ -510,7 +526,8 @@ public class AlarmDataController {
         final RStatQuerySignalsResponse2 response = (RStatQuerySignalsResponse2) service.radioStationServiceCall("rStatQuerySignals",
                 mapper.writeValueAsString(requestParam), RStatQuerySignalsRequest.class);
 
-        List<Station> reslutDtos = response.getRStatSignalList().getRadioStationSignalDTO().stream().map(t -> {
+        List<Station> reslutDtos;
+        reslutDtos = response.getRStatSignalList().getRadioStationSignalDTO().stream().map((RadioStationSignalDTO t) -> {
 
             final RadioStationDTO radioStationDTO = t.getStation();
 
@@ -531,51 +548,51 @@ public class AlarmDataController {
         return reslut;
     }
 
-    @GetMapping("/maxlevel")
-    public Object getMaxlevel(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
-        try {
-
-            LocalDate loacl = LocalDate.now();
-
-            DateTimeFormatter yearformatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-            String first = loacl.format(yearformatter);
-
-            LocalDateTime time = LocalDateTime.now();
-
-            DateTimeFormatter timeformatter = DateTimeFormatter.ofPattern("HHmmss");
-            String last = timeformatter.format(time);
-            beginTime = first + last;
-
-            String id = "52010118";
-            long frequency = (long) (88.8 * 1000000);
-
-            Map<Object, Object> reponceReslut = hbaseClient.queryMaxLevels(stationCode, frequency, upperBound, lowerBound, beginTime);
-
-            LinkedList<Object> xAxis = Lists.newLinkedList();
-            LinkedList<Object> series = Lists.newLinkedList();
-
-            final double pow = Math.pow(10, 6);
-
-            reponceReslut.forEach((k, v) -> {
-
-                final double key = Double.parseDouble(k.toString()) / pow;
-
-                xAxis.add(key);
-                series.add(v);
-            });
-
-            HashMap<String, Object> restlutHashMap = Maps.newHashMap();
-
-            restlutHashMap.put("xAxis", xAxis);
-            restlutHashMap.put("series", series);
-
-            return restlutHashMap;
-
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            Logger.error("峰值查询异常", e);
-        }
-
-        return Maps.newHashMap();
-    }
+//    @GetMapping("/maxlevel")
+//    public Object getMaxlevel(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
+//        try {
+//
+//            LocalDate loacl = LocalDate.now();
+//
+//            DateTimeFormatter yearformatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+//            String first = loacl.format(yearformatter);
+//
+//            LocalDateTime time = LocalDateTime.now();
+//
+//            DateTimeFormatter timeformatter = DateTimeFormatter.ofPattern("HHmmss");
+//            String last = timeformatter.format(time);
+//            beginTime = first + last;
+//
+//            String id = "52010118";
+//            long frequency = (long) (88.8 * 1000000);
+//
+//            Map<Object, Object> reponceReslut = hbaseClient.queryMaxLevels(stationCode, frequency, upperBound, lowerBound, beginTime);
+//
+//            LinkedList<Object> xAxis = Lists.newLinkedList();
+//            LinkedList<Object> series = Lists.newLinkedList();
+//
+//            final double pow = Math.pow(10, 6);
+//
+//            reponceReslut.forEach((k, v) -> {
+//
+//                final double key = Double.parseDouble(k.toString()) / pow;
+//
+//                xAxis.add(key);
+//                series.add(v);
+//            });
+//
+//            HashMap<String, Object> restlutHashMap = Maps.newHashMap();
+//
+//            restlutHashMap.put("xAxis", xAxis);
+//            restlutHashMap.put("series", series);
+//
+//            return restlutHashMap;
+//
+//        } catch (Exception e) {
+//            // TODO Auto-generated catch block
+//            Logger.error("峰值查询异常", e);
+//        }
+//
+//        return Maps.newHashMap();
+//    }
 }

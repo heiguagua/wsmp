@@ -173,9 +173,7 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/signal/sign
                                 console.log(true);
                                 var id = e.graphic.geometry.stationId;
                                 var data = {"stationId" : id}
-                                ajax.get("data/signal/provisionaldegree", data, function() {
 
-                                });
 
                             }
                         });

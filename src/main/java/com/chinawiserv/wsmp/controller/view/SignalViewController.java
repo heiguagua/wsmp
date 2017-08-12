@@ -99,10 +99,13 @@ public class SignalViewController {
 	}
 
 	@PostMapping(path = "/singallist")
-	public Object singalList(@RequestParam Map<String, String> param, ModelAndView modelAndView) throws JsonProcessingException {
+	public Object singalList(@RequestParam Map<String, String> para, ModelAndView modelAndView) throws JsonProcessingException {
+
+		final String param = para.get("param").toString();
+		final String jsonStr = param.replace("\\","");
 
 		final RadioSignalQueryResponse responce = (RadioSignalQueryResponse) service.radioSignalServiceCall("queryRadioSignal",
-				mapper.writeValueAsString(param), RadioSignalQueryRequest.class);
+				jsonStr, RadioSignalQueryRequest.class);
 
 		final List<Singal> redio = responce.getRadioSignals().getRadioSignalDTO().stream().map(t -> {
 

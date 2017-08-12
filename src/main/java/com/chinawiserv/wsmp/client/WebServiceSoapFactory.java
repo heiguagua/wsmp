@@ -106,7 +106,8 @@ public class WebServiceSoapFactory {
 		try {
 			Method method = this.radioSignalService.getClass().getMethod(methodName, parameterTypes);
 
-			Object object = JSON.parseObject(param, parameterTypes);
+			final JSON json =  (JSON)JSON.parse(param);
+			Object object = JSON.toJavaObject(json, parameterTypes);
 
 			return method.invoke(this.radioSignalService, object);
 		} catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
