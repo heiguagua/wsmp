@@ -4,6 +4,7 @@ import com.sefon.ws.service.impl.QueryToolsService;
 import com.sefon.ws.service.impl.QueryToolsServicePortType;
 import com.sefon.ws.service.impl.StationService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.net.MalformedURLException;
@@ -18,7 +19,7 @@ public class WebServiceSeFonConfig {
     @Value("${sefon.webservice.queryToolservice}")
     private String queryToolsUrl;
 
-    //@Bean
+    @Bean
     public StationService initStationService() throws MalformedURLException {
 	URL wsdlLoction = new URL(url);
 	StationService stationService = new StationService(wsdlLoction);
@@ -26,7 +27,7 @@ public class WebServiceSeFonConfig {
 
     }
 
-    // @Bean
+    //@Bean
     public QueryToolsServicePortType initQueryToolsServicePortType() throws MalformedURLException {
 	URL wsdlLocation = new URL(queryToolsUrl);
 	QueryToolsService service = new QueryToolsService(wsdlLocation);
