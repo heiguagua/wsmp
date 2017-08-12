@@ -8,6 +8,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 
 		$('.select2-picker').select2();
 		var areaCode = $(".select2-picker").val(); 
+		
 		AREACODE = areaCode;
 		var user = getUser();
 		var userID = user.ID;
