@@ -686,6 +686,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
     var month_start_index_temp = 0;
     var month_end_index = 0;        // mouseup时的x轴index
     var month_total_length = 0;     // x轴数据总数
+    var drag_flag = false;             // 月占用度是否拖拽
     function initMonthchart(levelParam) {
 
         var optionMonth = {
@@ -817,7 +818,6 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 }
             }
     	}
-    	var drag_flag = false;
     	var mouseup = function(){
     		var evt = window.event || e;
         	evt.preventDefault();
