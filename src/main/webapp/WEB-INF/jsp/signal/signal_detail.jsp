@@ -47,8 +47,8 @@
               <p>重点监测</p>
 
             </div>
-            <div class='way-single flex1'>
-              <div class='way-sign'>
+            <div  class='way-single flex1'>
+              <div id = 'singletonFreq' class='way-sign'>
                 <img src='images/way_1.png' alt='单频测量' />
               </div>
               <p>单频测量</p>

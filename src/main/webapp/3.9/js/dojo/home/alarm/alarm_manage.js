@@ -16,6 +16,14 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
 
         });
 
+        $("#signal_list").change(function (e) {
+
+            stationselectinit();
+            changeView();
+
+        });
+
+
         $("#singletonFreq").click(function () {
 
             var reopenParam = {};
@@ -29,17 +37,9 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
             var centFreq = $("#search").val();
 
             reopenParam.Url = "FIXFQViewModel?SerialNumber="+statiocode+"&TaskType=FIXFQ&frequency="+centFreq;
-           var  paramStr = JSON.stringify(reopenParam)
+            var  paramStr = JSON.stringify(reopenParam)
             console.log(paramStr)
             Binding.openUrl(paramStr);
-
-        });
-
-
-        $("#signal_list").change(function (e) {
-
-            stationselectinit();
-            changeView();
 
         });
 

@@ -14,8 +14,6 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 
         init_select2();
 
-
-
         // 信号列表change事件
         $("#signal_list1 .select2-picker").change(function() {
             var selected_val = $(this).val();
@@ -1116,6 +1114,25 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             para.frequency = centorfreq;
             ajax.get("data/signal/FmRate", para, function(reslut) {
                 initChart(reslut, data);
+            });
+
+            $("#singletonFreq").click(function () {
+
+                var reopenParam = {};
+
+                reopenParam.ServerName = "host";
+                reopenParam.DisplayName = "单频测量";
+                reopenParam.MultiTabable = "False";
+                reopenParam.ReflushIfExist = "False";
+
+                var statiocode = $('#station_list').find('option:selected').val();
+                var centFreq = $("#search").val();
+
+                reopenParam.Url = "FIXFQViewModel?SerialNumber="+statiocode+"&TaskType=FIXFQ&frequency="+centFreq;
+                var  paramStr = JSON.stringify(reopenParam)
+                console.log(paramStr)
+                Binding.openUrl(paramStr);
+
             });
 
         });

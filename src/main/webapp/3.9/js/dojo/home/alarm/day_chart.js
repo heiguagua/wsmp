@@ -74,9 +74,9 @@ define([ "ajax", "echarts", "jquery" ], function(ajax,echarts) {
 			var dayChart = echarts.init($('#dayChart')[0]);
 			dayChart.setOption(optionDay);
 			
-			dayChart.on('click', function() {
-				$('#modalHour').modal()
-			})
+			// dayChart.on('click', function() {
+			// 	$('#modalHour').modal()
+			// })
 			
 			window.onresize = function(){
 				dayChart.clear();
