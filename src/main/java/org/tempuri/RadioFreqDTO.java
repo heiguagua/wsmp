@@ -2,7 +2,6 @@
 package org.tempuri;
 
 import java.math.BigInteger;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -11,9 +10,9 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>RadioFreqDTO complex type锟斤拷 Java 锟洁。
+ * <p>RadioFreqDTO complex type的 Java 类。
  * 
- * <p>锟斤拷锟斤拷模式片锟斤拷指锟斤拷锟斤拷锟斤拷锟节达拷锟斤拷锟叫碉拷预锟斤拷锟斤拷锟捷★拷
+ * <p>以下模式片段指定包含在此类中的预期内容。
  * 
  * <pre>
  * &lt;complexType name="RadioFreqDTO"&gt;
@@ -49,7 +48,7 @@ public class RadioFreqDTO {
     protected BigInteger bandWidth;
 
     /**
-     * 锟斤拷取id锟斤拷锟皆碉拷值锟斤拷
+     * 获取id属性的值。
      * 
      * @return
      *     possible object is
@@ -61,7 +60,7 @@ public class RadioFreqDTO {
     }
 
     /**
-     * 锟斤拷锟斤拷id锟斤拷锟皆碉拷值锟斤拷
+     * 设置id属性的值。
      * 
      * @param value
      *     allowed object is
@@ -73,7 +72,7 @@ public class RadioFreqDTO {
     }
 
     /**
-     * 锟斤拷取centerFreq锟斤拷锟皆碉拷值锟斤拷
+     * 获取centerFreq属性的值。
      * 
      * @return
      *     possible object is
@@ -85,7 +84,7 @@ public class RadioFreqDTO {
     }
 
     /**
-     * 锟斤拷锟斤拷centerFreq锟斤拷锟皆碉拷值锟斤拷
+     * 设置centerFreq属性的值。
      * 
      * @param value
      *     allowed object is
@@ -97,7 +96,7 @@ public class RadioFreqDTO {
     }
 
     /**
-     * 锟斤拷取bandWidth锟斤拷锟皆碉拷值锟斤拷
+     * 获取bandWidth属性的值。
      * 
      * @return
      *     possible object is
@@ -109,7 +108,7 @@ public class RadioFreqDTO {
     }
 
     /**
-     * 锟斤拷锟斤拷bandWidth锟斤拷锟皆碉拷值锟斤拷
+     * 设置bandWidth属性的值。
      * 
      * @param value
      *     allowed object is

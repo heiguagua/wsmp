@@ -106,10 +106,10 @@ public class MeasureTaskParamDto {
 		this.duration = duration;
 	}
 	public void setBeginTime(String beginTime) {
-		this.beginTime = beginTime;
+		this.beginTime = beginTime.replace('T',' ');
 	}
 	public void setEndTime(String endTime) {
-		this.endTime = endTime;
+		this.endTime = endTime.replace('T',' ');
 	}
 	public void setCycleStep(Integer cycleStep) {
 		this.cycleStep = cycleStep;

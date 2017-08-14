@@ -1,6 +1,6 @@
 
 define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer", "dojo/request", "esri/layers/GraphicsLayer", "esri/dijit/Scalebar"
-	, "esri/symbols/TextSymbol", "esri/geometry/Point", "esri/graphic", "esri/symbols/Font", "esri/symbols/SimpleMarkerSymbol" ], function(ajax, parser, Map, ArcGISTiledMapServiceLayer, request, GraphicsLayer, Scalebar, TextSymbol, Point, graphic, Font, SimpleMarkerSymbol) {
+	, "esri/symbols/TextSymbol", "esri/geometry/Point", "esri/graphic", "esri/symbols/Font", "esri/symbols/SimpleMarkerSymbol","esri/symbols/PictureMarkerSymbol"], function(ajax, parser, Map, ArcGISTiledMapServiceLayer, request, GraphicsLayer, Scalebar, TextSymbol, Point, graphic, Font, SimpleMarkerSymbol,PictureMarkerSymbol) {
 	function wo_init(map_arry) {
 		var user = getUser();
 		getArea(user);
@@ -8,28 +8,39 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 
 		$('.select2-picker').select2();
 		var areaCode = $(".select2-picker").val(); 
-		
 		AREACODE = areaCode;
 		var user = getUser();
 		var userID = user.ID;
-		table_radio_init(true, areaCode,userID);
 		var monitors = getMonitors(areaCode);
-		console.log(monitors);
-		table_alarm_undealed(areaCode,monitors);
-		table_alarm_dealed(areaCode,monitors);
+		var monitorsID = new Array();
+		for(var i = 0;i<monitors.length;i++) {
+			monitorsID[i] = monitors[i].Num; 
+		}
+		table_radio_init(true, monitorsID,userID);
+		table_alarm_undealed(monitorsID,monitors);
+		table_alarm_dealed(monitorsID,monitors);
 		addPoint(map_arry, monitors,0);//默认选中0
 		redioType(monitors);
 		
+		$.fn.datetimepicker.defaults = {
+				language: 'zh-CN',
+				format: 'yyyy-mm-dd',
+				autoclose:true,
+				minView:2
+		}	
+		
 		$(".select2-picker").on("select2:select", function(e) {
-			var areaCode = e.target.value;
 			AREACODE = areaCode;
 			var user = getUser();
 			var userID = user.ID;
-			table_radio_init(true, areaCode,userID);
 			var monitors = getMonitors(areaCode);
-			console.log(monitors);
-			table_alarm_undealed(areaCode,monitors);
-			table_alarm_dealed(areaCode,monitors);
+			var monitorsID = new Array();
+			for(var i = 0;i<monitors.length;i++) {
+				monitorsID[i] = monitors[i].Num; 
+			}
+			table_radio_init(true, monitorsID,userID);
+			table_alarm_undealed(monitorsID,monitors);
+			table_alarm_dealed(monitorsID,monitors);
 			addPoint(map_arry, monitors,0);//默认选中0
 			redioType(monitors);
 		});
@@ -39,6 +50,13 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 			$(this).tab('show');
 
 		});
+		
+		$("#modalConfig").on("click",".time-picker",function(){
+			$('.time-picker').datetimepicker({
+				
+			});
+		})
+		
 		
 		$("#redioType").on("click","input",function(e){
 			var monitors = getMonitors(AREACODE);
@@ -66,9 +84,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 		});
 		
 		$("#table-signal-list").on("click",".centerFreqA",function(e) {
-			console.log(e.target.text);//中心频率
 			var freq = e.target.text;
-			console.log(freq);
 			const urlObj = {
 					ServerName: 'host1',// 跳四方用host1,跳自己这边用host2
 					DisplayName: '单频率',
@@ -80,9 +96,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 			
 		})
 		$("#table-alarm-undeal").on("click",".centerFreqA",function(e) {
-			console.log(e.target.text);//中心频率
 			var freq = e.target.text;
-			console.log(freq);
 			const urlObj = {
 	                ServerName: 'host1',// 跳四方用host1,跳自己这边用host2
 	                DisplayName: '单频率',
@@ -95,9 +109,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 		})
 		
 		$("#table-alarm-dealed").on("click",".centerFreqA",function(e) {
-			console.log(e.target.text);//中心频率
 			var freq = e.target.text;
-			console.log(freq);
 			const urlObj = {
 	                ServerName: 'host1',// 跳四方用host1,跳自己这边用host2
 	                DisplayName: '单频率',
@@ -110,7 +122,6 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 		
 		$("#important_monitor").on("click","#buttonUpdate",function(e) {
 			var str = $("#important-monitor-form").serialize();
-			console.log(str);
 			$.ajax({
 				url : 'waveorder/importantMonitorCreateOrUpdate',
 				type : 'post',
@@ -129,7 +140,6 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 		});
 		$("#important_monitor").on("click","#buttonInsert",function(e) {
 			var str = $("#important-monitor-form").serialize();
-			console.log(str);
 			$.ajax({
 				url : 'waveorder/importantMonitorCreateOrUpdate',
 				type : 'post',
@@ -147,7 +157,6 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 		});
 		$("#important_monitor").on("click","#buttonDelete",function(e) {
 			var str = $("#important-monitor-form").serialize();
-			console.log(str);
 			$.ajax({
 				url : 'waveorder/importantMonitorDelete',
 				type : 'post',
@@ -166,16 +175,15 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 		
 		$("#modalSignal").on("shown.bs.modal",function(e){
 			var a = $(e.relatedTarget);
-        	var areaCode = a.data('areacode');//data()函数里面要取小写
-        	var beginFreq = a.data('beginfreq');
+        	var beginFreq = a.data('beginfreq');//data()函数里面要取小写
         	var endFreq = a.data('endfreq');
         	var radioType = a.data('radiotype');
-        	console.log(beginFreq);
+        	var monitorsID = a.data('monitorsid');
         	$('#table-signal-list').bootstrapTable("destroy");
 			$('#table-signal-list').bootstrapTable({
-				method : 'get',
+				method : 'post',
 				cache : false,
-				contentType : "application/x-www-form-urlencoded", //必须要有！！！！
+				contentType : "application/json", //必须要有！！！！
 				//url : "assets/json/signal-list.json", //要请求数据的文件路径 TODO 修改为真实url地址
 				url : "data/waveorder/radioDetail",
 				striped : true, //是否显示行间隔色
@@ -188,7 +196,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 					params.beginFreq = beginFreq;
 					params.endFreq = endFreq;
 					params.radioType = radioType;
-					params.areaCode = areaCode;
+					params.monitorsID = monitorsID;
 					return params
 				}, //请求服务器时所传的参数
 				sidePagination : 'client', //指定服务器端分页
@@ -218,7 +226,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 	                title: '监测站',
 	                width:'25%',
 	                formatter : function(value, row, index) {
-	                	var monitors = getMonitors(areaCode);
+	                	var monitors = getMonitors(AREACODE);
 	                	var content = "";
 						for(var i=0;i<value.length;i++) {
 							for(var j=0;j<monitors.length;j++){
@@ -266,17 +274,14 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 			option.setAttribute("id","option");
 			//option.setAttribute("selected","selected");
 			//option.innerHTML = province_name;//此时就设置innerHTML的话会报错，因为<option>标签还没渲染出来
-			console.log(option);
 			$("#area_select").append(option);
 			$("#option").append(province.Name);
 			var citys = province.Citys;
-			console.log(citys);
 			//显示市级选项
 			for(var i=0;i<citys.length;i++){
 				var option_city = document.createElement("option");
 				option_city.setAttribute("value",citys[i].Code);
 				option_city.setAttribute("id","option_city"+i);
-				console.log(option_city);
 				$("#area_select").append(option_city);
 				$("#option_city"+i).append(citys[i].Name);
 			}
@@ -286,7 +291,6 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 			var option_city = document.createElement("option");
 			option_city.setAttribute("value",city.Code);
 			option_city.setAttribute("id","option_city");
-			console.log(option_city);
 			$("#area_select").append(option_city);
 			$("#option_city").append(city.Name);
 		}
@@ -320,18 +324,17 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 	}
 
 	function addPoint(map_arry, monitors,signalType) {
-		console.info(map_arry);
 		var data = {};
 		data.monitorsNum = [];
 		data.signalType = signalType;
 		for(var i=0;i<monitors.length;i++) {
 			data.monitorsNum[i] = monitors[i].Num;
 		}
-		console.log(data);
-		var pSymbol = new SimpleMarkerSymbol();
-		pSymbol.style = SimpleMarkerSymbol.STYLE_CIRCLE; //设置点的类型为圆形
-		pSymbol.setSize(20); //设置点的大小为20像素
-		pSymbol.setColor(new dojo.Color("#FFFFCC")); //设置点的颜色
+		var pmSymbol = new PictureMarkerSymbol({
+			"url":"images/monitoring-station.svg",
+			"height":33,
+		    "width":32,
+		});
 		ajax.post("data/waveorder/monitorsPoint", data, function(result) {
 			console.log(result);
 			var glayer = map_arry.glayer1;
@@ -350,7 +353,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 								new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
 										new Font("12pt").setWeight(Font.WEIGHT_BOLD));
 						var textsyboml = new esri.Graphic(p, textSymbol);//文本
-						var graphic = new esri.Graphic(p, pSymbol);//点
+						var graphic = new esri.Graphic(p, pmSymbol);//点
 						glayer.add(graphic);//要先加图
 						glayer.add(textsyboml);//再加文本
 						break;
@@ -378,11 +381,11 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 
 	}
 
-	function table_alarm_dealed(areaCode,monitors) {
+	function table_alarm_dealed(monitorsID,monitors) {
 		$('#table-alarm-dealed').bootstrapTable("destroy");
 		$('#table-alarm-dealed').bootstrapTable({
-			method : 'get',
-			contentType : "application/x-www-form-urlencoded", //必须要有！！！！
+			method : 'post',
+			contentType : "application/json", //必须要有！！！！
 			url : "data/waveorder/alarmdealed", //要请求数据的文件路径
 			striped : true, //是否显示行间隔色
 			dataField : "data", 
@@ -391,7 +394,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 			pagination : true, //是否分页
 			queryParamsType : 'limit', //查询参数组织方式
 			queryParams : function(params) {
-				params.areaCode = areaCode;
+				params.monitorsID = monitorsID;
 				return params
 			}, //请求服务器时所传的参数
 			sidePagination : 'client', //指定服务器端分页
@@ -442,11 +445,11 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 	}
 
 	
-	function table_alarm_undealed(areaCode,monitors) {
+	function table_alarm_undealed(monitorsID,monitors) {
 		$('#table-alarm-undeal').bootstrapTable("destroy");
 		var option = {
-			method : 'get',
-			contentType : "application/x-www-form-urlencoded", //必须要有！！！！
+			method : 'post',
+			contentType : "application/json", //必须要有！！！！
 			url : "data/waveorder/alarmundealed", //要请求数据的文件路径
 			striped : true, //是否显示行间隔色
 			dataField : "data", 
@@ -456,7 +459,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 			pagination : true, //是否分页
 			queryParamsType : 'limit', //查询参数组织方式
 			queryParams : function(params) {
-				params.areaCode = areaCode;
+				params.monitorsID = monitorsID;
 				return params
 			}, //请求服务器时所传的参数
 			pageSize : 16, //单页记录数
@@ -507,12 +510,12 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 		$('#table-alarm-undeal').bootstrapTable(option)
 	}
 
-	function table_radio_init(bool, areaCode,userID) {
+	function table_radio_init(bool, monitorsID,userID) {
 		$("#table_radio").load("waveorder/frequencyrange", function() {
 			if (bool) {
 				$('#table-radio').bootstrapTable({
-					method : 'get',
-					contentType : "application/x-www-form-urlencoded", //必须要有！！！！
+					method : 'post',
+					contentType : "application/json", //必须要有！！！！
 					url : "data/waveorder/rediostatus", //要请求数据的文件路径
 					striped : true, //是否显示行间隔色
 					dataField : "data",
@@ -522,7 +525,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 					pagination : true, //是否分页
 					queryParamsType : 'limit', //查询参数组织方式
 					queryParams : function(params) {
-						params.areaCode = areaCode;
+						params.monitorsID = monitorsID;
 						params.userID = userID;
 						return params
 					},
@@ -542,31 +545,31 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 						field : 'legalNormalStationNumber',
 						title : '合法正常信号',
 						formatter : function(value, row, index) {
-							return '<a data-toggle="modal" data-target="#modalSignal" data-areaCode="'+areaCode+'" data-radioType="0" data-beginFreq="'+row.beginFreq+'" data-endFreq="'+row.endFreq+'">' + value + '</a>';
+							return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'+monitorsID+'" data-radioType="0" data-beginFreq="'+row.beginFreq+'" data-endFreq="'+row.endFreq+'">' + value + '</a>';
 						}
 					}, {
 						field : 'legalUnNormalStationNumber',
 						title : '合法违规信号',
 						formatter : function(value, row, index) {
-							return '<a data-toggle="modal" data-target="#modalSignal" data-areaCode="'+areaCode+'" data-radioType="1" data-beginFreq="'+row.beginFreq+'" data-endFreq="'+row.endFreq+'">' + value + '</a>';
+							return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'+monitorsID+'" data-radioType="1" data-beginFreq="'+row.beginFreq+'" data-endFreq="'+row.endFreq+'">' + value + '</a>';
 						}
 					}, {
 						field : 'konwStationNumber',
 						title : '已知信号',
 						formatter : function(value, row, index) {
-							return '<a data-toggle="modal" data-target="#modalSignal" data-areaCode="'+areaCode+'" data-radioType="2" data-beginFreq="'+row.beginFreq+'" data-endFreq="'+row.endFreq+'">' + value + '</a>';
+							return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'+monitorsID+'" data-radioType="2" data-beginFreq="'+row.beginFreq+'" data-endFreq="'+row.endFreq+'">' + value + '</a>';
 						}
 					}, {
 						field : 'unKonw',
 						title : '不明信号',
 						formatter : function(value, row, index) {
-							return '<a data-toggle="modal" data-target="#modalSignal" data-areaCode="'+areaCode+'" data-radioType="3" data-beginFreq="'+row.beginFreq+'" data-endFreq="'+row.endFreq+'">' + value + '</a>';
+							return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'+monitorsID+'" data-radioType="3" data-beginFreq="'+row.beginFreq+'" data-endFreq="'+row.endFreq+'">' + value + '</a>';
 						}
 					}, {
 						field : 'illegalSignal',
 						title : '非法信号',
 						formatter : function(value, row, index) {
-							return '<a data-toggle="modal" data-target="#modalSignal" data-areaCode="'+areaCode+'" data-radioType="4" data-beginFreq="'+row.beginFreq+'" data-endFreq="'+row.endFreq+'">' + value + '</a>';
+							return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'+monitorsID+'" data-radioType="4" data-beginFreq="'+row.beginFreq+'" data-endFreq="'+row.endFreq+'">' + value + '</a>';
 						}
 					}, {
 						title : '重点监测',
@@ -577,8 +580,8 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 				});
 			} else {
 				$('#table-radio').bootstrapTable({
-					method : 'get',
-					contentType : "application/x-www-form-urlencoded", //必须要有！！！！
+					method : 'post',
+					contentType : "application/json", //必须要有！！！！
 					url : "data/waveorder/rediostatus", //要请求数据的文件路径
 					striped : true, //是否显示行间隔色
 					dataField : "data",
@@ -587,7 +590,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 					pagination : true, //是否分页
 					queryParamsType : 'limit', //查询参数组织方式
 					queryParams : function(params) {
-						params.areaCode = areaCode;
+						params.monitorsID = monitorsID;
 						params.userID = userID;
 						return params
 					}, //请求服务器时所传的参数

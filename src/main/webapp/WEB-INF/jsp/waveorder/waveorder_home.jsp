@@ -28,6 +28,9 @@
 	href="3.9/js/dojo/webgis/widgets/themes/darkangel/darkangel.css">
 <link rel="stylesheet"
 	href="3.9/js/dojo/webgis/widgets/themes/darkangel/override.css">
+<link
+	href='3.9/js/dojo/library/timepicker/css/bootstrap-datetimepicker.min.css'
+	rel='stylesheet' />
 </head>
 
 <body id='waveOrder'>
@@ -79,7 +82,7 @@
 		<section class='flex-row'>
 			<div class='box'>
 				<div id='redioType'></div>
-				<div id="mapDiv1"padding: 10px; height: 960px></div>
+				<div id="mapDiv1" padding: 10px; height: 960px></div>
 			</div>
 		</section>
 
@@ -187,7 +190,7 @@
 				</div>
 				<div class="modal-body padding20">
 					<table class="table table-striped" id='table-signal-list'>
-						
+
 					</table>
 				</div>
 			</div>
@@ -239,7 +242,7 @@
 						<div class='flex-row'>
 							<div class='flex1 config-left' id="important_monitor"></div>
 						</div>
-						
+
 					</div>
 
 				</div>
@@ -255,10 +258,10 @@
 				function(init) {
 
 					require(
-							[ "bootstrap", "bootstrapTable", "select2" ],
+							[ "bootstrap", "bootstrapTable", "select2" ,"datetimepicker"],
 							function() {
 								require(
-										[ "bootstrap_table_cn" ],
+										[ "bootstrap_table_cn" ,"datetimepicker_cn"],
 										function() {
 											require(
 													[ "home/waveorder/waveorder_manage" ],

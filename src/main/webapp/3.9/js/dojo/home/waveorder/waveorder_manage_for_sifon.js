@@ -3,8 +3,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 	, "esri/symbols/TextSymbol", "esri/geometry/Point", "esri/graphic", "esri/symbols/Font", "esri/symbols/SimpleMarkerSymbol" ], function(ajax, parser, Map, ArcGISTiledMapServiceLayer, request, GraphicsLayer, Scalebar, TextSymbol, Point, graphic, Font, SimpleMarkerSymbol) {
 	function wo_init(map_arry) {
 		var AREACODE = $("#areaCode")[0].value;
-		var areaCode = AREACODE;
-		var monitors = getMonitors(areaCode);
+		var monitors = getMonitors(AREACODE);
 		addPoint(map_arry, monitors, 0);// 默认选中0
 		redioType(monitors);
 

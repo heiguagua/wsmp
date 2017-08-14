@@ -66,7 +66,7 @@ public class WaveOrderViewController {
     @PostMapping("/importantMonitor")
     public String importantMonitor(Model model,@RequestBody Map<String,Object> map) throws MalformedURLException {
     	//根据频段查询重点监测，返回页面和对象
-    	//System.out.println("=================================map:"+map);
+    	System.out.println("=================================map:"+map);
     	BigDecimal beginFreq = new BigDecimal(map.get("beginFreq").toString());
 		BigDecimal endFreq = new BigDecimal(map.get("endFreq").toString());
 		BigDecimal divisor = new BigDecimal(1000000);

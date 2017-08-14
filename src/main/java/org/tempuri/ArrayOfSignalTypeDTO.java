@@ -3,7 +3,6 @@ package org.tempuri;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -38,7 +37,11 @@ public class ArrayOfSignalTypeDTO {
     @XmlElement(name = "SignalTypeDTO", nillable = true)
     protected List<SignalTypeDTO> signalTypeDTO;
 
-    /**
+    public void setSignalTypeDTO(List<SignalTypeDTO> signalTypeDTO) {
+		this.signalTypeDTO = signalTypeDTO;
+	}
+
+	/**
      * Gets the value of the signalTypeDTO property.
      * 
      * <p>
@@ -66,10 +69,5 @@ public class ArrayOfSignalTypeDTO {
         }
         return this.signalTypeDTO;
     }
-
-	public void setSignalTypeDTO(List<SignalTypeDTO> signalTypeDTO) {
-		this.signalTypeDTO = signalTypeDTO;
-		
-	}
 
 }

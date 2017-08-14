@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 43 (38999) - http://www.bohemiancoding.com/sketch -->
+    <title>监测站</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="1.0" transform="translate(-694.000000, -1419.000000)" fill-rule="nonzero" fill="#37A5FF">
+            <g id="Group-2" transform="translate(13.000000, 995.000000)">
+                <g id="数量-copy-6" transform="translate(681.000000, 407.000000)">
+                    <g id="监测站" transform="translate(0.000000, 17.000000)">
+                        <polygon id="Rectangle-13" points="24 24 24 30 26 30 26 22 6 22 6 30 8 30 8 24"></polygon>
+                        <polygon id="Path-6" points="0 32 32 32 32 30 2.66453526e-15 30"></polygon>
+                        <polygon id="Path-9" points="5 12 27 12 27 10 5 10"></polygon>
+                        <polygon id="Path-9-Copy" transform="translate(16.000000, 11.000000) rotate(42.000000) translate(-16.000000, -11.000000) " points="5 12 27 12 27 10 5 10"></polygon>
+                        <polygon id="Path-9-Copy-2" transform="translate(16.000000, 11.000000) rotate(-225.000000) translate(-16.000000, -11.000000) " points="5 12 27 12 27 10 5 10"></polygon>
+                        <polygon id="Path-7" points="17 22.8 17 0.787100129 15 0.787100129 15 22.8"></polygon>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
