@@ -88,6 +88,12 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
 //		})
     }
 
+    function configWarmingClick() {
+        $("#configWFreqWarming").click(function(){
+            ajax.get("")
+        });
+    }
+
     function setMapInit(init) {
         mapinit = init
     }

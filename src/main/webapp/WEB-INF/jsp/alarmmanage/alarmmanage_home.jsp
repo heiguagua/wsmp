@@ -37,7 +37,7 @@
       <select id = "station_picker" class='station-list select2-picker'>
       </select>
     </span>
-    <div class='config pull-right'>
+    <div id="configWFreqWarming" class='config pull-right'>
 			 <a class='btn btn-default btn-config' data-toggle="modal"
 				data-target="#modalConfig"> <img src='images/config.png' />&nbsp;&nbsp;配置
 			</a>
@@ -106,6 +106,7 @@
           </div>
         </div>
         <div id="mapDiv" style= "padding: 10px;"></div>
+        <div id="heatLayerMap"></div>
       </div>
     </section>
 	<section class='flex-row'>
@@ -341,6 +342,8 @@
   <input id="typeCode" class ="after_modal_colse" style="display: none;"  value="" >
   <input style="display: none" id ='mapUrl' value="${mapUrl}" />
   <script src="3.9/init.js"></script>
+  <script src="3.9/js/dojo/home/heatmap/heatmap.js"></script>
+  <script src="js/ol.js"></script>
   <script type="text/javascript">
     var test = 1;
     require([ "home/alarm/init", "jquery",
