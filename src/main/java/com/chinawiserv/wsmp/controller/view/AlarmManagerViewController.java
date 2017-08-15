@@ -1,5 +1,7 @@
 package com.chinawiserv.wsmp.controller.view;
 
+import com.alibaba.fastjson.JSON;
+import com.chinawiserv.apps.util.logger.Logger;
 import com.chinawiserv.wsmp.client.WebServiceSoapFactory;
 import com.chinawiserv.wsmp.pojo.RedioType;
 import com.chinawiserv.wsmp.pojo.Singal;
@@ -17,6 +19,8 @@ import org.tempuri.FreqWarningQueryRequest;
 import org.tempuri.FreqWarningQueryResponse;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -58,48 +62,56 @@ public class AlarmManagerViewController {
 		final String param = para.get("param").toString();
 
 		final String jsonStr = param.replace("\\","");
-		final FreqWarningQueryResponse response = (FreqWarningQueryResponse) service.freqWarnServiceCall("query", jsonStr, FreqWarningQueryRequest.class);
+		final FreqWarningQueryResponse response ;
 
-		final List<Singal> reslutList = response.getWarningInfos().getFreqWarningDTO().stream().map(t -> {
+		List<Singal> reslutList = Collections.emptyList();
+		try {
+			response = (FreqWarningQueryResponse) service.freqWarnServiceCall("query", jsonStr, FreqWarningQueryRequest.class);
 
-			final Singal singal = new Singal();
+			reslutList = response.getWarningInfos().getFreqWarningDTO().stream().map(t -> {
 
-			List<String> listId = Lists.newArrayList();
+                final Singal singal = new Singal();
 
-			singal.setContext(t.getCenterFreq().toString().concat("  ").concat(t.getSaveDate().toString()));
-			singal.setInteger(t.getCenterFreq());
-			System.out.println(t.getID());
-			singal.setId(t.getID());
+                List<String> listId = Lists.newArrayList();
 
-			int id = t.getStatus();
-			singal.setStatus(id);
+                singal.setContext(t.getCenterFreq().toString().concat("  ").concat(t.getSaveDate().toString()));
+                singal.setInteger(t.getCenterFreq());
+                System.out.println(t.getID());
+                singal.setId(t.getID());
 
-			singal.setCentorFreq(t.getCenterFreq().toString());
+                int id = t.getStatus();
+                singal.setStatus(id);
 
-			String beginTime = t.getSaveDate().toString().replaceAll(":", "").replaceAll("T", "").replaceAll("-", "");
-			singal.setBeginTime(beginTime);
+                singal.setCentorFreq(t.getCenterFreq().toString());
 
-			t.getStatList().getFreqWarningStatDTO().stream().map(m -> {
-				return m.getStationGUID();
-			}).forEach(z -> {
-				listId.add(z);
-			});
+                String beginTime = t.getSaveDate().toString().replaceAll(":", "").replaceAll("T", "").replaceAll("-", "");
+                singal.setBeginTime(beginTime);
 
-			final int size = listId.size();
+                t.getStatList().getFreqWarningStatDTO().stream().map(m -> {
+                    return m.getStationGUID();
+                }).forEach(z -> {
+                    listId.add(z);
+                });
 
-			String listIdString = "";
+                final int size = listId.size();
 
-			for (int i = 0; i < size; i++) {
-				listIdString = listIdString.concat(listId.get(i)).concat(",");
-			}
+                String listIdString = "";
 
-			int index = listIdString.lastIndexOf(",");
+                for (int i = 0; i < size; i++) {
+                    listIdString = listIdString.concat(listId.get(i)).concat(",");
+                }
 
-			listIdString = index != -1 ? listIdString.substring(0, index) : "";
+                int index = listIdString.lastIndexOf(",");
 
-			singal.setListString(listIdString);
-			return singal;
-		}).collect(toList());
+                listIdString = index != -1 ? listIdString.substring(0, index) : "";
+
+                singal.setListString(listIdString);
+                return singal;
+            }).collect(toList());
+			Logger.info("告警列表获取成功  操作时间{}  入参{} 返回值{}", LocalDateTime.now().toString(), JSON.toJSONString(para),JSON.toJSONString(reslutList));
+		} catch (Exception e) {
+			Logger.error("告警列表获取异常  操作时间{}  入参{} 异常{}", LocalDateTime.now().toString(), JSON.toJSONString(para),e);
+		}
 
 		model.addAttribute("stations", reslutList);
 
