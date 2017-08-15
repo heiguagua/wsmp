@@ -34,6 +34,7 @@
 </head>
 
 <body id='waveOrder'>
+	<input style="display: none" id ='mapUrl' value="${mapUrl}" />
 	<!--header-->
 	<div class='header-bar'>
 		<span class='module-name'>电波秩序管理</span>

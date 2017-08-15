@@ -46,6 +46,10 @@ public class WaveOrderViewController {
 	
 	@Value("${importFreqRangeManageService.wsdl}")
 	private String urlImportFreqRange;
+	
+	@Value("${mapservice.wdsl}")
+	private String mapUrl;
+
 
     @GetMapping("/ssss")
     public String alarmDealed() {
@@ -59,7 +63,7 @@ public class WaveOrderViewController {
 
     @GetMapping(path = {"/", ""})
 	public String home(Model model, @RequestParam Map<String, Object> map) {
-		
+		model.addAttribute("mapUrl", mapUrl);
         return "waveorder/waveorder_home";
     }
     
