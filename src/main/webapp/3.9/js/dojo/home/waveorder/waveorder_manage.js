@@ -1,5 +1,5 @@
 
-define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer", "dojo/request", "esri/layers/GraphicsLayer", "esri/dijit/Scalebar"
+define(["ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer", "dojo/request", "esri/layers/GraphicsLayer", "esri/dijit/Scalebar"
 	, "esri/symbols/TextSymbol", "esri/geometry/Point", "esri/graphic", "esri/symbols/Font", "esri/symbols/SimpleMarkerSymbol","esri/symbols/PictureMarkerSymbol"], function(ajax, parser, Map, ArcGISTiledMapServiceLayer, request, GraphicsLayer, Scalebar, TextSymbol, Point, graphic, Font, SimpleMarkerSymbol,PictureMarkerSymbol) {
 	function wo_init(map_arry) {
 		var user = getUser();
@@ -123,13 +123,12 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 				data : str,
 				dataType : 'html',// 只返回bool值
 				success : function(html) {
-					if (html != null) {
-						alert("更新成功！");
-						$("#important_monitor").html(html);
-						
-					} else {
-						alert("更新失败！");
-					}
+					alert("更新成功！");
+					$("#important_monitor").html(html);
+				},
+				error : function(html) {
+					console.log(html);
+					alert(html);
 				}
 			})
 		});
@@ -141,16 +140,17 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 				data : str,
 				dataType : 'html',// 只返回bool值
 				success : function(html) {
-					if (html != null) {
 						alert("添加成功！");
 						$("#important_monitor").html(html);
-					} else {
-						alert("添加失败！");
-					}
+						},
+				error : function(html) {
+					console.log(html);
+					alert(html);
 				}
 			})
 		});
 		$("#important_monitor").on("click","#buttonDelete",function(e) {
+			prompt("确认是否删除?");
 			var str = $("#important-monitor-form").serialize();
 			$.ajax({
 				url : 'waveorder/importantMonitorDelete',
@@ -158,12 +158,12 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 				data : str,
 				dataType : 'html',// 只返回bool值
 				success : function(html) {
-					if (html != null) {
-						alert("删除成功！");
-						$("#important_monitor").html(html);
-					} else {
-						alert("删除失败！");
-					}
+					alert("删除成功！");
+					$("#important_monitor").html(html);
+					},
+				error : function(html) {
+					console.log(html);
+					alert(html);
 				}
 			})
 		});	
