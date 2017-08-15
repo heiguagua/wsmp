@@ -4,7 +4,7 @@
 
 <form id="important-monitor-form" class="form-horizontal">
 	<div class="form-box-wrap">
-		<div class="form-group col-sm-6">
+		<%-- <div class="form-group col-sm-6">
 			<label for="" class="col-sm-3 control-label">开始时间</label>
 			<div class="col-sm-9">
 				<div class="input-group date time-picker" id="startTime">
@@ -23,7 +23,25 @@
 						class="input-group-addon"> <img src="images/date.png" /></span>
 				</div>
 			</div>
-		</div>
+		</div> --%>
+		 <div class="form-group col-sm-6">
+			<label for="" class="col-xs-3 control-label">开始时间</label>
+		        <div class=' input-group date time-picker' id='startTime' style="padding-left:15px">
+		          <input name="beginTime" type='text' class="form-control " value="${dto.getBeginTime()}" />
+		          <span class="input-group-addon">
+		            <span class="glyphicon glyphicon-calendar"></span>
+		          </span>
+		        </div> 
+		</div> 
+		 <div class="form-group col-sm-6">
+			<label for="" class="col-xs-3 control-label">结束时间</label>
+		        <div class='input-group date time-picker' id='endTime' style="padding-left:15px">
+		          <input name="endTime" type='text' class="form-control " value="${dto.getEndTime()}"/>
+		          <span class="input-group-addon">
+		            <span class="glyphicon glyphicon-calendar"></span>
+		          </span>
+		        </div> 
+		</div> 
 		<div class="form-group col-sm-6">
 			<label for="" class="col-sm-3 control-label">循环周期</label>
 			<div class="col-sm-9">

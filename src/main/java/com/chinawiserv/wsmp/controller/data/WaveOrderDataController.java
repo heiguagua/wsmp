@@ -1,5 +1,6 @@
 package com.chinawiserv.wsmp.controller.data;
 
+import com.chinawiserv.apps.util.logger.Logger;
 import com.chinawiserv.wsmp.pojo.Alarm;
 import com.chinawiserv.wsmp.pojo.RedioDetail;
 import com.chinawiserv.wsmp.pojo.RedioStatusCount;
@@ -138,6 +139,7 @@ public class WaveOrderDataController {
 		List<Alarm> alarmRows = Lists.newArrayList();
 		response.getWarningInfos().getFreqWarningDTO().stream().forEach(t -> {
 			Alarm alarm = new Alarm();
+//			Logger.info("===================================:{}", t.getID());
 			BigDecimal certerFreq = new BigDecimal(t.getCenterFreq());
 			BigDecimal divisor = new BigDecimal(1000000);
 			alarm.setRadio(certerFreq.divide(divisor).toString());

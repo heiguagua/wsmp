@@ -140,6 +140,26 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 
         // 门阀输入提交事件
         $("#gate-btn").on("click", function(ev) {})
+        
+        // 重点监测配置点击事件
+//        $("#modalConfig").on("shown.bs.modal",function(e){
+//        	var warningID = $("#signal_list1").find('option:selected').attr("warningid");
+//        	console.log(warningID);
+//        	var data = {};
+//        	data.warningID = warningID;
+//        	var str = JSON.stringify(data);
+//        	$.ajax({
+//    			url : 'signal/importantMonitor',
+//    			type : 'post',
+//    			data : str,//传输数据
+//    			contentType : 'application/json',//传输数据类型
+//    			dataType : 'html',//返回数据类型
+//    			success : function (html) {
+//    				$("#important_monitor").html(html);
+//    				$("#modalConfig").find(".time-picker").datetimepicker({});
+//    			}
+//    		})
+//	});
     }
 
 

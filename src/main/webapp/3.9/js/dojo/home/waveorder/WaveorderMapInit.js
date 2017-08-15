@@ -25,7 +25,9 @@ define(["dojo/parser","esri/map","esri/layers/ArcGISTiledMapServiceLayer","dojo/
         });
         
         //var url = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer";
-        var url = "http://192.168.21.105:8081/PBS/rest/services/guiyang/MapServer";
+//        var url = "http://192.168.21.105:8081/PBS/rest/services/guiyang/MapServer";
+        var mapUrl = $("#mapUrl").val();
+        var url = mapUrl;
         var agoLayer1 = new ArcGISTiledMapServiceLayer(url,{ id: "街道地图" });
         var agoLayer2 = new ArcGISTiledMapServiceLayer(url,{ id: "街道地图" });
         map1.addLayer(agoLayer1);

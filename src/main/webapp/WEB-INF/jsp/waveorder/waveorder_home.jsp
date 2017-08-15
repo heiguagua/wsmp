@@ -34,6 +34,7 @@
 </head>
 
 <body id='waveOrder'>
+	<input style="display: none" id ='mapUrl' value="${mapUrl}" />
 	<!--header-->
 	<div class='header-bar'>
 		<span class='module-name'>电波秩序管理</span>
@@ -237,7 +238,7 @@
 					</button>
 					<h4 class="modal-title" id="modalConfigLabel">重点监测参数配置</h4>
 				</div>
-				<div>
+				<div class="modal-body">
 					<div role="tabpanel" class="tab-pane active ">
 						<div class='flex-row'>
 							<div class='flex1 config-left' id="important_monitor"></div>

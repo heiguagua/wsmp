@@ -24,7 +24,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 		
 		$.fn.datetimepicker.defaults = {
 				language: 'zh-CN',
-				format: 'yyyy-mm-dd',
+				format: 'yyyy-mm-dd hh:ii:ss',
 				autoclose:true,
 				minView:2
 		}	
@@ -51,13 +51,6 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 
 		});
 		
-		$("#modalConfig").on("click",".time-picker",function(){
-			$('.time-picker').datetimepicker({
-				
-			});
-		})
-		
-		
 		$("#redioType").on("click","input",function(e){
 			var monitors = getMonitors(AREACODE);
 			addPoint(map_arry, monitors,e.target.value);
@@ -79,7 +72,9 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
     			dataType : 'html',//返回数据类型
     			success : function (html) {
     				$("#important_monitor").html(html);
-    			}
+    				$("#modalConfig").find(".time-picker").datetimepicker({
+	            	});
+    			},
     		})
 		});
 		
@@ -350,7 +345,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 						obj.monitorID = result[i].monitorID;
 						var p = new Point(obj);
 						var textSymbol = new TextSymbol(p.count).setColor(
-								new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
+								new esri.Color([ 0x0, 0x0, 0])).setAlign(Font.ALIGN_START).setFont(
 										new Font("12pt").setWeight(Font.WEIGHT_BOLD));
 						var textsyboml = new esri.Graphic(p, textSymbol);//文本
 						var graphic = new esri.Graphic(p, pmSymbol);//点
