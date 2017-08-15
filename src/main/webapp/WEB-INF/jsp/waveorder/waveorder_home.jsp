@@ -238,7 +238,7 @@
 					</button>
 					<h4 class="modal-title" id="modalConfigLabel">重点监测参数配置</h4>
 				</div>
-				<div>
+				<div class="modal-body">
 					<div role="tabpanel" class="tab-pane active ">
 						<div class='flex-row'>
 							<div class='flex1 config-left' id="important_monitor"></div>

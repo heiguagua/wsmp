@@ -345,7 +345,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 						obj.monitorID = result[i].monitorID;
 						var p = new Point(obj);
 						var textSymbol = new TextSymbol(p.count).setColor(
-								new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
+								new esri.Color([ 0x0, 0xff, 0])).setAlign(Font.ALIGN_START).setFont(
 										new Font("12pt").setWeight(Font.WEIGHT_BOLD));
 						var textsyboml = new esri.Graphic(p, textSymbol);//文本
 						var graphic = new esri.Graphic(p, pmSymbol);//点

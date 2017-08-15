@@ -1,6 +1,6 @@
 
 define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer", "dojo/request", "esri/layers/GraphicsLayer", "esri/dijit/Scalebar"
-	, "esri/symbols/TextSymbol", "esri/geometry/Point", "esri/graphic", "esri/symbols/Font", "esri/symbols/SimpleMarkerSymbol" ], function(ajax, parser, Map, ArcGISTiledMapServiceLayer, request, GraphicsLayer, Scalebar, TextSymbol, Point, graphic, Font, SimpleMarkerSymbol) {
+	, "esri/symbols/TextSymbol", "esri/geometry/Point", "esri/graphic", "esri/symbols/Font", "esri/symbols/SimpleMarkerSymbol","esri/symbols/PictureMarkerSymbol" ], function(ajax, parser, Map, ArcGISTiledMapServiceLayer, request, GraphicsLayer, Scalebar, TextSymbol, Point, graphic, Font, SimpleMarkerSymbol,PictureMarkerSymbol) {
 	function wo_init(map_arry) {
 		var AREACODE = $("#areaCode")[0].value;
 		var monitors = getMonitors(AREACODE);
@@ -57,10 +57,11 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 			data.monitorsNum[i] = monitors[i].Num;
 		}
 		console.log(data);
-		var pSymbol = new SimpleMarkerSymbol();
-		pSymbol.style = SimpleMarkerSymbol.STYLE_CIRCLE; //设置点的类型为圆形
-		pSymbol.setSize(20); //设置点的大小为20像素
-		pSymbol.setColor(new dojo.Color("#FFFFCC")); //设置点的颜色
+		var pmSymbol = new PictureMarkerSymbol({
+			"url":"images/monitoring-station.svg",
+			"height":33,
+		 	"width":32
+		});
 		ajax.post("data/waveorder/monitorsPoint", data, function(result) {
 			console.log(result);
 			var glayer = map_arry.glayer1;
@@ -79,7 +80,7 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 								new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
 										new Font("12pt").setWeight(Font.WEIGHT_BOLD));
 						var textsyboml = new esri.Graphic(p, textSymbol);//文本
-						var graphic = new esri.Graphic(p, pSymbol);//点
+						var graphic = new esri.Graphic(p, pmSymbol);//点
 						glayer.add(graphic);//要先加图
 						glayer.add(textsyboml);//再加文本
 						break;
