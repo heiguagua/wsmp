@@ -22,7 +22,7 @@
 		</url>
 		<username>station_gy</username>
 		<password>oracle</password>
-		<validationQuery>select 1</validationQuery>
+		<validationQuery>select 1 from dual</validationQuery>
 		<removeAbandoned>true</removeAbandoned>
 		<removeAbandonedTimeout>6000</removeAbandonedTimeout>
 		<testWhileIdle>true</testWhileIdle>

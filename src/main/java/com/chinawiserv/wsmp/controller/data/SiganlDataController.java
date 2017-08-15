@@ -56,20 +56,19 @@ public class SiganlDataController {
 	}
 
 	@GetMapping("/FmRate")
-	public Object getFMRate(@RequestParam String id, @RequestParam String timeStart, @RequestParam String timeStop, @RequestParam String frequency)
-			throws Exception {
-
-		String ID = "52010126";
-		long Frequency = 10740000000000L;
-		String TimeStart = "20170128000000";
-		String TimeStop = "20170804000000";
+	public Object getFMRate(@RequestParam String id, @RequestParam String timeStart, @RequestParam String timeStop, @RequestParam String frequency) {
 
 		// long frequencyLong = Long.parseLong(frequency);
 
 		Map<String, Object> resluteMap = Maps.newHashMap();
 
 		//Map<String, Object> map = hbaseClient.queryModulationMode(id, timeStart, timeStop, Long.parseLong(frequency));
-		Map<String, Object> map = hbaseClient.queryModulationMode(id, timeStart, timeStop, Long.parseLong(frequency));
+		Map<String, Object> map = null;
+		try {
+			map = hbaseClient.queryModulationMode(id, timeStart, timeStop, Long.parseLong(frequency));
+		} catch (Exception e) {
+			Logger.errorThrow("调制方式异常{}",e);
+		}
 		List<String> lists = Lists.newLinkedList();
 		int sum =  map.values().stream().mapToInt(m->Integer.parseInt(m.toString())).reduce(0,(a, b) ->  a +  b);
 
