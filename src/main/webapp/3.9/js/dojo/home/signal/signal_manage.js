@@ -143,9 +143,10 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
         
         // 重点监测配置点击事件
 //        $("#modalConfig").on("shown.bs.modal",function(e){
-//		var a = $(e.relatedTarget);
-//		var warningID = a.data("warningid");
+//        	var warningID = $("#signal_list1").find('option:selected').attr("warningid");
+//        	console.log(warningID);
 //        	var data = {};
+//        	data.warningID = warningID;
 //        	var str = JSON.stringify(data);
 //        	$.ajax({
 //    			url : 'signal/importantMonitor',

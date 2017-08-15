@@ -176,8 +176,8 @@ public class SignalViewController {
 			URL url = new URL(urlImportFreqRange);
 	    	ImportFreqRangeManageService service = new ImportFreqRangeManageService(url);
 			IImportFreqRangeManageService service2 = service.getBasicHttpBindingIImportFreqRangeManageService();
-			String result = service2.findAllFreqRange();
-			//System.out.println("=================================result:"+result);
+			String result = service2.findFreqByWarn(map.get("warningID").toString());
+			System.out.println("=================================result:"+result);
 			final Type type = new TypeReference<List<MeasureTaskParamDto>>() {}.getType();
 			@SuppressWarnings("unchecked")
 			List<MeasureTaskParamDto> resultList = (List<MeasureTaskParamDto>) JSON.parseObject(result,type);
