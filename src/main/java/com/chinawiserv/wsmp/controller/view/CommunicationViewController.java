@@ -23,4 +23,8 @@ public class CommunicationViewController {
 
 		return "communication/communication_home";
 	}
+	@RequestMapping("/openLayTest")
+	public String openLayTest(){
+		return "openLayerTest";
+	}
 }

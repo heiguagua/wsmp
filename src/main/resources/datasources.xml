@@ -15,6 +15,7 @@
 		<testWhileIdle>true</testWhileIdle>
 	</datasource> -->
 
+	<!--oracle连接配置-->
 	<datasource name="datasource2" primary="true">
 		<url>
 		<![CDATA[jdbc:oracle:thin:@192.168.21.105:1521:wireless]]>

@@ -1,19 +1,15 @@
 
 package org.tempuri;
 
-import java.math.BigInteger;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.math.BigInteger;
 
 
 /**
- * <p>RadioSignalDTO complex type的 Java 类。
+ * <p>RadioSignalDTO complex type锟斤拷 Java 锟洁。
  * 
- * <p>以下模式片段指定包含在此类中的预期内容。
+ * <p>锟斤拷锟斤拷模式片锟斤拷指锟斤拷锟斤拷锟斤拷锟节达拷锟斤拷锟叫碉拷预锟斤拷锟斤拷锟捷★拷
  * 
  * <pre>
  * &lt;complexType name="RadioSignalDTO"&gt;
@@ -119,7 +115,7 @@ public class RadioSignalDTO {
     protected ArrayOfRadioSignalAbnormalHistoryDTO abnormalHistory;
 
     /**
-     * 获取id属性的值。
+     * 锟斤拷取id锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -131,7 +127,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 设置id属性的值。
+     * 锟斤拷锟斤拷id锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -143,7 +139,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 获取name属性的值。
+     * 锟斤拷取name锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -155,7 +151,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 设置name属性的值。
+     * 锟斤拷锟斤拷name锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -167,7 +163,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 获取centerFreq属性的值。
+     * 锟斤拷取centerFreq锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -179,7 +175,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 设置centerFreq属性的值。
+     * 锟斤拷锟斤拷centerFreq锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -191,7 +187,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 获取bandWidth属性的值。
+     * 锟斤拷取bandWidth锟斤拷锟皆碉拷值锟斤拷
      * 
      */
     public long getBandWidth() {
@@ -199,7 +195,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 设置bandWidth属性的值。
+     * 锟斤拷锟斤拷bandWidth锟斤拷锟皆碉拷值锟斤拷
      * 
      */
     public void setBandWidth(long value) {
@@ -207,7 +203,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 获取areaCode属性的值。
+     * 锟斤拷取areaCode锟斤拷锟皆碉拷值锟斤拷
      * 
      */
     public int getAreaCode() {
@@ -215,7 +211,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 设置areaCode属性的值。
+     * 锟斤拷锟斤拷areaCode锟斤拷锟皆碉拷值锟斤拷
      * 
      */
     public void setAreaCode(int value) {
@@ -223,7 +219,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 获取typeCode属性的值。
+     * 锟斤拷取typeCode锟斤拷锟皆碉拷值锟斤拷
      * 
      */
     public int getTypeCode() {
@@ -231,7 +227,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 设置typeCode属性的值。
+     * 锟斤拷锟斤拷typeCode锟斤拷锟皆碉拷值锟斤拷
      * 
      */
     public void setTypeCode(int value) {
@@ -239,7 +235,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 获取longitude属性的值。
+     * 锟斤拷取longitude锟斤拷锟皆碉拷值锟斤拷
      * 
      */
     public double getLongitude() {
@@ -247,7 +243,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 设置longitude属性的值。
+     * 锟斤拷锟斤拷longitude锟斤拷锟皆碉拷值锟斤拷
      * 
      */
     public void setLongitude(double value) {
@@ -255,7 +251,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 获取latitude属性的值。
+     * 锟斤拷取latitude锟斤拷锟皆碉拷值锟斤拷
      * 
      */
     public double getLatitude() {
@@ -263,7 +259,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 设置latitude属性的值。
+     * 锟斤拷锟斤拷latitude锟斤拷锟皆碉拷值锟斤拷
      * 
      */
     public void setLatitude(double value) {
@@ -271,7 +267,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 获取altitude属性的值。
+     * 锟斤拷取altitude锟斤拷锟皆碉拷值锟斤拷
      * 
      */
     public double getAltitude() {
@@ -279,7 +275,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 设置altitude属性的值。
+     * 锟斤拷锟斤拷altitude锟斤拷锟皆碉拷值锟斤拷
      * 
      */
     public void setAltitude(double value) {
@@ -287,7 +283,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 获取stationKey属性的值。
+     * 锟斤拷取stationKey锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -299,7 +295,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 设置stationKey属性的值。
+     * 锟斤拷锟斤拷stationKey锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -311,7 +307,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 获取isInvalid属性的值。
+     * 锟斤拷取isInvalid锟斤拷锟皆碉拷值锟斤拷
      * 
      */
     public boolean isIsInvalid() {
@@ -319,7 +315,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 设置isInvalid属性的值。
+     * 锟斤拷锟斤拷isInvalid锟斤拷锟皆碉拷值锟斤拷
      * 
      */
     public void setIsInvalid(boolean value) {
@@ -327,7 +323,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 获取saveDate属性的值。
+     * 锟斤拷取saveDate锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -339,7 +335,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 设置saveDate属性的值。
+     * 锟斤拷锟斤拷saveDate锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -351,7 +347,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 获取extendFields属性的值。
+     * 锟斤拷取extendFields锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -363,7 +359,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 设置extendFields属性的值。
+     * 锟斤拷锟斤拷extendFields锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -375,7 +371,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 获取warningFreqID属性的值。
+     * 锟斤拷取warningFreqID锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -387,7 +383,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 设置warningFreqID属性的值。
+     * 锟斤拷锟斤拷warningFreqID锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -399,7 +395,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 获取invalidDate属性的值。
+     * 锟斤拷取invalidDate锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -411,7 +407,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 设置invalidDate属性的值。
+     * 锟斤拷锟斤拷invalidDate锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -423,7 +419,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 获取des属性的值。
+     * 锟斤拷取des锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -435,7 +431,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 设置des属性的值。
+     * 锟斤拷锟斤拷des锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -447,7 +443,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 获取appendDTOs属性的值。
+     * 锟斤拷取appendDTOs锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -459,7 +455,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 设置appendDTOs属性的值。
+     * 锟斤拷锟斤拷appendDTOs锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -471,7 +467,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 获取stationDTOs属性的值。
+     * 锟斤拷取stationDTOs锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -483,7 +479,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 设置stationDTOs属性的值。
+     * 锟斤拷锟斤拷stationDTOs锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -495,7 +491,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 获取radioStation属性的值。
+     * 锟斤拷取radioStation锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -507,7 +503,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 设置radioStation属性的值。
+     * 锟斤拷锟斤拷radioStation锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -519,7 +515,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 获取abnormalHistory属性的值。
+     * 锟斤拷取abnormalHistory锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -531,7 +527,7 @@ public class RadioSignalDTO {
     }
 
     /**
-     * 设置abnormalHistory属性的值。
+     * 锟斤拷锟斤拷abnormalHistory锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is

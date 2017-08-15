@@ -2,18 +2,19 @@
  * Created by wuhaoran on 2017/2/25.
  */
 //
-define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm_manage","ajax","dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer", "dojo/request", "esri/layers/GraphicsLayer", "esri/dijit/Scalebar"
+
+define(["esri/geometry/Extent","home/heatmap/HeatmapLayer","esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm_manage","ajax","dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer", "dojo/request", "esri/layers/GraphicsLayer", "esri/dijit/Scalebar"
 	, "esri/symbols/TextSymbol", "esri/geometry/Point", "esri/graphic", "esri/symbols/Font", "esri/symbols/SimpleMarkerSymbol" ],
-	function(SimpleFillSymbol,Circle,alarm_manage,ajax,parser, Map, ArcGISTiledMapServiceLayer, request, GraphicsLayer, Scalebar, TextSymbol, Point, graphic, Font, SimpleMarkerSymbol) {
+	function(Extent,HeatmapLayer,SimpleFillSymbol,Circle,alarm_manage,ajax,parser, Map, ArcGISTiledMapServiceLayer, request, GraphicsLayer, Scalebar, TextSymbol, Point, graphic, Font, SimpleMarkerSymbol) {
 		var testWidget = null;
 
 		var pSymbol = null;
 
         var glayer = null;
 
-        var map = null;
-
         var mapUtl = $("#mapUrl").val();
+
+        var map = null;
 		//var map = null;
 		//config.defaults.io.corsEnabledServers.push("192.168.13.79:7080");
 		function pares() {
@@ -66,9 +67,54 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 			});
 
 			parser.parse();
-			mapInit();
+			mapInit()
+            //getKriking();
 			closeModal();
 		}
+
+		function getKriking() {
+
+           var heatLayer = new HeatmapLayer({
+                "useLocalMaximum": true,
+                config: {
+                    "radius": 40,
+                    "gradient": {
+                        0.45: "rgb(000,000,255)",
+                        0.55: "rgb(000,255,255)",
+                        0.65: "rgb(000,255,000)",
+                        0.95: "rgb(255,255,000)",
+                        1.00: "rgb(255,000,000)"
+                    }
+                },
+                "map": map,
+                "opacity": 0.85
+            }, "heatLayer");
+
+            map.addLayer(heatLayer);
+
+            var data = [
+                {
+                    attributes: {},
+                    geometry: {
+                        spatialReference: {wkid: 3857},
+                        type: "point",
+                        x: 10259021.6831997,
+                        y: 3007789.22457995
+                    }
+                },
+                {
+                    attributes: {},
+                    geometry: {
+                        spatialReference: {wkid: 3857},
+                        type: "point",
+                        x: 10259021.6831997,
+                        y: 3007789.22457995
+                    }
+                }
+            ];
+
+            heatLayer.setData(data);
+        }
 
         function  warnig_confirm() {
             var value = $("#signal_list").find('option:selected').val();
@@ -176,10 +222,7 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 		//"http://127.0.0.1:8080/data/PBS/rest/services/MyPBSService1/MapServer"
 		function mapInit() {
 
-			map = new Map("mapDiv", {
-				//center : [ 104.06, 30.67 ],
-				zoom : 10
-			});
+
 			//var url = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer";
 			var url = mapUtl;
 			var agoLayer = new ArcGISTiledMapServiceLayer(url, {
@@ -190,6 +233,16 @@ define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm
 				"Ycoord" : 30.67,
 				"Plant" : "Mesa Mint"
 			};
+
+			console.log(agoLayer);
+
+            map = new Map("mapDiv", {
+                //center : [ 104.06, 30.67 ],
+                zoom : 10,
+                extent: agoLayer.initExtent
+            });
+
+            console.log(map);
 
 			glayer = new GraphicsLayer();
 

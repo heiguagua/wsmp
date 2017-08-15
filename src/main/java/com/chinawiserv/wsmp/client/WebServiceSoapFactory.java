@@ -4,12 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.chinawiserv.apps.util.logger.Logger;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
+import org.joor.Reflect;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.tempuri.FreqHistoryWebServiceSoap;
-import org.tempuri.FreqWarningWebServiceSoap;
-import org.tempuri.RadioSignalWebServiceSoap;
-import org.tempuri.RadioStationWebServiceSoap;
+import org.tempuri.*;
 
 import javax.annotation.PostConstruct;
 import java.lang.reflect.InvocationTargetException;
@@ -32,6 +30,9 @@ public class WebServiceSoapFactory {
 	@Value("${radioSignalWebService.wsdl}")
 	private String radioSignal;
 
+	@Value("${importFreqRangeManageService.wsdl}")
+	private String iImportFreqRangeManageServiceUrl;
+
 	private FreqWarningWebServiceSoap freqWarnService;
 
 	private FreqHistoryWebServiceSoap fregHistoryService;
@@ -39,6 +40,8 @@ public class WebServiceSoapFactory {
 	private RadioStationWebServiceSoap radioStationService;
 
 	private RadioSignalWebServiceSoap radioSignalService;
+
+	private  IImportFreqRangeManageService iImportFreqRangeManageService;
 
 	public Object fregHistoryServiceCall(String methodName, String param, Class<?> parameterTypes) {
 
@@ -90,6 +93,9 @@ public class WebServiceSoapFactory {
 
 		factoryBean.setAddress(this.radioSignal);
 		this.radioSignalService = factoryBean.create(RadioSignalWebServiceSoap.class);
+
+		factoryBean.setAddress(this.iImportFreqRangeManageServiceUrl);
+		this.iImportFreqRangeManageService = factoryBean.create(IImportFreqRangeManageService.class);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -131,4 +137,12 @@ public class WebServiceSoapFactory {
 		return null;
 	}
 
+	public Object IImportFreqRangeManageServiceCall( String methodName, String param){
+		String method = Reflect.on(iImportFreqRangeManageService).call(methodName,param).toString();
+			return  null;
+	}
+
+	public FreqWarningWebServiceSoap getFreqWarnService() {
+		return freqWarnService;
+	}
 }

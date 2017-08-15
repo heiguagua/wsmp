@@ -1,5 +1,6 @@
 package com.chinawiserv.wsmp.controller.data;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.chinawiserv.apps.util.logger.Logger;
 import com.chinawiserv.wsmp.client.WebServiceSoapFactory;
@@ -56,6 +57,7 @@ public class AlarmDataController {
     long lowerBound;
 
     private ObjectMapper mapper = new ObjectMapper();
+
 
     @GetMapping(path = "/secondLevelChart")
     public Object secondLevelChart(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
@@ -301,22 +303,18 @@ public class AlarmDataController {
     public @ResponseBody
     Map<String, Object> getStationPiont(@RequestBody Map<String, Object> param) {
 
-        long centerFreq = (long) (88.8 * 1000000);
-        String dateTime = "20170810235959";
+//        long centerFreq = (long) (88.8 * 1000000);
+//        String dateTime = "20170810235959";
 
 //        测试或正式环境使用
 //        Long frequency = Long.parseLong((String) param.get("frequency"));
 //        List<LevelLocate> relate = hbaseClient.queryLevelLocate((String) param.get("beginTime"), frequency );
-        List<LevelLocate> relate = hbaseClient.queryLevelLocate(dateTime, centerFreq);
-
+        List<LevelLocate> relate = hbaseClient.queryLevelLocate((String) param.get("beginTime"), Long.parseLong((String) param.get("frequency")));
+        System.out.println(JSON.toJSONString(relate));
         //测试或正式环境使用
         //List<String> stationcode = (List<String>) param.get("stationcode");
 
-        List<String> stationcode = Lists.newLinkedList();
-
-
-        stationcode.add("52010120");
-        stationcode.add("52010126");
+        List<String> stationcode = (List<String>) param.get("stationcode");
 
         List<LevelLocate> mapPoint = relate.stream().filter(t -> stationcode.contains(t.getId())).collect(toList());
 
@@ -329,7 +327,7 @@ public class AlarmDataController {
         double[] flon = relate.stream().mapToDouble(LevelLocate::getFlon).toArray();
         double[] flat = relate.stream().mapToDouble(LevelLocate::getFlat).toArray();
         double[] level = relate.stream().mapToDouble(LevelLocate::getLevel).toArray();
-        //至少要五个点才能计算出来
+        //至少要八个点才能计算出来
         params.setSid("" + System.currentTimeMillis());// sid能够表该次计算的唯一标识
         params.setStype((byte) 3);// 固定3，标识计算类型为场强计算
         params.setDistanceTh(10d);// 距离门限，单位km，值是界面传递进来的
@@ -357,14 +355,6 @@ public class AlarmDataController {
 
         levelPoint.add(map);
         levelPoint.add(map1);
-
-        Map<String,Object> stations = Maps.newHashMap();
-        stations.put("x", 106.080555555556);
-        stations.put("y", 27.6838888888889);
-        stations.put("count",40000);
-        stations.put("stationId", "52010121");
-        List< Map<String,Object>> listest = Lists.newLinkedList();
-        listest.add(stations);
 
 //        try {
 //
@@ -403,7 +393,7 @@ public class AlarmDataController {
         Map<String, Object> mapPiont = new HashMap<>();
 
         //mapPiont.put("stationPiont", stationPiont);
-        mapPiont.put("stationPiont", listest);
+        mapPiont.put("stationPiont", stationPiont);
         mapPiont.put("levelPoint", levelPoint);
 
         // map.put("x", "106.709177096");

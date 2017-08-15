@@ -22,6 +22,16 @@ public class Singal {
 
 	private String beginTime;
 
+	private String warnimgId;
+
+	public String getWarnimgId() {
+		return warnimgId;
+	}
+
+	public void setWarnimgId(String warnimgId) {
+		this.warnimgId = warnimgId;
+	}
+
 	public String getId() {
 		return id;
 	}
