@@ -119,11 +119,11 @@ public class SignalViewController {
 			final String id = t.getID();
 
 			singal.setId(id);
+			singal.setWarnimgId(t.getWarningFreqID());
 			singal.setCentorFreq(t.getCenterFreq().toString());
 			singal.setBeginTime(t.getSaveDate().toString().replaceAll(":", "").replaceAll("T", "").replaceAll("-", ""));
 			singal.setEndTime(t.getInvalidDate().toString().replaceAll(":", "").replaceAll("T", "").replaceAll("-", ""));
 			singal.setContext(t.getCenterFreq().toString().concat("   ").concat(t.getSaveDate().toString()));
-
 			return singal;
 		}).collect(toList());
 

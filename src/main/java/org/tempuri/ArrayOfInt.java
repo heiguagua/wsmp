@@ -3,7 +3,6 @@ package org.tempuri;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -36,9 +35,17 @@ import javax.xml.bind.annotation.XmlType;
 public class ArrayOfInt {
 
     @XmlElement(name = "int", type = Integer.class)
-	private List<Integer> _int;
+    protected List<Integer> _int;
 
-    /**
+    public List<Integer> get_int() {
+		return _int;
+	}
+
+	public void set_int(List<Integer> _int) {
+		this._int = _int;
+	}
+
+	/**
      * Gets the value of the int property.
      * 
      * <p>
@@ -62,13 +69,9 @@ public class ArrayOfInt {
      */
     public List<Integer> getInt() {
         if (_int == null) {
-            set_int(new ArrayList<Integer>());
+            _int = new ArrayList<Integer>();
         }
         return this._int;
     }
-
-	public void set_int(List<Integer> _int) {
-		this._int = _int;
-	}
 
 }

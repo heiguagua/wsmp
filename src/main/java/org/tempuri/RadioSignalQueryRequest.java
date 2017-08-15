@@ -2,7 +2,6 @@
 package org.tempuri;
 
 import java.math.BigInteger;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -12,9 +11,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * <p>RadioSignalQueryRequest complex type锟斤拷 Java 锟洁。
+ * <p>RadioSignalQueryRequest complex type的 Java 类。
  * 
- * <p>锟斤拷锟斤拷模式片锟斤拷指锟斤拷锟斤拷锟斤拷锟节达拷锟斤拷锟叫碉拷预锟斤拷锟斤拷锟捷★拷
+ * <p>以下模式片段指定包含在此类中的预期内容。
  * 
  * <pre>
  * &lt;complexType name="RadioSignalQueryRequest"&gt;
@@ -84,7 +83,7 @@ public class RadioSignalQueryRequest {
     protected boolean isReturnRadioStation;
 
     /**
-     * 锟斤拷取id锟斤拷锟皆碉拷值锟斤拷
+     * 获取id属性的值。
      * 
      * @return
      *     possible object is
@@ -96,7 +95,7 @@ public class RadioSignalQueryRequest {
     }
 
     /**
-     * 锟斤拷锟斤拷id锟斤拷锟皆碉拷值锟斤拷
+     * 设置id属性的值。
      * 
      * @param value
      *     allowed object is
@@ -108,7 +107,7 @@ public class RadioSignalQueryRequest {
     }
 
     /**
-     * 锟斤拷取beginFreq锟斤拷锟皆碉拷值锟斤拷
+     * 获取beginFreq属性的值。
      * 
      * @return
      *     possible object is
@@ -120,7 +119,7 @@ public class RadioSignalQueryRequest {
     }
 
     /**
-     * 锟斤拷锟斤拷beginFreq锟斤拷锟皆碉拷值锟斤拷
+     * 设置beginFreq属性的值。
      * 
      * @param value
      *     allowed object is
@@ -132,7 +131,7 @@ public class RadioSignalQueryRequest {
     }
 
     /**
-     * 锟斤拷取endFreq锟斤拷锟皆碉拷值锟斤拷
+     * 获取endFreq属性的值。
      * 
      * @return
      *     possible object is
@@ -144,7 +143,7 @@ public class RadioSignalQueryRequest {
     }
 
     /**
-     * 锟斤拷锟斤拷endFreq锟斤拷锟皆碉拷值锟斤拷
+     * 设置endFreq属性的值。
      * 
      * @param value
      *     allowed object is
@@ -156,7 +155,7 @@ public class RadioSignalQueryRequest {
     }
 
     /**
-     * 锟斤拷取typeCodes锟斤拷锟皆碉拷值锟斤拷
+     * 获取typeCodes属性的值。
      * 
      * @return
      *     possible object is
@@ -168,7 +167,7 @@ public class RadioSignalQueryRequest {
     }
 
     /**
-     * 锟斤拷锟斤拷typeCodes锟斤拷锟皆碉拷值锟斤拷
+     * 设置typeCodes属性的值。
      * 
      * @param value
      *     allowed object is
@@ -180,7 +179,7 @@ public class RadioSignalQueryRequest {
     }
 
     /**
-     * 锟斤拷取areaCodes锟斤拷锟皆碉拷值锟斤拷
+     * 获取areaCodes属性的值。
      * 
      * @return
      *     possible object is
@@ -192,7 +191,7 @@ public class RadioSignalQueryRequest {
     }
 
     /**
-     * 锟斤拷锟斤拷areaCodes锟斤拷锟皆碉拷值锟斤拷
+     * 设置areaCodes属性的值。
      * 
      * @param value
      *     allowed object is
@@ -204,7 +203,7 @@ public class RadioSignalQueryRequest {
     }
 
     /**
-     * 锟斤拷取stationIDs锟斤拷锟皆碉拷值锟斤拷
+     * 获取stationIDs属性的值。
      * 
      * @return
      *     possible object is
@@ -216,7 +215,7 @@ public class RadioSignalQueryRequest {
     }
 
     /**
-     * 锟斤拷锟斤拷stationIDs锟斤拷锟皆碉拷值锟斤拷
+     * 设置stationIDs属性的值。
      * 
      * @param value
      *     allowed object is
@@ -228,7 +227,7 @@ public class RadioSignalQueryRequest {
     }
 
     /**
-     * 锟斤拷取startTime锟斤拷锟皆碉拷值锟斤拷
+     * 获取startTime属性的值。
      * 
      * @return
      *     possible object is
@@ -240,7 +239,7 @@ public class RadioSignalQueryRequest {
     }
 
     /**
-     * 锟斤拷锟斤拷startTime锟斤拷锟皆碉拷值锟斤拷
+     * 设置startTime属性的值。
      * 
      * @param value
      *     allowed object is
@@ -252,7 +251,7 @@ public class RadioSignalQueryRequest {
     }
 
     /**
-     * 锟斤拷取stopTime锟斤拷锟皆碉拷值锟斤拷
+     * 获取stopTime属性的值。
      * 
      * @return
      *     possible object is
@@ -264,7 +263,7 @@ public class RadioSignalQueryRequest {
     }
 
     /**
-     * 锟斤拷锟斤拷stopTime锟斤拷锟皆碉拷值锟斤拷
+     * 设置stopTime属性的值。
      * 
      * @param value
      *     allowed object is
@@ -276,7 +275,7 @@ public class RadioSignalQueryRequest {
     }
 
     /**
-     * 锟斤拷取startIndex锟斤拷锟皆碉拷值锟斤拷
+     * 获取startIndex属性的值。
      * 
      * @return
      *     possible object is
@@ -288,7 +287,7 @@ public class RadioSignalQueryRequest {
     }
 
     /**
-     * 锟斤拷锟斤拷startIndex锟斤拷锟皆碉拷值锟斤拷
+     * 设置startIndex属性的值。
      * 
      * @param value
      *     allowed object is
@@ -300,7 +299,7 @@ public class RadioSignalQueryRequest {
     }
 
     /**
-     * 锟斤拷取count锟斤拷锟皆碉拷值锟斤拷
+     * 获取count属性的值。
      * 
      * @return
      *     possible object is
@@ -312,7 +311,7 @@ public class RadioSignalQueryRequest {
     }
 
     /**
-     * 锟斤拷锟斤拷count锟斤拷锟皆碉拷值锟斤拷
+     * 设置count属性的值。
      * 
      * @param value
      *     allowed object is
@@ -324,7 +323,7 @@ public class RadioSignalQueryRequest {
     }
 
     /**
-     * 锟斤拷取isReturnRadioStation锟斤拷锟皆碉拷值锟斤拷
+     * 获取isReturnRadioStation属性的值。
      * 
      */
     public boolean isIsReturnRadioStation() {
@@ -332,7 +331,7 @@ public class RadioSignalQueryRequest {
     }
 
     /**
-     * 锟斤拷锟斤拷isReturnRadioStation锟斤拷锟皆碉拷值锟斤拷
+     * 设置isReturnRadioStation属性的值。
      * 
      */
     public void setIsReturnRadioStation(boolean value) {

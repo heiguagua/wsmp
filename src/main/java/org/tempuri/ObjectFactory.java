@@ -1,14 +1,7 @@
 
 package org.tempuri;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.annotation.XmlElementDecl;
 import javax.xml.bind.annotation.XmlRegistry;
-import javax.xml.datatype.Duration;
-import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.namespace.QName;
 
 
 /**
@@ -28,27 +21,6 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _AnyType_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/", "anyType");
-    private final static QName _AnyURI_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/", "anyURI");
-    private final static QName _Base64Binary_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/", "base64Binary");
-    private final static QName _Boolean_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/", "boolean");
-    private final static QName _Byte_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/", "byte");
-    private final static QName _DateTime_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/", "dateTime");
-    private final static QName _Decimal_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/", "decimal");
-    private final static QName _Double_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/", "double");
-    private final static QName _Float_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/", "float");
-    private final static QName _Int_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/", "int");
-    private final static QName _Long_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/", "long");
-    private final static QName _QName_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/", "QName");
-    private final static QName _Short_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/", "short");
-    private final static QName _String_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/", "string");
-    private final static QName _UnsignedByte_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/", "unsignedByte");
-    private final static QName _UnsignedInt_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/", "unsignedInt");
-    private final static QName _UnsignedLong_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/", "unsignedLong");
-    private final static QName _UnsignedShort_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/", "unsignedShort");
-    private final static QName _Char_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/", "char");
-    private final static QName _Duration_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/", "duration");
-    private final static QName _Guid_QNAME = new QName("http://schemas.microsoft.com/2003/10/Serialization/", "guid");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: org.tempuri
@@ -58,320 +30,427 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link QueryImportantMonitorFreqRange }
+     * Create an instance of {@link HelloWorld }
      * 
      */
-    public QueryImportantMonitorFreqRange createQueryImportantMonitorFreqRange() {
-        return new QueryImportantMonitorFreqRange();
+    public HelloWorld createHelloWorld() {
+        return new HelloWorld();
     }
 
     /**
-     * Create an instance of {@link QueryImportantMonitorFreqRangeResponse }
+     * Create an instance of {@link HelloWorldResponse }
      * 
      */
-    public QueryImportantMonitorFreqRangeResponse createQueryImportantMonitorFreqRangeResponse() {
-        return new QueryImportantMonitorFreqRangeResponse();
+    public HelloWorldResponse createHelloWorldResponse() {
+        return new HelloWorldResponse();
     }
 
     /**
-     * Create an instance of {@link UpdateImportantMonitorFreqRange }
+     * Create an instance of {@link QueryRadioSignal }
      * 
      */
-    public UpdateImportantMonitorFreqRange createUpdateImportantMonitorFreqRange() {
-        return new UpdateImportantMonitorFreqRange();
+    public QueryRadioSignal createQueryRadioSignal() {
+        return new QueryRadioSignal();
     }
 
     /**
-     * Create an instance of {@link UpdateImportantMonitorFreqRangeResponse }
+     * Create an instance of {@link RadioSignalQueryRequest }
      * 
      */
-    public UpdateImportantMonitorFreqRangeResponse createUpdateImportantMonitorFreqRangeResponse() {
-        return new UpdateImportantMonitorFreqRangeResponse();
+    public RadioSignalQueryRequest createRadioSignalQueryRequest() {
+        return new RadioSignalQueryRequest();
     }
 
     /**
-     * Create an instance of {@link AddImportantMonitorFreq }
+     * Create an instance of {@link QueryRadioSignalResponse }
      * 
      */
-    public AddImportantMonitorFreq createAddImportantMonitorFreq() {
-        return new AddImportantMonitorFreq();
+    public QueryRadioSignalResponse createQueryRadioSignalResponse() {
+        return new QueryRadioSignalResponse();
     }
 
     /**
-     * Create an instance of {@link AddImportantMonitorFreqResponse }
+     * Create an instance of {@link RadioSignalQueryResponse }
      * 
      */
-    public AddImportantMonitorFreqResponse createAddImportantMonitorFreqResponse() {
-        return new AddImportantMonitorFreqResponse();
+    public RadioSignalQueryResponse createRadioSignalQueryResponse() {
+        return new RadioSignalQueryResponse();
     }
 
     /**
-     * Create an instance of {@link FindAllFreq }
+     * Create an instance of {@link QueryRadioSignalClassified }
      * 
      */
-    public FindAllFreq createFindAllFreq() {
-        return new FindAllFreq();
+    public QueryRadioSignalClassified createQueryRadioSignalClassified() {
+        return new QueryRadioSignalClassified();
     }
 
     /**
-     * Create an instance of {@link FindAllFreqResponse }
+     * Create an instance of {@link RadioSignalClassifiedQueryRequest }
      * 
      */
-    public FindAllFreqResponse createFindAllFreqResponse() {
-        return new FindAllFreqResponse();
+    public RadioSignalClassifiedQueryRequest createRadioSignalClassifiedQueryRequest() {
+        return new RadioSignalClassifiedQueryRequest();
     }
 
     /**
-     * Create an instance of {@link FindAllFreqRange }
+     * Create an instance of {@link QueryRadioSignalClassifiedResponse }
      * 
      */
-    public FindAllFreqRange createFindAllFreqRange() {
-        return new FindAllFreqRange();
+    public QueryRadioSignalClassifiedResponse createQueryRadioSignalClassifiedResponse() {
+        return new QueryRadioSignalClassifiedResponse();
     }
 
     /**
-     * Create an instance of {@link FindAllFreqRangeResponse }
+     * Create an instance of {@link RadioSignalClassifiedQueryResponse }
      * 
      */
-    public FindAllFreqRangeResponse createFindAllFreqRangeResponse() {
-        return new FindAllFreqRangeResponse();
+    public RadioSignalClassifiedQueryResponse createRadioSignalClassifiedQueryResponse() {
+        return new RadioSignalClassifiedQueryResponse();
     }
 
     /**
-     * Create an instance of {@link FindFreqByWarn }
+     * Create an instance of {@link QueryAbnormalHistory }
      * 
      */
-    public FindFreqByWarn createFindFreqByWarn() {
-        return new FindFreqByWarn();
+    public QueryAbnormalHistory createQueryAbnormalHistory() {
+        return new QueryAbnormalHistory();
     }
 
     /**
-     * Create an instance of {@link FindFreqByWarnResponse }
+     * Create an instance of {@link AbnormalHistoryRequest }
      * 
      */
-    public FindFreqByWarnResponse createFindFreqByWarnResponse() {
-        return new FindFreqByWarnResponse();
+    public AbnormalHistoryRequest createAbnormalHistoryRequest() {
+        return new AbnormalHistoryRequest();
     }
 
     /**
-     * Create an instance of {@link CreateOrUpdate }
+     * Create an instance of {@link QueryAbnormalHistoryResponse }
      * 
      */
-    public CreateOrUpdate createCreateOrUpdate() {
-        return new CreateOrUpdate();
+    public QueryAbnormalHistoryResponse createQueryAbnormalHistoryResponse() {
+        return new QueryAbnormalHistoryResponse();
     }
 
     /**
-     * Create an instance of {@link CreateOrUpdateResponse }
+     * Create an instance of {@link AbnormalHistoryQueryResponse }
      * 
      */
-    public CreateOrUpdateResponse createCreateOrUpdateResponse() {
-        return new CreateOrUpdateResponse();
+    public AbnormalHistoryQueryResponse createAbnormalHistoryQueryResponse() {
+        return new AbnormalHistoryQueryResponse();
     }
 
     /**
-     * Create an instance of {@link RemoveById }
+     * Create an instance of {@link InsertRadioSignal }
      * 
      */
-    public RemoveById createRemoveById() {
-        return new RemoveById();
+    public InsertRadioSignal createInsertRadioSignal() {
+        return new InsertRadioSignal();
     }
 
     /**
-     * Create an instance of {@link RemoveByIdResponse }
+     * Create an instance of {@link RadioSignalDTO }
      * 
      */
-    public RemoveByIdResponse createRemoveByIdResponse() {
-        return new RemoveByIdResponse();
+    public RadioSignalDTO createRadioSignalDTO() {
+        return new RadioSignalDTO();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Object }{@code >}}
+     * Create an instance of {@link InsertRadioSignalResponse }
      * 
      */
-    @XmlElementDecl(namespace = "http://schemas.microsoft.com/2003/10/Serialization/", name = "anyType")
-    public JAXBElement<Object> createAnyType(Object value) {
-        return new JAXBElement<Object>(_AnyType_QNAME, Object.class, null, value);
+    public InsertRadioSignalResponse createInsertRadioSignalResponse() {
+        return new InsertRadioSignalResponse();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * Create an instance of {@link RadioSignalOperationReponse }
      * 
      */
-    @XmlElementDecl(namespace = "http://schemas.microsoft.com/2003/10/Serialization/", name = "anyURI")
-    public JAXBElement<String> createAnyURI(String value) {
-        return new JAXBElement<String>(_AnyURI_QNAME, String.class, null, value);
+    public RadioSignalOperationReponse createRadioSignalOperationReponse() {
+        return new RadioSignalOperationReponse();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link byte[]}{@code >}}
+     * Create an instance of {@link InsertAbnormalHistory }
      * 
      */
-    @XmlElementDecl(namespace = "http://schemas.microsoft.com/2003/10/Serialization/", name = "base64Binary")
-    public JAXBElement<byte[]> createBase64Binary(byte[] value) {
-        return new JAXBElement<byte[]>(_Base64Binary_QNAME, byte[].class, null, ((byte[]) value));
+    public InsertAbnormalHistory createInsertAbnormalHistory() {
+        return new InsertAbnormalHistory();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Boolean }{@code >}}
+     * Create an instance of {@link RadioSignalAbnormalHistoryDTO }
      * 
      */
-    @XmlElementDecl(namespace = "http://schemas.microsoft.com/2003/10/Serialization/", name = "boolean")
-    public JAXBElement<Boolean> createBoolean(Boolean value) {
-        return new JAXBElement<Boolean>(_Boolean_QNAME, Boolean.class, null, value);
+    public RadioSignalAbnormalHistoryDTO createRadioSignalAbnormalHistoryDTO() {
+        return new RadioSignalAbnormalHistoryDTO();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Byte }{@code >}}
+     * Create an instance of {@link InsertAbnormalHistoryResponse }
      * 
      */
-    @XmlElementDecl(namespace = "http://schemas.microsoft.com/2003/10/Serialization/", name = "byte")
-    public JAXBElement<Byte> createByte(Byte value) {
-        return new JAXBElement<Byte>(_Byte_QNAME, Byte.class, null, value);
+    public InsertAbnormalHistoryResponse createInsertAbnormalHistoryResponse() {
+        return new InsertAbnormalHistoryResponse();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link XMLGregorianCalendar }{@code >}}
+     * Create an instance of {@link UpdateRadioSignal }
      * 
      */
-    @XmlElementDecl(namespace = "http://schemas.microsoft.com/2003/10/Serialization/", name = "dateTime")
-    public JAXBElement<XMLGregorianCalendar> createDateTime(XMLGregorianCalendar value) {
-        return new JAXBElement<XMLGregorianCalendar>(_DateTime_QNAME, XMLGregorianCalendar.class, null, value);
+    public UpdateRadioSignal createUpdateRadioSignal() {
+        return new UpdateRadioSignal();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link BigDecimal }{@code >}}
+     * Create an instance of {@link UpdateRadioSignalResponse }
      * 
      */
-    @XmlElementDecl(namespace = "http://schemas.microsoft.com/2003/10/Serialization/", name = "decimal")
-    public JAXBElement<BigDecimal> createDecimal(BigDecimal value) {
-        return new JAXBElement<BigDecimal>(_Decimal_QNAME, BigDecimal.class, null, value);
+    public UpdateRadioSignalResponse createUpdateRadioSignalResponse() {
+        return new UpdateRadioSignalResponse();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Double }{@code >}}
+     * Create an instance of {@link UpdateRadioSignalForRequest }
      * 
      */
-    @XmlElementDecl(namespace = "http://schemas.microsoft.com/2003/10/Serialization/", name = "double")
-    public JAXBElement<Double> createDouble(Double value) {
-        return new JAXBElement<Double>(_Double_QNAME, Double.class, null, value);
+    public UpdateRadioSignalForRequest createUpdateRadioSignalForRequest() {
+        return new UpdateRadioSignalForRequest();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Float }{@code >}}
+     * Create an instance of {@link RadioSignalUpdateRequest }
      * 
      */
-    @XmlElementDecl(namespace = "http://schemas.microsoft.com/2003/10/Serialization/", name = "float")
-    public JAXBElement<Float> createFloat(Float value) {
-        return new JAXBElement<Float>(_Float_QNAME, Float.class, null, value);
+    public RadioSignalUpdateRequest createRadioSignalUpdateRequest() {
+        return new RadioSignalUpdateRequest();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Integer }{@code >}}
+     * Create an instance of {@link UpdateRadioSignalForRequestResponse }
      * 
      */
-    @XmlElementDecl(namespace = "http://schemas.microsoft.com/2003/10/Serialization/", name = "int")
-    public JAXBElement<Integer> createInt(Integer value) {
-        return new JAXBElement<Integer>(_Int_QNAME, Integer.class, null, value);
+    public UpdateRadioSignalForRequestResponse createUpdateRadioSignalForRequestResponse() {
+        return new UpdateRadioSignalForRequestResponse();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Long }{@code >}}
+     * Create an instance of {@link UpdateAbnormalHistory }
      * 
      */
-    @XmlElementDecl(namespace = "http://schemas.microsoft.com/2003/10/Serialization/", name = "long")
-    public JAXBElement<Long> createLong(Long value) {
-        return new JAXBElement<Long>(_Long_QNAME, Long.class, null, value);
+    public UpdateAbnormalHistory createUpdateAbnormalHistory() {
+        return new UpdateAbnormalHistory();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link QName }{@code >}}
+     * Create an instance of {@link UpdateAbnormalHistoryResponse }
      * 
      */
-    @XmlElementDecl(namespace = "http://schemas.microsoft.com/2003/10/Serialization/", name = "QName")
-    public JAXBElement<QName> createQName(QName value) {
-        return new JAXBElement<QName>(_QName_QNAME, QName.class, null, value);
+    public UpdateAbnormalHistoryResponse createUpdateAbnormalHistoryResponse() {
+        return new UpdateAbnormalHistoryResponse();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Short }{@code >}}
+     * Create an instance of {@link RemoveRadioSignal }
      * 
      */
-    @XmlElementDecl(namespace = "http://schemas.microsoft.com/2003/10/Serialization/", name = "short")
-    public JAXBElement<Short> createShort(Short value) {
-        return new JAXBElement<Short>(_Short_QNAME, Short.class, null, value);
+    public RemoveRadioSignal createRemoveRadioSignal() {
+        return new RemoveRadioSignal();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * Create an instance of {@link ArrayOfString }
      * 
      */
-    @XmlElementDecl(namespace = "http://schemas.microsoft.com/2003/10/Serialization/", name = "string")
-    public JAXBElement<String> createString(String value) {
-        return new JAXBElement<String>(_String_QNAME, String.class, null, value);
+    public ArrayOfString createArrayOfString() {
+        return new ArrayOfString();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Short }{@code >}}
+     * Create an instance of {@link RemoveRadioSignalResponse }
      * 
      */
-    @XmlElementDecl(namespace = "http://schemas.microsoft.com/2003/10/Serialization/", name = "unsignedByte")
-    public JAXBElement<Short> createUnsignedByte(Short value) {
-        return new JAXBElement<Short>(_UnsignedByte_QNAME, Short.class, null, value);
+    public RemoveRadioSignalResponse createRemoveRadioSignalResponse() {
+        return new RemoveRadioSignalResponse();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Long }{@code >}}
+     * Create an instance of {@link RemoveAbnormalHistory }
      * 
      */
-    @XmlElementDecl(namespace = "http://schemas.microsoft.com/2003/10/Serialization/", name = "unsignedInt")
-    public JAXBElement<Long> createUnsignedInt(Long value) {
-        return new JAXBElement<Long>(_UnsignedInt_QNAME, Long.class, null, value);
+    public RemoveAbnormalHistory createRemoveAbnormalHistory() {
+        return new RemoveAbnormalHistory();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link BigInteger }{@code >}}
+     * Create an instance of {@link RemoveAbnormalHistoryResponse }
      * 
      */
-    @XmlElementDecl(namespace = "http://schemas.microsoft.com/2003/10/Serialization/", name = "unsignedLong")
-    public JAXBElement<BigInteger> createUnsignedLong(BigInteger value) {
-        return new JAXBElement<BigInteger>(_UnsignedLong_QNAME, BigInteger.class, null, value);
+    public RemoveAbnormalHistoryResponse createRemoveAbnormalHistoryResponse() {
+        return new RemoveAbnormalHistoryResponse();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Integer }{@code >}}
+     * Create an instance of {@link ArrayOfSignalTypeDTO }
      * 
      */
-    @XmlElementDecl(namespace = "http://schemas.microsoft.com/2003/10/Serialization/", name = "unsignedShort")
-    public JAXBElement<Integer> createUnsignedShort(Integer value) {
-        return new JAXBElement<Integer>(_UnsignedShort_QNAME, Integer.class, null, value);
+    public ArrayOfSignalTypeDTO createArrayOfSignalTypeDTO() {
+        return new ArrayOfSignalTypeDTO();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Integer }{@code >}}
+     * Create an instance of {@link SignalTypeDTO }
      * 
      */
-    @XmlElementDecl(namespace = "http://schemas.microsoft.com/2003/10/Serialization/", name = "char")
-    public JAXBElement<Integer> createChar(Integer value) {
-        return new JAXBElement<Integer>(_Char_QNAME, Integer.class, null, value);
+    public SignalTypeDTO createSignalTypeDTO() {
+        return new SignalTypeDTO();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Duration }{@code >}}
+     * Create an instance of {@link ArrayOfInt }
      * 
      */
-    @XmlElementDecl(namespace = "http://schemas.microsoft.com/2003/10/Serialization/", name = "duration")
-    public JAXBElement<Duration> createDuration(Duration value) {
-        return new JAXBElement<Duration>(_Duration_QNAME, Duration.class, null, value);
+    public ArrayOfInt createArrayOfInt() {
+        return new ArrayOfInt();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * Create an instance of {@link ArrayOfRadioSignalDTO }
      * 
      */
-    @XmlElementDecl(namespace = "http://schemas.microsoft.com/2003/10/Serialization/", name = "guid")
-    public JAXBElement<String> createGuid(String value) {
-        return new JAXBElement<String>(_Guid_QNAME, String.class, null, value);
+    public ArrayOfRadioSignalDTO createArrayOfRadioSignalDTO() {
+        return new ArrayOfRadioSignalDTO();
+    }
+
+    /**
+     * Create an instance of {@link ArrayOfRadioSignalAppendDTO }
+     * 
+     */
+    public ArrayOfRadioSignalAppendDTO createArrayOfRadioSignalAppendDTO() {
+        return new ArrayOfRadioSignalAppendDTO();
+    }
+
+    /**
+     * Create an instance of {@link RadioSignalAppendDTO }
+     * 
+     */
+    public RadioSignalAppendDTO createRadioSignalAppendDTO() {
+        return new RadioSignalAppendDTO();
+    }
+
+    /**
+     * Create an instance of {@link ArrayOfRadioSignalStationDTO }
+     * 
+     */
+    public ArrayOfRadioSignalStationDTO createArrayOfRadioSignalStationDTO() {
+        return new ArrayOfRadioSignalStationDTO();
+    }
+
+    /**
+     * Create an instance of {@link RadioSignalStationDTO }
+     * 
+     */
+    public RadioSignalStationDTO createRadioSignalStationDTO() {
+        return new RadioSignalStationDTO();
+    }
+
+    /**
+     * Create an instance of {@link RadioStationSignalDTO }
+     * 
+     */
+    public RadioStationSignalDTO createRadioStationSignalDTO() {
+        return new RadioStationSignalDTO();
+    }
+
+    /**
+     * Create an instance of {@link RadioStationDTO }
+     * 
+     */
+    public RadioStationDTO createRadioStationDTO() {
+        return new RadioStationDTO();
+    }
+
+    /**
+     * Create an instance of {@link RadioFreqDTO }
+     * 
+     */
+    public RadioFreqDTO createRadioFreqDTO() {
+        return new RadioFreqDTO();
+    }
+
+    /**
+     * Create an instance of {@link ArrayOfRadioSignalAbnormalHistoryDTO }
+     * 
+     */
+    public ArrayOfRadioSignalAbnormalHistoryDTO createArrayOfRadioSignalAbnormalHistoryDTO() {
+        return new ArrayOfRadioSignalAbnormalHistoryDTO();
+    }
+
+    /**
+     * Create an instance of {@link ArrayOfFrequencyBand }
+     * 
+     */
+    public ArrayOfFrequencyBand createArrayOfFrequencyBand() {
+        return new ArrayOfFrequencyBand();
+    }
+
+    /**
+     * Create an instance of {@link FrequencyBand }
+     * 
+     */
+    public FrequencyBand createFrequencyBand() {
+        return new FrequencyBand();
+    }
+
+    /**
+     * Create an instance of {@link ArrayOfSignalStaticsOnFreqBand }
+     * 
+     */
+    public ArrayOfSignalStaticsOnFreqBand createArrayOfSignalStaticsOnFreqBand() {
+        return new ArrayOfSignalStaticsOnFreqBand();
+    }
+
+    /**
+     * Create an instance of {@link SignalStaticsOnFreqBand }
+     * 
+     */
+    public SignalStaticsOnFreqBand createSignalStaticsOnFreqBand() {
+        return new SignalStaticsOnFreqBand();
+    }
+
+    /**
+     * Create an instance of {@link ArrayOfSignalStatics }
+     * 
+     */
+    public ArrayOfSignalStatics createArrayOfSignalStatics() {
+        return new ArrayOfSignalStatics();
+    }
+
+    /**
+     * Create an instance of {@link SignalStatics }
+     * 
+     */
+    public SignalStatics createSignalStatics() {
+        return new SignalStatics();
+    }
+
+    /**
+     * Create an instance of {@link ArrayOfSignalStaticsOnStation }
+     * 
+     */
+    public ArrayOfSignalStaticsOnStation createArrayOfSignalStaticsOnStation() {
+        return new ArrayOfSignalStaticsOnStation();
+    }
+
+    /**
+     * Create an instance of {@link SignalStaticsOnStation }
+     * 
+     */
+    public SignalStaticsOnStation createSignalStaticsOnStation() {
+        return new SignalStaticsOnStation();
     }
 
 }

@@ -121,7 +121,6 @@ public class SiganlDataController {
 			final String id = t.getID();
 
 			singal.setId(id);
-
 			singal.setText(t.getCenterFreq().toString().concat("   ").concat(t.getSaveDate().toString()));
 
 			return singal;

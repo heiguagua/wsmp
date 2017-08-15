@@ -350,13 +350,13 @@
       "dojo/domReady!" ],
       function(init) {
         require([ "bootstrap", "select2","echarts", "home/alarm/alarm_manage" ], function(bootstrap,select2,echarts, alarm_manage) {
-            
+
           alarm_manage.init();
           alarm_manage.setMapInit(init);
           var map = init.init();
         });
-  
-  
+
+
       });
   </script>
 </body>

@@ -3,18 +3,16 @@ package org.tempuri;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
+
 /**
- * <p>
- * ArrayOfSignalStatics complex typeï¿½ï¿½ Java ï¿½à¡£
+ * <p>ArrayOfSignalStatics complex typeµÄ Java Àà¡£
  * 
- * <p>
- * ï¿½ï¿½ï¿½ï¿½Ä£Ê½Æ¬ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½ï¿½ï¿½ï¿½Ðµï¿½Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½Ý¡ï¿½
+ * <p>ÒÔÏÂÄ£Ê½Æ¬¶ÎÖ¸¶¨°üº¬ÔÚ´ËÀàÖÐµÄÔ¤ÆÚÄÚÈÝ¡£
  * 
  * <pre>
  * &lt;complexType name="ArrayOfSignalStatics"&gt;
@@ -31,41 +29,41 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ArrayOfSignalStatics", propOrder = { "signalStatics"
+@XmlType(name = "ArrayOfSignalStatics", propOrder = {
+    "signalStatics"
 })
 public class ArrayOfSignalStatics {
 
-	@XmlElement(name = "SignalStatics", nillable = true)
-	protected List<SignalStatics> signalStatics;
+    @XmlElement(name = "SignalStatics", nillable = true)
+    protected List<SignalStatics> signalStatics;
 
-	/**
-	 * Gets the value of the signalStatics property.
-	 * 
-	 * <p>
-	 * This accessor method returns a reference to the live list, not a
-	 * snapshot. Therefore any modification you make to the returned list will
-	 * be present inside the JAXB object. This is why there is not a
-	 * <CODE>set</CODE> method for the signalStatics property.
-	 * 
-	 * <p>
-	 * For example, to add a new item, do as follows:
-	 * 
-	 * <pre>
-	 * getSignalStatics().add(newItem);
-	 * </pre>
-	 * 
-	 * 
-	 * <p>
-	 * Objects of the following type(s) are allowed in the list
-	 * {@link SignalStatics }
-	 * 
-	 * 
-	 */
-	public List<SignalStatics> getSignalStatics() {
-		if (signalStatics == null) {
-			signalStatics = new ArrayList<>();
-		}
-		return this.signalStatics;
-	}
+    /**
+     * Gets the value of the signalStatics property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the signalStatics property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getSignalStatics().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link SignalStatics }
+     * 
+     * 
+     */
+    public List<SignalStatics> getSignalStatics() {
+        if (signalStatics == null) {
+            signalStatics = new ArrayList<SignalStatics>();
+        }
+        return this.signalStatics;
+    }
 
 }

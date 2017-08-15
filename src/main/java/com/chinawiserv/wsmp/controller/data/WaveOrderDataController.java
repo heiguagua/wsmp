@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -39,13 +40,12 @@ public class WaveOrderDataController {
 	@Value("${importFreqRangeManageService.wsdl}")
 	private String urlImportFreqRange;
 
-	@GetMapping("/rediostatus")
-	public Map<String, Object> getRedioStatus(@RequestParam Map<String, Object> param) throws MalformedURLException {
-		// System.out.println("======================"+param);
+	@PostMapping("/rediostatus")
+	public Map<String, Object> getRedioStatus(@RequestBody Map<String, Object> param) throws MalformedURLException {
+//		 System.out.println("======================"+param);
 		// 根据用户ID查询自定义频段
 		URL url1 = new URL(urlFreq);
 		FreqService service = new FreqService(url1);
-		// ObjectFactory obj = new ObjectFactory();
 		FrequencyRangeQuerySpec model = new FrequencyRangeQuerySpec();
 		model.setUserId(param.get("userID").toString());
 		List<FrequencyRangeInfo> response = service.getFreqServiceHttpSoap12Endpoint().queryFrequencyRange(model);
@@ -71,11 +71,12 @@ public class WaveOrderDataController {
 		ArrayOfFrequencyBand array = new ArrayOfFrequencyBand();
 		array.setFrequencyBand(freqList);
 		request2.setFreqBandList(array);
-		ArrayOfInt intArray = new ArrayOfInt();
-		List<Integer> _int = Lists.newArrayList();
-		_int.add(Integer.valueOf(param.get("areaCode").toString()));
-		intArray.set_int(_int);
-		request2.setAreaCodes(intArray);
+		//设置监测站ID列表
+		ArrayOfString stationArray = new ArrayOfString();
+		@SuppressWarnings("unchecked")
+		List<String> stationString = (List<String>) param.get("monitorsID");
+		stationArray.setString(stationString );
+		request2.setStationNumber(stationArray);
 		RadioSignalClassifiedQueryResponse response2 = service2.getRadioSignalWebServiceSoap().queryRadioSignalClassified(request2);
 		// System.out.println("==========================response2"+JSON.toJSONString(response2));
 		List<RedioStatusCount> rsCountRows = Lists.newArrayList();
@@ -118,15 +119,20 @@ public class WaveOrderDataController {
 		return result;
 	}
 
-	@GetMapping("/alarmundealed")
-	public Map<String, Object> getAlarmUnDealed(@RequestParam Map<String, Object> param) throws MalformedURLException {
-		// System.out.println("=============================param:"+param);
+	@PostMapping("/alarmundealed")
+	public Map<String, Object> getAlarmUnDealed(@RequestBody Map<String, Object> param) throws MalformedURLException {
+//		 System.out.println("=============================param:"+param);
 		// 根据未确认和区域码查询告警
 		URL url = new URL(urlFreqWarning);
 		FreqWarningWebService freqWarningWS = new FreqWarningWebService(url);
 		FreqWarningQueryRequest request = new FreqWarningQueryRequest();
-		request.setAreaCode(Integer.valueOf(param.get("areaCode").toString()));
 		request.setIsInvalid(false);
+		// 设置监测站ID列表
+		ArrayOfString stationArray = new ArrayOfString();
+		@SuppressWarnings("unchecked")
+		List<String> stationString = (List<String>) param.get("monitorsID");
+		stationArray.setString(stationString);
+		request.setStationIDs(stationArray);
 		FreqWarningQueryResponse response = freqWarningWS.getFreqWarningWebServiceSoap().query(request);
 		// System.out.println("=============================response:"+JSON.toJSONString(response));
 		List<Alarm> alarmRows = Lists.newArrayList();
@@ -135,8 +141,8 @@ public class WaveOrderDataController {
 			BigDecimal certerFreq = new BigDecimal(t.getCenterFreq());
 			BigDecimal divisor = new BigDecimal(1000000);
 			alarm.setRadio(certerFreq.divide(divisor).toString());
-			alarm.setFirstTime(t.getSaveDate().toString());
-			alarm.setLastingTime(t.getInvalidDate().toString());
+			alarm.setFirstTime(t.getSaveDate().toString().replace('T',' '));
+			alarm.setLastingTime(t.getInvalidDate().toString().replace('T',' '));
 			alarm.setMark(t.getDescription());
 			List<String> stationID = Lists.newArrayList();
 			t.getStatList().getFreqWarningStatDTO().stream().forEach(t1 -> {
@@ -151,15 +157,20 @@ public class WaveOrderDataController {
 		return result;
 	}
 
-	@GetMapping("/alarmdealed")
-	public Map<String, Object> getAlarmDealed(@RequestParam Map<String, Object> param) throws MalformedURLException {
-		// System.out.println("=============================param:"+param);
+	@PostMapping("/alarmdealed")
+	public Map<String, Object> getAlarmDealed(@RequestBody Map<String, Object> param) throws MalformedURLException {
+//		 System.out.println("=============================param:"+param);
 		// 根据未确认和区域码查询告警
 		URL url = new URL(urlFreqWarning);
 		FreqWarningWebService freqWarningWS = new FreqWarningWebService(url);
 		FreqWarningQueryRequest request = new FreqWarningQueryRequest();
-		request.setAreaCode(Integer.valueOf(param.get("areaCode").toString()));
 		request.setIsInvalid(true);
+		// 设置监测站ID列表
+		ArrayOfString stationArray = new ArrayOfString();
+		@SuppressWarnings("unchecked")
+		List<String> stationString = (List<String>) param.get("monitorsID");
+		stationArray.setString(stationString);
+		request.setStationIDs(stationArray);
 		FreqWarningQueryResponse response = freqWarningWS.getFreqWarningWebServiceSoap().query(request);
 		// System.out.println("=============================response:"+JSON.toJSONString(response));
 		List<Alarm> alarmRows = Lists.newArrayList();
@@ -168,8 +179,8 @@ public class WaveOrderDataController {
 			BigDecimal certerFreq = new BigDecimal(t.getCenterFreq());
 			BigDecimal divisor = new BigDecimal(1000000);
 			alarm.setRadio(certerFreq.divide(divisor).toString());
-			alarm.setFirstTime(t.getSaveDate().toString());
-			alarm.setLastingTime(t.getInvalidDate().toString());
+			alarm.setFirstTime(t.getSaveDate().toString().replace('T',' '));
+			alarm.setLastingTime(t.getInvalidDate().toString().replace('T',' '));
 			alarm.setMark(t.getDescription());
 			List<String> stationID = Lists.newArrayList();
 			t.getStatList().getFreqWarningStatDTO().stream().forEach(t1 -> {
@@ -184,19 +195,20 @@ public class WaveOrderDataController {
 		return result;
 	}
 
-	@GetMapping("/radioDetail")
-	public Map<String, Object> getRedioDetail(@RequestParam Map<String, Object> param) throws MalformedURLException {
+	@PostMapping("/radioDetail")
+	public Map<String, Object> getRedioDetail(@RequestBody Map<String, Object> param) throws MalformedURLException {
 		
-		// System.out.println("==================param:"+param);
+//		 System.out.println("==================param:"+param);
 		URL url = new URL(urlRadioSignal);
 		RadioSignalWebService service = new RadioSignalWebService(url);
 		RadioSignalQueryRequest request = new RadioSignalQueryRequest();
-		// 入参：区域码
-		ArrayOfInt value = new ArrayOfInt();
-		List<Integer> _int = Lists.newArrayList();
-		_int.add(Integer.valueOf(param.get("areaCode").toString()));
-		value.set_int(_int);
-		request.setAreaCodes(value);
+		// 设置监测站ID列表
+		ArrayOfString stationArray = new ArrayOfString();
+		@SuppressWarnings("unchecked")
+		String stations = (String) param.get("monitorsID");
+		String[] stationString = stations.split(",");
+		stationArray.setString(Arrays.asList(stationString));
+		request.setStationIDs(stationArray);
 		// 入参:信号类型
 		ArrayOfSignalTypeDTO signaTypeArray = new ArrayOfSignalTypeDTO();
 		List<SignalTypeDTO> signalTypeDTO = Lists.newArrayList();

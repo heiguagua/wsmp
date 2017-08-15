@@ -4,7 +4,7 @@
 <html>
 <select class='station-list select2-picker'>
   <c:forEach var = "s" items = "${stations}" varStatus="vs" step="1" begin="0">
-       <option class = "redio" centorFreq = "${s.centorFreq}" endTime = "${s.endTime}" beginTime = "${s.beginTime}" stationId = "${s.listString}" value="${s.id}">${s.context}</option>
+       <option class = "redio" waringId = "${s.warnimgId}" centorFreq = "${s.centorFreq}" endTime = "${s.endTime}" beginTime = "${s.beginTime}" stationId = "${s.listString}" value="${s.id}">${s.context}</option>
   </c:forEach>
 </select>
 </html>
