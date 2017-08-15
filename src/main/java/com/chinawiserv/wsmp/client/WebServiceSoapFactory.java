@@ -142,4 +142,7 @@ public class WebServiceSoapFactory {
 			return  null;
 	}
 
+	public FreqWarningWebServiceSoap getFreqWarnService() {
+		return freqWarnService;
+	}
 }
