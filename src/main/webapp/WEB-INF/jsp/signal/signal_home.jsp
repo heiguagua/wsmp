@@ -18,7 +18,12 @@
 <link rel="stylesheet" href="3.9/js/dojo/dijit/themes/tundra/tundra.css">
 <link rel="stylesheet" href="3.9/js/dojo/webgis/widgets/themes/darkangel/darkangel.css">
 <link rel="stylesheet" href="3.9/js/dojo/webgis/widgets/themes/darkangel/override.css">
+<link
+	href='3.9/js/dojo/library/timepicker/css/bootstrap-datetimepicker.min.css'
+	rel='stylesheet' />
+	<link href='3.9/js/dojo/library/layer/layer.css' rel='stylesheet' />
 <script src="3.9/js/dojo/library/wavesuffer/wavesuffer.js"></script>
+
 </head>
 
 <body id='signal'>
@@ -292,10 +297,10 @@
   <input style="display: none" id ='mapUrl' value="${mapUrl}" />
   <script src="3.9/init.js"></script>
   <script type="text/javascript">
-    require([ "home/signal/signal_map_init","jquery","dojo/domReady!"],
+    require([ "home/signal/signal_map_init","jquery","dojo/domReady!","layer"],
       function(mapInit) {
-    	require(["bootstrap", "bootstrapTable"],function(){
-    		 require(["echarts","select2","home/signal/signal_manage","bootstrap_table_cn"], function(echarts,select2,signal_manage) {
+    	require(["bootstrap", "bootstrapTable","datetimepicker"],function(){
+    		 require(["echarts","select2","home/signal/signal_manage","bootstrap_table_cn","datetimepicker_cn"], function(echarts,select2,signal_manage) {
                  signal_manage.init();
             	 var map = mapInit.init();
                  signal_manage.set(mapInit);

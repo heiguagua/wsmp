@@ -14,6 +14,14 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 
         init_select2();
 
+        //时间选择器初始化
+        $.fn.datetimepicker.defaults = {
+				language: 'zh-CN',
+				format: 'yyyy-mm-dd hh:ii:ss',
+				autoclose:true,
+				minView:2
+		}	
+		
         // 信号列表change事件
         $("#signal_list1 .select2-picker").change(function() {
             var selected_val = $(this).val();
@@ -142,24 +150,91 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
         $("#gate-btn").on("click", function(ev) {})
         
         // 重点监测配置点击事件
-//        $("#modalConfig").on("shown.bs.modal",function(e){
-//        	var warningID = $("#signal_list1").find('option:selected').attr("warningid");
-//        	console.log(warningID);
-//        	var data = {};
-//        	data.warningID = warningID;
-//        	var str = JSON.stringify(data);
-//        	$.ajax({
-//    			url : 'signal/importantMonitor',
-//    			type : 'post',
-//    			data : str,//传输数据
-//    			contentType : 'application/json',//传输数据类型
-//    			dataType : 'html',//返回数据类型
-//    			success : function (html) {
-//    				$("#important_monitor").html(html);
-//    				$("#modalConfig").find(".time-picker").datetimepicker({});
-//    			}
-//    		})
-//	});
+        $("#modalConfig").on("shown.bs.modal",function(e){
+        	var warningID = $("#signal_list1").find('option:selected').attr("warningid");
+        	var centorFreq = $("#signal_list1").find('option:selected').attr("centorfreq");
+        	console.log(warningID);
+        	var data = {};
+        	data.warningID = warningID;
+        	data.centorFreq = centorFreq;
+        	var str = JSON.stringify(data);
+        	$.ajax({
+    			url : 'signal/importantMonitor',
+    			type : 'post',
+    			data : str,//传输数据
+    			contentType : 'application/json',//传输数据类型
+    			dataType : 'html',//返回数据类型
+    			success : function (html) {
+    				$("#important_monitor").html(html);
+    				$("#modalConfig").find(".time-picker").datetimepicker({
+    				
+    				});
+    			}
+    		})
+		});
+		
+		//重点监测更新点击事件
+		$("#important_monitor").on("click","#buttonUpdate",function(e) {
+			var str = $("#important-monitor-form").serialize();
+			$.ajax({
+				url : 'signal/importantMonitorCreateOrUpdate',
+				type : 'post',
+				data : str,
+				dataType : 'html',// 只返回bool值
+				success : function(html) {
+					layer.msg("更新成功！");
+					$("#important_monitor").html(html);
+				},
+				error : function(html) {
+					console.log(html);
+					layer.alert(html.responseText);
+				}
+			})
+		});
+		
+		//重点监测添加点击事件
+		$("#important_monitor").on("click","#buttonInsert",function(e) {
+			var str = $("#important-monitor-form").serialize();
+			$.ajax({
+				url : 'signal/importantMonitorCreateOrUpdate',
+				type : 'post',
+				data : str,
+				dataType : 'html',// 只返回bool值
+				success : function(html) {
+						layer.msg("添加成功！");
+						$("#important_monitor").html(html);
+						},
+				error : function(html) {
+					console.log(html);
+					layer.alert(html.responseText);
+				}
+			})
+		});
+		
+		//重点监测删除点击事件
+		$("#important_monitor").on("click","#buttonDelete",function(e) {
+			//确实是否删除
+//			layer.confirm('is not?', {icon: 3, title:'提示'}, function(index){
+//				  console.log(index);
+//				  layer.close(index);
+//				});
+
+			var str = $("#important-monitor-form").serialize();
+			$.ajax({
+				url : 'signal/importantMonitorDelete',
+				type : 'post',
+				data : str,
+				dataType : 'html',// 只返回bool值
+				success : function(html) {
+					layer.msg("删除成功!");
+					$("#important_monitor").html(html);
+					},
+				error : function(html) {
+					console.log(html);
+					layer.alert(html.responseText);
+				}
+			})
+		});	
     }
 
 

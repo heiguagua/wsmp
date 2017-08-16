@@ -170,34 +170,34 @@ public class SignalViewController {
 	    public String importantMonitor(Model model,@RequestBody Map<String,Object> map) throws MalformedURLException {
 	    	//根据频段查询重点监测，返回页面和对象
 	    	System.out.println("=================================map:"+map);
-	    	BigDecimal beginFreq = new BigDecimal(map.get("beginFreq").toString());
-			BigDecimal endFreq = new BigDecimal(map.get("endFreq").toString());
+//	    	BigDecimal beginFreq = new BigDecimal(map.get("beginFreq").toString());
+			BigDecimal centorFreq = new BigDecimal(map.get("centorFreq").toString());
 			BigDecimal divisor = new BigDecimal(1000000);
 			URL url = new URL(urlImportFreqRange);
 	    	ImportFreqRangeManageService service = new ImportFreqRangeManageService(url);
 			IImportFreqRangeManageService service2 = service.getBasicHttpBindingIImportFreqRangeManageService();
 			String result = service2.findFreqByWarn(map.get("warningID").toString());
 			System.out.println("=================================result:"+result);
-			final Type type = new TypeReference<List<MeasureTaskParamDto>>() {}.getType();
+			final Type type = new TypeReference<MeasureTaskParamDto>() {}.getType();
 			@SuppressWarnings("unchecked")
-			List<MeasureTaskParamDto> resultList = (List<MeasureTaskParamDto>) JSON.parseObject(result,type);
-			System.out.println("====================================resultList:"+JSON.toJSONString(resultList));
-			//过滤传过来的频段
-			Optional<MeasureTaskParamDto> optional = resultList.stream().filter(dto -> Double.valueOf(beginFreq.divide(divisor).toString()) >= dto.getBeginFreq() &&
-					Double.valueOf(endFreq.divide(divisor).toString()) <= dto.getEndFreq()).findFirst();
-			if(optional.isPresent()) {
-				System.out.println("==============================================查询结果"+JSON.toJSONString(optional.get()));
-				model.addAttribute("dto",optional.get());
-				return "waveorder/important_monitor";
+			MeasureTaskParamDto resultDTO = (MeasureTaskParamDto) JSON.parseObject(result,type);
+			System.out.println("====================================resultDTO:"+JSON.toJSONString(resultDTO));
+			//查询到重点监测
+			if(resultDTO != null) {
+				model.addAttribute("dto", resultDTO);
+				return "signal/important_monitor";
+			}else {
+				//如果没有查询到数据，设置默认的频段范围，是否频段，nullID
+				MeasureTaskParamDto dto = new MeasureTaskParamDto();
+				dto.setBeginFreq(Double.valueOf(centorFreq.divide(divisor).toString()));
+				dto.setEndFreq(Double.valueOf(centorFreq.divide(divisor).toString()));
+				dto.setFreqRange(false);
+				dto.setWarnID(map.get("warningID").toString());
+				System.out.println("===================================================没有数据传入model:"+JSON.toJSONString(dto));
+				model.addAttribute("dto",dto);
+				return "signal/important_monitor_insert";
 			}
-			//如果没有查询到数据，设置默认的频段范围，是否频段，nullID
-			MeasureTaskParamDto dto = new MeasureTaskParamDto();
-			dto.setBeginFreq(Double.valueOf(beginFreq.divide(divisor).toString()));
-			dto.setEndFreq(Double.valueOf(endFreq.divide(divisor).toString()));
-			dto.setFreqRange(true);
-			System.out.println("===================================================没有数据传入model:"+JSON.toJSONString(dto));
-			model.addAttribute("dto",dto);
-			return "waveorder/important_monitor_insert";
+			
 	    }
 	    
 	    @PostMapping("/importantMonitorCreateOrUpdate")
@@ -220,7 +220,7 @@ public class SignalViewController {
 	    			System.out.println("====================================更新或添加成功");
 	    			System.out.println("====================================更新或添加model:"+JSON.toJSONString(resultDTO));
 	    			model.addAttribute("dto",resultDTO);
-	    			return "waveorder/important_monitor";
+	    			return "signal/important_monitor";
 	    		}else{
 	    			System.out.println("====================================更新或添加失败");
 	    			return "false";
@@ -245,7 +245,7 @@ public class SignalViewController {
 				modelDTO.setFreqRange(true);
 				System.out.println("==========================================删除成功传入model:"+JSON.toJSONString(modelDTO));
 				model.addAttribute("dto",modelDTO);
-				return "waveorder/important_monitor_insert";
+				return "signal/important_monitor_insert";
 				//成功返回空白页面
 			}else {
 				System.out.println("==========================================删除失败!");
