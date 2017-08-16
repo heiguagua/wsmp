@@ -1,5 +1,6 @@
 package com.chinawiserv.wsmp.controller.data;
 
+import com.alibaba.fastjson.JSON;
 import com.chinawiserv.apps.util.logger.Logger;
 import com.chinawiserv.wsmp.client.WebServiceSoapFactory;
 import com.chinawiserv.wsmp.hbase.HbaseClient;
@@ -17,6 +18,7 @@ import org.tempuri.RadioSignalOperationReponse;
 import org.tempuri.RadioSignalQueryRequest;
 import org.tempuri.RadioSignalQueryResponse;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static java.util.stream.Collectors.toList;
@@ -56,34 +58,34 @@ public class SiganlDataController {
 	}
 
 	@GetMapping("/FmRate")
-	public Object getFMRate(@RequestParam String id, @RequestParam String timeStart, @RequestParam String timeStop, @RequestParam String frequency)
-			throws Exception {
-
-		String ID = "52010126";
-		long Frequency = 10740000000000L;
-		String TimeStart = "20170128000000";
-		String TimeStop = "20170804000000";
+	public Object getFMRate(@RequestParam String id, @RequestParam String timeStart, @RequestParam String timeStop, @RequestParam String frequency) {
 
 		// long frequencyLong = Long.parseLong(frequency);
 
 		Map<String, Object> resluteMap = Maps.newHashMap();
 
 		//Map<String, Object> map = hbaseClient.queryModulationMode(id, timeStart, timeStop, Long.parseLong(frequency));
-		Map<String, Object> map = hbaseClient.queryModulationMode(id, timeStart, timeStop, Long.parseLong(frequency));
-		List<String> lists = Lists.newLinkedList();
-		int sum =  map.values().stream().mapToInt(m->Integer.parseInt(m.toString())).reduce(0,(a, b) ->  a +  b);
 
-		List<Object> reslut = map.entrySet().stream().map(m -> {
-			HashMap<String, Double> mapReslut = Maps.newHashMap();
-			mapReslut.put(m.getKey(), (double) ((Integer) m.getValue() / sum));
-			lists.add(m.getKey());
-			return mapReslut;
-		}).collect(toList());
+		try {
+			Map<String, Object>  map = hbaseClient.queryModulationMode(id, timeStart, timeStop, Long.parseLong(frequency));
+			List<String> lists = Lists.newLinkedList();
+			int sum =  map.values().stream().mapToInt(m->Integer.parseInt(m.toString())).reduce(0,(a, b) ->  a +  b);
 
-		resluteMap.put("name", lists);
-		resluteMap.put("value", reslut);
+			List<Object> reslut = map.entrySet().stream().map(m -> {
+				HashMap<String, Double> mapReslut = Maps.newHashMap();
+				mapReslut.put(m.getKey(), (double) ((Integer) m.getValue() / sum));
+				lists.add(m.getKey());
+				return mapReslut;
+			}).collect(toList());
 
-		return resluteMap;
+			resluteMap.put("name", lists);
+			resluteMap.put("value", reslut);
+			Logger.info("调制方式调用正常 操作时间：{} 入参：监测站id{}，开始时间{}，结束时间{}，中心频率{} 返回值：{}", LocalDateTime.now().toString(),id,timeStart,timeStop,frequency,JSON.toJSONString(map));
+			return resluteMap;
+		} catch (Exception e) {
+			Logger.error("调制方式调用异常 操作时间：{} 入参：监测站id{}，开始时间{}，结束时间{}，中心频率{} 异常：{}", LocalDateTime.now().toString(),id,timeStart,timeStop,frequency,e);
+		}
+		return  resluteMap;
 	}
 
 	@GetMapping("/station")
@@ -112,52 +114,79 @@ public class SiganlDataController {
 	@GetMapping(path = "/singallist")
 	public Object singalList(@RequestParam Map<String, String> param) throws JsonProcessingException {
 
-		final RadioSignalQueryResponse responce = (RadioSignalQueryResponse) service.radioSignalServiceCall("queryRadioSignal",
-				mapper.writeValueAsString(param), RadioSignalQueryRequest.class);
+		try {
+			final RadioSignalQueryResponse responce = (RadioSignalQueryResponse) service.radioSignalServiceCall("queryRadioSignal",
+                    mapper.writeValueAsString(param), RadioSignalQueryRequest.class);
 
-		return responce.getRadioSignals().getRadioSignalDTO().stream().map(t -> {
+			return responce.getRadioSignals().getRadioSignalDTO().stream().map(t -> {
 
-			final Singal singal = new Singal();
-			final String id = t.getID();
+                final Singal singal = new Singal();
+                final String id = t.getID();
 
-			singal.setId(id);
-			singal.setText(t.getCenterFreq().toString().concat("   ").concat(t.getSaveDate().toString()));
+                singal.setId(id);
+                singal.setText(t.getCenterFreq().toString().concat("   ").concat(t.getSaveDate().toString()));
 
-			return singal;
-		}).collect(toList());
+				Logger.info("获取信号列表时间成功 操作时间：{} 入参：{} 返回值：{}",LocalDateTime.now().toString(), JSON.toJSONString(param));
+
+                return singal;
+            }).collect(toList());
+		} catch (JsonProcessingException e) {
+			Logger.error("获取信号列表时间异常 操作时间：{} 入参：{} 异常：{}",LocalDateTime.now().toString(), JSON.toJSONString(param),e);
+		}
+
+		return  Collections.emptyMap();
 	}
 
 	@GetMapping(path = "/stationList", params = "id")
 	public Object stationList(@RequestParam Map<String, String> param) throws JsonProcessingException {
 
-		final RadioSignalQueryResponse responce = (RadioSignalQueryResponse) service.radioSignalServiceCall("queryRadioSignal",
-				mapper.writeValueAsString(param), RadioSignalQueryRequest.class);
-
 		final List<String> reslutList = Lists.newLinkedList();
 
-		responce.getRadioSignals().getRadioSignalDTO().forEach(z -> z.getStationDTOs().getRadioSignalStationDTO().forEach(f -> reslutList.add(f.getStationNumber())));
+		try {
+			final RadioSignalQueryResponse responce = (RadioSignalQueryResponse) service.radioSignalServiceCall("queryRadioSignal",
+                    mapper.writeValueAsString(param), RadioSignalQueryRequest.class);
 
-        return reslutList.size() != 0 ? reslutList : Collections.emptyList();
+			responce.getRadioSignals().getRadioSignalDTO().forEach(z -> z.getStationDTOs().getRadioSignalStationDTO().forEach(f -> reslutList.add(f.getStationNumber())));
+			Logger.info("获取监测站列表时间成功 操作时间：{} 入参：{} 返回值：{}",LocalDateTime.now().toString(), JSON.toJSONString(param));
+		} catch (JsonProcessingException e) {
+			Logger.error("获取监测站表时间异常 操作时间：{} 入参：{} 异常：{}",LocalDateTime.now().toString(), JSON.toJSONString(param),e);
+		}
+
+		return reslutList.size() != 0 ? reslutList : Collections.emptyList();
 	}
 
 	@GetMapping(path = "/one", params = "id")
 	public Object oneSingal(@RequestParam Map<String, String> param) throws JsonProcessingException {
 
-		final RadioSignalQueryResponse responce = (RadioSignalQueryResponse) service.radioSignalServiceCall("queryRadioSignal",
-				mapper.writeValueAsString(param), RadioSignalQueryRequest.class);
+		List<RadioSignalDTO> radioSignals =Collections.emptyList();
+		try {
+			final RadioSignalQueryResponse responce = (RadioSignalQueryResponse) service.radioSignalServiceCall("queryRadioSignal",
+                    mapper.writeValueAsString(param), RadioSignalQueryRequest.class);
 
-		final List<RadioSignalDTO> radioSignals = responce.getRadioSignals().getRadioSignalDTO();
+			radioSignals  = responce.getRadioSignals().getRadioSignalDTO();
 
-		return radioSignals.size() > 0 ? radioSignals.get(0) : new RadioSignalDTO();
+			Logger.info("查询一条信号记录成功 入参：{} 返回值{}",JSON.toJSONString(param),JSON.toJSONString(radioSignals));
+
+			return radioSignals !=null ? radioSignals.get(0) : new RadioSignalDTO();
+		} catch (JsonProcessingException e) {
+			Logger.error("查询一条信号记录异常 操作时间:{} 入参：{} 返回值{} 异常{}",LocalDateTime.now().toLocalDate(),param,e);
+		}
+
+		return  radioSignals;
 	}
 
 	@PutMapping(path = "/one/update")
 	public Object oneUpdate(@RequestBody String param) throws JsonProcessingException {
 
-		RadioSignalOperationReponse reponce = (RadioSignalOperationReponse) service.radioSignalServiceCall("updateRadioSignalForRequest", param,
-				RadioSignalDTO.class);
-		System.out.println(mapper.writeValueAsString(reponce));
-		return param;
+		try {
+			RadioSignalOperationReponse reponce = (RadioSignalOperationReponse) service.radioSignalServiceCall("updateRadioSignalForRequest", param,
+                    RadioSignalDTO.class);
+			Logger.info("更新一条信号记录成功 入参：{} 返回值{}",JSON.toJSONString(param),JSON.toJSONString(reponce));
+		} catch (JsonProcessingException e) {
+			Logger.error("查询一条信号记录异常 操作时间:{} 入参：{} 返回值{} 异常{}",LocalDateTime.now().toString(),param,e);
+		}
+
+		return null;
 
 	}
 

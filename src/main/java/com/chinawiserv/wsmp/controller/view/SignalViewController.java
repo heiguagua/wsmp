@@ -9,7 +9,6 @@ import com.chinawiserv.wsmp.pojo.MeasureTaskParamDto;
 import com.chinawiserv.wsmp.pojo.MonitoringStation;
 import com.chinawiserv.wsmp.pojo.RedioDetail;
 import com.chinawiserv.wsmp.pojo.Singal;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,23 +20,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.tempuri.IImportFreqRangeManageService;
-import org.tempuri.ImportFreqRangeManageService;
-import org.tempuri.RadioSignalDTO;
-import org.tempuri.RadioSignalQueryRequest;
-import org.tempuri.RadioSignalQueryResponse;
+import org.tempuri.*;
 
+import java.lang.reflect.Type;
+import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
-
-import java.lang.reflect.Type;
-import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 @Controller
 @RequestMapping("/signal")
@@ -84,7 +79,7 @@ public class SignalViewController {
 
 		try {
 			// long frequency = Long.parseLong(centorfreq);
-			Map<String, Object> map = hbaseClient.queryFeaturePara(Id, timeStart, frequency);
+			Map<String, Object> map = hbaseClient.queryFeaturePara(stationCode, beginTime, Long.parseLong(centorfreq));
 
 			Map<String, Object> requestPara = Maps.newLinkedHashMap();
 
@@ -120,40 +115,45 @@ public class SignalViewController {
 			redioDetail.setFreqPeakNumFSK(map.get("freqPeakNumFSK"));
 
 			model.addAttribute("redioDetail", redioDetail);
+			Logger.info("方法 {} 操作时间{} 请求成功 入参{}  ", "signal_detail", LocalDateTime.now().toString());
 		}
 		catch (Exception e) {
-			Logger.error("方法 {} 请求异常  原因{}", "signal_detail", e);
+			Logger.error("方法 {} 操作时间{} 请求异常  原因{}", "signal_detail", LocalDateTime.now().toString(), e);
 		}
 
 		return "signal/signal_detail";
 	}
 
 	@PostMapping(path = "/singallist")
-	public Object singalList(@RequestParam Map<String, String> para, ModelAndView modelAndView) throws JsonProcessingException {
+	public Object singalList(@RequestParam Map<String, String> para, ModelAndView modelAndView)  {
 
 		final String param = para.get("param").toString();
 		final String jsonStr = param.replace("\\","");
 
-		final RadioSignalQueryResponse responce = (RadioSignalQueryResponse) service.radioSignalServiceCall("queryRadioSignal",
-				jsonStr, RadioSignalQueryRequest.class);
+		try {
+			final RadioSignalQueryResponse responce = (RadioSignalQueryResponse) service.radioSignalServiceCall("queryRadioSignal",
+                    jsonStr, RadioSignalQueryRequest.class);
 
-		final List<Singal> redio = responce.getRadioSignals().getRadioSignalDTO().stream().map(t -> {
+			final List<Singal> redio = responce.getRadioSignals().getRadioSignalDTO().stream().map(t -> {
 
-			final Singal singal = new Singal();
-			final String id = t.getID();
+                final Singal singal = new Singal();
+                final String id = t.getID();
 
-			singal.setId(id);
-			singal.setWarnimgId(t.getWarningFreqID());
-			singal.setCentorFreq(t.getCenterFreq().toString());
-			singal.setBeginTime(t.getSaveDate().toString().replaceAll(":", "").replaceAll("T", "").replaceAll("-", ""));
-			singal.setEndTime(t.getInvalidDate().toString().replaceAll(":", "").replaceAll("T", "").replaceAll("-", ""));
-			singal.setContext(t.getCenterFreq().toString().concat("   ").concat(t.getSaveDate().toString()));
-			return singal;
-		}).collect(toList());
+                singal.setId(id);
+                singal.setWarnimgId(t.getWarningFreqID());
+                singal.setCentorFreq(t.getCenterFreq().toString());
+                singal.setBeginTime(t.getSaveDate().toString().replaceAll(":", "").replaceAll("T", "").replaceAll("-", ""));
+                singal.setEndTime(t.getInvalidDate().toString().replaceAll(":", "").replaceAll("T", "").replaceAll("-", ""));
+                singal.setContext(t.getCenterFreq().toString().concat("   ").concat(t.getSaveDate().toString()));
+                return singal;
+            }).collect(toList());
+
+			modelAndView.addObject("stations", redio);
+		} catch (Exception e) {
+			Logger.error("请求信号列表异常{}",e);
+		}
 
 		modelAndView.setViewName("signal/signal_list");
-		modelAndView.addObject("stations", redio);
-
 		return modelAndView;
 	}
 
