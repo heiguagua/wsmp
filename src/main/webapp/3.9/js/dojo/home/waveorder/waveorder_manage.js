@@ -2,6 +2,7 @@
 define(["ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer", "dojo/request", "esri/layers/GraphicsLayer", "esri/dijit/Scalebar"
 	, "esri/symbols/TextSymbol", "esri/geometry/Point", "esri/graphic", "esri/symbols/Font", "esri/symbols/SimpleMarkerSymbol","esri/symbols/PictureMarkerSymbol"], function(ajax, parser, Map, ArcGISTiledMapServiceLayer, request, GraphicsLayer, Scalebar, TextSymbol, Point, graphic, Font, SimpleMarkerSymbol,PictureMarkerSymbol) {
 	function wo_init(map_arry) {
+		console.log(layer);
 		var user = getUser();
 		getArea(user);
 		var AREACODE = null;
@@ -123,12 +124,12 @@ define(["ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLay
 				data : str,
 				dataType : 'html',// 只返回bool值
 				success : function(html) {
-					alert("更新成功！");
+					layer.msg("更新成功！");
 					$("#important_monitor").html(html);
 				},
 				error : function(html) {
 					console.log(html);
-					alert(html);
+					layer.alert(html.responseText);
 				}
 			})
 		});
@@ -140,17 +141,22 @@ define(["ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLay
 				data : str,
 				dataType : 'html',// 只返回bool值
 				success : function(html) {
-						alert("添加成功！");
+						layer.msg("添加成功！");
 						$("#important_monitor").html(html);
 						},
 				error : function(html) {
 					console.log(html);
-					alert(html);
+					layer.alert(html.responseText);
 				}
 			})
 		});
 		$("#important_monitor").on("click","#buttonDelete",function(e) {
-			prompt("确认是否删除?");
+			//确实是否删除
+//			layer.confirm('is not?', {icon: 3, title:'提示'}, function(index){
+//				  console.log(index);
+//				  layer.close(index);
+//				});
+
 			var str = $("#important-monitor-form").serialize();
 			$.ajax({
 				url : 'waveorder/importantMonitorDelete',
@@ -158,12 +164,12 @@ define(["ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLay
 				data : str,
 				dataType : 'html',// 只返回bool值
 				success : function(html) {
-					alert("删除成功！");
+					layer.msg("删除成功!");
 					$("#important_monitor").html(html);
 					},
 				error : function(html) {
 					console.log(html);
-					alert(html);
+					layer.alert(html.responseText);
 				}
 			})
 		});	

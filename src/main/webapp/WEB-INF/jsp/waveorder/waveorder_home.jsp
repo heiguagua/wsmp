@@ -31,6 +31,7 @@
 <link
 	href='3.9/js/dojo/library/timepicker/css/bootstrap-datetimepicker.min.css'
 	rel='stylesheet' />
+<link href='3.9/js/dojo/library/layer/layer.css' rel='stylesheet' />
 </head>
 
 <body id='waveOrder'>
@@ -255,9 +256,9 @@
 	<script src="3.9/init.js"></script>
 	<script type="text/javascript">
 		require(
-				[ "home/waveorder/WaveorderMapInit", "jquery", "dojo/domReady!" ],
+				[ "home/waveorder/WaveorderMapInit", "jquery", "dojo/domReady!","layer" ],
 				function(init) {
-
+					
 					require(
 							[ "bootstrap", "bootstrapTable", "select2" ,"datetimepicker"],
 							function() {
