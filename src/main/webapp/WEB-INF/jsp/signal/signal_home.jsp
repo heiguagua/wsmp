@@ -18,10 +18,8 @@
 <link rel="stylesheet" href="3.9/js/dojo/dijit/themes/tundra/tundra.css">
 <link rel="stylesheet" href="3.9/js/dojo/webgis/widgets/themes/darkangel/darkangel.css">
 <link rel="stylesheet" href="3.9/js/dojo/webgis/widgets/themes/darkangel/override.css">
-<link
-	href='3.9/js/dojo/library/timepicker/css/bootstrap-datetimepicker.min.css'
-	rel='stylesheet' />
-	<link href='3.9/js/dojo/library/layer/layer.css' rel='stylesheet' />
+<link href='3.9/js/dojo/library/timepicker/css/bootstrap-datetimepicker.min.css' rel='stylesheet' />
+<link href='3.9/js/dojo/library/layer/layer.css' rel='stylesheet' />
 <script src="3.9/js/dojo/library/wavesuffer/wavesuffer.js"></script>
 
 </head>

@@ -21,7 +21,9 @@
 <link href='3.9/js/dojo/library/select2/select2.min.css'
 	rel='stylesheet' />
 <link href='css/common.css' rel='stylesheet' />
-<link href='css/wave_order.css' rel='stylesheet' />
+<!-- <link href='css/wave_order.css' rel='stylesheet' /> -->
+<link href='css/waveOrder_map_to_sifon.css' rel='stylesheet' />
+
 <link rel="stylesheet" href="3.9/js/esri/css/esri.css">
 <link rel="stylesheet" href="3.9/js/dojo/dijit/themes/tundra/tundra.css">
 <link rel="stylesheet"
@@ -30,9 +32,8 @@
 	href="3.9/js/dojo/webgis/widgets/themes/darkangel/override.css">
 </head>
 
-<body id='waveOrder'>
+<%-- <body id='waveOrder'>
 	<div class='content-wrap'>
-		
 		<!--信号监测-->
 		<section class='flex-row'>
 			<div class='box'>
@@ -42,12 +43,23 @@
 				<div id="mapDiv1"padding: 10px; height: 960px></div>
 			</div>
 		</section>
-
-
 	</div>
+</body> --%>
 
-	
+<body id='waveOrder_map_to_sifon' class='waveOrder_map_to_sifon'>
+	<div class='content-wrap waveOrder_map_to_sifon_wrap'>
+		<!--信号监测-->
+		<section class='flex-row'>
+			<div class='box waveOrder_map_to_sifon_box'>
+				<input style="display: none" id ='mapUrl' value="${mapUrl}" />
+				<input value="${areaCode}" hidden="true" id="areaCode">
+				<div id='redioType'></div>
+				<div id="mapDiv1"padding: 10px; height: 960px></div>
+			</div>
+		</section>
+	</div>
 </body>
+
 
 <script src="3.9/init.js"></script>
 	<script type="text/javascript">
