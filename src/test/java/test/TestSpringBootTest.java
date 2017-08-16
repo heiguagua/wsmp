@@ -53,7 +53,7 @@ public class TestSpringBootTest {
 		URL wsdlLocation = new URL(urlImportFreqRange);
 		ImportFreqRangeManageService service = new ImportFreqRangeManageService(wsdlLocation );
 		//查询频点
-		String response = service.getBasicHttpBindingIImportFreqRangeManageService().findFreqByWarn("048512a1-7a88-4536-8bea-473367492db4");
+		String response = service.getBasicHttpBindingIImportFreqRangeManageService().findFreqByWarn("1a797917-71d0-4e0f-b87a-17d6ce08ff59");
 		System.out.println("========================================:"+response);
 		final Type type = new TypeReference<MeasureTaskParamDto>() {}.getType();
 		@SuppressWarnings("unchecked")
@@ -64,11 +64,10 @@ public class TestSpringBootTest {
 		//添加
 		//增加重点监测或更新(更新需要ID)
 		MeasureTaskParamDto dto = new MeasureTaskParamDto();
-//		dto.setID("f49925a5-9a94-41c5-b118-c5e6a2e0dd96");
-//		dto.setWarnID("0eadb104-dad6-40e9-814f-249c6b095833");
-		dto.setWarnID("048512a1-7a88-4536-8bea-473367492db4");
-		dto.setBeginFreq(0.1);
-		dto.setEndFreq(0.1);
+		dto.setID("1a797917-71d0-4e0f-b87a-17d6ce08ff59");
+		dto.setWarnID("1a797917-71d0-4e0f-b87a-17d6ce08ff59");
+//		dto.setBeginFreq(0.1);
+//		dto.setEndFreq(0.1);
 		dto.setBeginTime("2017-08-07T19:13:30");
 		dto.setEndTime("2017-08-07T19:13:30");
 		dto.setCycleStep(30);
@@ -85,6 +84,7 @@ public class TestSpringBootTest {
 		dto.setTotalSpecCount(6);
 		dto.setFreqRange(false);
 		String jsonTaskParam = JSON.toJSONString(dto);
+//		String jsontest = 
 		String result = service.getBasicHttpBindingIImportFreqRangeManageService().createOrUpdate(jsonTaskParam);
 		System.out.println("==============================================================result:"+result);		
 	}

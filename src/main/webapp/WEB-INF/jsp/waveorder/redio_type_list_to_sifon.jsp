@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
  <div class='signal-wrap'>
-          <label class='signal-detect'><image src='images/sifon_2.png' />电波秩序</label>
+          <label class='signal-detect'><image src='images/sifon_1.png' />&nbsp;电波秩序</label>
           <ul class='signal-category'>
             <li class='item'>
               <div class="radio radio-primary  ">
