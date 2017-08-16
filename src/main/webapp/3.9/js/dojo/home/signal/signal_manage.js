@@ -239,11 +239,22 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 queryParamsType : 'limit', //查询参数组织方式
                 queryParams : function(params) {
                     var info = Binding.getUser();
+
                     info = JSON.parse(info);
-                    if (info.AreaType != "Province") {
-                        var code = info.Area.Code;
-                        params.areaCode = code;
+                    console.log(info);
+                    var codes = info.Area.Citys;
+                    var codeList = [];
+
+                    for (var index =0;index<codes.length;index++){
+                        codeList.push(codes[index].Code);
                     }
+                    codeList.push(info.Area.Code);
+                    var codeStr = JSON.stringify(codeList);
+
+                    console.log(codeStr);
+                    codeStr = codeStr.replace("[","").replace("]","");
+                    params.areaCode = codeStr;
+
                     return params
                 }, //请求服务器时所传的参数
                 onClickRow : function(row) {
@@ -311,10 +322,21 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 queryParamsType : 'limit', //查询参数组织方式
                 queryParams : function(params) {
                     var info = Binding.getUser();
-                    info = JSON.parse(info);
 
-                    var code = info.Area.Code;
-                    params.areaCode = code;
+                    info = JSON.parse(info);
+                    console.log(info);
+                    var codes = info.Area.Citys;
+                    var codeList = [];
+
+                    for (var index =0;index<codes.length;index++){
+                        codeList.push(codes[index].Code);
+                    }
+                    codeList.push(info.Area.Code);
+                    var codeStr = JSON.stringify(codeList);
+
+                    console.log(codeStr);
+                    codeStr = codeStr.replace("[","").replace("]","");
+                    params.areaCode = codeStr;
 
                     return params
                 }, //请求服务器时所传的参数
@@ -383,9 +405,21 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 queryParamsType : 'limit', //查询参数组织方式
                 queryParams : function(params) {
                     var info = Binding.getUser();
+
                     info = JSON.parse(info);
-                    var code = info.Area.Code;
-                    params.areaCode = code;
+                    console.log(info);
+                    var codes = info.Area.Citys;
+                    var codeList = [];
+
+                    for (var index =0;index<codes.length;index++){
+                        codeList.push(codes[index].Code);
+                    }
+                    codeList.push(info.Area.Code);
+                    var codeStr = JSON.stringify(codeList);
+
+                    console.log(codeStr);
+                    codeStr = codeStr.replace("[","").replace("]","");
+                    params.areaCode = codeStr;
 
                     return params
                 }, //请求服务器时所传的参数

@@ -1,6 +1,5 @@
 package com.chinawiserv.wsmp.controller.data;
 
-import com.alibaba.fastjson.JSON;
 import com.chinawiserv.apps.util.logger.Logger;
 import com.chinawiserv.wsmp.hbase.HbaseClient;
 import com.chinawiserv.wsmp.hbase.query.Audio;
@@ -55,7 +54,7 @@ public class ASIQDataController {
 
 			List<Audio> audios = client.queryAudio(id, centerFreq, timeStartLong, timeStopLong);
 
-			Logger.info("查询音频数据正常 操作时间{},入参：基站id :{},中心频率:{},开始时间:{},结束时间{} 返回值:{}",LocalDateTime.now().toString(),id,centerFreq,timeStart,timeStop, JSON.toJSONString(audios));
+			Logger.info("查询音频数据正常 操作时间{},入参：基站id :{},中心频率:{},开始时间:{},结束时间{}",LocalDateTime.now().toString(),id,centerFreq,timeStart,timeStop);
 
 			return audios;
 		} catch (Exception e) {
@@ -82,14 +81,14 @@ public class ASIQDataController {
 			final AudioData aduioData = this.client.queryAudioData(id, rowKey);
 			final byte[] bytes = aduioData.getAudioData();
 
-			Logger.info("查询音频数据成功 操作时间{} 入参为 基站id{},rowKey{} 返回值{}",LocalDateTime.now().toString(),id,rowKey,JSON.toJSONString(aduioData));
+			Logger.info("查询音频数据成功 操作时间{} 入参为 基站id{},rowKey{}",LocalDateTime.now().toString(),id,rowKey);
 			return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment;filename=\"%s\"", "test.wav"))
                     .contentType(MediaType.APPLICATION_OCTET_STREAM)
                     .body(bytes);
 
 		} catch (Exception e) {
-			Logger.error("查询音频数据成功 操作时间{} 入参为 基站id{},rowKey{} 返回值{}",LocalDateTime.now().toString(),id,rowKey,e);
+			Logger.error("查询音频数据异常 操作时间{} 入参为 基站id{},rowKey{} 异常{}",LocalDateTime.now().toString(),id,rowKey,e);
 		}
 		return  new Object();
 	}
@@ -114,7 +113,7 @@ public class ASIQDataController {
                     this.formatter).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 
 			List<IQ>  iq = this.client.queryIQ(id, centerFreq, timeStartLong, timeStopLong);
-			Logger.info("iq 数据查询正常 基站id{} 中心频率为{} 开始时间{} 返回值 {}",id,centerFreq,timeStart,iq);
+			Logger.info("iq 数据查询正常 基站id{} 中心频率为{} 开始时间{} 返回值 {}",id,centerFreq,timeStart);
 
 			return  iq;
 		} catch (Exception e) {
@@ -153,7 +152,7 @@ public class ASIQDataController {
                     timeStopLong);
 		} catch (Exception e) {
 
-			Logger.error("音频数据查询正常 入参id：{},中心频率：{}，开始时间：{}，异常 {}",id,centerFreq,timeStart,e);
+			Logger.error("音频数据查询异常 入参id：{},中心频率：{}，开始时间：{}，异常 {}",id,centerFreq,timeStart,e);
 		}
 		return  spectrums;
 	}

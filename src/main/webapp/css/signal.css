@@ -351,3 +351,7 @@ td.bs-checkbox{
     overflow: hidden;
     background: rgba(239, 239, 239, 0.18);
     }
+.spectrum-table {
+    height: 150px;
+    overflow: auto;
+}

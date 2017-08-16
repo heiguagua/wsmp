@@ -181,8 +181,9 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                 }
 
                 var info = Binding.getUser();
-                console.log(info);
+
                 info = JSON.parse(info);
+                console.log(info);
 
                 var info = Binding.getUser();
                 info = JSON.parse(info);

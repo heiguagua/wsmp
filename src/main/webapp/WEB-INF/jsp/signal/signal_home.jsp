@@ -64,7 +64,7 @@
 					<a class='btn btn-default btn-choose pull-right' id="spectrum-choose-btn">选择数据</a>
 					<div class="data-choose-list" id="spectrum-choose-list">
 						<div class="pull-right"><span id="data-list-close" class="ico-close">&times;</span></div>
-						<table class="table table-striped table-hover" id="spectrum-table">
+						<table class="table table-striped table-hover spectrum-table" id="spectrum-table">
 						</table>
 						<div class="text-center confirm-wrap"><a class="btn btn-confirm" id="spectrum-confirm">确定</a><a class="btn btn-cancel">取消</a></div>
 					</div>
