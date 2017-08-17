@@ -351,3 +351,14 @@ td.bs-checkbox{
     overflow: hidden;
     background: rgba(239, 239, 239, 0.18);
     }
+.spectrum-table {
+    max-height: 150px;
+    overflow: auto;
+}
+ .empty-msg{
+	padding: 20px 0 0 0;
+    text-align: center;
+}
+.mark-content textarea{
+	width:100%;
+}

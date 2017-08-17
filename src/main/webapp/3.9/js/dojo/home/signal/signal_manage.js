@@ -314,11 +314,22 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 queryParamsType : 'limit', //查询参数组织方式
                 queryParams : function(params) {
                     var info = Binding.getUser();
+
                     info = JSON.parse(info);
-                    if (info.AreaType != "Province") {
-                        var code = info.Area.Code;
-                        params.areaCode = code;
+                    console.log(info);
+                    var codes = info.Area.Citys;
+                    var codeList = [];
+
+                    for (var index =0;index<codes.length;index++){
+                        codeList.push(codes[index].Code);
                     }
+                    codeList.push(info.Area.Code);
+                    var codeStr = JSON.stringify(codeList);
+
+                    console.log(codeStr);
+                    codeStr = codeStr.replace("[","").replace("]","");
+                    params.areaCode = codeStr;
+
                     return params
                 }, //请求服务器时所传的参数
                 onClickRow : function(row) {
@@ -386,10 +397,21 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 queryParamsType : 'limit', //查询参数组织方式
                 queryParams : function(params) {
                     var info = Binding.getUser();
-                    info = JSON.parse(info);
 
-                    var code = info.Area.Code;
-                    params.areaCode = code;
+                    info = JSON.parse(info);
+                    console.log(info);
+                    var codes = info.Area.Citys;
+                    var codeList = [];
+
+                    for (var index =0;index<codes.length;index++){
+                        codeList.push(codes[index].Code);
+                    }
+                    codeList.push(info.Area.Code);
+                    var codeStr = JSON.stringify(codeList);
+
+                    console.log(codeStr);
+                    codeStr = codeStr.replace("[","").replace("]","");
+                    params.areaCode = codeStr;
 
                     return params
                 }, //请求服务器时所传的参数
@@ -458,9 +480,21 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 queryParamsType : 'limit', //查询参数组织方式
                 queryParams : function(params) {
                     var info = Binding.getUser();
+
                     info = JSON.parse(info);
-                    var code = info.Area.Code;
-                    params.areaCode = code;
+                    console.log(info);
+                    var codes = info.Area.Citys;
+                    var codeList = [];
+
+                    for (var index =0;index<codes.length;index++){
+                        codeList.push(codes[index].Code);
+                    }
+                    codeList.push(info.Area.Code);
+                    var codeStr = JSON.stringify(codeList);
+
+                    console.log(codeStr);
+                    codeStr = codeStr.replace("[","").replace("]","");
+                    params.areaCode = codeStr;
 
                     return params
                 }, //请求服务器时所传的参数
@@ -553,116 +587,80 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
         //		});
     }
 
+    function destroy_chart_table(){
+        // 清除图表
+        spectrum_data.destroy();
+        iq_data.destroy();
+        audio_data.destroy();
+        maxlevel_chart.destroy();
+        if(monthChart) {
+            monthChart.clear();
+        }
+    }
+
     function init_select2() {
 
         $('.select2-picker').select2();
         $("#search").keydown(function(e) {
             if (e.keyCode == 13) {
-                var val = $(this).val();
-                var data = {};
-                if (isNaN(val)) {
-                    alert("请输入数字");
-                    return;
-                }
-                val = parseFloat(val) * 1000000;
-                data.beginFreq = val;
-                data.endFreq = val;
-
-                var info = Binding.getUser();
-                console.log(info);
-                info = JSON.parse(info);
-
-                var stationList = [];
-                var codes = info.Area.Code;
-
-                var stations = Binding.getMonitorNodes(codes);
-                stations = JSON.parse(stations);
-
-                console.log(stations);
-
-                var stationCodeList = {};
-                stationCodeList.string = stationList;
-
-                for (var index = 0;index<stations.length;index++){
-                    console.log(stations[index].Num);
-                    stationList.push(stations[index].Num);
-                }
-
-                data.stationIDs = stationCodeList;
-
-                $("#signal_list1 .select2-picker").html('');
-
-
-                console.log(data);
-
-                $("#signal_list1 .select2-picker").html('');
-                data = JSON.stringify(data);
-                $("#signal_list1 .select2-picker").load("signal/singallist",{param:data}, function() {
-                    var s_val = $('#signal_list1').find('option:selected').val();
-                    if (s_val) {
-                        getStations(s_val);
-
-                    }
-                });
-
+            	getFreqList();
             }
         });
-
 
         $(".search-icon").click(function() {
-            $("#singal_list").children().remove();
-            var val = $(this).val();
-            var data = {};
-            if (isNaN(val)) {
-                alert("请输入数字");
-                return;
-            }
-            val = parseFloat(val) * 1000000;
-            data.beginFreq = val;
-            data.endFreq = val;
-
-            var info = Binding.getUser();
-            console.log(info);
-            info = JSON.parse(info);
-
-            var stationList = [];
-            var codes = info.Area.Code;
-
-            var stations = Binding.getMonitorNodes(codes);
-            stations = JSON.parse(stations);
-
-            console.log(stations);
-
-            var stationCodeList = {};
-            stationCodeList.string = stationList;
-
-            for (var index = 0;index<stations.length;index++){
-                console.log(stations[index].Num);
-                stationList.push(stations[index].Num);
-            }
-
-            data.stationIDs = stationCodeList;
-
-            $("#signal_list1 .select2-picker").html('');
-
-
-            console.log(data);
-
-            $("#signal_list1 .select2-picker").html('');
-
-            $("#signal_list1 .select2-picker").load("signal/singallist", data, function() {
-                var s_val = $('#signal_list1').find('option:selected').val();
-
-                if (s_val) {
-                    getStations(s_val);
-                }
-
-
-            });
-
+        	getFreqList();
         });
+    }
+    
+    function getFreqList(){
+    	// 清除图表
+    	destroy_chart_table();
+    	var val = $("#search").val();
+        var data = {};
+        if (isNaN(val)) {
+            alert("请输入数字");
+            return;
+        }
+    	val = parseFloat(val) * 1000000;
+        data.beginFreq = val;
+        data.endFreq = val;
+
+        var info = Binding.getUser();
+        console.log(info);
+        info = JSON.parse(info);
+
+        var stationList = [];
+        var codes = info.Area.Code;
+
+        var stations = Binding.getMonitorNodes(codes);
+        stations = JSON.parse(stations);
+
+        console.log(stations);
+
+        var stationCodeList = {};
+        stationCodeList.string = stationList;
+
+        for (var index = 0;index<stations.length;index++){
+            console.log(stations[index].Num);
+            stationList.push(stations[index].Num);
+        }
+
+        data.stationIDs = stationCodeList;
+
+        $("#signal_list1 .select2-picker").html('');
 
 
+        console.log(data);
+
+        $("#signal_list1 .select2-picker").html('');
+        data = JSON.stringify(data);
+        $("#signal_list1 .select2-picker").load("signal/singallist",{param:data}, function() {
+            var s_val = $('#signal_list1').find('option:selected').val();
+            if (s_val) {
+                getStations(s_val);
+
+            }
+        });
 
     }
 

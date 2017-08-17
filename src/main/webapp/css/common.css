@@ -12,7 +12,9 @@ input::-webkit-inner-spin-button{
 input::-webkit-outer-spin-button{
 	-webkit-appearance:none;
 }
-
+textarea{
+	    resize: none;
+}
 html {
 	height: 100%;
 }

@@ -213,7 +213,14 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
         $(document).on("mouseup",mouseup);
         $("#levelChart").on("mousemove",mousemove);
     }
+    
+    function destroy(){
+    	if(maxlevelChart){
+    		maxlevelChart.clear();
+    	}
+    }
     return {
-    	init:maxlevelinit
+    	init:maxlevelinit,
+    	destroy:destroy
     }
 })

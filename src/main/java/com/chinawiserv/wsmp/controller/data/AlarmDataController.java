@@ -405,20 +405,17 @@ public class AlarmDataController {
 
         final Object offset = param.get("offset");
         final Object limit = param.get("limit");
-        final Object areaCode = param.get("areaCode");
-
+        final String areaCode = (String)param.get("areaCode");
+        String[] areaCodes = areaCode.split(",");
         StationQuerySpecInfo info = new StationQuerySpecInfo();
 
         int pageNumber = Integer.parseInt(offset.toString());
         int limitNumber = Integer.parseInt(limit.toString());
 
-        List<String> areaCodesList = Lists.newLinkedList();
+        ArrayList<String> dr =new ArrayList<>(Arrays.asList(areaCodes)) ;
 
-        if (areaCode != null) {
-            areaCodesList.add(areaCode.toString());
-        }
-
-        info.setAreaCodes(areaCodesList);
+        info.setAreaCodes(dr);
+        
 
         Map<String, Object> hasMap = Maps.newLinkedHashMap();
 
@@ -438,7 +435,8 @@ public class AlarmDataController {
             }).collect(toList());
 
             hasMap.put("total", totlal);
-            Logger.error("四方台站webservice  StationService调用异常，操作时间{} ,入参 ：查询条件{} 当前个数{} 限制个数{}",LocalDateTime.now().toString(),info,pageNumber,limitNumber);
+            hasMap.put("rows",stations);
+            Logger.info("四方台站webservice  StationService调用正常，操作时间{} ,入参 ：查询条件{} 当前个数{} 限制个数{}",LocalDateTime.now().toString(),info,pageNumber,limitNumber);
         } catch (Exception e) {
             Logger.error("四方台站webservice  StationService调用异常，操作时间{} ,入参 ：查询条件{} 当前个数{} 限制个数{} 异常详情 : {}",LocalDateTime.now().toString(),info,pageNumber,limitNumber,e);
         }
@@ -511,9 +509,9 @@ public class AlarmDataController {
             String index = (String) map.get("offset");
             String limit = (String) map.get("limit");
             String areaCode = (String) map.get("areaCode");
+            String[] areaList = areaCode.split(",");
+            List<String> areaCodeList = new ArrayList<>(Arrays.asList(areaList));
 
-            List<String> areaCodeList = Lists.newLinkedList();
-            areaCodeList.add(areaCode);
 
             Map<String, Object> requestParam = Maps.newLinkedHashMap();
             requestParam.put("index", index);

@@ -8,6 +8,9 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
         //var url = "assets/json/audio-player-list.json";
         ajax.get(url, null, function(result) {
             var data = result;
+            if(data && data.length == 0) {
+                data = null;
+            }
             $('#audio-table').bootstrapTable({
                 method : 'get',
                 contentType : "application/x-www-form-urlencoded", //必须要有！！！！
@@ -90,8 +93,8 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
  // 音频数据播放
     var wavesurfer;
     function audio_player() {
-
-        if (wavesurfer) {
+        if(audio_play_list && audio_play_list.length>0) {
+            if (wavesurfer) {
             wavesurfer.destroy();
         }
 
@@ -148,13 +151,17 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
             wavesurfer.play();
         });
 
+        }
 
+    }
 
-
+    function destroy(){
+        $('#audio-table').bootstrapTable('destroy');
     }
 
 	return {
 		init:load_audio_data,
-		play:audio_player
+		play:audio_player,
+        destroy:destroy
 	}
 })

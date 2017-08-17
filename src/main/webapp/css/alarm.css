@@ -103,3 +103,9 @@
     padding: 0 0 40px 0;
     border-top: none;
 }
+.way-single{
+	cursor:pointer;
+}
+.radio+.radio, .checkbox+.checkbox{
+	margin-top:0;
+}

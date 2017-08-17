@@ -6,13 +6,17 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
         //var url = "data/asiq/iq/52010126/80000000/20170810144216/20170810144216";
         //var url = "assets/json/iq-player-list.json";
         ajax.get(url, null, function(result) {
+            var data = result;
+            if(data && data.length == 0) {
+                data = null;
+            }
             $('#IQ-table').bootstrapTable({
                 method : 'get',
                 contentType : "application/x-www-form-urlencoded", //必须要有！！！！
                 striped : true,
                 pageNumber : 1, //初始化加载第一页，默认第一页
                 pagination : true, //是否分页
-                data : result,
+                data : data,
                 //					url :"assets/json/iq-player-list.json",
                 queryParamsType : 'limit', //查询参数组织方式
                 sidePagination : 'client', //指定服务器端分页
@@ -118,7 +122,9 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                     formatter:function(param){
                       iq_start_index_temp = param[0].dataIndex;
                       iq_end_index = param[0].dataIndex;
-                      return param[0].name + " : " + param[0].value;
+                      if(param && param[0] && param[0].name && param[0].value) {
+                        return param[0].name + " : " + param[0].value;
+                      }
                     }
                 },
                 legend : {
@@ -441,9 +447,17 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
         $(document).on("mouseup",mouseup);
         $("#IQChart").on("mousemove",mousemove);
     }
+    
+    function destroy(){
+    	if(iqChart){
+    		iqChart.clear();
+    	}
+    	$('#IQ-table').bootstrapTable('destroy');
+    }
 
 	return {
 		init:load_iq_data,
-		play:iq_player
+		play:iq_player,
+		destroy:destroy
 	}
 })
