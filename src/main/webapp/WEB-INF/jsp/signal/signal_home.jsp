@@ -48,9 +48,9 @@
     </span>
     
        <div class='config pull-right'>
-      <a class='btn btn-default btn-config'>
-        <img src='images/export.png' />&nbsp;&nbsp;导出报表
-      </a>
+      <%--<a class='btn btn-default btn-config'>--%>
+        <%--<img src='images/export.png' />&nbsp;&nbsp;导出报表--%>
+      <%--</a>--%>
       <a class='btn btn-default btn-config' data-toggle="modal" data-target="#modalConfig">
         <img src='images/config.png' />&nbsp;&nbsp;配置
       </a>
@@ -278,7 +278,7 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-          <h4 class="modal-title" id="modalStationAlarmLabel">台站列表</h4>
+          <h4 id="staionType" class="modal-title" id="modalStationAlarmLabel">台站列表</h4>
         </div>
         <div class="modal-body">
           	<div id="stationWrap"></div>

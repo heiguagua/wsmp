@@ -73,7 +73,8 @@ public class SiganlDataController {
 
 			List<Object> reslut = map.entrySet().stream().map(m -> {
 				HashMap<String, Double> mapReslut = Maps.newHashMap();
-				mapReslut.put(m.getKey(), (double) ((Integer) m.getValue() / sum));
+				double d = (double) ((Integer) m.getValue() / sum);
+				mapReslut.put(m.getKey(),d );
 				lists.add(m.getKey());
 				return mapReslut;
 			}).collect(toList());

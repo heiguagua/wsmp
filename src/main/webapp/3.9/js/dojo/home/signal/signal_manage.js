@@ -289,6 +289,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 
         $("#legal-normal").click(function() {
             //					var value = $('option:selected').val();
+            $("#staionType").html("合法台站正常");
             var value = $("#station_list").find('option:selected').text();
             var kmz = $('#search').val();
             $("#typeCode").val($(this).val());
@@ -371,6 +372,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
         });
 
         $("#undeclared").click(function() {
+            $("#staionType").html("合法违规信号");
             var value = $('option:selected').val();
             var kmz = $('#search').val();
             var data = {};
@@ -454,6 +456,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 
 
         $("#nonlocal_station").click(function() {
+            $("#staionType").html("已知信号");
             var value = $('option:selected').val();
             var kmz = $('#search').val();
             var data = {};
@@ -537,6 +540,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
         });
 
         $("#illegal").click(function() {
+            $("#staionType").html("非法信号");
             var value = $('option:selected').val();
             var kmz = $('#search').val();
             var data = {
@@ -553,6 +557,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
         });
 
         $("#unknown").click(function() {
+            $("#staionType").html("不明信号");
             var value = $('option:selected').val();
             var kmz = $('#search').val();
             var data = {

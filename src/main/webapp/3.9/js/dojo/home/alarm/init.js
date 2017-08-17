@@ -320,6 +320,7 @@ define(["esri/geometry/Extent","home/heatmap/HeatmapLayer","esri/symbols/SimpleF
 			require([ "bootstrap", "bootstrapTable"],function(){
 				require(["bootstrap_table_cn"],function(){
 					$("#legal-normal").click(function() {
+                        $("#staionType").html("合法台站正常");
 //						var value = $('option:selected').val();
 						var value = $("#station_list").find('option:selected').text();
 						var kmz = $('#search').val();
@@ -369,6 +370,7 @@ define(["esri/geometry/Extent","home/heatmap/HeatmapLayer","esri/symbols/SimpleF
 									//data.id = row.signalId;
 									console.log(row);
 									$("#stationId").val(row.id);
+
 //									ajax.post("data/alarm/instersingal",data,function(){
 //									
 //									});
@@ -405,6 +407,7 @@ define(["esri/geometry/Extent","home/heatmap/HeatmapLayer","esri/symbols/SimpleF
 					});
 
 					$("#legal-wrong").click(function() {
+                        $("#staionType").html("合法台站违规");
 						var value = $('option:selected').val();
 						var kmz = $('#search').val();
 						var data = {};
@@ -497,6 +500,7 @@ define(["esri/geometry/Extent","home/heatmap/HeatmapLayer","esri/symbols/SimpleF
 
 
 					$("#legal").click(function() {
+                        $("#staionType").html("已知信号");
 						var value = $('option:selected').val();
 						var kmz = $('#search').val();
 						var data = {};

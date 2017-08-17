@@ -40,13 +40,13 @@
       <div class='box flex-column'>
         <div class='singal-control flex-column justify-center flex1'>
           <div class='detect-way flex1 flex-row'>
-            <div id = "warning_confirm" class='way-key flex1 checked'>
-              <div class='way-sign'>
-                <img src='images/way_2.png' alt='重点监测' />
-              </div>
-              <p>重点监测</p>
+            <%--<div id = "warning_confirm" class='way-key flex1 checked'>--%>
+              <%--&lt;%&ndash;<div class='way-sign'>&ndash;%&gt;--%>
+                <%--&lt;%&ndash;<img src='images/way_2.png' alt='重点监测' />&ndash;%&gt;--%>
+              <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
+              <%--<p>重点监测</p>--%>
 
-            </div>
+            <%--</div>--%>
             <div  class='way-single flex1'>
               <div id = 'singletonFreq' class='way-sign'>
                 <img src='images/way_1.png' alt='单频测量' />

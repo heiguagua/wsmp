@@ -414,8 +414,7 @@ public class AlarmDataController {
 
         ArrayList<String> dr =new ArrayList<>(Arrays.asList(areaCodes)) ;
 
-        info.setAreaCodes(dr);
-        info.setSignalFreq();
+        info.setAreaCodes(dr);;
 
         Map<String, Object> hasMap = Maps.newLinkedHashMap();
 
