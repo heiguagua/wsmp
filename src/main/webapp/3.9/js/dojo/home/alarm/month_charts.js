@@ -16,7 +16,10 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
 	                formatter:function(param){
 	                	maxlevel_start_index_temp = param[0].dataIndex;
 	                	maxlevel_end_index = param[0].dataIndex;
-	                  return param[0].name + " : " + param[0].value;
+	                	if(param && param[0] && param[0].name && param[0].value) {
+	                		return param[0].name + " : " + param[0].value;
+	                	}
+	                  
 	                }
 	            },
 				dataZoom : [{
