@@ -274,7 +274,10 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                 if (!isNaN(centerFrq)) {
                     centerFrq = (parseFloat(centerFrq)) * 1000000;
                 }
-
+                else{
+                    alert("请输入数字！");
+                    return;
+                }
                 var info = Binding.getUser();
 
                 info = JSON.parse(info);
@@ -329,6 +332,10 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
             var data = {};
             if (!isNaN(centerFrq)) {
                 centerFrq = (parseFloat(centerFrq)) * 1000000;
+            }
+            else{
+                alert("请输入数字！");
+                return;
             }
 
             var info = Binding.getUser();
