@@ -602,114 +602,65 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 
         $('.select2-picker').select2();
         $("#search").keydown(function(e) {
-        	destroy_chart_table();
             if (e.keyCode == 13) {
-                var val = $(this).val();
-                var data = {};
-                if (isNaN(val)) {
-                    alert("请输入数字");
-                    return;
-                }
-                val = parseFloat(val) * 1000000;
-                data.beginFreq = val;
-                data.endFreq = val;
-
-                var info = Binding.getUser();
-                console.log(info);
-                info = JSON.parse(info);
-
-                var stationList = [];
-                var codes = info.Area.Code;
-
-                var stations = Binding.getMonitorNodes(codes);
-                stations = JSON.parse(stations);
-
-                console.log(stations);
-
-                var stationCodeList = {};
-                stationCodeList.string = stationList;
-
-                for (var index = 0;index<stations.length;index++){
-                    console.log(stations[index].Num);
-                    stationList.push(stations[index].Num);
-                }
-
-                data.stationIDs = stationCodeList;
-
-                $("#signal_list1 .select2-picker").html('');
-
-
-                console.log(data);
-
-                $("#signal_list1 .select2-picker").html('');
-                data = JSON.stringify(data);
-                $("#signal_list1 .select2-picker").load("signal/singallist",{param:data}, function() {
-                    var s_val = $('#signal_list1').find('option:selected').val();
-                    if (s_val) {
-                        getStations(s_val);
-
-                    }
-                });
-
+            	getFreqList();
             }
         });
-
 
         $(".search-icon").click(function() {
-        	destroy_chart_table();
-            $("#singal_list").children().remove();
-            var val = $(this).val();
-            var data = {};
-            if (isNaN(val)) {
-                alert("请输入数字");
-                return;
-            }
-            val = parseFloat(val) * 1000000;
-            data.beginFreq = val;
-            data.endFreq = val;
-
-            var info = Binding.getUser();
-            console.log(info);
-            info = JSON.parse(info);
-
-            var stationList = [];
-            var codes = info.Area.Code;
-
-            var stations = Binding.getMonitorNodes(codes);
-            stations = JSON.parse(stations);
-
-            console.log(stations);
-
-            var stationCodeList = {};
-            stationCodeList.string = stationList;
-
-            for (var index = 0;index<stations.length;index++){
-                console.log(stations[index].Num);
-                stationList.push(stations[index].Num);
-            }
-
-            data.stationIDs = stationCodeList;
-
-            $("#signal_list1 .select2-picker").html('');
-
-
-            console.log(data);
-
-            $("#signal_list1 .select2-picker").html('');
-
-            $("#signal_list1 .select2-picker").load("signal/singallist", data, function() {
-                var s_val = $('#signal_list1').find('option:selected').val();
-
-                if (s_val) {
-                    getStations(s_val);
-                }
-
-
-            });
-
+        	getFreqList();
         });
+    }
+    
+    function getFreqList(){
+    	// 清除图表
+    	destroy_chart_table();
+    	var val = $("#search").val();
+        var data = {};
+        if (isNaN(val)) {
+            alert("请输入数字");
+            return;
+        }
+    	val = parseFloat(val) * 1000000;
+        data.beginFreq = val;
+        data.endFreq = val;
+
+        var info = Binding.getUser();
+        console.log(info);
+        info = JSON.parse(info);
+
+        var stationList = [];
+        var codes = info.Area.Code;
+
+        var stations = Binding.getMonitorNodes(codes);
+        stations = JSON.parse(stations);
+
+        console.log(stations);
+
+        var stationCodeList = {};
+        stationCodeList.string = stationList;
+
+        for (var index = 0;index<stations.length;index++){
+            console.log(stations[index].Num);
+            stationList.push(stations[index].Num);
+        }
+
+        data.stationIDs = stationCodeList;
+
+        $("#signal_list1 .select2-picker").html('');
 
 
+        console.log(data);
+
+        $("#signal_list1 .select2-picker").html('');
+        data = JSON.stringify(data);
+        $("#signal_list1 .select2-picker").load("signal/singallist",{param:data}, function() {
+            var s_val = $('#signal_list1').find('option:selected').val();
+            if (s_val) {
+                getStations(s_val);
+
+            }
+        });
 
     }
 
