@@ -422,8 +422,17 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
         $("#spectrumChart").on("mousemove",mousemove);
     }
     
+    function destroy(){
+    	if(spectrumChart) {
+    		spectrumChart.clear();
+    	}
+    	$('#spectrum-table').bootstrapTable('destroy');
+    }
+    
+    
 	return {
 		init : spectrum_init,
-		play: spectrum_player
+		play: spectrum_player,
+		destroy: destroy
 	}
 })

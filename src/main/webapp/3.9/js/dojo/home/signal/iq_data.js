@@ -441,9 +441,17 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
         $(document).on("mouseup",mouseup);
         $("#IQChart").on("mousemove",mousemove);
     }
+    
+    function destroy(){
+    	if(iqChart){
+    		iqChart.clear();
+    	}
+    	$('#IQ-table').bootstrapTable('destroy');
+    }
 
 	return {
 		init:load_iq_data,
-		play:iq_player
+		play:iq_player,
+		destroy:destroy
 	}
 })

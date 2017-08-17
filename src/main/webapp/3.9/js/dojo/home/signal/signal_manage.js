@@ -591,6 +591,9 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 
         $('.select2-picker').select2();
         $("#search").keydown(function(e) {
+        	// 清除图表
+        	spectrum_data.destroy();
+        	iq_data.destroy();
             if (e.keyCode == 13) {
                 var val = $(this).val();
                 var data = {};
@@ -644,6 +647,9 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 
 
         $(".search-icon").click(function() {
+        	// 清除图表
+        	spectrum_data.destroy();
+        	iq_data.destroy();
             $("#singal_list").children().remove();
             var val = $(this).val();
             var data = {};
