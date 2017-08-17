@@ -3,25 +3,33 @@ define(["ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLay
 	, "esri/symbols/TextSymbol", "esri/geometry/Point", "esri/graphic", "esri/symbols/Font", "esri/symbols/SimpleMarkerSymbol","esri/symbols/PictureMarkerSymbol"], function(ajax, parser, Map, ArcGISTiledMapServiceLayer, request, GraphicsLayer, Scalebar, TextSymbol, Point, graphic, Font, SimpleMarkerSymbol,PictureMarkerSymbol) {
 	function wo_init(map_arry) {
 		console.log(layer);
-		var user = getUser();
-		getArea(user);
 		var AREACODE = null;
-
-		$('.select2-picker').select2();
-		var areaCode = $(".select2-picker").val(); 
-		AREACODE = areaCode;
+		//取得用户信息
 		var user = getUser();
-		var userID = user.ID;
-		var monitors = getMonitors(areaCode);
-		var monitorsID = new Array();
-		for(var i = 0;i<monitors.length;i++) {
-			monitorsID[i] = monitors[i].Num; 
+		//得到区域信息
+		getArea(user);
+		//执行下拉框
+		$('.select2-picker').select2();
+		//默认选中第一个
+		var defaultAreaCode = $("#area_select")[0].children[0].value;
+//		$('.select2-picker').val(defaultAreaCode); // Change the value or make some change to the internal state
+//		$('.select2-picker').trigger('change.select2'); //触发事件
+		select2_change(defaultAreaCode,map_arry);
+		//获取请求参数areaCode
+		var areaCode = $("#areaCode").value;
+		//有areaCode,直接触发选择事件
+		if(areaCode != null) {
+			$('.select2-picker').val(areaCode); // Change the value or make some change to the internal state
+			$('.select2-picker').trigger('change.select2'); //触发事件
+			select2_change(areaCode,map_arry);
 		}
-		table_radio_init(true, monitorsID,userID);
-		table_alarm_undealed(monitorsID,monitors);
-		table_alarm_dealed(monitorsID,monitors);
-		addPoint(map_arry, monitors,0);//默认选中0
-		redioType(monitors);
+		
+		
+		//监听下拉框点击事件
+		$(".select2-picker").on("select2:select", function(e) {
+			var areaCode = e.target.value;
+			select2_change(areaCode,map_arry);
+		});
 		
 		$.fn.datetimepicker.defaults = {
 				language: 'zh-CN',
@@ -30,21 +38,6 @@ define(["ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLay
 				minView:2
 		}	
 		
-		$(".select2-picker").on("select2:select", function(e) {
-			AREACODE = areaCode;
-			var user = getUser();
-			var userID = user.ID;
-			var monitors = getMonitors(areaCode);
-			var monitorsID = new Array();
-			for(var i = 0;i<monitors.length;i++) {
-				monitorsID[i] = monitors[i].Num; 
-			}
-			table_radio_init(true, monitorsID,userID);
-			table_alarm_undealed(monitorsID,monitors);
-			table_alarm_dealed(monitorsID,monitors);
-			addPoint(map_arry, monitors,0);//默认选中0
-			redioType(monitors);
-		});
 		
 		$("#tabs a").click(function(e) {
 			e.preventDefault();
@@ -260,6 +253,23 @@ define(["ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLay
 		});
 	}
 	
+	function select2_change(areaCode,map_arry) {
+		AREACODE = areaCode;//更新全局变量
+		var user = getUser();
+		var userID = user.ID;
+		var monitors = getMonitors(areaCode);
+		console.log(monitors);
+		var monitorsID = new Array();
+		for(var i = 0;i<monitors.length;i++) {
+			monitorsID[i] = monitors[i].Num; 
+		}
+		table_radio_init(true, monitorsID,userID);
+		table_alarm_undealed(monitorsID,monitors);
+		table_alarm_dealed(monitorsID,monitors);
+		addPoint(map_arry, monitors,0);//默认选中0
+		redioType(monitors);
+	}
+	
 	function getUser() {
 		var userStr = Binding.getUser();
 		var user = JSON.parse(userStr);
@@ -331,10 +341,17 @@ define(["ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLay
 		for(var i=0;i<monitors.length;i++) {
 			data.monitorsNum[i] = monitors[i].Num;
 		}
-		var pmSymbol = new PictureMarkerSymbol({
+		//监测站symbol
+		var monitorSymbol = new PictureMarkerSymbol({
 			"url":"images/monitoring-station.svg",
 			"height":33,
 		    "width":32,
+		});
+		//计数点symbol
+		var countBackgroundSymbol = new PictureMarkerSymbol({
+			"url":"images/legal.svg",
+			"height":18,
+			"width":43,
 		});
 		ajax.post("data/waveorder/monitorsPoint", data, function(result) {
 			console.log(result);
@@ -349,14 +366,17 @@ define(["ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLay
 						obj.y = monitors[j].Latitude;
 						obj.count = result[i].count;
 						obj.monitorID = result[i].monitorID;
-						var p = new Point(obj);
-						var textSymbol = new TextSymbol(p.count).setColor(
-								new esri.Color([ 0x0, 0x0, 0])).setAlign(Font.ALIGN_START).setFont(
+						var monitorPoint = new Point(obj);
+						var countPoint = monitorPoint.offset(0.06,0.05);//计数点位于右上角
+						var countSymbol = new TextSymbol(monitorPoint.count).setColor(
+								new esri.Color([ 0xff, 0xff, 0xff])).setAlign(Font.ALIGN_START).setFont(
 										new Font("12pt").setWeight(Font.WEIGHT_BOLD));
-						var textsyboml = new esri.Graphic(p, textSymbol);//文本
-						var graphic = new esri.Graphic(p, pmSymbol);//点
-						glayer.add(graphic);//要先加图
-						glayer.add(textsyboml);//再加文本
+						var countGraphic = new esri.Graphic(countPoint, countSymbol);//计数图
+						var countBackgroundGraphic = new esri.Graphic(countPoint, countBackgroundSymbol);//计数底图
+						var monitorGraphic = new esri.Graphic(monitorPoint, monitorSymbol);//监测站图
+						glayer.add(monitorGraphic);
+						glayer.add(countBackgroundGraphic);
+						glayer.add(countGraphic);
 						break;
 					}
 					

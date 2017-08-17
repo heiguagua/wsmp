@@ -297,7 +297,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             var temp = '<div class="header-search"><input type="text" placeholder="输入中心频率">' +
                 '<span class="search-icon"></span></div>' +
                 '<table class="table table-striped" id="table-station-list"></table>' +
-                '<div class="mark-content"><p>备注</p><textarea id = "des" rows="5" placeholder="请输入备注信息"></textarea></div>';
+                '<div class="mark-content"><p>备注</p><textarea id = "des" rows="5" placeholder="请输入备注信息" cols="120"></textarea></div>';
             $("#stationWrap").html("");
             $("#stationWrap").html(temp);
             $('#table-station-list').bootstrapTable({

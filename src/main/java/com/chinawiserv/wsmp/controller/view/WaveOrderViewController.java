@@ -27,6 +27,7 @@ import org.tempuri.RadioSignalWebService;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.chinawiserv.apps.logger.Logger;
 import com.chinawiserv.wsmp.pojo.MeasureTaskParamDto;
 import com.chinawiserv.wsmp.pojo.RedioStatusCount;
 
@@ -50,19 +51,17 @@ public class WaveOrderViewController {
 	@Value("${mapservice.wdsl}")
 	private String mapUrl;
 
-
-    @GetMapping("/ssss")
-    public String alarmDealed() {
-        return null;
-    }
-
     @GetMapping("/frequencyrange")
     public String frequencyRange() {
         return "waveorder/table_radio";
     }
 
     @GetMapping(path = {"/", ""})
-	public String home(Model model, @RequestParam Map<String, Object> map) {
+	public String home(Model model, @RequestParam(required=false,name="areaCode") String areaCode) {
+    	Optional.ofNullable(areaCode).ifPresent(a -> {
+    		model.addAttribute("areaCode",a);
+    	});
+    	//缺少对于四方接口的参数校验
 		model.addAttribute("mapUrl", mapUrl);
         return "waveorder/waveorder_home";
     }

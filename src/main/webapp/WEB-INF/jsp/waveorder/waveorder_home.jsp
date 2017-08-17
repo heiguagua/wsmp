@@ -36,6 +36,7 @@
 
 <body id='waveOrder'>
 	<input style="display: none" id ='mapUrl' value="${mapUrl}" />
+	<input value="${areaCode}" hidden="true" id="areaCode">
 	<!--header-->
 	<div class='header-bar'>
 		<span class='module-name'>电波秩序管理</span>
