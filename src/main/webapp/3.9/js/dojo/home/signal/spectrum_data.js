@@ -126,7 +126,10 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                     formatter:function(param){
                       start_index_temp = param[0].dataIndex;
                       end_index = param[0].dataIndex;
-                      return param[0].name + " : " + param[0].value;
+                      if(param && param[0] && param[0].name && param[0].value) {
+                        return param[0].name + " : " + param[0].value;
+                      }
+                      
                     }
                 },
                 legend : {
