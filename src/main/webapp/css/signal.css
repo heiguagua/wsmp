@@ -352,6 +352,10 @@ td.bs-checkbox{
     background: rgba(239, 239, 239, 0.18);
     }
 .spectrum-table {
-    height: 150px;
+    max-height: 150px;
     overflow: auto;
+}
+ .empty-msg{
+	padding: 20px 0 0 0;
+    text-align: center;
 }

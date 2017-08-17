@@ -68,6 +68,7 @@
 					<div class="data-choose-list" id="spectrum-choose-list">
 						<div class="pull-right"><span id="data-list-close" class="ico-close">&times;</span></div>
 						<table class="table table-striped table-hover spectrum-table" id="spectrum-table">
+							<tr class="empty-msg"><td>未查询到数据！</td></tr>
 						</table>
 						<div class="text-center confirm-wrap"><a class="btn btn-confirm" id="spectrum-confirm">确定</a><a class="btn btn-cancel">取消</a></div>
 					</div>
@@ -102,6 +103,7 @@
 					<div class="data-choose-list" id="IQ-choose-list">
 						<div class="pull-right"><span id="IQ-list-close" class="ico-close">&times;</span></div>
 						<table class="table table-striped table-hover" id="IQ-table">
+							<tr class="empty-msg"><td>未查询到数据！</td></tr>
 						</table>
 						<div class="text-center confirm-wrap"><a class="btn btn-confirm" id="iq-confirm">确定</a><a class="btn btn-cancel">取消</a></div>
 					</div>
@@ -124,6 +126,7 @@
 					<div class="data-choose-list" id="audio-choose-list">
 						<div class="pull-right"><span id="audio-list-close" class="ico-close">&times;</span></div>
 						<table class="table table-striped table-hover" id="audio-table">
+							<tr class="empty-msg"><td>未查询到数据！</td></tr>
 						</table>
 						<div class="text-center confirm-wrap"><a class="btn btn-confirm" id="audio-confirm">确定</a><a class="btn btn-cancel">取消</a></div>
 					</div>
