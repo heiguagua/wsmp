@@ -8,12 +8,14 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
     var spectrum_play_list = [];
     function load_spectrum_data(stationcode,centorfreq,beginTime,endTime) {
 
-        var data = null;
         var url = "data/asiq/spectrum/" + stationcode + "/" + centorfreq + "/" + beginTime + "/" + endTime;
         //var url = "data/asiq/spectrum/52010126/80000000/20170810144216/20170810144216";
         //var url = "assets/json/spectrum-player-list.json";
         ajax.get(url, null, function(result) {
-            data = result;
+            var data = result;
+            if(data && data.length == 0) {
+                data = null;
+            }
             $('#spectrum-table').bootstrapTable({
                 //method : 'get',
                 contentType : "application/x-www-form-urlencoded", //必须要有！！！！

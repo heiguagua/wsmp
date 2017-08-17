@@ -6,13 +6,17 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
         //var url = "data/asiq/iq/52010126/80000000/20170810144216/20170810144216";
         //var url = "assets/json/iq-player-list.json";
         ajax.get(url, null, function(result) {
+            var data = result;
+            if(data && data.length == 0) {
+                data = null;
+            }
             $('#IQ-table').bootstrapTable({
                 method : 'get',
                 contentType : "application/x-www-form-urlencoded", //必须要有！！！！
                 striped : true,
                 pageNumber : 1, //初始化加载第一页，默认第一页
                 pagination : true, //是否分页
-                data : result,
+                data : data,
                 //					url :"assets/json/iq-player-list.json",
                 queryParamsType : 'limit', //查询参数组织方式
                 sidePagination : 'client', //指定服务器端分页
