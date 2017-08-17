@@ -359,3 +359,6 @@ td.bs-checkbox{
 	padding: 20px 0 0 0;
     text-align: center;
 }
+.mark-content textarea{
+	width:100%;
+}
