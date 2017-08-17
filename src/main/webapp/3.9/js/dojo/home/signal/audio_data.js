@@ -153,8 +153,13 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
 
     }
 
+    function destroy(){
+        $('#audio-table').bootstrapTable('destroy');
+    }
+
 	return {
 		init:load_audio_data,
-		play:audio_player
+		play:audio_player,
+        destroy:destroy
 	}
 })

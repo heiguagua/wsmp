@@ -587,13 +587,22 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
         //		});
     }
 
+    function destroy_chart_table(){
+        // 清除图表
+        spectrum_data.destroy();
+        iq_data.destroy();
+        audio_data.destroy();
+        maxlevel_chart.destroy();
+        if(monthChart) {
+            monthChart.clear();
+        }
+    }
+
     function init_select2() {
 
         $('.select2-picker').select2();
         $("#search").keydown(function(e) {
-        	// 清除图表
-        	spectrum_data.destroy();
-        	iq_data.destroy();
+        	destroy_chart_table();
             if (e.keyCode == 13) {
                 var val = $(this).val();
                 var data = {};
@@ -647,9 +656,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 
 
         $(".search-icon").click(function() {
-        	// 清除图表
-        	spectrum_data.destroy();
-        	iq_data.destroy();
+        	destroy_chart_table();
             $("#singal_list").children().remove();
             var val = $(this).val();
             var data = {};
