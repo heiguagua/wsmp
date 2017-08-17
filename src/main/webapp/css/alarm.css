@@ -106,3 +106,6 @@
 .way-single{
 	cursor:pointer;
 }
+.radio+.radio, .checkbox+.checkbox{
+	margin-top:0;
+}
