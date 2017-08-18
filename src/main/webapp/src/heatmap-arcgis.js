@@ -140,6 +140,7 @@ dojo.addOnLoad(function () {
                     else if(this._map.extent.contains(dataPoint)){
                         validPoint = true;
                     }
+                    console.log("validPoint:" + validPoint)
                     if (validPoint) {
                         // attributes
                         attributes = features[i].attributes;

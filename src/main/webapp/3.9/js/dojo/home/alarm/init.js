@@ -3,14 +3,13 @@
  */
 //
 
-define([ "esri/symbols/SimpleFillSymbol", "esri/geometry/Circle", "home/alarm/alarm_manage", "ajax", "dojo/parser", "dojo/request", "esri/dijit/Scalebar"
-        , "esri/symbols/TextSymbol", "esri/geometry/Point", "esri/graphic", "esri/symbols/Font", "home/heatmap/heatmap", "home/heatmap/heatmap-arcgis"],
-    function (SimpleFillSymbol, Circle, alarm_manage, ajax, parser,
-               request, Scalebar, TextSymbol, Point, graphic, Font,Heatmap, HeatmapLayer) {
+define(["home/alarm/alarm_manage", "ajax"],
+    function (alarm_manage, ajax) {
         var testWidget = null;
         dojo.require("esri.map");
-        dojo.require("dijit.dijit");
+        dojo.require("esri.layers.FeatureLayer");
         dojo.require("esri.symbols.SimpleMarkerSymbol");
+
         var heatLayer
         var pSymbol = null;
         var glayer = null;
@@ -18,6 +17,7 @@ define([ "esri/symbols/SimpleFillSymbol", "esri/geometry/Circle", "home/alarm/al
         var map = null;
         //config.defaults.io.corsEnabledServers.push("192.168.13.79:7080");
         function pares() {
+
             $("#submitButton").click(function () {
                 var stationID = $("#stationId").val();
                 var des = $("#des").val();
@@ -36,23 +36,16 @@ define([ "esri/symbols/SimpleFillSymbol", "esri/geometry/Circle", "home/alarm/al
                 station.des = des;
 
                 station.warningFreqID = warningFreqID;
-
                 station.radioStation = {};
-
                 station.radioStation.station = {};
-
                 station.radioStation.station.id = stationID;
 
                 if (typeCode == "1") {
-
                     station.radioStation.station.type = "L_B";
-
                 }
 
                 if (typeCode == "2") {
-
                     station.radioStation.station.type = "N_P";
-
                 }
 
                 station.stationKey = stationID;
@@ -66,10 +59,9 @@ define([ "esri/symbols/SimpleFillSymbol", "esri/geometry/Circle", "home/alarm/al
                 });
             });
 
-            parser.parse();
-
-            dojo.addOnLoad(mapInit());
-
+            //parser.parse();
+            mapInit()
+            // dojo.addOnLoad(());
             closeModal();
         }
 
@@ -221,23 +213,31 @@ define([ "esri/symbols/SimpleFillSymbol", "esri/geometry/Circle", "home/alarm/al
         //"http://127.0.0.1:8080/data/PBS/rest/services/MyPBSService1/MapServer"
         function mapInit() {
 
+            var heatLayer
+            var pSymbol = null;
+            var glayer = null;
+            var mapUtl = $("#mapUrl").val();
+            var map = null;
+
             var url = mapUtl;
-            var agoLayer = new esri.layers.ArcGISTiledMapServiceLayer(url, {
-                id: "街道地图"
-            });
+            var agoLayer = new esri.layers.ArcGISTiledMapServiceLayer(url, {id: "街道地图"});
+            console.log(agoLayer.initialExtent)
             var attr = {
                 "Xcoord": 104.06,
                 "Ycoord": 30.67,
                 "Plant": "Mesa Mint"
             };
 
+            var initExtent = new esri.geometry.Extent({type: "extent", xmin: -180, ymin: -90, xmax: 180, ymax: 90});
+
             console.log(JSON.stringify(agoLayer.initialExtent));
             var initiaEx = agoLayer.initialExtent;
-            map = new  esri.Map("mapDiv", {
+            map = new esri.Map("mapDiv", {
                 //center : [ 104.06, 30.67 ],
                 zoom: 10,
                 sliderStyle: "small"
             });
+
             map.addLayer(agoLayer);
             glayer = new esri.layers.GraphicsLayer();
             pSymbol = new esri.symbols.SimpleMarkerSymbol();
@@ -248,11 +248,11 @@ define([ "esri/symbols/SimpleFillSymbol", "esri/geometry/Circle", "home/alarm/al
 
             dojo.connect(map, 'onLoad', function (theMap) {
 
-                dojo.connect(dijit.byId('map'), 'resize', map, map.resize);
+                dojo.connect(dijit.byId('mapDiv'), 'resize', map, map.resize);
                 // create heat layer
                 heatLayer = new HeatmapLayer({
                     config: {
-                        "useLocalMaximum": true,
+                        "useLocalMaximum": false,
                         "radius": 40,
                         "gradient": {
                             0.45: "rgb(000,000,255)",
@@ -269,10 +269,58 @@ define([ "esri/symbols/SimpleFillSymbol", "esri/geometry/Circle", "home/alarm/al
                 // add heat layer to map
                 map.addLayer(heatLayer);
                 // resize map
-
+                getFeatures();
                 map.resize();
-
             });
+            function lonlat2mercator(lonlat) {
+                var mercator = {x: 0, y: 0};
+                var x = lonlat.x * 20037508.34 / 180;
+                var y = Math.log(Math.tan((90 + lonlat.y) * Math.PI / 360)) / (Math.PI / 180);
+                y = y * 20037508.34 / 180;
+                mercator.x = x;
+                mercator.y = y;
+                return mercator;
+            }
+
+            function getFeatures() {
+                var point = [
+                    {
+                        attributes: {
+                            count: 40
+                        },
+                        geometry: {
+                            spatialReference: {wkid: 4326},
+                            type: "point",
+                            x: 106.711123,
+                            y: 26.5712221
+                        }
+                    },
+                    {
+                        attributes: {
+                            count: 40
+                        },
+                        geometry: {
+                            spatialReference: {wkid: 4326},
+                            type: "point",
+                            x: 106.711123,
+                            y: 26.5712221
+                        }
+                    }
+                ];
+
+                console.log(point.length);
+
+                for (var index = 0; index < point.length; index++) {
+
+                    var mercator = lonlat2mercator(point[index].geometry);
+
+                    point[index].geometry.x = mercator.x;
+                    point[index].geometry.y = mercator.y;
+
+
+                }
+                heatLayer.setData(point);
+            }
 
             var ti = $("#warning_confirm").attr("class");
             signalClick(map, pSymbol, glayer);
