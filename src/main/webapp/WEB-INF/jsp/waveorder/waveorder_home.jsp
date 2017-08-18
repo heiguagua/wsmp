@@ -58,7 +58,8 @@
 		<section class='flex-row'>
 			<div class='box right10'>
 				<p class='table-title'>频段状态</p>
-				<span id="table_radio"></span>
+				<table class="table table-striped text-center" id='table-radio'>
+                </table>
 			</div>
 			<div class='box box-tabs flex-column'>
 				<ul class="nav nav-tabs" id="tabs">
@@ -212,13 +213,23 @@
 					</button>
 					<h4 class="modal-title" id="modalEvaluateLabel">电磁环境评估</h4>
 				</div>
-				<div class="modal-body " style="padding: 0">
+				<div class="modal-body " style="padding:0">
+					<div class="cover-info">电磁覆盖率：<span>90%</span></div>
+					<div class="prev-month arrow-wrap">
+						<div class="arrow-box">
+							<i class="fa fa-chevron-left"></i>
+							<p>上一月</p>
+						</div>
+					</div>
+					<div class="next-month arrow-wrap">
+						<div class="arrow-box">
+							<i class="fa fa-chevron-right"></i>
+							<p>下一月</p>
+						</div>
+					</div>
 					<!--电磁环境评估-->
 					<section class='flex-row'>
 						<div class='box'>
-							<div class='pull-right'>
-								电磁覆盖率:&nbsp; <span class='coverage-number'>90%</span>
-							</div>
 							<div id="mapDiv2"></div>
 						</div>
 					</section>
@@ -257,9 +268,8 @@
 	<script src="3.9/init.js"></script>
 	<script type="text/javascript">
 		require(
-				[ "home/waveorder/WaveorderMapInit", "jquery", "dojo/domReady!","layer" ],
-				function(init) {
-					
+				[ "jquery", "dojo/domReady!","layer" ],
+				function() {
 					require(
 							[ "bootstrap", "bootstrapTable", "select2" ,"datetimepicker"],
 							function() {
@@ -269,9 +279,7 @@
 											require(
 													[ "home/waveorder/waveorder_manage" ],
 													function(wave_order) {
-														var maps = init.init();
-														console.log(maps);
-														wave_order.init(maps);
+														wave_order.init();
 													})
 										})
 							})

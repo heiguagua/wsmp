@@ -1,9 +1,12 @@
 
 define(["ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer", "dojo/request", "esri/layers/GraphicsLayer", "esri/dijit/Scalebar"
-	, "esri/symbols/TextSymbol", "esri/geometry/Point", "esri/graphic", "esri/symbols/Font", "esri/symbols/SimpleMarkerSymbol","esri/symbols/PictureMarkerSymbol"], function(ajax, parser, Map, ArcGISTiledMapServiceLayer, request, GraphicsLayer, Scalebar, TextSymbol, Point, graphic, Font, SimpleMarkerSymbol,PictureMarkerSymbol) {
-	function wo_init(map_arry) {
-		console.log(layer);
-		var AREACODE = null;
+	, "esri/symbols/TextSymbol", "esri/geometry/Point", "esri/graphic", "esri/symbols/Font", "esri/symbols/SimpleMarkerSymbol","esri/symbols/PictureMarkerSymbol"], 
+	function(ajax, parser, Map, ArcGISTiledMapServiceLayer, request, GraphicsLayer, Scalebar, TextSymbol, Point, graphic, Font, SimpleMarkerSymbol,PictureMarkerSymbol) {
+	var MAP1 = null;
+	var AREACODE = null;
+	
+	function wo_init() {
+		
 		//取得用户信息
 		var user = getUser();
 		//得到区域信息
@@ -14,23 +17,17 @@ define(["ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLay
 		var defaultAreaCode = $("#area_select")[0].children[0].value;
 //		$('.select2-picker').val(defaultAreaCode); // Change the value or make some change to the internal state
 //		$('.select2-picker').trigger('change.select2'); //触发事件
-		select2_change(defaultAreaCode,map_arry);
+		select2_change(defaultAreaCode);
 		//获取请求参数areaCode
 		var areaCode = $("#areaCode").value;
 		//有areaCode,直接触发选择事件
 		if(areaCode != null) {
 			$('.select2-picker').val(areaCode); // Change the value or make some change to the internal state
 			$('.select2-picker').trigger('change.select2'); //触发事件
-			select2_change(areaCode,map_arry);
+			select2_change(areaCode);
 		}
 		
-		
-		//监听下拉框点击事件
-		$(".select2-picker").on("select2:select", function(e) {
-			var areaCode = e.target.value;
-			select2_change(areaCode,map_arry);
-		});
-		
+		//时间选择器初始化
 		$.fn.datetimepicker.defaults = {
 				language: 'zh-CN',
 				format: 'yyyy-mm-dd hh:ii:ss',
@@ -38,18 +35,27 @@ define(["ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLay
 				minView:2
 		}	
 		
+		//监听下拉框点击事件
+		$(".select2-picker").on("select2:select", function(e) {
+			var areaCode = e.target.value;
+			select2_change(areaCode);
+		});
 		
+		
+		//切换页面点击事件
 		$("#tabs a").click(function(e) {
 			e.preventDefault();
 			$(this).tab('show');
 
 		});
 		
+		//信号类型切换点击事件
 		$("#redioType").on("click","input",function(e){
 			var monitors = getMonitors(AREACODE);
-			addPoint(map_arry, monitors,e.target.value);
+			addPoint(monitors,e.target.value);
 		});
 		
+		//重点监测点击事件
 		$("#modalConfig").on("shown.bs.modal",function(e){
 			var a = $(e.relatedTarget);
         	var beginFreq = a.data('beginfreq');
@@ -72,6 +78,7 @@ define(["ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLay
     		})
 		});
 		
+		//信号详情 频率链接点击事件
 		$("#table-signal-list").on("click",".centerFreqA",function(e) {
 			var freq = e.target.text;
 			const urlObj = {
@@ -84,6 +91,8 @@ define(["ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLay
 			Binding.openUrl(JSON.stringify(urlObj));
 			
 		})
+		
+		//告警未处理频率链接点击事件
 		$("#table-alarm-undeal").on("click",".centerFreqA",function(e) {
 			var freq = e.target.text;
 			const urlObj = {
@@ -97,6 +106,7 @@ define(["ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLay
 			
 		})
 		
+		//告警处理频率链接点击事件
 		$("#table-alarm-dealed").on("click",".centerFreqA",function(e) {
 			var freq = e.target.text;
 			const urlObj = {
@@ -109,6 +119,7 @@ define(["ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLay
 	        Binding.openUrl(JSON.stringify(urlObj));
 		})
 		
+		//重点监测更新点击事件
 		$("#important_monitor").on("click","#buttonUpdate",function(e) {
 			var str = $("#important-monitor-form").serialize();
 			$.ajax({
@@ -126,6 +137,8 @@ define(["ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLay
 				}
 			})
 		});
+		
+		//重点监测添加点击事件
 		$("#important_monitor").on("click","#buttonInsert",function(e) {
 			var str = $("#important-monitor-form").serialize();
 			$.ajax({
@@ -143,6 +156,8 @@ define(["ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLay
 				}
 			})
 		});
+		
+		//重点监测删除点击事件
 		$("#important_monitor").on("click","#buttonDelete",function(e) {
 			//确实是否删除
 //			layer.confirm('is not?', {icon: 3, title:'提示'}, function(index){
@@ -167,6 +182,7 @@ define(["ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLay
 			})
 		});	
 		
+		//信号统计点击事件
 		$("#modalSignal").on("shown.bs.modal",function(e){
 			var a = $(e.relatedTarget);
         	var beginFreq = a.data('beginfreq');//data()函数里面要取小写
@@ -253,7 +269,9 @@ define(["ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLay
 		});
 	}
 	
-	function select2_change(areaCode,map_arry) {
+	//区域切换
+	function select2_change(areaCode) {
+		
 		AREACODE = areaCode;//更新全局变量
 		var user = getUser();
 		var userID = user.ID;
@@ -263,19 +281,21 @@ define(["ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLay
 		for(var i = 0;i<monitors.length;i++) {
 			monitorsID[i] = monitors[i].Num; 
 		}
-		table_radio_init(true, monitorsID,userID);
+		table_radio_init(true, monitors,userID);
 		table_alarm_undealed(monitorsID,monitors);
 		table_alarm_dealed(monitorsID,monitors);
-		addPoint(map_arry, monitors,0);//默认选中0
+		
 		redioType(monitors);
 	}
 	
+	//取得用户信息
 	function getUser() {
 		var userStr = Binding.getUser();
 		var user = JSON.parse(userStr);
 		return user;
 	}
 	
+	//根据用户取得区域信息
 	function getArea(user) {
 		if(user.AreaType == "Province"){
 			//显示省级选项
@@ -307,13 +327,14 @@ define(["ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLay
 		}
 	}
 	
+	//根据区域码得到监测站信息
 	function getMonitors(areaCode) {
 		var monitorsStr = Binding.getMonitorNodes(Number(areaCode));
 		var monitors = JSON.parse(monitorsStr);
 		return monitors;
 	}
 	
-
+	//根据监测站信息得到信号类型统计
 	function redioType(monitors) {
 		var data = {};
 		data.monitorsNum = [];
@@ -334,7 +355,10 @@ define(["ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLay
 		
 	}
 
-	function addPoint(map_arry, monitors,signalType) {
+	//根据监测站列表，信号类型绘出监测站点
+	function addPoint(monitors,signalType) {
+		var map1 = MAP1;
+		var glayer1 = map1.getLayer('graphicsLayer0');
 		var data = {};
 		data.monitorsNum = [];
 		data.signalType = signalType;
@@ -355,53 +379,72 @@ define(["ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLay
 		});
 		ajax.post("data/waveorder/monitorsPoint", data, function(result) {
 			console.log(result);
-			var glayer = map_arry.glayer1;
-			var map = map_arry.map1;
-			glayer.clear();
+			glayer1.clear();
 			for(var i=0;i<result.length;i++) {
 				for(var j=0;j<monitors.length;j++) {
 					if(result[i].monitorID == monitors[j].Num) {
+						
 						var obj = {};
 						obj.x = monitors[j].Longitude;
 						obj.y = monitors[j].Latitude;
 						obj.count = result[i].count;
 						obj.monitorID = result[i].monitorID;
+						
 						var monitorPoint = new Point(obj);
 						var countPoint = monitorPoint.offset(0.06,0.05);//计数点位于右上角
 						var countSymbol = new TextSymbol(monitorPoint.count).setColor(
 								new esri.Color([ 0xff, 0xff, 0xff])).setAlign(Font.ALIGN_START).setFont(
 										new Font("12pt").setWeight(Font.WEIGHT_BOLD));
+						
 						var countGraphic = new esri.Graphic(countPoint, countSymbol);//计数图
 						var countBackgroundGraphic = new esri.Graphic(countPoint, countBackgroundSymbol);//计数底图
 						var monitorGraphic = new esri.Graphic(monitorPoint, monitorSymbol);//监测站图
-						glayer.add(monitorGraphic);
-						glayer.add(countBackgroundGraphic);
-						glayer.add(countGraphic);
+						glayer1.add(monitorGraphic);
+						glayer1.add(countBackgroundGraphic);
+						glayer1.add(countGraphic);
 						break;
 					}
 					
 				}
 			}
-			map.addLayer(glayer);
+			map1.addLayer(glayer1);
 		});
-
-//		ajax.post("data/waveorder/monitorsPoint", data, function(reslut) {
-//			var glayer = map_arry.glayer2;
-//			var map = map_arry.map2;
-//			glayer.clear();
-//			var p = new Point(reslut);
-//			var textSymbol = new TextSymbol(reslut.count).setColor(
-//				new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
-//				new Font("12pt").setWeight(Font.WEIGHT_BOLD));
-//			var graphic = new esri.Graphic(p, textSymbol);
-//			var textsyboml = new esri.Graphic(p, pSymbol);
-//			glayer.add(textsyboml);
-//			glayer.add(graphic);
-//			map.addLayer(glayer);
-//		});
-
 	}
+	
+	//地图初始化
+	function mapInit() {
 
+				var mapUrl = $("#mapUrl").val();
+				var url = mapUrl;
+				var map1 = new Map("mapDiv1", {
+					// center :[104.06,30.67],
+					zoom : 10
+				});
+
+				var agoLayer1 = new ArcGISTiledMapServiceLayer(url, {
+					id : "街道地图"
+				});
+				var glayer1 = new GraphicsLayer();
+				map1.addLayer(agoLayer1);
+				map1.addLayer(glayer1);
+
+				$('#modalEvaluate').on('shown.bs.modal', function(e) {
+
+					var map2 = new Map("mapDiv2", {
+						// center :[104.06,30.67],
+						zoom : 10
+					});
+					var agoLayer2 = new ArcGISTiledMapServiceLayer(url, {
+						id : "街道地图1"
+					});
+					var glayer2 = new GraphicsLayer();
+					map2.addLayer(agoLayer2);
+					map2.addLayer(glayer2);
+				})
+		return map1;
+    }
+
+	//告警处理页面
 	function table_alarm_dealed(monitorsID,monitors) {
 		$('#table-alarm-dealed').bootstrapTable("destroy");
 		$('#table-alarm-dealed').bootstrapTable({
@@ -465,7 +508,7 @@ define(["ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLay
 		});
 	}
 
-	
+	//告警未处理页面
 	function table_alarm_undealed(monitorsID,monitors) {
 		$('#table-alarm-undeal').bootstrapTable("destroy");
 		var option = {
@@ -531,8 +574,12 @@ define(["ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLay
 		$('#table-alarm-undeal').bootstrapTable(option)
 	}
 
-	function table_radio_init(bool, monitorsID,userID) {
-		$("#table_radio").load("waveorder/frequencyrange", function() {
+	//信号统计表格
+	function table_radio_init(bool, monitors,userID) {
+		var monitorsID = new Array();
+		for(var i = 0;i<monitors.length;i++) {
+			monitorsID[i] = monitors[i].Num; 
+		}
 			if (bool) {
 				$('#table-radio').bootstrapTable({
 					method : 'post',
@@ -555,6 +602,13 @@ define(["ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLay
 					clickToSelect : true, //是否启用点击选中行
 					responseHandler : function(res) {
 						return res;
+					},
+					//必须要在此bootstraptable渲染成功之后才能渲染地图,不然地图会有错误
+					onLoadSuccess:function(){
+						alert(1);
+						MAP1 = mapInit();
+						addPoint(monitors,0);//默认选中0
+						console.log(MAP1);
 					},
 					columns : [ {
 						field : 'redioName',
@@ -666,8 +720,6 @@ define(["ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLay
 					} ]
 				});
 			}
-		})
-
 	}
 
 	return {
