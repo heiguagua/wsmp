@@ -8,7 +8,6 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
     var maxlevel_total_length = 0;     // x轴数据总数
     var drag_flag = false;             // 月占用度是否拖拽
 	function charts_init(reslut) {
-			console.log(reslut);
 			var optionMonth = {
 				color : [ 'rgb(55,165,255)' ],
 				tooltip : {
@@ -92,12 +91,11 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
 					}
 				]
 			};
-			maxlevel_total_length = reslut.max.xAxis.length;
+			maxlevel_total_length = reslut.monthOcc.xAxis.length;
 			monthChart = echarts.init($('#month')[0]);
 			monthChart.setOption(optionMonth);
 
 			monthChart.on('click', function(params) {
-				console.log(params)
 				if(drag_flag){
 	        		drag_flag = false;
 	        		return;
@@ -109,7 +107,6 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
 			})
 			
 			window.onresize = function(){
-				console.log(11);
 				monthChart.clear();
 				monthChart.resize();
 				monthChart.setOption(optionMonth);
@@ -255,7 +252,6 @@ function changeView(time){
 //			level_charts.init(reslut);
 //			
 //			month_charts.init(reslut);
-			console.log(reslut);
 			day_chart.init(reslut);
             day_levelcharts.init(reslut);
 		});
