@@ -104,85 +104,86 @@
     };
     var K = {}, H = p.signal = function (c,
                                          d) {
-        var b = K[c];
-        f(b && b.slice(0), function (c) {
-            c.apply(null, a(d) ? d : [d])
-        })
-    }, ia = p.on = function (a, c) {
-        var d = K[a] || (K[a] = []);
-        d.push(c);
-        return {
-            remove: function () {
-                for (var a = 0; a < d.length; a++)if (d[a] === c) {
-                    d.splice(a, 1);
-                    break
+            var b = K[c];
+            f(b && b.slice(0), function (c) {
+                c.apply(null, a(d) ? d : [d])
+            })
+        }, ia = p.on = function (a, c) {
+            var d = K[a] || (K[a] = []);
+            d.push(c);
+            return {
+                remove: function () {
+                    for (var a = 0; a < d.length; a++)if (d[a] === c) {
+                        d.splice(a, 1);
+                        break
+                    }
                 }
             }
-        }
-    }, V = [], aa = {}, P = [], G = {}, W = p.map = {}, D = [], B = {}, ja = "", N = {}, ca = {}, Y = {}, da = 0, sa = function (a) {
-        var c, d, b, f;
-        for (c in ca)d = ca[c], (b = c.match(/^url\:(.+)/)) ? N["url:" + Na(b[1], a)] = d : "*now" == c ? f = d : "*noref" != c && (b = ka(c, a), N[b.mid] = N["url:" + b.url] = d);
-        f && f(Ca(a));
-        ca = {}
-    }, Oa = function (a) {
-        return a.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g,
-            function (a) {
-                return "\\" + a
+        }, V = [], aa = {}, P = [], G = {}, W = p.map = {}, D = [], B = {}, ja = "", N = {}, ca = {}, Y = {}, da = 0,
+        sa = function (a) {
+            var c, d, b, f;
+            for (c in ca)d = ca[c], (b = c.match(/^url\:(.+)/)) ? N["url:" + Na(b[1], a)] = d : "*now" == c ? f = d : "*noref" != c && (b = ka(c, a), N[b.mid] = N["url:" + b.url] = d);
+            f && f(Ca(a));
+            ca = {}
+        }, Oa = function (a) {
+            return a.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g,
+                function (a) {
+                    return "\\" + a
+                })
+        }, Da = function (a, c) {
+            c.splice(0, c.length);
+            for (var d in a)c.push([d, a[d], RegExp("^" + Oa(d) + "(/|$)"), d.length]);
+            c.sort(function (a, c) {
+                return c[3] - a[3]
+            });
+            return c
+        }, ab = function (a, c) {
+            f(a, function (a) {
+                c.push([h(a[0]) ? RegExp("^" + Oa(a[0]) + "$") : a[0], a[1]])
             })
-    }, Da = function (a, c) {
-        c.splice(0, c.length);
-        for (var d in a)c.push([d, a[d], RegExp("^" + Oa(d) + "(/|$)"), d.length]);
-        c.sort(function (a, c) {
-            return c[3] - a[3]
-        });
-        return c
-    }, ab = function (a, c) {
-        f(a, function (a) {
-            c.push([h(a[0]) ? RegExp("^" + Oa(a[0]) + "$") : a[0], a[1]])
-        })
-    }, Pa = function (a) {
-        var c = a.name;
-        c || (c = a, a = {name: c});
-        a = d({main: "main"}, a);
-        a.location = a.location ? a.location : c;
-        a.packageMap && (W[c] = a.packageMap);
-        a.main.indexOf("./") || (a.main = a.main.substring(2));
-        G[c] = a
-    }, Qa = [], la = function (a, c, b) {
-        for (var g in a) {
-            "waitSeconds" ==
-            g && (p.waitms = 1E3 * (a[g] || 0));
-            "cacheBust" == g && (ja = a[g] ? h(a[g]) ? a[g] : (new Date).getTime() + "" : "");
-            if ("baseUrl" == g || "combo" == g) p[g] = a[g];
-            if ("async" == g) {
-                var t = a[g];
-                p.legacyMode = z = h(t) && /sync|legacyAsync/.test(t) ? t : !t ? "sync" : !1;
-                p.async = !z
+        }, Pa = function (a) {
+            var c = a.name;
+            c || (c = a, a = {name: c});
+            a = d({main: "main"}, a);
+            a.location = a.location ? a.location : c;
+            a.packageMap && (W[c] = a.packageMap);
+            a.main.indexOf("./") || (a.main = a.main.substring(2));
+            G[c] = a
+        }, Qa = [], la = function (a, c, b) {
+            for (var g in a) {
+                "waitSeconds" ==
+                g && (p.waitms = 1E3 * (a[g] || 0));
+                "cacheBust" == g && (ja = a[g] ? h(a[g]) ? a[g] : (new Date).getTime() + "" : "");
+                if ("baseUrl" == g || "combo" == g) p[g] = a[g];
+                if ("async" == g) {
+                    var t = a[g];
+                    p.legacyMode = z = h(t) && /sync|legacyAsync/.test(t) ? t : !t ? "sync" : !1;
+                    p.async = !z
+                }
+                a[g] !== x && (p.rawConfig[g] = a[g], "has" != g && w.add("config-" + g, a[g], 0, c))
             }
-            a[g] !== x && (p.rawConfig[g] = a[g], "has" != g && w.add("config-" + g, a[g], 0, c))
-        }
-        p.baseUrl || (p.baseUrl = "./");
-        /\/$/.test(p.baseUrl) || (p.baseUrl += "/");
-        for (g in a.has)w.add(g, a.has[g], 0, c);
-        f(a.packages, Pa);
-        for (q in a.packagePaths)f(a.packagePaths[q], function (a) {
-            var c = q + "/" + a;
-            h(a) && (a =
-                {name: a});
-            a.location = c;
-            Pa(a)
-        });
-        Da(d(W, a.map), D);
-        f(D, function (a) {
-            a[1] = Da(a[1], []);
-            "*" == a[0] && (D.star = a)
-        });
-        Da(d(aa, a.paths), P);
-        ab(a.aliases, V);
-        if (c) Qa.push({config: a.config}); else for (g in a.config)c = U(g, b), c.config = d(c.config || {}, a.config[g]);
-        a.cache && (sa(), ca = a.cache, a.cache["*noref"] && sa());
-        H("config", [a, p.rawConfig])
-    };
+            p.baseUrl || (p.baseUrl = "./");
+            /\/$/.test(p.baseUrl) || (p.baseUrl += "/");
+            for (g in a.has)w.add(g, a.has[g], 0, c);
+            f(a.packages, Pa);
+            for (q in a.packagePaths)f(a.packagePaths[q], function (a) {
+                var c = q + "/" + a;
+                h(a) && (a =
+                    {name: a});
+                a.location = c;
+                Pa(a)
+            });
+            Da(d(W, a.map), D);
+            f(D, function (a) {
+                a[1] = Da(a[1], []);
+                "*" == a[0] && (D.star = a)
+            });
+            Da(d(aa, a.paths), P);
+            ab(a.aliases, V);
+            if (c) Qa.push({config: a.config}); else for (g in a.config)c = U(g, b), c.config = d(c.config || {}, a.config[g]);
+            a.cache && (sa(), ca = a.cache, a.cache["*noref"] && sa());
+            H("config", [a, p.rawConfig])
+        };
     w("dojo-cdn");
     var ta = s.getElementsByTagName("script");
     e = 0;
@@ -291,18 +292,18 @@
                 return Ta(a, c, G, B, p.baseUrl, D, P, V)
             }, Ua = function (a, c, d) {
             return a.normalize ? a.normalize(c, function (a) {
-                    return Ea(a, d)
-                }) : Ea(c, d)
+                return Ea(a, d)
+            }) : Ea(c, d)
         }, Va = 0, U = function (a, c, d) {
             var b, f;
             (b = a.match(/^(.+?)\!(.*)$/)) ? (f = U(b[1], c, d), "sync" == z && !f.executed && (qa(f), 2 === f.injected && !f.executed && ha(function () {
-                    ga(f)
-                }), f.executed ? za(f) : Q.unshift(f)), 5 === f.executed && !f.load && za(f), f.load ? (b = Ua(f, b[2], c), a = f.mid + "!" + (f.dynamic ? ++Va + "!" : "") + b) : (b = b[2], a = f.mid + "!" + ++Va + "!waitingForPlugin"), a = {
-                    plugin: f,
-                    mid: a,
-                    req: Ca(c),
-                    prid: b
-                }) :
+                ga(f)
+            }), f.executed ? za(f) : Q.unshift(f)), 5 === f.executed && !f.load && za(f), f.load ? (b = Ua(f, b[2], c), a = f.mid + "!" + (f.dynamic ? ++Va + "!" : "") + b) : (b = b[2], a = f.mid + "!" + ++Va + "!waitingForPlugin"), a = {
+                plugin: f,
+                mid: a,
+                req: Ca(c),
+                prid: b
+            }) :
                 a = ka(a, c);
             return B[a.mid] || !d && (B[a.mid] = a)
         }, Ea = p.toAbsMid = function (a, c) {
@@ -322,11 +323,8 @@
             var c = {};
             f(a.loadQ, function (b) {
                 var f = Ua(a, b.prid,
-                    b.req.module), g = a.dynamic ? b.mid.replace(/waitingForPlugin$/, f) : a.mid + "!" + f, f = d(d({}, b), {
-                    mid: g,
-                    prid: f,
-                    injected: 0
-                });
+                    b.req.module), g = a.dynamic ? b.mid.replace(/waitingForPlugin$/, f) : a.mid + "!" + f,
+                    f = d(d({}, b), {mid: g, prid: f, injected: 0});
                 B[g] || Xa(B[g] = f);
                 c[b.mid] = B[g];
                 $(b);
@@ -347,7 +345,8 @@
             });
             a.loadQ && (za(a), gb(a));
             for (e = 0; e < Q.length;)Q[e] === a ? Q.splice(e, 1) : e++;
-            /^require\*/.test(a.mid) && delete B[a.mid]
+            /^require\*/.test(a.mid) &&
+            delete B[a.mid]
         }, hb = [], ga = function (a, d) {
             if (4 === a.executed)return p.trace("loader-circular-dependency", [hb.concat(a.mid).join("-\x3e")]), !a.def || d ? Aa : a.cjs && a.cjs.exports;
             if (!a.executed) {
@@ -410,7 +409,7 @@
         Ia = 1;
         if (w("config-dojo-loader-catches"))try {
             a === Z ? Z.call(null) : p.eval(a, w("dojo-loader-eval-hint-url") ? d.url :
-                    d.mid)
+                d.mid)
         } catch (b) {
             H("error", c("evalModuleThrew", d))
         } else a === Z ? Z.call(null) : p.eval(a, w("dojo-loader-eval-hint-url") ? d.url : d.mid);
@@ -564,7 +563,8 @@
     d(d(p, n.loaderPatch), b.loaderPatch);
     ia("error", function (a) {
         try {
-            if (console.error(a), a instanceof Error) {
+            if (console.error(a), a instanceof
+                Error) {
                 for (var c in a)console.log(c + ":", a[c]);
                 console.log(".")
             }
@@ -582,20 +582,12 @@
         p.boot = Za || $a ? [Za || [], $a] : 0
     }
 })(this.dojoConfig || this.djConfig || this.require || {}, {
-//(location.protocol === 'file:' ? 'http:' : location.protocol) + '//' +
-    baseUrl:  "3.9/js/dojo/dojo",
+    async: 0,
+    baseUrl:  "/radio/app/3.9/js/dojo/dojo",
     hasCache: {
         "config-selectorEngine": "acme", "config-tlmSiblingOfDojo": 1, "dojo-built": 1, "dojo-has-api": 1,
         "dojo-loader": 1, "dojo-undef-api": 0, dom: 1, "extend-esri": 1, "host-browser": 1
     },
-    packages: [{location: "../dojox", name: "dojox"}, {
-        location: "../../dgrid",
-        main: "OnDemandGrid",
-        name: "dgrid"
-    },{location: "../dijit", name: "dijit"}, {location: "../../xstyle", name: "xstyle"}, {
-        location: "../../esri",
-        name: "esri"
-    }, {location: ".", name: "dojo"}, {location: "../../put-selector", main: "put", name: "put-selector"}],
     paths: {
         jquery : "../library/jquery/jquery",
         bootstrap : "../library/bootstrap/js/bootstrap",
@@ -609,20 +601,14 @@
         ajax : "../library/util/ajax",
         layer:"../library/layer/layer"
     },
-    shim : {
-        bootstrap : {deps : ["jquery"]},
-       	bootstrap_table_cn :{deps : ["bootstrapTable"],exports: 'bootstrap_table_cn'}
-//    	'vForm' : [ 'jquery' ],
-//    	'layui' : [ 'jquery'],
-//    	'ztreeJquery' : [ 'jquery' ],
-//    	'ajaxFrom' : [ 'jquery' ],
-//    	"select2" : [ "jquery" ],
-//    	"jscroll" : [ "jquery" ],
-//    	"domReady" : [ "jquery" ],
-//    	"treeView" : ['jquery' ],
-//    	"Validform" : [ "jquery" ],
-//    	"select2Load" : [ "select2" ]
-        }
+    packages: [{location: "../dojox", name: "dojox"}, {
+        location: "../../dgrid",
+        main: "OnDemandGrid",
+        name: "dgrid"
+    }, {location: "../dijit", name: "dijit"}, {location: "../../xstyle", name: "xstyle"}, {
+        location: "../../esri",
+        name: "esri"
+    }, {location: ".", name: "dojo"}, {location: "../../put-selector", main: "put", name: "put-selector"}]
 });
 require({
     cache: {
@@ -712,7 +698,8 @@ require({
                         return this._active ? this._paused ? "paused" : "playing" : "stopped"
                     }, _cycle: function () {
                         if (this._active) {
-                            var a = (new Date).valueOf(), a = 0 === this.duration ? 1 : (a - this._startTime) / this.duration;
+                            var a = (new Date).valueOf(),
+                                a = 0 === this.duration ? 1 : (a - this._startTime) / this.duration;
                             1 <= a && (a = 1);
                             this._percent = a;
                             this.easing && (a = this.easing(a));
@@ -740,18 +727,18 @@ require({
                     }
                 });
                 var v = r("ie") ? function (a) {
-                        var c = a.style;
-                        !c.width.length && "auto" == h.get(a, "width") && (c.width = "auto")
-                    } : function () {
-                    };
+                    var c = a.style;
+                    !c.width.length && "auto" == h.get(a, "width") && (c.width = "auto")
+                } : function () {
+                };
                 f._fade = function (c) {
                     c.node = k.byId(c.node);
                     var d = a({properties: {}}, c);
                     c = d.properties.opacity = {};
                     c.start = !("start" in d) ? function () {
-                            return +h.get(d.node, "opacity") ||
-                                0
-                        } : d.start;
+                        return +h.get(d.node, "opacity") ||
+                            0
+                    } : d.start;
                     c.end = d.end;
                     c = f.animateProperty(d);
                     m.after(c, "beforeBegin", e.partial(v, d.node), !0);
@@ -777,7 +764,8 @@ require({
                     var c = {}, d;
                     for (d in this._properties) {
                         var b = this._properties[d], f = b.start;
-                        f instanceof l ? c[d] = l.blendColors(f, b.end, a, b.tempColor).toCss() : e.isArray(f) || (c[d] = (b.end - f) * a + f + ("opacity" != d ? b.units || "px" : 0))
+                        f instanceof
+                        l ? c[d] = l.blendColors(f, b.end, a, b.tempColor).toCss() : e.isArray(f) || (c[d] = (b.end - f) * a + f + ("opacity" != d ? b.units || "px" : 0))
                     }
                     return c
                 };
@@ -899,7 +887,8 @@ require({
                             if (h)return
                         }
                         a = f.exec(a);
-                        var u = a[1] + "/", t = a[5] || a[4], r = u + t, h = (a = a[5] && a[4]) || b.locale || "", n = r + "/" + h;
+                        var u = a[1] + "/", t = a[5] || a[4], r = u + t, h = (a = a[5] && a[4]) || b.locale || "",
+                            n = r + "/" + h;
                         a = a ? [h] : v(h);
                         var w = a.length, s = function () {
                             --w || g(m.delegate(c[n]))
@@ -908,7 +897,7 @@ require({
                             var b = r + "/" + a;
                             e("dojo-preload-i18n-Api") && A(b);
                             c[b] ? s() : p(d, r,
-                                    u, t, a, s)
+                                u, t, a, s)
                         })
                     };
                 if (e("dojo-unit-tests"))var t = a.unitTests = [];
@@ -950,16 +939,17 @@ require({
                         e();
                         q.forEach(b.config.extraLocale, e)
                     }, A = function () {
-                    }, E = {}, J = new Function("__bundle", "__checkForLegacyModules", "__mid", "__amdValue", "var define \x3d function(mid, factory){define.called \x3d 1; __amdValue.result \x3d factory || mid;},\t   require \x3d function(){define.called \x3d 1;};try{define.called \x3d 0;eval(__bundle);if(define.called\x3d\x3d1)return __amdValue;if((__checkForLegacyModules \x3d __checkForLegacyModules(__mid)))return __checkForLegacyModules;}catch(e){}try{return eval('('+__bundle+')');}catch(e){return e;}"),
+                    }, E = {},
+                    J = new Function("__bundle", "__checkForLegacyModules", "__mid", "__amdValue", "var define \x3d function(mid, factory){define.called \x3d 1; __amdValue.result \x3d factory || mid;},\t   require \x3d function(){define.called \x3d 1;};try{define.called \x3d 0;eval(__bundle);if(define.called\x3d\x3d1)return __amdValue;if((__checkForLegacyModules \x3d __checkForLegacyModules(__mid)))return __checkForLegacyModules;}catch(e){}try{return eval('('+__bundle+')');}catch(e){return e;}"),
                     T = function (a, d, b) {
                         var f = [];
                         q.forEach(a, function (a) {
                             function d(b) {
                                 b = J(b, A, a, E);
                                 b === E ? f.push(c[g] = E.result) : (b instanceof Error && (console.error("failed to evaluate i18n bundle; url\x3d" + g, b), b = {}), f.push(c[g] = /nls\/[^\/]+\/[^\/]+$/.test(g) ? b : {
-                                            root: b,
-                                            _v1x: 1
-                                        }))
+                                    root: b,
+                                    _v1x: 1
+                                }))
                             }
 
                             var g = b.toUrl(a + ".js");
@@ -987,8 +977,8 @@ require({
                     var b;
                     a = g(a, c, d);
                     s(a, !n.isXdUrl(n.toUrl(a + ".js")) ? function (a, c) {
-                            T(a, c, n)
-                        } : n, function (a) {
+                        T(a, c, n)
+                    } : n, function (a) {
                         b = a
                     });
                     return b
@@ -1125,7 +1115,7 @@ require({
                 b.setProp = l.set;
                 b.prop = function (b, a, f) {
                     return 2 == arguments.length ? l["string" == typeof a ?
-                            "get" : "set"](b, a) : l.set(b, a, f)
+                        "get" : "set"](b, a) : l.set(b, a, f)
                 };
                 b.getStyle = e.get;
                 b.setStyle = e.set;
@@ -1166,15 +1156,16 @@ require({
                 k.exit = function () {
                 };
                 "undefined" != typeof console || (console = {});
-                var m = "assert count debug dir dirxml error group groupEnd info profile profileEnd time timeEnd trace warn log".split(" "), h;
+                var m = "assert count debug dir dirxml error group groupEnd info profile profileEnd time timeEnd trace warn log".split(" "),
+                    h;
                 for (q = 0; h = m[q++];)console[h] || function () {
                     var a = h + "";
                     console[a] = "log" in console ? function () {
-                            var b = Array.apply({}, arguments);
-                            b.unshift(a + ":");
-                            console.log(b.join(" "))
-                        } : function () {
-                        };
+                        var b = Array.apply({}, arguments);
+                        b.unshift(a + ":");
+                        console.log(b.join(" "))
+                    } : function () {
+                    };
                     console[a]._fake = !0
                 }();
                 b.add("dojo-debug-messages", !!n.isDebug);
@@ -1336,7 +1327,7 @@ require({
                 function a(a) {
                     return function (c, b, d) {
                         return 2 == arguments.length ? a["string" == typeof b ? "get" :
-                                "set"](c, b) : a.set(c, b, d)
+                            "set"](c, b) : a.set(c, b, d)
                     }
                 }
 
@@ -1355,7 +1346,7 @@ require({
                         }
                         f = typeof a;
                         "string" == f || "number" == f ? (a = m.toDom(a, c && c.ownerDocument), a = 11 == a.nodeType ? q._toArray(a.childNodes) : [a]) : q.isArrayLike(a) ?
-                                q.isArray(a) || (a = q._toArray(a)) : a = [a];
+                            q.isArray(a) || (a = q._toArray(a)) : a = [a];
                         d && (a._runParse = !0);
                         return a
                     },
@@ -1589,9 +1580,11 @@ require({
                 var e = b.has || function () {
                     };
                 if (!e("dojo-has-api")) {
-                    var q = this, l = "undefined" != typeof window && ("undefined" != typeof location && "undefined" != typeof document && window.location == location && window.document == document) && document, m = l && l.createElement("DiV"), r = n.config && n.config() || {}, e = function (b) {
-                        return "function" == typeof r[b] ? r[b] = r[b](q, l, m) : r[b]
-                    };
+                    var q = this,
+                        l = "undefined" != typeof window && ("undefined" != typeof location && "undefined" != typeof document && window.location == location && window.document == document) && document,
+                        m = l && l.createElement("DiV"), r = n.config && n.config() || {}, e = function (b) {
+                            return "function" == typeof r[b] ? r[b] = r[b](q, l, m) : r[b]
+                        };
                     e.cache = r;
                     e.add = function (b, a, f, d) {
                         ("undefined" == typeof r[b] ||
@@ -1657,7 +1650,8 @@ require({
                         if (0 != g)throw"unmatched paren around character " + f.lastIndex + " in: " + a;
                         return [b.trim(a.substring(d, f.lastIndex)) + ";\n", f.lastIndex]
                     }, u = /(\/\*([\s\S]*?)\*\/|\/\/(.*)$)/mg,
-                    p = /(^|\s)dojo\.(loadInit|require|provide|requireLocalization|requireIf|requireAfterIf|platformRequire)\s*\(/mg, v = /(^|\s)(require|define)\s*\(/m, s = function (a, c) {
+                    p = /(^|\s)dojo\.(loadInit|require|provide|requireLocalization|requireIf|requireAfterIf|platformRequire)\s*\(/mg,
+                    v = /(^|\s)(require|define)\s*\(/m, s = function (a, c) {
                         var b, d, f, h = [], e = [];
                         b = [];
                         for (c = c || a.replace(u, function (a) {
@@ -1666,7 +1660,7 @@ require({
                             }); b = p.exec(c);)d = p.lastIndex, f = d - b[0].length, d = g(c, d, f), "loadInit" == b[2] ? h.push(d[0]) : e.push(d[0]), p.lastIndex = d[1];
                         b = h.concat(e);
                         return b.length || !v.test(c) ? [a.replace(/(^|\s)dojo\.loadInit\s*\(/g, "\n0 \x26\x26 dojo.loadInit("),
-                                b.join(""), b] : 0
+                            b.join(""), b] : 0
                     }, t = e.initSyncLoader(d, c, function (a, c) {
                         var b, d, f = [], g = [];
                         if (h.test(c) || !(b = s(c)))return 0;
@@ -1674,7 +1668,9 @@ require({
                         for (var e in M("dojo", a).result.scopeMap)f.push(e), g.push('"' + e + '"');
                         return "// xdomain rewrite of " + a.mid + "\ndefine('" + d + "',{\n\tnames:" + l.stringify(f) + ",\n\tdef:function(" + f.join(",") + "){" + b[1] + "}});\n\ndefine(" + l.stringify(f.concat(["dojo/loadInit!" + d])) + ", function(" + f.join(",") + "){\n" + b[0] + "});"
                     }), w = t.sync, x = t.requested, y = t.arrived, z = t.nonmodule, A = t.executing, E = t.executed,
-                    J = t.syncExecStack, T = t.modules, L = t.execQ, M = t.getModule, R = t.injectModule, C = t.setArrived, F = t.signal, O = t.finishExec, I = t.execModule, K = t.getLegacyMode, H = t.guardCheckComplete, d = t.dojoRequirePlugin;
+                    J = t.syncExecStack, T = t.modules, L = t.execQ, M = t.getModule, R = t.injectModule,
+                    C = t.setArrived, F = t.signal, O = t.finishExec, I = t.execModule, K = t.getLegacyMode,
+                    H = t.guardCheckComplete, d = t.dojoRequirePlugin;
                 b.provide = function (a) {
                     var c = J[0], b = m.mixin(M(k(a), e.module), {executed: A, result: m.getObject(a, !0)});
                     C(b);
@@ -1810,7 +1806,8 @@ require({
                             for (f in b) {
                                 var q;
                                 if (b.hasOwnProperty(f)) {
-                                    if ("number" == typeof f) q = '"' + f + '"'; else if ("string" == typeof f) q = e(f); else continue;
+                                    if ("number" == typeof f) q = '"' + f + '"'; else if ("string" ==
+                                        typeof f) q = e(f); else continue;
                                     d = r(b[f], c, f);
                                     "string" == typeof d && p.push(u + c + q + ":" + g + d)
                                 }
@@ -2003,7 +2000,7 @@ require({
                         V && q("can't build consistent linearization", H);
                         G = r[0];
                         C[0] = G ? G._meta && G === C[C.length - G._meta.bases.length] ? G._meta.bases.length :
-                                1 : 0;
+                            1 : 0;
                         I = C;
                         C = I[0];
                         H = I.length - C;
@@ -2043,7 +2040,8 @@ require({
                     return F
                 }
 
-                var t = e.mixin, w = Object.prototype, x = w.toString, y = new Function, z = 0, A = "constructor", E = b.config.isDebug ? r : l;
+                var t = e.mixin, w = Object.prototype, x = w.toString, y = new Function, z = 0, A = "constructor",
+                    E = b.config.isDebug ? r : l;
                 b.safeMixin = s.safeMixin = function (a, b) {
                     var c, d;
                     for (c in b)if (d = b[c], (d !== w[c] || !(c in w)) && c != A) "[object Function]" == x.call(d) && (d.nom = c), a[c] = d;
@@ -2061,15 +2059,15 @@ require({
                 }
                 var q = {};
                 b("ie") ? q.byId = function (b, e) {
-                        if ("string" != typeof b)return b;
-                        var k = e || n.doc, h = b && k.getElementById(b);
-                        if (h && (h.attributes.id.value == b || h.id == b))return h;
-                        k = k.all[b];
-                        if (!k || k.nodeName) k = [k];
-                        for (var a = 0; h = k[a++];)if (h.attributes && h.attributes.id && h.attributes.id.value == b || h.id == b)return h
-                    } : q.byId = function (b, e) {
-                        return ("string" == typeof b ? (e || n.doc).getElementById(b) : b) || null
-                    };
+                    if ("string" != typeof b)return b;
+                    var k = e || n.doc, h = b && k.getElementById(b);
+                    if (h && (h.attributes.id.value == b || h.id == b))return h;
+                    k = k.all[b];
+                    if (!k || k.nodeName) k = [k];
+                    for (var a = 0; h = k[a++];)if (h.attributes && h.attributes.id && h.attributes.id.value == b || h.id == b)return h
+                } : q.byId = function (b, e) {
+                    return ("string" == typeof b ? (e || n.doc).getElementById(b) : b) || null
+                };
                 q.isDescendant =
                     function (b, e) {
                         try {
@@ -2093,13 +2091,13 @@ require({
                 });
                 var l = b("css-user-select");
                 q.setSelectable = l ? function (b, e) {
-                        q.byId(b).style[l] = e ? "" : "none"
-                    } : function (b, e) {
-                        b = q.byId(b);
-                        var k = b.getElementsByTagName("*"), h = k.length;
-                        if (e)for (b.removeAttribute("unselectable"); h--;)k[h].removeAttribute("unselectable");
-                        else for (b.setAttribute("unselectable", "on"); h--;)k[h].setAttribute("unselectable", "on")
-                    };
+                    q.byId(b).style[l] = e ? "" : "none"
+                } : function (b, e) {
+                    b = q.byId(b);
+                    var k = b.getElementsByTagName("*"), h = k.length;
+                    if (e)for (b.removeAttribute("unselectable"); h--;)k[h].removeAttribute("unselectable");
+                    else for (b.setAttribute("unselectable", "on"); h--;)k[h].setAttribute("unselectable", "on")
+                };
                 return q
             })
         }, "dojo/_base/browser": function () {
@@ -2110,168 +2108,172 @@ require({
         }, "dojo/selector/acme": function () {
             define(["../dom", "../sniff", "../_base/array", "../_base/lang", "../_base/window"], function (b, n, e, q, l) {
                 var m = q.trim, r = e.forEach, k = "BackCompat" ==
-                    l.doc.compatMode, h = !1, a = function () {
-                    return !0
-                }, f = function (a) {
-                    a = 0 <= "\x3e~+".indexOf(a.slice(-1)) ? a + " * " : a + " ";
-                    for (var b = function (b, c) {
-                        return m(a.slice(b, c))
-                    }, c = [], d = -1, f = -1, g = -1, e = -1, p = -1, k = -1, l = -1, u, r = "", q = "", n, t = 0, A = a.length, s = null, v = null, w = function () {
-                        0 <= k && (s.id = b(k, t).replace(/\\/g, ""), k = -1);
-                        if (0 <= l) {
-                            var a = l == t ? null : b(l, t);
-                            s[0 > "\x3e~+".indexOf(a) ? "tag" : "oper"] = a;
-                            l = -1
-                        }
-                        0 <= p && (s.classes.push(b(p + 1, t).replace(/\\/g, "")), p = -1)
-                    }; r = q, q = a.charAt(t), t < A; t++)if ("\\" != r)if (s || (n = t, s = {
-                            query: null, pseudos: [],
-                            attrs: [], classes: [], tag: null, oper: null, id: null, getTag: function () {
-                                return h ? this.otag : this.tag
+                        l.doc.compatMode, h = !1, a = function () {
+                        return !0
+                    }, f = function (a) {
+                        a = 0 <= "\x3e~+".indexOf(a.slice(-1)) ? a + " * " : a + " ";
+                        for (var b = function (b, c) {
+                            return m(a.slice(b, c))
+                        }, c = [], d = -1, f = -1, g = -1, e = -1, p = -1, k = -1, l = -1, u, r = "", q = "", n, t = 0, A = a.length, s = null, v = null, w = function () {
+                            0 <= k && (s.id = b(k, t).replace(/\\/g, ""), k = -1);
+                            if (0 <= l) {
+                                var a = l == t ? null : b(l, t);
+                                s[0 > "\x3e~+".indexOf(a) ? "tag" : "oper"] = a;
+                                l = -1
                             }
-                        }, l = t), u) q == u && (u = null); else if ("'" == q || '"' == q) u = q; else if (0 <= d)if ("]" == q) {
-                        v.attr ? v.matchFor = b(g || d + 1, t) : v.attr = b(d + 1, t);
-                        if ((d = v.matchFor) && ('"' == d.charAt(0) || "'" == d.charAt(0))) v.matchFor = d.slice(1, -1);
-                        v.matchFor && (v.matchFor = v.matchFor.replace(/\\/g, ""));
-                        s.attrs.push(v);
-                        v = null;
-                        d = g = -1
-                    } else"\x3d" == q && (g = 0 <= "|~^$*".indexOf(r) ? r : "", v.type = g + q, v.attr = b(d + 1, t - g.length), g = t + 1); else 0 <= f ? ")" == q && (0 <= e && (v.value =
-                            b(f + 1, t)), e = f = -1) : "#" == q ? (w(), k = t + 1) : "." == q ? (w(), p = t) : ":" == q ? (w(), e = t) : "[" == q ? (w(), d = t, v = {}) : "(" == q ? (0 <= e && (v = {
-                                                name: b(e + 1, t),
-                                                value: null
-                                            }, s.pseudos.push(v)), f = t) : " " == q && r != q && (w(), 0 <= e && s.pseudos.push({name: b(e + 1, t)}), s.loops = s.pseudos.length || s.attrs.length || s.classes.length, s.oquery = s.query = b(n, t), s.otag = s.tag = s.oper ? null : s.tag || "*", s.tag && (s.tag = s.tag.toUpperCase()), c.length && c[c.length - 1].oper && (s.infixOper = c.pop(), s.query = s.infixOper.query + " " + s.query), c.push(s), s = null);
-                    return c
-                }, d = function (a,
-                                 b) {
-                    return !a ? b : !b ? a : function () {
-                                return a.apply(window, arguments) && b.apply(window, arguments)
+                            0 <= p && (s.classes.push(b(p + 1, t).replace(/\\/g, "")), p = -1)
+                        }; r = q, q = a.charAt(t), t < A; t++)if ("\\" != r)if (s || (n = t, s = {
+                                query: null, pseudos: [],
+                                attrs: [], classes: [], tag: null, oper: null, id: null, getTag: function () {
+                                    return h ? this.otag : this.tag
+                                }
+                            }, l = t), u) q == u && (u = null); else if ("'" == q || '"' == q) u = q; else if (0 <= d)if ("]" == q) {
+                            v.attr ? v.matchFor = b(g || d + 1, t) : v.attr = b(d + 1, t);
+                            if ((d = v.matchFor) && ('"' == d.charAt(0) || "'" == d.charAt(0))) v.matchFor = d.slice(1, -1);
+                            v.matchFor && (v.matchFor = v.matchFor.replace(/\\/g, ""));
+                            s.attrs.push(v);
+                            v = null;
+                            d = g = -1
+                        } else"\x3d" == q && (g = 0 <= "|~^$*".indexOf(r) ? r : "", v.type = g + q, v.attr = b(d + 1, t - g.length), g = t + 1); else 0 <= f ? ")" == q && (0 <= e && (v.value =
+                                b(f + 1, t)), e = f = -1) : "#" == q ? (w(), k = t + 1) : "." == q ? (w(), p = t) : ":" == q ? (w(), e = t) : "[" == q ? (w(), d = t, v = {}) : "(" == q ? (0 <= e && (v = {
+                            name: b(e + 1, t),
+                            value: null
+                        }, s.pseudos.push(v)), f = t) : " " == q && r != q && (w(), 0 <= e && s.pseudos.push({name: b(e + 1, t)}), s.loops = s.pseudos.length || s.attrs.length || s.classes.length, s.oquery = s.query = b(n, t), s.otag = s.tag = s.oper ? null : s.tag || "*", s.tag && (s.tag = s.tag.toUpperCase()), c.length && c[c.length - 1].oper && (s.infixOper = c.pop(), s.query = s.infixOper.query + " " + s.query), c.push(s), s = null);
+                        return c
+                    }, d = function (a,
+                                     b) {
+                        return !a ? b : !b ? a : function () {
+                            return a.apply(window, arguments) && b.apply(window, arguments)
+                        }
+                    }, c = function (a, b) {
+                        var c = b || [];
+                        a && c.push(a);
+                        return c
+                    }, g = function (a) {
+                        return 1 == a.nodeType
+                    }, u = function (a, b) {
+                        return !a ? "" : "class" == b ? a.className || "" : "for" == b ? a.htmlFor || "" : "style" == b ? a.style.cssText || "" : (h ? a.getAttribute(b) : a.getAttribute(b, 2)) || ""
+                    }, p = {
+                        "*\x3d": function (a, b) {
+                            return function (c) {
+                                return 0 <= u(c, a).indexOf(b)
                             }
-                }, c = function (a, b) {
-                    var c = b || [];
-                    a && c.push(a);
-                    return c
-                }, g = function (a) {
-                    return 1 == a.nodeType
-                }, u = function (a, b) {
-                    return !a ? "" : "class" == b ? a.className || "" : "for" == b ? a.htmlFor || "" : "style" == b ? a.style.cssText || "" : (h ? a.getAttribute(b) : a.getAttribute(b, 2)) || ""
-                }, p = {
-                    "*\x3d": function (a, b) {
-                        return function (c) {
-                            return 0 <= u(c, a).indexOf(b)
-                        }
-                    }, "^\x3d": function (a, b) {
-                        return function (c) {
-                            return 0 == u(c, a).indexOf(b)
-                        }
-                    }, "$\x3d": function (a, b) {
-                        return function (c) {
-                            c =
-                                " " + u(c, a);
-                            var d = c.lastIndexOf(b);
-                            return -1 < d && d == c.length - b.length
-                        }
-                    }, "~\x3d": function (a, b) {
-                        var c = " " + b + " ";
-                        return function (b) {
-                            return 0 <= (" " + u(b, a) + " ").indexOf(c)
-                        }
-                    }, "|\x3d": function (a, b) {
-                        var c = b + "-";
-                        return function (d) {
-                            d = u(d, a);
-                            return d == b || 0 == d.indexOf(c)
-                        }
-                    }, "\x3d": function (a, b) {
-                        return function (c) {
-                            return u(c, a) == b
-                        }
-                    }
-                }, v = "undefined" == typeof l.doc.firstChild.nextElementSibling, s = !v ? "nextElementSibling" : "nextSibling", t = !v ? "previousElementSibling" : "previousSibling", w = v ? g : a, x = function (a) {
-                    for (; a = a[t];)if (w(a))return !1;
-                    return !0
-                }, y = function (a) {
-                    for (; a = a[s];)if (w(a))return !1;
-                    return !0
-                }, z = function (a) {
-                    var b = a.parentNode, b = 7 != b.nodeType ? b : b.nextSibling, c = 0, d = b.children || b.childNodes, f = a._i || a.getAttribute("_i") || -1, g = b._l || ("undefined" !== typeof b.getAttribute ? b.getAttribute("_l") : -1);
-                    if (!d)return -1;
-                    d = d.length;
-                    if (g == d && 0 <= f && 0 <= g)return f;
-                    n("ie") && "undefined" !== typeof b.setAttribute ? b.setAttribute("_l", d) : b._l = d;
-                    f = -1;
-                    for (b = b.firstElementChild || b.firstChild; b; b = b[s])w(b) && (n("ie") ? b.setAttribute("_i", ++c) : b._i = ++c, a === b &&
-                    (f = c));
-                    return f
-                }, A = function (a) {
-                    return !(z(a) % 2)
-                }, E = function (a) {
-                    return z(a) % 2
-                }, J = {
-                    checked: function (a, b) {
-                        return function (a) {
-                            return !!("checked" in a ? a.checked : a.selected)
-                        }
-                    }, disabled: function (a, b) {
-                        return function (a) {
-                            return a.disabled
-                        }
-                    }, enabled: function (a, b) {
-                        return function (a) {
-                            return !a.disabled
-                        }
-                    }, "first-child": function () {
-                        return x
-                    }, "last-child": function () {
-                        return y
-                    }, "only-child": function (a, b) {
-                        return function (a) {
-                            return x(a) && y(a)
-                        }
-                    }, empty: function (a, b) {
-                        return function (a) {
-                            var b = a.childNodes;
-                            for (a = a.childNodes.length -
-                                1; 0 <= a; a--) {
-                                var c = b[a].nodeType;
-                                if (1 === c || 3 == c)return !1
+                        }, "^\x3d": function (a, b) {
+                            return function (c) {
+                                return 0 == u(c, a).indexOf(b)
                             }
-                            return !0
+                        }, "$\x3d": function (a, b) {
+                            return function (c) {
+                                c =
+                                    " " + u(c, a);
+                                var d = c.lastIndexOf(b);
+                                return -1 < d && d == c.length - b.length
+                            }
+                        }, "~\x3d": function (a, b) {
+                            var c = " " + b + " ";
+                            return function (b) {
+                                return 0 <= (" " + u(b, a) + " ").indexOf(c)
+                            }
+                        }, "|\x3d": function (a, b) {
+                            var c = b + "-";
+                            return function (d) {
+                                d = u(d, a);
+                                return d == b || 0 == d.indexOf(c)
+                            }
+                        }, "\x3d": function (a, b) {
+                            return function (c) {
+                                return u(c, a) == b
+                            }
                         }
-                    }, contains: function (a, b) {
-                        var c = b.charAt(0);
-                        if ('"' == c || "'" == c) b = b.slice(1, -1);
-                        return function (a) {
-                            return 0 <= a.innerHTML.indexOf(b)
+                    }, v = "undefined" == typeof l.doc.firstChild.nextElementSibling,
+                    s = !v ? "nextElementSibling" : "nextSibling",
+                    t = !v ? "previousElementSibling" : "previousSibling", w = v ? g : a, x = function (a) {
+                        for (; a = a[t];)if (w(a))return !1;
+                        return !0
+                    }, y = function (a) {
+                        for (; a = a[s];)if (w(a))return !1;
+                        return !0
+                    }, z = function (a) {
+                        var b = a.parentNode, b = 7 != b.nodeType ? b : b.nextSibling, c = 0,
+                            d = b.children || b.childNodes, f = a._i || a.getAttribute("_i") || -1,
+                            g = b._l || ("undefined" !== typeof b.getAttribute ? b.getAttribute("_l") : -1);
+                        if (!d)return -1;
+                        d = d.length;
+                        if (g == d && 0 <= f && 0 <= g)return f;
+                        n("ie") && "undefined" !== typeof b.setAttribute ? b.setAttribute("_l", d) : b._l = d;
+                        f = -1;
+                        for (b = b.firstElementChild || b.firstChild; b; b = b[s])w(b) && (n("ie") ? b.setAttribute("_i", ++c) : b._i = ++c, a === b &&
+                        (f = c));
+                        return f
+                    }, A = function (a) {
+                        return !(z(a) % 2)
+                    }, E = function (a) {
+                        return z(a) % 2
+                    }, J = {
+                        checked: function (a, b) {
+                            return function (a) {
+                                return !!("checked" in a ? a.checked : a.selected)
+                            }
+                        }, disabled: function (a, b) {
+                            return function (a) {
+                                return a.disabled
+                            }
+                        }, enabled: function (a, b) {
+                            return function (a) {
+                                return !a.disabled
+                            }
+                        }, "first-child": function () {
+                            return x
+                        }, "last-child": function () {
+                            return y
+                        }, "only-child": function (a, b) {
+                            return function (a) {
+                                return x(a) && y(a)
+                            }
+                        }, empty: function (a, b) {
+                            return function (a) {
+                                var b = a.childNodes;
+                                for (a = a.childNodes.length -
+                                    1; 0 <= a; a--) {
+                                    var c = b[a].nodeType;
+                                    if (1 === c || 3 == c)return !1
+                                }
+                                return !0
+                            }
+                        }, contains: function (a, b) {
+                            var c = b.charAt(0);
+                            if ('"' == c || "'" == c) b = b.slice(1, -1);
+                            return function (a) {
+                                return 0 <= a.innerHTML.indexOf(b)
+                            }
+                        }, not: function (a, b) {
+                            var c = f(b)[0], d = {el: 1};
+                            "*" != c.tag && (d.tag = 1);
+                            c.classes.length || (d.classes = 1);
+                            var g = L(c, d);
+                            return function (a) {
+                                return !g(a)
+                            }
+                        }, "nth-child": function (a, b) {
+                            var c = parseInt;
+                            if ("odd" == b)return E;
+                            if ("even" == b)return A;
+                            if (-1 != b.indexOf("n")) {
+                                var d = b.split("n", 2), f = d[0] ? "-" == d[0] ? -1 : c(d[0]) : 1, g = d[1] ?
+                                    c(d[1]) : 0, e = 0, h = -1;
+                                0 < f ? 0 > g ? g = g % f && f + g % f : 0 < g && (g >= f && (e = g - g % f), g %= f) : 0 > f && (f *= -1, 0 < g && (h = g, g %= f));
+                                if (0 < f)return function (a) {
+                                    a = z(a);
+                                    return a >= e && (0 > h || a <= h) && a % f == g
+                                };
+                                b = g
+                            }
+                            var p = c(b);
+                            return function (a) {
+                                return z(a) == p
+                            }
                         }
-                    }, not: function (a, b) {
-                        var c = f(b)[0], d = {el: 1};
-                        "*" != c.tag && (d.tag = 1);
-                        c.classes.length || (d.classes = 1);
-                        var g = L(c, d);
-                        return function (a) {
-                            return !g(a)
-                        }
-                    }, "nth-child": function (a, b) {
-                        var c = parseInt;
-                        if ("odd" == b)return E;
-                        if ("even" == b)return A;
-                        if (-1 != b.indexOf("n")) {
-                            var d = b.split("n", 2), f = d[0] ? "-" == d[0] ? -1 : c(d[0]) : 1, g = d[1] ?
-                                c(d[1]) : 0, e = 0, h = -1;
-                            0 < f ? 0 > g ? g = g % f && f + g % f : 0 < g && (g >= f && (e = g - g % f), g %= f) : 0 > f && (f *= -1, 0 < g && (h = g, g %= f));
-                            if (0 < f)return function (a) {
-                                a = z(a);
-                                return a >= e && (0 > h || a <= h) && a % f == g
-                            };
-                            b = g
-                        }
-                        var p = c(b);
-                        return function (a) {
-                            return z(a) == p
-                        }
-                    }
-                }, T = 9 > n("ie") || 9 == n("ie") && n("quirks") ? function (a) {
+                    }, T = 9 > n("ie") || 9 == n("ie") && n("quirks") ? function (a) {
                         var b = a.toLowerCase();
                         "class" == b && (a = "className");
                         return function (c) {
@@ -2282,85 +2284,85 @@ require({
                             return b && b.getAttribute && b.hasAttribute(a)
                         }
                     }, L = function (b, c) {
-                    if (!b)return a;
-                    c = c || {};
-                    var f = null;
-                    "el" in c || (f = d(f, g));
-                    "tag" in c || "*" != b.tag && (f = d(f, function (a) {
-                        return a && (h ? a.tagName : a.tagName.toUpperCase()) == b.getTag()
-                    }));
-                    "classes" in c || r(b.classes, function (a, b, c) {
-                        var g = RegExp("(?:^|\\s)" + a + "(?:\\s|$)");
-                        f = d(f, function (a) {
-                            return g.test(a.className)
-                        });
-                        f.count = b
-                    });
-                    "pseudos" in c || r(b.pseudos, function (a) {
-                        var b = a.name;
-                        J[b] && (f = d(f, J[b](b, a.value)))
-                    });
-                    "attrs" in c || r(b.attrs, function (a) {
-                        var b, c = a.attr;
-                        a.type && p[a.type] ? b = p[a.type](c, a.matchFor) : c.length && (b = T(c));
-                        b && (f = d(f, b))
-                    });
-                    "id" in c || b.id && (f =
-                        d(f, function (a) {
-                            return !!a && a.id == b.id
+                        if (!b)return a;
+                        c = c || {};
+                        var f = null;
+                        "el" in c || (f = d(f, g));
+                        "tag" in c || "*" != b.tag && (f = d(f, function (a) {
+                            return a && (h ? a.tagName : a.tagName.toUpperCase()) == b.getTag()
                         }));
-                    f || "default" in c || (f = a);
-                    return f
-                }, M = function (a) {
-                    return function (b, c, d) {
-                        for (; b = b[s];)if (!v || g(b)) {
-                            (!d || N(b, d)) && a(b) && c.push(b);
-                            break
-                        }
-                        return c
-                    }
-                }, R = function (a) {
-                    return function (b, c, d) {
-                        for (b = b[s]; b;) {
-                            if (w(b)) {
-                                if (d && !N(b, d))break;
-                                a(b) && c.push(b)
+                        "classes" in c || r(b.classes, function (a, b, c) {
+                            var g = RegExp("(?:^|\\s)" + a + "(?:\\s|$)");
+                            f = d(f, function (a) {
+                                return g.test(a.className)
+                            });
+                            f.count = b
+                        });
+                        "pseudos" in c || r(b.pseudos, function (a) {
+                            var b = a.name;
+                            J[b] && (f = d(f, J[b](b, a.value)))
+                        });
+                        "attrs" in c || r(b.attrs, function (a) {
+                            var b, c = a.attr;
+                            a.type && p[a.type] ? b = p[a.type](c, a.matchFor) : c.length && (b = T(c));
+                            b && (f = d(f, b))
+                        });
+                        "id" in c || b.id && (f =
+                            d(f, function (a) {
+                                return !!a && a.id == b.id
+                            }));
+                        f || "default" in c || (f = a);
+                        return f
+                    }, M = function (a) {
+                        return function (b, c, d) {
+                            for (; b = b[s];)if (!v || g(b)) {
+                                (!d || N(b, d)) && a(b) && c.push(b);
+                                break
                             }
-                            b = b[s]
+                            return c
                         }
-                        return c
-                    }
-                }, C = function (b) {
-                    b = b || a;
-                    return function (a, c, d) {
-                        for (var f = 0, g = a.children || a.childNodes; a = g[f++];)w(a) && ((!d || N(a, d)) && b(a, f)) && c.push(a);
-                        return c
-                    }
-                }, F = {}, O = function (d) {
-                    var f = F[d.query];
-                    if (f)return f;
-                    var g = d.infixOper,
-                        g = g ? g.oper : "", e = L(d, {el: 1}), h = "*" == d.tag, p = l.doc.getElementsByClassName;
-                    if (g) p = {el: 1}, h && (p.tag = 1), e = L(d, p), "+" == g ? f = M(e) : "~" == g ? f = R(e) : "\x3e" == g && (f = C(e)); else if (d.id) e = !d.loops && h ? a : L(d, {
+                    }, R = function (a) {
+                        return function (b, c, d) {
+                            for (b = b[s]; b;) {
+                                if (w(b)) {
+                                    if (d && !N(b, d))break;
+                                    a(b) && c.push(b)
+                                }
+                                b = b[s]
+                            }
+                            return c
+                        }
+                    }, C = function (b) {
+                        b = b || a;
+                        return function (a, c, d) {
+                            for (var f = 0, g = a.children || a.childNodes; a = g[f++];)w(a) && ((!d || N(a, d)) && b(a, f)) && c.push(a);
+                            return c
+                        }
+                    }, F = {}, O = function (d) {
+                        var f = F[d.query];
+                        if (f)return f;
+                        var g = d.infixOper,
+                            g = g ? g.oper : "", e = L(d, {el: 1}), h = "*" == d.tag, p = l.doc.getElementsByClassName;
+                        if (g) p = {el: 1}, h && (p.tag = 1), e = L(d, p), "+" == g ? f = M(e) : "~" == g ? f = R(e) : "\x3e" == g && (f = C(e)); else if (d.id) e = !d.loops && h ? a : L(d, {
                             el: 1,
                             id: 1
                         }), f = function (a, f) {
-                        var g = b.byId(d.id, a.ownerDocument || a);
-                        if (g && e(g)) {
-                            if (9 == a.nodeType)return c(g, f);
-                            for (var h = g.parentNode; h && h != a;)h = h.parentNode;
-                            if (h)return c(g, f)
-                        }
-                    }; else if (p && /\{\s*\[native code\]\s*\}/.test(String(p)) && d.classes.length && !k)var e = L(d, {
-                        el: 1,
-                        classes: 1,
-                        id: 1
-                    }), m = d.classes.join(" "), f =
-                        function (a, b, d) {
-                            b = c(0, b);
-                            for (var f, g = 0, h = a.getElementsByClassName(m); f = h[g++];)e(f, a) && N(f, d) && b.push(f);
-                            return b
-                        }; else!h && !d.loops ? f = function (a, b, f) {
+                            var g = b.byId(d.id, a.ownerDocument || a);
+                            if (g && e(g)) {
+                                if (9 == a.nodeType)return c(g, f);
+                                for (var h = g.parentNode; h && h != a;)h = h.parentNode;
+                                if (h)return c(g, f)
+                            }
+                        }; else if (p && /\{\s*\[native code\]\s*\}/.test(String(p)) && d.classes.length && !k)var e = L(d, {
+                            el: 1,
+                            classes: 1,
+                            id: 1
+                        }), m = d.classes.join(" "), f =
+                            function (a, b, d) {
+                                b = c(0, b);
+                                for (var f, g = 0, h = a.getElementsByClassName(m); f = h[g++];)e(f, a) && N(f, d) && b.push(f);
+                                return b
+                            }; else!h && !d.loops ? f = function (a, b, f) {
                             b = c(0, b);
                             for (var g = 0, e = d.getTag(), e = e ? a.getElementsByTagName(e) : []; a = e[g++];)N(a, f) && b.push(a);
                             return b
@@ -2369,96 +2371,97 @@ require({
                             for (var g, h = 0, p = (g = d.getTag()) ? a.getElementsByTagName(g) : []; g = p[h++];)e(g, a) && N(g, f) && b.push(g);
                             return b
                         });
-                    return F[d.query] = f
-                }, I = {}, K = {}, H = function (a) {
-                    var b = f(m(a));
-                    if (1 == b.length) {
-                        var d = O(b[0]);
-                        return function (a) {
-                            if (a = d(a, [])) a.nozip = !0;
-                            return a
-                        }
-                    }
-                    return function (a) {
-                        a = c(a);
-                        for (var d, f, g = b.length, e, h, p = 0; p < g; p++) {
-                            h = [];
-                            d = b[p];
-                            f = a.length - 1;
-                            0 < f && (e = {}, h.nozip = !0);
-                            f = O(d);
-                            for (var k = 0; d = a[k]; k++)f(d, h, e);
-                            if (!h.length)break;
-                            a = h
-                        }
-                        return h
-                    }
-                }, ia = n("ie") ? "commentStrip" : "nozip", V = !!l.doc.querySelectorAll, aa = /\\[>~+]|n\+\d|([^ \\])?([>~+])([^ =])?/g, P = function (a, b, c, d) {
-                    return c ? (b ? b + " " : "") + c + (d ? " " + d : "") : a
-                }, G = /([^[]*)([^\]]*])?/g, W = function (a, b, c) {
-                    return b.replace(aa, P) + (c || "")
-                }, D = function (a, b) {
-                    a = a.replace(G,
-                        W);
-                    if (V) {
-                        var c = K[a];
-                        if (c && !b)return c
-                    }
-                    if (c = I[a])return c;
-                    var c = a.charAt(0), d = -1 == a.indexOf(" ");
-                    0 <= a.indexOf("#") && d && (b = !0);
-                    if (V && !b && -1 == "\x3e~+".indexOf(c) && (!n("ie") || -1 == a.indexOf(":")) && !(k && 0 <= a.indexOf(".")) && -1 == a.indexOf(":contains") && -1 == a.indexOf(":checked") && -1 == a.indexOf("|\x3d")) {
-                        var f = 0 <= "\x3e~+".indexOf(a.charAt(a.length - 1)) ? a + " *" : a;
-                        return K[a] = function (b) {
-                            try {
-                                if (!(9 == b.nodeType || d))throw"";
-                                var c = b.querySelectorAll(f);
-                                c[ia] = !0;
-                                return c
-                            } catch (g) {
-                                return D(a, !0)(b)
+                        return F[d.query] = f
+                    }, I = {}, K = {}, H = function (a) {
+                        var b = f(m(a));
+                        if (1 == b.length) {
+                            var d = O(b[0]);
+                            return function (a) {
+                                if (a = d(a, [])) a.nozip = !0;
+                                return a
                             }
                         }
-                    }
-                    var g = a.match(/([^\s,](?:"(?:\\.|[^"])+"|'(?:\\.|[^'])+'|[^,])*)/g);
-                    return I[a] = 2 > g.length ? H(a) : function (a) {
+                        return function (a) {
+                            a = c(a);
+                            for (var d, f, g = b.length, e, h, p = 0; p < g; p++) {
+                                h = [];
+                                d = b[p];
+                                f = a.length - 1;
+                                0 < f && (e = {}, h.nozip = !0);
+                                f = O(d);
+                                for (var k = 0; d = a[k]; k++)f(d, h, e);
+                                if (!h.length)break;
+                                a = h
+                            }
+                            return h
+                        }
+                    }, ia = n("ie") ? "commentStrip" : "nozip", V = !!l.doc.querySelectorAll,
+                    aa = /\\[>~+]|n\+\d|([^ \\])?([>~+])([^ =])?/g, P = function (a, b, c, d) {
+                        return c ? (b ? b + " " : "") + c + (d ? " " + d : "") : a
+                    }, G = /([^[]*)([^\]]*])?/g, W = function (a, b, c) {
+                        return b.replace(aa, P) + (c || "")
+                    }, D = function (a, b) {
+                        a = a.replace(G,
+                            W);
+                        if (V) {
+                            var c = K[a];
+                            if (c && !b)return c
+                        }
+                        if (c = I[a])return c;
+                        var c = a.charAt(0), d = -1 == a.indexOf(" ");
+                        0 <= a.indexOf("#") && d && (b = !0);
+                        if (V && !b && -1 == "\x3e~+".indexOf(c) && (!n("ie") || -1 == a.indexOf(":")) && !(k && 0 <= a.indexOf(".")) && -1 == a.indexOf(":contains") && -1 == a.indexOf(":checked") && -1 == a.indexOf("|\x3d")) {
+                            var f = 0 <= "\x3e~+".indexOf(a.charAt(a.length - 1)) ? a + " *" : a;
+                            return K[a] = function (b) {
+                                try {
+                                    if (!(9 == b.nodeType || d))throw"";
+                                    var c = b.querySelectorAll(f);
+                                    c[ia] = !0;
+                                    return c
+                                } catch (g) {
+                                    return D(a, !0)(b)
+                                }
+                            }
+                        }
+                        var g = a.match(/([^\s,](?:"(?:\\.|[^"])+"|'(?:\\.|[^'])+'|[^,])*)/g);
+                        return I[a] = 2 > g.length ? H(a) : function (a) {
                             for (var b = 0, c = [], d; d = g[b++];)c = c.concat(H(d)(a));
                             return c
                         }
-                }, B = 0, ja = n("ie") ? function (a) {
+                    }, B = 0, ja = n("ie") ? function (a) {
                         return h ? a.getAttribute("_uid") || a.setAttribute("_uid", ++B) || B : a.uniqueID
                     } : function (a) {
                         return a._uid || (a._uid = ++B)
                     }, N = function (a, b) {
-                    if (!b)return 1;
-                    var c = ja(a);
-                    return !b[c] ? b[c] = 1 : 0
-                }, ca = function (a) {
-                    if (a && a.nozip)return a;
-                    if (!a || !a.length)return [];
-                    if (2 > a.length)return [a[0]];
-                    var b = [];
-                    B++;
-                    var c, d;
-                    if (n("ie") && h) {
-                        var f = B + "";
-                        for (c = 0; c < a.length; c++)if ((d = a[c]) && d.getAttribute("_zipIdx") !=
-                            f) b.push(d), d.setAttribute("_zipIdx", f)
-                    } else if (n("ie") && a.commentStrip)try {
-                        for (c = 0; c < a.length; c++)(d = a[c]) && g(d) && b.push(d)
-                    } catch (e) {
-                    } else for (c = 0; c < a.length; c++)if ((d = a[c]) && d._zipIdx != B) b.push(d), d._zipIdx = B;
-                    return b
-                }, Y = function (a, b) {
-                    b = b || l.doc;
-                    h = "div" === (b.ownerDocument || b).createElement("div").tagName;
-                    var c = D(a)(b);
-                    return c && c.nozip ? c : ca(c)
-                };
+                        if (!b)return 1;
+                        var c = ja(a);
+                        return !b[c] ? b[c] = 1 : 0
+                    }, ca = function (a) {
+                        if (a && a.nozip)return a;
+                        if (!a || !a.length)return [];
+                        if (2 > a.length)return [a[0]];
+                        var b = [];
+                        B++;
+                        var c, d;
+                        if (n("ie") && h) {
+                            var f = B + "";
+                            for (c = 0; c < a.length; c++)if ((d = a[c]) && d.getAttribute("_zipIdx") !=
+                                f) b.push(d), d.setAttribute("_zipIdx", f)
+                        } else if (n("ie") && a.commentStrip)try {
+                            for (c = 0; c < a.length; c++)(d = a[c]) && g(d) && b.push(d)
+                        } catch (e) {
+                        } else for (c = 0; c < a.length; c++)if ((d = a[c]) && d._zipIdx != B) b.push(d), d._zipIdx = B;
+                        return b
+                    }, Y = function (a, b) {
+                        b = b || l.doc;
+                        h = "div" === (b.ownerDocument || b).createElement("div").tagName;
+                        var c = D(a)(b);
+                        return c && c.nozip ? c : ca(c)
+                    };
                 Y.filter = function (a, c, d) {
                     for (var g = [], h = f(c), h = 1 == h.length && !/[^\w#\.]/.test(c) ? L(h[0]) : function (a) {
-                            return -1 != e.indexOf(Y(c, b.byId(d)), a)
-                        }, p = 0, k; k = a[p]; p++)h(k) &&
+                        return -1 != e.indexOf(Y(c, b.byId(d)), a)
+                    }, p = 0, k; k = a[p]; p++)h(k) &&
                     g.push(k);
                     return g
                 };
@@ -2491,38 +2494,38 @@ require({
 
                 var q, l = {};
                 q = b("webkit") ? function (a) {
-                        var b;
-                        if (1 == a.nodeType) {
-                            var d = a.ownerDocument.defaultView;
-                            b = d.getComputedStyle(a, null);
-                            !b && a.style && (a.style.display = "", b = d.getComputedStyle(a, null))
-                        }
-                        return b || {}
-                    } : b("ie") && (9 > b("ie") || b("quirks")) ? function (a) {
-                            return 1 == a.nodeType && a.currentStyle ? a.currentStyle : {}
-                        } : function (a) {
-                            return 1 == a.nodeType ? a.ownerDocument.defaultView.getComputedStyle(a, null) : {}
-                        };
+                    var b;
+                    if (1 == a.nodeType) {
+                        var d = a.ownerDocument.defaultView;
+                        b = d.getComputedStyle(a, null);
+                        !b && a.style && (a.style.display = "", b = d.getComputedStyle(a, null))
+                    }
+                    return b || {}
+                } : b("ie") && (9 > b("ie") || b("quirks")) ? function (a) {
+                    return 1 == a.nodeType && a.currentStyle ? a.currentStyle : {}
+                } : function (a) {
+                    return 1 == a.nodeType ? a.ownerDocument.defaultView.getComputedStyle(a, null) : {}
+                };
                 l.getComputedStyle = q;
                 var m;
                 m = b("ie") ? function (a, b) {
-                        if (!b)return 0;
-                        if ("medium" == b)return 4;
-                        if (b.slice &&
-                            "px" == b.slice(-2))return parseFloat(b);
-                        var d = a.style, f = a.runtimeStyle, e = d.left, h = f.left;
-                        f.left = a.currentStyle.left;
-                        try {
-                            d.left = b, b = d.pixelLeft
-                        } catch (k) {
-                            b = 0
-                        }
-                        d.left = e;
-                        f.left = h;
-                        return b
-                    } : function (a, b) {
-                        return parseFloat(b) || 0
-                    };
+                    if (!b)return 0;
+                    if ("medium" == b)return 4;
+                    if (b.slice &&
+                        "px" == b.slice(-2))return parseFloat(b);
+                    var d = a.style, f = a.runtimeStyle, e = d.left, h = f.left;
+                    f.left = a.currentStyle.left;
+                    try {
+                        d.left = b, b = d.pixelLeft
+                    } catch (k) {
+                        b = 0
+                    }
+                    d.left = e;
+                    f.left = h;
+                    return b
+                } : function (a, b) {
+                    return parseFloat(b) || 0
+                };
                 l.toPixelValue = m;
                 var r = function (a, b) {
                         try {
@@ -2531,23 +2534,23 @@ require({
                             return b ? {} : null
                         }
                     }, k = 9 > b("ie") || 10 > b("ie") && b("quirks") ? function (a) {
-                            try {
-                                return r(a).Opacity / 100
-                            } catch (b) {
-                                return 1
-                            }
-                        } : function (a) {
-                            return q(a).opacity
-                        }, h = 9 > b("ie") || 10 > b("ie") &&
+                        try {
+                            return r(a).Opacity / 100
+                        } catch (b) {
+                            return 1
+                        }
+                    } : function (a) {
+                        return q(a).opacity
+                    }, h = 9 > b("ie") || 10 > b("ie") &&
                     b("quirks") ? function (a, b) {
-                            "" === b && (b = 1);
-                            var d = 100 * b;
-                            1 === b ? (a.style.zoom = "", r(a) && (a.style.filter = a.style.filter.replace(/\s*progid:DXImageTransform.Microsoft.Alpha\([^\)]+?\)/i, ""))) : (a.style.zoom = 1, r(a) ? r(a, 1).Opacity = d : a.style.filter += " progid:DXImageTransform.Microsoft.Alpha(Opacity\x3d" + d + ")", r(a, 1).Enabled = !0);
-                            if ("tr" == a.tagName.toLowerCase())for (d = a.firstChild; d; d = d.nextSibling)"td" == d.tagName.toLowerCase() && h(d, b);
-                            return b
-                        } : function (a, b) {
-                            return a.style.opacity = b
-                        }, a = {left: !0, top: !0}, f = /margin|padding|width|height|max|min|offset/,
+                        "" === b && (b = 1);
+                        var d = 100 * b;
+                        1 === b ? (a.style.zoom = "", r(a) && (a.style.filter = a.style.filter.replace(/\s*progid:DXImageTransform.Microsoft.Alpha\([^\)]+?\)/i, ""))) : (a.style.zoom = 1, r(a) ? r(a, 1).Opacity = d : a.style.filter += " progid:DXImageTransform.Microsoft.Alpha(Opacity\x3d" + d + ")", r(a, 1).Enabled = !0);
+                        if ("tr" == a.tagName.toLowerCase())for (d = a.firstChild; d; d = d.nextSibling)"td" == d.tagName.toLowerCase() && h(d, b);
+                        return b
+                    } : function (a, b) {
+                        return a.style.opacity = b
+                    }, a = {left: !0, top: !0}, f = /margin|padding|width|height|max|min|offset/,
                     d = {cssFloat: 1, styleFloat: 1, "float": 1};
                 l.get = function (a, b) {
                     var f = n.byId(a), h = arguments.length;
@@ -2590,13 +2593,17 @@ require({
                     "border-box" : "content-box");
                 k.getPadExtents = function (a, b) {
                     a = e.byId(a);
-                    var d = b || q.getComputedStyle(a), c = q.toPixelValue, g = c(a, d.paddingLeft), h = c(a, d.paddingTop), p = c(a, d.paddingRight), d = c(a, d.paddingBottom);
+                    var d = b || q.getComputedStyle(a), c = q.toPixelValue, g = c(a, d.paddingLeft),
+                        h = c(a, d.paddingTop), p = c(a, d.paddingRight), d = c(a, d.paddingBottom);
                     return {l: g, t: h, r: p, b: d, w: g + p, h: h + d}
                 };
                 k.getBorderExtents = function (a, b) {
                     a = e.byId(a);
-                    var d = q.toPixelValue, c = b || q.getComputedStyle(a), g = "none" != c.borderLeftStyle ? d(a, c.borderLeftWidth) : 0, h = "none" != c.borderTopStyle ? d(a, c.borderTopWidth) : 0, p = "none" != c.borderRightStyle ? d(a, c.borderRightWidth) : 0, d = "none" !=
-                    c.borderBottomStyle ? d(a, c.borderBottomWidth) : 0;
+                    var d = q.toPixelValue, c = b || q.getComputedStyle(a),
+                        g = "none" != c.borderLeftStyle ? d(a, c.borderLeftWidth) : 0,
+                        h = "none" != c.borderTopStyle ? d(a, c.borderTopWidth) : 0,
+                        p = "none" != c.borderRightStyle ? d(a, c.borderRightWidth) : 0, d = "none" !=
+                        c.borderBottomStyle ? d(a, c.borderBottomWidth) : 0;
                     return {l: g, t: h, r: p, b: d, w: g + p, h: h + d}
                 };
                 k.getPadBorderExtents = function (a, b) {
@@ -2606,13 +2613,15 @@ require({
                 };
                 k.getMarginExtents = function (a, b) {
                     a = e.byId(a);
-                    var d = b || q.getComputedStyle(a), c = q.toPixelValue, g = c(a, d.marginLeft), h = c(a, d.marginTop), p = c(a, d.marginRight), d = c(a, d.marginBottom);
+                    var d = b || q.getComputedStyle(a), c = q.toPixelValue, g = c(a, d.marginLeft),
+                        h = c(a, d.marginTop), p = c(a, d.marginRight), d = c(a, d.marginBottom);
                     return {l: g, t: h, r: p, b: d, w: g + p, h: h + d}
                 };
                 k.getMarginBox =
                     function (a, f) {
                         a = e.byId(a);
-                        var d = f || q.getComputedStyle(a), c = k.getMarginExtents(a, d), g = a.offsetLeft - c.l, h = a.offsetTop - c.t, p = a.parentNode, m = q.toPixelValue;
+                        var d = f || q.getComputedStyle(a), c = k.getMarginExtents(a, d), g = a.offsetLeft - c.l,
+                            h = a.offsetTop - c.t, p = a.parentNode, m = q.toPixelValue;
                         if (b("mozilla")) {
                             var l = parseFloat(d.left), d = parseFloat(d.top);
                             !isNaN(l) && !isNaN(d) ? (g = l, h = d) : p && p.style && (p = q.getComputedStyle(p), "visible" != p.overflow && (g += "none" != p.borderLeftStyle ? m(a, p.borderLeftWidth) : 0, h += "none" != p.borderTopStyle ? m(a, p.borderTopWidth) : 0))
@@ -2622,7 +2631,8 @@ require({
                     };
                 k.getContentBox = function (a, f) {
                     a = e.byId(a);
-                    var d = f || q.getComputedStyle(a), c = a.clientWidth, g = k.getPadExtents(a, d), h = k.getBorderExtents(a, d);
+                    var d = f || q.getComputedStyle(a), c = a.clientWidth, g = k.getPadExtents(a, d),
+                        h = k.getBorderExtents(a, d);
                     c ? (d = a.clientHeight, h.w = h.h = 0) : (c = a.offsetWidth, d = a.offsetHeight);
                     b("opera") && (g.l += h.l, g.t += h.t);
                     return {l: g.l, t: g.t, w: c - g.w - h.w, h: d - g.h - h.h}
@@ -2658,9 +2668,9 @@ require({
                     a = a || n.doc;
                     var f = n.doc.parentWindow || n.doc.defaultView;
                     return "pageXOffset" in f ? {
-                            x: f.pageXOffset,
-                            y: f.pageYOffset
-                        } : (f = b("quirks") ? n.body(a) : a.documentElement) && {
+                        x: f.pageXOffset,
+                        y: f.pageYOffset
+                    } : (f = b("quirks") ? n.body(a) : a.documentElement) && {
                             x: k.fixIeBiDiScrollLeft(f.scrollLeft || 0, a),
                             y: f.scrollTop || 0
                         }
@@ -2688,12 +2698,8 @@ require({
                     };
                 k.position = function (a, f) {
                     a = e.byId(a);
-                    var d = n.body(a.ownerDocument), c = a.getBoundingClientRect(), c = {
-                        x: c.left,
-                        y: c.top,
-                        w: c.right - c.left,
-                        h: c.bottom - c.top
-                    };
+                    var d = n.body(a.ownerDocument), c = a.getBoundingClientRect(),
+                        c = {x: c.left, y: c.top, w: c.right - c.left, h: c.bottom - c.top};
                     if (9 > b("ie")) {
                         var g = k.getIeDocumentElementOffset(a.ownerDocument);
                         c.x -= g.x + (b("quirks") ? d.clientLeft +
@@ -2711,7 +2717,8 @@ require({
                 k.normalizeEvent = function (a) {
                     "layerX" in a || (a.layerX = a.offsetX, a.layerY = a.offsetY);
                     if (!b("dom-addeventlistener")) {
-                        var f = a.target, f = f && f.ownerDocument || document, d = b("quirks") ? f.body : f.documentElement,
+                        var f = a.target, f = f && f.ownerDocument || document,
+                            d = b("quirks") ? f.body : f.documentElement,
                             c = k.getIeDocumentElementOffset(f);
                         a.pageX = a.clientX + k.fixIeBiDiScrollLeft(d.scrollLeft || 0, f) - c.x;
                         a.pageY = a.clientY + (d.scrollTop || 0) - c.y
@@ -2789,12 +2796,8 @@ require({
                     return d && d.specified
                 }
 
-                var k = {innerHTML: 1, className: 1, htmlFor: n("ie"), value: 1}, h = {
-                    classname: "class",
-                    htmlfor: "for",
-                    tabindex: "tabIndex",
-                    readonly: "readOnly"
-                };
+                var k = {innerHTML: 1, className: 1, htmlFor: n("ie"), value: 1},
+                    h = {classname: "class", htmlfor: "for", tabindex: "tabIndex", readonly: "readOnly"};
                 b.has = function (a, b) {
                     var d = b.toLowerCase();
                     return k[m.names[d] || b] || r(q.byId(a), h[d] || b)
@@ -2948,7 +2951,7 @@ require({
                     var d = a.xhr;
                     a.status = a.xhr.status;
                     l("native-xhr2") && h[a.options.handleAs] ? (a.data = d.response, "blob" === a.options.handleAs && !l("native-xhr2-blob") && (a.data = new Blob([a.data], {type: d.getResponseHeader("Content-Type")}))) : (a.text =
-                            d.responseText, "xml" === a.options.handleAs && (a.data = d.responseXML));
+                        d.responseText, "xml" === a.options.handleAs && (a.data = d.responseXML));
                     if (!c)try {
                         e(a)
                     } catch (f) {
@@ -3006,7 +3009,8 @@ require({
                 l.add("native-xhr2", function () {
                     if (l("native-xhr")) {
                         var a = new XMLHttpRequest;
-                        return "undefined" !== typeof a.addEventListener && ("undefined" === typeof opera || "undefined" !== typeof a.upload)
+                        return "undefined" !==
+                            typeof a.addEventListener && ("undefined" === typeof opera || "undefined" !== typeof a.upload)
                     }
                 });
                 l.add("native-xhr2-blob", function () {
@@ -3024,41 +3028,41 @@ require({
                 });
                 var h = {arraybuffer: 1, blob: 1, document: 1}, a, f, d, c;
                 l("native-xhr2") ? (a = function (a) {
-                        return !this.isFulfilled()
-                    }, c = function (a, b) {
-                        b.xhr.abort()
-                    }, d = function (a, c, d) {
-                        function f(a) {
-                            c.handleResponse(d)
-                        }
+                    return !this.isFulfilled()
+                }, c = function (a, b) {
+                    b.xhr.abort()
+                }, d = function (a, c, d) {
+                    function f(a) {
+                        c.handleResponse(d)
+                    }
 
-                        function g(a) {
-                            a = new b("Unable to load " + d.url + " status: " + a.target.status, d);
-                            c.handleResponse(d, a)
-                        }
+                    function g(a) {
+                        a = new b("Unable to load " + d.url + " status: " + a.target.status, d);
+                        c.handleResponse(d, a)
+                    }
 
-                        function e(a) {
-                            a.lengthComputable && (d.loaded = a.loaded, d.total = a.total, c.progress(d))
-                        }
+                    function e(a) {
+                        a.lengthComputable && (d.loaded = a.loaded, d.total = a.total, c.progress(d))
+                    }
 
-                        a.addEventListener("load", f, !1);
-                        a.addEventListener("error", g, !1);
-                        a.addEventListener("progress", e, !1);
-                        return function () {
-                            a.removeEventListener("load", f, !1);
-                            a.removeEventListener("error", g, !1);
-                            a.removeEventListener("progress", e, !1);
-                            a = null
-                        }
-                    }) : (a = function (a) {
-                        return a.xhr.readyState
-                    }, f = function (a) {
-                        return 4 === a.xhr.readyState
-                    },
-                        c = function (a, b) {
-                            var c = b.xhr, d = typeof c.abort;
-                            ("function" === d || "object" === d || "unknown" === d) && c.abort()
-                        });
+                    a.addEventListener("load", f, !1);
+                    a.addEventListener("error", g, !1);
+                    a.addEventListener("progress", e, !1);
+                    return function () {
+                        a.removeEventListener("load", f, !1);
+                        a.removeEventListener("error", g, !1);
+                        a.removeEventListener("progress", e, !1);
+                        a = null
+                    }
+                }) : (a = function (a) {
+                    return a.xhr.readyState
+                }, f = function (a) {
+                    return 4 === a.xhr.readyState
+                },
+                    c = function (a, b) {
+                        var c = b.xhr, d = typeof c.abort;
+                        ("function" === d || "object" === d || "unknown" === d) && c.abort()
+                    });
                 var g, u = {data: null, query: null, sync: !1, method: "GET"};
                 k._create = function () {
                     throw Error("XMLHTTP not available");
@@ -3098,7 +3102,7 @@ require({
                 b.cache = function (a, b, d) {
                     var c;
                     "string" == typeof a ? /\//.test(a) ?
-                            (c = a, d = b) : c = n.toUrl(a.replace(/\./g, "/") + (b ? "/" + b : "")) : (c = a + "", d = b);
+                        (c = a, d = b) : c = n.toUrl(a.replace(/\./g, "/") + (b ? "/" + b : "")) : (c = a + "", d = b);
                     a = void 0 != d && "string" != typeof d ? d.value : d;
                     d = d && d.sanitize;
                     if ("string" == typeof a)return m[c] = a, d ? r(a) : a;
@@ -3220,10 +3224,8 @@ require({
                     }
                 }
 
-                var q = this, l = document, m = {
-                    loaded: 1,
-                    complete: 1
-                }, r = "string" != typeof l.readyState, k = !!m[l.readyState], h = [], a;
+                var q = this, l = document, m = {loaded: 1, complete: 1}, r = "string" != typeof l.readyState,
+                    k = !!m[l.readyState], h = [], a;
                 n.load = function (a, b, c) {
                     n(c)
                 };
@@ -3370,16 +3372,16 @@ require({
                             return c
                         }
                     }(), _toArray: n("ie") ? function () {
-                            function a(a, b, c) {
-                                c = c || [];
-                                for (b = b || 0; b < a.length; b++)c.push(a[b]);
-                                return c
-                            }
+                        function a(a, b, c) {
+                            c = c || [];
+                            for (b = b || 0; b < a.length; b++)c.push(a[b]);
+                            return c
+                        }
 
-                            return function (b) {
-                                return (b.item ? a : r).apply(this, arguments)
-                            }
-                        }() : r, partial: function (a) {
+                        return function (b) {
+                            return (b.item ? a : r).apply(this, arguments)
+                        }
+                    }() : r, partial: function (a) {
                         return h.hitch.apply(b, [null].concat(h._toArray(arguments)))
                     }, clone: function (a) {
                         if (!a || "object" != typeof a || h.isFunction(a))return a;
@@ -3395,14 +3397,14 @@ require({
                         } else b = a.constructor ? new a.constructor : {};
                         return h._mixin(b, a, h.clone)
                     }, trim: String.prototype.trim ? function (a) {
-                            return a.trim()
-                        } : function (a) {
-                            return a.replace(/^\s\s*/, "").replace(/\s\s*$/, "")
-                        }, replace: function (a, b, d) {
+                        return a.trim()
+                    } : function (a) {
+                        return a.replace(/^\s\s*/, "").replace(/\s\s*$/, "")
+                    }, replace: function (a, b, d) {
                         return a.replace(d || k, h.isFunction(b) ? b : function (a, d) {
-                                return h.getObject(d,
-                                    !1, b)
-                            })
+                            return h.getObject(d,
+                                !1, b)
+                        })
                     }
                 };
                 h.mixin(b, h);
@@ -3476,7 +3478,7 @@ require({
                     var e = b.data, h = b.query;
                     e && !f && "object" === typeof e && (b.data = l.objectToQuery(e));
                     h ? ("object" === typeof h && (h = l.objectToQuery(h)),
-                        b.preventCache && (h += (h ? "\x26" : "") + "request.preventCache\x3d" + +new Date)) : b.preventCache && (h = "request.preventCache\x3d" + +new Date);
+                    b.preventCache && (h += (h ? "\x26" : "") + "request.preventCache\x3d" + +new Date)) : b.preventCache && (h = "request.preventCache\x3d" + +new Date);
                     a && h && (a += (~a.indexOf("?") ? "\x26" : "?") + h);
                     return {
                         url: a, options: b, getHeader: function (a) {
@@ -3532,40 +3534,40 @@ require({
                 e.add("events-mouseenter", l.doc && "onmouseenter" in l.doc.createElement("div"));
                 e.add("events-mousewheel", l.doc && "onmousewheel" in l.doc);
                 l = e("dom-quirks") && e("ie") || !e("dom-addeventlistener") ? {
-                        LEFT: 1,
-                        MIDDLE: 4,
-                        RIGHT: 2,
-                        isButton: function (b, e) {
-                            return b.button & e
-                        },
-                        isLeft: function (b) {
-                            return b.button & 1
-                        },
-                        isMiddle: function (b) {
-                            return b.button & 4
-                        },
-                        isRight: function (b) {
-                            return b.button & 2
-                        }
-                    } : {
-                        LEFT: 0, MIDDLE: 1, RIGHT: 2, isButton: function (b, e) {
-                            return b.button == e
-                        }, isLeft: function (b) {
-                            return 0 ==
-                                b.button
-                        }, isMiddle: function (b) {
-                            return 1 == b.button
-                        }, isRight: function (b) {
-                            return 2 == b.button
-                        }
-                    };
+                    LEFT: 1,
+                    MIDDLE: 4,
+                    RIGHT: 2,
+                    isButton: function (b, e) {
+                        return b.button & e
+                    },
+                    isLeft: function (b) {
+                        return b.button & 1
+                    },
+                    isMiddle: function (b) {
+                        return b.button & 4
+                    },
+                    isRight: function (b) {
+                        return b.button & 2
+                    }
+                } : {
+                    LEFT: 0, MIDDLE: 1, RIGHT: 2, isButton: function (b, e) {
+                        return b.button == e
+                    }, isLeft: function (b) {
+                        return 0 ==
+                            b.button
+                    }, isMiddle: function (b) {
+                        return 1 == b.button
+                    }, isRight: function (b) {
+                        return 2 == b.button
+                    }
+                };
                 b.mouseButtons = l;
                 b = e("events-mousewheel") ? "mousewheel" : function (b, e) {
-                        return n(b, "DOMMouseScroll", function (b) {
-                            b.wheelDelta = -b.detail;
-                            e.call(this, b)
-                        })
-                    };
+                    return n(b, "DOMMouseScroll", function (b) {
+                        b.wheelDelta = -b.detail;
+                        e.call(this, b)
+                    })
+                };
                 return {
                     _eventHandler: m,
                     enter: m("mouseover"),
@@ -3734,7 +3736,8 @@ require({
                             ioArgs: e
                         };
                         "undefined" !== typeof c.headers && (h.headers = c.headers);
-                        "undefined" !== typeof c.contentType && (h.headers || (h.headers = {}), h.headers["Content-Type"] = c.contentType);
+                        "undefined" !==
+                        typeof c.contentType && (h.headers || (h.headers = {}), h.headers["Content-Type"] = c.contentType);
                         "undefined" !== typeof e.query && (h.data = e.query);
                         "undefined" !== typeof c.sync && (h.sync = c.sync);
                         b._ioNotifyStart(g);
@@ -3856,7 +3859,8 @@ require({
                     if (k)try {
                         var l = k(g);
                         if (0 === c) "undefined" !== typeof l && a(m, c, l); else {
-                            if (l && "function" === typeof l.then) {
+                            if (l && "function" ===
+                                typeof l.then) {
                                 b.cancel = l.cancel;
                                 l.then(h(m, 1), h(m, 2), h(m, 0));
                                 return
@@ -3941,7 +3945,8 @@ require({
                         } else {
                             if (a) {
                                 var f = a(b);
-                                b = "undefined" === typeof f ? b : f
+                                b = "undefined" ===
+                                typeof f ? b : f
                             }
                             n = !0;
                             if (h) {
@@ -4084,8 +4089,8 @@ require({
 
                 function r(b, c, e, l) {
                     c ? q.some(h, function (a, c) {
-                            if (a.error === b)return h.splice(c, 1), !0
-                        }) : q.some(h, function (a) {
+                        if (a.error === b)return h.splice(c, 1), !0
+                    }) : q.some(h, function (a) {
                             return a.error === b
                         }) || h.push({error: b, rejection: e, deferred: l, timestamp: (new Date).getTime()});
                     a || (a = setTimeout(k, f))
@@ -4131,7 +4136,7 @@ require({
                         k = n;
                         e = "default" == e ? b("config-selectorEngine") || "css3" : e;
                         e = "css2" == e || "lite" == e ? "./lite" : "css2.1" == e ? b("dom-qsa2.1") ? "./lite" : "./acme" : "css3" == e ? b("dom-qsa3") ?
-                                        "./lite" : "./acme" : "acme" == e ? "./acme" : (k = m) && e;
+                            "./lite" : "./acme" : "acme" == e ? "./acme" : (k = m) && e;
                         if ("?" == e.charAt(e.length - 1)) {
                             e = e.substring(0, e.length - 1);
                             var h = !0
@@ -4296,9 +4301,9 @@ require({
 
                         var g = "function" == typeof a ? {matches: a} : this, h = b.bubble;
                         return h ? k(d, h(e), f) : k(d, b, function (a) {
-                                var b = e(a.target);
-                                return b && f.call(b, a)
-                            })
+                            var b = e(a.target);
+                            return b && f.call(b, a)
+                        })
                     }
                 };
                 var a = [].slice, f = k.emit = function (b, c, d) {
@@ -4374,7 +4379,8 @@ require({
                             "undefined" == typeof _dojoIEListeners_ && (_dojoIEListeners_ = []);
                             var f = a[c];
                             if (!f || !f.listeners) {
-                                var g = f, f = Function("event", "var callee \x3d arguments.callee; for(var i \x3d 0; i\x3ccallee.listeners.length; i++){var listener \x3d _dojoIEListeners_[callee.listeners[i]]; if(listener){listener.call(this,event);}}");
+                                var g = f,
+                                    f = Function("event", "var callee \x3d arguments.callee; for(var i \x3d 0; i\x3ccallee.listeners.length; i++){var listener \x3d _dojoIEListeners_[callee.listeners[i]]; if(listener){listener.call(this,event);}}");
                                 f.listeners = [];
                                 a[c] = f;
                                 f.global = this;
@@ -4604,8 +4610,8 @@ require({
                         return b
                     }
                     return !b ? [] : n.filter(b, function (a) {
-                            return a
-                        })
+                        return a
+                    })
                 }
 
                 var l, m = /\s+/, r = [""], k = {};
@@ -4662,8 +4668,8 @@ require({
                     h && (h = m.map(l.isArray(h) ? h : [h], function (a) {
                         return a.replace(/\./g, "/")
                     }), b.isAsync ? e(h) : k(1, function () {
-                            e(h)
-                        }));
+                        e(h)
+                    }));
                     return b
                 })
         }, "dojo/_base/event": function () {
@@ -4700,7 +4706,8 @@ require({
                 b.add("mac", 0 <= q.indexOf("Macintosh"));
                 b.add("quirks", "BackCompat" == document.compatMode);
                 if (e.match(/(iPhone|iPod|iPad)/)) {
-                    var l = RegExp.$1.replace(/P/, "p"), m = e.match(/OS ([\d_]+)/) ? RegExp.$1 : "1", m = parseFloat(m.replace(/_/, ".").replace(/_/g, ""));
+                    var l = RegExp.$1.replace(/P/, "p"), m = e.match(/OS ([\d_]+)/) ? RegExp.$1 : "1",
+                        m = parseFloat(m.replace(/_/, ".").replace(/_/g, ""));
                     b.add(l, m);
                     b.add("ios", m)
                 }
@@ -4801,7 +4808,8 @@ require({
                             for (var a = q, b = arguments, c = g.before; c;)b = c.advice.apply(this, b) || b, c = c.next;
                             if (g.around)var d = g.around.advice(this, b);
                             for (c = g.after; c && c.id < a;) {
-                                if (c.receiveArguments)var f = c.advice.apply(this, b), d = f === e ? d : f; else d = c.advice.call(this, d, b);
+                                if (c.receiveArguments)var f = c.advice.apply(this, b),
+                                    d = f === e ? d : f; else d = c.advice.call(this, d, b);
                                 c = c.next
                             }
                             return d
@@ -4847,8 +4855,8 @@ require({
                     var f = l._toArray(arguments);
                     "number" != typeof a ? (e = c, c = a, a = 1E3) : f.shift();
                     e = e ? l.hitch.apply(b, f) : function () {
-                            c()
-                        };
+                        c()
+                    };
                     e.priority = a;
                     for (f = 0; f < r.length && a >= r[f].priority; f++);
                     r.splice(f, 0, e);
@@ -4924,46 +4932,47 @@ require({
                     return d
                 }, g;
                 g = r("events-keypress-typed") ? function (a, b) {
-                        var d = n(a, "keydown", function (a) {
-                            var d = a.keyCode, e = 13 != d && 32 != d && (27 != d || !r("ie")) && (48 > d || 90 < d) && (96 > d || 111 < d) && (186 > d || 192 < d) && (219 > d || 222 < d) && 229 != d;
-                            if (e || a.ctrlKey) {
-                                e = e ? 0 : d;
-                                if (a.ctrlKey) {
-                                    if (3 == d || 13 == d)return b.call(a.currentTarget, a);
-                                    e = 95 < e && 106 > e ? e - 48 : !a.shiftKey && 65 <= e && 90 >= e ? e + 32 : f[e] || e
-                                }
-                                d = c(a, {type: "keypress", faux: !0, charCode: e});
-                                b.call(a.currentTarget, d);
-                                if (r("ie"))try {
-                                    a.keyCode = d.keyCode
-                                } catch (g) {
-                                }
+                    var d = n(a, "keydown", function (a) {
+                        var d = a.keyCode,
+                            e = 13 != d && 32 != d && (27 != d || !r("ie")) && (48 > d || 90 < d) && (96 > d || 111 < d) && (186 > d || 192 < d) && (219 > d || 222 < d) && 229 != d;
+                        if (e || a.ctrlKey) {
+                            e = e ? 0 : d;
+                            if (a.ctrlKey) {
+                                if (3 == d || 13 == d)return b.call(a.currentTarget, a);
+                                e = 95 < e && 106 > e ? e - 48 : !a.shiftKey && 65 <= e && 90 >= e ? e + 32 : f[e] || e
                             }
-                        }), e = n(a, "keypress", function (a) {
-                            var d = a.charCode;
-                            a = c(a, {charCode: 32 <= d ? d : 0, faux: !0});
-                            return b.call(this, a)
-                        });
-                        return {
-                            remove: function () {
-                                d.remove();
-                                e.remove()
+                            d = c(a, {type: "keypress", faux: !0, charCode: e});
+                            b.call(a.currentTarget, d);
+                            if (r("ie"))try {
+                                a.keyCode = d.keyCode
+                            } catch (g) {
                             }
                         }
-                    } : r("opera") ? function (a, b) {
-                            return n(a, "keypress", function (a) {
-                                var d = a.which;
-                                3 == d && (d = 99);
-                                d = 32 > d && !a.shiftKey ? 0 : d;
-                                a.ctrlKey && (!a.shiftKey && 65 <= d && 90 >= d) && (d += 32);
-                                return b.call(this, c(a, {charCode: d}))
-                            })
-                        } : function (b, c) {
-                            return n(b, "keypress", function (b) {
-                                a(b);
-                                return c.call(this, b)
-                            })
-                        };
+                    }), e = n(a, "keypress", function (a) {
+                        var d = a.charCode;
+                        a = c(a, {charCode: 32 <= d ? d : 0, faux: !0});
+                        return b.call(this, a)
+                    });
+                    return {
+                        remove: function () {
+                            d.remove();
+                            e.remove()
+                        }
+                    }
+                } : r("opera") ? function (a, b) {
+                    return n(a, "keypress", function (a) {
+                        var d = a.which;
+                        3 == d && (d = 99);
+                        d = 32 > d && !a.shiftKey ? 0 : d;
+                        a.ctrlKey && (!a.shiftKey && 65 <= d && 90 >= d) && (d += 32);
+                        return b.call(this, c(a, {charCode: d}))
+                    })
+                } : function (b, c) {
+                    return n(b, "keypress", function (b) {
+                        a(b);
+                        return c.call(this, b)
+                    })
+                };
                 var u = {
                     _keypress: g,
                     connect: function (a, b, c, d, e) {
@@ -4984,7 +4993,7 @@ require({
                             u.publish(a, arguments)
                         };
                         return c ? u.connect(b,
-                                c, d) : u.connect(b, d)
+                            c, d) : u.connect(b, d)
                     }, isCopyKey: function (a) {
                         return a[d]
                     }
@@ -5211,7 +5220,8 @@ require({
                         return this
                     },
                     toJson: function () {
-                        var g = m.px2pt(this.size), g = isNaN(g) ? void 0 : g, c = m.px2pt(this.xoffset), c = isNaN(c) ? void 0 : c, b = m.px2pt(this.yoffset), b = isNaN(b) ? void 0 : b;
+                        var g = m.px2pt(this.size), g = isNaN(g) ? void 0 : g, c = m.px2pt(this.xoffset),
+                            c = isNaN(c) ? void 0 : c, b = m.px2pt(this.yoffset), b = isNaN(b) ? void 0 : b;
                         return h.mixin(this.inherited("toJson", arguments), {
                             size: "auto" ===
                             this.size ? this.size : g, angle: this.angle && -1 * this.angle, xoffset: c, yoffset: b
@@ -5476,8 +5486,8 @@ require({
                                     } else if (a.selection && e) {
                                         var c;
                                         e.pRange ? c = e.range : n.isArray(e) ? (c = a.body.createControlRange(), d.forEach(e, function (a) {
-                                                    c.addElement(a)
-                                                })) : (c = a.body.createTextRange(), c.moveToBookmark(e));
+                                            c.addElement(a)
+                                        })) : (c = a.body.createTextRange(), c.moveToBookmark(e));
                                         c.select()
                                     }
                                 };
@@ -5546,8 +5556,8 @@ require({
                             for (var f in a) {
                                 var r = a[f];
                                 h.isArray(r) ? a[f] = k.toJson(n.map(r, function (a) {
-                                        return this._gpEncode({item: a}, !0).item
-                                    }, this)) : r instanceof Date && (a[f] = r.getTime())
+                                    return this._gpEncode({item: a}, !0).item
+                                }, this)) : r instanceof Date && (a[f] = r.getTime())
                             }
                             return this._encode(a, b, e)
                         },
@@ -5885,7 +5895,9 @@ require({
                             e && (delete this._loadCallback, e(this))
                         },
                         getImageUrl: function (e, f, r, q) {
-                            var p = this._url.path + "/export?", g = this._params, s = e.spatialReference.wkid || m.toJson(e.spatialReference.toJson()), d = this._errorHandler;
+                            var p = this._url.path + "/export?", g = this._params,
+                                s = e.spatialReference.wkid || m.toJson(e.spatialReference.toJson()),
+                                d = this._errorHandler;
                             delete g._ts;
                             h.mixin(g, {
                                 bbox: e.xmin + "," + e.ymin + "," + e.xmax + "," + e.ymax,
@@ -5898,16 +5910,16 @@ require({
                             var t = g.token = this._getToken();
                             e = a.addProxy(p + l.objectToQuery(h.mixin({}, g, {f: "image"})));
                             e.length > c.defaults.io.postLength || this.useMapImage ? this._jsonRequest = b({
-                                    url: p,
-                                    content: h.mixin(g, {f: "json"}),
-                                    callbackParamName: "callback",
-                                    load: function (b, e) {
-                                        var f = b.href;
-                                        t && (f += -1 === f.indexOf("?") ? "?token\x3d" + t : "\x26token\x3d" + t);
-                                        q(a.addProxy(f))
-                                    },
-                                    error: d
-                                }) : q(e)
+                                url: p,
+                                content: h.mixin(g, {f: "json"}),
+                                callbackParamName: "callback",
+                                load: function (b, e) {
+                                    var f = b.href;
+                                    t && (f += -1 === f.indexOf("?") ? "?token\x3d" + t : "\x26token\x3d" + t);
+                                    q(a.addProxy(f))
+                                },
+                                error: d
+                            }) : q(e)
                         },
                         _setIsPNG32: function () {
                             var a =
@@ -6020,7 +6032,8 @@ require({
                                 if (!this.dynamicLayerInfos || 0 === this.dynamicLayerInfos.length) this.dynamicLayerInfos = this.createDynamicLayerInfosFromLayerInfos();
                                 var a;
                                 a = this.dynamicLayerInfos;
-                                var b = [], r = this._map && f.getScale(this._map), c = this.visibleLayers, q = r ? e._getLayersForScale(r, a) : c;
+                                var b = [], r = this._map && f.getScale(this._map), c = this.visibleLayers,
+                                    q = r ? e._getLayersForScale(r, a) : c;
                                 n.forEach(a, function (a) {
                                     if (!a.subLayerIds) {
                                         var e, f = a.id;
@@ -6066,7 +6079,8 @@ require({
                             b || this.refresh(!0)
                         },
                         exportMapImage: function (a, b) {
-                            var e = c.defaults.map, e = h.mixin({size: e.width + "," + e.height}, this._params, a ? a.toJson(this.normalization) : {}, {f: "json"});
+                            var e = c.defaults.map,
+                                e = h.mixin({size: e.width + "," + e.height}, this._params, a ? a.toJson(this.normalization) : {}, {f: "json"});
                             delete e._ts;
                             if (e.layerDefs) {
                                 var f = e.layerDefs;
@@ -6088,7 +6102,8 @@ require({
                         constructor: function (b) {
                             if (b) {
                                 h.mixin(this, b);
-                                var q = this.features, p = b.spatialReference, d = a.getGeometryType(b.geometryType), p = this.spatialReference = new c(p);
+                                var q = this.features, p = b.spatialReference, d = a.getGeometryType(b.geometryType),
+                                    p = this.spatialReference = new c(p);
                                 this.geometryType = b.geometryType;
                                 b.fields && (this.fields = b.fields);
                                 n.forEach(q, function (a, b) {
@@ -6209,7 +6224,7 @@ require({
                         _setup: function () {
                             var a = this.domNode;
                             this.titleBar && this.draggable ? (this._moveable = new (6 == r("ie") ? y : t)(a, {handle: this.titleBar}),
-                                    n.after(this._moveable, "onMoveStop", q.hitch(this, "_endDrag"), !0)) : g.add(a, "dijitDialogFixed");
+                                n.after(this._moveable, "onMoveStop", q.hitch(this, "_endDrag"), !0)) : g.add(a, "dijitDialogFixed");
                             this.underlayAttrs = {
                                 dialogId: this.id,
                                 "class": h.map(this["class"].split(/\s/), function (a) {
@@ -6227,17 +6242,19 @@ require({
                             e.w *= this.maxRatio;
                             e.h *= this.maxRatio;
                             if (a.w >= e.w || a.h >= e.h) {
-                                var f = c.position(this.containerNode), r = Math.min(a.w, e.w) - (a.w - f.w), a = Math.min(a.h, e.h) - (a.h - f.h);
+                                var f = c.position(this.containerNode), r = Math.min(a.w, e.w) - (a.w - f.w),
+                                    a = Math.min(a.h, e.h) - (a.h - f.h);
                                 this._singleChild && this._singleChild.resize ? ("undefined" == typeof this._singleChildOriginalStyle && (this._singleChildOriginalStyle = this._singleChild.domNode.style.cssText), this._singleChild.resize({
-                                        w: r,
-                                        h: a
-                                    })) : b.set(this.containerNode,
-                                        {width: r + "px", height: a + "px", overflow: "auto", position: "relative"})
+                                    w: r,
+                                    h: a
+                                })) : b.set(this.containerNode,
+                                    {width: r + "px", height: a + "px", overflow: "auto", position: "relative"})
                             } else this._singleChild && this._singleChild.resize && this._singleChild.resize()
                         },
                         _position: function () {
                             if (!g.contains(this.ownerDocumentBody, "dojoMove")) {
-                                var a = this.domNode, e = s.getBox(this.ownerDocument), f = this._relativePosition, r = f ? null : c.position(a);
+                                var a = this.domNode, e = s.getBox(this.ownerDocument), f = this._relativePosition,
+                                    r = f ? null : c.position(a);
                                 b.set(a, {
                                     left: Math.floor(e.l + (f ? f.x : (e.w - r.w) / 2)) + "px",
                                     top: Math.floor(e.t + (f ? f.y : (e.h - r.h) / 2)) + "px"
@@ -6254,7 +6271,8 @@ require({
                         show: function () {
                             if (!this.open) {
                                 this._started || this.startup();
-                                this._alreadyInitialized || (this._setup(), this._alreadyInitialized = !0);
+                                this._alreadyInitialized || (this._setup(), this._alreadyInitialized =
+                                    !0);
                                 this._fadeOutDeferred && (this._fadeOutDeferred.cancel(), H.hide(this));
                                 var e = s.get(this.ownerDocument);
                                 this._modalconnects.push(p(e, "scroll", q.hitch(this, "resize")));
@@ -6347,7 +6365,7 @@ require({
                                 J.pop();
                                 var b = J[J.length - 1];
                                 1 == J.length ? D.hide() : D.show(b.underlayAttrs,
-                                        b.zIndex - 1);
+                                    b.zIndex - 1);
                                 if (a.refocus) {
                                     a = b.focus;
                                     if (b.dialog && (!a || !l.isDescendant(a, b.dialog.domNode))) b.dialog._getFocusItems(b.dialog.domNode), a = b.dialog._firstFocusItem;
@@ -6495,7 +6513,7 @@ require({
                             case "E":
                                 p = a.getDay();
                                 3 > c ? (p +=
-                                        1, d = !0) : (k = ["days", "c" == k ? "standAlone" : "format", l[c - 3]].join("-"), p = b[k][p]);
+                                    1, d = !0) : (k = ["days", "c" == k ? "standAlone" : "format", l[c - 3]].join("-"), p = b[k][p]);
                                 break;
                             case "a":
                                 k = 12 > a.getHours() ? "am" : "pm";
@@ -6638,98 +6656,103 @@ require({
                 };
                 q.format = function (b, f) {
                     f = f || {};
-                    var c = k.normalizeLocale(f.locale), p = f.formatLength || "short", c = q._getGregorianBundle(c), g = [], l = d.hitch(this, a, b, c, f);
+                    var c = k.normalizeLocale(f.locale), p = f.formatLength || "short", c = q._getGregorianBundle(c),
+                        g = [], l = d.hitch(this, a, b, c, f);
                     if ("year" == f.selector)return e(c["dateFormatItem-yyyy"] || "yyyy", l);
                     var u;
                     "date" != f.selector && (u = f.timePattern ||
                         c["timeFormat-" + p]) && g.push(e(u, l));
                     "time" != f.selector && (u = f.datePattern || c["dateFormat-" + p]) && g.push(e(u, l));
                     return 1 == g.length ? g[0] : c["dateTimeFormat-" + p].replace(/\'/g, "").replace(/\{(\d+)\}/g, function (a, b) {
-                            return g[b]
-                        })
+                        return g[b]
+                    })
                 };
                 q.regexp = function (a) {
                     return q._parseInfo(a).regexp
                 };
                 q._parseInfo = function (a) {
                     a = a || {};
-                    var b = k.normalizeLocale(a.locale), b = q._getGregorianBundle(b), c = a.formatLength || "short", p = a.datePattern || b["dateFormat-" + c], g = a.timePattern || b["timeFormat-" + c], c = "date" == a.selector ? p : "time" == a.selector ?
+                    var b = k.normalizeLocale(a.locale), b = q._getGregorianBundle(b), c = a.formatLength || "short",
+                        p = a.datePattern || b["dateFormat-" + c], g = a.timePattern || b["timeFormat-" + c],
+                        c = "date" == a.selector ? p : "time" == a.selector ?
                             g : b["dateTimeFormat-" + c].replace(/\{(\d+)\}/g, function (a, b) {
                                 return [g, p][b]
                             }), l = [];
                     return {regexp: e(c, d.hitch(this, f, l, b, a)), tokens: l, bundle: b}
                 };
                 q.parse = function (a, b) {
-                    var e = /[\u200E\u200F\u202A\u202E]/g, f = q._parseInfo(b), c = f.tokens, p = f.bundle, e = RegExp("^" + f.regexp.replace(e, "") + "$", f.strict ? "" : "i").exec(a && a.replace(e, ""));
+                    var e = /[\u200E\u200F\u202A\u202E]/g, f = q._parseInfo(b), c = f.tokens, p = f.bundle,
+                        e = RegExp("^" + f.regexp.replace(e, "") + "$", f.strict ? "" : "i").exec(a && a.replace(e, ""));
                     if (!e)return null;
-                    var g = ["abbr", "wide", "narrow"], d = [1970, 0, 1, 0, 0, 0, 0], k = "", e = h.every(e, function (a, e) {
-                        if (!e)return !0;
-                        var f = c[e - 1], q = f.length, f = f.charAt(0);
-                        switch (f) {
-                            case "y":
-                                if (2 !=
-                                    q && b.strict) d[0] = a; else if (100 > a) a = Number(a), f = "" + (new Date).getFullYear(), q = 100 * f.substring(0, 2), f = Math.min(Number(f.substring(2, 4)) + 20, 99), d[0] = a < f ? q + a : q - 100 + a; else {
-                                    if (b.strict)return !1;
-                                    d[0] = a
-                                }
-                                break;
-                            case "M":
-                            case "L":
-                                if (2 < q) {
-                                    if (q = p["months-" + ("L" == f ? "standAlone" : "format") + "-" + g[q - 3]].concat(), b.strict || (a = a.replace(".", "").toLowerCase(), q = h.map(q, function (a) {
-                                            return a.replace(".", "").toLowerCase()
-                                        })), a = h.indexOf(q, a), -1 == a)return !1
-                                } else a--;
-                                d[1] = a;
-                                break;
-                            case "E":
-                            case "e":
-                            case "c":
-                                q = p["days-" + ("c" ==
-                                f ? "standAlone" : "format") + "-" + g[q - 3]].concat();
-                                b.strict || (a = a.toLowerCase(), q = h.map(q, function (a) {
-                                    return a.toLowerCase()
-                                }));
-                                a = h.indexOf(q, a);
-                                if (-1 == a)return !1;
-                                break;
-                            case "D":
-                                d[1] = 0;
-                            case "d":
-                                d[2] = a;
-                                break;
-                            case "a":
-                                q = b.am || p["dayPeriods-format-wide-am"];
-                                f = b.pm || p["dayPeriods-format-wide-pm"];
-                                if (!b.strict) {
-                                    var s = /\./g;
-                                    a = a.replace(s, "").toLowerCase();
-                                    q = q.replace(s, "").toLowerCase();
-                                    f = f.replace(s, "").toLowerCase()
-                                }
-                                if (b.strict && a != q && a != f)return !1;
-                                k = a == f ? "p" : a == q ? "a" : "";
-                                break;
-                            case "K":
-                                24 == a && (a = 0);
-                            case "h":
-                            case "H":
-                            case "k":
-                                if (23 <
-                                    a)return !1;
-                                d[3] = a;
-                                break;
-                            case "m":
-                                d[4] = a;
-                                break;
-                            case "s":
-                                d[5] = a;
-                                break;
-                            case "S":
-                                d[6] = a
-                        }
-                        return !0
-                    }), f = +d[3];
+                    var g = ["abbr", "wide", "narrow"], d = [1970, 0, 1, 0, 0, 0, 0], k = "",
+                        e = h.every(e, function (a, e) {
+                            if (!e)return !0;
+                            var f = c[e - 1], q = f.length, f = f.charAt(0);
+                            switch (f) {
+                                case "y":
+                                    if (2 !=
+                                        q && b.strict) d[0] = a; else if (100 > a) a = Number(a), f = "" + (new Date).getFullYear(), q = 100 * f.substring(0, 2), f = Math.min(Number(f.substring(2, 4)) + 20, 99), d[0] = a < f ? q + a : q - 100 + a; else {
+                                        if (b.strict)return !1;
+                                        d[0] = a
+                                    }
+                                    break;
+                                case "M":
+                                case "L":
+                                    if (2 < q) {
+                                        if (q = p["months-" + ("L" == f ? "standAlone" : "format") + "-" + g[q - 3]].concat(), b.strict || (a = a.replace(".", "").toLowerCase(), q = h.map(q, function (a) {
+                                                return a.replace(".", "").toLowerCase()
+                                            })), a = h.indexOf(q, a), -1 == a)return !1
+                                    } else a--;
+                                    d[1] = a;
+                                    break;
+                                case "E":
+                                case "e":
+                                case "c":
+                                    q = p["days-" + ("c" ==
+                                    f ? "standAlone" : "format") + "-" + g[q - 3]].concat();
+                                    b.strict || (a = a.toLowerCase(), q = h.map(q, function (a) {
+                                        return a.toLowerCase()
+                                    }));
+                                    a = h.indexOf(q, a);
+                                    if (-1 == a)return !1;
+                                    break;
+                                case "D":
+                                    d[1] = 0;
+                                case "d":
+                                    d[2] = a;
+                                    break;
+                                case "a":
+                                    q = b.am || p["dayPeriods-format-wide-am"];
+                                    f = b.pm || p["dayPeriods-format-wide-pm"];
+                                    if (!b.strict) {
+                                        var s = /\./g;
+                                        a = a.replace(s, "").toLowerCase();
+                                        q = q.replace(s, "").toLowerCase();
+                                        f = f.replace(s, "").toLowerCase()
+                                    }
+                                    if (b.strict && a != q && a != f)return !1;
+                                    k = a == f ? "p" : a == q ? "a" : "";
+                                    break;
+                                case "K":
+                                    24 == a && (a = 0);
+                                case "h":
+                                case "H":
+                                case "k":
+                                    if (23 <
+                                        a)return !1;
+                                    d[3] = a;
+                                    break;
+                                case "m":
+                                    d[4] = a;
+                                    break;
+                                case "s":
+                                    d[5] = a;
+                                    break;
+                                case "S":
+                                    d[6] = a
+                            }
+                            return !0
+                        }), f = +d[3];
                     "p" === k && 12 > f ? d[3] = f + 12 : "a" === k && 12 == f && (d[3] = 0);
                     f = new Date(d[0], d[1], d[2], d[3], d[4], d[5], d[6]);
                     b.strict && f.setFullYear(d[0]);
@@ -6771,7 +6794,8 @@ require({
                 };
                 q._getWeekOfYear = function (a, b) {
                     1 == arguments.length && (b = 0);
-                    var e = (new Date(a.getFullYear(), 0, 1)).getDay(), f = Math.floor((q._getDayOfYear(a) + (e - b + 7) % 7 - 1) / 7);
+                    var e = (new Date(a.getFullYear(), 0, 1)).getDay(),
+                        f = Math.floor((q._getDayOfYear(a) + (e - b + 7) % 7 - 1) / 7);
                     e == b && f++;
                     return f
                 };
@@ -6819,7 +6843,8 @@ require({
                                 this._pendingDfds = {};
                                 this._activeLayers = [];
                                 this._sharedLayers = [];
-                                var f = this.domNode = c.byId(e), r = this.map, q = "\x3cspan class\x3d'" + this.listClass + "'\x3e\x3c/span\x3e";
+                                var f = this.domNode = c.byId(e), r = this.map,
+                                    q = "\x3cspan class\x3d'" + this.listClass + "'\x3e\x3c/span\x3e";
                                 f && (b.set(f,
                                     "innerHTML", q), this.listNode = k.query(".esriAttributionList", f)[0], this.itemNodes = {});
                                 this._eventConnections = [m.connect(r, "onLayerAdd", this, this._onLayerAdd), m.connect(r, "onLayerRemove", this, this._onLayerRemove), m.connect(r, "onLayerSuspend", this, this._onLayerSuspend), m.connect(r, "onLayerResume", this, this._onLayerResume), m.connect(r, "onExtentChange", this, this._onExtentChange)];
@@ -6900,7 +6925,8 @@ require({
                         _onExtentChange: function (a, e, f, c) {
                             try {
                                 var r =
-                                    this._activeLayers, q = this._attributions, p = this.itemNodes, g, d, k, s, t = r.length || 0;
+                                        this._activeLayers, q = this._attributions, p = this.itemNodes, g, d, k, s,
+                                    t = r.length || 0;
                                 for (s = 0; s < t; s++)if (d = r[s], k = q[d], (g = p[d]) && !h.isString(k)) {
                                     var l = this._getContributorsList(k, a, c ? c.level : -1);
                                     b.set(g, "innerHTML", l ? l + this._getDelimiter() : "");
@@ -6912,13 +6938,15 @@ require({
                         },
                         _createNode: function (b) {
                             if (this.domNode) {
-                                var e = this._checkShareInfo(b), f = e && e.sharedWith, f = f && this.itemNodes[f], c = this.map, r = this._attributions[b], r = h.isString(r) ? r : this._getContributorsList(r, c.extent,
+                                var e = this._checkShareInfo(b), f = e && e.sharedWith, f = f && this.itemNodes[f],
+                                    c = this.map, r = this._attributions[b],
+                                    r = h.isString(r) ? r : this._getContributorsList(r, c.extent,
                                         c.getLevel()), c = !!r && !c.getLayer(b).suspended;
                                 f ? (this.itemNodes[b] = f, this._toggleItem(f, c, e.index)) : (b = this.itemNodes[b] = a.create("span", {
-                                        "class": this.itemClass,
-                                        innerHTML: r ? r + this._getDelimiter() : "",
-                                        style: {display: c ? "inline" : "none"}
-                                    }, this.listNode), c && this._setLastItem(b));
+                                    "class": this.itemClass,
+                                    innerHTML: r ? r + this._getDelimiter() : "",
+                                    style: {display: c ? "inline" : "none"}
+                                }, this.listNode), c && this._setLastItem(b));
                                 this._adjustCursorStyle()
                             }
                         },
@@ -7020,7 +7048,7 @@ require({
                         _adjustCursorStyle: function () {
                             var a = q.position(this.listNode.parentNode, !0).h;
                             f.contains(this.listNode.parentNode, "esriAttributionOpen") ? (f.remove(this.listNode.parentNode, "esriAttributionOpen"),
-                                    a > q.position(this.listNode.parentNode, !0).h ? (e.set(this.listNode.parentNode, "cursor", "pointer"), f.add(this.listNode.parentNode, "esriAttributionOpen")) : e.set(this.listNode.parentNode, "cursor", "default")) : (f.add(this.listNode.parentNode, "esriAttributionOpen"), a < q.position(this.listNode.parentNode, !0).h ? e.set(this.listNode.parentNode, "cursor", "pointer") : e.set(this.listNode.parentNode, "cursor", "default"), f.remove(this.listNode.parentNode, "esriAttributionOpen"))
+                                a > q.position(this.listNode.parentNode, !0).h ? (e.set(this.listNode.parentNode, "cursor", "pointer"), f.add(this.listNode.parentNode, "esriAttributionOpen")) : e.set(this.listNode.parentNode, "cursor", "default")) : (f.add(this.listNode.parentNode, "esriAttributionOpen"), a < q.position(this.listNode.parentNode, !0).h ? e.set(this.listNode.parentNode, "cursor", "pointer") : e.set(this.listNode.parentNode, "cursor", "default"), f.remove(this.listNode.parentNode, "esriAttributionOpen"))
                         }
                     });
                     l("extend-esri") && h.setObject("dijit.Attribution",
@@ -7051,29 +7079,29 @@ require({
                                                                                                                                                                                                                                             l, g, c, b, a) {
                 var e = function () {
                     return 9 > n("ie") ? function (a, b, e, f, c, g, d, k, l) {
-                            var h = [], m = Math.round, n, A = d.length, B, D, F, E, G, H;
-                            for (n = 0; n < A; n++)if (B = d[n], E = k ? k(B[0][0], B[0][1], l) : B[0], 1 < (F = B.length)) {
-                                G = m((E[0] - a) * e + c);
-                                H = m((b - E[1]) * f + g);
-                                E = k ? k(B[1][0], B[1][1], l) : B[1];
-                                D = m((E[0] - a) * e + c);
-                                E = m((b - E[1]) * f + g);
-                                h.push("M", G + "," + H, "L", D + "," + E);
-                                for (D = 2; D < F; D++)E = k ? k(B[D][0], B[D][1], l) : B[D], G = m((E[0] - a) * e + c), H = m((b - E[1]) * f + g), h.push(G + "," + H)
-                            } else G = m((E[0] - a) * e + c), H = m((b - E[1]) * f + g), h.push("M", G + "," + H);
-                            return h
-                        } : function (a,
-                                      b, e, f, c, g, d, k, l) {
-                            var h = [], m, n, A, B, D, F, E = Math.round;
-                            m = 0;
-                            for (A = d ? d.length : 0; m < A; m++) {
-                                D = d[m];
-                                h.push("M");
-                                n = 0;
-                                for (B = D ? D.length : 0; n < B; n++)F = k ? k(D[n][0], D[n][1], l) : D[n], h.push(E((F[0] - a) * e + c) + "," + E((b - F[1]) * f + g))
-                            }
-                            return h
+                        var h = [], m = Math.round, n, A = d.length, B, D, F, E, G, H;
+                        for (n = 0; n < A; n++)if (B = d[n], E = k ? k(B[0][0], B[0][1], l) : B[0], 1 < (F = B.length)) {
+                            G = m((E[0] - a) * e + c);
+                            H = m((b - E[1]) * f + g);
+                            E = k ? k(B[1][0], B[1][1], l) : B[1];
+                            D = m((E[0] - a) * e + c);
+                            E = m((b - E[1]) * f + g);
+                            h.push("M", G + "," + H, "L", D + "," + E);
+                            for (D = 2; D < F; D++)E = k ? k(B[D][0], B[D][1], l) : B[D], G = m((E[0] - a) * e + c), H = m((b - E[1]) * f + g), h.push(G + "," + H)
+                        } else G = m((E[0] - a) * e + c), H = m((b - E[1]) * f + g), h.push("M", G + "," + H);
+                        return h
+                    } : function (a,
+                                  b, e, f, c, g, d, k, l) {
+                        var h = [], m, n, A, B, D, F, E = Math.round;
+                        m = 0;
+                        for (A = d ? d.length : 0; m < A; m++) {
+                            D = d[m];
+                            h.push("M");
+                            n = 0;
+                            for (B = D ? D.length : 0; n < B; n++)F = k ? k(D[n][0], D[n][1], l) : D[n], h.push(E((F[0] - a) * e + c) + "," + E((b - F[1]) * f + g))
                         }
+                        return h
+                    }
                 }(), f = {
                     toScreenPoint: function (a, b, e, f, c) {
                         var g = a.spatialReference, d = f.spatialReference, h = f.x;
@@ -7085,7 +7113,8 @@ require({
                             f = Math.round(f));
                         return new l(h, f)
                     }, toScreenGeometry: function (e, f, l, r) {
-                        var s = e.xmin, t = e.ymax, h = f / e.getWidth(), m = l / e.getHeight(), u = d.forEach, z = Math.round;
+                        var s = e.xmin, t = e.ymax, h = f / e.getWidth(), m = l / e.getHeight(), u = d.forEach,
+                            z = Math.round;
                         if (r instanceof k)return new k(z((r.x - s) * h), z((t - r.y) * m));
                         if (r instanceof b) {
                             e = new b;
@@ -7127,7 +7156,8 @@ require({
                                              b, e, f) {
                         return new k(a.xmin + f.x / (b / a.getWidth()), a.ymax - f.y / (e / a.getHeight()), a.spatialReference)
                     }, toMapGeometry: function (e, f, l, r) {
-                        var s = e.xmin, t = e.ymax, h = e.spatialReference, m = f / e.getWidth(), u = l / e.getHeight(), n = d.forEach;
+                        var s = e.xmin, t = e.ymax, h = e.spatialReference, m = f / e.getWidth(), u = l / e.getHeight(),
+                            n = d.forEach;
                         if (r instanceof k)return new k(s + r.x / m, t - r.y / u, h);
                         if (r instanceof b) {
                             e = new b(h);
@@ -7272,8 +7302,8 @@ require({
                     registerServers: function (a) {
                         var b = this.serverInfos;
                         b ? (a = m.filter(a, function (a) {
-                                return !this.findServerInfo(a.server)
-                            }, this), this.serverInfos = b.concat(a)) : this.serverInfos = a;
+                            return !this.findServerInfo(a.server)
+                        }, this), this.serverInfos = b.concat(a)) : this.serverInfos = a;
                         m.forEach(a, function (a) {
                             a.owningSystemUrl && this._portals.push(a.owningSystemUrl);
                             if (a.hasPortal) {
@@ -7289,13 +7319,13 @@ require({
                         var b = this._sanitizeUrl(a.server), e = this.findServerInfo(b), f;
                         e || (e = new q, e.server = this._getOrigin(b), e.tokenServiceUrl = this._getTokenSvcUrl(b), e.hasPortal = !0, this.registerServers([e]));
                         (f = this.findCredential(b, a.userId)) ? n.mixin(f, a) : (f = new u({
-                                userId: a.userId,
-                                server: e.server,
-                                token: a.token,
-                                expires: a.expires,
-                                ssl: a.ssl,
-                                scope: this._isServerRsrc(b) ? "server" : "portal"
-                            }), f.resources = [b], this.credentials.push(f));
+                            userId: a.userId,
+                            server: e.server,
+                            token: a.token,
+                            expires: a.expires,
+                            ssl: a.ssl,
+                            scope: this._isServerRsrc(b) ? "server" : "portal"
+                        }), f.resources = [b], this.credentials.push(f));
                         f.onTokenChange(!1)
                     },
                     toJson: function () {
@@ -7339,20 +7369,21 @@ require({
                         a = this._sanitizeUrl(a);
                         f = this._isServerRsrc(a) ? "server" : "portal";
                         b ? m.some(this.credentials, function (c) {
-                                p.hasSameOrigin(a, c.server, !0) && (b === c.userId && c.scope === f) && (e = c);
-                                return !!e
-                            }, this) : m.some(this.credentials, function (b) {
-                                p.hasSameOrigin(a,
-                                    b.server, !0) && (-1 !== this._getIdenticalSvcIdx(a, b) && b.scope === f) && (e = b);
-                                return !!e
-                            }, this);
+                            p.hasSameOrigin(a, c.server, !0) && (b === c.userId && c.scope === f) && (e = c);
+                            return !!e
+                        }, this) : m.some(this.credentials, function (b) {
+                            p.hasSameOrigin(a,
+                                b.server, !0) && (-1 !== this._getIdenticalSvcIdx(a, b) && b.scope === f) && (e = b);
+                            return !!e
+                        }, this);
                         return e
                     },
                     getCredential: function (a, e) {
                         var c, r, p = !0;
                         f.isDefined(e) && (n.isObject(e) ? (c = !!e.token, r = e.error, p = !1 !== e.prompt) : c = e);
                         a = this._sanitizeUrl(a);
-                        var g = new k(v._dfdCanceller), d = this._isAdminResource(a), s = c && this._doPortalSignIn(a) ? b("esri_auth") : null;
+                        var g = new k(v._dfdCanceller), d = this._isAdminResource(a),
+                            s = c && this._doPortalSignIn(a) ? b("esri_auth") : null;
                         c = c ? this.findCredential(a) : null;
                         if (s || c)return s = s && l.fromJson(s), p = Error("You are currently signed in as: '" + (s && s.email || c && c.userId) + "'. You do not have access to this resource: " +
                             a), p.code = "IdentityManagerBase.1", p.httpCode = r && r.httpCode, p.messageCode = r ? r.messageCode : null, p.subcode = r ? r.subcode : null, p.details = r ? r.details : null, p.log = h.isDebug, g.errback(p), g;
@@ -7373,7 +7404,8 @@ require({
                             a.replace(this._gwItem, "$1") || this._gwGroup.test(a) && a.replace(this._gwGroup, "$1") || ""
                     },
                     generateToken: function (e, f, c) {
-                        var q, d, k, s, v, m, u = new g(window.location.href.toLowerCase()), y = b("esri_auth"), w, K = e.webTierAuth && !f;
+                        var q, d, k, s, v, m, u = new g(window.location.href.toLowerCase()), y = b("esri_auth"), w,
+                            K = e.webTierAuth && !f;
                         s = e.shortLivedTokenValidity;
                         var I;
                         f && (I = a.id.tokenValidity || s || a.id.defaultTokenValidity, I > s && (I = s));
@@ -7423,9 +7455,10 @@ require({
                     _findCredential: function (a, b) {
                         var e = -1, f, c, r, q, g = b && b.token;
                         f = b && b.resource;
-                        var d = this._isServerRsrc(a) ? "server" : "portal", k = m.filter(this.credentials, function (b) {
-                            return p.hasSameOrigin(b.server, a, !0) && b.scope === d
-                        });
+                        var d = this._isServerRsrc(a) ? "server" : "portal",
+                            k = m.filter(this.credentials, function (b) {
+                                return p.hasSameOrigin(b.server, a, !0) && b.scope === d
+                            });
                         a = f || a;
                         if (k.length)if (1 === k.length)if (f = k[0], r = (c = (q = this.findServerInfo(f.server)) && q.owningSystemUrl) && this.findCredential(c, f.userId), e =
                                 this._getIdenticalSvcIdx(a, f), g) -1 !== e && (f.resources.splice(e, 1), this._removeResource(a, r)); else return -1 === e && f.resources.push(a), this._addResource(a, r), f; else {
@@ -7454,7 +7487,8 @@ require({
                     },
                     _sanitizeUrl: function (a) {
                         a = p.fixUrl(n.trim(a));
-                        var b = (e.defaults.io.proxyUrl || "").toLowerCase(), f = b ? a.toLowerCase().indexOf(b + "?") : -1;
+                        var b = (e.defaults.io.proxyUrl || "").toLowerCase(),
+                            f = b ? a.toLowerCase().indexOf(b + "?") : -1;
                         -1 !== f && (a = a.substring(f + b.length + 1));
                         return p.urlToObject(a).path
                     },
@@ -7568,7 +7602,8 @@ require({
                     },
                     _doPortalSignIn: function (a) {
                         if (b.isSupported()) {
-                            var e = b("esri_auth"), f = this._portalConfig, c = window.location.href, r = this.findServerInfo(a);
+                            var e = b("esri_auth"), f = this._portalConfig, c = window.location.href,
+                                r = this.findServerInfo(a);
                             if (this.useSignInPage && (f || this._isPortalDomain(c) || e) && (r ? r.hasPortal || r.owningSystemUrl && this._isPortalDomain(r.owningSystemUrl) :
                                     this._isPortalDomain(a)) && (this._isIdProvider(c, a) || f && (p.hasSameOrigin(f.restBaseUrl, a, !0) || this._isIdProvider(f.restBaseUrl, a)) || p.hasSameOrigin(c, a, !0)))return !0
                         }
@@ -7578,9 +7613,9 @@ require({
                         var r = !0;
                         c = c ? b.adminTokenServiceUrl : b.tokenServiceUrl;
                         if (0 === n.trim(c).toLowerCase().indexOf("https:") && 0 !== window.location.href.toLowerCase().indexOf("https:") && (!e.defaults.io.useCors || !p.canUseXhr(c) && !p.canUseXhr(p.getProxyUrl(!0).path))) r = this._protocolFunc ? !!this._protocolFunc({
-                                resourceUrl: a,
-                                serverInfo: b
-                            }) : !1, r || (a = Error("Aborted the Sign-In process to avoid sending password over insecure connection."), a.code = "IdentityManagerBase.4", a.log = h.isDebug, console.log(a.message), f(a));
+                            resourceUrl: a,
+                            serverInfo: b
+                        }) : !1, r || (a = Error("Aborted the Sign-In process to avoid sending password over insecure connection."), a.code = "IdentityManagerBase.4", a.log = h.isDebug, console.log(a.message), f(a));
                         return r
                     },
                     _enqueue: function (a, b, e, f, c, r) {
@@ -7627,21 +7662,21 @@ require({
                             var k = a.sinfo_, s = !a.options_ || !1 !== a.options_.prompt;
                             e._doPortalSignIn(a.resUrl_) ?
                                 (p = b("esri_auth"), q = e._portalConfig, p ? (p = l.fromJson(p), c(new u({
-                                        userId: p.email,
-                                        server: k.server,
-                                        token: p.token,
-                                        expires: null
-                                    }))) : s ? (s = "", p = window.location.href, s = e.signInPage ? e.signInPage : q ? q.baseUrl + q.signin : e._isIdProvider(p, a.resUrl_) ? e._getOrigin(p) + "/home/signin.html" : k.tokenServiceUrl.replace(/\/sharing\/generatetoken/i, "") + "/home/signin.html", s = s.replace(/http:/i, "https:"), q && !1 === q.useSSL && (s = s.replace(/https:/i, "http:")), 0 === p.toLowerCase().replace("https", "http").indexOf(s.toLowerCase().replace("https",
-                                            "http")) ? (k = Error("Cannot redirect to Sign-In page from within Sign-In page. URL of the resource that triggered this workflow: " + a.resUrl_), k.code = "IdentityManagerBase.5", k.log = h.isDebug, r(k)) : e._redirectFunc ? e._redirectFunc({
-                                                    signInPage: s,
-                                                    returnUrlParamName: "returnUrl",
-                                                    returnUrl: p,
-                                                    resourceUrl: a.resUrl_,
-                                                    serverInfo: k
-                                                }) : window.location = s + "?returnUrl\x3d" + window.escape(p)) : (k = Error("User is not signed in."), k.code = "IdentityManagerBase.6", k.log = h.isDebug, r(k))) : q ? c(new u({
-                                        userId: q, server: k.server, token: g,
-                                        expires: f.isDefined(d) ? Number(d) : null, ssl: !!p
-                                    })) : s ? e._checkProtocol(a.resUrl_, k, r, a.admin_) && (s = a.options_, a.admin_ && (s = s || {}, s.isAdmin = !0), a._pendingDfd = e.signIn(a.resUrl_, k, s).addCallbacks(c, r)) : (k = Error("User is not signed in."), k.code = "IdentityManagerBase.6", k.log = h.isDebug, r(k))
+                                    userId: p.email,
+                                    server: k.server,
+                                    token: p.token,
+                                    expires: null
+                                }))) : s ? (s = "", p = window.location.href, s = e.signInPage ? e.signInPage : q ? q.baseUrl + q.signin : e._isIdProvider(p, a.resUrl_) ? e._getOrigin(p) + "/home/signin.html" : k.tokenServiceUrl.replace(/\/sharing\/generatetoken/i, "") + "/home/signin.html", s = s.replace(/http:/i, "https:"), q && !1 === q.useSSL && (s = s.replace(/https:/i, "http:")), 0 === p.toLowerCase().replace("https", "http").indexOf(s.toLowerCase().replace("https",
+                                    "http")) ? (k = Error("Cannot redirect to Sign-In page from within Sign-In page. URL of the resource that triggered this workflow: " + a.resUrl_), k.code = "IdentityManagerBase.5", k.log = h.isDebug, r(k)) : e._redirectFunc ? e._redirectFunc({
+                                    signInPage: s,
+                                    returnUrlParamName: "returnUrl",
+                                    returnUrl: p,
+                                    resourceUrl: a.resUrl_,
+                                    serverInfo: k
+                                }) : window.location = s + "?returnUrl\x3d" + window.escape(p)) : (k = Error("User is not signed in."), k.code = "IdentityManagerBase.6", k.log = h.isDebug, r(k))) : q ? c(new u({
+                                userId: q, server: k.server, token: g,
+                                expires: f.isDefined(d) ? Number(d) : null, ssl: !!p
+                            })) : s ? e._checkProtocol(a.resUrl_, k, r, a.admin_) && (s = a.options_, a.admin_ && (s = s || {}, s.isAdmin = !0), a._pendingDfd = e.signIn(a.resUrl_, k, s).addCallbacks(c, r)) : (k = Error("User is not signed in."), k.code = "IdentityManagerBase.6", k.log = h.isDebug, r(k))
                         }, g = function () {
                             var b = a.sinfo_, q = b.owningSystemUrl, p = a.options_, g, d, k;
                             p && (g = p.token, d = p.error);
@@ -7652,56 +7687,56 @@ require({
                                 return !!k
                             }, e);
                             k ? (p = e.findCredential(a.resUrl_, k.userId)) ? c(p) : w(b, e._legacyFed) ? (p = k.toJson(), p.server = b.server, p.resources = null, c(new u(p))) : (a._pendingDfd = e.generateToken(e.findServerInfo(k.server), null, {
-                                            serverUrl: a.resUrl_,
-                                            token: k.token,
-                                            ssl: k.ssl
-                                        })).addCallbacks(function (e) {
-                                            c(new u({
-                                                userId: k.userId,
-                                                server: b.server,
-                                                token: e.token,
-                                                expires: f.isDefined(e.expires) ? Number(e.expires) : null,
-                                                ssl: !!e.ssl,
-                                                isAdmin: a.admin_,
-                                                validity: e.validity
-                                            }))
-                                        }, r) : (e._busy = null, g && (a.options_.token = null), (a._pendingDfd =
-                                    e.getCredential(q.replace(/\/?$/, "/sharing"), {
-                                        resource: a.resUrl_,
-                                        token: g,
-                                        error: d
-                                    })).addCallbacks(function (b) {
-                                    e._enqueue(a.resUrl_, a.sinfo_, a.options_, a, a.admin_)
-                                }, function (a) {
-                                    r(a)
+                                serverUrl: a.resUrl_,
+                                token: k.token,
+                                ssl: k.ssl
+                            })).addCallbacks(function (e) {
+                                c(new u({
+                                    userId: k.userId,
+                                    server: b.server,
+                                    token: e.token,
+                                    expires: f.isDefined(e.expires) ? Number(e.expires) : null,
+                                    ssl: !!e.ssl,
+                                    isAdmin: a.admin_,
+                                    validity: e.validity
                                 }))
+                            }, r) : (e._busy = null, g && (a.options_.token = null), (a._pendingDfd =
+                                e.getCredential(q.replace(/\/?$/, "/sharing"), {
+                                    resource: a.resUrl_,
+                                    token: g,
+                                    error: d
+                                })).addCallbacks(function (b) {
+                                e._enqueue(a.resUrl_, a.sinfo_, a.options_, a, a.admin_)
+                            }, function (a) {
+                                r(a)
+                            }))
                         }, d = a.sinfo_.owningSystemUrl, k = this._isServerRsrc(a.resUrl_), s = a.sinfo_._restInfoDfd;
                         s ? s.addCallbacks(function (b) {
-                                var f = a.sinfo_;
-                                f.adminTokenServiceUrl = f._restInfoDfd.adminUrl_;
-                                f._restInfoDfd = null;
-                                f.tokenServiceUrl = n.getObject("authInfo.tokenServicesUrl", !1, b) || n.getObject("authInfo.tokenServiceUrl", !1, b) || n.getObject("tokenServiceUrl",
-                                        !1, b);
-                                f.shortLivedTokenValidity = n.getObject("authInfo.shortLivedTokenValidity", !1, b);
-                                f.currentVersion = b.currentVersion;
-                                f.owningTenant = b.owningTenant;
-                                if (b = f.owningSystemUrl = b.owningSystemUrl) e._portals.push(b), !f.hasPortal && p.hasSameOrigin(b, a.resUrl_, !0) && (f._selfDfd = e._getPortalSelf(b.replace(/\/?$/, "/sharing/rest/portals/self"), a.resUrl_), f.hasPortal = !0);
-                                k && b ? g() : q()
-                            }, function () {
-                                a.sinfo_._restInfoDfd = null;
-                                var b = Error("Unknown resource - could not find token service endpoint.");
-                                b.code = "IdentityManagerBase.2";
-                                b.log = h.isDebug;
-                                r(b)
-                            }) : k && d ? g() : a.sinfo_._selfDfd ? (d = function (b) {
-                                        a.sinfo_._selfDfd = null;
-                                        var f = b && b.user && b.user.username, c = b && b.allSSL;
-                                        a.sinfo_.webTierAuth = !!f;
-                                        f && e.normalizeWebTierAuth ? (a.sinfo_._tokenDfd = e.generateToken(a.sinfo_, null, {ssl: c}), b = function (b) {
-                                                a.sinfo_._tokenDfd = null;
-                                                q(f, c, b && b.token, b && b.expires)
-                                            }, a.sinfo_._tokenDfd.then(b, b)) : q(f, c)
-                                    }, a.sinfo_._selfDfd.then(d, d)) : q()
+                            var f = a.sinfo_;
+                            f.adminTokenServiceUrl = f._restInfoDfd.adminUrl_;
+                            f._restInfoDfd = null;
+                            f.tokenServiceUrl = n.getObject("authInfo.tokenServicesUrl", !1, b) || n.getObject("authInfo.tokenServiceUrl", !1, b) || n.getObject("tokenServiceUrl",
+                                    !1, b);
+                            f.shortLivedTokenValidity = n.getObject("authInfo.shortLivedTokenValidity", !1, b);
+                            f.currentVersion = b.currentVersion;
+                            f.owningTenant = b.owningTenant;
+                            if (b = f.owningSystemUrl = b.owningSystemUrl) e._portals.push(b), !f.hasPortal && p.hasSameOrigin(b, a.resUrl_, !0) && (f._selfDfd = e._getPortalSelf(b.replace(/\/?$/, "/sharing/rest/portals/self"), a.resUrl_), f.hasPortal = !0);
+                            k && b ? g() : q()
+                        }, function () {
+                            a.sinfo_._restInfoDfd = null;
+                            var b = Error("Unknown resource - could not find token service endpoint.");
+                            b.code = "IdentityManagerBase.2";
+                            b.log = h.isDebug;
+                            r(b)
+                        }) : k && d ? g() : a.sinfo_._selfDfd ? (d = function (b) {
+                            a.sinfo_._selfDfd = null;
+                            var f = b && b.user && b.user.username, c = b && b.allSSL;
+                            a.sinfo_.webTierAuth = !!f;
+                            f && e.normalizeWebTierAuth ? (a.sinfo_._tokenDfd = e.generateToken(a.sinfo_, null, {ssl: c}), b = function (b) {
+                                a.sinfo_._tokenDfd = null;
+                                q(f, c, b && b.token, b && b.expires)
+                            }, a.sinfo_._tokenDfd.then(b, b)) : q(f, c)
+                        }, a.sinfo_._selfDfd.then(d, d)) : q()
                     }
                 });
                 u = d(null, {
@@ -7711,10 +7746,11 @@ require({
                             this.resources || [];
                         f.isDefined(this.creationTime) || (this.creationTime = (new Date).getTime())
                     }, refreshToken: function () {
-                        var b = this, e = this.resources && this.resources[0], c = a.id.findServerInfo(this.server), r = c && c.owningSystemUrl, q = !!r && "server" === this.scope, g = q && w(c, a.id._legacyFed), d = q && a.id.findServerInfo(r), k, s = (k = c.webTierAuth) && a.id.normalizeWebTierAuth, l = t[this.server], l = l && l[this.userId], h = {
-                            username: this.userId,
-                            password: l
-                        }, v;
+                        var b = this, e = this.resources && this.resources[0], c = a.id.findServerInfo(this.server),
+                            r = c && c.owningSystemUrl, q = !!r && "server" === this.scope,
+                            g = q && w(c, a.id._legacyFed), d = q && a.id.findServerInfo(r), k,
+                            s = (k = c.webTierAuth) && a.id.normalizeWebTierAuth, l = t[this.server],
+                            l = l && l[this.userId], h = {username: this.userId, password: l}, v;
                         if (!k || s)if (q && !d && m.some(a.id.serverInfos, function (b) {
                                 a.id._isIdProvider(r,
                                     b.server) && (d = b);
@@ -7748,7 +7784,8 @@ require({
                     },
                     onTokenChange: function (b) {
                         clearTimeout(this._refreshTimer);
-                        var e = this.server && a.id.findServerInfo(this.server), c = (e = e && e.owningSystemUrl) && a.id.findServerInfo(e);
+                        var e = this.server && a.id.findServerInfo(this.server),
+                            c = (e = e && e.owningSystemUrl) && a.id.findServerInfo(e);
                         !1 !== b && ((!e || "portal" === this.scope || c && c.webTierAuth && !a.id.normalizeWebTierAuth) && (f.isDefined(this.expires) || f.isDefined(this.validity))) && this._startRefreshTimer()
                     }, onDestroy: function () {
                     }, destroy: function () {
@@ -7838,7 +7875,8 @@ require({
                             if (a = this.sizeRange) e = a[0], f = a[1], a = Math.abs(f - e) * q, this._setSymbolSize(c, e < f ? e + a :
                                 e - a);
                             if (a = this.colorRange) {
-                                var f = a[0], p = a[1], g = Math.round, e = new n, r = f.r, d = p.r, a = Math.abs(d - r) * q;
+                                var f = a[0], p = a[1], g = Math.round, e = new n, r = f.r, d = p.r,
+                                    a = Math.abs(d - r) * q;
                                 e.r = g(r < d ? r + a : r - a);
                                 r = f.g;
                                 d = p.g;
@@ -7914,7 +7952,8 @@ require({
                         },
                         attr: function (a, b) {
                             if (h.isDebug) {
-                                var e = arguments.callee._ach || (arguments.callee._ach = {}), f = (arguments.callee.caller || "unknown caller").toString();
+                                var e = arguments.callee._ach || (arguments.callee._ach = {}),
+                                    f = (arguments.callee.caller || "unknown caller").toString();
                                 e[f] || (l.deprecated(this.declaredClass + "::attr() is deprecated. Use get() or set() instead, called from " + f, "", "2.0"), e[f] = !0)
                             }
                             return 2 <= arguments.length || "object" === typeof a ? this.set.apply(this, arguments) : this.get(a)
@@ -7950,7 +7989,7 @@ require({
                             this._symbols = {};
                             this.infos = [];
                             b && !b.declaredClass ? (a = b, this.defaultSymbol = (b = a.defaultSymbol) && (b.declaredClass ? b : g.fromJson(b)), this.attributeField = a.field1, this.attributeField2 = a.field2, this.attributeField3 = a.field3, this.fieldDelimiter = a.fieldDelimiter, this.defaultLabel = a.defaultLabel, h.forEach(a.uniqueValueInfos, this._addValueInfo, this)) : (this.defaultSymbol = b, this.attributeField = a, this.attributeField2 =
-                                    e, this.attributeField3 = f, this.fieldDelimiter = c);
+                                e, this.attributeField3 = f, this.fieldDelimiter = c);
                             this._multiple = !!this.attributeField2
                         }, addValue: function (b, a) {
                             var e = n.isObject(b) ? b : {value: b, symbol: a};
@@ -7961,7 +8000,7 @@ require({
                         }, getUniqueValueInfo: function (b) {
                             var a = this.attributeField, e = b.attributes, f, c;
                             this._multiple ? (b = this.attributeField2, f = this.attributeField3, c = [], a && c.push(e[a]), b && c.push(e[b]), f && c.push(e[f]),
-                                    a = c.join(this.fieldDelimiter || "")) : a = n.isFunction(a) ? a(b) : e[a];
+                                a = c.join(this.fieldDelimiter || "")) : a = n.isFunction(a) ? a(b) : e[a];
                             return this._symbols[a]
                         }, getSymbol: function (b) {
                             return (b = this.getUniqueValueInfo(b)) && b.symbol || this.defaultSymbol
@@ -8023,7 +8062,9 @@ require({
                     var b = d("esri-transforms3d");
                     if (void 0 !== a && null !== a) b = a; else if (b && (g || c && !d("esri-iphone"))) b = !1;
                     var q = b ? "translate3d(" : "translate(", p = b ? g ? ",-1px)" :
-                            ",0px)" : ")", h = b ? "scale3d(" : "scale(", r = b ? ",1)" : ")", s = b ? "rotate3d(0,0,1," : "rotate(", t = b ? "matrix3d(" : "matrix(", y = b ? ",0,0," : ",", w = b ? ",0,0,0,0,1,0," : ",", u = b ? ",0,1)" : ")";
+                            ",0px)" : ")", h = b ? "scale3d(" : "scale(", r = b ? ",1)" : ")",
+                        s = b ? "rotate3d(0,0,1," : "rotate(", t = b ? "matrix3d(" : "matrix(", y = b ? ",0,0," : ",",
+                        w = b ? ",0,0,0,0,1,0," : ",", u = b ? ",0,1)" : ")";
                     return {
                         names: {
                             transition: k && "-webkit-transition" || n && "MozTransition" || l && "OTransition" || m && "msTransition",
@@ -8056,12 +8097,13 @@ require({
                     }, own: function () {
                         d.forEach(arguments,
                             function (d) {
-                                var k = "destroyRecursive" in d ? "destroyRecursive" : "destroy" in d ? "destroy" : "remove", l = h.before(this, "destroy", function (c) {
-                                    d[k](c)
-                                }), g = h.after(d, k, function () {
-                                    l.remove();
-                                    g.remove()
-                                }, !0)
+                                var k = "destroyRecursive" in d ? "destroyRecursive" : "destroy" in d ? "destroy" : "remove",
+                                    l = h.before(this, "destroy", function (c) {
+                                        d[k](c)
+                                    }), g = h.after(d, k, function () {
+                                        l.remove();
+                                        g.remove()
+                                    }, !0)
                             }, this);
                         return arguments
                     }
@@ -8215,10 +8257,10 @@ require({
                     getFill: function () {
                         var a = this.style;
                         return a === e.STYLE_NULL ? null : a === e.STYLE_SOLID ? this.color : h.mixin({}, k.defaultPattern, {
-                                    src: this.patternUrlPrefix + a + ".png",
-                                    width: 10,
-                                    height: 10
-                                })
+                            src: this.patternUrlPrefix + a + ".png",
+                            width: 10,
+                            height: 10
+                        })
                     },
                     getShapeDescriptors: function () {
                         return {
@@ -8241,14 +8283,15 @@ require({
         "esri/MapNavigationManager": function () {
             define("dojo/_base/declare dojo/_base/lang dojo/_base/array dojo/_base/connect dojo/_base/event dojo/mouse dojo/keys esri/kernel esri/MouseEvents esri/TouchEvents esri/PointerEvents esri/config esri/sniff esri/lang esri/fx esri/graphic esri/tileUtils esri/geometry/ScreenPoint esri/geometry/Extent esri/geometry/Rect esri/geometry/mathUtils esri/symbols/SimpleFillSymbol".split(" "),
                 function (d, h, n, m, k, l, g, c, b, a, e, f, q, p, v, r, s, t, y, w, u, z) {
-                    var C = m.connect, x = m.disconnect, A = q("chrome"), B = q("safari"), D = [g.NUMPAD_PLUS, 61, g.NUMPAD_MINUS, g.UP_ARROW, g.NUMPAD_8, g.RIGHT_ARROW, g.NUMPAD_6, g.DOWN_ARROW, g.NUMPAD_2, g.LEFT_ARROW, g.NUMPAD_4, g.PAGE_UP, g.NUMPAD_9, g.PAGE_DOWN, g.NUMPAD_3, g.END, g.NUMPAD_1, g.HOME, g.NUMPAD_7];
+                    var C = m.connect, x = m.disconnect, A = q("chrome"), B = q("safari"),
+                        D = [g.NUMPAD_PLUS, 61, g.NUMPAD_MINUS, g.UP_ARROW, g.NUMPAD_8, g.RIGHT_ARROW, g.NUMPAD_6, g.DOWN_ARROW, g.NUMPAD_2, g.LEFT_ARROW, g.NUMPAD_4, g.PAGE_UP, g.NUMPAD_9, g.PAGE_DOWN, g.NUMPAD_3, g.END, g.NUMPAD_1, g.HOME, g.NUMPAD_7];
                     d = d(null, {
                         declaredClass: "esri.MapNavigationManager", eventModel: "", constructor: function (c, p) {
                             this.map = c;
                             h.mixin(this, p);
                             var g = c.__container;
                             q("esri-pointer") ? (this.pointerEvents = new e(g,
-                                    {map: c}), this.eventModel = "pointer") : q("esri-touch") ? (this.touchEvents = new a(g, {map: c}), this.eventModel = "touch", q("ios") || (this.mouseEvents = new b(g, {map: c}))) : (this.mouseEvents = new b(g, {map: c}), this.eventModel = "mouse");
+                                {map: c}), this.eventModel = "pointer") : q("esri-touch") ? (this.touchEvents = new a(g, {map: c}), this.eventModel = "touch", q("ios") || (this.mouseEvents = new b(g, {map: c}))) : (this.mouseEvents = new b(g, {map: c}), this.eventModel = "mouse");
                             this._zoomRect = new r(null, new z(f.defaults.map.zoomSymbol));
                             this._keyDx = this._keyDy = 0;
                             this._adjustPinch = h.hitch(this, this._adjustPinch);
@@ -8272,15 +8315,16 @@ require({
                         }, _zoomInit: function (a) {
                             var b = this.map, e = this.pointerEvents || this.mouseEvents;
                             if ((l.isLeft(a) || a.pointerType) && b.isRubberBandZoom && a.shiftKey) b.setCursor("crosshair"), this._dragOrigin = h.mixin({}, a.screenPoint), this._zoomDir = a.ctrlKey || a.metaKey ? -1 : 1, this.pointerEvents ? (this._zoomHandle = C(e,
-                                    "onSwipeMove", this, this._zoom), this._zoomEndHandle = C(e, "onSwipeEnd", this, this._zoomEnd)) : (this._zoomHandle = C(e, "onMouseDrag", this, this._zoom), this._zoomEndHandle = C(e, "onMouseUp", this, this._zoomEnd)), A && a.preventDefault()
+                                "onSwipeMove", this, this._zoom), this._zoomEndHandle = C(e, "onSwipeEnd", this, this._zoomEnd)) : (this._zoomHandle = C(e, "onMouseDrag", this, this._zoom), this._zoomEndHandle = C(e, "onMouseUp", this, this._zoomEnd)), A && a.preventDefault()
                         }, _zoom: function (a) {
                             var b = this.map, e = this._normalizeRect(a).offset(b.__visibleRect.x, b.__visibleRect.y);
                             a = b.graphics;
                             var f = this._zoomRect;
                             f.geometry || b.setCursor("crosshair");
                             f.geometry && a.remove(f, !0);
-                            var c = b.toMap(new t(e.x, e.y)), e = b.toMap(new t(e.x + e.width, e.y + e.height)), e = new w(c.x,
-                                c.y, e.x - c.x, c.y - e.y, b.spatialReference);
+                            var c = b.toMap(new t(e.x, e.y)), e = b.toMap(new t(e.x + e.width, e.y + e.height)),
+                                e = new w(c.x,
+                                    c.y, e.x - c.x, c.y - e.y, b.spatialReference);
                             e._originOnly = !0;
                             f.setGeometry(e);
                             a.add(f, !0)
@@ -8417,7 +8461,7 @@ require({
                         }, _swipe: function (a) {
                             var b = this.map;
                             b.__panning ? (this._panX = a.screenPoint.x, this._panY = a.screenPoint.y, b.__pan(a.screenPoint.x - this._dragOrigin.x, a.screenPoint.y -
-                                    this._dragOrigin.y)) : (b.setCursor("move"), b.__panStart(a.screenPoint.x, a.screenPoint.y))
+                                this._dragOrigin.y)) : (b.setCursor("move"), b.__panStart(a.screenPoint.x, a.screenPoint.y))
                         }, _swipeEnd: function (a) {
                             x(this._swipeHandle);
                             x(this._swipeEndHandle);
@@ -8435,7 +8479,7 @@ require({
                         }, _pinch: function (a) {
                             var b = this.map;
                             a.screenPoints && (this.currLength = u.getLength(a.screenPoints[0], a.screenPoints[1]), b.__zooming ? (a = this.currLength / this._length, this._zoomStartExtent = this.__scaleExtent(b.extent, a, this._dragOrigin),
-                                    b.__zoom(this._zoomStartExtent, a, this._dragOrigin)) : (this._dragOrigin = new t((a.screenPoints[0].x + a.screenPoints[1].x) / 2, (a.screenPoints[0].y + a.screenPoints[1].y) / 2), this._length = this.currLength, b.__zoomStart(b.extent, this._dragOrigin)), b._fireOnScale(this.currLength / this._length, this._dragOrigin, !0))
+                                b.__zoom(this._zoomStartExtent, a, this._dragOrigin)) : (this._dragOrigin = new t((a.screenPoints[0].x + a.screenPoints[1].x) / 2, (a.screenPoints[0].y + a.screenPoints[1].y) / 2), this._length = this.currLength, b.__zoomStart(b.extent, this._dragOrigin)), b._fireOnScale(this.currLength / this._length, this._dragOrigin, !0))
                         }, _pinchEnd: function (a) {
                             a = this.map;
                             x(this._pinchHandle);
@@ -8446,7 +8490,10 @@ require({
                                 this._zoomAnimAnchor = a.toMap(this._dragOrigin);
                                 this._zoomStartExtent = this.__scaleExtent(a.extent, 1 / b, this._zoomAnimAnchor);
                                 if (a.__tileInfo) {
-                                    var c = s.getCandidateTileInfo(a, a.__tileInfo, this._zoomStartExtent), r = a.__getExtentForLevel(c.lod.level, this._zoomAnimAnchor), p = a.getMinZoom(), q = a.getMaxZoom(), g = r.extent, r = r.lod, d = e / g.getWidth(), k = c.lod.level;
+                                    var c = s.getCandidateTileInfo(a, a.__tileInfo, this._zoomStartExtent),
+                                        r = a.__getExtentForLevel(c.lod.level, this._zoomAnimAnchor),
+                                        p = a.getMinZoom(), q = a.getMaxZoom(), g = r.extent, r = r.lod,
+                                        d = e / g.getWidth(), k = c.lod.level;
                                     1 > b ? d > b && k-- : d < b && k++;
                                     k < p ? k = p : k > q && (k = q);
                                     k !== c.lod.level && (r = a.__getExtentForLevel(k, this._zoomAnimAnchor), g = r.extent, r = r.lod);
@@ -8472,7 +8519,9 @@ require({
                                 a, this._zoomAnimAnchor);
                             this.map.__zoom(b, a, this._dragOrigin)
                         }, _adjustPinchEnd: function () {
-                            var a = this.map, b = a.extent.getWidth() / this._zoomEndExtent.getWidth(), e = this.__scaleExtent(a.extent, 1 / b, this._zoomAnimAnchor), f = this._dragOrigin, c = this._zoomEndLod;
+                            var a = this.map, b = a.extent.getWidth() / this._zoomEndExtent.getWidth(),
+                                e = this.__scaleExtent(a.extent, 1 / b, this._zoomAnimAnchor), f = this._dragOrigin,
+                                c = this._zoomEndLod;
                             this._zoomStartExtent = this._zoomEndExtent = this._zoomEndLod = this._dragOrigin = a._zoomAnim = this._zoomAnimAnchor = null;
                             a.__zoomEnd(e, b, f, c, !0)
                         }, __scaleExtent: function (a, b, e) {
@@ -8589,8 +8638,9 @@ require({
                             this.touchEvents && this.touchEvents.destroy();
                             this.mouseEvents && this.mouseEvents.destroy();
                             this.pointerEvents && this.pointerEvents.destroy();
-                            var a, b = [this._panInitHandle, this._panStartHandle, this._panHandle, this._panEndHandle, this._zoomInitHandle, this._zoomHandle, this._zoomEndHandle, this._wheelHandle, this._mwMacHandle, this._dblClickHandle, this._zoomOutHandle, this._recenterHandle, this._sDblClickHandle, this._dblTapHandle,
-                                this._keyHandle, this._keyEndHandle, this._swipeInitHandle, this._swipeHandle, this._swipeEndHandle, this._pinchInitHandle, this._pinchHandle, this._pinchEndHandle];
+                            var a,
+                                b = [this._panInitHandle, this._panStartHandle, this._panHandle, this._panEndHandle, this._zoomInitHandle, this._zoomHandle, this._zoomEndHandle, this._wheelHandle, this._mwMacHandle, this._dblClickHandle, this._zoomOutHandle, this._recenterHandle, this._sDblClickHandle, this._dblTapHandle,
+                                    this._keyHandle, this._keyEndHandle, this._swipeInitHandle, this._swipeHandle, this._swipeEndHandle, this._pinchInitHandle, this._pinchHandle, this._pinchEndHandle];
                             for (a = 0; a < b.length; a++)x(b[a]);
                             this.map = this.touchEvents = this.mouseEvents = this.eventModel = this.pointerEvents = this._zoomRect = this._dragOrigin = this._panInitHandle = this._panStartHandle = this._panHandle = this._panEndHandle = this._zoomInitHandle = this._zoomHandle = this._zoomEndHandle = this._wheelHandle = this._mwMacHandle = this._dblClickHandle = this._zoomOutHandle =
                                 this._recenterHandle = this._sDblClickHandle = this._dblTapHandle = this._keyHandle = this._keyEndHandle = this._swipeInitHandle = this._swipeHandle = this._swipeEndHandle = this._pinchInitHandle = this._pinchHandle = this._pinchEndHandle = null
@@ -8611,10 +8661,10 @@ require({
                                 }), 0 < c.length)) {
                             var e;
                             b ? (e = {}, h.forEach(c, function (a) {
-                                    e[a[0]] = a[1]
-                                }), e = n.toJson(e)) : (e = [], h.forEach(c, function (a) {
-                                    e.push(a[0] + ":" + a[1])
-                                }), e = e.join(";"));
+                                e[a[0]] = a[1]
+                            }), e = n.toJson(e)) : (e = [], h.forEach(c, function (a) {
+                                e.push(a[0] + ":" + a[1])
+                            }), e = e.join(";"));
                             return e
                         }
                         return null
@@ -8646,7 +8696,7 @@ require({
                                 })) && 0 <= c[a].id) {
                                 var e = !0, f = c[a].maxScale, q = c[a].minScale;
                                 if (0 < f || 0 < q) 0 < f && 0 < q ? e = f <= g && g <= q : 0 < f ? e = f <= g : 0 < q && (e =
-                                            g <= q);
+                                        g <= q);
                                 e && b.push(c[a].id)
                             }
                         }
@@ -8761,17 +8811,17 @@ require({
                             if (this.bingMapsKey) {
                                 var b = this.resourceInfo;
                                 !this.loaded && b ? this._initLayer(b) : v({
-                                        url: a,
-                                        content: h.mixin({}, {
-                                            key: this.bingMapsKey,
-                                            ss: !0,
-                                            c: this.culture,
-                                            include: this.hasAttributionData ? "imageryProviders" : null
-                                        }),
-                                        callbackParamName: "jsonp",
-                                        load: this._initLayer,
-                                        error: this._errorHandler
-                                    })
+                                    url: a,
+                                    content: h.mixin({}, {
+                                        key: this.bingMapsKey,
+                                        ss: !0,
+                                        c: this.culture,
+                                        include: this.hasAttributionData ? "imageryProviders" : null
+                                    }),
+                                    callbackParamName: "jsonp",
+                                    load: this._initLayer,
+                                    error: this._errorHandler
+                                })
                             }
                         }
                     }, _initLayer: function (a,
@@ -8806,7 +8856,7 @@ require({
                         var a = new c, b = n.fromJson(this.resourceInfo), e;
                         this.hasAttributionData && b && (e = h.getObject("resourceSets.0.resources.0.imageryProviders", !1, b));
                         e ? a.callback({contributors: e}) : (b = Error("Layer does not have attribution data"),
-                                b.log = k.isDebug, a.errback(b));
+                            b.log = k.isDebug, a.errback(b));
                         return a
                     }, getTileUrl: function (a, b, e) {
                         return g.substitute(this.tileServers[b % this._tsLength].replace(/\{/g, "${"), {
@@ -8886,9 +8936,9 @@ require({
                         }
                     });
                     return f ? new c({paths: r, spatialReference: a.spatialReference}) : new b({
-                            rings: r,
-                            spatialReference: a.spatialReference
-                        })
+                        rings: r,
+                        spatialReference: a.spatialReference
+                    })
                 }
 
                 function v(b, e, f) {
@@ -8923,10 +8973,10 @@ require({
                             })
                         });
                         c === e ? q.rings ? d.forEach(q.rings, function (b, e) {
-                                    a[c] = a[c].addRing(b)
-                                }) : d.forEach(q.paths, function (b, e) {
-                                    a[c] = a[c].addPath(b)
-                                }) : (e = c, a[c] = q)
+                            a[c] = a[c].addRing(b)
+                        }) : d.forEach(q.paths, function (b, e) {
+                            a[c] = a[c].addPath(b)
+                        }) : (e = c, a[c] = q)
                     });
                     return a
                 }
@@ -8945,9 +8995,9 @@ require({
                             })), y) {
                             var p = e.fromJson(a.toJson()), g = a.getExtent();
                             "point" === a.type ? t.push(r(p, z, K)) : "multipoint" === a.type ? (p.points = d.map(p.points, function (a) {
-                                        return r(a, z, K)
-                                    }), t.push(p)) : "extent" === a.type ? (p = g._normalize(null, null, y), t.push(p.rings ? new b(p) : p)) : (a = f(g.xmin, K) * 2 * z, p = 0 === a ? p : q(p, a), g = g.offset(a, 0), g.intersects(M) && g.xmax !== z ? (P = g.xmax > P ? g.xmax : P, p = v(p, w), m.push(p), t.push("cut")) : g.intersects(W) && g.xmin !== K ? (P = g.xmax * 2 * z > P ? g.xmax * 2 * z : P, p = v(p, w, 360), m.push(p), t.push("cut")) :
-                                                t.push(p))
+                                return r(a, z, K)
+                            }), t.push(p)) : "extent" === a.type ? (p = g._normalize(null, null, y), t.push(p.rings ? new b(p) : p)) : (a = f(g.xmin, K) * 2 * z, p = 0 === a ? p : q(p, a), g = g.offset(a, 0), g.intersects(M) && g.xmax !== z ? (P = g.xmax > P ? g.xmax : P, p = v(p, w), m.push(p), t.push("cut")) : g.intersects(W) && g.xmin !== K ? (P = g.xmax * 2 * z > P ? g.xmax * 2 * z : P, p = v(p, w, 360), m.push(p), t.push("cut")) :
+                                t.push(p))
                         } else t.push(a); else t.push(a)
                     });
                     k = new c;
@@ -8959,42 +9009,42 @@ require({
                         l--
                     }
                     0 < m.length && 0 < R ? g ? g.cut(m, k, function (b) {
-                                m = s(m, b);
-                                var e = [];
-                                d.forEach(t, function (b, f) {
-                                    if ("cut" === b) {
-                                        var c = m.shift();
-                                        p[f].rings && 1 < p[f].rings.length && c.rings.length >= p[f].rings.length ? (t[f] = "simplify", e.push(c)) : t[f] = !0 === w ? a.geographicToWebMercator(c) : c
-                                    }
-                                });
-                                0 < e.length ? g.simplify(e, function (b) {
-                                        d.forEach(t, function (e, f) {
-                                            "simplify" === e && (t[f] = !0 === w ? a.geographicToWebMercator(b.shift()) :
-                                                b.shift())
-                                        });
-                                        h.callback(t)
-                                    }, function (a) {
-                                        h.errback(a)
-                                    }) : h.callback(t)
-                            }, function (a) {
-                                h.errback(a)
-                            }) : h.errback(Error("esri.geometry.normalizeCentralMeridian: 'geometryService' argument is missing.")) : (d.forEach(t, function (b, e) {
+                        m = s(m, b);
+                        var e = [];
+                        d.forEach(t, function (b, f) {
                             if ("cut" === b) {
-                                var f = m.shift();
-                                t[e] = !0 === w ? a.geographicToWebMercator(f) : f
+                                var c = m.shift();
+                                p[f].rings && 1 < p[f].rings.length && c.rings.length >= p[f].rings.length ? (t[f] = "simplify", e.push(c)) : t[f] = !0 === w ? a.geographicToWebMercator(c) : c
                             }
-                        }), h.callback(t));
+                        });
+                        0 < e.length ? g.simplify(e, function (b) {
+                            d.forEach(t, function (e, f) {
+                                "simplify" === e && (t[f] = !0 === w ? a.geographicToWebMercator(b.shift()) :
+                                    b.shift())
+                            });
+                            h.callback(t)
+                        }, function (a) {
+                            h.errback(a)
+                        }) : h.callback(t)
+                    }, function (a) {
+                        h.errback(a)
+                    }) : h.errback(Error("esri.geometry.normalizeCentralMeridian: 'geometryService' argument is missing.")) : (d.forEach(t, function (b, e) {
+                        if ("cut" === b) {
+                            var f = m.shift();
+                            t[e] = !0 === w ? a.geographicToWebMercator(f) : f
+                        }
+                    }), h.callback(t));
                     return h
                 }
 
                 function y(a, b, e, f) {
                     var c = !1, r;
                     h.isObject(a) && a && (h.isArray(a) ? a.length && ((r = a[0] && a[0].declaredClass) && -1 !== r.indexOf("Graphic") ? (a = d.map(a, function (a) {
-                                return a.geometry
-                            }), c = a.length ?
-                                !0 : !1) : r && -1 !== r.indexOf("esri.geometry.") && (c = !0)) : (r = a.declaredClass) && -1 !== r.indexOf("FeatureSet") ? (a = d.map(a.features || [], function (a) {
-                                return a.geometry
-                            }), c = a.length ? !0 : !1) : r && -1 !== r.indexOf("esri.geometry.") && (c = !0));
+                            return a.geometry
+                        }), c = a.length ?
+                            !0 : !1) : r && -1 !== r.indexOf("esri.geometry.") && (c = !0)) : (r = a.declaredClass) && -1 !== r.indexOf("FeatureSet") ? (a = d.map(a.features || [], function (a) {
+                        return a.geometry
+                    }), c = a.length ? !0 : !1) : r && -1 !== r.indexOf("esri.geometry.") && (c = !0));
                     c && b.push({index: e, property: f, value: a})
                 }
 
@@ -9046,12 +9096,12 @@ require({
                                     k = k.concat(a.value)
                                 }), k.length && (s = t(k, l.defaults.geometryService)));
                                 s ? (r._pendingDfd = s, s.addCallbacks(function (a) {
-                                        r.canceled || (p.assembly = u(a, q), r._pendingDfd = e.apply(b, f))
-                                    }, function (e) {
-                                        var c = b.declaredClass;
-                                        c && -1 !== c.indexOf("FeatureLayer") ? b._resolve([e], null, f[a.e], r, !0) : b._errorHandler(e,
-                                                f[a.e], r)
-                                    })) : r._pendingDfd = e.apply(b, f);
+                                    r.canceled || (p.assembly = u(a, q), r._pendingDfd = e.apply(b, f))
+                                }, function (e) {
+                                    var c = b.declaredClass;
+                                    c && -1 !== c.indexOf("FeatureLayer") ? b._resolve([e], null, f[a.e], r, !0) : b._errorHandler(e,
+                                        f[a.e], r)
+                                })) : r._pendingDfd = e.apply(b, f);
                                 return r
                             }
                         })
@@ -9199,7 +9249,8 @@ require({
                     b.add("script-readystatechange", function (a, b) {
                         return "undefined" !== typeof b.createElement("script").onreadystatechange && ("undefined" === typeof a.opera || "[object Opera]" !== a.opera.toString())
                     });
-                    var s = d.id.replace(/[\/\.\-]/g, "_"), t = 0, y = b("script-readystatechange") ? "readystatechange" : "load",
+                    var s = d.id.replace(/[\/\.\-]/g, "_"), t = 0,
+                        y = b("script-readystatechange") ? "readystatechange" : "load",
                         w = /complete|loaded/, u = this[s + "_callbacks"] = {}, z = [];
                     r.get = r;
                     r._attach = function (b, e, f) {
@@ -9215,8 +9266,8 @@ require({
                     r._remove = function (a, b, e) {
                         c.destroy(g.byId(a, b));
                         u[a] && (e ? u[a] = function () {
-                                delete u[a]
-                            } : delete u[a])
+                            delete u[a]
+                        } : delete u[a])
                     };
                     r._callbacksProperty = s + "_callbacks";
                     return r
@@ -9547,16 +9598,18 @@ require({
                         });
                         return p
                     }, attach: b._attach, remove: b._remove, _makeScriptDeferred: function (a, c) {
-                        var p = l._ioSetArgs(a, c || this._deferredCancel, this._deferredOk, this._deferredError), g = p.ioArgs;
+                        var p = l._ioSetArgs(a, c || this._deferredCancel, this._deferredOk, this._deferredError),
+                            g = p.ioArgs;
                         g.id = h._scopeName + "IoScript" + (a.callbackSuffix || this._counter++);
                         g.canDelete = !1;
                         g.jsonp = a.callbackParamName || a.jsonp;
-                        g.jsonp && (g.query = g.query || "", 0 < g.query.length && (g.query += "\x26"), g.query += g.jsonp + "\x3d" + (a.frameDoc ? "parent." : "") + h._scopeName + ".io.script.jsonp_" + g.id + "._jsonpCallback", g.frameDoc = a.frameDoc, g.canDelete = !0, p._jsonpCallback = this._jsonpCallback, this["jsonp_" + g.id] = p);
+                        g.jsonp && (g.query = g.query || "", 0 < g.query.length && (g.query += "\x26"), g.query += g.jsonp + "\x3d" + (a.frameDoc ? "parent." : "") + h._scopeName + ".io.script.jsonp_" + g.id + "._jsonpCallback", g.frameDoc = a.frameDoc, g.canDelete =
+                            !0, p._jsonpCallback = this._jsonpCallback, this["jsonp_" + g.id] = p);
                         p.addBoth(function (a) {
                             g.canDelete && (a instanceof Error ? e["jsonp_" + g.id]._jsonpCallback = function () {
-                                    delete e["jsonp_" + g.id];
-                                    if (g.requestId) h.global[b._callbacksProperty][g.requestId]()
-                                } : e._addDeadScript(g))
+                                delete e["jsonp_" + g.id];
+                                if (g.requestId) h.global[b._callbacksProperty][g.requestId]()
+                            } : e._addDeadScript(g))
                         });
                         return p
                     }, _deferredCancel: function (a) {
@@ -9626,7 +9679,7 @@ require({
                             h.mixin(this, m.defaultRect);
                             h.isObject(a) && "extent" === a.type && (b = a.ymax, e = a.getWidth(), c = a.getHeight(), r = a.spatialReference, a = a.xmin);
                             h.isObject(a) ? (h.mixin(this, a), this.spatialReference && (this.spatialReference = new l(this.spatialReference))) : (this.x =
-                                    a, this.y = b, this.width = e, this.height = c, this.spatialReference = r);
+                                a, this.y = b, this.width = e, this.height = c, this.spatialReference = r);
                             this.verifySR()
                         }, getCenter: function () {
                             return new c(this.x + this.width / 2, this.y + this.height / 2, this.spatialReference)
@@ -9802,8 +9855,8 @@ require({
                 n.substitute = function (m, k, l, g) {
                     g = g || d.global;
                     l = l ? h.hitch(g, l) : function (c) {
-                            return c
-                        };
+                        return c
+                    };
                     return m.replace(/\$\{([^\s\:\}]+)(?:\:([^\s\:\}]+))?\}/g, function (c, b, a) {
                         c = h.getObject(b, !1, k);
                         a && (c = h.getObject(a, !1, g).call(g, c, b));
@@ -9811,13 +9864,13 @@ require({
                     })
                 };
                 n.trim = String.prototype.trim ? h.trim : function (d) {
-                        d = d.replace(/^\s+/, "");
-                        for (var k = d.length - 1; 0 <= k; k--)if (/\S/.test(d.charAt(k))) {
-                            d = d.substring(0, k + 1);
-                            break
-                        }
-                        return d
-                    };
+                    d = d.replace(/^\s+/, "");
+                    for (var k = d.length - 1; 0 <= k; k--)if (/\S/.test(d.charAt(k))) {
+                        d = d.substring(0, k + 1);
+                        break
+                    }
+                    return d
+                };
                 return n
             })
         },
@@ -9851,11 +9904,13 @@ require({
         "esri/layers/GraphicsLayer": function () {
             define("dojo/_base/declare dojo/_base/connect dojo/_base/lang dojo/_base/array dojo/dom-attr dojo/dom-construct dojo/dom-style dojox/gfx dojox/gfx/matrix esri/kernel esri/lang esri/sniff esri/domUtils esri/layers/layer esri/symbols/MarkerSymbol esri/symbols/SimpleMarkerSymbol esri/geometry/Point esri/geometry/ScreenPoint esri/geometry/Extent esri/geometry/mathUtils esri/geometry/screenUtils esri/PluginTarget".split(" "),
                 function (d, h, n, m, k, l, g, c, b, a, e, f, q, p, v, r, s, t, y, w, u, z) {
-                    var C, x = -1 !== c.renderer.toLowerCase().indexOf("svg"), A = -1 !== c.renderer.toLowerCase().indexOf("canvas"), B = 9 > f("ie"), D = f("esri-touch"), F = d(null, {
-                        declaredClass: "esri.layers._GraphicsContainer", _setMap: function (a, b) {
-                            var e, f = this._connects = [];
-                            this._map = a;
-                            A ? (e = l.create("div", {style: "overflow: visible; position: absolute;"}, b), this._surface = {
+                    var C, x = -1 !== c.renderer.toLowerCase().indexOf("svg"),
+                        A = -1 !== c.renderer.toLowerCase().indexOf("canvas"), B = 9 > f("ie"), D = f("esri-touch"),
+                        F = d(null, {
+                            declaredClass: "esri.layers._GraphicsContainer", _setMap: function (a, b) {
+                                var e, f = this._connects = [];
+                                this._map = a;
+                                A ? (e = l.create("div", {style: "overflow: visible; position: absolute;"}, b), this._surface = {
                                     getEventSource: function () {
                                         return e
                                     }
@@ -9864,82 +9919,86 @@ require({
                                     overflow: "visible",
                                     position: "absolute"
                                 }));
-                            f.push(h.connect(a, "onResize", this, "_onResizeHandler"));
-                            return e
-                        }, _onResizeHandler: function (a, b, e) {
-                            a = this._surface.getEventSource();
-                            var f = this._map, c;
-                            B && g.set(a = a.parentNode, {
-                                width: b + "px",
-                                height: e + "px",
-                                clip: "rect(0px " + b + "px " + e + "px 0px)"
-                            });
-                            k.set(a, "width", b);
-                            k.set(a, "height", e);
-                            this._surface.declaredClass || m.forEach(a.childNodes, function (a) {
+                                f.push(h.connect(a, "onResize", this, "_onResizeHandler"));
+                                return e
+                            }, _onResizeHandler: function (a, b, e) {
+                                a = this._surface.getEventSource();
+                                var f = this._map, c;
+                                B && g.set(a = a.parentNode, {
+                                    width: b + "px",
+                                    height: e + "px",
+                                    clip: "rect(0px " + b + "px " + e + "px 0px)"
+                                });
                                 k.set(a, "width", b);
-                                k.set(a, "height", e)
-                            });
-                            f.loaded && (f.graphics.suspended || (f.graphics._resized = !0), m.forEach(f.graphicsLayerIds, function (a) {
-                                c = f.getLayer(a);
-                                c.suspended || (c._resized = !0)
-                            }))
-                        }, _cleanUp: function () {
-                            m.forEach(this._connects, h.disconnect, h);
-                            this._map = this._surface = null
-                        }, _processEvent: function (a) {
-                            var b = this._map;
-                            a.screenPoint = new t(a.pageX - b.position.x, a.pageY - b.position.y);
-                            a.mapPoint = b.toMap(a.screenPoint)
-                        },
-                        _canvasDownHandler: function (a) {
-                            this._processEvent(a);
-                            this._downPt = a.screenPoint.x + "," + a.screenPoint.y
-                        }, _canvasUpHandler: function (a) {
-                            this._processEvent(a);
-                            this._upPt = a.screenPoint.x + "," + a.screenPoint.y
-                        }, _tolerance: 15, _isPrimaryMatch: function (a, b, e, f) {
-                            if (!a.visible || !b)return !1;
-                            var c = b.getTransformedBoundingBox(), r;
-                            return c ? (r = new y(c[0].x, c[0].y, c[2].x, c[2].y), delete r.spatialReference, D ? r.intersects(e) : r.contains(f)) : m.some(b.children || [], function (a) {
+                                k.set(a, "height", e);
+                                this._surface.declaredClass || m.forEach(a.childNodes, function (a) {
+                                    k.set(a, "width", b);
+                                    k.set(a, "height", e)
+                                });
+                                f.loaded && (f.graphics.suspended || (f.graphics._resized = !0), m.forEach(f.graphicsLayerIds, function (a) {
+                                    c = f.getLayer(a);
+                                    c.suspended || (c._resized = !0)
+                                }))
+                            }, _cleanUp: function () {
+                                m.forEach(this._connects, h.disconnect, h);
+                                this._map = this._surface = null
+                            }, _processEvent: function (a) {
+                                var b = this._map;
+                                a.screenPoint = new t(a.pageX - b.position.x, a.pageY - b.position.y);
+                                a.mapPoint = b.toMap(a.screenPoint)
+                            },
+                            _canvasDownHandler: function (a) {
+                                this._processEvent(a);
+                                this._downPt = a.screenPoint.x + "," + a.screenPoint.y
+                            }, _canvasUpHandler: function (a) {
+                                this._processEvent(a);
+                                this._upPt = a.screenPoint.x + "," + a.screenPoint.y
+                            }, _tolerance: 15, _isPrimaryMatch: function (a, b, e, f) {
+                                if (!a.visible || !b)return !1;
+                                var c = b.getTransformedBoundingBox(), r;
+                                return c ? (r = new y(c[0].x, c[0].y, c[2].x, c[2].y), delete r.spatialReference, D ? r.intersects(e) : r.contains(f)) : m.some(b.children || [], function (a) {
                                     c = a.getTransformedBoundingBox();
                                     r = new y(c[0].x,
                                         c[0].y, c[2].x, c[2].y);
                                     delete r.spatialReference;
                                     return D ? r.intersects(e) : r.contains(f)
                                 })
-                        }, _canvasClickHandler: function (a) {
-                            if (this._downPt && this._upPt && this._downPt === this._upPt) {
-                                this._processEvent(a);
-                                var b = this._map, f = m.map(b.graphicsLayerIds, function (a) {
-                                    return b.getLayer(a)
-                                });
-                                f.push(b.graphics);
-                                f.reverse();
-                                var f = m.filter(f, function (a) {
-                                    return a.loaded && a._mouseEvents && !a.suspended && (!e.isDefined(a.opacity) || 0 < a.opacity)
-                                }), c = a.screenPoint, r = this._tolerance, p = c.x - r, q = c.y + r, g = c.x + r, r = c.y - r, d = new y(p,
-                                    r, g, q), p = b.toMap(new t(p, q)), g = b.toMap(new t(g, r)), q = p.spatialReference._getInfo(), k = new y(y.prototype._normalizeX(p.x, q).x, p.y, y.prototype._normalizeX(g.x, q).x, g.y, p.spatialReference), s;
-                                delete d.spatialReference;
-                                m.some(f, function (a) {
-                                    a = m.filter(a.graphics, function (a) {
-                                        return this._isPrimaryMatch(a, a.getDojoShape(), d, c) || !(!a._bgShape || !this._isPrimaryMatch(a, a._bgShape, d, c))
+                            }, _canvasClickHandler: function (a) {
+                                if (this._downPt && this._upPt && this._downPt === this._upPt) {
+                                    this._processEvent(a);
+                                    var b = this._map, f = m.map(b.graphicsLayerIds, function (a) {
+                                        return b.getLayer(a)
+                                    });
+                                    f.push(b.graphics);
+                                    f.reverse();
+                                    var f = m.filter(f, function (a) {
+                                            return a.loaded && a._mouseEvents && !a.suspended && (!e.isDefined(a.opacity) || 0 < a.opacity)
+                                        }), c = a.screenPoint, r = this._tolerance, p = c.x - r, q = c.y + r, g = c.x + r,
+                                        r = c.y - r, d = new y(p,
+                                        r, g, q), p = b.toMap(new t(p, q)), g = b.toMap(new t(g, r)),
+                                        q = p.spatialReference._getInfo(),
+                                        k = new y(y.prototype._normalizeX(p.x, q).x, p.y, y.prototype._normalizeX(g.x, q).x, g.y, p.spatialReference),
+                                        s;
+                                    delete d.spatialReference;
+                                    m.some(f, function (a) {
+                                        a = m.filter(a.graphics, function (a) {
+                                            return this._isPrimaryMatch(a, a.getDojoShape(), d, c) || !(!a._bgShape || !this._isPrimaryMatch(a, a._bgShape, d, c))
+                                        }, this);
+                                        a.reverse();
+                                        if (0 < a.length) {
+                                            var b;
+                                            m.some(a, function (a) {
+                                                return a.geometry && k.intersects(a.geometry) ? (b = a, !0) : !1
+                                            });
+                                            if (b)return s =
+                                                b, !0
+                                        }
+                                        return !1
                                     }, this);
-                                    a.reverse();
-                                    if (0 < a.length) {
-                                        var b;
-                                        m.some(a, function (a) {
-                                            return a.geometry && k.intersects(a.geometry) ? (b = a, !0) : !1
-                                        });
-                                        if (b)return s =
-                                            b, !0
-                                    }
-                                    return !1
-                                }, this);
-                                if (s && (f = s.getLayer())) a.graphic = s, f.onClick(a)
+                                    if (s && (f = s.getLayer())) a.graphic = s, f.onClick(a)
+                                }
                             }
-                        }
-                    });
+                        });
                     C = d(p, {
                         declaredClass: "esri.layers._GraphicsLayer",
                         managedSuspension: !0,
@@ -9972,7 +10031,7 @@ require({
                             this._wrap = a.wrapAround180;
                             this._srInfo = a.spatialReference._getInfo();
                             this._canvas ? (b = c.createSurface(b.getEventSource(), a.width,
-                                    a.height), g.set(b.rawNode, "position", "absolute"), this._div = b.createGroup(), this._renderProto = this._div.constructor.prototype._render, this._div._render = n.hitch(this, this._canvasRender)) : this._div = b.createGroup();
+                                a.height), g.set(b.rawNode, "position", "absolute"), this._div = b.createGroup(), this._renderProto = this._div.constructor.prototype._render, this._div._render = n.hitch(this, this._canvasRender)) : this._div = b.createGroup();
                             this._bgGroup = this._div.createGroup();
                             this._div.getEventSource().id = this.id + "_layer";
                             var f = this.opacity;
@@ -9984,7 +10043,7 @@ require({
                                 a._shape = null
                             });
                             this._canvas ? (b = this._div.getParent(), b._parent = {},
-                                    l.destroy(b.rawNode), b.destroy()) : (this._div.clear(), b.remove(this._div), l.destroy(this._div.getEventSource()));
+                                l.destroy(b.rawNode), b.destroy()) : (this._div.clear(), b.remove(this._div), l.destroy(this._div.getEventSource()));
                             this._map = this._div = null;
                             clearTimeout(this._wakeTimer);
                             this._wakeTimer = null;
@@ -9998,9 +10057,9 @@ require({
                             clearTimeout(this._wakeTimer);
                             this._wakeTimer = null;
                             f ? (a = this._map.__visibleRect, e = this._div, this._evalSDRenderer(), this._refresh(!0), e.setTransform(b.translate({
-                                    x: a.x,
-                                    y: a.y
-                                })), this._renderProto && e.surface.pendingRender ? this._dirty = !0 : this.suspended || q.show(e.getEventSource())) : this._resized && (this._refresh(!1), this._resized = !1);
+                                x: a.x,
+                                y: a.y
+                            })), this._renderProto && e.surface.pendingRender ? this._dirty = !0 : this.suspended || q.show(e.getEventSource())) : this._resized && (this._refresh(!1), this._resized = !1);
                             if (0 < this.graphics.length) this.onUpdate()
                         },
                         _canvasRender: function () {
@@ -10062,7 +10121,7 @@ require({
                             var a = this._map, b = h.connect;
                             this._disableDrawConnectors();
                             this._params.displayOnPan ? (this._params._child || (this._onPanHandler_connect = b(a, "onPan", this, "_onPanHandler")), this._onPanEndHandler_connect = b(a, "onPanEnd", this, "_onPanEndUpdateHandler")) : (this._onPanStartHandler_connect = b(a, "onPanStart", this, "_onPanStartHandler"), this._onPanEndHandler_connect =
-                                    b(a, "onPanEnd", this, "_onPanEndHandler"));
+                                b(a, "onPanEnd", this, "_onPanEndHandler"));
                             this._onZoomStartHandler_connect = b(a, "onZoomStart", this, "_onZoomStartHandler");
                             this._onExtentChangeHandler_connect = b(a, "onExtentChange", this, "_onExtentChangeHandler")
                         },
@@ -10094,7 +10153,8 @@ require({
                                 f._canProject(c) && 4326 === c.wkid;
                             if (this._wrap && !e) {
                                 e = [];
-                                var f = a._getFrameWidth(), p = this._srInfo, q = a._clip ? a._getAvailExtent() : a.extent, g, d, k, s, l = [];
+                                var f = a._getFrameWidth(), p = this._srInfo,
+                                    q = a._clip ? a._getAvailExtent() : a.extent, g, d, k, s, l = [];
                                 g = b._partwise;
                                 r && (q = a.geographicExtent, p = c._getInfo());
                                 a = q._getParts(p);
@@ -10129,11 +10189,14 @@ require({
                         },
                         _draw: function (a, b) {
                             if (this._params.drawMode && this._map && !this.suspended)try {
-                                var e = a._extent, f, c, r = !x || this.styling, p = x && this.dataAttributes, q = a.getDojoShape(), g;
+                                var e = a._extent, f, c, r = !x || this.styling, p = x && this.dataAttributes,
+                                    q = a.getDojoShape(), g;
                                 if (a.visible && e && (f = this._intersects(this._map, e, a.geometry._originOnly)) && (c = r ? this._getSymbol(a) :
                                         this._defaultMarker)) {
                                     if (!a._offsets || a._offsets.join(",") !== f.join(",") ? a._offsets = f : g = !0, !q || b || !g) {
-                                        var d = a.geometry.type, e = {graphic: a}, k = a._bgShape, s = r && !a.symbol ? this._getRenderer(a) : null, l = s && s.backgroundFillSymbol;
+                                        var d = a.geometry.type, e = {graphic: a}, k = a._bgShape,
+                                            s = r && !a.symbol ? this._getRenderer(a) : null,
+                                            l = s && s.backgroundFillSymbol;
                                         if ("point" === d) this._isInvalidShape(c, q) && this._removeShape(a), a._shape = this._drawPoint(this._div, a.geometry, c, a.getDojoShape(), f, s, a), r && this._symbolizePoint(a.getDojoShape(), c, s, a); else if ("multipoint" === d) this._drawMarkers(a, c, f, s), r && this._symbolizeMarkers(a, c, s); else {
                                             var h, d =
                                                 c, t, m;
@@ -10181,7 +10244,8 @@ require({
                         },
                         _drawShape: function (a, b, e, f) {
                             a = a.geometry;
-                            var c = a.type, r = this._map, p = r.extent, q = r.width, g = r.height, r = r.__visibleRect, d = [], k, s;
+                            var c = a.type, r = this._map, p = r.extent, q = r.width, g = r.height, r = r.__visibleRect,
+                                d = [], k, s;
                             k = "extent" === c;
                             if ("rect" === c || k) d = {
                                 x: 0,
@@ -10212,16 +10276,16 @@ require({
                         },
                         _drawPath: function () {
                             return B ? function (a, b, e, f) {
-                                    e = f ? e :
-                                        e.join(" ");
-                                    if (b)return b.setShape(e);
-                                    b = a.createObject(f ? c.Path : c.EsriPath, e);
-                                    a._overrideSize(b.getEventSource());
-                                    return b
-                                } : function (a, b, e, f) {
-                                    e = f ? e : e.join(" ");
-                                    return b ? b.setShape(e) : a.createPath(e)
-                                }
+                                e = f ? e :
+                                    e.join(" ");
+                                if (b)return b.setShape(e);
+                                b = a.createObject(f ? c.Path : c.EsriPath, e);
+                                a._overrideSize(b.getEventSource());
+                                return b
+                            } : function (a, b, e, f) {
+                                e = f ? e : e.join(" ");
+                                return b ? b.setShape(e) : a.createPath(e)
+                            }
                         }(),
                         _drawText: function (a, b, e) {
                             return b ? b.setShape(e) : a.createText(e)
@@ -10246,38 +10310,38 @@ require({
                             var p, q, g = e && e.proportionalSymbolInfo ? e.getSize(f) : null;
                             e && (e.colorInfo && "picturefillsymbol" !== b) && (e = e.getColor(f), -1 !== b.indexOf("linesymbol") ? p = e : r && r.toCss && (q = e));
                             a.setStroke(null == g && !p ? c : n.mixin({},
-                                    c, g && {width: g}, p && {color: p})).setFill(q || r)
+                                c, g && {width: g}, p && {color: p})).setFill(q || r)
                         },
                         _smsToPath: function () {
                             return B ? function (a, b, e, f, c, r, p, q, g) {
-                                    switch (b) {
-                                        case a.STYLE_SQUARE:
-                                            return ["M", c + "," + p, "L", r + "," + p, r + "," + q, c + "," + q, "X", "E"];
-                                        case a.STYLE_CROSS:
-                                            return ["M", e + "," + p, "L", e + "," + q, "M", c + "," + f, "L", r + "," + f, "E"];
-                                        case a.STYLE_X:
-                                            return ["M", c + "," + p, "L", r + "," + q, "M", c + "," + q, "L", r + "," + p, "E"];
-                                        case a.STYLE_DIAMOND:
-                                            return ["M", e + "," + p, "L", r + "," + f, e + "," + q, c + "," + f, "X", "E"];
-                                        case a.STYLE_TARGET:
-                                            return ["M", c + "," + p, "L", r + "," + p, r + "," + q, c + "," + q, c + "," + p, "M", c -
-                                            g + "," + f, "L", c + "," + f, "M", e + "," + (p - g), "L", e + "," + p, "M", r + g + "," + f, "L", r + "," + f, "M", e + "," + (q + g), "L", e + "," + q, "E"]
-                                    }
-                                } : function (a, b, e, f, c, r, p, q, g) {
-                                    switch (b) {
-                                        case a.STYLE_SQUARE:
-                                            return ["M", c + "," + p, r + "," + p, r + "," + q, c + "," + q, "Z"];
-                                        case a.STYLE_CROSS:
-                                            return ["M", e + "," + p, e + "," + q, "M", c + "," + f, r + "," + f];
-                                        case a.STYLE_X:
-                                            return ["M", c + "," + p, r + "," + q, "M", c + "," + q, r + "," + p];
-                                        case a.STYLE_DIAMOND:
-                                            return ["M", e + "," + p, r + "," + f, e + "," + q, c + "," + f, "Z"];
-                                        case a.STYLE_TARGET:
-                                            return ["M", c + "," + p, r + "," + p, r + "," + q, c + "," + q, c + "," + p, "M", c - g + "," + f, c +
-                                            "," + f, "M", e + "," + (p - g), e + "," + p, "M", r + g + "," + f, r + "," + f, "M", e + "," + (q + g), e + "," + q]
-                                    }
+                                switch (b) {
+                                    case a.STYLE_SQUARE:
+                                        return ["M", c + "," + p, "L", r + "," + p, r + "," + q, c + "," + q, "X", "E"];
+                                    case a.STYLE_CROSS:
+                                        return ["M", e + "," + p, "L", e + "," + q, "M", c + "," + f, "L", r + "," + f, "E"];
+                                    case a.STYLE_X:
+                                        return ["M", c + "," + p, "L", r + "," + q, "M", c + "," + q, "L", r + "," + p, "E"];
+                                    case a.STYLE_DIAMOND:
+                                        return ["M", e + "," + p, "L", r + "," + f, e + "," + q, c + "," + f, "X", "E"];
+                                    case a.STYLE_TARGET:
+                                        return ["M", c + "," + p, "L", r + "," + p, r + "," + q, c + "," + q, c + "," + p, "M", c -
+                                        g + "," + f, "L", c + "," + f, "M", e + "," + (p - g), "L", e + "," + p, "M", r + g + "," + f, "L", r + "," + f, "M", e + "," + (q + g), "L", e + "," + q, "E"]
                                 }
+                            } : function (a, b, e, f, c, r, p, q, g) {
+                                switch (b) {
+                                    case a.STYLE_SQUARE:
+                                        return ["M", c + "," + p, r + "," + p, r + "," + q, c + "," + q, "Z"];
+                                    case a.STYLE_CROSS:
+                                        return ["M", e + "," + p, e + "," + q, "M", c + "," + f, r + "," + f];
+                                    case a.STYLE_X:
+                                        return ["M", c + "," + p, r + "," + q, "M", c + "," + q, r + "," + p];
+                                    case a.STYLE_DIAMOND:
+                                        return ["M", e + "," + p, r + "," + f, e + "," + q, c + "," + f, "Z"];
+                                    case a.STYLE_TARGET:
+                                        return ["M", c + "," + p, r + "," + p, r + "," + q, c + "," + q, c + "," + p, "M", c - g + "," + f, c +
+                                        "," + f, "M", e + "," + (p - g), e + "," + p, "M", r + g + "," + f, r + "," + f, "M", e + "," + (q + g), e + "," + q]
+                                }
+                            }
                         }(),
                         _pathStyles: {square: 1, cross: 1, x: 1, diamond: 1, target: 1},
                         _typeMaps: {
@@ -10296,9 +10360,12 @@ require({
                         },
                         _drawPoint: function (a, e, f, c, p, q,
                                               g) {
-                            var d = f.type, k = this._map, s = k.__visibleRect, l = u.toScreenPoint(k.extent, k.width, k.height, e).offset(-s.x + p[0], -s.y), k = l.x, s = l.y, h;
+                            var d = f.type, k = this._map, s = k.__visibleRect,
+                                l = u.toScreenPoint(k.extent, k.width, k.height, e).offset(-s.x + p[0], -s.y), k = l.x,
+                                s = l.y, h;
                             e = [];
-                            var t = q && q.rotationInfo ? q.getRotationAngle(g) : null, m = q && q.proportionalSymbolInfo;
+                            var t = q && q.rotationInfo ? q.getRotationAngle(g) : null,
+                                m = q && q.proportionalSymbolInfo;
                             q = m ? q.getSize(g, {shape: f.style}) : null;
                             t && e.push(b.rotategAt(t, l));
                             (0 !== f.xoffset || 0 !== f.yoffset) && e.push(b.translate(f.xoffset, -f.yoffset));
@@ -10328,37 +10395,37 @@ require({
                                     f = isNaN(q) ? 16 : q / 2, h = this._drawCircle(a,
                                         c, {cx: k, cy: s, r: f})
                             } else"shieldlabelsymbol" === d ? (h = f.width, l = f.height, c = a.createGroup(), h = a.createImage({
-                                    x: k - h / 2,
-                                    y: s - l / 2,
-                                    width: h,
-                                    height: l,
-                                    src: f.url
-                                }), c.add(h), null != f.font && (s += 0.2 * f.getHeight(), a = a.createText({
+                                x: k - h / 2,
+                                y: s - l / 2,
+                                width: h,
+                                height: l,
+                                src: f.url
+                            }), c.add(h), null != f.font && (s += 0.2 * f.getHeight(), a = a.createText({
+                                type: "text",
+                                text: f.text,
+                                x: k,
+                                y: s,
+                                align: "middle",
+                                decoration: f.decoration,
+                                rotated: f.rotated,
+                                kerning: f.kerning
+                            }), a.setFont(f.font), a.setFill(f.color), c.add(a)), h = c) : "picturemarkersymbol" === d ? (h = m ? q : f.width, l = m ? q : f.height, h = this._drawImage(a, c, {
+                                x: k - h / 2,
+                                y: s - l / 2,
+                                width: h,
+                                height: l,
+                                src: f.url
+                            })) : "textsymbol" ===
+                                d && (h = this._drawText(a, c, {
                                     type: "text",
                                     text: f.text,
                                     x: k,
                                     y: s,
-                                    align: "middle",
-                                    decoration: f.decoration,
+                                    align: f.getSVGAlign(),
+                                    decoration: f.decoration || f.font && f.font.decoration,
                                     rotated: f.rotated,
                                     kerning: f.kerning
-                                }), a.setFont(f.font), a.setFill(f.color), c.add(a)), h = c) : "picturemarkersymbol" === d ? (h = m ? q : f.width, l = m ? q : f.height, h = this._drawImage(a, c, {
-                                        x: k - h / 2,
-                                        y: s - l / 2,
-                                        width: h,
-                                        height: l,
-                                        src: f.url
-                                    })) : "textsymbol" ===
-                                    d && (h = this._drawText(a, c, {
-                                        type: "text",
-                                        text: f.text,
-                                        x: k,
-                                        y: s,
-                                        align: f.getSVGAlign(),
-                                        decoration: f.decoration || f.font && f.font.decoration,
-                                        rotated: f.rotated,
-                                        kerning: f.kerning
-                                    }), x && (a = h.getNode(), k = f.getSVGBaseline(), f = f.getSVGBaselineShift(), a && (a.setAttribute("dominant-baseline", k), f && a.setAttribute("baseline-shift", f))));
+                                }), x && (a = h.getNode(), k = f.getSVGBaseline(), f = f.getSVGBaselineShift(), a && (a.setAttribute("dominant-baseline", k), f && a.setAttribute("baseline-shift", f))));
                             h.setTransform(b.multiply(e));
                             h._wrapOffsets = p;
                             return h
@@ -10376,7 +10443,8 @@ require({
                             }
                         },
                         _drawMarkers: function (a, b, e, f) {
-                            var c = a.geometry, r = c.points, p = a.getDojoShape() || this._div.createGroup(), q, g, d = r.length, k = [], s = 0, h, l = e ? e.length : 0;
+                            var c = a.geometry, r = c.points, p = a.getDojoShape() || this._div.createGroup(), q, g,
+                                d = r.length, k = [], s = 0, h, l = e ? e.length : 0;
                             p.children[0] && this._isInvalidShape(b, p.children[0]) &&
                             p.clear();
                             for (g = 0; g < d; g++) {
@@ -10413,7 +10481,9 @@ require({
                         }(),
                         _clipPolyline: function (a, b) {
                             var e = this._getCorners(a, b), f = e.br,
-                                c = this._rendererLimits, r = c.rangeMin, p = c.rangeMax, q = c.clipBBox, g = c.clipSegments, c = this._isPointWithinRange, d = this._isPointWithinBBox, k = this._getClipperIntersection, s = this._getPlaneIndex;
+                                c = this._rendererLimits, r = c.rangeMin, p = c.rangeMax, q = c.clipBBox,
+                                g = c.clipSegments, c = this._isPointWithinRange, d = this._isPointWithinBBox,
+                                k = this._getClipperIntersection, s = this._getPlaneIndex;
                             if (!c(e.tl, r, p) || !c(f, r, p)) {
                                 B && this._createSegments(a);
                                 var h = [];
@@ -10425,7 +10495,7 @@ require({
                                         if (p ^ l) {
                                             if (l = k([c, r], g)) p ? (f ? e.push(l[1]) : e.push(c, l[1]), h.push(e), e = []) : e.push(l[1], r)
                                         } else p ? f ? e.push(r) : e.push(c,
-                                                    r) : (l = s(c, q), p = s(r, q), -1 === l || (-1 === p || l === p) || (c = k([c, r], g, !0), 0 < c.length && (c[l] || (l = c[l[0]] ? l[0] : l[1]), c[p] || (p = c[p[0]] ? p[0] : p[1]), r = c[l], c = c[p], r && e.push(r), c && (e.push(c), h.push(e), e = []))))
+                                            r) : (l = s(c, q), p = s(r, q), -1 === l || (-1 === p || l === p) || (c = k([c, r], g, !0), 0 < c.length && (c[l] || (l = c[l[0]] ? l[0] : l[1]), c[p] || (p = c[p[0]] ? p[0] : p[1]), r = c[l], c = c[p], r && e.push(r), c && (e.push(c), h.push(e), e = []))))
                                     }
                                     h.push(e)
                                 });
@@ -10433,7 +10503,10 @@ require({
                             }
                         },
                         _clipPolygon: function (a, b) {
-                            var e = this._getCorners(a, b), f = e.br, c = this._rendererLimits, r = c.clipLimit, p = c.rangeMin, q = c.rangeMax, g = c.clipBBox, d = c.clipSegments, c = this._isPointWithinRange, k = this._isPointWithinBBox, s = this._getClipperIntersection, l = this._getPlaneIndex,
+                            var e = this._getCorners(a, b), f = e.br, c = this._rendererLimits, r = c.clipLimit,
+                                p = c.rangeMin, q = c.rangeMax, g = c.clipBBox, d = c.clipSegments,
+                                c = this._isPointWithinRange, k = this._isPointWithinBBox,
+                                s = this._getClipperIntersection, l = this._getPlaneIndex,
                                 h = w._pointLineDistance;
                             if (!c(e.tl, p, q) || !c(f, p, q)) B && this._createSegments(a), e = m.map(a.segments, function (a) {
                                 var b = a.args, e = b.length, f = [];
@@ -10452,7 +10525,7 @@ require({
                                     } else if (!t) {
                                         var t = l(p, g), u = l(q, g);
                                         -1 === t || (-1 === u || t === u) || (v = s([p, q], d, !0), 0 < v.length ? (v[t] || (t = v[t[0]] ? t[0] : t[1]), v[u] || (u = v[u[0]] ?
-                                                u[0] : u[1]), p = v[t], q = v[u], p && (p.outIn = !0, f.push(p), a.push(["OUTIN", f.length - 1, t])), q && (q.inOut = !0, f.push(q), a.push(["INOUT", f.length - 1, u]))) : n.isArray(t) && n.isArray(u) && (v = t.concat(u), v.sort(), "0123" === v.join("") && (v = [], 3 === t[0] + t[1] ? v.push([r, -r], [-r, r]) : v.push([-r, -r], [r, r]), t = h(v[0], [p, q]), p = h(v[1], [p, q]), f.push(t < p ? v[0] : v[1]))))
+                                            u[0] : u[1]), p = v[t], q = v[u], p && (p.outIn = !0, f.push(p), a.push(["OUTIN", f.length - 1, t])), q && (q.inOut = !0, f.push(q), a.push(["INOUT", f.length - 1, u]))) : n.isArray(t) && n.isArray(u) && (v = t.concat(u), v.sort(), "0123" === v.join("") && (v = [], 3 === t[0] + t[1] ? v.push([r, -r], [-r, r]) : v.push([-r, -r], [r, r]), t = h(v[0], [p, q]), p = h(v[1], [p, q]), f.push(t < p ? v[0] : v[1]))))
                                     }
                                 }
                                 var B = g[0], y = g[1], D = g[2], F = g[3];
@@ -10506,7 +10579,8 @@ require({
                                     var w = e(u) === r, z = e(c) === r;
                                     t && z ? a.push([b + 1, [p, c]]) : v && w && a.push([b + 1, [u, q]])
                                 }
-                                for (b = a.length - 1; 0 <= b; b--)c = a[b], p = f[c[0] - 1], e = f[c[0]], !p.outIn && (!p.inOut && !e.outIn && !e.inOut) && f.splice(c[0], 0, c[1]);
+                                for (b = a.length - 1; 0 <= b; b--)c = a[b], p = f[c[0] - 1], e = f[c[0]], !p.outIn && (!p.inOut && !e.outIn &&
+                                !e.inOut) && f.splice(c[0], 0, c[1]);
                                 e = f[0];
                                 b = f[f.length - 1];
                                 (e[0] !== b[0] || e[1] !== b[1]) && f.push(e);
@@ -10515,7 +10589,8 @@ require({
                         },
                         _getCorners: function (a, b) {
                             if (B) {
-                                var e = this._map, f = b.getExtent(), c = f.spatialReference, r = e.toScreen(new s(f.xmin, f.ymax, c)), e = e.toScreen(new s(f.xmax, f.ymin, c));
+                                var e = this._map, f = b.getExtent(), c = f.spatialReference,
+                                    r = e.toScreen(new s(f.xmin, f.ymax, c)), e = e.toScreen(new s(f.xmax, f.ymin, c));
                                 return {tl: r, br: e}
                             }
                             r = a.getTransformedBoundingBox();
@@ -10534,14 +10609,14 @@ require({
                         },
                         _getPathStringFromPaths: function (a) {
                             B ? (a = m.map(a, function (a) {
-                                    return "m " + m.map(a, function (a, b) {
-                                            return (1 === b ? "l " : "") + a.join(",")
-                                        }).join(" ")
-                                }), a.push("e")) : a = m.map(a, function (a) {
-                                    return "M " + m.map(a, function (a) {
-                                            return a.join(",")
-                                        }).join(" ")
-                                });
+                                return "m " + m.map(a, function (a, b) {
+                                        return (1 === b ? "l " : "") + a.join(",")
+                                    }).join(" ")
+                            }), a.push("e")) : a = m.map(a, function (a) {
+                                return "M " + m.map(a, function (a) {
+                                        return a.join(",")
+                                    }).join(" ")
+                            });
                             return a.join(" ")
                         },
                         _isPointWithinBBox: function (a, b) {
@@ -10623,9 +10698,9 @@ require({
                             if (b || this.opacity != a) {
                                 var e = this._div;
                                 e && (B ? (m.forEach(this.graphics, function (b) {
-                                        this._setIEOpacity(b._shape, a);
-                                        this._setIEOpacity(b._bgShape, a)
-                                    }, this), e._esriIeOpacity = a, this._bgGroup._esriIeOpacity = a) : this._canvas ? g.set(e.getEventSource(), "opacity", a) : e.getEventSource().setAttribute("opacity", a));
+                                    this._setIEOpacity(b._shape, a);
+                                    this._setIEOpacity(b._bgShape, a)
+                                }, this), e._esriIeOpacity = a, this._bgGroup._esriIeOpacity = a) : this._canvas ? g.set(e.getEventSource(), "opacity", a) : e.getEventSource().setAttribute("opacity", a));
                                 this.opacity = a;
                                 if (!b) this.onOpacityChange(a)
                             }
@@ -10984,10 +11059,10 @@ require({
                         return q
                     }, getShapeDescriptors: function (a) {
                         return a && a.getShapeDescriptors ? a.getShapeDescriptors() : {
-                                defaultShape: null,
-                                fill: null,
-                                stroke: null
-                            }
+                            defaultShape: null,
+                            fill: null,
+                            stroke: null
+                        }
                     }
                 };
                 h("extend-esri") && d.mixin(d.getObject("symbol", !0, n), e);
@@ -11045,10 +11120,10 @@ require({
                         },
                         _extentChangeHandler: function (a) {
                             this._prevExtent || this._nextExtent ? this._currentExtent = a : (this._preExtent = this._currentExtent, this._currentExtent = a, this._preExtent && this._currentExtent && (a = new v.MapExtent({
-                                    map: this.map,
-                                    preExtent: this._preExtent,
-                                    currentExtent: this._currentExtent
-                                }), this._undoManager.add(a)));
+                                map: this.map,
+                                preExtent: this._preExtent,
+                                currentExtent: this._currentExtent
+                            }), this._undoManager.add(a)));
                             this._prevExtent = this._nextExtent = !1;
                             this.onExtentHistoryChange()
                         },
@@ -11080,11 +11155,8 @@ require({
                             f.graphics.remove(this._graphic, !0);
                             if (!(0 === c.width && 0 === c.height))if (this._navType === v.ZOOM_IN) f.setExtent((new e(c)).getExtent()); else {
                                 b = f.toScreen(c);
-                                var c = f.toScreen({
-                                    x: c.x + c.width,
-                                    y: c.y,
-                                    spatialReference: f.spatialReference
-                                }), p = f.extent.getWidth();
+                                var c = f.toScreen({x: c.x + c.width, y: c.y, spatialReference: f.spatialReference}),
+                                    p = f.extent.getWidth();
                                 b = (p * f.width / Math.abs(c.x - b.x) - p) / 2;
                                 c = f.extent;
                                 f.setExtent(new a(c.xmin - b, c.ymin - b, c.xmax +
@@ -11219,7 +11291,8 @@ require({
             define("dojo/_base/declare dojo/_base/lang dojo/has esri/kernel esri/lang esri/symbols/jsonUtils esri/renderers/Renderer".split(" "), function (d, h, n, m, k, l, g) {
                 d = d(g, {
                     declaredClass: "esri.renderer.SimpleRenderer", constructor: function (c) {
-                        if (c && !c.declaredClass) {
+                        if (c &&
+                            !c.declaredClass) {
                             var b = c;
                             this.symbol = (c = b.symbol) && (c.declaredClass ? c : l.fromJson(c));
                             this.label = b.label;
@@ -11388,8 +11461,12 @@ require({
                         f.timeout = p.isDefined(f.timeout) ? f.timeout : I.timeout;
                         f.handleAs = f.handleAs || "json";
                         try {
-                            var W, P, L = w && v.canUseXhr(f.url) && !/https?:\/\/[^\/]+\/[^\/]+\/admin\/?(\/.*)?$/i.test(f.url),
-                                R = v.hasSameOrigin(f.url, window.location.href) || L, Z = y || k || M > I.postLength ? !0 : !1, V = !R && -1 !== f.handleAs.indexOf("json") && f.callbackParamName && !k ? !0 : !1, S = v.getProxyRule(f.url) || I.alwaysUseProxy || u || (!V || Z) && !R ? !0 : !1;
+                            var W, P,
+                                L = w && v.canUseXhr(f.url) && !/https?:\/\/[^\/]+\/[^\/]+\/admin\/?(\/.*)?$/i.test(f.url),
+                                R = v.hasSameOrigin(f.url, window.location.href) || L,
+                                Z = y || k || M > I.postLength ? !0 : !1,
+                                V = !R && -1 !== f.handleAs.indexOf("json") && f.callbackParamName && !k ? !0 : !1,
+                                S = v.getProxyRule(f.url) || I.alwaysUseProxy || u || (!V || Z) && !R ? !0 : !1;
                             k && (!q("esri-file-upload") && !S && L) && (S = !0);
                             if (S)if (W = v.getProxyUrl(z, w), P = W.path, W._xo && (L = !0), !Z && P.length + 1 + M > I.postLength && (Z = !0), f.url = P + "?" + z, Z) f.content = m.mixin(W.query || {}, r); else {
                                 var N = a.objectToQuery(m.mixin(W.query || {}, r));
@@ -11401,7 +11478,8 @@ require({
                             var U = f.headers;
                             if (L && (!U || !U.hasOwnProperty("X-Requested-With"))) U = f.headers = U || {}, U["X-Requested-With"] = null;
                             if (k) {
-                                var Y = f.callbackParamName || "callback.html", Q = f.callbackElementName || "textarea", X, $, aa, T, da = A.elements ? A.elements.length : 0, ba;
+                                var Y = f.callbackParamName || "callback.html", Q = f.callbackElementName || "textarea",
+                                    X, $, aa, T, da = A.elements ? A.elements.length : 0, ba;
                                 if (r = f.content)for (X in r)if (aa = r[X], p.isDefined(aa)) {
                                     $ = null;
                                     for (T = 0; T < da; T++)if (ba = A.elements[T], ba.name === X) {
@@ -11409,10 +11487,10 @@ require({
                                         break
                                     }
                                     $ ? $.value = aa : t ? A.append(X, aa) : A.appendChild(b.create("input", {
-                                                type: "hidden",
-                                                name: X,
-                                                value: aa
-                                            }))
+                                        type: "hidden",
+                                        name: X,
+                                        value: aa
+                                    }))
                                 }
                                 if (q("esri-file-upload")) d.forEach(A.elements,
                                     function (a) {
@@ -11428,7 +11506,8 @@ require({
                                     delete f.content
                                 }
                             }
-                            if (L && !f.hasOwnProperty("withCredentials"))if (t = S ? P : z, -1 !== d.indexOf(x.webTierAuthServers, s(t))) f.withCredentials = !0; else if (e.id) {
+                            if (L &&
+                                !f.hasOwnProperty("withCredentials"))if (t = S ? P : z, -1 !== d.indexOf(x.webTierAuthServers, s(t))) f.withCredentials = !0; else if (e.id) {
                                 var ca = e.id.findServerInfo(t);
                                 ca && ca.webTierAuth && (f.withCredentials = !0)
                             }
@@ -11534,13 +11613,15 @@ require({
                         var c, g = a.form, k = b.disableIdentityLookup, m = b._preLookup, u = !1;
                         if (q("esri-workers") && !1 !== x.useWorkers)if (!0 === b.useWorkers || !0 === x.useWorkers) u = !0; else if (b.workerOptions) {
                             var C = b.workerOptions;
-                            if (C.callback || C.worker && C.worker.worker instanceof Worker) u = !0
+                            if (C.callback || C.worker && C.worker.worker instanceof
+                                Worker) u = !0
                         }
                         var I = g && g.append, M = g && (g.elements ? d.some(g.elements, function (a) {
                                     return "file" === a.type
-                                }) : I), W = -1 !== a.url.toLowerCase().indexOf("token\x3d") || a.content && a.content.token || M && d.some(g.elements, function (a) {
-                            return "token" === a.name
-                        }) ? 1 : 0;
+                                }) : I),
+                            W = -1 !== a.url.toLowerCase().indexOf("token\x3d") || a.content && a.content.token || M && d.some(g.elements, function (a) {
+                                return "token" === a.name
+                            }) ? 1 : 0;
                         w(a.url);
                         if (a._usrDfd) c = a._usrDfd; else {
                             c = new n(r._dfdCanceller);
@@ -11568,12 +11649,12 @@ require({
                         if (e.id && !W && !a._token && !e.id._isPublic(a.url) &&
                             (!k || m))if (g = e.id.findCredential(a.url)) a._token = g.token, a._ssl = g.ssl;
                         u ? b.workerOptions && b.workerOptions.worker ? (l = b.workerOptions.worker, f(c)) : require(["esri/workers/RequestClient"], function (a) {
-                                    if (b.workerOptions) {
-                                        var e = b.workerOptions;
-                                        l = a.getClient(e.callback, e.cbFunction)
-                                    } else l = a.getClient();
-                                    f(c)
-                                }) : f(c);
+                            if (b.workerOptions) {
+                                var e = b.workerOptions;
+                                l = a.getClient(e.callback, e.cbFunction)
+                            } else l = a.getClient();
+                            f(c)
+                        }) : f(c);
                         return c
                     }
 
@@ -11591,20 +11672,20 @@ require({
             define("./_base/kernel ./aspect ./dom ./dom-class ./_base/lang ./on ./has ./mouse ./domReady ./_base/window".split(" "), function (d, h, n, m, k, l, g, c, b, a) {
                 function e(a, b, e) {
                     return r && e ? function (a, b) {
-                            return l(a, e, b)
-                        } : p ? function (e, f) {
-                                var c = l(e, b, f), r = l(e, a, function (a) {
-                                    (!A || (new Date).getTime() > A + 1E3) && f.call(this, a)
-                                });
-                                return {
-                                    remove: function () {
-                                        c.remove();
-                                        r.remove()
-                                    }
-                                }
-                            } : function (b, e) {
-                                return l(b, a, e)
+                        return l(a, e, b)
+                    } : p ? function (e, f) {
+                        var c = l(e, b, f), r = l(e, a, function (a) {
+                            (!A || (new Date).getTime() > A + 1E3) && f.call(this, a)
+                        });
+                        return {
+                            remove: function () {
+                                c.remove();
+                                r.remove()
                             }
+                        }
+                    } : function (b, e) {
+                        return l(b, a, e)
+                    }
                 }
 
                 function f(a) {
@@ -11635,43 +11716,43 @@ require({
 
                 var p = g("touch"), v = 5 > g("ios"), r = navigator.msPointerEnabled, s, t, y, w, u, z, C, x, A, B;
                 p && (r ? b(function () {
-                        a.doc.addEventListener("MSPointerDown", function (a) {
-                            q(a, "MSPointerMove", "MSPointerUp")
-                        }, !0)
-                    }) : b(function () {
-                        function b(a) {
-                            var e = k.delegate(a, {bubbles: !0});
-                            6 <= g("ios") && (e.touches = a.touches, e.altKey = a.altKey, e.changedTouches = a.changedTouches,
-                                e.ctrlKey = a.ctrlKey, e.metaKey = a.metaKey, e.shiftKey = a.shiftKey, e.targetTouches = a.targetTouches);
-                            return e
-                        }
+                    a.doc.addEventListener("MSPointerDown", function (a) {
+                        q(a, "MSPointerMove", "MSPointerUp")
+                    }, !0)
+                }) : b(function () {
+                    function b(a) {
+                        var e = k.delegate(a, {bubbles: !0});
+                        6 <= g("ios") && (e.touches = a.touches, e.altKey = a.altKey, e.changedTouches = a.changedTouches,
+                            e.ctrlKey = a.ctrlKey, e.metaKey = a.metaKey, e.shiftKey = a.shiftKey, e.targetTouches = a.targetTouches);
+                        return e
+                    }
 
-                        B = a.body();
-                        a.doc.addEventListener("touchstart", function (a) {
-                            A = (new Date).getTime();
-                            var b = B;
-                            B = a.target;
-                            l.emit(b, "dojotouchout", {relatedTarget: B, bubbles: !0});
-                            l.emit(B, "dojotouchover", {relatedTarget: b, bubbles: !0});
-                            q(a, "touchmove", "touchend")
-                        }, !0);
-                        l(a.doc, "touchmove", function (e) {
-                            A = (new Date).getTime();
-                            var f = a.doc.elementFromPoint(e.pageX - (v ? 0 : a.global.pageXOffset), e.pageY - (v ? 0 : a.global.pageYOffset));
-                            f && (B !== f && (l.emit(B, "dojotouchout", {
-                                relatedTarget: f,
-                                bubbles: !0
-                            }), l.emit(f, "dojotouchover", {
-                                relatedTarget: B,
-                                bubbles: !0
-                            }), B = f), l.emit(f, "dojotouchmove", b(e)))
-                        });
-                        l(a.doc, "touchend", function (e) {
-                            A = (new Date).getTime();
-                            var f = a.doc.elementFromPoint(e.pageX - (v ? 0 : a.global.pageXOffset), e.pageY - (v ? 0 : a.global.pageYOffset)) || a.body();
-                            l.emit(f, "dojotouchend", b(e))
-                        })
-                    }));
+                    B = a.body();
+                    a.doc.addEventListener("touchstart", function (a) {
+                        A = (new Date).getTime();
+                        var b = B;
+                        B = a.target;
+                        l.emit(b, "dojotouchout", {relatedTarget: B, bubbles: !0});
+                        l.emit(B, "dojotouchover", {relatedTarget: b, bubbles: !0});
+                        q(a, "touchmove", "touchend")
+                    }, !0);
+                    l(a.doc, "touchmove", function (e) {
+                        A = (new Date).getTime();
+                        var f = a.doc.elementFromPoint(e.pageX - (v ? 0 : a.global.pageXOffset), e.pageY - (v ? 0 : a.global.pageYOffset));
+                        f && (B !== f && (l.emit(B, "dojotouchout", {
+                            relatedTarget: f,
+                            bubbles: !0
+                        }), l.emit(f, "dojotouchover", {
+                            relatedTarget: B,
+                            bubbles: !0
+                        }), B = f), l.emit(f, "dojotouchmove", b(e)))
+                    });
+                    l(a.doc, "touchend", function (e) {
+                        A = (new Date).getTime();
+                        var f = a.doc.elementFromPoint(e.pageX - (v ? 0 : a.global.pageXOffset), e.pageY - (v ? 0 : a.global.pageYOffset)) || a.body();
+                        l.emit(f, "dojotouchend", b(e))
+                    })
+                }));
                 h = {
                     press: e("mousedown", "touchstart", "MSPointerDown"),
                     move: e("mousemove", "dojotouchmove", "MSPointerMove"),
@@ -11951,10 +12032,12 @@ require({
                         esriTimeUnitsCenturies: {getter: "getUTCFullYear", setter: "setUTCFullYear", multiplier: 100}
                     }, _intersection: function (d, g) {
                         if (d && g) {
-                            var c = d.startTime, b = d.endTime, a = g.startTime, e = g.endTime, c = c ? c.getTime() : -Infinity, a = a ? a.getTime() : -Infinity, b = b ? b.getTime() : Infinity, e = e ? e.getTime() : Infinity, f, q;
+                            var c = d.startTime, b = d.endTime, a = g.startTime, e = g.endTime,
+                                c = c ? c.getTime() : -Infinity, a = a ? a.getTime() : -Infinity,
+                                b = b ? b.getTime() : Infinity, e = e ? e.getTime() : Infinity, f, q;
                             a >= c && a <= b ? f = a : c >= a && c <= e && (f = c);
                             b >= a && b <= e ? q =
-                                    b : e >= c && e <= b && (q = e);
+                                b : e >= c && e <= b && (q = e);
                             if (!isNaN(f) && !isNaN(q))return c = new k, c.startTime = -Infinity === f ? null : new Date(f), c.endTime = Infinity === q ? null : new Date(q), c
                         }
                         return null
@@ -12052,9 +12135,9 @@ require({
                             d.style.display = "none" === d.style.display ? "block" : "none"
                         },
                         documentBox: m("ie") ? {
-                                w: document.documentElement.clientWidth,
-                                h: document.documentElement.clientHeight
-                            } : {w: window.innerWidth, h: window.innerHeight},
+                            w: document.documentElement.clientWidth,
+                            h: document.documentElement.clientHeight
+                        } : {w: window.innerWidth, h: window.innerHeight},
                         setScrollable: function (g) {
                             var c = 0, b = 0, a = 0, e = 0, f = 0, q = 0;
                             return [d.connect(g, "ontouchstart", function (d) {
@@ -12229,7 +12312,8 @@ require({
                     buildRendering: function () {
                         if (!this._rendered) {
                             this.templateString || (this.templateString = d(this.templatePath, {sanitize: !0}));
-                            var a = b.getCachedTemplate(this.templateString, this._skipNodeCache, this.ownerDocument), e;
+                            var a = b.getCachedTemplate(this.templateString, this._skipNodeCache, this.ownerDocument),
+                                e;
                             if (m.isString(a)) {
                                 if (e = n.toDom(this._stringRepl(a), this.ownerDocument), 1 != e.nodeType)throw Error("Invalid template: " +
                                     a);
@@ -12294,12 +12378,14 @@ require({
                     }, getTitle: function () {
                     }, getContent: function () {
                     }, getComponents: function (b) {
-                        var a = this.info, e = b.getLayer(), f = h.clone(b.attributes) || {}, d = h.clone(f), p = a.fieldInfos, g = "", r = "", k, l, m, w = e && e._getDateOpts && e._getDateOpts().properties, u = {
-                            dateFormat: {
-                                properties: w,
-                                formatter: "DateFormat" + this._insertOffset(this._dateFormats.shortDateShortTime)
-                            }
-                        };
+                        var a = this.info, e = b.getLayer(), f = h.clone(b.attributes) || {}, d = h.clone(f),
+                            p = a.fieldInfos, g = "", r = "", k, l, m,
+                            w = e && e._getDateOpts && e._getDateOpts().properties, u = {
+                                dateFormat: {
+                                    properties: w,
+                                    formatter: "DateFormat" + this._insertOffset(this._dateFormats.shortDateShortTime)
+                                }
+                            };
                         p && n.forEach(p, function (a) {
                             var b = a.fieldName;
                             d[b] = this._formatValue(d[b], b, u);
@@ -12387,7 +12473,8 @@ require({
                         var d = this._fieldsMap[a];
                         a = d && d.format;
                         if (!c.isDefined(b) || !d || !c.isDefined(a))return b;
-                        var p = "", g = [], d = a.hasOwnProperty("places") || a.hasOwnProperty("digitSeparator"), r = a.hasOwnProperty("digitSeparator") ? a.digitSeparator : !0;
+                        var p = "", g = [], d = a.hasOwnProperty("places") || a.hasOwnProperty("digitSeparator"),
+                            r = a.hasOwnProperty("digitSeparator") ? a.digitSeparator : !0;
                         if (d) p = "NumberFormat",
                             g.push("places: " + (c.isDefined(a.places) && (!f || 0 < a.places) ? Number(a.places) : "Infinity")), g.length && (p += "(" + g.join(",") + ")"); else if (a.dateFormat) p = "DateFormat" + this._insertOffset(this._dateFormats[a.dateFormat] || this._dateFormats.shortDateShortTime); else return b;
                         b = c.substitute({myKey: b}, "${myKey:" + p + "}", e) || "";
@@ -12395,7 +12482,7 @@ require({
                         return b
                     }, _insertOffset: function (b) {
                         b && (b = c.isDefined(this.utcOffset) ? b.replace(/\)\s*$/,
-                                ", utcOffset:" + this.utcOffset + ")") : b);
+                            ", utcOffset:" + this.utcOffset + ")") : b);
                         return b
                     }, _getDomainName: function (b, a, e, f, d) {
                         var p, g;
@@ -12420,7 +12507,7 @@ require({
                             var f;
                             n.some(e, function (b) {
                                 return b.name === a ? (f = b.domain,
-                                        !0) : !1
+                                    !0) : !1
                             });
                             return f
                         }
@@ -12543,7 +12630,8 @@ require({
                         maximize: function () {
                             var a = this.map;
                             if (a && !this._maximized && this.popupWindow) {
-                                this._maximized = !0;
+                                this._maximized =
+                                    !0;
                                 var b = this._maxButton;
                                 f.remove(b, "maximize");
                                 f.add(b, "restore");
@@ -12705,8 +12793,11 @@ require({
                         _setPosition: function (a) {
                             var b = a.x, e = a.y;
                             a = this.offsetX || 0;
-                            var f = this.offsetY || 0, c = 0, r = 0, d = p.position(this.map.container, !0), q = d.w, k = d.h, h = "Left", s = "bottom", l = p.getContentBox(this._positioner),
-                                t = l.w / 2, m = l.h / 2, u = v.get(this._sizers[0], "height") + this._maxHeight + v.get(this._sizers[2], "height"), n = u / 2, y = 0, w = 0, z = b, C = e, x = this.anchor.toLowerCase();
+                            var f = this.offsetY || 0, c = 0, r = 0, d = p.position(this.map.container, !0), q = d.w,
+                                k = d.h, h = "Left", s = "bottom", l = p.getContentBox(this._positioner),
+                                t = l.w / 2, m = l.h / 2,
+                                u = v.get(this._sizers[0], "height") + this._maxHeight + v.get(this._sizers[2], "height"),
+                                n = u / 2, y = 0, w = 0, z = b, C = e, x = this.anchor.toLowerCase();
                             if ("auto" === x) {
                                 if (x = g.getBox) x = x(), y = Math.max(x.l, d.x), q = Math.min(x.l + x.w, d.x + d.w), w = Math.max(x.t, d.y), k = Math.min(x.t + x.h, d.y + d.h), z += d.x, C += d.y;
                                 d = C - w >= u;
@@ -12716,7 +12807,7 @@ require({
                                 C - w > n && k - C >= n && (x ? (s = "", h = "Left") : l && (s = "", h = "Right"));
                                 h && s && (z - y > t && q - z >= t) && (d ? (h = "", s = "bottom") : u && (h = "", s = "top"));
                                 h && s && (x && d ? (h = "Left", s = "bottom") : x && u ? (h = "Left", s =
-                                            "top") : l && u ? (h = "Right", s = "top") : l && d && (h = "Right", s = "bottom"))
+                                    "top") : l && u ? (h = "Right", s = "top") : l && d && (h = "Right", s = "bottom"))
                             } else s = h = "", -1 !== x.indexOf("top") ? s = "bottom" : -1 !== x.indexOf("bottom") && (s = "top"), -1 !== x.indexOf("left") ? h = "Right" : -1 !== x.indexOf("right") && (h = "Left");
                             n = s + h;
                             switch (n) {
@@ -12737,7 +12828,7 @@ require({
                             v.set(this.domNode, {left: b + "px", top: e + "px", right: null, bottom: null});
                             b = {left: null, right: null, top: null, bottom: null};
                             h ? b[h.toLowerCase()] =
-                                    c + a + "px" : b.left = -t + "px";
+                                c + a + "px" : b.left = -t + "px";
                             s ? b[s] = r + f + "px" : b.top = -m + "px";
                             v.set(this._positioner, b);
                             this._showPointer(n)
@@ -12775,14 +12866,16 @@ require({
                                     -1 !== b._getFrameWidth() &&
                                     (n.forEach(a.paths, function (a) {
                                         a = (new u({paths: [a, b.spatialReference]})).getExtent();
-                                        var e = Math.abs(a.ymax - a.ymin), f = Math.abs(a.xmax - a.xmin), e = f > e ? f : e;
+                                        var e = Math.abs(a.ymax - a.ymin), f = Math.abs(a.xmax - a.xmin),
+                                            e = f > e ? f : e;
                                         e > c && (c = e, r = a)
                                     }), r.spatialReference = f.spatialReference, f = r);
                                     break;
                                 case "polygon":
                                     e = a.getPoint(0, 0), f = a.getExtent(), -1 !== b._getFrameWidth() && (n.forEach(a.rings, function (a) {
                                         a = (new z({rings: [a, b.spatialReference]})).getExtent();
-                                        var e = Math.abs(a.ymax - a.ymin), f = Math.abs(a.xmax - a.xmin), e = f > e ? f : e;
+                                        var e = Math.abs(a.ymax - a.ymin), f = Math.abs(a.xmax - a.xmin),
+                                            e = f > e ? f : e;
                                         e > c && (c = e, r = a)
                                     }), r.spatialReference = f.spatialReference, f = r)
                             }
@@ -12800,20 +12893,22 @@ require({
                                 b || (b = this._location);
                                 if (!e || !e.intersects(this._location)) this._location = b;
                                 if (e) a.setExtent(e, !0); else {
-                                    var f = a.getNumLevels(), e = a.getLevel(), c = a.getMaxZoom(), r = this.zoomFactor || 1;
+                                    var f = a.getNumLevels(), e = a.getLevel(), c = a.getMaxZoom(),
+                                        r = this.zoomFactor || 1;
                                     0 < f ? e !== c && (f = e + r, f > c && (f = c), a.navigationManager._wheelZoom({
                                             value: f - e,
                                             mapPoint: b
                                         }, !0)) : a.navigationManager._wheelZoom({
-                                            value: 2 * (1 / Math.pow(2, r)),
-                                            mapPoint: b
-                                        }, !0)
+                                        value: 2 * (1 / Math.pow(2, r)),
+                                        mapPoint: b
+                                    }, !0)
                                 }
                             }
                         },
                         _updatePagingControls: function () {
                             var a =
-                                this._prevFeatureButton, b = this._nextFeatureButton, e = this.selectedIndex, c = this.features ? this.features.length : 0;
+                                    this._prevFeatureButton, b = this._nextFeatureButton, e = this.selectedIndex,
+                                c = this.features ? this.features.length : 0;
                             this.pagingControls && 1 < c ? (0 === e ? f.add(a, "hidden") : f.remove(a, "hidden"), e === c - 1 ? f.add(b, "hidden") : f.remove(b, "hidden")) : (f.add(a, "hidden"), f.add(b, "hidden"))
                         },
                         _updatePagingInfo: function () {
@@ -12828,12 +12923,13 @@ require({
                         },
                         _updateUI: function () {
                             if (this.popupWindow) {
-                                var a = this.features, b = this.deferreds, e = a ? a.length : 0, c = this._spinner, r = this._actionList, d = this._nls;
+                                var a = this.features, b = this.deferreds, e = a ? a.length : 0, c = this._spinner,
+                                    r = this._actionList, d = this._nls;
                                 this._updatePagingControls();
                                 this._updatePagingInfo();
                                 e ? f.remove(r, "hidden") : f.add(r, "hidden");
                                 b && b.length ? a ? f.remove(c, "hidden") : this.setContent("\x3cdiv style\x3d'text-align: center;'\x3e" + d.NLS_searching +
-                                            "...\x3c/div\x3e") : (f.add(c, "hidden"), e || (this.setContent("\x3cdiv style\x3d'text-align: center;'\x3e" + d.NLS_noInfo + ".\x3c/div\x3e"), this.visibleWhenEmpty || this._waitAndHide(this.hideDelay)))
+                                    "...\x3c/div\x3e") : (f.add(c, "hidden"), e || (this.setContent("\x3cdiv style\x3d'text-align: center;'\x3e" + d.NLS_noInfo + ".\x3c/div\x3e"), this.visibleWhenEmpty || this._waitAndHide(this.hideDelay)))
                             }
                         }
                     });
@@ -12885,7 +12981,7 @@ require({
                             if (void 0 !== a.xmin && void 0 !== a.ymin && void 0 !== a.xmax && void 0 !== a.ymax)return new c(a)
                         }, getJsonType: function (a) {
                             return a instanceof m ? "esriGeometryPoint" : a instanceof k ? "esriGeometryPolyline" : a instanceof l ? "esriGeometryPolygon" : a instanceof c ? "esriGeometryEnvelope" : a instanceof g ? "esriGeometryMultipoint" :
-                                                null
+                                null
                         }, getGeometryType: function (a) {
                             return "esriGeometryPoint" === a ? m : "esriGeometryPolyline" === a ? k : "esriGeometryPolygon" === a ? l : "esriGeometryEnvelope" === a ? c : "esriGeometryMultipoint" === a ? g : null
                         }
@@ -12962,7 +13058,8 @@ require({
                                     case k.SCROLL_LOCK:
                                         return
                                 }
-                                if (!a.ctrlKey && !a.metaKey && !a.altKey) {
+                                if (!a.ctrlKey &&
+                                    !a.metaKey && !a.altKey) {
                                     switch (b) {
                                         case k.NUMPAD_0:
                                         case k.NUMPAD_1:
@@ -13127,21 +13224,22 @@ require({
                                 return a && "input" == a.tagName.toLowerCase() && a.type && "radio" == a.type.toLowerCase() && a.name && a.name.toLowerCase()
                             }
 
-                            var e, f, d, p, g, r, k = {}, h = c._isElementShown, m = c.isTabNavigable, w = function (b) {
-                                for (b = b.firstChild; b; b = b.nextSibling)if (!(1 !=
-                                    b.nodeType || 9 >= l("ie") && "HTML" !== b.scopeName || !h(b))) {
-                                    if (m(b)) {
-                                        var c = +n.get(b, "tabIndex");
-                                        if (!n.has(b, "tabIndex") || 0 == c) e || (e = b), f = b; else if (0 < c) {
-                                            if (!d || c < p) p = c, d = b;
-                                            if (!g || c >= r) r = c, g = b
+                            var e, f, d, p, g, r, k = {}, h = c._isElementShown, m = c.isTabNavigable,
+                                w = function (b) {
+                                    for (b = b.firstChild; b; b = b.nextSibling)if (!(1 !=
+                                        b.nodeType || 9 >= l("ie") && "HTML" !== b.scopeName || !h(b))) {
+                                        if (m(b)) {
+                                            var c = +n.get(b, "tabIndex");
+                                            if (!n.has(b, "tabIndex") || 0 == c) e || (e = b), f = b; else if (0 < c) {
+                                                if (!d || c < p) p = c, d = b;
+                                                if (!g || c >= r) r = c, g = b
+                                            }
+                                            c = a(b);
+                                            n.get(b, "checked") && c && (k[c] = b)
                                         }
-                                        c = a(b);
-                                        n.get(b, "checked") && c && (k[c] = b)
+                                        "SELECT" != b.nodeName.toUpperCase() && w(b)
                                     }
-                                    "SELECT" != b.nodeName.toUpperCase() && w(b)
-                                }
-                            };
+                                };
                             h(b) && w(b);
                             return {
                                 first: k[a(e)] || e,
@@ -13279,16 +13377,16 @@ require({
                             longdashdot: "esriSLSLongDashDot"
                         }, constructor: function (e, f, c) {
                             e ? h.isString(e) ? (this.style = e, f && (this.color = f), c && (this.width = c)) : this.style = g.valueOf(this._styles, e.style) || b.STYLE_SOLID : (h.mixin(this,
-                                    a), this.color = new n(this.color), this.width = k.pt2px(this.width))
+                                a), this.color = new n(this.color), this.width = k.pt2px(this.width))
                         }, setStyle: function (a) {
                             this.style = a;
                             return this
                         }, getStroke: function () {
                             return this.style === b.STYLE_NULL || 0 === this.width ? null : {
-                                    color: this.color,
-                                    style: this.style,
-                                    width: this.width
-                                }
+                                color: this.color,
+                                style: this.style,
+                                width: this.width
+                            }
                         }, getFill: function () {
                             return null
                         }, getShapeDescriptors: function () {
@@ -13327,7 +13425,7 @@ require({
                         if (this.geometryType) {
                             var b;
                             b = "point" === this.geometryType.toLowerCase() ? "esriGeometryPoint" : "multipoint" === this.geometryType.toLowerCase() ? "esriGeometryMultipoint" : "polyline" === this.geometryType.toLowerCase() ? "esriGeometryPolyline" : "polygon" ===
-                                        this.geometryType.toLowerCase() ? "esriGeometryPolygon" : this.geometryType;
+                            this.geometryType.toLowerCase() ? "esriGeometryPolygon" : this.geometryType;
                             c.geometryType = b
                         }
                         return k.fixJson(c)
@@ -13531,7 +13629,8 @@ require({
                     function f(a, b, f) {
                         var q = f.match(/([^\(]+)(\([^\)]+\))?/i), l = m.trim(q[1]);
                         f = b[a];
-                        var q = h.fromJson((q[2] ? m.trim(q[2]) : "()").replace(/^\(/, "({").replace(/\)$/, "})")), u = q.utcOffset;
+                        var q = h.fromJson((q[2] ? m.trim(q[2]) : "()").replace(/^\(/, "({").replace(/\)$/, "})")),
+                            u = q.utcOffset;
                         if (-1 === d.indexOf(p, l)) l = m.getObject(l), m.isFunction(l) && (f = l(f, a, b)); else if ("number" === typeof f || "string" === typeof f && f && !isNaN(Number(f)))switch (f =
                             Number(f), l) {
                             case "NumberFormat":
@@ -13611,10 +13710,10 @@ require({
                         this.valueNode && n.set(this.valueNode, "disabled", b);
                         this.focusNode.setAttribute("aria-disabled", b ? "true" : "false");
                         b ? (this._set("hovering", !1), this._set("active", !1), b = "tabIndex" in this.attributeMap ? this.attributeMap.tabIndex : "_setTabIndexAttr" in this ? this._setTabIndexAttr :
-                                    "focusNode", d.forEach(k.isArray(b) ? b : [b], function (b) {
-                                b = this[b];
-                                c("webkit") || a.hasDefaultTabStop(b) ? b.setAttribute("tabIndex", "-1") : b.removeAttribute("tabIndex")
-                            }, this)) : "" != this.tabIndex && this.set("tabIndex", this.tabIndex)
+                            "focusNode", d.forEach(k.isArray(b) ? b : [b], function (b) {
+                            b = this[b];
+                            c("webkit") || a.hasDefaultTabStop(b) ? b.setAttribute("tabIndex", "-1") : b.removeAttribute("tabIndex")
+                        }, this)) : "" != this.tabIndex && this.set("tabIndex", this.tabIndex)
                     },
                     _onFocus: function (a) {
                         if ("mouse" == a && this.isFocusable())var c = this.own(g(this.focusNode, "focus", function () {
@@ -13707,7 +13806,9 @@ require({
                                     spatialRel: this.spatialRelationship,
                                     maxAllowableOffset: this.maxAllowableOffset,
                                     geometryPrecision: this.geometryPrecision
-                                }, c = a && a.geometry || this.geometry, d = this.objectIds, p = this.outFields, k = this.outSpatialReference, r = this.groupByFieldsForStatistics, h = this.orderByFields,
+                                }, c = a && a.geometry || this.geometry, d = this.objectIds, p = this.outFields,
+                                k = this.outSpatialReference, r = this.groupByFieldsForStatistics,
+                                h = this.orderByFields,
                                 l = this.outStatistics;
                             a = this.distance;
                             c && (e.geometry = c, e.geometryType = g.getJsonType(c), e.inSR = c.spatialReference.wkid || m.toJson(c.spatialReference.toJson()));
@@ -13772,7 +13873,8 @@ require({
                             };
                             return f
                         }
-                        var a = this.constructor._onMap || this.registerConnectEvents(), e = "string" == typeof c && c.toLowerCase(), d = this._onCamelCase(e), p = a && a[e];
+                        var a = this.constructor._onMap || this.registerConnectEvents(),
+                            e = "string" == typeof c && c.toLowerCase(), d = this._onCamelCase(e), p = a && a[e];
                         return (d = p && p.method || this[d] && h.isFunction(this[d]) && d) ? p && h.isArray(p.argKeys) ? (a = this._onArr2Obj(b, a[e].argKeys), n.after(this, d, a, !0)) : n.after(this, d, b, !0) : this.inherited(arguments)
                     }, emit: function (c, b) {
                         var a, e, f, d, p = c.toLowerCase();
@@ -14130,7 +14232,8 @@ require({
                                 this.map.snappingManager && (b = this.map.snappingManager._snappingPoint);
                                 var e = this._points[0], c = b || a.mapPoint, f = this.map, d = f.spatialReference;
                                 b = this._graphic;
-                                var r = A, p = f.toScreen(e), q = f.toScreen(c), k = [], k = q.x - p.x, q = q.y - p.y, l = Math.sqrt(k * k + q * q);
+                                var r = A, p = f.toScreen(e), q = f.toScreen(c), k = [], k = q.x - p.x, q = q.y - p.y,
+                                    l = Math.sqrt(k * k + q * q);
                                 switch (this._geometryType) {
                                     case r.CIRCLE:
                                         this._hideTooltip();
@@ -14172,7 +14275,7 @@ require({
                                     case r.RIGHT_ARROW:
                                         this._hideTooltip();
                                         k = 0 <= k ? [[k, 0], [0.75 * k, q], [0.75 * k, 0.5 * q], [0, 0.5 * q], [0, -0.5 * q], [0.75 * k, -0.5 * q], [0.75 * k, -q], [k, 0]] : [[0, 0], [0.25 * k, q], [0.25 * k, 0.5 * q],
-                                                [k, 0.5 * q], [k, -0.5 * q], [0.25 * k, -0.5 * q], [0.25 * k, -q], [0, 0]];
+                                            [k, 0.5 * q], [k, -0.5 * q], [0.25 * k, -0.5 * q], [0.25 * k, -q], [0, 0]];
                                         b.geometry = this._toPolygon(k, p.x, p.y);
                                         b.setGeometry(b.geometry);
                                         break;
@@ -14185,7 +14288,7 @@ require({
                                     case r.DOWN_ARROW:
                                         this._hideTooltip();
                                         k = 0 <= q ? [[0, q], [-k, 0.75 * q], [-0.5 * k, 0.75 * q], [-0.5 *
-                                            k, 0], [0.5 * k, 0], [0.5 * k, 0.75 * q], [k, 0.75 * q], [0, q]] : [[0, 0], [-k, 0.25 * q], [-0.5 * k, 0.25 * q], [-0.5 * k, q], [0.5 * k, q], [0.5 * k, 0.25 * q], [k, 0.25 * q], [0, 0]];
+                                        k, 0], [0.5 * k, 0], [0.5 * k, 0.75 * q], [k, 0.75 * q], [0, q]] : [[0, 0], [-k, 0.25 * q], [-0.5 * k, 0.25 * q], [-0.5 * k, q], [0.5 * k, q], [0.5 * k, 0.25 * q], [k, 0.25 * q], [0, 0]];
                                         b.geometry = this._toPolygon(k, p.x, p.y);
                                         b.setGeometry(b.geometry);
                                         break;
@@ -14231,7 +14334,8 @@ require({
                         },
                         _canDrawFreehandPoint: function (a) {
                             if (!this._oldPoint)return !1;
-                            var b = this._oldPoint.x - a.screenPoint.x, e = this._oldPoint.y - a.screenPoint.y, c = this._options.tolerance;
+                            var b = this._oldPoint.x - a.screenPoint.x, e = this._oldPoint.y - a.screenPoint.y,
+                                c = this._options.tolerance;
                             if ((0 > b ? -1 * b : b) < c && (0 > e ? -1 * e : e) < c)return !1;
                             b = new Date;
                             if (b - this._startTime < this._options.drawTime)return !1;
@@ -14293,10 +14397,10 @@ require({
                                     break;
                                 case c.POLYLINE:
                                     1 === this._points.length ? (e = new w(b.spatialReference), e.addPath(this._points), this._graphic = b.graphics.add(new s(e, this.lineSymbol), !0), b.snappingManager && b.snappingManager._setGraphic(this._graphic),
-                                            this._onMouseMoveHandler_connect = m.connect(b, "onMouseMove", this._onMouseMoveHandler), this._tGraphic = b.graphics.add(new s(new w({
-                                            paths: [[[a.x, a.y], [a.x, a.y]]],
-                                            spatialReference: b.spatialReference
-                                        }), this.lineSymbol), !0)) : (this._graphic.geometry._insertPoints([a.offset(0, 0)], 0), this._graphic.setGeometry(this._graphic.geometry).setSymbol(this.lineSymbol), b = this._tGraphic, e = b.geometry, e.setPoint(0, 0, a.offset(0, 0)), e.setPoint(0, 1, a.offset(0, 0)), b.setGeometry(e));
+                                        this._onMouseMoveHandler_connect = m.connect(b, "onMouseMove", this._onMouseMoveHandler), this._tGraphic = b.graphics.add(new s(new w({
+                                        paths: [[[a.x, a.y], [a.x, a.y]]],
+                                        spatialReference: b.spatialReference
+                                    }), this.lineSymbol), !0)) : (this._graphic.geometry._insertPoints([a.offset(0, 0)], 0), this._graphic.setGeometry(this._graphic.geometry).setSymbol(this.lineSymbol), b = this._tGraphic, e = b.geometry, e.setPoint(0, 0, a.offset(0, 0)), e.setPoint(0, 1, a.offset(0, 0)), b.setGeometry(e));
                                     break;
                                 case c.POLYGON:
                                     1 === this._points.length ?
@@ -14304,7 +14408,7 @@ require({
                                             paths: [[[a.x, a.y], [a.x, a.y]]],
                                             spatialReference: b.spatialReference
                                         }), this.fillSymbol), !0)) : (this._graphic.geometry._insertPoints([a.offset(0, 0)], 0), this._graphic.setGeometry(this._graphic.geometry).setSymbol(this.fillSymbol),
-                                            b = this._tGraphic, e = b.geometry, e.setPoint(0, 0, a.offset(0, 0)), e.setPoint(0, 1, a.offset(0, 0)), b.setGeometry(e));
+                                        b = this._tGraphic, e = b.geometry, e.setPoint(0, 0, a.offset(0, 0)), e.setPoint(0, 1, a.offset(0, 0)), b.setGeometry(e));
                                     break;
                                 case c.MULTI_POINT:
                                     a = this._points;
@@ -14523,7 +14627,7 @@ require({
                         yoffset: 0,
                         constructor: function (a, e, c, d) {
                             a ? h.isString(a) ? (this.url = a, void 0 !== e && (this.outline = e), void 0 !== c && (this.width = c), void 0 !== d && (this.height = d)) : (this.xoffset = m.pt2px(a.xoffset), this.yoffset = m.pt2px(a.yoffset), this.width = m.pt2px(a.width), this.height = m.pt2px(a.height), e = a.imageData, !(9 > n("ie")) && e && (c = this.url, this.url =
-                                        "data:" + (a.contentType || "image") + ";base64," + e, this.imageData = c)) : (h.mixin(this, b), this.width = m.pt2px(this.width), this.height = m.pt2px(this.height))
+                                "data:" + (a.contentType || "image") + ";base64," + e, this.imageData = c)) : (h.mixin(this, b), this.width = m.pt2px(this.width), this.height = m.pt2px(this.height))
                         },
                         setWidth: function (a) {
                             this.width = a;
@@ -14575,18 +14679,21 @@ require({
                             if (0 === a.indexOf("data:"))var c = a, a = b, b = c.indexOf(";base64,") +
                                 8, b = c.substr(b);
                             if (h.isString(a) && (0 === a.indexOf("/") || 0 === a.indexOf("//") || 0 === a.indexOf("./") || 0 === a.indexOf("../"))) a = g.getAbsoluteUrl(a);
-                            var c = m.px2pt(this.width), c = isNaN(c) ? void 0 : c, d = m.px2pt(this.height), d = isNaN(d) ? void 0 : d, p = m.px2pt(this.xoffset), p = isNaN(p) ? void 0 : p, k = m.px2pt(this.yoffset), k = isNaN(k) ? void 0 : k, a = l.fixJson(h.mixin(this.inherited("toJson", arguments), {
-                                type: "esriPFS",
-                                url: a,
-                                imageData: b,
-                                contentType: this.contentType,
-                                width: c,
-                                height: d,
-                                xoffset: p,
-                                yoffset: k,
-                                xscale: this.xscale,
-                                yscale: this.yscale
-                            }));
+                            var c = m.px2pt(this.width), c = isNaN(c) ? void 0 : c, d = m.px2pt(this.height),
+                                d = isNaN(d) ? void 0 : d, p = m.px2pt(this.xoffset), p = isNaN(p) ? void 0 : p,
+                                k = m.px2pt(this.yoffset), k = isNaN(k) ? void 0 : k,
+                                a = l.fixJson(h.mixin(this.inherited("toJson", arguments), {
+                                    type: "esriPFS",
+                                    url: a,
+                                    imageData: b,
+                                    contentType: this.contentType,
+                                    width: c,
+                                    height: d,
+                                    xoffset: p,
+                                    yoffset: k,
+                                    xscale: this.xscale,
+                                    yscale: this.yscale
+                                }));
                             a.imageData || delete a.imageData;
                             return a
                         }
@@ -14604,7 +14711,8 @@ require({
                         this.routeName = b.routeName;
                         h.mixin(this, b.summary);
                         this.extent = new l(this.envelope);
-                        var e = this._fromCompressedGeometry, c = this.features, d = this.extent.spatialReference, p = [];
+                        var e = this._fromCompressedGeometry, c = this.features, d = this.extent.spatialReference,
+                            p = [];
                         n.forEach(a, function (a, b) {
                             c[b].setGeometry(p[b] = e(a, d))
                         });
@@ -14876,40 +14984,32 @@ require({
                 function (d, h, n, m, k, l, g) {
                     h.add("rtl-adjust-position-for-verticalScrollBar", function (b, a) {
                         var e = n.body(a), c = g.create("div", {
-                            style: {
-                                overflow: "scroll",
-                                overflowX: "visible",
-                                direction: "rtl",
-                                visibility: "hidden",
-                                position: "absolute",
-                                left: "0",
-                                top: "0",
-                                width: "64px",
-                                height: "64px"
-                            }
-                        }, e, "last"), d = g.create("div", {
-                            style: {
-                                overflow: "hidden",
-                                direction: "ltr"
-                            }
-                        }, c, "last"), p = 0 != k.position(d).x;
+                                style: {
+                                    overflow: "scroll",
+                                    overflowX: "visible",
+                                    direction: "rtl",
+                                    visibility: "hidden",
+                                    position: "absolute",
+                                    left: "0",
+                                    top: "0",
+                                    width: "64px",
+                                    height: "64px"
+                                }
+                            }, e, "last"), d = g.create("div", {style: {overflow: "hidden", direction: "ltr"}}, c, "last"),
+                            p = 0 != k.position(d).x;
                         c.removeChild(d);
                         e.removeChild(c);
                         return p
                     });
                     h.add("position-fixed-support", function (b, a) {
                         var e = n.body(a), c = g.create("span", {
-                            style: {
-                                visibility: "hidden",
-                                position: "fixed", left: "1px", top: "1px"
-                            }
-                        }, e, "last"), d = g.create("span", {
-                            style: {
-                                position: "fixed",
-                                left: "0",
-                                top: "0"
-                            }
-                        }, c, "last"), p = k.position(d).x != k.position(c).x;
+                                style: {
+                                    visibility: "hidden",
+                                    position: "fixed", left: "1px", top: "1px"
+                                }
+                            }, e, "last"),
+                            d = g.create("span", {style: {position: "fixed", left: "0", top: "0"}}, c, "last"),
+                            p = k.position(d).x != k.position(c).x;
                         c.removeChild(d);
                         e.removeChild(c);
                         return p
@@ -14936,15 +15036,19 @@ require({
                         }, scrollIntoView: function (b, a) {
                             try {
                                 b = m.byId(b);
-                                var e = b.ownerDocument || n.doc, c = n.body(e), d = e.documentElement || c.parentNode, p = h("ie"), g = h("webkit");
+                                var e = b.ownerDocument || n.doc, c = n.body(e), d = e.documentElement || c.parentNode,
+                                    p = h("ie"), g = h("webkit");
                                 if (!(b == c || b == d))if (!h("mozilla") && (!p && !g && !h("opera")) && "scrollIntoView" in b) b.scrollIntoView(!1); else {
                                     var r = "BackCompat" == e.compatMode, s = Math.min(c.clientWidth ||
-                                        d.clientWidth, d.clientWidth || c.clientWidth), t = Math.min(c.clientHeight || d.clientHeight, d.clientHeight || c.clientHeight), e = g || r ? c : d, y = a || k.position(b), w = b.parentNode, g = function (a) {
-                                        return 6 >= p || 7 == p && r ? !1 : h("position-fixed-support") && "fixed" == l.get(a, "position").toLowerCase()
-                                    };
+                                            d.clientWidth, d.clientWidth || c.clientWidth),
+                                        t = Math.min(c.clientHeight || d.clientHeight, d.clientHeight || c.clientHeight),
+                                        e = g || r ? c : d, y = a || k.position(b), w = b.parentNode, g = function (a) {
+                                            return 6 >= p || 7 == p && r ? !1 : h("position-fixed-support") && "fixed" == l.get(a, "position").toLowerCase()
+                                        };
                                     if (!g(b))for (; w;) {
                                         w == c && (w = e);
-                                        var u = k.position(w), z = g(w), C = "rtl" == l.getComputedStyle(w).direction.toLowerCase();
+                                        var u = k.position(w), z = g(w),
+                                            C = "rtl" == l.getComputedStyle(w).direction.toLowerCase();
                                         if (w == e) {
                                             u.w = s;
                                             u.h = t;
@@ -15040,11 +15144,11 @@ require({
                         c = {id: e, level: c, row: b, col: a};
                         b = this._getResamplingBudget();
                         0 < b ? this._process({
-                                tile: c,
-                                requestedTile: c,
-                                callback: f,
-                                resamplingBudget: b
-                            }) : (f || this.callback).call(this, c, c)
+                            tile: c,
+                            requestedTile: c,
+                            callback: f,
+                            resamplingBudget: b
+                        }) : (f || this.callback).call(this, c, c)
                     }, statusOf: function (c, b, a) {
                         var e = this._getResamplingBudget();
                         c = {level: c, row: b, col: a};
@@ -15358,10 +15462,10 @@ require({
                                 var a = c[b], e = m.getObject(b, !1, g);
                                 void 0 !== e && (e = [].concat(e),
                                     "boolean" == typeof a[0].checked ? d.forEach(a, function (a) {
-                                            a.set("value", -1 != d.indexOf(e, a._get("value")))
-                                        }) : a[0].multiple ? a[0].set("value", e) : d.forEach(a, function (a, b) {
-                                                a.set("value", e[b])
-                                            }))
+                                        a.set("value", -1 != d.indexOf(e, a._get("value")))
+                                    }) : a[0].multiple ? a[0].set("value", e) : d.forEach(a, function (a, b) {
+                                        a.set("value", e[b])
+                                    }))
                             }
                         }, getValues: function () {
                             n.deprecated(this.declaredClass + "::getValues() is deprecated. Use get('value') instead.", "", "2.0");
@@ -15471,7 +15575,8 @@ require({
                                 a.charOrCode === c.ENTER && this.execute_()
                             },
                             execute_: function () {
-                                var a = this.txtUser_.get("value"), c = this.txtPwd_.get("value"), d = this.dfd_, r = this;
+                                var a = this.txtUser_.get("value"), c = this.txtPwd_.get("value"), d = this.dfd_,
+                                    r = this;
                                 if (a && c) {
                                     this.btnSubmit_.set("label", b.lblSigning);
                                     var k = f.id.findCredential(r.resUrl_, a), h = function (c) {
@@ -15485,27 +15590,27 @@ require({
                                         r.dfd_ = r.serverInfo_ = r.generateDfd_ = r.resUrl_ = null;
                                         var g, h, l = k, m;
                                         c && (g = c.token, h = q.isDefined(c.expires) ? Number(c.expires) : null, m = !!c.ssl, l ? (l.userId = a, l.token = g, l.expires = h, l.validity = c.validity, l.ssl = m, l.creationTime = (new Date).getTime()) : l = new v({
-                                                userId: a,
-                                                server: f.server,
-                                                token: g,
-                                                expires: h,
-                                                ssl: m,
-                                                isAdmin: r.admin_,
-                                                validity: c.validity
-                                            }));
+                                            userId: a,
+                                            server: f.server,
+                                            token: g,
+                                            expires: h,
+                                            ssl: m,
+                                            isAdmin: r.admin_,
+                                            validity: c.validity
+                                        }));
                                         d.callback(l)
                                     };
                                     k && !k._enqueued ? h() : (r.btnSubmit_.set("disabled", !0), r.generateDfd_ =
-                                            f.id.generateToken(this.serverInfo_, {
-                                                username: a,
-                                                password: c
-                                            }, {isAdmin: this.admin_}).addCallback(h).addErrback(function (a) {
-                                                r.btnSubmit_.set("disabled", !1);
-                                                r.generateDfd_ = null;
-                                                r.btnSubmit_.set("label", b.lblOk);
-                                                g.set(r.errMsg_, "innerHTML", a && a.code ? b.invalidUser : b.noAuthService);
-                                                p.show(r.errMsg_)
-                                            }))
+                                        f.id.generateToken(this.serverInfo_, {
+                                            username: a,
+                                            password: c
+                                        }, {isAdmin: this.admin_}).addCallback(h).addErrback(function (a) {
+                                            r.btnSubmit_.set("disabled", !1);
+                                            r.generateDfd_ = null;
+                                            r.btnSubmit_.set("label", b.lblOk);
+                                            g.set(r.errMsg_, "innerHTML", a && a.code ? b.invalidUser : b.noAuthService);
+                                            p.show(r.errMsg_)
+                                        }))
                                 }
                             },
                             cancel_: function () {
@@ -15550,7 +15655,8 @@ require({
                         var a = [];
                         this.pop = function () {
                             var b;
-                            a.length ? (b = a.pop(), b.style.display = "") : (9 > c("ie") ? (b = "\x3ciframe src\x3d'" + (n.dojoBlankHtmlUrl || d.toUrl("dojo/resources/blank.html") || 'javascript:""') + "' role\x3d'presentation' style\x3d'position: absolute; left: 0px; top: 0px;z-index: -1; filter:Alpha(Opacity\x3d\"0\");'\x3e", b = document.createElement(b)) : (b = m.create("iframe"), b.src = 'javascript:""', b.className = "dijitBackgroundIframe", b.setAttribute("role", "presentation"), k.set(b, "opacity", 0.1)), b.tabIndex = -1);
+                            a.length ? (b = a.pop(), b.style.display = "") : (9 > c("ie") ? (b = "\x3ciframe src\x3d'" + (n.dojoBlankHtmlUrl || d.toUrl("dojo/resources/blank.html") || 'javascript:""') + "' role\x3d'presentation' style\x3d'position: absolute; left: 0px; top: 0px;z-index: -1; filter:Alpha(Opacity\x3d\"0\");'\x3e", b = document.createElement(b)) : (b = m.create("iframe"), b.src = 'javascript:""', b.className = "dijitBackgroundIframe", b.setAttribute("role", "presentation"), k.set(b, "opacity", 0.1)), b.tabIndex =
+                                -1);
                             return b
                         };
                         this.push = function (b) {
@@ -15564,9 +15670,9 @@ require({
                         var e = this.iframe = b.pop();
                         a.appendChild(e);
                         7 > c("ie") || c("quirks") ? (this.resize(a), this._conn = g(a, "resize", l.hitch(this, "resize", a))) : k.set(e, {
-                                width: "100%",
-                                height: "100%"
-                            })
+                            width: "100%",
+                            height: "100%"
+                        })
                     }
                 };
                 l.extend(h.BackgroundIframe, {
@@ -15663,8 +15769,12 @@ require({
                         }],
                         _handler: function (b, c, d, k, r) {
                             try {
-                                var g = [], h = [], m = b.routes ? b.routes.features : [], w = b.stops ? b.stops.features : [], u = b.barriers ? b.barriers.features :
-                                    [], z = b.polygonBarriers ? b.polygonBarriers.features : [], C = b.polylineBarriers ? b.polylineBarriers.features : [], x = b.messages, A = n.forEach, B = n.indexOf, D = !0, F, E, G = b.routes && b.routes.spatialReference || b.stops && b.stops.spatialReference || b.barriers && b.barriers.spatialReference || b.polygonBarriers && b.polygonBarriers.spatialReference || b.polylineBarriers && b.polylineBarriers.spatialReference;
+                                var g = [], h = [], m = b.routes ? b.routes.features : [],
+                                    w = b.stops ? b.stops.features : [], u = b.barriers ? b.barriers.features :
+                                        [], z = b.polygonBarriers ? b.polygonBarriers.features : [],
+                                    C = b.polylineBarriers ? b.polylineBarriers.features : [], x = b.messages,
+                                    A = n.forEach, B = n.indexOf, D = !0, F, E,
+                                    G = b.routes && b.routes.spatialReference || b.stops && b.stops.spatialReference || b.barriers && b.barriers.spatialReference || b.polygonBarriers && b.polygonBarriers.spatialReference || b.polylineBarriers && b.polylineBarriers.spatialReference;
                                 A(b.directions || [], function (a) {
                                     g.push(F = a.routeName);
                                     h[F] = {directions: a}
@@ -15831,23 +15941,24 @@ require({
                         }, _toProjectGeometry: function (a) {
                             var b = a.spatialReference.toJson();
                             return a instanceof e ? new q({
-                                    rings: [[[a.xmin, a.ymin], [a.xmin, a.ymax], [a.xmax, a.ymax], [a.xmax, a.ymin], [a.xmin, a.ymin]]],
-                                    spatialReference: b
-                                }) : new f({paths: [[].concat(a.points)], spatialReference: b})
+                                rings: [[[a.xmin, a.ymin], [a.xmin, a.ymax], [a.xmax, a.ymax], [a.xmax, a.ymin], [a.xmin, a.ymin]]],
+                                spatialReference: b
+                            }) : new f({paths: [[].concat(a.points)], spatialReference: b})
                         }, _fromProjectedGeometry: function (a, b, c) {
                             return "esriGeometryEnvelope" === b ? (a = a.rings[0], new e(a[0][0], a[0][1], a[2][0], a[2][1], c)) : new p({
-                                    points: a.paths[0],
-                                    spatialReference: c.toJson()
-                                })
+                                points: a.paths[0],
+                                spatialReference: c.toJson()
+                            })
                         },
                         project: function (a, e, f, d) {
                             var g = h.mixin({}, this._url.query, {f: "json"}), p;
                             a.geometries ? (d = f, f = e, e = a.outSR, p = a.geometries[0], g = h.mixin(g, a.toJson())) : (p = a[0], g = h.mixin(g, {
-                                    outSR: e.wkid || m.toJson(e.toJson()),
-                                    inSR: p.spatialReference.wkid || m.toJson(p.spatialReference.toJson()),
-                                    geometries: m.toJson(this._encodeGeometries(a))
-                                }));
-                            var q = v.getJsonType(p), l = this._projectHandler, n = this._errorHandler, A = new k(b._dfdCanceller);
+                                outSR: e.wkid || m.toJson(e.toJson()),
+                                inSR: p.spatialReference.wkid || m.toJson(p.spatialReference.toJson()),
+                                geometries: m.toJson(this._encodeGeometries(a))
+                            }));
+                            var q = v.getJsonType(p), l = this._projectHandler, n = this._errorHandler,
+                                A = new k(b._dfdCanceller);
                             A._pendingDfd = c({
                                 url: this._url.path + "/project",
                                 content: g,
@@ -16121,7 +16232,9 @@ require({
                             }
                         }, onDifferenceComplete: function () {
                         }, buffer: function (a, e, f) {
-                            var d = h.mixin({}, this._url.query, {f: "json"}, a.toJson()), g = a.outSpatialReference || a.geometries[0].spatialReference, p = this._bufferHandler, q = this._errorHandler, l = new k(b._dfdCanceller);
+                            var d = h.mixin({}, this._url.query, {f: "json"}, a.toJson()),
+                                g = a.outSpatialReference || a.geometries[0].spatialReference, p = this._bufferHandler,
+                                q = this._errorHandler, l = new k(b._dfdCanceller);
                             l._pendingDfd = c({
                                 url: this._url.path + "/buffer",
                                 content: d,
@@ -16241,7 +16354,8 @@ require({
                         }, onRelationComplete: function () {
                         }, trimExtend: function (a, e, f) {
                             var d = h.mixin({}, this._url.query, {f: "json"}, a.toJson()),
-                                g = a.sr, p = this._trimExtendHandler, q = this._errorHandler, l = new k(b._dfdCanceller);
+                                g = a.sr, p = this._trimExtendHandler, q = this._errorHandler,
+                                l = new k(b._dfdCanceller);
                             l._pendingDfd = c({
                                 url: this._url.path + "/trimExtend",
                                 content: d,
@@ -16267,7 +16381,9 @@ require({
                         }, onTrimExtendComplete: function () {
                         },
                         densify: function (a, e, f) {
-                            var d = h.mixin({}, this._url.query, {f: "json"}, a.toJson()), g = a.geometries[0].spatialReference, p = this._densifyHandler, q = this._errorHandler, l = new k(b._dfdCanceller);
+                            var d = h.mixin({}, this._url.query, {f: "json"}, a.toJson()),
+                                g = a.geometries[0].spatialReference, p = this._densifyHandler, q = this._errorHandler,
+                                l = new k(b._dfdCanceller);
                             l._pendingDfd = c({
                                 url: this._url.path + "/densify",
                                 content: d,
@@ -16293,7 +16409,9 @@ require({
                             }
                         }, onDensifyComplete: function () {
                         }, generalize: function (a, e, f) {
-                            var d = h.mixin({}, this._url.query, {f: "json"}, a.toJson()), g = a.geometries[0].spatialReference, p = this._generalizeHandler, q = this._errorHandler, l = new k(b._dfdCanceller);
+                            var d = h.mixin({}, this._url.query, {f: "json"}, a.toJson()),
+                                g = a.geometries[0].spatialReference, p = this._generalizeHandler,
+                                q = this._errorHandler, l = new k(b._dfdCanceller);
                             l._pendingDfd = c({
                                 url: this._url.path + "/generalize",
                                 content: d,
@@ -16318,7 +16436,9 @@ require({
                             }
                         }, onGeneralizeComplete: function () {
                         }, offset: function (a, e, f) {
-                            var d = h.mixin({}, this._url.query, {f: "json"}, a.toJson()), g = a.geometries[0].spatialReference, p = this._offsetHandler, q = this._errorHandler, l = new k(b._dfdCanceller);
+                            var d = h.mixin({}, this._url.query, {f: "json"}, a.toJson()),
+                                g = a.geometries[0].spatialReference, p = this._offsetHandler, q = this._errorHandler,
+                                l = new k(b._dfdCanceller);
                             l._pendingDfd = c({
                                 url: this._url.path + "/offset",
                                 content: d,
@@ -16344,7 +16464,9 @@ require({
                             }
                         }, onOffsetComplete: function () {
                         }, distance: function (a, e, f) {
-                            var d = h.mixin({}, this._url.query, {f: "json"}, a.toJson()), g = a.geometry1.spatialReference, p = this._distanceHandler, q = this._errorHandler, l = new k(b._dfdCanceller);
+                            var d = h.mixin({}, this._url.query, {f: "json"}, a.toJson()),
+                                g = a.geometry1.spatialReference, p = this._distanceHandler, q = this._errorHandler,
+                                l = new k(b._dfdCanceller);
                             l._pendingDfd = c({
                                 url: this._url.path +
                                 "/distance", content: d, callbackParamName: "callback", load: function (a, b) {
@@ -22079,7 +22201,8 @@ require({
                         b = [h(d[c + "Hours"]()), h(d[c + "Minutes"]()), h(d[c + "Seconds"]())].join(":");
                         c = d[c + "Milliseconds"]();
                         k.milliseconds && (b += "." + (100 > c ? "0" : "") + h(c));
-                        if (k.zulu) b += "Z"; else if ("time" != k.selector)var c = d.getTimezoneOffset(), a = Math.abs(c), b = b + ((0 < c ? "-" : "+") + h(Math.floor(a / 60)) + ":" + h(a % 60));
+                        if (k.zulu) b += "Z"; else if ("time" != k.selector)var c = d.getTimezoneOffset(),
+                            a = Math.abs(c), b = b + ((0 < c ? "-" : "+") + h(Math.floor(a / 60)) + ":" + h(a % 60));
                         g.push(b)
                     }
                     return g.join("T")
@@ -22134,11 +22257,8 @@ require({
                     var m = null;
                     d.some(b, function (b) {
                         var e = b.corner, d = b.pos, k = 0, r = {
-                            w: {
-                                L: p.l + p.w - d.x,
-                                R: d.x - p.l,
-                                M: p.w
-                            }[e.charAt(1)], h: {T: p.t + p.h - d.y, B: d.y - p.t, M: p.h}[e.charAt(0)]
+                            w: {L: p.l + p.w - d.x, R: d.x - p.l, M: p.w}[e.charAt(1)],
+                            h: {T: p.t + p.h - d.y, B: d.y - p.t, M: p.h}[e.charAt(0)]
                         }, l =
                             a.style;
                         l.left = l.right = "auto";
@@ -22215,17 +22335,10 @@ require({
                         if ("string" == typeof b || "offsetWidth" in b) {
                             if (r =
                                     h.position(b, !0), /^(above|below)/.test(f[0])) {
-                                var s = h.getBorderExtents(b), t = b.firstChild ? h.getBorderExtents(b.firstChild) : {
-                                        t: 0,
-                                        l: 0,
-                                        b: 0,
-                                        r: 0
-                                    }, y = h.getBorderExtents(a), w = a.firstChild ? h.getBorderExtents(a.firstChild) : {
-                                        t: 0,
-                                        l: 0,
-                                        b: 0,
-                                        r: 0
-                                    };
+                                var s = h.getBorderExtents(b),
+                                    t = b.firstChild ? h.getBorderExtents(b.firstChild) : {t: 0, l: 0, b: 0, r: 0},
+                                    y = h.getBorderExtents(a),
+                                    w = a.firstChild ? h.getBorderExtents(a.firstChild) : {t: 0, l: 0, b: 0, r: 0};
                                 r.y += Math.min(s.t + t.t, y.t + w.t);
                                 r.h -= Math.min(s.t + t.t, y.t + w.t) + Math.min(s.b + t.b, y.b + w.b)
                             }
@@ -22248,7 +22361,9 @@ require({
                                 b = b.parentNode
                             }
                         }
-                        var z = r.x, C = r.y, x = "w" in r ? r.w : r.w = r.width, A = "h" in r ? r.h : (m.deprecated("place.around: dijit/place.__Rectangle: { x:" + z + ", y:" + C + ", height:" + r.height + ", width:" + x + " } has been deprecated.  Please use { x:" + z + ", y:" + C + ", h:" + r.height + ", w:" + x + " }", "", "2.0"), r.h = r.height), B = [];
+                        var z = r.x, C = r.y, x = "w" in r ? r.w : r.w = r.width,
+                            A = "h" in r ? r.h : (m.deprecated("place.around: dijit/place.__Rectangle: { x:" + z + ", y:" + C + ", height:" + r.height + ", width:" + x + " } has been deprecated.  Please use { x:" + z + ", y:" + C + ", h:" + r.height + ", w:" + x + " }", "", "2.0"), r.h = r.height),
+                            B = [];
                         d.forEach(f,
                             function (a) {
                                 var b = g;
@@ -22297,14 +22412,15 @@ require({
         "esri/map": function () {
             define("require dojo/_base/kernel dojo/_base/declare dojo/_base/connect dojo/_base/lang dojo/_base/array dojo/_base/event dojo/on dojo/aspect dojo/dom dojo/dom-class dojo/dom-construct dojo/dom-geometry dojo/dom-style dijit/registry esri/kernel esri/config esri/sniff esri/lang esri/_coremap esri/MapNavigationManager".split(" "), function (d, h, n, m, k, l, g, c, b, a, e, f, q, p, v, r, s, t, y, w, u) {
                 var z = {
-                    up: "panUp", right: "panRight",
-                    down: "panDown", left: "panLeft"
-                }, C = {
-                    upperRight: "panUpperRight",
-                    lowerRight: "panLowerRight",
-                    lowerLeft: "panLowerLeft",
-                    upperLeft: "panUpperLeft"
-                }, x = m.connect, A = m.disconnect, B = f.create, D = p.set, F = k.hitch, E = q.getMarginBox, G = h.deprecated, H = k.mixin, J = 0;
+                        up: "panUp", right: "panRight",
+                        down: "panDown", left: "panLeft"
+                    }, C = {
+                        upperRight: "panUpperRight",
+                        lowerRight: "panLowerRight",
+                        lowerLeft: "panLowerLeft",
+                        upperLeft: "panUpperLeft"
+                    }, x = m.connect, A = m.disconnect, B = f.create, D = p.set, F = k.hitch, E = q.getMarginBox,
+                    G = h.deprecated, H = k.mixin, J = 0;
                 h = n(w, {
                     declaredClass: "esri.Map", constructor: function (a, f) {
                         H(this, {
@@ -22392,7 +22508,8 @@ require({
                         this.enableMapNavigation();
                         this._createNav();
                         if ("small" === this._mapParams.sliderStyle || !this._createSlider) this._createSimpleSlider(); else if (this._mapParams.slider) {
-                            var a = -1 !== this._getSliderClass(!0).indexOf("Horizontal"), a = [a ? "dijit.form.HorizontalSlider" : "dijit.form.VerticalSlider", a ? "dijit.form.HorizontalRule" : "dijit.form.VerticalRule", a ? "dijit.form.HorizontalRuleLabels" : "dijit.form.VerticalRuleLabels"];
+                            var a = -1 !== this._getSliderClass(!0).indexOf("Horizontal"),
+                                a = [a ? "dijit.form.HorizontalSlider" : "dijit.form.VerticalSlider", a ? "dijit.form.HorizontalRule" : "dijit.form.VerticalRule", a ? "dijit.form.HorizontalRuleLabels" : "dijit.form.VerticalRuleLabels"];
                             if (l.some(a, function (a) {
                                     return !k.getObject(a, !1)
                                 })) {
@@ -22417,12 +22534,12 @@ require({
                             var g = this.width / 2, k = this.height / 2, p;
                             for (c in z)b = z[c], a = B("div", {id: d + "_pan_" + c}, this._navDiv), f(a, "fixedPan " + b),
                                 "up" === c || "down" === c ? (p = parseInt(E(a).w, 10) / 2, D(a, {
-                                        left: g - p + "px",
-                                        zIndex: 30
-                                    })) : (p = parseInt(E(a).h, 10) / 2, D(a, {
-                                        top: k - p + "px",
-                                        zIndex: 30
-                                    })), this._connects.push(x(a, "onclick", F(this, this[b])));
+                                    left: g - p + "px",
+                                    zIndex: 30
+                                })) : (p = parseInt(E(a).h, 10) / 2, D(a, {
+                                    top: k - p + "px",
+                                    zIndex: 30
+                                })), this._connects.push(x(a, "onclick", F(this, this[b])));
                             this._onMapResizeNavHandler_connect = x(this, "onResize", this, "_onMapResizeNavHandler");
                             for (c in C)b = C[c], a = B("div", {
                                 id: d + "_pan_" + c,
@@ -22443,7 +22560,9 @@ require({
                                     id: this.id + "_zoom_slider",
                                     "class": this._getSliderClass(),
                                     style: {zIndex: 30}
-                                }), c = t("esri-touch") && !t("ff") ? "touchstart" : t("esri-pointer") ? navigator.msPointerEnabled ? "MSPointerDown" : "pointerdown" : "onclick", f = B("div", {"class": "esriSimpleSliderIncrementButton"}, b),
+                                }),
+                                c = t("esri-touch") && !t("ff") ? "touchstart" : t("esri-pointer") ? navigator.msPointerEnabled ? "MSPointerDown" : "pointerdown" : "onclick",
+                                f = B("div", {"class": "esriSimpleSliderIncrementButton"}, b),
                                 d = B("div", {"class": "esriSimpleSliderDecrementButton"}, b);
                             this._incButton = f;
                             this._decButton = d;
@@ -22469,10 +22588,11 @@ require({
                         b = this._decButton;
                         f === this.getMaxZoom() ? d = a : f === this.getMinZoom() && (d = b);
                         d ? (e.add(d, "esriSimpleSliderDisabledButton"), e.remove(d ===
-                            a ? b : a, "esriSimpleSliderDisabledButton")) : (e.remove(a, "esriSimpleSliderDisabledButton"), e.remove(b, "esriSimpleSliderDisabledButton"))
+                        a ? b : a, "esriSimpleSliderDisabledButton")) : (e.remove(a, "esriSimpleSliderDisabledButton"), e.remove(b, "esriSimpleSliderDisabledButton"))
                     }, _getSliderClass: function (a) {
                         a = a ? "Large" : "Simple";
-                        var b = this._mapParams.sliderOrientation, e = this._mapParams.sliderPosition || "", b = b && "horizontal" === b.toLowerCase() ? "esri" + a + "SliderHorizontal" : "esri" + a + "SliderVertical";
+                        var b = this._mapParams.sliderOrientation, e = this._mapParams.sliderPosition || "",
+                            b = b && "horizontal" === b.toLowerCase() ? "esri" + a + "SliderHorizontal" : "esri" + a + "SliderVertical";
                         if (e)switch (e.toLowerCase()) {
                             case "top-left":
                                 e = "esri" + a + "SliderTL";
@@ -22489,7 +22609,8 @@ require({
                         return "esri" + a + "Slider " + b + " " + e
                     }, _createSlider: function (a, b, e) {
                         if (this._mapParams.slider) {
-                            var c = B("div", {id: this.id + "_zoom_slider"}, this.root), f = s.defaults.map, d = this._getSliderClass(!0), g = -1 !== d.indexOf("Horizontal");
+                            var c = B("div", {id: this.id + "_zoom_slider"}, this.root), f = s.defaults.map,
+                                d = this._getSliderClass(!0), g = -1 !== d.indexOf("Horizontal");
                             -1 !== d.indexOf("SliderTL") || d.indexOf("SliderBL");
                             -1 !== d.indexOf("SliderTL") || d.indexOf("SliderTR");
                             var k = this.getNumLevels();
@@ -22610,7 +22731,8 @@ require({
                         this.isShiftDoubleClickZoom || (G(this.declaredClass +
                             ": Map.(enable/disable)ShiftDoubleClickZoom deprecated. Shift-Double-Click zoom behavior will not be supported.", null, "v2.0"), this.navigationManager.enableShiftDoubleClickZoom(), this.isShiftDoubleClickZoom = !0)
                     }, disableShiftDoubleClickZoom: function () {
-                        this.isShiftDoubleClickZoom && (G(this.declaredClass + ": Map.(enable/disable)ShiftDoubleClickZoom deprecated. Shift-Double-Click zoom behavior will not be supported.", null, "v2.0"), this.navigationManager.disableShiftDoubleClickZoom(), this.isShiftDoubleClickZoom = !1)
+                        this.isShiftDoubleClickZoom && (G(this.declaredClass + ": Map.(enable/disable)ShiftDoubleClickZoom deprecated. Shift-Double-Click zoom behavior will not be supported.", null, "v2.0"), this.navigationManager.disableShiftDoubleClickZoom(), this.isShiftDoubleClickZoom =
+                            !1)
                     }, enableClickRecenter: function () {
                         this.isClickRecenter || (this.navigationManager.enableClickRecenter(), this.isClickRecenter = !0)
                     }, disableClickRecenter: function () {
@@ -22740,426 +22862,426 @@ require({
                     d = d.split("-");
                     var k = d[1];
                     k ? 4 == k.length && (k = d[2]) : k = {
-                            aa: "et",
-                            ab: "ge",
-                            af: "za",
-                            ak: "gh",
-                            am: "et",
-                            ar: "eg",
-                            as: "in",
-                            av: "ru",
-                            ay: "bo",
-                            az: "az",
-                            ba: "ru",
-                            be: "by",
-                            bg: "bg",
-                            bi: "vu",
-                            bm: "ml",
-                            bn: "bd",
-                            bo: "cn",
-                            br: "fr",
-                            bs: "ba",
-                            ca: "es",
-                            ce: "ru",
-                            ch: "gu",
-                            co: "fr",
-                            cr: "ca",
-                            cs: "cz",
-                            cv: "ru",
-                            cy: "gb",
-                            da: "dk",
-                            de: "de",
-                            dv: "mv",
-                            dz: "bt",
-                            ee: "gh",
-                            el: "gr",
-                            en: "us",
-                            es: "es",
-                            et: "ee",
-                            eu: "es",
-                            fa: "ir",
-                            ff: "sn",
-                            fi: "fi",
-                            fj: "fj",
-                            fo: "fo",
-                            fr: "fr",
-                            fy: "nl",
-                            ga: "ie",
-                            gd: "gb",
-                            gl: "es",
-                            gn: "py",
-                            gu: "in",
-                            gv: "gb",
-                            ha: "ng",
-                            he: "il",
-                            hi: "in",
-                            ho: "pg",
-                            hr: "hr",
-                            ht: "ht",
-                            hu: "hu",
-                            hy: "am",
-                            ia: "fr",
-                            id: "id",
-                            ig: "ng",
-                            ii: "cn",
-                            ik: "us",
-                            "in": "id",
-                            is: "is",
-                            it: "it",
-                            iu: "ca",
-                            iw: "il",
-                            ja: "jp",
-                            ji: "ua",
-                            jv: "id",
-                            jw: "id",
-                            ka: "ge",
-                            kg: "cd",
-                            ki: "ke",
-                            kj: "na",
-                            kk: "kz",
-                            kl: "gl",
-                            km: "kh",
-                            kn: "in",
-                            ko: "kr",
-                            ks: "in",
-                            ku: "tr",
-                            kv: "ru",
-                            kw: "gb",
-                            ky: "kg",
-                            la: "va",
-                            lb: "lu",
-                            lg: "ug",
-                            li: "nl",
-                            ln: "cd",
-                            lo: "la",
-                            lt: "lt",
-                            lu: "cd",
-                            lv: "lv",
-                            mg: "mg",
-                            mh: "mh",
-                            mi: "nz",
-                            mk: "mk",
-                            ml: "in",
-                            mn: "mn",
-                            mo: "ro",
-                            mr: "in",
-                            ms: "my",
-                            mt: "mt",
-                            my: "mm",
-                            na: "nr",
-                            nb: "no",
-                            nd: "zw",
-                            ne: "np",
-                            ng: "na",
-                            nl: "nl",
-                            nn: "no",
-                            no: "no",
-                            nr: "za",
-                            nv: "us",
-                            ny: "mw",
-                            oc: "fr",
-                            om: "et",
-                            or: "in",
-                            os: "ge",
-                            pa: "in",
-                            pl: "pl",
-                            ps: "af",
-                            pt: "br",
-                            qu: "pe",
-                            rm: "ch",
-                            rn: "bi",
-                            ro: "ro",
-                            ru: "ru",
-                            rw: "rw",
-                            sa: "in",
-                            sd: "in",
-                            se: "no",
-                            sg: "cf",
-                            si: "lk",
-                            sk: "sk",
-                            sl: "si",
-                            sm: "ws",
-                            sn: "zw",
-                            so: "so",
-                            sq: "al",
-                            sr: "rs",
-                            ss: "za",
-                            st: "za",
-                            su: "id",
-                            sv: "se",
-                            sw: "tz",
-                            ta: "in",
-                            te: "in",
-                            tg: "tj",
-                            th: "th",
-                            ti: "et",
-                            tk: "tm",
-                            tl: "ph",
-                            tn: "za",
-                            to: "to",
-                            tr: "tr",
-                            ts: "za",
-                            tt: "ru",
-                            ty: "pf",
-                            ug: "cn",
-                            uk: "ua",
-                            ur: "pk",
-                            uz: "uz",
-                            ve: "za",
-                            vi: "vn",
-                            wa: "be",
-                            wo: "sn",
-                            xh: "za",
-                            yi: "il",
-                            yo: "ng",
-                            za: "cn",
-                            zh: "cn",
-                            zu: "za",
-                            ace: "id",
-                            ady: "ru",
-                            agq: "cm",
-                            alt: "ru",
-                            amo: "ng",
-                            asa: "tz",
-                            ast: "es",
-                            awa: "in",
-                            bal: "pk",
-                            ban: "id",
-                            bas: "cm",
-                            bax: "cm",
-                            bbc: "id",
-                            bem: "zm",
-                            bez: "tz",
-                            bfq: "in",
-                            bft: "pk",
-                            bfy: "in",
-                            bhb: "in",
-                            bho: "in",
-                            bik: "ph",
-                            bin: "ng",
-                            bjj: "in",
-                            bku: "ph",
-                            bqv: "ci",
-                            bra: "in",
-                            brx: "in",
-                            bss: "cm",
-                            btv: "pk",
-                            bua: "ru",
-                            buc: "yt",
-                            bug: "id",
-                            bya: "id",
-                            byn: "er",
-                            cch: "ng",
-                            ccp: "in",
-                            ceb: "ph",
-                            cgg: "ug",
-                            chk: "fm",
-                            chm: "ru",
-                            chp: "ca",
-                            chr: "us",
-                            cja: "kh",
-                            cjm: "vn",
-                            ckb: "iq",
-                            crk: "ca",
-                            csb: "pl",
-                            dar: "ru",
-                            dav: "ke",
-                            den: "ca",
-                            dgr: "ca",
-                            dje: "ne",
-                            doi: "in",
-                            dsb: "de",
-                            dua: "cm",
-                            dyo: "sn",
-                            dyu: "bf",
-                            ebu: "ke",
-                            efi: "ng",
-                            ewo: "cm",
-                            fan: "gq",
-                            fil: "ph",
-                            fon: "bj",
-                            fur: "it",
-                            gaa: "gh",
-                            gag: "md",
-                            gbm: "in",
-                            gcr: "gf",
-                            gez: "et",
-                            gil: "ki",
-                            gon: "in",
-                            gor: "id",
-                            grt: "in",
-                            gsw: "ch",
-                            guz: "ke",
-                            gwi: "ca",
-                            haw: "us",
-                            hil: "ph",
-                            hne: "in",
-                            hnn: "ph",
-                            hoc: "in",
-                            hoj: "in",
-                            ibb: "ng",
-                            ilo: "ph",
-                            inh: "ru",
-                            jgo: "cm",
-                            jmc: "tz",
-                            kaa: "uz",
-                            kab: "dz",
-                            kaj: "ng",
-                            kam: "ke",
-                            kbd: "ru",
-                            kcg: "ng",
-                            kde: "tz",
-                            kdt: "th",
-                            kea: "cv",
-                            ken: "cm",
-                            kfo: "ci",
-                            kfr: "in",
-                            kha: "in",
-                            khb: "cn",
-                            khq: "ml",
-                            kht: "in",
-                            kkj: "cm",
-                            kln: "ke",
-                            kmb: "ao",
-                            koi: "ru",
-                            kok: "in",
-                            kos: "fm",
-                            kpe: "lr",
-                            krc: "ru",
-                            kri: "sl",
-                            krl: "ru",
-                            kru: "in",
-                            ksb: "tz",
-                            ksf: "cm",
-                            ksh: "de",
-                            kum: "ru",
-                            lag: "tz",
-                            lah: "pk",
-                            lbe: "ru",
-                            lcp: "cn",
-                            lep: "in",
-                            lez: "ru",
-                            lif: "np",
-                            lis: "cn",
-                            lki: "ir",
-                            lmn: "in",
-                            lol: "cd",
-                            lua: "cd",
-                            luo: "ke",
-                            luy: "ke",
-                            lwl: "th",
-                            mad: "id",
-                            mag: "in",
-                            mai: "in",
-                            mak: "id",
-                            man: "gn",
-                            mas: "ke",
-                            mdf: "ru",
-                            mdh: "ph",
-                            mdr: "id",
-                            men: "sl",
-                            mer: "ke",
-                            mfe: "mu",
-                            mgh: "mz",
-                            mgo: "cm",
-                            min: "id",
-                            mni: "in",
-                            mnk: "gm",
-                            mnw: "mm",
-                            mos: "bf",
-                            mua: "cm",
-                            mwr: "in",
-                            myv: "ru",
-                            nap: "it",
-                            naq: "na",
-                            nds: "de",
-                            "new": "np",
-                            niu: "nu",
-                            nmg: "cm",
-                            nnh: "cm",
-                            nod: "th",
-                            nso: "za",
-                            nus: "sd",
-                            nym: "tz",
-                            nyn: "ug",
-                            pag: "ph",
-                            pam: "ph",
-                            pap: "bq",
-                            pau: "pw",
-                            pon: "fm",
-                            prd: "ir",
-                            raj: "in",
-                            rcf: "re",
-                            rej: "id",
-                            rjs: "np",
-                            rkt: "in",
-                            rof: "tz",
-                            rwk: "tz",
-                            saf: "gh",
-                            sah: "ru",
-                            saq: "ke",
-                            sas: "id",
-                            sat: "in",
-                            saz: "in",
-                            sbp: "tz",
-                            scn: "it",
-                            sco: "gb",
-                            sdh: "ir",
-                            seh: "mz",
-                            ses: "ml",
-                            shi: "ma",
-                            shn: "mm",
-                            sid: "et",
-                            sma: "se",
-                            smj: "se",
-                            smn: "fi",
-                            sms: "fi",
-                            snk: "ml",
-                            srn: "sr",
-                            srr: "sn",
-                            ssy: "er",
-                            suk: "tz",
-                            sus: "gn",
-                            swb: "yt",
-                            swc: "cd",
-                            syl: "bd",
-                            syr: "sy",
-                            tbw: "ph",
-                            tcy: "in",
-                            tdd: "cn",
-                            tem: "sl",
-                            teo: "ug",
-                            tet: "tl",
-                            tig: "er",
-                            tiv: "ng",
-                            tkl: "tk",
-                            tmh: "ne",
-                            tpi: "pg",
-                            trv: "tw",
-                            tsg: "ph",
-                            tts: "th",
-                            tum: "mw",
-                            tvl: "tv",
-                            twq: "ne",
-                            tyv: "ru",
-                            tzm: "ma",
-                            udm: "ru",
-                            uli: "fm",
-                            umb: "ao",
-                            unr: "in",
-                            unx: "in",
-                            vai: "lr",
-                            vun: "tz",
-                            wae: "ch",
-                            wal: "et",
-                            war: "ph",
-                            xog: "ug",
-                            xsr: "np",
-                            yao: "mz",
-                            yap: "fm",
-                            yav: "cm",
-                            zza: "tr"
-                        }[d[0]];
+                        aa: "et",
+                        ab: "ge",
+                        af: "za",
+                        ak: "gh",
+                        am: "et",
+                        ar: "eg",
+                        as: "in",
+                        av: "ru",
+                        ay: "bo",
+                        az: "az",
+                        ba: "ru",
+                        be: "by",
+                        bg: "bg",
+                        bi: "vu",
+                        bm: "ml",
+                        bn: "bd",
+                        bo: "cn",
+                        br: "fr",
+                        bs: "ba",
+                        ca: "es",
+                        ce: "ru",
+                        ch: "gu",
+                        co: "fr",
+                        cr: "ca",
+                        cs: "cz",
+                        cv: "ru",
+                        cy: "gb",
+                        da: "dk",
+                        de: "de",
+                        dv: "mv",
+                        dz: "bt",
+                        ee: "gh",
+                        el: "gr",
+                        en: "us",
+                        es: "es",
+                        et: "ee",
+                        eu: "es",
+                        fa: "ir",
+                        ff: "sn",
+                        fi: "fi",
+                        fj: "fj",
+                        fo: "fo",
+                        fr: "fr",
+                        fy: "nl",
+                        ga: "ie",
+                        gd: "gb",
+                        gl: "es",
+                        gn: "py",
+                        gu: "in",
+                        gv: "gb",
+                        ha: "ng",
+                        he: "il",
+                        hi: "in",
+                        ho: "pg",
+                        hr: "hr",
+                        ht: "ht",
+                        hu: "hu",
+                        hy: "am",
+                        ia: "fr",
+                        id: "id",
+                        ig: "ng",
+                        ii: "cn",
+                        ik: "us",
+                        "in": "id",
+                        is: "is",
+                        it: "it",
+                        iu: "ca",
+                        iw: "il",
+                        ja: "jp",
+                        ji: "ua",
+                        jv: "id",
+                        jw: "id",
+                        ka: "ge",
+                        kg: "cd",
+                        ki: "ke",
+                        kj: "na",
+                        kk: "kz",
+                        kl: "gl",
+                        km: "kh",
+                        kn: "in",
+                        ko: "kr",
+                        ks: "in",
+                        ku: "tr",
+                        kv: "ru",
+                        kw: "gb",
+                        ky: "kg",
+                        la: "va",
+                        lb: "lu",
+                        lg: "ug",
+                        li: "nl",
+                        ln: "cd",
+                        lo: "la",
+                        lt: "lt",
+                        lu: "cd",
+                        lv: "lv",
+                        mg: "mg",
+                        mh: "mh",
+                        mi: "nz",
+                        mk: "mk",
+                        ml: "in",
+                        mn: "mn",
+                        mo: "ro",
+                        mr: "in",
+                        ms: "my",
+                        mt: "mt",
+                        my: "mm",
+                        na: "nr",
+                        nb: "no",
+                        nd: "zw",
+                        ne: "np",
+                        ng: "na",
+                        nl: "nl",
+                        nn: "no",
+                        no: "no",
+                        nr: "za",
+                        nv: "us",
+                        ny: "mw",
+                        oc: "fr",
+                        om: "et",
+                        or: "in",
+                        os: "ge",
+                        pa: "in",
+                        pl: "pl",
+                        ps: "af",
+                        pt: "br",
+                        qu: "pe",
+                        rm: "ch",
+                        rn: "bi",
+                        ro: "ro",
+                        ru: "ru",
+                        rw: "rw",
+                        sa: "in",
+                        sd: "in",
+                        se: "no",
+                        sg: "cf",
+                        si: "lk",
+                        sk: "sk",
+                        sl: "si",
+                        sm: "ws",
+                        sn: "zw",
+                        so: "so",
+                        sq: "al",
+                        sr: "rs",
+                        ss: "za",
+                        st: "za",
+                        su: "id",
+                        sv: "se",
+                        sw: "tz",
+                        ta: "in",
+                        te: "in",
+                        tg: "tj",
+                        th: "th",
+                        ti: "et",
+                        tk: "tm",
+                        tl: "ph",
+                        tn: "za",
+                        to: "to",
+                        tr: "tr",
+                        ts: "za",
+                        tt: "ru",
+                        ty: "pf",
+                        ug: "cn",
+                        uk: "ua",
+                        ur: "pk",
+                        uz: "uz",
+                        ve: "za",
+                        vi: "vn",
+                        wa: "be",
+                        wo: "sn",
+                        xh: "za",
+                        yi: "il",
+                        yo: "ng",
+                        za: "cn",
+                        zh: "cn",
+                        zu: "za",
+                        ace: "id",
+                        ady: "ru",
+                        agq: "cm",
+                        alt: "ru",
+                        amo: "ng",
+                        asa: "tz",
+                        ast: "es",
+                        awa: "in",
+                        bal: "pk",
+                        ban: "id",
+                        bas: "cm",
+                        bax: "cm",
+                        bbc: "id",
+                        bem: "zm",
+                        bez: "tz",
+                        bfq: "in",
+                        bft: "pk",
+                        bfy: "in",
+                        bhb: "in",
+                        bho: "in",
+                        bik: "ph",
+                        bin: "ng",
+                        bjj: "in",
+                        bku: "ph",
+                        bqv: "ci",
+                        bra: "in",
+                        brx: "in",
+                        bss: "cm",
+                        btv: "pk",
+                        bua: "ru",
+                        buc: "yt",
+                        bug: "id",
+                        bya: "id",
+                        byn: "er",
+                        cch: "ng",
+                        ccp: "in",
+                        ceb: "ph",
+                        cgg: "ug",
+                        chk: "fm",
+                        chm: "ru",
+                        chp: "ca",
+                        chr: "us",
+                        cja: "kh",
+                        cjm: "vn",
+                        ckb: "iq",
+                        crk: "ca",
+                        csb: "pl",
+                        dar: "ru",
+                        dav: "ke",
+                        den: "ca",
+                        dgr: "ca",
+                        dje: "ne",
+                        doi: "in",
+                        dsb: "de",
+                        dua: "cm",
+                        dyo: "sn",
+                        dyu: "bf",
+                        ebu: "ke",
+                        efi: "ng",
+                        ewo: "cm",
+                        fan: "gq",
+                        fil: "ph",
+                        fon: "bj",
+                        fur: "it",
+                        gaa: "gh",
+                        gag: "md",
+                        gbm: "in",
+                        gcr: "gf",
+                        gez: "et",
+                        gil: "ki",
+                        gon: "in",
+                        gor: "id",
+                        grt: "in",
+                        gsw: "ch",
+                        guz: "ke",
+                        gwi: "ca",
+                        haw: "us",
+                        hil: "ph",
+                        hne: "in",
+                        hnn: "ph",
+                        hoc: "in",
+                        hoj: "in",
+                        ibb: "ng",
+                        ilo: "ph",
+                        inh: "ru",
+                        jgo: "cm",
+                        jmc: "tz",
+                        kaa: "uz",
+                        kab: "dz",
+                        kaj: "ng",
+                        kam: "ke",
+                        kbd: "ru",
+                        kcg: "ng",
+                        kde: "tz",
+                        kdt: "th",
+                        kea: "cv",
+                        ken: "cm",
+                        kfo: "ci",
+                        kfr: "in",
+                        kha: "in",
+                        khb: "cn",
+                        khq: "ml",
+                        kht: "in",
+                        kkj: "cm",
+                        kln: "ke",
+                        kmb: "ao",
+                        koi: "ru",
+                        kok: "in",
+                        kos: "fm",
+                        kpe: "lr",
+                        krc: "ru",
+                        kri: "sl",
+                        krl: "ru",
+                        kru: "in",
+                        ksb: "tz",
+                        ksf: "cm",
+                        ksh: "de",
+                        kum: "ru",
+                        lag: "tz",
+                        lah: "pk",
+                        lbe: "ru",
+                        lcp: "cn",
+                        lep: "in",
+                        lez: "ru",
+                        lif: "np",
+                        lis: "cn",
+                        lki: "ir",
+                        lmn: "in",
+                        lol: "cd",
+                        lua: "cd",
+                        luo: "ke",
+                        luy: "ke",
+                        lwl: "th",
+                        mad: "id",
+                        mag: "in",
+                        mai: "in",
+                        mak: "id",
+                        man: "gn",
+                        mas: "ke",
+                        mdf: "ru",
+                        mdh: "ph",
+                        mdr: "id",
+                        men: "sl",
+                        mer: "ke",
+                        mfe: "mu",
+                        mgh: "mz",
+                        mgo: "cm",
+                        min: "id",
+                        mni: "in",
+                        mnk: "gm",
+                        mnw: "mm",
+                        mos: "bf",
+                        mua: "cm",
+                        mwr: "in",
+                        myv: "ru",
+                        nap: "it",
+                        naq: "na",
+                        nds: "de",
+                        "new": "np",
+                        niu: "nu",
+                        nmg: "cm",
+                        nnh: "cm",
+                        nod: "th",
+                        nso: "za",
+                        nus: "sd",
+                        nym: "tz",
+                        nyn: "ug",
+                        pag: "ph",
+                        pam: "ph",
+                        pap: "bq",
+                        pau: "pw",
+                        pon: "fm",
+                        prd: "ir",
+                        raj: "in",
+                        rcf: "re",
+                        rej: "id",
+                        rjs: "np",
+                        rkt: "in",
+                        rof: "tz",
+                        rwk: "tz",
+                        saf: "gh",
+                        sah: "ru",
+                        saq: "ke",
+                        sas: "id",
+                        sat: "in",
+                        saz: "in",
+                        sbp: "tz",
+                        scn: "it",
+                        sco: "gb",
+                        sdh: "ir",
+                        seh: "mz",
+                        ses: "ml",
+                        shi: "ma",
+                        shn: "mm",
+                        sid: "et",
+                        sma: "se",
+                        smj: "se",
+                        smn: "fi",
+                        sms: "fi",
+                        snk: "ml",
+                        srn: "sr",
+                        srr: "sn",
+                        ssy: "er",
+                        suk: "tz",
+                        sus: "gn",
+                        swb: "yt",
+                        swc: "cd",
+                        syl: "bd",
+                        syr: "sy",
+                        tbw: "ph",
+                        tcy: "in",
+                        tdd: "cn",
+                        tem: "sl",
+                        teo: "ug",
+                        tet: "tl",
+                        tig: "er",
+                        tiv: "ng",
+                        tkl: "tk",
+                        tmh: "ne",
+                        tpi: "pg",
+                        trv: "tw",
+                        tsg: "ph",
+                        tts: "th",
+                        tum: "mw",
+                        tvl: "tv",
+                        twq: "ne",
+                        tyv: "ru",
+                        tzm: "ma",
+                        udm: "ru",
+                        uli: "fm",
+                        umb: "ao",
+                        unr: "in",
+                        unx: "in",
+                        vai: "lr",
+                        vun: "tz",
+                        wae: "ch",
+                        wal: "et",
+                        war: "ph",
+                        xog: "ug",
+                        xsr: "np",
+                        yao: "mz",
+                        yap: "fm",
+                        yav: "cm",
+                        zza: "tr"
+                    }[d[0]];
                     return k
                 };
                 n.getWeekend = function (d) {
@@ -23271,7 +23393,7 @@ require({
                     c = String(Math.abs(c)).split(".");
                     var d = c[1] || "";
                     b[1] || a.places ? (e && (a.places =
-                            a.places.substring(0, e)), e = void 0 !== a.places ? a.places : b[1] && b[1].lastIndexOf("0") + 1, e > d.length && (c[1] = m.pad(d, e, "0", !0)), f < d.length && (c[1] = d.substr(0, f))) : c[1] && c.pop();
+                        a.places.substring(0, e)), e = void 0 !== a.places ? a.places : b[1] && b[1].lastIndexOf("0") + 1, e > d.length && (c[1] = m.pad(d, e, "0", !0)), f < d.length && (c[1] = d.substr(0, f))) : c[1] && c.pop();
                     f = b[0].replace(",", "");
                     e = f.indexOf("0");
                     -1 != e && (e = f.length - e, e > c[0].length && (c[0] = m.pad(c[0], e)), -1 == f.indexOf("#") && (c[0] = c[0].substr(c[0].length - e)));
@@ -23288,7 +23410,8 @@ require({
                 };
                 l._parseInfo = function (c) {
                     c = c || {};
-                    var b = h.normalizeLocale(c.locale), b = h.getLocalization("dojo.cldr", "number", b), a = c.pattern || b[(c.type || "decimal") + "Format"], e = b.group, f = b.decimal, d = 1;
+                    var b = h.normalizeLocale(c.locale), b = h.getLocalization("dojo.cldr", "number", b),
+                        a = c.pattern || b[(c.type || "decimal") + "Format"], e = b.group, f = b.decimal, d = 1;
                     if (-1 != a.indexOf("%")) d /= 100; else if (-1 != a.indexOf("\u2030")) d /= 1E3; else {
                         var g = -1 != a.indexOf("\u00a4");
                         g && (e = b.currencyGroup || e, f = b.currencyDecimal || f)
@@ -23519,9 +23642,9 @@ require({
                             b = this.timeExtent;
                             c.time = b ? b.toJson().join(",") : null;
                             l.isDefined(this.pixelSizeX) && l.isDefined(this.pixelSizeY) ? c.pixelSize = n.toJson({
-                                    x: parseFloat(this.pixelSizeX),
-                                    y: parseFloat(this.pixelSizeY)
-                                }) : this.pixelSize && (c.pixelSize = this.pixelSize ? n.toJson(this.pixelSize.toJson()) : null);
+                                x: parseFloat(this.pixelSizeX),
+                                y: parseFloat(this.pixelSizeY)
+                            }) : this.pixelSize && (c.pixelSize = this.pixelSize ? n.toJson(this.pixelSize.toJson()) : null);
                             return c
                         }
                     });
@@ -23616,8 +23739,8 @@ require({
                     dojox.xml.parser.removeChildren(h);
                     d.forEach(m, d.destroy);
                     d.isArray(n) ? d.forEach(n, function (d) {
-                            h.appendChild(d)
-                        }) : h.appendChild(n)
+                        h.appendChild(d)
+                    }) : h.appendChild(n)
                 };
                 dojox.xml.parser.removeChildren = function (d) {
                     for (var n = d.childNodes.length; d.hasChildNodes();)d.removeChild(d.firstChild);
@@ -23825,19 +23948,16 @@ require({
                     flipXY: new n.Matrix2D({xx: -1, yy: -1}),
                     translate: function (d, h) {
                         return 1 < arguments.length ? new n.Matrix2D({dx: d, dy: h}) : new n.Matrix2D({
-                                dx: d.x,
-                                dy: d.y
-                            })
+                            dx: d.x,
+                            dy: d.y
+                        })
                     },
                     scale: function (d, h) {
                         return 1 <
                         arguments.length ? new n.Matrix2D({
-                                xx: d,
-                                yy: h
-                            }) : "number" == typeof d ? new n.Matrix2D({xx: d, yy: d}) : new n.Matrix2D({
-                                    xx: d.x,
-                                    yy: d.y
-                                })
+                            xx: d,
+                            yy: h
+                        }) : "number" == typeof d ? new n.Matrix2D({xx: d, yy: d}) : new n.Matrix2D({xx: d.x, yy: d.y})
                     },
                     rotate: function (d) {
                         var h = Math.cos(d);
@@ -23878,7 +23998,8 @@ require({
                     },
                     clone: function (d) {
                         var h = new n.Matrix2D, g;
-                        for (g in d)"number" == typeof d[g] && ("number" == typeof h[g] && h[g] != d[g]) && (h[g] = d[g]);
+                        for (g in d)"number" == typeof d[g] && ("number" ==
+                        typeof h[g] && h[g] != d[g]) && (h[g] = d[g]);
                         return h
                     },
                     invert: function (d) {
@@ -23904,7 +24025,11 @@ require({
                         var g = n.normalize(d);
                         h = h || {x: 0, y: 0, width: 0, height: 0};
                         if (n.isIdentity(g))return {x: h.x, y: h.y, width: h.width, height: h.height};
-                        var c = n.multiplyPoint(g, h.x, h.y), b = n.multiplyPoint(g, h.x, h.y + h.height), a = n.multiplyPoint(g, h.x + h.width, h.y), e = n.multiplyPoint(g, h.x + h.width, h.y + h.height), g = Math.min(c.x, b.x, a.x, e.x), f = Math.min(c.y, b.y, a.y, e.y), q = Math.max(c.x, b.x, a.x, e.x), c = Math.max(c.y, b.y, a.y, e.y);
+                        var c = n.multiplyPoint(g, h.x, h.y), b = n.multiplyPoint(g, h.x, h.y + h.height),
+                            a = n.multiplyPoint(g, h.x + h.width, h.y),
+                            e = n.multiplyPoint(g, h.x + h.width, h.y + h.height), g = Math.min(c.x, b.x, a.x, e.x),
+                            f = Math.min(c.y, b.y, a.y, e.y), q = Math.max(c.x, b.x, a.x, e.x),
+                            c = Math.max(c.y, b.y, a.y, e.y);
                         return {x: g, y: f, width: q - g, height: c - f}
                     },
                     multiply: function (d) {
@@ -23947,7 +24072,7 @@ require({
                     },
                     skewYAt: function (d, h, g) {
                         return 2 < arguments.length ? n._sandwich(n.skewY(d),
-                                h, g) : n._sandwich(n.skewY(d), h.x, h.y)
+                            h, g) : n._sandwich(n.skewY(d), h.x, h.y)
                     },
                     skewYgAt: function (d, h, g) {
                         return 2 < arguments.length ? n._sandwich(n.skewYg(d), h, g) : n._sandwich(n.skewYg(d), h.x, h.y)
@@ -24010,7 +24135,8 @@ require({
                         b = this.paths;
                         var e = b.length;
                         if (e && b[0].length) {
-                            var c, d, g, k, h, l, m, n, z = k = b[0][0][0], C = h = b[0][0][1], x = Math.min, A = Math.max, B = this.spatialReference, D = [], F, E, G, H;
+                            var c, d, g, k, h, l, m, n, z = k = b[0][0][0], C = h = b[0][0][1], x = Math.min,
+                                A = Math.max, B = this.spatialReference, D = [], F, E, G, H;
                             for (l = 0; l < e; l++) {
                                 c = b[l];
                                 F = E = c[0] && c[0][0];
@@ -24066,14 +24192,12 @@ require({
                     unionResults: !1,
                     geodesic: !1,
                     toJson: function () {
-                        var b = {
-                            unit: this.unit,
-                            unionResults: this.unionResults,
-                            geodesic: this.geodesic
-                        }, a = this.distances, e = this.outSpatialReference, d = this.bufferSpatialReference, g = n.map(this.geometries, function (a) {
-                            a = "extent" === a.type ? this._extentToPolygon(a) : a;
-                            return a.toJson()
-                        }, this), p = this.geometries;
+                        var b = {unit: this.unit, unionResults: this.unionResults, geodesic: this.geodesic},
+                            a = this.distances, e = this.outSpatialReference, d = this.bufferSpatialReference,
+                            g = n.map(this.geometries, function (a) {
+                                a = "extent" === a.type ? this._extentToPolygon(a) : a;
+                                return a.toJson()
+                            }, this), p = this.geometries;
                         if (p && 0 < p.length) {
                             var k = "extent" === p[0].type ? "esriGeometryPolygon" : c.getJsonType(p[0]);
                             b.geometries = m.toJson({geometryType: k, geometries: g});
@@ -24139,14 +24263,15 @@ require({
                     n = n(null, {
                         _stack: [], _beginZIndex: 1E3, _idGen: 1, _repositionAll: function () {
                             if (this._firstAroundNode) {
-                                var a = this._firstAroundPosition, b = g.position(this._firstAroundNode, !0), c = b.x - a.x, a = b.y - a.y;
+                                var a = this._firstAroundPosition, b = g.position(this._firstAroundNode, !0),
+                                    c = b.x - a.x, a = b.y - a.y;
                                 if (c || a) {
                                     this._firstAroundPosition = b;
                                     for (b = 0; b < this._stack.length; b++) {
                                         var d = this._stack[b].wrapper.style;
                                         d.top = parseInt(d.top, 10) + a + "px";
                                         "auto" == d.right ? d.left = parseInt(d.left, 10) +
-                                                c + "px" : d.right = parseInt(d.right, 10) - c + "px"
+                                            c + "px" : d.right = parseInt(d.right, 10) - c + "px"
                                     }
                                 }
                                 this._aroundMoveListener = setTimeout(e.hitch(this, "_repositionAll"), c || a ? 10 : 50)
@@ -24294,7 +24419,8 @@ require({
                         },
                         _checkAvailability: function () {
                             this.length = this._historyStack.length;
-                            0 === this.length ? this.canUndo = this.canRedo = !1 : 0 === this.position ? (this.canRedo = !0, this.canUndo = !1) : this.position === this.length ? (this.canUndo = !0, this.canRedo = !1) : this.canRedo = this.canUndo = !0;
+                            0 === this.length ? this.canUndo = this.canRedo = !1 : 0 === this.position ? (this.canRedo =
+                                !0, this.canUndo = !1) : this.position === this.length ? (this.canUndo = !0, this.canRedo = !1) : this.canRedo = this.canUndo = !0;
                             this.onChange()
                         },
                         clearUndo: function () {
@@ -24393,7 +24519,7 @@ require({
                 d = d(null, {
                     declaredClass: "esri.SpatialReference", constructor: function (b) {
                         b && (n.isObject(b) ? n.mixin(this, b) : n.isString(b) ? this.wkt = b :
-                                this.wkid = b)
+                            this.wkid = b)
                     }, wkid: null, wkt: null, _info: {
                         102113: {
                             wkTemplate: 'PROJCS["WGS_1984_Web_Mercator",GEOGCS["GCS_WGS_1984_Major_Auxiliary_Sphere",DATUM["D_WGS_1984_Major_Auxiliary_Sphere",SPHEROID["WGS_1984_Major_Auxiliary_Sphere",6378137.0,0.0]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Mercator"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",${Central_Meridian}],PARAMETER["Standard_Parallel_1",0.0],UNIT["Meter",1.0]]',
@@ -24482,15 +24608,16 @@ require({
                                 }
                             }, a))
                         }, slideTo: function (a) {
-                            var b = a.node = m.byId(a.node), c = l.getComputedStyle, g = null, v = null, r = function () {
-                                return function () {
-                                    var a = "absolute" == b.style.position ? "absolute" : "relative";
-                                    g = "absolute" == a ? b.offsetTop : parseInt(c(b).top) || 0;
-                                    v = "absolute" == a ? b.offsetLeft : parseInt(c(b).left) || 0;
-                                    "absolute" != a && "relative" !=
-                                    a && (a = k.position(b, !0), g = a.y, v = a.x, b.style.position = "absolute", b.style.top = g + "px", b.style.left = v + "px")
-                                }
-                            }();
+                            var b = a.node = m.byId(a.node), c = l.getComputedStyle, g = null, v = null,
+                                r = function () {
+                                    return function () {
+                                        var a = "absolute" == b.style.position ? "absolute" : "relative";
+                                        g = "absolute" == a ? b.offsetTop : parseInt(c(b).top) || 0;
+                                        v = "absolute" == a ? b.offsetLeft : parseInt(c(b).left) || 0;
+                                        "absolute" != a && "relative" !=
+                                        a && (a = k.position(b, !0), g = a.y, v = a.x, b.style.position = "absolute", b.style.top = g + "px", b.style.left = v + "px")
+                                    }
+                                }();
                             r();
                             a = h.animateProperty(n.mixin({
                                 properties: {
@@ -24734,9 +24861,12 @@ require({
                         this.isPNG32 = "PNG24" === this.tileInfo.format || "PNG32" === this.tileInfo.format;
                         b.timeInfo && (this.timeInfo = new p(b.timeInfo));
                         var c = this._url.path, d = this._loadCallback, f =
-                            "file:" === window.location.protocol ? "http:" : window.location.protocol, g = c.match(/^https?\:\/\/(server|services)\.arcgisonline\.com\/arcgis\/rest\/services\/([^\/]+(\/[^\/]+)*)\/mapserver/i), g = g && g[2];
+                                "file:" === window.location.protocol ? "http:" : window.location.protocol,
+                            g = c.match(/^https?\:\/\/(server|services)\.arcgisonline\.com\/arcgis\/rest\/services\/([^\/]+(\/[^\/]+)*)\/mapserver/i),
+                            g = g && g[2];
                         if (!this.tileServers)if (b.tileServers) this._setTileServers(b.tileServers); else {
-                            var h = -1 !== c.search(/^https?\:\/\/server\.arcgisonline\.com/i), l = -1 !== c.search(/^https?\:\/\/services\.arcgisonline\.com/i);
+                            var h = -1 !== c.search(/^https?\:\/\/server\.arcgisonline\.com/i),
+                                l = -1 !== c.search(/^https?\:\/\/services\.arcgisonline\.com/i);
                             if (h || l) this._setTileServers([c, c.replace(h ? /server\.arcgisonline/i : /services\.arcgisonline/i, h ? "services.arcgisonline" :
                                 "server.arcgisonline")])
                         }
@@ -24819,7 +24949,8 @@ require({
                     },
                     getBreakIndex: function (b) {
                         var a =
-                            this.attributeField, e = b.attributes, c = this.breaks, d = c.length, g = this.isMaxInclusive;
+                                this.attributeField, e = b.attributes, c = this.breaks, d = c.length,
+                            g = this.isMaxInclusive;
                         if (n.isFunction(a)) b = a(b); else {
                             b = parseFloat(e[a]);
                             var a = this.normalizationType, k;
@@ -24865,21 +24996,22 @@ require({
                         this._symbols[a + "-" + e] = b.symbol
                     },
                     toJson: function () {
-                        var b = this.infos || [], a = l.fixJson, e = b[0] && b[0].minValue, c = this.backgroundFillSymbol, b = n.mixin(this.inherited(arguments), {
-                            type: "classBreaks",
-                            field: this.attributeField,
-                            defaultSymbol: this.defaultSymbol && this.defaultSymbol.toJson(),
-                            backgroundFillSymbol: c && c.toJson(),
-                            minValue: -Infinity === e ? -Number.MAX_VALUE : e,
-                            classBreakInfos: h.map(b, function (b) {
-                                b = n.mixin({}, b);
-                                b.symbol = b.symbol && b.symbol.toJson();
-                                b.classMaxValue = Infinity === b.maxValue ? Number.MAX_VALUE : b.maxValue;
-                                delete b.minValue;
-                                delete b.maxValue;
-                                return a(b)
-                            })
-                        });
+                        var b = this.infos || [], a = l.fixJson, e = b[0] && b[0].minValue,
+                            c = this.backgroundFillSymbol, b = n.mixin(this.inherited(arguments), {
+                                type: "classBreaks",
+                                field: this.attributeField,
+                                defaultSymbol: this.defaultSymbol && this.defaultSymbol.toJson(),
+                                backgroundFillSymbol: c && c.toJson(),
+                                minValue: -Infinity === e ? -Number.MAX_VALUE : e,
+                                classBreakInfos: h.map(b, function (b) {
+                                    b = n.mixin({}, b);
+                                    b.symbol = b.symbol && b.symbol.toJson();
+                                    b.classMaxValue = Infinity === b.maxValue ? Number.MAX_VALUE : b.maxValue;
+                                    delete b.minValue;
+                                    delete b.maxValue;
+                                    return a(b)
+                                })
+                            });
                         this._copy(["defaultLabel", "classificationMethod:sdk", "normalizationType:sdk", "normalizationField", "normalizationTotal"], this, b);
                         return a(b)
                     }
@@ -25136,9 +25268,9 @@ require({
                                 var b, e;
                                 a[0] instanceof k ? e = a : b = a;
                                 b ? this._updateFeatures(null,
-                                        b) : (this.deferreds = e, e = e.slice(0), n.forEach(e, function (a) {
-                                        a.addBoth(h.hitch(this, this._updateFeatures, a))
-                                    }, this))
+                                    b) : (this.deferreds = e, e = e.slice(0), n.forEach(e, function (a) {
+                                    a.addBoth(h.hitch(this, this._updateFeatures, a))
+                                }, this))
                             }
                         },
                         clearFeatures: function () {
@@ -25460,7 +25592,8 @@ require({
                         e = this._getAttrNames(a);
                         var c = this[e.s];
                         if (v.isFunction(c))var d = c.apply(this, Array.prototype.slice.call(arguments, 1)); else {
-                            var c = this.focusNode && !v.isFunction(this.focusNode) ? "focusNode" : "domNode", f = this[c] && this[c].tagName, g;
+                            var c = this.focusNode && !v.isFunction(this.focusNode) ? "focusNode" : "domNode",
+                                f = this[c] && this[c].tagName, g;
                             if (g = f)if (!(g =
                                     A[f])) {
                                 g = this[c];
@@ -25708,11 +25841,8 @@ require({
                         return [d, c * f]
                     }
 
-                    var a = 6378137, e = 3.141592653589793, f = 57.29577951308232, q = 0.017453292519943, p = {
-                        type: "point",
-                        x: 0,
-                        y: 0
-                    };
+                    var a = 6378137, e = 3.141592653589793, f = 57.29577951308232, q = 0.017453292519943,
+                        p = {type: "point", x: 0, y: 0};
                     d = d(g, {
                         declaredClass: "esri.geometry.Point", constructor: function (a, b, e) {
                             h.mixin(this,
@@ -25834,7 +25964,8 @@ require({
                         b.tileInfo = new M($(a, {lods: d}))
                     }
 
-                    var V = O.toMapPoint, S = O.toScreenPoint, N = m.connect, U = m.disconnect, Y = l.hitch, Q = v.set, X = g.indexOf, $ = l.mixin, aa = 0, T = w.defaults.map;
+                    var V = O.toMapPoint, S = O.toScreenPoint, N = m.connect, U = m.disconnect, Y = l.hitch, Q = v.set,
+                        X = g.indexOf, $ = l.mixin, aa = 0, T = w.defaults.map;
                     n = n([z,
                         B], {
                         declaredClass: "esri._CoreMap",
@@ -25931,7 +26062,8 @@ require({
                                 __visibleDelta: null,
                                 _rids: []
                             });
-                            var g = this.container = a.byId(c), k = this.id = e.get(g, "id") || s.getUniqueId(this.declaredClass);
+                            var g = this.container = a.byId(c),
+                                k = this.id = e.get(g, "id") || s.getUniqueId(this.declaredClass);
                             f.add(g, "map");
                             var h = p.getContentBox(g), r = f.add, l = q.create;
                             this.position = new F(0, 0);
@@ -25985,7 +26117,7 @@ require({
                             h.appendChild(k);
                             this._zoomAnimDiv = l("div", {style: {position: "absolute"}});
                             g.infoWindow ? this.infoWindow = g.infoWindow : (r = this.infoWindow = new R(g.popupOptions,
-                                    l("div")), r.startup(), r._ootb = !0, Q(r.domNode, "zIndex", 40));
+                                l("div")), r.startup(), r._ootb = !0, Q(r.domNode, "zIndex", 40));
                             this._zoomStartHandler = Y(this, this._zoomStartHandler);
                             this._zoomingHandler = Y(this, this._zoomingHandler);
                             this._zoomEndHandler = Y(this, this._zoomEndHandler);
@@ -26016,17 +26148,18 @@ require({
                             e = this._connects;
                             f = function () {
                                 a.loaded ? k._onLoadFix ? (k._onLoadFix = !1, setTimeout(function () {
-                                            g(a)
-                                        }, 0)) : g(a) : (k[c + "_addtoken_load"] = N(a, "onLoad", k, "_addLayerHandler"), k[c + "_addtoken_err"] = N(a, "onError", k, function (e) {
-                                        g(a, e, b)
-                                    }))
+                                    g(a)
+                                }, 0)) : g(a) : (k[c + "_addtoken_load"] = N(a, "onLoad", k, "_addLayerHandler"), k[c + "_addtoken_err"] = N(a, "onError", k, function (e) {
+                                    g(a, e, b)
+                                }))
                             };
                             this.loaded || 0 === d || a.loaded && -1 === X(this.graphicsLayerIds, c) ? f() : e.push(N(this, "onLoad", f));
                             return a
                         },
                         _addLayerHandler: function (a, b, e) {
-                            var c = this.id, d = a.id, f = X(a instanceof I ? this.graphicsLayerIds : this.layerIds, d), g =
-                                f, k = !1, p = this._params;
+                            var c = this.id, d = a.id, f = X(a instanceof I ? this.graphicsLayerIds : this.layerIds, d),
+                                g =
+                                    f, k = !1, p = this._params;
                             U(this[d + "_addtoken_load"]);
                             U(this[d + "_addtoken_err"]);
                             if (b) delete this._layers[d], -1 !== f && (e.splice(f, 1), this.onLayerAddResult(a, b)); else {
@@ -26037,7 +26170,7 @@ require({
                                     e = this.spatialReference = e || b;
                                     this.wrapAround180 = this.wrapAround180 && e && e._isWrappable() ? !0 : !1;
                                     a.tileInfo && (this.__tileInfo ? (b = this.__tileInfo.lods, this.__tileInfo =
-                                            $({}, a.tileInfo), this.__tileInfo.lods = b) : (Z($({}, a.tileInfo), p), this.__tileInfo = p.tileInfo));
+                                        $({}, a.tileInfo), this.__tileInfo.lods = b) : (Z($({}, a.tileInfo), p), this.__tileInfo = p.tileInfo));
                                     if (this.wrapAround180) {
                                         b = this.__tileInfo;
                                         e = e._getInfo();
@@ -26056,7 +26189,7 @@ require({
                                     } else p.minZoom = p.maxZoom = p.zoom = -1
                                 }
                                 a instanceof I ? (this._gc || (this._gc = new I._GraphicsContainer, this._gc._setMap(this, this._layersDiv).id = c + "_gc"), g = a._setMap(this, this._gc._surface), g.id = c + "_" + d, this._layerDivs[d] = g, this._reorderLayers(this.graphicsLayerIds), p.showInfoWindowOnClick &&
-                                    this._clickHandles.push(N(a, "onClick", this, "_gClickHandler"))) : (g = a._setMap(this, this._layersDiv, g, this.__LOD), g.id = c + "_" + d, this._layerDivs[d] = g, this._reorderLayers(this.layerIds), !k && -1 !== a.declaredClass.indexOf("VETiledLayer") && this._onBingLayerAdd(a));
+                                this._clickHandles.push(N(a, "onClick", this, "_gClickHandler"))) : (g = a._setMap(this, this._layersDiv, g, this.__LOD), g.id = c + "_" + d, this._layerDivs[d] = g, this._reorderLayers(this.layerIds), !k && -1 !== a.declaredClass.indexOf("VETiledLayer") && this._onBingLayerAdd(a));
                                 d === this._firstLayerId && (this.graphics = new I({
                                     id: c + "_graphics",
                                     displayOnPan: p.displayGraphicsOnPan
@@ -26080,7 +26213,8 @@ require({
                                     this.extent = c.extent;
                                     this.__LOD = c.lod;
                                     this.__setExtent(this.extent, null, null, p.fitExtent);
-                                    this.loaded = !0;
+                                    this.loaded =
+                                        !0;
                                     this.attr("data-loaded", "");
                                     this.infoWindow.setMap(this);
                                     this.onLoad(this)
@@ -26092,13 +26226,14 @@ require({
                         _convertGeometry: function (a, b) {
                             var e = a && a.spatialReference, c = b && b.spatialReference;
                             e && (c && !e.equals(c)) && (e._canProject(c) ? e.isWebMercator() ? b = K.geographicToWebMercator(b) : 4326 === e.wkid && (b = K.webMercatorToGeographic(b, !0)) : (console.log("Map: " + u.substitute({
-                                        geometry: c.wkid || c.wkt,
-                                        map: e.wkid || e.wkt
-                                    }, this.invalidGeometry)), b = null));
+                                    geometry: c.wkid || c.wkt,
+                                    map: e.wkid || e.wkt
+                                }, this.invalidGeometry)), b = null));
                             return b
                         },
                         _reorderLayers: function (a) {
-                            var b = this.onLayerReorder, e = q.place, c = this._layerDivs, d = this._layers, f = this._gc ? this._gc._surface.getEventSource() : null;
+                            var b = this.onLayerReorder, e = q.place, c = this._layerDivs, d = this._layers,
+                                f = this._gc ? this._gc._surface.getEventSource() : null;
                             if (a === this.graphicsLayerIds) g.forEach(a, function (a, g) {
                                 var p = c[a];
                                 p && (e(p.getEventSource(), f, g), b(d[a], g))
@@ -26123,7 +26258,8 @@ require({
                             this.__zoom(a, b, this._zoomAnimDiv.anchor)
                         },
                         _zoomEndHandler: function () {
-                            var a = this._zoomAnimDiv, b = a.extent, e = this.extent.getWidth() / b.getWidth(), c = a.anchor, d = a.newLod, f = a.levelChange;
+                            var a = this._zoomAnimDiv, b = a.extent, e = this.extent.getWidth() / b.getWidth(),
+                                c = a.anchor, d = a.newLod, f = a.levelChange;
                             a.extent = a.anchor = a.levelChange = a.startingExtent = a.newLod = this._delta = this._zoomAnim = null;
                             this.__zoomEnd(b,
                                 e, c, d, f)
@@ -26150,7 +26286,8 @@ require({
                             d.x += -b;
                             d.y += -e;
                             Q(this._zoomAnimDiv, {left: "0px", top: "0px"});
-                            var c = this.extent, d = this._ratioW, f = this._ratioH, c = new E(c.xmin + b / d, c.ymin - e / f, c.xmax + b / d, c.ymax - e / f, this.spatialReference);
+                            var c = this.extent, d = this._ratioW, f = this._ratioH,
+                                c = new E(c.xmin + b / d, c.ymin - e / f, c.xmax + b / d, c.ymax - e / f, this.spatialReference);
                             a.setX(-a.x);
                             a.setY(-a.y);
                             this._delta = this._panAnim = null;
@@ -26169,16 +26306,18 @@ require({
                             return a
                         },
                         _reshapeExtent: function (a) {
-                            var b = a.getWidth(), e = a.getHeight(), c = b / e, d = this.width / this.height, f = 0, g = 0;
+                            var b = a.getWidth(), e = a.getHeight(), c = b / e, d = this.width / this.height, f = 0,
+                                g = 0;
                             this.width > this.height ? b > e ? d > c ? f = e * d - b : g = b / d - e : f = e * d - b : this.width < this.height ? b > e ? g = b / d - e : b < e ?
-                                            d > c ? f = e * d - b : g = b / d - e : g = b / d - e : b < e ? f = e - b : b > e && (g = b / d - e);
+                                d > c ? f = e * d - b : g = b / d - e : g = b / d - e : b < e ? f = e - b : b > e && (g = b / d - e);
                             f && (a.xmin -= f / 2, a.xmax += f / 2);
                             g && (a.ymin -= g / 2, a.ymax += g / 2);
                             return this._getAdjustedExtent(a)
                         },
                         _getAdjustedExtent: function (a) {
                             if (this.__tileInfo)return A.getCandidateTileInfo(this, this.__tileInfo, a);
-                            var b = J.getScale(this, a), e = this.getMinScale(), c = this.getMaxScale(), d = !c || b >= c;
+                            var b = J.getScale(this, a), e = this.getMinScale(), c = this.getMaxScale(),
+                                d = !c || b >= c;
                             e && !(b <= e) ? a = J.getExtentForScale(this, e, a) : d || (a = J.getExtentForScale(this, c, a));
                             return {extent: a}
                         },
@@ -26211,14 +26350,15 @@ require({
                         },
                         _toggleBingLogo: function (a) {
                             a && !this._bingLogo ? (a = {left: this._mapParams && this._mapParams.nav ? "25px" : ""}, 6 === r("ie") && (a.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled\x3d'true', sizingMethod\x3d'crop', src\x3d'" + d.toUrl("esri") + "/images/map/bing-logo-lg.png')"), a = this._bingLogo = q.create("div",
-                                    {style: a}, this.root), f.add(a, "bingLogo-lg")) : !a && this._bingLogo && (q.destroy(this._bingLogo), delete this._bingLogo)
+                                {style: a}, this.root), f.add(a, "bingLogo-lg")) : !a && this._bingLogo && (q.destroy(this._bingLogo), delete this._bingLogo)
                         },
                         __panStart: function (a, b) {
                             var e = this._zoomAnim, c = this._panAnim;
                             if (e && e._active) e.stop(), e._fire("onEnd", [e.node]); else if (c && c._active) {
                                 c.stop();
                                 this._panAnim = null;
-                                var c = c.curve.getValue(c._getStep()), e = Math.round(parseFloat(c.left)), c = Math.round(parseFloat(c.top)), d = this.navigationManager._dragOrigin;
+                                var c = c.curve.getValue(c._getStep()), e = Math.round(parseFloat(c.left)),
+                                    c = Math.round(parseFloat(c.top)), d = this.navigationManager._dragOrigin;
                                 this.__pan(e, c);
                                 d && (d.x -= e, d.y -= c);
                                 return
@@ -26237,7 +26377,8 @@ require({
                             e.y += b;
                             c.x += a;
                             c.y += b;
-                            var e = new F(a, b), c = this.extent, d = this._ratioW, f = this._ratioH, c = new E(c.xmin - a / d, c.ymin + b / f, c.xmax - a / d, c.ymax + b / f, this.spatialReference);
+                            var e = new F(a, b), c = this.extent, d = this._ratioW, f = this._ratioH,
+                                c = new E(c.xmin - a / d, c.ymin + b / f, c.xmax - a / d, c.ymax + b / f, this.spatialReference);
                             this.__panning = !1;
                             this._updateExtent(c);
                             this.onPanEnd(c, e);
@@ -26289,21 +26430,23 @@ require({
                             B && (r && q) && (r = V(this.extent, z, x, q));
                             a && (r && q) && (r = V(a.divExtent, z, x, q));
                             w && (A ? (g = this.getMinZoom(), w = this.getMaxZoom(), p < g ? p = g : p >
-                                    w && (p = w), g = p - (a ? a.level : this.getLevel())) : (g = 0 < p ? -1 : 1, C = y ? p : null));
+                                w && (p = w), g = p - (a ? a.level : this.getLevel())) : (g = 0 < p ? -1 : 1, C = y ? p : null));
                             if (!e)if (u.isDefined(g)) A ? (z = a ? a.level : this.getLevel(), x = this.__getExtentForLevel(z + g, m, b).extent) : (x = (a ? a.end : this.extent).expand(C || (0 < g ? 0.5 * g : 2 * -g)), C && m && (x = x.centerAt(m))), x && (m ? e = x : (z = r || b.getCenter(), t = b.ymax - (x.getHeight() - b.getHeight()) * (z.y - b.ymax) / b.getHeight(), z = b.xmin - (x.getWidth() - b.getWidth()) * (z.x - b.xmin) / b.getWidth(), e = new E(z, t - x.getHeight(), z + x.getWidth(), t, this.spatialReference))); else if (s) e = J.getExtentForScale(this,
                                 n, b); else if (u.isDefined(h)) e = b.expand(h); else if (t || v) a ? (e = a.end, r = e.getCenter(), C = S(e, z, x, r), C.x += t, C.y += v, C = V(e, z, x, C), e = e.offset(C.x - r.x, C.y - r.y)) : (t = new F(z / 2 + t, x / 2 + v), v = V(b, z, x, t), x = b.getWidth(), t = b.getHeight(), z = v.x - x / 2, v = v.y - t / 2, e = new E(z, v, z + x, v + t, this.spatialReference));
                             e || (m ? (b = a ? a.end : b, x = b.getWidth(), t = b.getHeight(), z = m.x - x / 2, v = m.y - t / 2, e = new E(z, v, z + x, v + t, this.spatialReference)) : a && (e = a.end));
                             e ? (this._extentDfd && -1 === this._extentDfd.fired && this._extentDfd.reject(), this._extentDfd = f, this.__setExtent(e,
-                                    null, q, c, a, d)) : f.reject();
+                                null, q, c, a, d)) : f.reject();
                             return f
                         },
                         __setExtent: function (a, b, e, c, d, f) {
                             try {
                                 if (this._firstLayerId) this.extent = a; else {
-                                    var g = !0, p = this.spatialReference, k = d ? d.divExtent : this.extent, h = this._fixExtent(a, c || !1);
+                                    var g = !0, p = this.spatialReference, k = d ? d.divExtent : this.extent,
+                                        h = this._fixExtent(a, c || !1);
                                     a = h.extent;
                                     var r = a.getWidth(), q = a.getHeight(), l = Math.round;
-                                    if (k)var m = l(1E6 * k.getWidth()), n = l(1E6 * r), s = l(1E6 * k.getHeight()), u = l(1E6 * q), g = m !== n || s !== u;
+                                    if (k)var m = l(1E6 * k.getWidth()), n = l(1E6 * r), s = l(1E6 * k.getHeight()),
+                                        u = l(1E6 * q), g = m !== n || s !== u;
                                     var t, v, z = d && d.rect, x = d && d.divExtent;
                                     if (T.zoomDuration && g && k) {
                                         x = x || new E(k);
@@ -26315,7 +26458,9 @@ require({
                                             };
                                         v =
                                             {left: a.xmin, top: a.ymax, width: r, height: q};
-                                        var w = new D(a.xmin, a.ymax, p), y = new D(a.xmin, a.ymin, p), B = new D(this.extent.xmin, this.extent.ymax, p), A = new D(this.extent.xmin, this.extent.ymin, p);
+                                        var w = new D(a.xmin, a.ymax, p), y = new D(a.xmin, a.ymin, p),
+                                            B = new D(this.extent.xmin, this.extent.ymax, p),
+                                            A = new D(this.extent.xmin, this.extent.ymin, p);
                                         t = H.getLineIntersection(B, w, A, y, p);
                                         !t && !d && (g = !1)
                                     }
@@ -26326,16 +26471,16 @@ require({
                                         left: "0px",
                                         top: "0px"
                                     }), b = new F(0, 0), this.__visibleRect.x = this.__visibleRect.y = 0, z && v ? (this._delta = b, J.id = "_zAD", J.startingExtent = x, J.extent = a, J.levelChange = g, J.newLod =
-                                            h.lod, J.anchor = e ? e : !t && d ? d.anchor : S(this.extent, this.width, this.height, t), this._zoomAnim = C.resize({
-                                            node: J,
-                                            start: z,
-                                            end: v,
-                                            duration: T.zoomDuration,
-                                            rate: T.zoomRate,
-                                            beforeBegin: !d ? this._zoomStartHandler : null,
-                                            onAnimate: this._zoomingHandler,
-                                            onEnd: this._zoomEndHandler
-                                        }).play(), this._fireOnScale(this.extent.getWidth() / a.getWidth(), J.anchor)) : (this._updateExtent(a, g), this._fireExtChg([this.extent, b, g, this.__LOD = h.lod])); else if (!this.__panning)if (!1 === this.loaded || f) this._updateExtent(a, g), this._fireExtChg([this.extent,
+                                        h.lod, J.anchor = e ? e : !t && d ? d.anchor : S(this.extent, this.width, this.height, t), this._zoomAnim = C.resize({
+                                        node: J,
+                                        start: z,
+                                        end: v,
+                                        duration: T.zoomDuration,
+                                        rate: T.zoomRate,
+                                        beforeBegin: !d ? this._zoomStartHandler : null,
+                                        onAnimate: this._zoomingHandler,
+                                        onEnd: this._zoomEndHandler
+                                    }).play(), this._fireOnScale(this.extent.getWidth() / a.getWidth(), J.anchor)) : (this._updateExtent(a, g), this._fireExtChg([this.extent, b, g, this.__LOD = h.lod])); else if (!this.__panning)if (!1 === this.loaded || f) this._updateExtent(a, g), this._fireExtChg([this.extent,
                                         b, g, this.__LOD = h.lod]); else {
                                         this.__panning = !0;
                                         z = (new G(0, 0, this.width, this.height, this.spatialReference)).getCenter();
@@ -26343,14 +26488,14 @@ require({
                                         z.y = l(z.y);
                                         var O = this._delta = this.toScreen(a.getCenter());
                                         this.optimizePanAnimation && (Math.abs(z.x - O.x) > 2 * this.width || Math.abs(z.y - O.y) > 2 * this.height) ? (b = new F(z.x - O.x, z.y - O.y), this.__panStart(z.x, z.y), this.__pan(b.x, b.y), this.__panEnd(b.x, b.y)) : (this.onPanStart(this.extent, new F(0, 0)), this._panAnim = C.slideTo({
-                                                node: J,
-                                                left: z.x - O.x,
-                                                top: z.y - O.y,
-                                                duration: T.panDuration,
-                                                rate: T.panRate,
-                                                onAnimate: this._panningHandler,
-                                                onEnd: this._panEndHandler
-                                            }), this._panAnim.play())
+                                            node: J,
+                                            left: z.x - O.x,
+                                            top: z.y - O.y,
+                                            duration: T.panDuration,
+                                            rate: T.panRate,
+                                            onAnimate: this._panningHandler,
+                                            onEnd: this._panEndHandler
+                                        }), this._panAnim.play())
                                     }
                                 }
                             } catch (I) {
@@ -26370,7 +26515,8 @@ require({
                             var a = this._zoomAnim, b = this._panAnim;
                             if (a && a._active) {
                                 a.stop();
-                                var b = a.curve.getValue(a._getStep()), e = parseFloat(b.left), c = parseFloat(b.top), a = a.node;
+                                var b = a.curve.getValue(a._getStep()), e = parseFloat(b.left), c = parseFloat(b.top),
+                                    a = a.node;
                                 return {
                                     anchor: a.anchor,
                                     start: a.startingExtent,
@@ -26565,10 +26711,10 @@ require({
                             a = new E(a.toJson());
                             var e = a.getWidth(), c = a.getHeight();
                             return 0 === e && 0 === c ? this.centerAt(new D({
-                                    x: a.xmin,
-                                    y: a.ymin,
-                                    spatialReference: a.spatialReference && a.spatialReference.toJson()
-                                })) : this._extentUtil(null, null, a, b)
+                                x: a.xmin,
+                                y: a.ymin,
+                                spatialReference: a.spatialReference && a.spatialReference.toJson()
+                            })) : this._extentUtil(null, null, a, b)
                         },
                         centerAt: function (a) {
                             return this._extentUtil(null,
@@ -26655,7 +26801,8 @@ require({
                                     }
                                     f && (e.push(f), c.push(b), b.isReference || d++)
                                 }, this);
-                                if (!e.length || !d) console.log("Map.setBasemap: " + u.substitute({basemapName: a}, this.invalidBasemap)); else {
+                                if (!e.length ||
+                                    !d) console.log("Map.setBasemap: " + u.substitute({basemapName: a}, this.invalidBasemap)); else {
                                     var f = {basemapName: a, infos: c, layers: e};
                                     if (this.loaded) {
                                         var p = this, h = new k(x._dfdCanceller), r = function (a) {
@@ -26784,7 +26931,8 @@ require({
                                     "px");
                                 this.__visibleRect.update(this.__visibleRect.x, this.__visibleRect.y, e, c);
                                 this.__visibleDelta.update(this.__visibleDelta.x, this.__visibleDelta.y, e, c);
-                                var d = new G(this.extent), a = (new G(d.x, d.y, d.width * (e / a), d.height * (c / b), this.spatialReference)).getExtent();
+                                var d = new G(this.extent),
+                                    a = (new G(d.x, d.y, d.width * (e / a), d.height * (c / b), this.spatialReference)).getExtent();
                                 this.onResize(a, e, c);
                                 this._extentUtil(null, null, a, null, !0)
                             }
@@ -26933,7 +27081,7 @@ require({
                             this._pinchActive &&
                             (l = this._nodeTouches[1]);
                             1 === this._numTouches ? this._swipeActive ? (this._swipeActive = !1, this._fire("onSwipeEnd", this._processTouchEvent(a, h))) : this._pinchActive && (this._pinchActive = !1, this._fire("onPinchEnd", this._processTouchEvent(a, [h, l]))) : 2 === this._numTouches ? this._swipeActive && (h && (k = b[this._touchIds[0]], k.startX = h.pageX, k.startY = h.pageY, k.moved = !1), this._swipeActive = !1, this._fire("onSwipeEnd", this._processTouchEvent(a, h))) : this._swipeActive ? (this._swipeActive = !1, this._fire("onSwipeEnd", this._processTouchEvent(a,
-                                            h))) : this._pinchActive && (this._pinchActive = !1, this._fire("onPinchEnd", this._processTouchEvent(a, [h, l])))
+                                h))) : this._pinchActive && (this._pinchActive = !1, this._fire("onPinchEnd", this._processTouchEvent(a, [h, l])))
                         }
                     },
                     _touchMove: function (a) {
@@ -26949,12 +27097,13 @@ require({
                                 l = l ? l : k.moved
                             }
                             1 === this._numTouches ? (c = a.changedTouches[0], this._swipeActive ? this._fire("onSwipeMove", this._processTouchEvent(a, c)) : l && (this._swipeActive = !0, this._fire("onSwipeStart", this._processTouchEvent(a, c)))) : 2 === this._numTouches && (c = this._nodeTouches[0], d = this._nodeTouches[1], this._pinchActive ? this._fire("onPinchMove", this._processTouchEvent(a,
-                                        [c, d])) : l && (l = b[c.identifier], k = b[d.identifier], b = Math.abs(l.startX - k.startX), l = Math.abs(l.startY - k.startY), b = Math.sqrt(b * b + l * l), l = Math.abs(c.pageX - d.pageX), k = Math.abs(c.pageY - d.pageY), l = Math.sqrt(l * l + k * k), Math.abs(l - b) >= 2 * this.tapRadius && (this._pinchActive = !0, this._fire("onPinchStart", this._processTouchEvent(a, [c, d])))))
+                                    [c, d])) : l && (l = b[c.identifier], k = b[d.identifier], b = Math.abs(l.startX - k.startX), l = Math.abs(l.startY - k.startY), b = Math.sqrt(b * b + l * l), l = Math.abs(c.pageX - d.pageX), k = Math.abs(c.pageY - d.pageY), l = Math.sqrt(l * l + k * k), Math.abs(l - b) >= 2 * this.tapRadius && (this._pinchActive = !0, this._fire("onPinchStart", this._processTouchEvent(a, [c, d])))))
                         }
                     },
                     _touchEnd: function (a) {
                         this._removeTouch(a);
-                        var b = this._touches, c = a.changedTouches, d, g = c.length, k, h, l = (new Date).getTime(), m = this._touchIds;
+                        var b = this._touches, c = a.changedTouches, d, g = c.length, k, h, l = (new Date).getTime(),
+                            m = this._touchIds;
                         for (d = 0; d < g; d++)if (h = b[c[d].identifier]) h.absMoved &&
                         (k = !0), h.pageX = c[d].pageX, h.pageY = c[d].pageY, h.endTS = l;
                         if (0 === this._numTouches)if (this._touches = {}, this._touchIds = [], this._swipeActive) this._swipeActive = !1, this._fire("onSwipeEnd", this._processTouchEvent(a, c[0])); else if (this._pinchActive) this._pinchActive = !1, this._fire("onPinchEnd", this._processTouchEvent(a, c)); else {
@@ -26981,11 +27130,11 @@ require({
                         this._fire("onBasicTap", a);
                         clearTimeout(this._tapTimer);
                         this._immediate ? this._analyzeTap(!0) : this._tapTimer = setTimeout(function () {
-                                var a = d;
-                                d = null;
-                                clearTimeout(a._tapTimer);
-                                a._analyzeTap()
-                            }, 2 === this._taps.length ? this.doubleTapDuration / 2 : this.doubleTapDuration)
+                            var a = d;
+                            d = null;
+                            clearTimeout(a._tapTimer);
+                            a._analyzeTap()
+                        }, 2 === this._taps.length ? this.doubleTapDuration / 2 : this.doubleTapDuration)
                     },
                     _analyzeTap: function (a) {
                         var b = this._taps, c = b[0],
@@ -26996,7 +27145,7 @@ require({
                         var b = a.event;
                         this._fire("onProcessedTap", b);
                         1 === a.touchInfos.length ? this._fire("onTap",
-                                this._fixEvent(b)) : 2 === a.touchInfos.length && this._fire("onTwoFingerTap", b)
+                            this._fixEvent(b)) : 2 === a.touchInfos.length && this._fire("onTwoFingerTap", b)
                     },
                     _processedDoubleTap: function (a) {
                         var b = 1 === a[1].touchInfos.length, c;
@@ -27066,7 +27215,7 @@ require({
                             a.screenPoints = [];
                             a.mapPoints = [];
                             for (h = 0; h < e.length; h++)e[h] ? (r = new b(e[h].pageX -
-                                    g.x, e[h].pageY - g.y), a.screenPoints.push(r), a.mapPoints.push(d.extent ? d.toMap(r) : new c)) : k++
+                                g.x, e[h].pageY - g.y), a.screenPoints.push(r), a.mapPoints.push(d.extent ? d.toMap(r) : new c)) : k++
                         } else a.screenPoint = new b(e.pageX - g.x, e.pageY - g.y), a.mapPoint = d.extent ? d.toMap(a.screenPoint) : new c;
                         a.numPoints = e ? n.isArray(e) ? e.length - k : 1 : 0;
                         return a
@@ -27133,7 +27282,7 @@ require({
                     _joins: {miter: "esriLJSMiter", round: "esriLJSRound", bevel: "esriLJSBevel"},
                     constructor: function (b, c, d, p, l, r) {
                         b ? h.isString(b) ? (this.style = b, c && (this.color = c), void 0 !== d && (this.width = d), p && (this.cap = p), l && (this.join = l), void 0 !== r && (this.miterLimit = r)) : (this.cap = g.valueOf(this._caps, b.cap), this.join = g.valueOf(this._joins, b.join), this.width = k.pt2px(b.width), this.miterLimit = k.pt2px(b.miterLimit)) : (h.mixin(this, a), this.color = new n(this.color),
-                                this.width = k.pt2px(this.width), this.miterLimit = k.pt2px(this.miterLimit))
+                            this.width = k.pt2px(this.width), this.miterLimit = k.pt2px(this.miterLimit))
                     },
                     setCap: function (a) {
                         this.cap = a;
@@ -27192,7 +27341,9 @@ require({
                         showTitle: !0,
                         startup: function () {
                             this.inherited(arguments);
-                            var c = this.template, d = this.graphic, f = c.getComponents(d), g = this.showTitle ? f.title : "", h = f.description, p = f.fields, r = f.mediaInfos, q = this.domNode, n = this._nls;
+                            var c = this.template, d = this.graphic, f = c.getComponents(d),
+                                g = this.showTitle ? f.title : "", h = f.description, p = f.fields, r = f.mediaInfos,
+                                q = this.domNode, n = this._nls;
                             this._prevMedia.title = n.NLS_prevMedia;
                             this._nextMedia.title = n.NLS_nextMedia;
                             a.set(this._title, "innerHTML", g);
@@ -27210,7 +27361,7 @@ require({
                                 a.set(b, "target", "_blank")
                             });
                             g && h ? l.query(".mainSection .hzLine", q).removeClass("hidden") : g || h ? l.query(".mainSection .hzLine",
-                                        q).addClass("hidden") : l.query(".mainSection", q).addClass("hidden");
+                                q).addClass("hidden") : l.query(".mainSection", q).addClass("hidden");
                             if (c = this._dfd = c.getAttachments(d)) c.addBoth(m.hitch(this, this._attListHandler, c)), a.set(this._attachmentsList, "innerHTML", "\x3cli\x3e" + n.NLS_searching + "...\x3c/li\x3e"), l.query(".attachmentsSection", q).removeClass("hidden");
                             r && r.length && (l.query(".mediaSection", q).removeClass("hidden"), b.setSelectable(this._mediaFrame, !1), this._mediaInfos = r, this._mediaPtr = 0, this._updateUI(), this._displayMedia());
                             f.editSummary && (a.set(this._editSummary,
@@ -27230,7 +27381,8 @@ require({
                                 this._displayMedia())
                         },
                         _updateUI: function () {
-                            var b = this._mediaInfos, c = b.length, d = this.domNode, f = this._prevMedia, g = this._nextMedia;
+                            var b = this._mediaInfos, c = b.length, d = this.domNode, f = this._prevMedia,
+                                g = this._nextMedia;
                             if (1 < c) {
                                 var h = 0, p = 0;
                                 k.forEach(b, function (a) {
@@ -27246,7 +27398,8 @@ require({
                             this._destroyFrame()
                         },
                         _displayMedia: function () {
-                            var b = this._mediaInfos[this._mediaPtr], c = b.title, f = b.caption, g = l.query(".mediaSection .hzLine", this.domNode)[0];
+                            var b = this._mediaInfos[this._mediaPtr], c = b.title, f = b.caption,
+                                g = l.query(".mediaSection .hzLine", this.domNode)[0];
                             a.set(this._mediaTitle, "innerHTML", c);
                             e[c ? "remove" : "add"](this._mediaTitle, "hidden");
                             a.set(this._mediaCaption, "innerHTML", f);
@@ -27255,7 +27408,8 @@ require({
                             this._rid = null;
                             if ("image" ===
                                 b.type) this._showImage(b.value); else {
-                                var k = this, c = ["dojox/charting/Chart2D", "dojox/charting/action2d/Tooltip"], f = b.value.theme || this.chartTheme || "esri/dijit/Rainbow";
+                                var k = this, c = ["dojox/charting/Chart2D", "dojox/charting/action2d/Tooltip"],
+                                    f = b.value.theme || this.chartTheme || "esri/dijit/Rainbow";
                                 m.isString(f) && (f = f.replace(/\./gi, "/"), -1 === f.indexOf("/") && (f = "dojox/charting/themes/" + f), c.push(f));
                                 try {
                                     var h = this._rid = y++;
@@ -27270,7 +27424,8 @@ require({
                         _showImage: function (b) {
                             e.add(this._mediaFrame, "image");
                             var c =
-                                q.get(this._gallery, "height"), d = "\x3cimg class\x3d'esriPopupMediaImage' src\x3d'" + b.sourceURL + "' /\x3e";
+                                    q.get(this._gallery, "height"),
+                                d = "\x3cimg class\x3d'esriPopupMediaImage' src\x3d'" + b.sourceURL + "' /\x3e";
                             b.linkURL && (d = "\x3ca target\x3d'_blank' href\x3d'" + b.linkURL + "'\x3e" + d + "\x3c/a\x3e");
                             a.set(this._mediaFrame, "innerHTML", d);
                             var f = l.query(".esriPopupMediaImage", this._mediaFrame)[0], g = this, k;
@@ -27409,10 +27564,12 @@ require({
                         return this
                     },
                     getSize: function (d, c) {
-                        var b = d.attributes, a = this.proportionalSymbolInfo, e = a && a.field, f = 0, k = "number" === typeof d ? d : null;
+                        var b = d.attributes, a = this.proportionalSymbolInfo, e = a && a.field, f = 0,
+                            k = "number" === typeof d ? d : null;
                         if (e) {
                             var p = a.minSize, l = a.maxSize, r = a.minDataValue, m = a.maxDataValue, n = a.valueUnit ||
-                                "unknown", y = a.valueRepresentation, a = a.normalizationField, w = b ? parseFloat(b[a]) : void 0, a = c && c.shape;
+                                    "unknown", y = a.valueRepresentation, a = a.normalizationField,
+                                w = b ? parseFloat(b[a]) : void 0, a = c && c.shape;
                             "number" !== typeof k && (h.isFunction(e) ? k = e.apply(this, arguments) : b && (k = b[e] || 0));
                             isNaN(w) || (k /= w);
                             if (null != p && null != l && null != r && null != m) f = k <= r ? p : k >= m ? l : p + (k - r) / (m - r) * (l - p); else if ("unknown" === n) null != p && null != r && (p && r ? (k /= r, f = "circle" === a ? 2 * Math.sqrt(k * Math.pow(p / 2, 2)) : "square" === a || "diamond" === a || "image" === a ? Math.sqrt(k * Math.pow(p, 2)) : k * p) : f = k + (p || r), f = f < p ? p : f, null != l && f > l && (f = l)); else {
@@ -27431,7 +27588,8 @@ require({
                         return this
                     },
                     getColor: function (d) {
-                        var c = d.attributes, b = this.colorInfo, a = b && b.field, e = "number" === typeof d ? d : null, f;
+                        var c = d.attributes, b = this.colorInfo, a = b && b.field,
+                            e = "number" === typeof d ? d : null, f;
                         a && (b = b.normalizationField, b = c ? parseFloat(c[b]) : void 0, "number" !== typeof e && (h.isFunction(a) ?
                             e = a.apply(this, arguments) : c && (e = c[a] || 0)), isNaN(b) || (e /= b), this._interpolatedValues && (f = this._getColor(e)));
                         return f
@@ -27454,7 +27612,7 @@ require({
                             b = d[0];
                             var a = d[1];
                             b = b === a ? this._getColorObj(c, b) : l.blendColors(this._getColorObj(c,
-                                    b), this._getColorObj(c, a), d[2])
+                                b), this._getColorObj(c, a), d[2])
                         }
                         return b
                     },
@@ -27556,7 +27714,8 @@ require({
                                 b = b.nextSibling
                             }
                         }, _processTemplateNode: function (a, b, e) {
-                            var c = !0, d = this.attachScope || this, g = b(a, "dojoAttachPoint") || b(a, "data-dojo-attach-point");
+                            var c = !0, d = this.attachScope || this,
+                                g = b(a, "dojoAttachPoint") || b(a, "data-dojo-attach-point");
                             if (g)for (var h = g.split(/\s*,\s*/); g = h.shift();)k.isArray(d[g]) ? d[g].push(a) : d[g] = a, c = "containerNode" != g, this._attachPoints.push(g);
                             if (b = b(a, "dojoAttachEvent") || b(a, "data-dojo-attach-event")) {
                                 g = b.split(/\s*,\s*/);
@@ -27600,7 +27759,7 @@ require({
                         this.rings = [];
                         this._ring = 0;
                         a && (n.isArray(a) ? this.rings = n.isArray(a[0][0]) ? a : [a] : a.rings ? n.mixin(this,
-                                    a) : this.spatialReference = a, this.spatialReference && (this.spatialReference = new g(this.spatialReference)));
+                            a) : this.spatialReference = a, this.spatialReference && (this.spatialReference = new g(this.spatialReference)));
                         this.verifySR()
                     }, _extent: null, addRing: function (a) {
                         this._extent = this._centroid = null;
@@ -27644,7 +27803,8 @@ require({
                         b = this.rings;
                         var e = b.length;
                         if (e && b[0].length) {
-                            var c, d, f, g, k, h, l, q, m = g = b[0][0][0], n = k = b[0][0][1], B = Math.min, D = Math.max, F = this.spatialReference, E = [], G, H, J, O;
+                            var c, d, f, g, k, h, l, q, m = g = b[0][0][0], n = k = b[0][0][1], B = Math.min,
+                                D = Math.max, F = this.spatialReference, E = [], G, H, J, O;
                             for (h = 0; h < e; h++) {
                                 c = b[h];
                                 G = H = c[0] && c[0][0];
@@ -27701,10 +27861,10 @@ require({
                     }, isClockwise: function (a) {
                         var b =
                             0, e, c = a.length, d = n.isArray(a[0]) ? function (a, b) {
-                                return a[0] * b[1] - b[0] * a[1]
-                            } : function (a, b) {
-                                return a.x * b.y - b.x * a.y
-                            };
+                            return a[0] * b[1] - b[0] * a[1]
+                        } : function (a, b) {
+                            return a.x * b.y - b.x * a.y
+                        };
                         for (e = 0; e < c; e++)b += d(a[e], a[(e + 1) % c]);
                         return 0 >= b / 2
                     }, isSelfIntersecting: function (a) {
@@ -27734,7 +27894,8 @@ require({
                 });
                 q.defaultProps = f;
                 q.createEllipse = function (a) {
-                    var b = a.center.x, e = a.center.y, c = a.longAxis, d = a.shortAxis, f = a.numberOfPoints, g = a.map, k, h, l;
+                    var b = a.center.x, e = a.center.y, c = a.longAxis, d = a.shortAxis, f = a.numberOfPoints,
+                        g = a.map, k, h, l;
                     a = [];
                     var m = 2 * Math.PI / f;
                     for (h = 0; h < f; h++)k = Math.cos(h * m), l = Math.sin(h * m), k = g.toMap({
@@ -27787,7 +27948,8 @@ require({
         "esri/geometry/geodesicUtils": function () {
             define("dojo/_base/array dojo/_base/lang dojo/has esri/kernel esri/SpatialReference esri/geometry/Point esri/geometry/Polyline esri/geometry/Polygon".split(" "), function (d, h, n, m, k, l, g, c) {
                 function b(a) {
-                    var b = Math.PI / 180, e = Math.sin(a.y * b), e = 0.9933056200098026 * (e / (1 - 0.006694379990197414 * e * e) - 6.111035746609262 * Math.log((1 - 0.0818191908429643 * e) / (1 + 0.0818191908429643 * e)));
+                    var b = Math.PI / 180, e = Math.sin(a.y * b),
+                        e = 0.9933056200098026 * (e / (1 - 0.006694379990197414 * e * e) - 6.111035746609262 * Math.log((1 - 0.0818191908429643 * e) / (1 + 0.0818191908429643 * e)));
                     return new l(6378137 *
                         a.x * b, 3189068.5 * e)
                 }
@@ -27802,8 +27964,9 @@ require({
                         H = Math.cos(2 * p + m);
                         E = Math.sin(m);
                         G = Math.cos(m);
-                        var J = D * E * (H + D / 4 * (G * (-1 + 2 * H * H) - D / 6 * H * (-3 + 4 * E * E) * (-3 + 4 * H * H))), F = m, m = c / (6356752.31424518 *
-                            n) + J
+                        var J = D * E * (H + D / 4 * (G * (-1 + 2 * H * H) - D / 6 * H * (-3 + 4 * E * E) * (-3 + 4 * H * H))),
+                            F = m, m = c / (6356752.31424518 *
+                                n) + J
                     }
                     c = h * E - g * G * e;
                     c = Math.atan2(h * G + g * E * e, (1 - d) * Math.sqrt(a * a + c * c));
@@ -27813,7 +27976,9 @@ require({
                 }
 
                 function e(a, b, e, c) {
-                    var d = 1 / 298.257223563, f = c - b, g = Math.atan((1 - d) * Math.tan(a)), k = Math.atan((1 - d) * Math.tan(e)), h = Math.sin(g), g = Math.cos(g), p = Math.sin(k), k = Math.cos(k), q = f, l, m = 1E3, n, E, G, H, J;
+                    var d = 1 / 298.257223563, f = c - b, g = Math.atan((1 - d) * Math.tan(a)),
+                        k = Math.atan((1 - d) * Math.tan(e)), h = Math.sin(g), g = Math.cos(g), p = Math.sin(k),
+                        k = Math.cos(k), q = f, l, m = 1E3, n, E, G, H, J;
                     do {
                         G = Math.sin(q);
                         H = Math.cos(q);
@@ -28024,7 +28189,7 @@ require({
                 d = d([h], {declaredClass: "esri.Color"});
                 d.toJsonColor = function (d) {
                     return d && [d.r, d.g, d.b, 1 < d.a ? d.a : Math.round(255 *
-                                d.a)]
+                            d.a)]
                 };
                 d.toDojoColor = function (d) {
                     return d && new h([d[0], d[1], d[2], d[3] / 255])
@@ -28067,7 +28232,7 @@ require({
                             }, q = a("ie"), l = h.connect, n = b.__visibleDelta;
                             q && 7 < q && delete p.opacity;
                             "css-transforms" === b.navigationMode ? (p[g.transform] = c._css.translate(n.x, n.y), k.set(f, p), this._left = n.x, this._top = n.y) : (p.left = "0px",
-                                    p.top = "0px", k.set(f, p), this._left = this._top = 0);
+                                p.top = "0px", k.set(f, p), this._left = this._top = 0);
                             k.set(f, p);
                             this._onResizeHandler_connect = l(b, "onResize", this, "_onResizeHandler");
                             this._opacityChangeHandler_connect = l(this, "onOpacityChange", this, "_opacityChangeHandler");
@@ -28145,9 +28310,9 @@ require({
                             this._panDy = b.y;
                             var e = this._dragOrigin, d = this._map.__visibleDelta, f = this._img;
                             f && ("css-transforms" === this._map.navigationMode ? (this._left = d.x + b.x, this._top = d.y + b.y, k.set(this._div, c._css.names.transform, c._css.translate(this._left, this._top))) : k.set(f, {
-                                    left: e.x + b.x + "px",
-                                    top: e.y + b.y + "px"
-                                }))
+                                left: e.x + b.x + "px",
+                                top: e.y + b.y + "px"
+                            }))
                         },
                         _onExtentChangeHandler: function (b, e, d) {
                             if (!this.suspended) {
@@ -28156,12 +28321,12 @@ require({
                                 var f =
                                     this._map, p = this._img, q = p && p.style, l = this._dragOrigin;
                                 if (e && !d && p && (e.x !== this._panDx || e.y !== this._panDy)) "css-transforms" === f.navigationMode ? (e = f.__visibleDelta, this._left = e.x, this._top = e.y, k.set(this._div, c._css.names.transform, c._css.translate(this._left, this._top))) : k.set(p, {
-                                        left: l.x + e.x + "px",
-                                        top: l.y + e.y + "px"
-                                    });
+                                    left: l.x + e.x + "px",
+                                    top: l.y + e.y + "px"
+                                });
                                 p ? (l.x = parseInt(q.left, 10), l.y = parseInt(q.top, 10)) : l.x = l.y = 0;
                                 "css-transforms" === f.navigationMode && (d && p) && (k.set(p, c._css.names.transition, "none"), p._multiply = p._multiply ? g.multiply(p._matrix,
-                                        p._multiply) : p._matrix);
+                                    p._multiply) : p._matrix);
                                 this._fireUpdateStart();
                                 if (d = this._img_loading)if (h.disconnect(d._onload_connect), h.disconnect(d._onerror_connect), h.disconnect(d._onabort_connect), m.destroy(d), this._img_loading = null, d = this._jsonRequest) {
                                     try {
@@ -28181,14 +28346,11 @@ require({
                                 }), this.getImageUrl(b, f.width, f.height, this._divAlphaImageFunc); else {
                                     d = this._img_loading = m.create("img");
                                     e = c._css.names;
-                                    var x = a("ie"), A = {
-                                        position: "absolute",
-                                        width: f.width + "px",
-                                        height: f.height + "px"
-                                    };
+                                    var x = a("ie"),
+                                        A = {position: "absolute", width: f.width + "px", height: f.height + "px"};
                                     x && 7 < x && (A.opacity = this.opacity);
                                     "css-transforms" === f.navigationMode ? (A[e.transform] = c._css.translate(-this._left, -this._top), d._tdx = -this._left, d._tdy = -this._top, A[e.transition] = e.transformName +
-                                            " " + v + "ms ease") : (A.left = "0px", A.top = "0px");
+                                        " " + v + "ms ease") : (A.left = "0px", A.top = "0px");
                                     d.id = f.id + "_" + this.id + "_" + (new Date).getTime();
                                     k.set(d, A);
                                     d._onload_connect = h.connect(d, "onload", this, "_onLoadHandler");
@@ -28226,12 +28388,12 @@ require({
                             b(a._onabort_connect);
                             !e || e.__panning || e.__zooming ?
                                 m.destroy(a) : (l.removeChildren(this._div), this._img = a, this._startRect = {
-                                    left: 0,
-                                    top: 0,
-                                    width: e.width,
-                                    height: e.height,
-                                    zoom: 1
-                                }, this._div.appendChild(a), this.suspended || f.show(this._div), a._onload_connect = a._onerror_connect = a._onabort_connect = this._img_loading = null, a = this._dragOrigin, a.x = a.y = 0, this.onUpdate());
+                                left: 0,
+                                top: 0,
+                                width: e.width,
+                                height: e.height,
+                                zoom: 1
+                            }, this._div.appendChild(a), this.suspended || f.show(this._div), a._onload_connect = a._onerror_connect = a._onabort_connect = this._img_loading = null, a = this._dragOrigin, a.x = a.y = 0, this.onUpdate());
                             this._fireUpdateEnd()
                         },
                         _onErrorHandler: function (a) {
@@ -28271,15 +28433,15 @@ require({
                             b = this._startRect;
                             var d = b.width * e, f = b.height * e, g = this._img, h = a("ie");
                             g && (h && 8 > h ? k.set(g, {
-                                    left: b.left - (d - b.width) * (c.x - b.left) / b.width + "px",
-                                    top: b.top - (f - b.height) * (c.y - b.top) / b.height + "px",
-                                    zoom: e * b.zoom
-                                }) : k.set(g, {
-                                    left: b.left - (d - b.width) * (c.x - b.left) / b.width + "px",
-                                    top: b.top - (f - b.height) * (c.y - b.top) / b.height + "px",
-                                    width: d + "px",
-                                    height: f + "px"
-                                }))
+                                left: b.left - (d - b.width) * (c.x - b.left) / b.width + "px",
+                                top: b.top - (f - b.height) * (c.y - b.top) / b.height + "px",
+                                zoom: e * b.zoom
+                            }) : k.set(g, {
+                                left: b.left - (d - b.width) * (c.x - b.left) / b.width + "px",
+                                top: b.top - (f - b.height) * (c.y - b.top) / b.height + "px",
+                                width: d + "px",
+                                height: f + "px"
+                            }))
                         },
                         _exportMapImage: function (a, c, d) {
                             var f = this._exportMapImageHandler;
@@ -28391,16 +28553,17 @@ require({
                             var a = this.bbox || this.extent, a = a && b && a._normalize(!0);
                             b = this.layerOption;
                             var e =
-                                a ? a.spatialReference.wkid || m.toJson(a.spatialReference.toJson()) : null, f = this.imageSpatialReference, a = {
-                                dpi: this.dpi,
-                                format: this.format,
-                                transparent: this.transparent,
-                                size: null !== this.width && null !== this.height ? this.width + "," + this.height : null,
-                                bbox: a ? a.xmin + "," + a.ymin + "," + a.xmax + "," + a.ymax : null,
-                                bboxSR: e,
-                                layers: b ? b + ":" + this.layerIds.join(",") : null,
-                                imageSR: f ? f.wkid || m.toJson(f.toJson()) : e
-                            };
+                                    a ? a.spatialReference.wkid || m.toJson(a.spatialReference.toJson()) : null,
+                                f = this.imageSpatialReference, a = {
+                                    dpi: this.dpi,
+                                    format: this.format,
+                                    transparent: this.transparent,
+                                    size: null !== this.width && null !== this.height ? this.width + "," + this.height : null,
+                                    bbox: a ? a.xmin + "," + a.ymin + "," + a.xmax + "," + a.ymax : null,
+                                    bboxSR: e,
+                                    layers: b ? b + ":" + this.layerIds.join(",") : null,
+                                    imageSR: f ? f.wkid || m.toJson(f.toJson()) : e
+                                };
                             a.layerDefs = c._serializeLayerDefinitions(this.layerDefinitions);
                             b = this.timeExtent;
                             a.time = b ? b.toJson().join(",") : null;
@@ -28481,7 +28644,9 @@ require({
                             return f ? null : new q(b, e, b + c, e + d, this.spatialReference)
                         }, _intersectsPolygon: function (a) {
                             var e =
-                                [this.xmin, this.ymax], c = [this.xmax, this.ymax], d = [this.xmin, this.ymin], f = [this.xmax, this.ymin], g = [e, c, d, f], e = [[d, e], [e, c], [c, f], [f, d]], d = a.rings, f = d.length, k, h = new b(0, 0, this.spatialReference);
+                                    [this.xmin, this.ymax], c = [this.xmax, this.ymax], d = [this.xmin, this.ymin],
+                                f = [this.xmax, this.ymin], g = [e, c, d, f], e = [[d, e], [e, c], [c, f], [f, d]],
+                                d = a.rings, f = d.length, k, h = new b(0, 0, this.spatialReference);
                             k = g.length;
                             for (c = 0; c < k; c++)if (h.update(g[c][0], g[c][1]), a.contains(h))return !0;
                             h.setSpatialReference(a.spatialReference);
@@ -28499,7 +28664,8 @@ require({
                             }
                             return !1
                         }, _intersectsPolyline: function (a) {
-                            var e = [[[this.xmin, this.ymin], [this.xmin, this.ymax]], [[this.xmin, this.ymax], [this.xmax, this.ymax]], [[this.xmax, this.ymax], [this.xmax, this.ymin]], [[this.xmax, this.ymin], [this.xmin, this.ymin]]], c, d = a.paths, f = d.length, g, k, h, q, l = new b(0, 0, a.spatialReference);
+                            var e = [[[this.xmin, this.ymin], [this.xmin, this.ymax]], [[this.xmin, this.ymax], [this.xmax, this.ymax]], [[this.xmax, this.ymax], [this.xmax, this.ymin]], [[this.xmax, this.ymin], [this.xmin, this.ymin]]],
+                                c, d = a.paths, f = d.length, g, k, h, q, l = new b(0, 0, a.spatialReference);
                             for (a = 0; a < f; a++)if (g = d[a], k = g.length) {
                                 h = g[0];
                                 l.update(h[0], h[1]);
@@ -28572,16 +28738,17 @@ require({
                                     return a.extent
                                 });
                                 return 2 < f.length ? a ? this._shiftCM(e) : c.update(e.valid[0], c.ymin, e.valid[1], c.ymax, d) : 2 === f.length ? a ? this._shiftCM(e) : b ? f : {
-                                                    rings: h.map(f, function (a) {
-                                                        return [[a.xmin, a.ymin], [a.xmin, a.ymax], [a.xmax, a.ymax], [a.xmax, a.ymin], [a.xmin, a.ymin]]
-                                                    }), spatialReference: d
-                                                } : f[0] || c
+                                    rings: h.map(f, function (a) {
+                                        return [[a.xmin, a.ymin], [a.xmin, a.ymax], [a.xmax, a.ymax], [a.xmax, a.ymin], [a.xmin, a.ymin]]
+                                    }), spatialReference: d
+                                } : f[0] || c
                             }
                             return c
                         }, _getParts: function (a) {
                             if (!this._parts) {
                                 var b =
-                                    this.xmin, e = this.xmax, c = this.ymin, d = this.ymax, f = this.spatialReference, g = this.getWidth(), k = b, h = e, l = 0, m = 0, n = [], B, D;
+                                        this.xmin, e = this.xmax, c = this.ymin, d = this.ymax, f = this.spatialReference,
+                                    g = this.getWidth(), k = b, h = e, l = 0, m = 0, n = [], B, D;
                                 a = a || f._getInfo();
                                 B = a.valid[0];
                                 D = a.valid[1];
@@ -28609,12 +28776,12 @@ require({
                                         frameIds: [l]
                                     }, {extent: b, frameIds: [m]}, {extent: D, frameIds: f}, {extent: c, frameIds: B})
                                 } else b > e || a ? n.push({
-                                        extent: new q(b, c, D, d, f),
-                                        frameIds: [l]
-                                    }, {
-                                        extent: new q(B, c, e, d, f),
-                                        frameIds: [m]
-                                    }) : n.push({extent: new q(b, c, e, d, f), frameIds: [l]});
+                                    extent: new q(b, c, D, d, f),
+                                    frameIds: [l]
+                                }, {
+                                    extent: new q(B, c, e, d, f),
+                                    frameIds: [m]
+                                }) : n.push({extent: new q(b, c, e, d, f), frameIds: [l]});
                                 this._parts = n
                             }
                             return this._parts
@@ -28849,7 +29016,8 @@ require({
                         var c = g.doc.createElement("div");
                         c.style.cssText = "border: 1px solid; border-color:red green; position: absolute; height: 5px; top: -999px;background-image: url(" + (h.blankGif || d.toUrl("./resources/blank.gif")) + ");";
                         g.body().appendChild(c);
-                        var b = m.getComputedStyle(c), a = b.backgroundImage, b = b.borderTopColor == b.borderRightColor || a && ("none" == a || "url(invalid-url:)" == a);
+                        var b = m.getComputedStyle(c), a = b.backgroundImage,
+                            b = b.borderTopColor == b.borderRightColor || a && ("none" == a || "url(invalid-url:)" == a);
                         8 >= k("ie") ? c.outerHTML = "" : g.body().removeChild(c);
                         return b
                     });
@@ -28971,12 +29139,13 @@ require({
                         if (!s._currentDfd && s._dfdQueue.length) {
                             do b = s._currentDfd = s._dfdQueue.shift(); while (b && (b.canceled || b.isCanceled && b.isCanceled()) && s._dfdQueue.length);
                             if (!b || b.canceled || b.isCanceled && b.isCanceled()) s._currentDfd = null; else {
-                                var c = b.response, d = c.options, k = b._contentToClean = [], h = a.byId(d.form), p = m.notify, q = d.data || null, n;
+                                var c = b.response, d = c.options, k = b._contentToClean = [], h = a.byId(d.form),
+                                    p = m.notify, q = d.data || null, n;
                                 !b._legacy && "POST" === d.method && !h ? h = b._tmpForm =
-                                        e.create("form", {
-                                            name: t + "_form",
-                                            style: {position: "absolute", top: "-1000px", left: "-1000px"}
-                                        }, f.body()) : "GET" === d.method && (h && -1 < c.url.indexOf("?")) && (n = c.url.slice(c.url.indexOf("?") + 1), q = l.mixin(g.queryToObject(n), q));
+                                    e.create("form", {
+                                        name: t + "_form",
+                                        style: {position: "absolute", top: "-1000px", left: "-1000px"}
+                                    }, f.body()) : "GET" === d.method && (h && -1 < c.url.indexOf("?")) && (n = c.url.slice(c.url.indexOf("?") + 1), q = l.mixin(g.queryToObject(n), q));
                                 if (h) {
                                     if (!b._legacy) {
                                         var r = h;
@@ -28994,7 +29163,8 @@ require({
                                             if (l.isArray(w) && 1 < w.length)for (n = 0; n < w.length; n++)r(v, w[n]); else h[v] ? h[v].value = w : r(v, w)
                                         }
                                     }
-                                    var y = h.getAttributeNode("action"), O = h.getAttributeNode("method"), K = h.getAttributeNode("target");
+                                    var y = h.getAttributeNode("action"), O = h.getAttributeNode("method"),
+                                        K = h.getAttributeNode("target");
                                     c.url && (b._originalAction = y ? y.value : null, y ? y.value = c.url : h.setAttribute("action", c.url));
                                     if (b._legacy) {
                                         if (!O || !O.value) O ? O.value = d.method : h.setAttribute("method", d.method)
@@ -29076,7 +29246,7 @@ require({
                         this._timer = null;
                         this._callback(++this._count, this._node, this._evt);
                         this._currentTimeout = Math.max(0 > this._currentTimeout ? this._initialDelay : 1 < this._subsequentDelay ? this._subsequentDelay : Math.round(this._currentTimeout *
-                                    this._subsequentDelay), this._minDelay);
+                            this._subsequentDelay), this._minDelay);
                         this._timer = setTimeout(n.hitch(this, "_fireEventAndReload"), this._currentTimeout)
                     }, trigger: function (c, b, a, e, d, g, h, k) {
                         if (d != this._obj) {
@@ -29097,12 +29267,13 @@ require({
                         this._timer && (clearTimeout(this._timer), this._timer = null);
                         this._obj && (this._callback(-1, this._node, this._evt), this._obj = null)
                     }, addKeyListener: function (c, b, a, e, f, k, l) {
-                        var v = "keyCode" in b ? "keyCode" : "charCode" in b ? "charCode" : "charOrCode", r = [m(c, "keyCode" in b ? "keydown" : "charCode" in b ? "keypress" : h._keypress, n.hitch(this, function (d) {
-                            d[v] == b[v] && (void 0 === b.ctrlKey || b.ctrlKey == d.ctrlKey) && (void 0 === b.altKey || b.altKey == d.altKey) && (void 0 === b.metaKey || b.metaKey == (d.metaKey || !1)) && (void 0 ===
-                            b.shiftKey || b.shiftKey == d.shiftKey) ? (d.stopPropagation(), d.preventDefault(), g.trigger(d, a, c, e, b, f, k, l)) : g._obj == b && g.stop()
-                        })), m(c, "keyup", n.hitch(this, function () {
-                            g._obj == b && g.stop()
-                        }))];
+                        var v = "keyCode" in b ? "keyCode" : "charCode" in b ? "charCode" : "charOrCode",
+                            r = [m(c, "keyCode" in b ? "keydown" : "charCode" in b ? "keypress" : h._keypress, n.hitch(this, function (d) {
+                                d[v] == b[v] && (void 0 === b.ctrlKey || b.ctrlKey == d.ctrlKey) && (void 0 === b.altKey || b.altKey == d.altKey) && (void 0 === b.metaKey || b.metaKey == (d.metaKey || !1)) && (void 0 ===
+                                b.shiftKey || b.shiftKey == d.shiftKey) ? (d.stopPropagation(), d.preventDefault(), g.trigger(d, a, c, e, b, f, k, l)) : g._obj == b && g.stop()
+                            })), m(c, "keyup", n.hitch(this, function () {
+                                g._obj == b && g.stop()
+                            }))];
                         return {
                             remove: function () {
                                 d.forEach(r, function (a) {
@@ -29318,12 +29489,13 @@ require({
                     c.urlToObject = function (a) {
                         var b = a.indexOf("?");
                         return -1 === b ? {path: a, query: null} : {
-                                path: a.substring(0, b),
-                                query: m.queryToObject(a.substring(b + 1))
-                            }
+                            path: a.substring(0, b),
+                            query: m.queryToObject(a.substring(b + 1))
+                        }
                     };
                     c.getProxyUrl = function (a, f) {
-                        var g = d.isString(a) ? 0 === d.trim(a).toLowerCase().indexOf("https:") : a, h = b.proxyUrl, k, l;
+                        var g = d.isString(a) ? 0 === d.trim(a).toLowerCase().indexOf("https:") : a, h = b.proxyUrl, k,
+                            l;
                         if (d.isString(a) && (l = c.getProxyRule(a))) h = l.proxyUrl;
                         if (!h)throw console.log("esri.config.defaults.io.proxyUrl is not set."), Error("esri.config.defaults.io.proxyUrl is not set.");
                         g && (!1 !== f && 0 !== window.location.href.toLowerCase().indexOf("https:")) && (g = h, 0 !== g.toLowerCase().indexOf("http") && (g = c.getAbsoluteUrl(g)), g = g.replace(/^http:/i, "https:"), c.canUseXhr(g) && (h = g, k = 1));
@@ -29339,7 +29511,8 @@ require({
                     };
                     c.addProxyRule = function (a) {
                         var d = a.urlPrefix =
-                            c.urlToObject(a.urlPrefix).path.replace(/([^\/])$/, "$1/").replace(/^https?:\/\//ig, "").toLowerCase(), g = b.proxyRules, h, k = g.length, l, m = k;
+                                c.urlToObject(a.urlPrefix).path.replace(/([^\/])$/, "$1/").replace(/^https?:\/\//ig, "").toLowerCase(),
+                            g = b.proxyRules, h, k = g.length, l, m = k;
                         for (h = 0; h < k; h++)if (l = g[h].urlPrefix, 0 === d.indexOf(l)) {
                             if (d.length === l)return -1;
                             m = h;
@@ -29349,7 +29522,9 @@ require({
                         return m
                     };
                     c.getProxyRule = function (a) {
-                        var d = b.proxyRules, g = d.length, h = c.urlToObject(a).path.replace(/([^\/])$/, "$1/").replace(/^https?:\/\//ig, "").toLowerCase(), k;
+                        var d = b.proxyRules, g = d.length,
+                            h = c.urlToObject(a).path.replace(/([^\/])$/, "$1/").replace(/^https?:\/\//ig, "").toLowerCase(),
+                            k;
                         for (a = 0; a < g; a++)if (0 === h.indexOf(d[a].urlPrefix)) {
                             k = d[a];
                             break
@@ -29482,9 +29657,10 @@ require({
                             this.containerNode.innerHTML = a;
                             f && this.set("textDir", f);
                             this.containerNode.align = d ? "right" : "left";
-                            var h = q.around(this.domNode, b, e && e.length ? e : w.defaultPosition, !d, c.hitch(this, "orient")), k = h.aroundNodePos;
+                            var h = q.around(this.domNode, b, e && e.length ? e : w.defaultPosition, !d, c.hitch(this, "orient")),
+                                k = h.aroundNodePos;
                             "M" == h.corner.charAt(0) && "M" == h.aroundCorner.charAt(0) ? (this.connectorNode.style.top = k.y + (k.h - this.connectorNode.offsetHeight >> 1) - h.y + "px", this.connectorNode.style.left = "") : "M" == h.corner.charAt(1) && "M" == h.aroundCorner.charAt(1) ? this.connectorNode.style.left =
-                                        k.x + (k.w - this.connectorNode.offsetWidth >> 1) - h.x + "px" : (this.connectorNode.style.left = "", this.connectorNode.style.top = "");
+                                k.x + (k.w - this.connectorNode.offsetWidth >> 1) - h.x + "px" : (this.connectorNode.style.left = "", this.connectorNode.style.top = "");
                             g.set(this.domNode, "opacity", 0);
                             this.fadeIn.play();
                             this.isShowingNow = !0;
@@ -29512,7 +29688,7 @@ require({
                         var k = Math.min(Math.max(d, 1), h.w);
                         l.setMarginBox(this.domNode, {w: k});
                         "B" == c.charAt(0) && "B" == b.charAt(0) ? (a = l.position(a), b = this.connectorNode.offsetHeight, a.h > g ? (this.connectorNode.style.top = g - (f.h + b >> 1) + "px", this.connectorNode.style.bottom = "") : (this.connectorNode.style.bottom =
-                                    Math.min(Math.max(f.h / 2 - b / 2, 0), a.h - b) + "px", this.connectorNode.style.top = "")) : (this.connectorNode.style.top = "", this.connectorNode.style.bottom = "");
+                            Math.min(Math.max(f.h / 2 - b / 2, 0), a.h - b) + "px", this.connectorNode.style.top = "")) : (this.connectorNode.style.top = "", this.connectorNode.style.bottom = "");
                         return Math.max(0, h.w - d)
                     }, _onShow: function () {
                         e("ie") && (this.domNode.style.filter = "")
@@ -29565,11 +29741,11 @@ require({
                         this._connections = d.map(this._connectIds, function (e) {
                             e = m.byId(e, this.ownerDocument);
                             var d = this.selector, f = d ? function (b) {
-                                    return a.selector(d,
-                                        b)
-                                } : function (a) {
-                                    return a
-                                }, g = this;
+                                return a.selector(d,
+                                    b)
+                            } : function (a) {
+                                return a
+                            }, g = this;
                             return [a(e, f(b.enter), function () {
                                 g._onHover(this)
                             }), a(e, f("focusin"), function () {
@@ -29680,7 +29856,8 @@ require({
                     layerTimeOptions: null,
                     dynamicLayerInfos: null,
                     toJson: function (a) {
-                        var d = a && a.geometry || this.geometry, h = this.mapExtent, k = this.spatialReference, l = this.layerIds;
+                        var d = a && a.geometry || this.geometry, h = this.mapExtent, k = this.spatialReference,
+                            l = this.layerIds;
                         a = {
                             geometry: d,
                             tolerance: this.tolerance,
@@ -29699,11 +29876,8 @@ require({
                         a.layerTimeOptions = g._serializeTimeOptions(this.layerTimeOptions);
                         if (this.dynamicLayerInfos && 0 < this.dynamicLayerInfos.length) {
                             var h =
-                                b.getScale({
-                                    extent: h,
-                                    width: this.width,
-                                    spatialReference: h.spatialReference
-                                }), r = g._getLayersForScale(h, this.dynamicLayerInfos), s = [];
+                                    b.getScale({extent: h, width: this.width, spatialReference: h.spatialReference}),
+                                r = g._getLayersForScale(h, this.dynamicLayerInfos), s = [];
                             n.forEach(this.dynamicLayerInfos, function (a) {
                                 if (!a.subLayerIds) {
                                     var b = a.id;
@@ -29792,8 +29966,8 @@ require({
                     markupFactory: function (a, b, e) {
                         var c = new e(a, b);
                         return !c.href && c._contentSetter && c._contentSetter.parseDeferred && !c._contentSetter.parseDeferred.isFulfilled() ? c._contentSetter.parseDeferred.then(function () {
-                                return c
-                            }) : c
+                            return c
+                        }) : c
                     },
                     create: function (a, b) {
                         if ((!a || !a.template) && b && !("href" in a) && !("content" in a)) {
@@ -29958,15 +30132,16 @@ require({
                             })
                         }));
                         var c = h.mixin({
-                            cleanContent: this.cleanContent,
-                            extractContent: this.extractContent,
-                            parseContent: !a.domNode && this.parseOnLoad,
-                            parserScope: this.parserScope,
-                            startup: !1,
-                            dir: this.dir,
-                            lang: this.lang,
-                            textDir: this.textDir
-                        }, this._contentSetterParams || {}), c = e.set(h.isObject(a) && a.domNode ? a.domNode : a, c), d = this;
+                                cleanContent: this.cleanContent,
+                                extractContent: this.extractContent,
+                                parseContent: !a.domNode && this.parseOnLoad,
+                                parserScope: this.parserScope,
+                                startup: !1,
+                                dir: this.dir,
+                                lang: this.lang,
+                                textDir: this.textDir
+                            }, this._contentSetterParams || {}), c = e.set(h.isObject(a) && a.domNode ? a.domNode : a, c),
+                            d = this;
                         return s(c && c.then ? c : e.parseDeferred, function () {
                             delete d._contentSetterParams;
                             b || (d._started && (d._startChildren(), d._scheduleLayout()), d._onLoadHandler(a))
@@ -30023,8 +30198,11 @@ require({
                             var a = this.tileInfo, b = a.lods;
                             this._tileW = a.width;
                             this._tileH = a.height;
-                            var e = this.scales = [], c = this._displayLevels, d = "esri.layers.WMTSLayer" === this.declaredClass &&
-                                96 != a.dpi, f = -Infinity, g = Infinity, h = this.fullExtent, k = new s(h.xmin, h.ymax), h = new s(h.xmax, h.ymin), l = r.getContainingTileCoords, q, n, t, v = b.length;
+                            var e = this.scales = [], c = this._displayLevels,
+                                d = "esri.layers.WMTSLayer" === this.declaredClass &&
+                                    96 != a.dpi, f = -Infinity, g = Infinity, h = this.fullExtent,
+                                k = new s(h.xmin, h.ymax), h = new s(h.xmax, h.ymin), l = r.getContainingTileCoords, q,
+                                n, t, v = b.length;
                             for (t = 0; t < v; t++)if (n = b[t], d && (n.scale = 96 * n.scale / a.dpi), q = l(a, k, n), n.startTileRow = 0 > q.row ? 0 : q.row, n.startTileCol = 0 > q.col ? 0 : q.col, q = l(a, h, n), n.endTileRow = q.row, n.endTileCol = q.col, !c || -1 !== m.indexOf(c, n.level)) e[t] = n.scale, f = n.scale > f ? n.scale : f, g = n.scale < g ? n.scale : g;
                             d && (a.dpi = 96);
                             -Infinity !== f && !this._hasMin && this.setMinScale(f);
@@ -30036,7 +30214,8 @@ require({
                             if (a) {
                                 var b;
                                 b = this._map;
-                                var a = this.scales, e = b.getScale(), c = !1, d = b.width > b.height ? b.width : b.height;
+                                var a = this.scales, e = b.getScale(), c = !1,
+                                    d = b.width > b.height ? b.width : b.height;
                                 for (b = 0; b < a.length; b++)if (Math.abs(a[b] - e) / a[b] < 1 / d) {
                                     c = !0;
                                     break
@@ -30048,10 +30227,11 @@ require({
                         _setMap: function (a, e, c, d) {
                             this.inherited(arguments);
                             this._map = a;
-                            var g = this._div = l.create("div", null, e), k = a.__visibleDelta, p = h.connect, q = f._css.names, m = {
-                                position: "absolute", width: a.width + "px",
-                                height: a.height + "px", overflow: "visible"
-                            };
+                            var g = this._div = l.create("div", null, e), k = a.__visibleDelta, p = h.connect,
+                                q = f._css.names, m = {
+                                    position: "absolute", width: a.width + "px",
+                                    height: a.height + "px", overflow: "visible"
+                                };
                             "css-transforms" === a.navigationMode ? (m[q.transform] = f._css.translate(-k.x, -k.y), b.set(g, m), delete m[q.transform], m[q.transition] = q.transformName + " " + w + "ms ease", b.set(this._active = l.create("div", null, g), m), this._active._remove = 0, this._passives = []) : (m.left = -k.x + "px", m.top = -k.y + "px", b.set(g, m));
                             this._onResizeHandler_connect = p(a, "onResize", this, "_onResizeHandler");
                             this._opacityChangeHandler_connect = p(this, "onOpacityChange", this, "_opacityChangeHandler");
@@ -30085,7 +30265,8 @@ require({
                             clearTimeout(this._wakeTimer);
                             this._wakeTimer = null;
                             this._disableDrawConnectors();
-                            var a = this._tiles, b = this._tileIds, e = this._loadingList, c, d, f = h.disconnect, g = l.destroy;
+                            var a = this._tiles, b = this._tileIds, e = this._loadingList, c, d, f = h.disconnect,
+                                g = l.destroy;
                             e && 0 < e.count && (e.forEach(function (b) {
                                 if (c = a[b]) f(c._onload_connect), f(c._onerror_connect), f(c._onabort_connect), c._onload_connect = c._onerror_connect = c._onabort_connect = null
                             }), e.clear(), this._fireUpdateEnd());
@@ -30172,7 +30353,8 @@ require({
                                 if (!this._ct || h.lod.level !== this._ct.lod.level || g) {
                                     p = h && this._ct && h.lod.level !== this._ct.lod.level;
                                     this._ct = h;
-                                    var q = this._tiles, m = this._tileIds, n = this._tileBounds, s = this._removeList, v, w = m.length;
+                                    var q = this._tiles, m = this._tileIds, n = this._tileBounds, s = this._removeList,
+                                        v, w = m.length;
                                     this._cleanUpRemovedImages();
                                     for (h = 0; h < w; h++)k = m[h], v = q[k], n[k] =
                                         m[h] = null, "css-transforms" === d.navigationMode && (p && v.parentNode && d.fadeOnZoom) && (v._fadeOut = p, v.parentNode._remove++), s.add(v);
@@ -30181,9 +30363,9 @@ require({
                                 h = a.x;
                                 g = a.y;
                                 "css-transforms" === d.navigationMode ? (k = {}, k[f._css.names.transform] = f._css.translate(h, g), b.set(this._div, k)) : b.set(this._div, {
-                                        left: h + "px",
-                                        top: g + "px"
-                                    });
+                                    left: h + "px",
+                                    top: g + "px"
+                                });
                                 this.__coords_dx = h;
                                 this.__coords_dy = g;
                                 this._updateImages(new t(0, 0, a.width, a.height));
@@ -30199,15 +30381,18 @@ require({
                             var c = this._map, d = c.__visibleDelta.offset(e.x, e.y);
                             this.__coords_dx = this.__coords_dy = 0;
                             "css-transforms" === c.navigationMode ? (c = {}, c[f._css.names.transform] = f._css.translate(d.x, d.y), b.set(this._div, c), !p("esri-touch") && !p("esri-pointer") && this._updateImages({
-                                    x: -d.x,
-                                    y: -d.y,
-                                    width: d.width,
-                                    height: d.height
-                                })) : (b.set(this._div, {
-                                    left: d.x + "px",
-                                    top: d.y + "px"
-                                }), this._updateImages({x: -d.x, y: -d.y, width: d.width, height: d.height}));
-                            0 < this._loadingList.count && (this._fireUpdateStart(), this._fireOnUpdate = !0)
+                                x: -d.x,
+                                y: -d.y,
+                                width: d.width,
+                                height: d.height
+                            })) : (b.set(this._div, {left: d.x + "px", top: d.y + "px"}), this._updateImages({
+                                x: -d.x,
+                                y: -d.y,
+                                width: d.width,
+                                height: d.height
+                            }));
+                            0 < this._loadingList.count && (this._fireUpdateStart(), this._fireOnUpdate =
+                                !0)
                         },
                         _onScaleHandler: function (a, c) {
                             var d, g = {}, h = f._css.names, k = this._map;
@@ -30227,7 +30412,8 @@ require({
                             a = c.getMarginBox(this._div);
                             d = d.offset(-a.l, -a.t);
                             if (!this._previousScale || 1 === e) this._previousScale = 1;
-                            var f, g = this._tileW * e, h = this._tileH * e, k = this._tileBounds, l = this._tiles, q = this._previousScale, n = this._multiple, r = b.set, s, t;
+                            var f, g = this._tileW * e, h = this._tileH * e, k = this._tileBounds, l = this._tiles,
+                                q = this._previousScale, n = this._multiple, r = b.set, s, t;
                             if ((a = p("ie")) && 8 > a) m.forEach(this._tileIds, function (a) {
                                 t = "";
                                 f = k[a];
@@ -30273,7 +30459,11 @@ require({
                                 var b, e = this._tileW, c = this._tileH, d = this._ct;
                                 b = d.lod;
                                 var d = d.tile, f = d.offsets,
-                                    g = d.coords, h = g.row, g = g.col, k = b.level, l = this.opacity, p = this._tileIds, q = this._loadingList, n = this._addImage, r = this._map.id, s = this.id, t = a.x, v = a.y, w = b.startTileRow, y = b.endTileRow, R = b.startTileCol, Z = b.endTileCol, V = m.indexOf, S, N, U = f.x - this.__coords_dx, Y = f.y - this.__coords_dy;
+                                    g = d.coords, h = g.row, g = g.col, k = b.level, l = this.opacity,
+                                    p = this._tileIds, q = this._loadingList, n = this._addImage, r = this._map.id,
+                                    s = this.id, t = a.x, v = a.y, w = b.startTileRow, y = b.endTileRow,
+                                    R = b.startTileCol, Z = b.endTileCol, V = m.indexOf, S, N,
+                                    U = f.x - this.__coords_dx, Y = f.y - this.__coords_dy;
                                 N = e - U + -a.x;
                                 var Q = c - Y + -a.y;
                                 S = Math.ceil;
@@ -30335,7 +30525,7 @@ require({
                                 s._onerror_connect = v(s, "onerror", n.hitch(this, "_tileErrorHandler", c, k));
                                 s._onabort_connect = v(s, "onabort", this, "_tileAbortHandler");
                                 if (this.tileMap) this.tileMap.getTile(a, c, k, p, this._tileMapCallback); else if (p = this.getTileUrl(a, c, k, s)) this._failedRequests && this._failedRequests[p] ? (b.set(s, this._failedRequests[p].css), s.src = this._failedRequests[p].src, this._multiple = parseInt(this._failedRequests[p].css.width) / this._tileW) : (this._multiple =
-                                        1, s.src = p);
+                                    1, s.src = p);
                                 "css-transforms" === e.navigationMode ? this._active.appendChild(s) : this._div.appendChild(s)
                             }
                         },
@@ -30350,7 +30540,7 @@ require({
                         addTimestampToURL: function (a) {
                             var b = this._refreshTS;
                             b && (a = this._reCheckTS.test(a) ? a.replace(this._reReplaceTS,
-                                    "$$$1" + b) : a + ((-1 === a.indexOf("?") ? "?" : "\x26") + "_ts\x3d" + b));
+                                "$$$1" + b) : a + ((-1 === a.indexOf("?") ? "?" : "\x26") + "_ts\x3d" + b));
                             return a
                         },
                         refresh: function () {
@@ -30384,7 +30574,9 @@ require({
                             g ? this._resample(c, a, e) : (this.onError(Error("Unable to load tile: " + c.src)), b.set(c, "visibility", "hidden"), this._tilePopPop(c))
                         },
                         _resample: function (a, e, c) {
-                            var d = (new k(a.src)).path.split("/"), f = this._multiple, g = parseInt(d[d.length - 3]) - 1, h = parseInt(e / f), l = parseInt(c / f), d = c % f, q = e % f, h = this.getTileUrl(g, h, l);
+                            var d = (new k(a.src)).path.split("/"), f = this._multiple,
+                                g = parseInt(d[d.length - 3]) - 1, h = parseInt(e / f), l = parseInt(c / f), d = c % f,
+                                q = e % f, h = this.getTileUrl(g, h, l);
                             e = this.getTileUrl(g + Math.log(f) / Math.LN2, e, c);
                             f = {
                                 width: this._tileW * f + "px", height: this._tileH * f + "px", margin: "-" +
@@ -30447,9 +30639,9 @@ require({
                                 })
                             });
                             return g ? new b.constructor({paths: l, spatialReference: e}) : new b.constructor({
-                                    rings: l,
-                                    spatialReference: e
-                                })
+                                rings: l,
+                                spatialReference: e
+                            })
                         }
                         if ("multipoint" === b.type) {
                             var n = [];
@@ -30530,10 +30722,10 @@ require({
                     },
                     getContent: function (b) {
                         return this.info ? (new c({
-                                template: this,
-                                graphic: b,
-                                chartTheme: this.chartTheme
-                            }, m.create("div"))).domNode : ""
+                            template: this,
+                            graphic: b,
+                            chartTheme: this.chartTheme
+                        }, m.create("div"))).domNode : ""
                     }
                 });
                 n("extend-esri") && h.setObject("dijit.PopupTemplate", d, k);
@@ -30627,7 +30819,8 @@ require({
                         _onKey: function (a) {
                             if (!this.disabled && !this.readOnly) {
                                 var e = this.dropDown, c = a.target;
-                                if (e && (this._opened && e.handleKey) && !1 === e.handleKey(a)) a.stopPropagation(), a.preventDefault(); else if (e && this._opened && a.keyCode == b.ESCAPE) this.closeDropDown(), a.stopPropagation(), a.preventDefault(); else if (!this._opened && (a.keyCode == b.DOWN_ARROW || (a.keyCode == b.ENTER || a.keyCode == b.SPACE && (!this._searchTimer || a.ctrlKey || a.altKey || a.metaKey)) && ("input" !== (c.tagName || "").toLowerCase() || c.type && "text" !== c.type.toLowerCase()))) this._toggleOnKeyUp = !0, a.stopPropagation(), a.preventDefault()
+                                if (e && (this._opened && e.handleKey) && !1 === e.handleKey(a)) a.stopPropagation(), a.preventDefault(); else if (e && this._opened && a.keyCode == b.ESCAPE) this.closeDropDown(), a.stopPropagation(), a.preventDefault(); else if (!this._opened && (a.keyCode == b.DOWN_ARROW || (a.keyCode == b.ENTER || a.keyCode == b.SPACE && (!this._searchTimer || a.ctrlKey || a.altKey || a.metaKey)) && ("input" !== (c.tagName || "").toLowerCase() || c.type && "text" !== c.type.toLowerCase()))) this._toggleOnKeyUp =
+                                    !0, a.stopPropagation(), a.preventDefault()
                             }
                         },
                         _onKeyUp: function () {
@@ -30657,27 +30850,29 @@ require({
                             return b
                         },
                         toggleDropDown: function () {
-                            !this.disabled && !this.readOnly && (this._opened ? this.closeDropDown(!0) : this.loadAndOpenDropDown())
+                            !this.disabled &&
+                            !this.readOnly && (this._opened ? this.closeDropDown(!0) : this.loadAndOpenDropDown())
                         },
                         openDropDown: function () {
-                            var b = this.dropDown, e = b.domNode, c = this._aroundNode || this.domNode, d = this, f = v.open({
-                                parent: this,
-                                popup: b,
-                                around: c,
-                                orient: this.dropDownPosition,
-                                maxHeight: this.maxHeight,
-                                onExecute: function () {
-                                    d.closeDropDown(!0)
-                                },
-                                onCancel: function () {
-                                    d.closeDropDown(!0)
-                                },
-                                onClose: function () {
-                                    m.set(d._popupStateNode, "popupActive", !1);
-                                    k.remove(d._popupStateNode, "dijitHasDropDownOpen");
-                                    d._set("_opened", !1)
-                                }
-                            });
+                            var b = this.dropDown, e = b.domNode, c = this._aroundNode || this.domNode, d = this,
+                                f = v.open({
+                                    parent: this,
+                                    popup: b,
+                                    around: c,
+                                    orient: this.dropDownPosition,
+                                    maxHeight: this.maxHeight,
+                                    onExecute: function () {
+                                        d.closeDropDown(!0)
+                                    },
+                                    onCancel: function () {
+                                        d.closeDropDown(!0)
+                                    },
+                                    onClose: function () {
+                                        m.set(d._popupStateNode, "popupActive", !1);
+                                        k.remove(d._popupStateNode, "dijitHasDropDownOpen");
+                                        d._set("_opened", !1)
+                                    }
+                                });
                             if (this.forceWidth ||
                                 this.autoWidth && c.offsetWidth > b._popupWrapper.offsetWidth) c = {w: c.offsetWidth - (b._popupWrapper.offsetWidth - b.domNode.offsetWidth)}, a.isFunction(b.resize) ? b.resize(c) : l.setMarginBox(e, c);
                             m.set(this._popupStateNode, "popupActive", "true");
@@ -30706,7 +30901,8 @@ require({
                         this.trackRenderer = c;
                         this.observationAger = b
                     }, getSymbol: function (d) {
-                        var g = d.getLayer(), c = this.getObservationRenderer(d), b = c && c.getSymbol(d), a = this.observationAger;
+                        var g = d.getLayer(), c = this.getObservationRenderer(d), b = c && c.getSymbol(d),
+                            a = this.observationAger;
                         g.timeInfo && (g._map.timeExtent && c === this.observationRenderer && a && b) && (b = a.getAgedSymbol(b, d));
                         return b
                     }, getObservationRenderer: function (d) {
@@ -30751,12 +30947,12 @@ require({
                             this._loadCallback =
                                 b && b.loadCallback;
                             (e = b && b.resourceInfo) ? this._initLayer(e) : f({
-                                    url: this._url.path,
-                                    content: h.mixin({f: "json"}, this._url.query),
-                                    callbackParamName: "callback",
-                                    load: this._initLayer,
-                                    error: this._errorHandler
-                                });
+                                url: this._url.path,
+                                content: h.mixin({f: "json"}, this._url.query),
+                                callbackParamName: "callback",
+                                load: this._initLayer,
+                                error: this._errorHandler
+                            });
                             this.registerConnectEvents()
                         },
                         disableClientCaching: !1,
@@ -30802,31 +30998,31 @@ require({
                         getKeyProperties: function () {
                             var a = this._url.path + "/keyProperties", b = new n(q._dfdCanceller);
                             10 < this.version ? (b._pendingDfd = f({
-                                    url: a,
-                                    content: {f: "json"},
-                                    handleAs: "json",
-                                    callbackParamName: "callback"
-                                }), b._pendingDfd.then(function (a) {
-                                        b.callback(a)
-                                    },
-                                    function (a) {
-                                        b.errback(a)
-                                    })) : (a = Error("Layer does not have key properties"), a.log = l.isDebug, b.errback(a));
+                                url: a,
+                                content: {f: "json"},
+                                handleAs: "json",
+                                callbackParamName: "callback"
+                            }), b._pendingDfd.then(function (a) {
+                                    b.callback(a)
+                                },
+                                function (a) {
+                                    b.errback(a)
+                                })) : (a = Error("Layer does not have key properties"), a.log = l.isDebug, b.errback(a));
                             return b
                         },
                         getRasterAttributeTable: function () {
                             var a = this._url.path + "/rasterAttributeTable", b = new n(q._dfdCanceller);
                             10 < this.version && this.hasRasterAttributeTable ? (b._pendingDfd = f({
-                                    url: a,
-                                    content: {f: "json"},
-                                    handleAs: "json",
-                                    callbackParamName: "callback"
-                                }), b._pendingDfd.then(function (a) {
-                                    b.callback(a)
-                                }, function (a) {
-                                    b.errback(a)
-                                })) : (a = Error("Layer does not support raster attribute table"), a.log = l.isDebug,
-                                    b.errback(a));
+                                url: a,
+                                content: {f: "json"},
+                                handleAs: "json",
+                                callbackParamName: "callback"
+                            }), b._pendingDfd.then(function (a) {
+                                b.callback(a)
+                            }, function (a) {
+                                b.errback(a)
+                            })) : (a = Error("Layer does not support raster attribute table"), a.log = l.isDebug,
+                                b.errback(a));
                             return b
                         },
                         _getRasterAttributeTableFeatures: function () {
@@ -30883,16 +31079,16 @@ require({
                             var m = this._params.token = this._getToken();
                             b = p.addProxy(q + c.objectToQuery(h.mixin(this._params, {f: "image"})));
                             b.length > a.defaults.io.postLength || this.useMapImage ? this._jsonRequest = f({
-                                    url: q,
-                                    content: h.mixin(this._params, {f: "json"}),
-                                    callbackParamName: "callback",
-                                    load: function (a, b) {
-                                        var e = a.href;
-                                        m && (e += -1 === e.indexOf("?") ? "?token\x3d" + m : "\x26token\x3d" + m);
-                                        g(p.addProxy(e))
-                                    },
-                                    error: this._errorHandler
-                                }) : g(b)
+                                url: q,
+                                content: h.mixin(this._params, {f: "json"}),
+                                callbackParamName: "callback",
+                                load: function (a, b) {
+                                    var e = a.href;
+                                    m && (e += -1 === e.indexOf("?") ? "?token\x3d" + m : "\x26token\x3d" + m);
+                                    g(p.addProxy(e))
+                                },
+                                error: this._errorHandler
+                            }) : g(b)
                         },
                         onRenderingChange: function () {
                         },
@@ -30968,7 +31164,8 @@ require({
                             }
                         },
                         exportMapImage: function (b, e) {
-                            var c = a.defaults.map, c = h.mixin({size: c.width + "," + c.height}, this._params, b ? b.toJson(this.normalization) : {}, {f: "json"});
+                            var c = a.defaults.map,
+                                c = h.mixin({size: c.width + "," + c.height}, this._params, b ? b.toJson(this.normalization) : {}, {f: "json"});
                             delete c._ts;
                             this._exportMapImage(this._url.path + "/exportImage", c, e)
                         },
@@ -31001,7 +31198,9 @@ require({
                         },
                         _queryVisibleRastersHandler: function (a, b, c, d, g) {
                             function p() {
-                                var a = this.getCustomRasterFields(b), d = this._getDomainFields(a), f = b ? b.returnDomainValues : !1, k = b && b.rasterAttributeTableFieldPrefix, r, s, t, v, w, y, A, B;
+                                var a = this.getCustomRasterFields(b), d = this._getDomainFields(a),
+                                    f = b ? b.returnDomainValues : !1, k = b && b.rasterAttributeTableFieldPrefix, r, s,
+                                    t, v, w, y, A, B;
                                 this._getRasterAttributeTableFeatures().then(h.hitch(this, function (a) {
                                     for (r = 0; r < l.length; r++) {
                                         u = l[r];
@@ -31042,27 +31241,27 @@ require({
                             if (l) {
                                 if (a)for (r = 0; r < l.length; r++)d.push(l[r].attributes[w]);
                                 !this._map.spatialReference.equals(this.spatialReference) && 0 < d.length ? f({
-                                        url: this._url.path + "/query",
-                                        content: {
-                                            f: "json",
-                                            objectIds: d.join(","),
-                                            returnGeometry: !0,
-                                            outSR: k.toJson(t._map.spatialReference.toJson()),
-                                            outFields: w
-                                        },
-                                        handleAs: "json",
-                                        callbackParamName: "callback",
-                                        load: function (a) {
-                                            if (0 === a.features.length) t._resolve([x,
-                                                null, null], null, c, g); else {
-                                                for (r = 0; r < a.features.length; r++)for (s = 0; s < l.length; s++)l[s].attributes[w] == a.features[r].attributes[w] && (l[s].geometry = new A(a.features[r].geometry), l[s].geometry.setSpatialReference(t._map.spatialReference));
-                                                p.call(t)
-                                            }
-                                        },
-                                        error: function (a) {
-                                            t._resolve([x, null, null], null, c, g)
+                                    url: this._url.path + "/query",
+                                    content: {
+                                        f: "json",
+                                        objectIds: d.join(","),
+                                        returnGeometry: !0,
+                                        outSR: k.toJson(t._map.spatialReference.toJson()),
+                                        outFields: w
+                                    },
+                                    handleAs: "json",
+                                    callbackParamName: "callback",
+                                    load: function (a) {
+                                        if (0 === a.features.length) t._resolve([x,
+                                            null, null], null, c, g); else {
+                                            for (r = 0; r < a.features.length; r++)for (s = 0; s < l.length; s++)l[s].attributes[w] == a.features[r].attributes[w] && (l[s].geometry = new A(a.features[r].geometry), l[s].geometry.setSpatialReference(t._map.spatialReference));
+                                            p.call(t)
                                         }
-                                    }) : p.call(this)
+                                    },
+                                    error: function (a) {
+                                        t._resolve([x, null, null], null, c, g)
+                                    }
+                                }) : p.call(this)
                             } else this._resolve([x, null, null], null, c, g)
                         },
                         getVisibleRasters: function () {
@@ -31247,9 +31446,9 @@ require({
                         2 < h && d && (f.className = d);
                         f.innerHTML = a;
                         return f.getBoundingClientRect ? (f = f.getBoundingClientRect(), {
-                                l: f.left, t: f.top, w: f.width || f.right - f.left, h: f.height ||
-                                f.bottom - f.top
-                            }) : b.getMarginBox(f)
+                            l: f.left, t: f.top, w: f.width || f.right - f.left, h: f.height ||
+                            f.bottom - f.top
+                        }) : b.getMarginBox(f)
                     };
                     e._computeTextLocation = function (a, b, e, c) {
                         var d = {};
@@ -31442,8 +31641,8 @@ require({
                                 function (b) {
                                     a[b] = e[b]
                                 }), "string" == typeof b ? a.renderer = b : l.some(["svg", "vml", "canvas", "canvasWithEvents", "silverlight"], function (b) {
-                                    return a.renderer = a[b] && a[b].Surface === a.Surface ? b : null
-                                }))
+                                return a.renderer = a[b] && a[b].Surface === a.Surface ? b : null
+                            }))
                         }
                     });
                     return a
@@ -31560,9 +31759,9 @@ require({
                 c.set = function (a, b, d) {
                     void 0 == b && (console.warn("dojo.html.set: no cont argument provided, using empty string"), b = "");
                     return d ? (new c._ContentSetter(h.mixin(d, {
-                            content: b,
-                            node: a
-                        }))).set() : c._setNodeContent(a, b, !0)
+                        content: b,
+                        node: a
+                    }))).set() : c._setNodeContent(a, b, !0)
                 };
                 return c
             })
@@ -31590,7 +31789,7 @@ require({
                         g = this[g.s];
                         var b;
                         "function" === typeof g ? b =
-                                g.apply(this, Array.prototype.slice.call(arguments, 1)) : this[d] = h;
+                            g.apply(this, Array.prototype.slice.call(arguments, 1)) : this[d] = h;
                         if (this._watchCallbacks) {
                             var a = this;
                             m(b, function () {
@@ -31615,7 +31814,8 @@ require({
                             k(g["_" + a]);
                             h || k(g["*"])
                         };
-                        !h && "function" === typeof d ? (h = d, d = "*") : d = "_" + d;
+                        !h && "function" ===
+                        typeof d ? (h = d, d = "*") : d = "_" + d;
                         var b = g[d];
                         "object" !== typeof b && (b = g[d] = []);
                         b.push(h);
@@ -31739,7 +31939,7 @@ require({
                 function l(c, b) {
                     var a = c.resize ? c.resize(b) : n.setMarginBox(c.domNode, b);
                     a ? k.mixin(c, a) : (k.mixin(c,
-                            n.getMarginBox(c.domNode)), k.mixin(c, b))
+                        n.getMarginBox(c.domNode)), k.mixin(c, b))
                 }
 
                 var g = {
@@ -31772,7 +31972,7 @@ require({
                             "leading" == d && (d = a.isLeftToRight() ? "left" : "right");
                             "trailing" == d && (d = a.isLeftToRight() ? "right" : "left");
                             "top" == d || "bottom" == d ? (c.w = b.w, l(a, c), b.h -= a.h, "top" == d ? b.t += a.h : g.top = b.t + b.h +
-                                        "px") : "left" == d || "right" == d ? (c.h = b.h, l(a, c), b.w -= a.w, "left" == d ? b.l += a.w : g.left = b.l + b.w + "px") : ("client" == d || "center" == d) && l(a, b)
+                                "px") : "left" == d || "right" == d ? (c.h = b.h, l(a, c), b.w -= a.w, "left" == d ? b.l += a.w : g.left = b.l + b.w + "px") : ("client" == d || "center" == d) && l(a, b)
                         })
                     }
                 };
@@ -31949,15 +32149,15 @@ require({
                         var a =
                             this.attributionDataUrl, b = new k(f._dfdCanceller);
                         this.hasAttributionData && a ? (b._pendingDfd = e({
-                                url: a,
-                                content: {f: "json"},
-                                handleAs: "json",
-                                callbackParamName: "callback"
-                            }), b._pendingDfd.then(function (a) {
-                                b.callback(a)
-                            }, function (a) {
-                                b.errback(a)
-                            })) : (a = Error("Layer does not have attribution data"), a.log = h.isDebug, b.errback(a));
+                            url: a,
+                            content: {f: "json"},
+                            handleAs: "json",
+                            callbackParamName: "callback"
+                        }), b._pendingDfd.then(function (a) {
+                            b.callback(a)
+                        }, function (a) {
+                            b.errback(a)
+                        })) : (a = Error("Layer does not have attribution data"), a.log = h.isDebug, b.errback(a));
                         return b
                     },
                     getResourceInfo: function () {
@@ -32096,10 +32296,10 @@ require({
                                 features: g._encodeGraphics(e.features, b && b["stops.features"]),
                                 doNotLocateOnRestrictedElements: this.doNotLocateOnRestrictedElements
                             }) : "esri.tasks.DataLayer" === e.declaredClass ? a.stops = e : "esri.tasks.DataFile" === e.declaredClass && (a.stops = n.toJson({
-                                    type: "features",
-                                    url: e.url,
-                                    doNotLocateOnRestrictedElements: this.doNotLocateOnRestrictedElements
-                                }));
+                                type: "features",
+                                url: e.url,
+                                doNotLocateOnRestrictedElements: this.doNotLocateOnRestrictedElements
+                            }));
                         if (this.directionsOutputType)switch (this.directionsOutputType.toLowerCase()) {
                             case "complete":
                                 a.directionsOutputType = "esriDOTComplete";
@@ -32121,12 +32321,12 @@ require({
                         }
                         e = function (a, e) {
                             return !a ? null : "esri.tasks.FeatureSet" === a.declaredClass ? 0 < a.features.length ? n.toJson({
-                                            type: "features", features: g._encodeGraphics(a.features,
-                                                b && b[e])
-                                        }) : null : "esri.tasks.DataLayer" === a.declaredClass ? a : "esri.tasks.DataFile" === a.declaredClass ? n.toJson({
-                                                type: "features",
-                                                url: a.url
-                                            }) : n.toJson(a)
+                                type: "features", features: g._encodeGraphics(a.features,
+                                    b && b[e])
+                            }) : null : "esri.tasks.DataLayer" === a.declaredClass ? a : "esri.tasks.DataFile" === a.declaredClass ? n.toJson({
+                                type: "features",
+                                url: a.url
+                            }) : n.toJson(a)
                         };
                         this.barriers && (a.barriers = e(this.barriers, "barriers.features"));
                         this.polygonBarriers && (a.polygonBarriers = e(this.polygonBarriers, "polygonBarriers.features"));
@@ -32146,7 +32346,7 @@ require({
                 d = d(null, {
                     declaredClass: "esri.Graphic", constructor: function (a, e, d, h) {
                         a && !a.declaredClass ? (this.geometry = a.geometry ? c.fromJson(a.geometry) : null, this.symbol = a.symbol ? b.fromJson(a.symbol) : null, this.attributes = a.attributes || null, this.infoTemplate = a.infoTemplate ? new g(a.infoTemplate) :
-                                null) : (this.geometry = a, this.symbol = e, this.attributes = d, this.infoTemplate = h)
+                            null) : (this.geometry = a, this.symbol = e, this.attributes = d, this.infoTemplate = h)
                     }, _shape: null, _graphicsLayer: null, _visible: !0, visible: !0, getDojoShape: function () {
                         return this._shape
                     }, getShapes: function () {
@@ -32190,15 +32390,14 @@ require({
                         return this.infoTemplate || a && a.infoTemplate
                     }, getTitle: function () {
                         var a = this.getInfoTemplate(), b = a && a.title;
-                        if (h.isFunction(b)) b = b.call(a, this); else if (h.isString(b))var c = (a = this._graphicsLayer) && a._getDateOpts, b = l.substitute(this.attributes, b, {
-                            first: !0,
-                            dateFormat: c && c.call(a)
-                        });
+                        if (h.isFunction(b)) b = b.call(a, this); else if (h.isString(b))var c = (a = this._graphicsLayer) && a._getDateOpts,
+                            b = l.substitute(this.attributes, b, {first: !0, dateFormat: c && c.call(a)});
                         return b
                     }, getContent: function () {
                         var a = this.getInfoTemplate(), b = a && a.content;
                         if (h.isFunction(b)) b = b.call(a,
-                            this); else if (h.isString(b))var c = (a = this._graphicsLayer) && a._getDateOpts, b = l.substitute(this.attributes, b, {dateFormat: c && c.call(a)});
+                            this); else if (h.isString(b))var c = (a = this._graphicsLayer) && a._getDateOpts,
+                            b = l.substitute(this.attributes, b, {dateFormat: c && c.call(a)});
                         return b
                     }, attr: function (a, b) {
                         var c = this.getNodes(), d, g = c.length;
@@ -32361,7 +32560,8 @@ require({
                     _onMouseWheelHandler: function (a) {
                         var b = this.map;
                         (b ? b.isScrollWheelZoom || b.isScrollWheelPan : this.preventPageScroll) && l.stop(a);
-                        var b = m("ie") || m("webkit") ? a.wheelDelta / this.wheelDivisor : -a.detail / this.mozWheelDivisor, e = Math.abs(b), e = e <= this.minWheelValue ? this.minWheelValue : this.maxWheelValue;
+                        var b = m("ie") || m("webkit") ? a.wheelDelta / this.wheelDivisor : -a.detail / this.mozWheelDivisor,
+                            e = Math.abs(b), e = e <= this.minWheelValue ? this.minWheelValue : this.maxWheelValue;
                         a.value = 0 > b ? -e : e;
                         this._fire("onMouseWheel", this._processEvent(a))
                     },
@@ -32444,14 +32644,15 @@ require({
                         if (0 === a.indexOf("data:"))var c = a, a = b, b = c.indexOf(";base64,") + 8, b = c.substr(b);
                         if (h.isString(a) && (0 === a.indexOf("/") || 0 === a.indexOf("//") ||
                             0 === a.indexOf("./") || 0 === a.indexOf("../"))) a = g.getAbsoluteUrl(a);
-                        var c = m.px2pt(this.width), c = isNaN(c) ? void 0 : c, d = m.px2pt(this.height), d = isNaN(d) ? void 0 : d, a = l.fixJson(h.mixin(this.inherited("toJson", arguments), {
-                            type: "esriPMS",
-                            url: a,
-                            imageData: b,
-                            contentType: this.contentType,
-                            width: c,
-                            height: d
-                        }));
+                        var c = m.px2pt(this.width), c = isNaN(c) ? void 0 : c, d = m.px2pt(this.height),
+                            d = isNaN(d) ? void 0 : d, a = l.fixJson(h.mixin(this.inherited("toJson", arguments), {
+                                type: "esriPMS",
+                                url: a,
+                                imageData: b,
+                                contentType: this.contentType,
+                                width: c,
+                                height: d
+                            }));
                         delete a.color;
                         delete a.size;
                         a.imageData || delete a.imageData;
@@ -32510,7 +32711,8 @@ require({
                             return (this.trim ? /^\s*$/ : /^$/).test(c)
                         },
                         getErrorMessage: function () {
-                            var c = "$_unset_$" == this.invalidMessage ? this.messages.invalidMessage : !this.invalidMessage ? this.promptMessage : this.invalidMessage, b = "$_unset_$" == this.missingMessage ? this.messages.missingMessage : !this.missingMessage ? c : this.missingMessage;
+                            var c = "$_unset_$" == this.invalidMessage ? this.messages.invalidMessage : !this.invalidMessage ? this.promptMessage : this.invalidMessage,
+                                b = "$_unset_$" == this.missingMessage ? this.messages.missingMessage : !this.missingMessage ? c : this.missingMessage;
                             return this.required && this._isEmpty(this.textbox.value) ? b : c
                         },
                         getPromptMessage: function () {
@@ -32525,7 +32727,7 @@ require({
                             this._set("state", a ? "" : ((!this._hasBeenBlurred || c) && e || d) && (this._maskValidSubsetError || d && !this._hasBeenBlurred && c) ? "Incomplete" : "Error");
                             this.focusNode.setAttribute("aria-invalid", a ? "false" : "true");
                             "Error" == this.state ? (this._maskValidSubsetError = c && d, b = this.getErrorMessage(c)) : "Incomplete" == this.state ? (b = this.getPromptMessage(c), this._maskValidSubsetError =
-                                        !this._hasBeenBlurred || c) : e && (b = this.getPromptMessage(c));
+                                !this._hasBeenBlurred || c) : e && (b = this.getPromptMessage(c));
                             this.set("message", b);
                             return a
                         },
@@ -32637,24 +32839,21 @@ require({
         "esri/symbols/TextSymbol": function () {
             define("dojo/_base/declare dojo/_base/lang dojo/has dojox/gfx/_base esri/kernel esri/lang esri/Color esri/symbols/Symbol esri/symbols/Font".split(" "), function (d, h, n, m, k, l, g, c, b) {
                 var a = {
-                    type: "textsymbol",
-                    x: 0,
-                    y: 0,
-                    text: "",
-                    rotated: !1,
-                    kerning: !0,
-                    color: [0, 0, 0, 1],
-                    font: m.defaultFont,
-                    angle: 0,
-                    xoffset: 0,
-                    yoffset: 0,
-                    horizontalAlignment: "center"
-                }, e = {start: "left", middle: "center", end: "right"}, f = {
-                    left: "start",
-                    center: "middle",
-                    right: "end",
-                    justify: "start"
-                }, q = {top: "text-before-edge", middle: "central", baseline: "alphabetic", bottom: "text-after-edge"};
+                        type: "textsymbol",
+                        x: 0,
+                        y: 0,
+                        text: "",
+                        rotated: !1,
+                        kerning: !0,
+                        color: [0, 0, 0, 1],
+                        font: m.defaultFont,
+                        angle: 0,
+                        xoffset: 0,
+                        yoffset: 0,
+                        horizontalAlignment: "center"
+                    }, e = {start: "left", middle: "center", end: "right"},
+                    f = {left: "start", center: "middle", right: "end", justify: "start"},
+                    q = {top: "text-before-edge", middle: "central", baseline: "alphabetic", bottom: "text-after-edge"};
                 d = d(c, {
                     declaredClass: "esri.symbol.TextSymbol",
                     angle: 0,
@@ -32665,7 +32864,7 @@ require({
                         this.font = new b(this.font);
                         this.color = new g(this.color);
                         e && (h.isObject(e) ? (h.mixin(this, e), this.color &&
-                            l.isDefined(this.color[0]) && (this.color = g.toDojoColor(this.color)), this.type = "textsymbol", this.font = new b(this.font), this.xoffset = m.pt2px(this.xoffset), this.yoffset = m.pt2px(this.yoffset), this.angle && (this.angle *= -1)) : (this.text = e, c && (this.font = c), d && (this.color = d)));
+                        l.isDefined(this.color[0]) && (this.color = g.toDojoColor(this.color)), this.type = "textsymbol", this.font = new b(this.font), this.xoffset = m.pt2px(this.xoffset), this.yoffset = m.pt2px(this.yoffset), this.angle && (this.angle *= -1)) : (this.text = e, c && (this.font = c), d && (this.color = d)));
                         this.setAlign(this.align || this.getSVGAlign())
                     },
                     setFont: function (a) {
@@ -32739,7 +32938,8 @@ require({
                         return m.normalizedLength(this.font.size)
                     },
                     toJson: function () {
-                        var a = m.px2pt(this.xoffset), b = m.px2pt(this.yoffset), a = isNaN(a) ? void 0 : a, b = isNaN(b) ? void 0 : b;
+                        var a = m.px2pt(this.xoffset), b = m.px2pt(this.yoffset), a = isNaN(a) ? void 0 : a,
+                            b = isNaN(b) ? void 0 : b;
                         return l.fixJson(h.mixin(this.inherited("toJson", arguments), {
                             type: "esriTS",
                             backgroundColor: this.backgroundColor,
@@ -32796,31 +32996,32 @@ require({
         "dojo/_base/url": function () {
             define(["./kernel"], function (d) {
                 var h =
-                    /^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?$/, n = /^((([^\[:]+):)?([^@]+)@)?(\[([^\]]+)\]|([^\[:]*))(:([0-9]+))?$/, m = function () {
-                    for (var d = arguments, l = [d[0]], g = 1; g < d.length; g++)if (d[g]) {
-                        var c = new m(d[g] + ""), l = new m(l[0] + "");
-                        if ("" == c.path && !c.scheme && !c.authority && !c.query) null != c.fragment && (l.fragment = c.fragment), c = l; else if (!c.scheme && (c.scheme = l.scheme, !c.authority && (c.authority = l.authority, "/" != c.path.charAt(0)))) {
-                            for (var l = (l.path.substring(0, l.path.lastIndexOf("/") + 1) + c.path).split("/"),
-                                     b = 0; b < l.length; b++)"." == l[b] ? b == l.length - 1 ? l[b] = "" : (l.splice(b, 1), b--) : 0 < b && (!(1 == b && "" == l[0]) && ".." == l[b] && ".." != l[b - 1]) && (b == l.length - 1 ? (l.splice(b, 1), l[b - 1] = "") : (l.splice(b - 1, 2), b -= 2));
-                            c.path = l.join("/")
+                        /^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?$/,
+                    n = /^((([^\[:]+):)?([^@]+)@)?(\[([^\]]+)\]|([^\[:]*))(:([0-9]+))?$/, m = function () {
+                        for (var d = arguments, l = [d[0]], g = 1; g < d.length; g++)if (d[g]) {
+                            var c = new m(d[g] + ""), l = new m(l[0] + "");
+                            if ("" == c.path && !c.scheme && !c.authority && !c.query) null != c.fragment && (l.fragment = c.fragment), c = l; else if (!c.scheme && (c.scheme = l.scheme, !c.authority && (c.authority = l.authority, "/" != c.path.charAt(0)))) {
+                                for (var l = (l.path.substring(0, l.path.lastIndexOf("/") + 1) + c.path).split("/"),
+                                         b = 0; b < l.length; b++)"." == l[b] ? b == l.length - 1 ? l[b] = "" : (l.splice(b, 1), b--) : 0 < b && (!(1 == b && "" == l[0]) && ".." == l[b] && ".." != l[b - 1]) && (b == l.length - 1 ? (l.splice(b, 1), l[b - 1] = "") : (l.splice(b - 1, 2), b -= 2));
+                                c.path = l.join("/")
+                            }
+                            l = [];
+                            c.scheme && l.push(c.scheme, ":");
+                            c.authority && l.push("//", c.authority);
+                            l.push(c.path);
+                            c.query && l.push("?", c.query);
+                            c.fragment && l.push("#", c.fragment)
                         }
-                        l = [];
-                        c.scheme && l.push(c.scheme, ":");
-                        c.authority && l.push("//", c.authority);
-                        l.push(c.path);
-                        c.query && l.push("?", c.query);
-                        c.fragment && l.push("#", c.fragment)
-                    }
-                    this.uri = l.join("");
-                    d = this.uri.match(h);
-                    this.scheme = d[2] || (d[1] ? "" : null);
-                    this.authority = d[4] || (d[3] ? "" : null);
-                    this.path = d[5];
-                    this.query = d[7] ||
-                        (d[6] ? "" : null);
-                    this.fragment = d[9] || (d[8] ? "" : null);
-                    null != this.authority && (d = this.authority.match(n), this.user = d[3] || null, this.password = d[4] || null, this.host = d[6] || d[7], this.port = d[9] || null)
-                };
+                        this.uri = l.join("");
+                        d = this.uri.match(h);
+                        this.scheme = d[2] || (d[1] ? "" : null);
+                        this.authority = d[4] || (d[3] ? "" : null);
+                        this.path = d[5];
+                        this.query = d[7] ||
+                            (d[6] ? "" : null);
+                        this.fragment = d[9] || (d[8] ? "" : null);
+                        null != this.authority && (d = this.authority.match(n), this.user = d[3] || null, this.password = d[4] || null, this.host = d[6] || d[7], this.port = d[9] || null)
+                    };
                 m.prototype.toString = function () {
                     return this.uri
                 };
@@ -32922,7 +33123,8 @@ require({
                         this._immediate = !1
                     },
                     _pointerDown: function (b) {
-                        var a = this._touches, e = b.target, c = b.pointerId, d = this._touchIds, g, h = (new Date).getTime();
+                        var a = this._touches, e = b.target, c = b.pointerId, d = this._touchIds, g,
+                            h = (new Date).getTime();
                         g = a[c] = {};
                         g.pointerId = c;
                         g.startX = g.pageX = b.pageX;
@@ -32934,7 +33136,7 @@ require({
                         e = a[d[0]];
                         a = a[d[1]];
                         1 !== this._numTouches && (2 === this._numTouches ? this._swipeActive && (e && (e.startX = e.pageX, e.startY = e.pageY, e.moved = !1), this._swipeActive = !1, this._fire("onSwipeEnd", this._processTouchEvent(b, e))) : this._swipeActive ? (this._swipeActive = !1, this._fire("onSwipeEnd", this._processTouchEvent(b,
-                                    e))) : this._pinchActive && (this._pinchActive = !1, this._fire("onPinchEnd", this._processTouchEvent(b, [e, a]))))
+                            e))) : this._pinchActive && (this._pinchActive = !1, this._fire("onPinchEnd", this._processTouchEvent(b, [e, a]))))
                     },
                     _pointerMove: function (b) {
                         var a = this._touches, e = this._touchIds, c, d, g;
@@ -32950,13 +33152,15 @@ require({
                         }
                     },
                     _pointerUp: function (b) {
-                        var a = this._touches, e, c = this.node, d = b.target, g = b.pointerId, h = this._touchIds, k = h.slice(0), l = n.map(k, function (b) {
-                            return a[b]
-                        }), m = (new Date).getTime();
+                        var a = this._touches, e, c = this.node, d = b.target, g = b.pointerId, h = this._touchIds,
+                            k = h.slice(0), l = n.map(k, function (b) {
+                                return a[b]
+                            }), m = (new Date).getTime();
                         if (e = a[g])if (e.pageX = b.pageX, e.pageY = b.pageY, e.endTS = m, this._numTouches--, d.releasePointerCapture ? d.releasePointerCapture(g) : d.msReleasePointerCapture && d.msReleasePointerCapture(g), 0 === this._numTouches)if (this._touches = {}, this._touchIds = [], this._swipeActive) this._swipeActive = !1, this._fire("onSwipeEnd", this._processTouchEvent(b,
                             b)); else if (this._pinchActive) this._pinchActive = !1, this._fire("onPinchEnd", this._processTouchEvent(b, b)); else {
                             if (!e.absMoved) {
-                                var d = Infinity, g = -Infinity, h = Infinity, m = -Infinity, y = this.tapStartTolerance, w;
+                                var d = Infinity, g = -Infinity, h = Infinity, m = -Infinity,
+                                    y = this.tapStartTolerance, w;
                                 for (w = 0; w < k.length; w++)e = l[w], e.startTS < d && (d = e.startTS), e.startTS > g && (g = e.startTS), e.endTS < h && (h = e.endTS), e.endTS > m && (m = e.endTS);
                                 Math.abs(g - d) <= y && Math.abs(m - h) <= y && this._basicTap(b, l)
                             }
@@ -32989,7 +33193,7 @@ require({
                     _analyzeTap: function (b) {
                         var a = this._taps, e = a[0], c = a[1], d = e.touchInfos, g = c && c.touchInfos;
                         a.length && (b || (this._taps = []), e && c ? d.length === g.length ? c.ts - e.ts <= this.doubleTapDuration ? (1 === d.length ? (b = Math.abs(d[0].startX -
-                                            g[0].startX), d = Math.abs(d[0].startY - g[0].startY), d = b <= this.doubleTapRadius && d <= this.doubleTapRadius) : d = !0, d ? this._processedDoubleTap(a) : this._processedTap(c)) : this._processedTap(c) : this._processedTap(c) : this._processedTap(e || c))
+                            g[0].startX), d = Math.abs(d[0].startY - g[0].startY), d = b <= this.doubleTapRadius && d <= this.doubleTapRadius) : d = !0, d ? this._processedDoubleTap(a) : this._processedTap(c)) : this._processedTap(c) : this._processedTap(c) : this._processedTap(e || c))
                     },
                     _processedTap: function (b) {
                         var a = b.event;
@@ -33035,7 +33239,8 @@ require({
                         var a =
                             this.map;
                         (a ? a.isScrollWheelZoom || a.isScrollWheelPan : this.preventPageScroll) && b.preventDefault();
-                        var a = b.wheelDelta ? b.wheelDelta / this.wheelDivisor : -b.detail / this.mozWheelDivisor, e = Math.abs(a), e = e <= this.minWheelValue ? this.minWheelValue : this.maxWheelValue;
+                        var a = b.wheelDelta ? b.wheelDelta / this.wheelDivisor : -b.detail / this.mozWheelDivisor,
+                            e = Math.abs(a), e = e <= this.minWheelValue ? this.minWheelValue : this.maxWheelValue;
                         b.value = 0 > a ? -e : e;
                         this._fire("onMouseWheel", this._processMouseEvent(b))
                     },
@@ -33201,7 +33406,8 @@ require({
                         w++;
                         u = {}
                     }, _functionFromScript: function (a, b) {
-                        var e = "", c = "", d = a.getAttribute(b + "args") || a.getAttribute("args"), f = a.getAttribute("with"), d = (d || "").split(/\s*,\s*/);
+                        var e = "", c = "", d = a.getAttribute(b + "args") || a.getAttribute("args"),
+                            f = a.getAttribute("with"), d = (d || "").split(/\s*,\s*/);
                         f && f.length && m.forEach(f.split(/\s*,\s*/), function (a) {
                             e += "with(" + a + "){";
                             c += "}"
@@ -33210,7 +33416,8 @@ require({
                     }, instantiate: function (a, b, e) {
                         b = b || {};
                         e = e || {};
-                        var c = (e.scope || h._scopeName) + "Type", d = "data-" + (e.scope || h._scopeName) + "-", f = d + "type", g = d + "mixins", k = [];
+                        var c = (e.scope || h._scopeName) + "Type", d = "data-" + (e.scope || h._scopeName) + "-",
+                            f = d + "type", g = d + "mixins", k = [];
                         m.forEach(a, function (a) {
                             var e = c in b ? b[c] :
                                 a.getAttribute(f) || a.getAttribute(c);
@@ -33252,15 +33459,15 @@ require({
                         l && n.mixin(w, l);
                         var y;
                         q("dom-attributes-explicit") ? y = d.attributes : q("dom-attributes-specified-flag") ?
-                                y = m.filter(d.attributes, function (a) {
-                                    return a.specified
-                                }) : (l = (/^input$|^img$/i.test(d.nodeName) ? d : d.cloneNode(!1)).outerHTML.replace(/=[^\s"']+|="[^"]*"|='[^']*'/g, "").replace(/^\s*<[a-zA-Z0-9]*\s*/, "").replace(/\s*>.*$/, ""), y = m.map(l.split(/\s+/), function (a) {
-                                    var b = a.toLowerCase();
-                                    return {
-                                        name: a,
-                                        value: "LI" == d.nodeName && "value" == a || "enctype" == b ? d.getAttribute(b) : d.getAttributeNode(b).value
-                                    }
-                                }));
+                            y = m.filter(d.attributes, function (a) {
+                                return a.specified
+                            }) : (l = (/^input$|^img$/i.test(d.nodeName) ? d : d.cloneNode(!1)).outerHTML.replace(/=[^\s"']+|="[^"]*"|='[^']*'/g, "").replace(/^\s*<[a-zA-Z0-9]*\s*/, "").replace(/\s*>.*$/, ""), y = m.map(l.split(/\s+/), function (a) {
+                                var b = a.toLowerCase();
+                                return {
+                                    name: a,
+                                    value: "LI" == d.nodeName && "value" == a || "enctype" == b ? d.getAttribute(b) : d.getAttributeNode(b).value
+                                }
+                            }));
                         var z = g.scope || h._scopeName;
                         l = "data-" + z + "-";
                         var K = {};
@@ -33313,7 +33520,7 @@ require({
                                             break;
                                         default:
                                             R = u[L], w[L] = R && "length" in R ? M ? M.split(/\s*,\s*/) : [] : R instanceof Date ? "" == M ? new Date("") : "now" == M ? new Date : e.fromISOString(M) :
-                                                    R instanceof c ? h.baseUrl + M : s(M)
+                                                R instanceof c ? h.baseUrl + M : s(M)
                                     } else w[L] = M
                             }
                         }
@@ -33328,16 +33535,16 @@ require({
                         var V = [], S = [], N = [], U = [];
                         if (k)for (I = 0; I < k.length; I++)K = k[I], d.removeChild(K), f = K.getAttribute(l + "event") || K.getAttribute("event"), g = K.getAttribute(l + "prop"), P = K.getAttribute(l +
                             "method"), z = K.getAttribute(l + "advice"), y = K.getAttribute("type"), K = this._functionFromScript(K, l), f ? "dojo/connect" == y ? V.push({
-                                    method: f,
-                                    func: K
-                                }) : "dojo/on" == y ? U.push({
-                                        event: f,
-                                        func: K
-                                    }) : w[f] = K : "dojo/aspect" == y ? V.push({
-                                    method: P,
-                                    advice: z,
-                                    func: K
-                                }) : "dojo/watch" == y ? N.push({prop: g, func: K}) : S.push(K);
+                            method: f,
+                            func: K
+                        }) : "dojo/on" == y ? U.push({
+                            event: f,
+                            func: K
+                        }) : w[f] = K : "dojo/aspect" == y ? V.push({
+                            method: P,
+                            advice: z,
+                            func: K
+                        }) : "dojo/watch" == y ? N.push({prop: g, func: K}) : S.push(K);
                         a = (k = a.markupFactory || u.markupFactory) ? k(w, d, a) : new a(w, d);
                         return a.then ? a.then(r) : r(a)
                     }, scan: function (a, b) {
@@ -33353,7 +33560,9 @@ require({
                             return a.inherited
                         }
 
-                        var c = [], g = [], k = {}, l = (b.scope || h._scopeName) + "Type", p = "data-" + (b.scope || h._scopeName) + "-", n = p + "type", r = p + "textdir", p = p + "mixins", s = a.firstChild, t = b.inherited;
+                        var c = [], g = [], k = {}, l = (b.scope || h._scopeName) + "Type",
+                            p = "data-" + (b.scope || h._scopeName) + "-", n = p + "type", r = p + "textdir",
+                            p = p + "mixins", s = a.firstChild, t = b.inherited;
                         if (!t) {
                             var v = function (a, b) {
                                 return a.getAttribute && a.getAttribute(b) || a.parentNode && v(a.parentNode, b)
@@ -33395,22 +33604,23 @@ require({
                         }
                         var V = new f;
                         g.length ? (q("dojo-debug-messages") && console.warn("WARNING: Modules being Auto-Required: " + g.join(", ")), (b.contextRequire || d)(g, function () {
-                                V.resolve(m.filter(c, function (a) {
-                                    if (!a.ctor)try {
-                                        a.ctor = y(a.types,
-                                            b.contextRequire)
-                                    } catch (e) {
-                                    }
-                                    for (var c = a.parent; c && !c.types;)c = c.parent;
-                                    var d = a.ctor && a.ctor.prototype;
-                                    a.instantiateChildren = !(d && d.stopParser && !b.template);
-                                    a.instantiate = !c || c.instantiate && c.instantiateChildren;
-                                    return a.instantiate
-                                }))
-                            })) : V.resolve(c);
+                            V.resolve(m.filter(c, function (a) {
+                                if (!a.ctor)try {
+                                    a.ctor = y(a.types,
+                                        b.contextRequire)
+                                } catch (e) {
+                                }
+                                for (var c = a.parent; c && !c.types;)c = c.parent;
+                                var d = a.ctor && a.ctor.prototype;
+                                a.instantiateChildren = !(d && d.stopParser && !b.template);
+                                a.instantiate = !c || c.instantiate && c.instantiateChildren;
+                                return a.instantiate
+                            }))
+                        })) : V.resolve(c);
                         return V.promise
                     }, _require: function (a, b) {
-                        var e = s("{" + a.innerHTML + "}"), c = [], g = [], h = new f, k = b && b.contextRequire || d, l;
+                        var e = s("{" + a.innerHTML + "}"), c = [], g = [], h = new f, k = b && b.contextRequire || d,
+                            l;
                         for (l in e)c.push(l), g.push(e[l]);
                         k(g, function () {
                             for (var a = 0; a < c.length; a++)n.setObject(c[a], arguments[a]);
@@ -33434,17 +33644,18 @@ require({
                         !b && a && a.rootNode ? (b = a, e = b.rootNode) : a && n.isObject(a) && !("nodeType" in a) ? b = a : e = a;
                         e = e ? l.byId(e) : g.body();
                         b = b || {};
-                        var c = b.template ? {template: !0} : {}, d = [], f = this, h = this._scanAmd(e, b).then(function () {
-                            return f.scan(e, b)
-                        }).then(function (a) {
-                            return f._instantiate(a, c, b,
-                                !0)
-                        }).then(function (a) {
-                            return d = d.concat(a)
-                        }).otherwise(function (a) {
-                            console.error("dojo/parser::parse() error", a);
-                            throw a;
-                        });
+                        var c = b.template ? {template: !0} : {}, d = [], f = this,
+                            h = this._scanAmd(e, b).then(function () {
+                                return f.scan(e, b)
+                            }).then(function (a) {
+                                return f._instantiate(a, c, b,
+                                    !0)
+                            }).then(function (a) {
+                                return d = d.concat(a)
+                            }).otherwise(function (a) {
+                                console.error("dojo/parser::parse() error", a);
+                                throw a;
+                            });
                         n.mixin(d, h);
                         return d
                     }
@@ -33576,7 +33787,7 @@ require({
             define(["dojo/_base/lang", "dojo/has", "esri/kernel", "esri/geometry/Point"], function (d, h, n, m) {
                 function k(b, a, e) {
                     return b instanceof m ? new m(b.x +
-                            e * (a.x - b.x), b.y + e * (a.y - b.y)) : [b[0] + e * (a[0] - b[0]), b[1] + e * (a[1] - b[1])]
+                        e * (a.x - b.x), b.y + e * (a.y - b.y)) : [b[0] + e * (a[0] - b[0]), b[1] + e * (a[1] - b[1])]
                 }
 
                 function l(b, a) {
@@ -33613,14 +33824,17 @@ require({
                         (b = g([b.x, b.y], [a.x, a.y], [c.x, c.y], [d.x, d.y])) && (b = new m(b[0], b[1], h));
                         return b
                     }, _getLineIntersection2: function (b, a) {
-                        var c = b[0], d = b[1], g = a[0], h = a[1], k = c[0], c = c[1], l = d[0], d = d[1], m = g[0], n = g[1], g = h[0] - m, m = k - m, y = l - k, h = h[1] - n, n = c - n, w = d - c, u = h * y - g * w;
+                        var c = b[0], d = b[1], g = a[0], h = a[1], k = c[0], c = c[1], l = d[0], d = d[1], m = g[0],
+                            n = g[1], g = h[0] - m, m = k - m, y = l - k, h = h[1] - n, n = c - n, w = d - c,
+                            u = h * y - g * w;
                         if (0 === u)return !1;
                         g = (g * n - h * m) / u;
                         m = (y * n - w * m) / u;
                         return 0 <= g && 1 >= g && 0 <= m && 1 >= m ? [k + g * (l - k), c + g * (d - c)] : !1
                     }, _pointLineDistance: function (b, a) {
                         var c = a[0], d = a[1], g = c[0], h = c[1], c = b[0], k = b[1], l = d[0] -
-                            g, m = d[1] - h, n = c - g, y = k - h, d = Math.sqrt, w = Math.pow, u = d(w(l, 2) + w(m, 2)), n = (n * l + y * m) / (u * u), h = h + n * m;
+                                g, m = d[1] - h, n = c - g, y = k - h, d = Math.sqrt, w = Math.pow,
+                            u = d(w(l, 2) + w(m, 2)), n = (n * l + y * m) / (u * u), h = h + n * m;
                         return d(w(c - (g + n * l), 2) + w(k - h, 2))
                     }
                 };
@@ -33654,7 +33868,7 @@ require({
                     },
                     constructor: function (c, d, l, m) {
                         c ? h.isString(c) ? (this.style = c, d && (this.size = d), l && (this.outline = l), m && (this.color = m)) : (this.style =
-                                    g.valueOf(this._styles, this.style), c.outline && (this.outline = new b(c.outline))) : (h.mixin(this, e), this.size = k.pt2px(this.size), this.outline = new b(this.outline), this.color = new n(this.color));
+                            g.valueOf(this._styles, this.style), c.outline && (this.outline = new b(c.outline))) : (h.mixin(this, e), this.size = k.pt2px(this.size), this.outline = new b(this.outline), this.color = new n(this.color));
                         this.style || (this.style = a.STYLE_CIRCLE)
                     },
                     setStyle: function (a) {
@@ -33682,7 +33896,8 @@ require({
                         this._spikeSize = c
                     },
                     getShapeDescriptors: function () {
-                        var b, c, d, g = this.style, h = (this.size || k.pt2px(e.size)) / 2, l = 0 - h, m = 0 + h, n = 0 - h, w = 0 + h;
+                        var b, c, d, g = this.style, h = (this.size || k.pt2px(e.size)) / 2, l = 0 - h, m = 0 + h,
+                            n = 0 - h, w = 0 + h;
                         switch (g) {
                             case a.STYLE_CIRCLE:
                                 b = {type: "circle", cx: 0, cy: 0, r: h};

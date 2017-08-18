@@ -108,7 +108,7 @@
           </div>
         </div>
         <div id="mapDiv" style= "padding: 10px;"></div>
-        <div id="heatLayerMap"></div>
+        <div id="heatLayer"></div>
       </div>
     </section>
 	<section class='flex-row'>
@@ -215,23 +215,94 @@
   <input id="stationId" class ="after_modal_colse" style="display: none;"  value="" >
   <input id="typeCode" class ="after_modal_colse" style="display: none;"  value="" >
   <input style="display: none" id ='mapUrl' value="${mapUrl}" />
+  <script>
+      var wsmp_host = "/radio/app"
+  </script>
+  <link rel="stylesheet" type="text/css" href="3.9/js/esri/dijit/css/Popup.css" />
+  <script src="3.9/js/dojo/library/jquery/jquery.js"></script>
   <script src="3.9/init.js"></script>
-  <script src="3.9/js/dojo/home/heatmap/heatmap.js"></script>
-  <script src="js/ol.js"></script>
   <script type="text/javascript">
     var test = 1;
-    require([ "home/alarm/init", "jquery",
-      "dojo/domReady!","layer","datetimepicker" ],
-      function(init) {
-        require([ "bootstrap", "select2","echarts", "home/alarm/alarm_manage" ,"datetimepicker_cn"], function(bootstrap,select2,echarts, alarm_manage) {
+//    require([ "home/alarm/init", "jquery",
+//      "dojo/domReady!","layer","datetimepicker" ],
+//      function(init) {
+//        require([ "bootstrap", "select2","echarts", "home/alarm/alarm_manage" ,"datetimepicker_cn"], function(bootstrap,select2,echarts, alarm_manage) {
+//
+//          alarm_manage.init();
+//          alarm_manage.setMapInit(init);
+//          var map = init.init();
+//        });
+//      });
 
-          alarm_manage.init();
-          alarm_manage.setMapInit(init);
-          var map = init.init();
+    require(["esri/map", "esri/layers/ArcGISTiledMapServiceLayer"],
+        function(){
+        dojo.require("esri.map");
+        dojo.require("esri.layers.ArcGISTiledMapServiceLayer");
+        dojo.require("esri.layers.FeatureLayer");
+        dojo.require("esri.layers.DynamicMapServiceLayer");
+        dojo.require("dijit.dijit");
+        dojo.require("esri.symbols.SimpleMarkerSymbol");
+        dojo.require("heatmap");
+        var obj = dojo.require("heatmap-arcgis");
+        var heatLayer
+        var pSymbol = null;
+        var glayer = null;
+        var mapUtl = $("#mapUrl").val();
+        var map = null;
+
+        var url = mapUtl;
+        var agoLayer = new esri.layers.ArcGISTiledMapServiceLayer(url, {id: "街道地图"});
+        var attr = {
+            "Xcoord": 104.06,
+            "Ycoord": 30.67,
+            "Plant": "Mesa Mint"
+        };
+
+        console.log(JSON.stringify(agoLayer.initialExtent));
+        var initiaEx = agoLayer.initialExtent;
+        map = new  esri.Map("mapDiv", {
+            //center : [ 104.06, 30.67 ],
+            zoom: 10,
+            sliderStyle: "small"
         });
+        map.addLayer(agoLayer);
+        glayer = new esri.layers.GraphicsLayer();
+        pSymbol = new esri.symbols.SimpleMarkerSymbol();
+        pSymbol.style = esri.symbols.SimpleMarkerSymbol.STYLE_CIRCLE; //设置点的类型为圆形
+        pSymbol.setSize(12); //设置点的大小为12像素
+        pSymbol.setColor(new dojo.Color("#FFFFCC")); //设置点的颜色
+        map.addLayer(glayer);
+
+        dojo.connect(map, 'onLoad', function (theMap) {
+
+            dojo.connect(dijit.byId('map'), 'resize', map, map.resize);
+            // create heat layer
+            heatLayer = new HeatmapLayer({
+                config: {
+                    "useLocalMaximum": true,
+                    "radius": 40,
+                    "gradient": {
+                        0.45: "rgb(000,000,255)",
+                        0.55: "rgb(000,255,255)",
+                        0.65: "rgb(000,255,000)",
+                        0.95: "rgb(255,255,000)",
+                        1.00: "rgb(255,000,000)"
+                    }
+                },
+                "map": map,
+                "domNodeId": "heatLayer",
+                "opacity": 0.85
+            });
+            // add heat layer to map
+            map.addLayer(heatLayer);
+            // resize map
+
+            map.resize();
+        })
+    })
 
 
-      });
+
   </script>
 </body>
 </html>

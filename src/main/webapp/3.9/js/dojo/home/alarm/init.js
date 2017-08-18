@@ -3,120 +3,119 @@
  */
 //
 
-define(["esri/geometry/Extent","home/heatmap/HeatmapLayer","esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/alarm/alarm_manage","ajax","dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer", "dojo/request", "esri/layers/GraphicsLayer", "esri/dijit/Scalebar"
-	, "esri/symbols/TextSymbol", "esri/geometry/Point", "esri/graphic", "esri/symbols/Font", "esri/symbols/SimpleMarkerSymbol" ],
-	function(Extent,HeatmapLayer,SimpleFillSymbol,Circle,alarm_manage,ajax,parser, Map, ArcGISTiledMapServiceLayer, request, GraphicsLayer, Scalebar, TextSymbol, Point, graphic, Font, SimpleMarkerSymbol) {
-		var testWidget = null;
-
-		var pSymbol = null;
-
+define([ "esri/symbols/SimpleFillSymbol", "esri/geometry/Circle", "home/alarm/alarm_manage", "ajax", "dojo/parser", "dojo/request", "esri/dijit/Scalebar"
+        , "esri/symbols/TextSymbol", "esri/geometry/Point", "esri/graphic", "esri/symbols/Font", "home/heatmap/heatmap", "home/heatmap/heatmap-arcgis"],
+    function (SimpleFillSymbol, Circle, alarm_manage, ajax, parser,
+               request, Scalebar, TextSymbol, Point, graphic, Font,Heatmap, HeatmapLayer) {
+        var testWidget = null;
+        dojo.require("esri.map");
+        dojo.require("dijit.dijit");
+        dojo.require("esri.symbols.SimpleMarkerSymbol");
+        var heatLayer
+        var pSymbol = null;
         var glayer = null;
-
         var mapUtl = $("#mapUrl").val();
-
         var map = null;
-		//var map = null;
-		//config.defaults.io.corsEnabledServers.push("192.168.13.79:7080");
-		function pares() {
-			$("#submitButton").click(function() {
-				var stationID = $("#stationId").val();
-				var des = $("#des").val();
-				var centerFrq = $('#search').val();
-				if(!isNaN(centerFrq)){
-					centerFrq = (parseInt(centerFrq))*1000000;
-				}
-				var stationId = $('#station_list').find('option:selected').val();
-				var signalId = $('#signal_list').find('option:selected').val();
-				var warningFreqID = $('#signal_list').find('option:selected').val();
-				var typeCode = $('.typeCode').val();
-				var data = {};
-				var station = {};
-				var singal = {}
-				singal.stationId = stationId;
-				station.des = des;
-
-				station.warningFreqID = warningFreqID;
-
-				station.radioStation ={};
-
-				station.radioStation.station ={};
-
-				station.radioStation.station.id = stationID;
-
-				if(typeCode == "1"){
-
-					station.radioStation.station.type = "L_B";
-
-				}
-
-				if(typeCode == "2"){
-
-					station.radioStation.station.type = "N_P";
-
-				}
-
-				station.stationKey = stationID;
-				data.station = station;
-				singal.warmingId = {"id" : signalId};
-				singal.typeCode = typeCode;
-				data.sigal = singal;
-				ajax.post("data/alarm/instersingal",data,function(){
-					alert("成功");
-                    warnig_confirm();
-				});
-			});
-
-			parser.parse();
-			mapInit()
-            //getKriking();
-			closeModal();
-		}
-
-		function getKriking() {
-
-           var heatLayer = new HeatmapLayer({
-                "useLocalMaximum": true,
-                config: {
-                    "radius": 40,
-                    "gradient": {
-                        0.45: "rgb(000,000,255)",
-                        0.55: "rgb(000,255,255)",
-                        0.65: "rgb(000,255,000)",
-                        0.95: "rgb(255,255,000)",
-                        1.00: "rgb(255,000,000)"
-                    }
-                },
-                "map": map,
-                "opacity": 0.85
-            }, "heatLayer");
-
-            map.addLayer(heatLayer);
-
-            var data = [
-                {
-                    attributes: {},
-                    geometry: {
-                        spatialReference: {wkid: 3857},
-                        type: "point",
-                        x: 10259021.6831997,
-                        y: 3007789.22457995
-                    }
-                },
-                {
-                    attributes: {},
-                    geometry: {
-                        spatialReference: {wkid: 3857},
-                        type: "point",
-                        x: 10259021.6831997,
-                        y: 3007789.22457995
-                    }
+        //config.defaults.io.corsEnabledServers.push("192.168.13.79:7080");
+        function pares() {
+            $("#submitButton").click(function () {
+                var stationID = $("#stationId").val();
+                var des = $("#des").val();
+                var centerFrq = $('#search').val();
+                if (!isNaN(centerFrq)) {
+                    centerFrq = (parseInt(centerFrq)) * 1000000;
                 }
-            ];
+                var stationId = $('#station_list').find('option:selected').val();
+                var signalId = $('#signal_list').find('option:selected').val();
+                var warningFreqID = $('#signal_list').find('option:selected').val();
+                var typeCode = $('.typeCode').val();
+                var data = {};
+                var station = {};
+                var singal = {}
+                singal.stationId = stationId;
+                station.des = des;
 
-            heatLayer.setData(data);
+                station.warningFreqID = warningFreqID;
+
+                station.radioStation = {};
+
+                station.radioStation.station = {};
+
+                station.radioStation.station.id = stationID;
+
+                if (typeCode == "1") {
+
+                    station.radioStation.station.type = "L_B";
+
+                }
+
+                if (typeCode == "2") {
+
+                    station.radioStation.station.type = "N_P";
+
+                }
+
+                station.stationKey = stationID;
+                data.station = station;
+                singal.warmingId = {"id": signalId};
+                singal.typeCode = typeCode;
+                data.sigal = singal;
+                ajax.post("data/alarm/instersingal", data, function () {
+                    alert("成功");
+                    warnig_confirm();
+                });
+            });
+
+            parser.parse();
+
+            dojo.addOnLoad(mapInit());
+
+            closeModal();
         }
 
-        function  warnig_confirm() {
+        function getKriking(extent) {
+
+            dojo.connect(map, 'onLoad', function (theMap) {
+                //resize the map when the browser resizes
+                dojo.connect(dijit.byId('map'), 'resize', map, map.resize);
+                // create heat layer
+                heatLayer = new HeatmapLayer({
+                    config: {
+                        "useLocalMaximum": true,
+                        "radius": 40,
+                        "gradient": {
+                            0.45: "rgb(000,000,255)",
+                            0.55: "rgb(000,255,255)",
+                            0.65: "rgb(000,255,000)",
+                            0.95: "rgb(255,255,000)",
+                            1.00: "rgb(255,000,000)"
+                        }
+                    },
+                    "map": map,
+                    "domNodeId": "heatLayer",
+                    "opacity": 0.85
+                });
+                // add heat layer to map
+                map.addLayer(heatLayer);
+                // resize map
+
+                map.resize();
+                // create feature layer to get the points from
+
+                // get features from this layer
+                getFeatures();
+
+                // on map extent change
+                dojo.connect(map, "onExtentChange", getFeatures);
+
+            });
+        }
+
+        function getFeatures() {
+            heatLayer.setData(piont);
+        }
+
+        function warnig_confirm() {
             var value = $("#signal_list").find('option:selected').val();
             var data = {};
             data.id = value;
@@ -127,75 +126,75 @@ define(["esri/geometry/Extent","home/heatmap/HeatmapLayer","esri/symbols/SimpleF
             });
         }
 
-		function station_change(){
+        function station_change() {
 
-				var value = $("#station_list").find('option:selected').val();
-				var kmz = $('#search').val();
+            var value = $("#station_list").find('option:selected').val();
+            var kmz = $('#search').val();
 
-				var l = $('#signal_list').find('option:selected').attr("stationId");
-				var centorFreq = $('#signal_list').find('option:selected').attr("centorFreq");
-				var beginTime = $('#signal_list').find('option:selected').attr("beginTime");
+            var l = $('#signal_list').find('option:selected').attr("stationId");
+            var centorFreq = $('#signal_list').find('option:selected').attr("centorFreq");
+            var beginTime = $('#signal_list').find('option:selected').attr("beginTime");
 
-				if (l == null){
-					return ;
-				}
+            if (l == null) {
+                return;
+            }
 
-				var arryId = l.split(",");
+            var arryId = l.split(",");
 
-				var data = {"stationcode":arryId,"frequency":centorFreq,"beginTime":beginTime};
-				//alarm_manage.changeView();
-				ajax.post("data/alarm/getStation",data,function(reslut){
-					glayer.clear();
+            var data = {"stationcode": arryId, "frequency": centorFreq, "beginTime": beginTime};
+            //alarm_manage.changeView();
+            ajax.post("data/alarm/getStation", data, function (reslut) {
+                glayer.clear();
 
-					var arryOfStation = reslut.stationPiont;
-					var arryOfLevel = reslut.levelPoint;
+                var arryOfStation = reslut.stationPiont;
+                var arryOfLevel = reslut.levelPoint;
 
-					var stationSize = arryOfStation.length;
-					var LevelSize = arryOfLevel.length;
-
-
-					for (var index = 0; index < stationSize; index++) {
-
-						var p = new Point(arryOfStation[index]);
-
-						var textSymbol = new TextSymbol(arryOfStation[index].count).setColor(
-								new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
-								new Font("12pt").setWeight(Font.WEIGHT_BOLD));
-
-						var graphic = new esri.Graphic(p, textSymbol);
-						var textsyboml = new esri.Graphic(p, pSymbol);
-
-						glayer.add(textsyboml);
-						glayer.add(graphic);
-
-					}
+                var stationSize = arryOfStation.length;
+                var LevelSize = arryOfLevel.length;
 
 
-					for(var index = 0 ; index < LevelSize;index++){
+                for (var index = 0; index < stationSize; index++) {
 
-						var p = new Point(arryOfLevel[index]);
-					      var circle = new Circle(p,{
-					            geodesic: true,
-					            radius: arryOfLevel[index].radius
-					        });
+                    var p = new Point(arryOfStation[index]);
 
-					      var symbol = new SimpleFillSymbol().setColor(null).outline.setColor("red");
-					      var circleGrap = new esri.Graphic(circle, symbol);
-					      glayer.add(circleGrap);
+                    var textSymbol = new TextSymbol(arryOfStation[index].count).setColor(
+                        new esri.Color([0xFF, 0, 0])).setAlign(Font.ALIGN_START).setFont(
+                        new Font("12pt").setWeight(Font.WEIGHT_BOLD));
 
-					}
+                    var graphic = new esri.Graphic(p, textSymbol);
+                    var textsyboml = new esri.Graphic(p, pSymbol);
 
-					map.addLayer(glayer);
+                    glayer.add(textsyboml);
+                    glayer.add(graphic);
 
-                    dojo.connect(map, "onClick", function(e){
-                        console.log(e.graphic.geometry);
-                        if(e.graphic.geometry.type = 'point'){
-                            console.log(true);
-                            var id = e.graphic.geometry.stationId;
-                            var data = {"stationId" : id}
-							alarm_manage.changeView(id);
-                        }
+                }
+
+
+                for (var index = 0; index < LevelSize; index++) {
+
+                    var p = new Point(arryOfLevel[index]);
+                    var circle = new Circle(p, {
+                        geodesic: true,
+                        radius: arryOfLevel[index].radius
                     });
+
+                    var symbol = new SimpleFillSymbol().setColor(null).outline.setColor("red");
+                    var circleGrap = new esri.Graphic(circle, symbol);
+                    glayer.add(circleGrap);
+
+                }
+
+                map.addLayer(glayer);
+
+                dojo.connect(map, "onClick", function (e) {
+                    console.log(e.graphic.geometry);
+                    if (e.graphic.geometry.type = 'point') {
+                        console.log(true);
+                        var id = e.graphic.geometry.stationId;
+                        var data = {"stationId": id}
+                        alarm_manage.changeView(id);
+                    }
+                });
 
 //					var p = new Point(reslut);
 //
@@ -215,394 +214,415 @@ define(["esri/geometry/Extent","home/heatmap/HeatmapLayer","esri/symbols/SimpleF
 //					glayer.add(graphic);
 //					glayer.add(circleGrap);
 //					map.addLayer(glayer);
-				});
-
-		}
-
-		//"http://127.0.0.1:8080/data/PBS/rest/services/MyPBSService1/MapServer"
-		function mapInit() {
-
-
-			//var url = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer";
-			var url = mapUtl;
-			var agoLayer = new ArcGISTiledMapServiceLayer(url, {
-				id : "街道地图"
-			});
-			var attr = {
-				"Xcoord" : 104.06,
-				"Ycoord" : 30.67,
-				"Plant" : "Mesa Mint"
-			};
-
-			console.log(agoLayer);
-
-            map = new Map("mapDiv", {
-                //center : [ 104.06, 30.67 ],
-                zoom : 10,
-                extent: agoLayer.initExtent
             });
 
-            console.log(map);
+        }
 
-			glayer = new GraphicsLayer();
+        //"http://127.0.0.1:8080/data/PBS/rest/services/MyPBSService1/MapServer"
+        function mapInit() {
 
-			pSymbol = new SimpleMarkerSymbol();
-			pSymbol.style = SimpleMarkerSymbol.STYLE_CIRCLE; //设置点的类型为圆形
-			pSymbol.setSize(12); //设置点的大小为12像素
-			pSymbol.setColor(new dojo.Color("#FFFFCC")); //设置点的颜色
-			map.addLayer(agoLayer);
+            var url = mapUtl;
+            var agoLayer = new esri.layers.ArcGISTiledMapServiceLayer(url, {
+                id: "街道地图"
+            });
+            var attr = {
+                "Xcoord": 104.06,
+                "Ycoord": 30.67,
+                "Plant": "Mesa Mint"
+            };
 
-			map.addLayer(glayer);
-			var ti = $("#warning_confirm").attr("class");
-			signalClick(map,pSymbol,glayer);
-			station_change(map,pSymbol,glayer);
-			//$("#illegal").click();
+            console.log(JSON.stringify(agoLayer.initialExtent));
+            var initiaEx = agoLayer.initialExtent;
+            map = new  esri.Map("mapDiv", {
+                //center : [ 104.06, 30.67 ],
+                zoom: 10,
+                sliderStyle: "small"
+            });
+            map.addLayer(agoLayer);
+            glayer = new esri.layers.GraphicsLayer();
+            pSymbol = new esri.symbols.SimpleMarkerSymbol();
+            pSymbol.style = esri.symbols.SimpleMarkerSymbol.STYLE_CIRCLE; //设置点的类型为圆形
+            pSymbol.setSize(12); //设置点的大小为12像素
+            pSymbol.setColor(new dojo.Color("#FFFFCC")); //设置点的颜色
+            map.addLayer(glayer);
+
+            dojo.connect(map, 'onLoad', function (theMap) {
+
+                dojo.connect(dijit.byId('map'), 'resize', map, map.resize);
+                // create heat layer
+                heatLayer = new HeatmapLayer({
+                    config: {
+                        "useLocalMaximum": true,
+                        "radius": 40,
+                        "gradient": {
+                            0.45: "rgb(000,000,255)",
+                            0.55: "rgb(000,255,255)",
+                            0.65: "rgb(000,255,000)",
+                            0.95: "rgb(255,255,000)",
+                            1.00: "rgb(255,000,000)"
+                        }
+                    },
+                    "map": map,
+                    "domNodeId": "heatLayer",
+                    "opacity": 0.85
+                });
+                // add heat layer to map
+                map.addLayer(heatLayer);
+                // resize map
+
+                map.resize();
+
+            });
+
+            var ti = $("#warning_confirm").attr("class");
+            signalClick(map, pSymbol, glayer);
+            station_change(map, pSymbol, glayer);
+            //$("#illegal").click();
 
 
-			//        var scaleba = new Scalebar({
-			//        	  map:map,
-			//        	  attachTo:"bottom-left"
-			//        	});
+            //        var scaleba = new Scalebar({
+            //        	  map:map,
+            //        	  attachTo:"bottom-left"
+            //        	});
 
-			require([ "dojo/request", "home/geoJson2ArcJson", "home/init", "esri/geometry/Polygon", "esri/graphic" ],
-				function(request, geoJson2ArcJson, init, Polygon) {
-					//            request.get("../data/map/getGeoJson", {
-					//                data: {
-					//                    color: "blue",
-					//                    answer: 42
-					//                },
-					//                headers: {
-					//                    "X-Something": "A value"
-					//                }
-					//            }).then(function(text){
-					//            	 //console.log(text);
-					//            	 var obj=JSON.parse(text);
-					////            	 var result = eval("("+text+")");
-					////            	 var jsonf = geoJson2ArcJson.init();
-					////            	 var json = jsonf.toEsri(result);
-					////            	 var features = json.rings;
-					////            	 console.log("The server returned: ", json);
-					////                 console.log("The server returned: ", features);
-					//            	 var sfs = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID,
-					//            	            new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_DASHDOT,
-					//            	                new dojo.Color([255, 0, 0]), 2), new dojo.Color([255, 0, 0, 0.25])
-					//            	        );
-					//            	 //var feature = obj[0];
-					//            	// console.log(feature);
-					//            	 //console.log(feature.type);
-					//            	 //console.log(feature.coordinates);
-					//            	 for(var index = 0;index < obj.length;index++){
-					//            		 var feature = obj[index];
-					//            		 //console.log(feature);
-					//            		 var polygon  = new Polygon(feature.coordinates);
-					//                     var graphic  = new esri.Graphic(polygon,sfs);
-					//                     glayer.add(graphic);
-					//            	 }
-					//
-					//                // map.addLayer(graphic);
-					//
-					//            });
+            require(["dojo/request", "home/geoJson2ArcJson", "home/init", "esri/geometry/Polygon", "esri/graphic"],
+                function (request, geoJson2ArcJson, init, Polygon) {
+                    //            request.get("../data/map/getGeoJson", {
+                    //                data: {
+                    //                    color: "blue",
+                    //                    answer: 42
+                    //                },
+                    //                headers: {
+                    //                    "X-Something": "A value"
+                    //                }
+                    //            }).then(function(text){
+                    //            	 //console.log(text);
+                    //            	 var obj=JSON.parse(text);
+                    ////            	 var result = eval("("+text+")");
+                    ////            	 var jsonf = geoJson2ArcJson.init();
+                    ////            	 var json = jsonf.toEsri(result);
+                    ////            	 var features = json.rings;
+                    ////            	 console.log("The server returned: ", json);
+                    ////                 console.log("The server returned: ", features);
+                    //            	 var sfs = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID,
+                    //            	            new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_DASHDOT,
+                    //            	                new dojo.Color([255, 0, 0]), 2), new dojo.Color([255, 0, 0, 0.25])
+                    //            	        );
+                    //            	 //var feature = obj[0];
+                    //            	// console.log(feature);
+                    //            	 //console.log(feature.type);
+                    //            	 //console.log(feature.coordinates);
+                    //            	 for(var index = 0;index < obj.length;index++){
+                    //            		 var feature = obj[index];
+                    //            		 //console.log(feature);
+                    //            		 var polygon  = new Polygon(feature.coordinates);
+                    //                     var graphic  = new esri.Graphic(polygon,sfs);
+                    //                     glayer.add(graphic);
+                    //            	 }
+                    //
+                    //                // map.addLayer(graphic);
+                    //
+                    //            });
 
 
-				});
-			return map;
-		}
+                });
+            return map;
+        }
 
-		function closeModal(){
+        function closeModal() {
 
-			$('#table-station-list').on('hide.bs.modal',function(){
-				$(".after_modal_colse").val('');
-			});
+            $('#table-station-list').on('hide.bs.modal', function () {
+                $(".after_modal_colse").val('');
+            });
 
-		}
+        }
 
-		function signalClick(map,pSymbol,glayer){
-			require([ "bootstrap", "bootstrapTable"],function(){
-				require(["bootstrap_table_cn"],function(){
-					$("#legal-normal").click(function() {
+        function signalClick(map, pSymbol, glayer) {
+            require(["bootstrap", "bootstrapTable"], function () {
+                require(["bootstrap_table_cn"], function () {
+                    $("#legal-normal").click(function () {
 //						var value = $('option:selected').val();
-						var value = $("#station_list").find('option:selected').text();
-						var kmz = $('#search').val();
-						var data = {};
-						data.type = "none";
+                        var value = $("#station_list").find('option:selected').text();
+                        var kmz = $('#search').val();
+                        var data = {};
+                        data.type = "none";
 
-							var temp = '<div class="header-search"><input type="text" placeholder="输入中心频率">'+
-										'<span class="search-icon"></span></div>'+
-										'<table class="table table-striped" id="table-station-list"></table>'+
-										'<div class="mark-content"><p>备注</p><textarea id = "des" rows="5" placeholder="请输入备注信息"></textarea></div>';
-							$("#stationWrap").html("");
-							$("#stationWrap").html(temp);
-							$('#table-station-list').bootstrapTable({
-								method : 'get',
-								contentType : "application/x-www-form-urlencoded", //必须要有！！！！
-								striped : true, //是否显示行间隔色
-								dataField : "rows", //bootstrap table 可以前端分页也可以后端分页，这里
-								url:"data/alarm/stationsf",
-								//我们使用的是后端分页，后端分页时需返回含有total：总记录数,这个键值好像是固定的
-								//rows： 记录集合 键值可以修改  dataField 自己定义成自己想要的就好
-								detailView : false,
-								pageNumber : 1, //初始化加载第一页，默认第一页
-								pagination : true, //是否分页
-								queryParamsType : 'limit', //查询参数组织方式
-								queryParams : function(params) {
+                        var temp = '<div class="header-search"><input type="text" placeholder="输入中心频率">' +
+                            '<span class="search-icon"></span></div>' +
+                            '<table class="table table-striped" id="table-station-list"></table>' +
+                            '<div class="mark-content"><p>备注</p><textarea id = "des" rows="5" placeholder="请输入备注信息"></textarea></div>';
+                        $("#stationWrap").html("");
+                        $("#stationWrap").html(temp);
+                        $('#table-station-list').bootstrapTable({
+                            method: 'get',
+                            contentType: "application/x-www-form-urlencoded", //必须要有！！！！
+                            striped: true, //是否显示行间隔色
+                            dataField: "rows", //bootstrap table 可以前端分页也可以后端分页，这里
+                            url: "data/alarm/stationsf",
+                            //我们使用的是后端分页，后端分页时需返回含有total：总记录数,这个键值好像是固定的
+                            //rows： 记录集合 键值可以修改  dataField 自己定义成自己想要的就好
+                            detailView: false,
+                            pageNumber: 1, //初始化加载第一页，默认第一页
+                            pagination: true, //是否分页
+                            queryParamsType: 'limit', //查询参数组织方式
+                            queryParams: function (params) {
 
-									var info = Binding.getUser();
+                                var info = Binding.getUser();
 
-							        info = JSON.parse(info);
-                                    console.log(info);
-									var codes = info.Area.Citys;
-									var codeList = [];
+                                info = JSON.parse(info);
+                                console.log(info);
+                                var codes = info.Area.Citys;
+                                var codeList = [];
 
-									for (var index =0;index<codes.length;index++){
-                                        codeList.push(codes[index].Code);
-									}
-                                    codeList.push(info.Area.Code);
-									var codeStr = JSON.stringify(codeList);
+                                for (var index = 0; index < codes.length; index++) {
+                                    codeList.push(codes[index].Code);
+                                }
+                                codeList.push(info.Area.Code);
+                                var codeStr = JSON.stringify(codeList);
 
-									console.log(codeStr);
-                                    codeStr = codeStr.replace("[","").replace("]","");
-									params.areaCode = codeStr;
+                                console.log(codeStr);
+                                codeStr = codeStr.replace("[", "").replace("]", "");
+                                params.areaCode = codeStr;
 
-									return params
-								}, //请求服务器时所传的参数
-								onClickRow: function(row){
-									//data.id = row.signalId;
-									console.log(row);
-									$("#stationId").val(row.id);
+                                return params
+                            }, //请求服务器时所传的参数
+                            onClickRow: function (row) {
+                                //data.id = row.signalId;
+                                console.log(row);
+                                $("#stationId").val(row.id);
 //									ajax.post("data/alarm/instersingal",data,function(){
 //									
 //									});
-								},
-								sidePagination : 'server', //指定服务器端分页
-								pageSize : 10, //单页记录数
-								pageList : [ 10, 25, 50, 100 ], //分页步进值
-								clickToSelect : true, //是否启用点击选中行
-								responseHandler : function(res) {
-									console.log(res);
-									return res;
-								},
-								columns : [ {
-									field : 'stationName',
-									title : '台站名称'
-								}, {
-									field : 'centerFrequency',
-									title : '中心频率（kHz）',
-									formatter : function(value, row, index) {
-										return '<a>' + value + '</a>';
-									}
-								}, {
-									field : 'tapeWidth',
-									title : '带宽（kHz）'
-								}]
-							});
+                            },
+                            sidePagination: 'server', //指定服务器端分页
+                            pageSize: 10, //单页记录数
+                            pageList: [10, 25, 50, 100], //分页步进值
+                            clickToSelect: true, //是否启用点击选中行
+                            responseHandler: function (res) {
+                                console.log(res);
+                                return res;
+                            },
+                            columns: [{
+                                field: 'stationName',
+                                title: '台站名称'
+                            }, {
+                                field: 'centerFrequency',
+                                title: '中心频率（kHz）',
+                                formatter: function (value, row, index) {
+                                    return '<a>' + value + '</a>';
+                                }
+                            }, {
+                                field: 'tapeWidth',
+                                title: '带宽（kHz）'
+                            }]
+                        });
 
-							$('#table-station-list').on('click-row.bs.table', function (row, $element, field) {
-							    $('#table-station-list tr').removeClass("selected");
-							    field.addClass("selected");
-							});
+                        $('#table-station-list').on('click-row.bs.table', function (row, $element, field) {
+                            $('#table-station-list tr').removeClass("selected");
+                            field.addClass("selected");
+                        });
 
-							$("#modalStationAlarm").modal();
-					});
+                        $("#modalStationAlarm").modal();
+                    });
 
-					$("#legal-wrong").click(function() {
-						var value = $('option:selected').val();
-						var kmz = $('#search').val();
-						var data = {};
-						var typeCode =  $(this).val();
-						$("#typeCode").val(typeCode);
-						data.type = "none";
-							var temp = '<div class="header-search"><input type="text" placeholder="输入中心频率">'+
-							'<span class="search-icon"></span></div>'+
-							'<table class="table table-striped" id="table-station-list"></table>'+
-							'<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息"></textarea></div>';
-							$("#stationWrap").html("");
-							$("#stationWrap").html(temp);
-							$('#table-station-list').bootstrapTable({
-								method : 'get',
-								contentType : "application/x-www-form-urlencoded", //必须要有！！！！
-								//data:reslut,
-								striped : true, //是否显示行间隔色
-								dataField : "rows", //bootstrap table 可以前端分页也可以后端分页，这里
-								url : "data/alarm/StationInfo",
-								//我们使用的是后端分页，后端分页时需返回含有total：总记录数,这个键值好像是固定的
-								//rows： 记录集合 键值可以修改  dataField 自己定义成自己想要的就好
-								detailView : false,
-								pageNumber : 1, //初始化加载第一页，默认第一页
-								pagination : true, //是否分页
-								queryParamsType : 'limit', //查询参数组织方式
-								queryParams : function(params) {
+                    $("#legal-wrong").click(function () {
+                        var value = $('option:selected').val();
+                        var kmz = $('#search').val();
+                        var data = {};
+                        var typeCode = $(this).val();
+                        $("#typeCode").val(typeCode);
+                        data.type = "none";
+                        var temp = '<div class="header-search"><input type="text" placeholder="输入中心频率">' +
+                            '<span class="search-icon"></span></div>' +
+                            '<table class="table table-striped" id="table-station-list"></table>' +
+                            '<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息"></textarea></div>';
+                        $("#stationWrap").html("");
+                        $("#stationWrap").html(temp);
+                        $('#table-station-list').bootstrapTable({
+                            method: 'get',
+                            contentType: "application/x-www-form-urlencoded", //必须要有！！！！
+                            //data:reslut,
+                            striped: true, //是否显示行间隔色
+                            dataField: "rows", //bootstrap table 可以前端分页也可以后端分页，这里
+                            url: "data/alarm/StationInfo",
+                            //我们使用的是后端分页，后端分页时需返回含有total：总记录数,这个键值好像是固定的
+                            //rows： 记录集合 键值可以修改  dataField 自己定义成自己想要的就好
+                            detailView: false,
+                            pageNumber: 1, //初始化加载第一页，默认第一页
+                            pagination: true, //是否分页
+                            queryParamsType: 'limit', //查询参数组织方式
+                            queryParams: function (params) {
 
-                                    var info = Binding.getUser();
+                                var info = Binding.getUser();
 
-                                    info = JSON.parse(info);
-                                    console.log(info);
-                                    var codes = info.Area.Citys;
-                                    var codeList = [];
+                                info = JSON.parse(info);
+                                console.log(info);
+                                var codes = info.Area.Citys;
+                                var codeList = [];
 
-                                    for (var index =0;index<codes.length;index++){
-                                        codeList.push(codes[index].Code);
-                                    }
-                                    codeList.push(info.Area.Code);
-                                    var codeStr = JSON.stringify(codeList);
+                                for (var index = 0; index < codes.length; index++) {
+                                    codeList.push(codes[index].Code);
+                                }
+                                codeList.push(info.Area.Code);
+                                var codeStr = JSON.stringify(codeList);
 
-                                    console.log(codeStr);
-                                    codeStr = codeStr.replace("[","").replace("]","");
-                                    params.areaCode = codeStr;
+                                console.log(codeStr);
+                                codeStr = codeStr.replace("[", "").replace("]", "");
+                                params.areaCode = codeStr;
 
-                                    return params
+                                return params
 
 
-
-									return params
-								}, //请求服务器时所传的参数
-								onClickRow: function(row){
-									//data.id = row.signalId;
-									console.log(row);
-									$("#stationId").val(row.id);
+                                return params
+                            }, //请求服务器时所传的参数
+                            onClickRow: function (row) {
+                                //data.id = row.signalId;
+                                console.log(row);
+                                $("#stationId").val(row.id);
 //									ajax.post("data/alarm/instersingal",data,function(){
 //									
 //									});
-								},
-								sidePagination : 'server', //指定服务器端分页
-								pageSize : 7, //单页记录数
-								pageList : [ 5, 10, 20, 30 ], //分页步进值
-								clickToSelect : true, //是否启用点击选中行
-								responseHandler : function(res) {
-									console.log(res);
-									return res;
-								},
-								columns : [ {
-									field : 'stationName',
-									title : '台站名称'
-								}, {
-									field : 'centerFrequency',
-									title : '中心频率（kHz）',
-									formatter : function(value, row, index) {
-										return '<a>' + value + '</a>';
-									}
-								}, {
-									field : 'tapeWidth',
-									title : '带宽（kHz）'
-								}]
-							});
+                            },
+                            sidePagination: 'server', //指定服务器端分页
+                            pageSize: 7, //单页记录数
+                            pageList: [5, 10, 20, 30], //分页步进值
+                            clickToSelect: true, //是否启用点击选中行
+                            responseHandler: function (res) {
+                                console.log(res);
+                                return res;
+                            },
+                            columns: [{
+                                field: 'stationName',
+                                title: '台站名称'
+                            }, {
+                                field: 'centerFrequency',
+                                title: '中心频率（kHz）',
+                                formatter: function (value, row, index) {
+                                    return '<a>' + value + '</a>';
+                                }
+                            }, {
+                                field: 'tapeWidth',
+                                title: '带宽（kHz）'
+                            }]
+                        });
 
-							$('#table-station-list').on('click-row.bs.table', function (row, $element, field) {
-							    $('#table-station-list tr').removeClass("selected");
-							    field.addClass("selected");
-							});
+                        $('#table-station-list').on('click-row.bs.table', function (row, $element, field) {
+                            $('#table-station-list tr').removeClass("selected");
+                            field.addClass("selected");
+                        });
 
-							$("#modalStationAlarm").modal();
+                        $("#modalStationAlarm").modal();
 
-					});
+                    });
 
 
-					$("#legal").click(function() {
-						var value = $('option:selected').val();
-						var kmz = $('#search').val();
-						var data = {};
-						var typeCode =  $(this).val();
-						$("#typeCode").val(typeCode);
-						data.type = "none";
-							var temp = '<div class="header-search"><input type="text" placeholder="输入中心频率">'+
-							'<span class="search-icon"></span></div>'+
-							'<table class="table table-striped" id="table-station-list"></table>'+
-							'<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息"></textarea></div>';
-							$("#stationWrap").html("");
-							$("#stationWrap").html(temp);
-							$('#table-station-list').bootstrapTable({
-								method : 'get',
-								contentType : "application/x-www-form-urlencoded", //必须要有！！！！
-								striped : true, //是否显示行间隔色
-								dataField : "rows", //bootstrap table 可以前端分页也可以后端分页，这里
-								url : "data/alarm/StationInfo",
-								//我们使用的是后端分页，后端分页时需返回含有total：总记录数,这个键值好像是固定的
-								//rows： 记录集合 键值可以修改  dataField 自己定义成自己想要的就好
-								detailView : false,
-								pageNumber : 1, //初始化加载第一页，默认第一页
-								pagination : true, //是否分页
-								queryParamsType : 'limit', //查询参数组织方式
-								queryParams : function(params) {
+                    $("#legal").click(function () {
+                        var value = $('option:selected').val();
+                        var kmz = $('#search').val();
+                        var data = {};
+                        var typeCode = $(this).val();
+                        $("#typeCode").val(typeCode);
+                        data.type = "none";
+                        var temp = '<div class="header-search"><input type="text" placeholder="输入中心频率">' +
+                            '<span class="search-icon"></span></div>' +
+                            '<table class="table table-striped" id="table-station-list"></table>' +
+                            '<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息"></textarea></div>';
+                        $("#stationWrap").html("");
+                        $("#stationWrap").html(temp);
+                        $('#table-station-list').bootstrapTable({
+                            method: 'get',
+                            contentType: "application/x-www-form-urlencoded", //必须要有！！！！
+                            striped: true, //是否显示行间隔色
+                            dataField: "rows", //bootstrap table 可以前端分页也可以后端分页，这里
+                            url: "data/alarm/StationInfo",
+                            //我们使用的是后端分页，后端分页时需返回含有total：总记录数,这个键值好像是固定的
+                            //rows： 记录集合 键值可以修改  dataField 自己定义成自己想要的就好
+                            detailView: false,
+                            pageNumber: 1, //初始化加载第一页，默认第一页
+                            pagination: true, //是否分页
+                            queryParamsType: 'limit', //查询参数组织方式
+                            queryParams: function (params) {
 
-                                    var info = Binding.getUser();
-                                    console.log(info);
-                                    info = JSON.parse(info);
-                                    var code = info.Area.Code;
-                                    params.areaCode = code;
+                                var info = Binding.getUser();
+                                console.log(info);
+                                info = JSON.parse(info);
+                                var code = info.Area.Code;
+                                params.areaCode = code;
 
-                                    return params;
-								}, //请求服务器时所传的参数
-								onClickRow: function(row){
-									//data.id = row.signalId;
-									console.log(row);
-									$("#stationId").val(row.id);
+                                return params;
+                            }, //请求服务器时所传的参数
+                            onClickRow: function (row) {
+                                //data.id = row.signalId;
+                                console.log(row);
+                                $("#stationId").val(row.id);
 //									ajax.post("data/alarm/instersingal",data,function(){
 //									
 //									});
-								},
-								sidePagination : 'server', //指定服务器端分页
-								pageSize : 7, //单页记录数
-								pageList : [ 5, 10, 20, 30 ], //分页步进值
-								clickToSelect : true, //是否启用点击选中行
-								responseHandler : function(res) {
-									console.log(res);
-									return res;
-								},
-								columns : [ {
-									field : 'stationName',
-									title : '台站名称'
-								}, {
-									field : 'centerFrequency',
-									title : '中心频率（kHz）',
-									formatter : function(value, row, index) {
-										return '<a>' + value + '</a>';
-									}
-								}, {
-									field : 'tapeWidth',
-									title : '带宽（kHz）'
-								}]
-							});
+                            },
+                            sidePagination: 'server', //指定服务器端分页
+                            pageSize: 7, //单页记录数
+                            pageList: [5, 10, 20, 30], //分页步进值
+                            clickToSelect: true, //是否启用点击选中行
+                            responseHandler: function (res) {
+                                console.log(res);
+                                return res;
+                            },
+                            columns: [{
+                                field: 'stationName',
+                                title: '台站名称'
+                            }, {
+                                field: 'centerFrequency',
+                                title: '中心频率（kHz）',
+                                formatter: function (value, row, index) {
+                                    return '<a>' + value + '</a>';
+                                }
+                            }, {
+                                field: 'tapeWidth',
+                                title: '带宽（kHz）'
+                            }]
+                        });
 
-							$('#table-station-list').on('click-row.bs.table', function (row, $element, field) {
-							    $('#table-station-list tr').removeClass("selected");
-							    field.addClass("selected");
-							});
+                        $('#table-station-list').on('click-row.bs.table', function (row, $element, field) {
+                            $('#table-station-list tr').removeClass("selected");
+                            field.addClass("selected");
+                        });
 
-							$("#modalStationAlarm").modal();
+                        $("#modalStationAlarm").modal();
 
-					});
+                    });
 
-					$("#illegal").click(function() {
-						var value = $('option:selected').val();
-						var kmz = $('#search').val();
-						var data = {"stationCode":value,"kmz":kmz};
-							var temp =
-							'<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息"></textarea></div>';
-							$("#stationWrap").html("");
-							$("#stationWrap").html(temp);
+                    $("#illegal").click(function () {
+                        var value = $('option:selected').val();
+                        var kmz = $('#search').val();
+                        var data = {"stationCode": value, "kmz": kmz};
+                        var temp =
+                            '<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息"></textarea></div>';
+                        $("#stationWrap").html("");
+                        $("#stationWrap").html(temp);
 
-							$("#modalStationAlarm").modal();
-					});
+                        $("#modalStationAlarm").modal();
+                    });
 
-					$("#unknown").click(function() {
-						var value = $('option:selected').val();
-						var kmz = $('#search').val();
-						var data = {"stationCode":value,"kmz":kmz};
-							var temp =
-								'<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息"></textarea></div>';
-								$("#stationWrap").html("");
-								$("#stationWrap").html(temp);
+                    $("#unknown").click(function () {
+                        var value = $('option:selected').val();
+                        var kmz = $('#search').val();
+                        var data = {"stationCode": value, "kmz": kmz};
+                        var temp =
+                            '<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息"></textarea></div>';
+                        $("#stationWrap").html("");
+                        $("#stationWrap").html(temp);
 
-								$("#modalStationAlarm").modal();
+                        $("#modalStationAlarm").modal();
 
-					});
-				})
-			})
+                    });
+                })
+            })
 
 
-		}
+        }
 
-		return {
-			init : pares ,
-            stationChange : station_change
-		}
-	});
+        return {
+            init: pares,
+            stationChange: station_change
+        }
+    });
