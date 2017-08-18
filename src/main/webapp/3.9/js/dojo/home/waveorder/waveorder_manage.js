@@ -267,6 +267,15 @@ define(["ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLay
 	            }
 			});
 		});
+		
+		//信号类型刷新按钮点击事件
+		$("#redioType").on("click",".btn",function(e) {
+			//重置地图
+			console.log(MAP1);
+//			var x = MAP1.getExtent();
+			Map.resize();
+			Map.reposition();
+		});
 	}
 	
 	//区域切换
@@ -418,7 +427,8 @@ define(["ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLay
 				var url = mapUrl;
 				var map1 = new Map("mapDiv1", {
 					// center :[104.06,30.67],
-					zoom : 10
+					zoom : 10,
+					logo : false
 				});
 
 				var agoLayer1 = new ArcGISTiledMapServiceLayer(url, {
@@ -605,7 +615,6 @@ define(["ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLay
 					},
 					//必须要在此bootstraptable渲染成功之后才能渲染地图,不然地图会有错误
 					onLoadSuccess:function(){
-						alert(1);
 						MAP1 = mapInit();
 						addPoint(monitors,0);//默认选中0
 						console.log(MAP1);

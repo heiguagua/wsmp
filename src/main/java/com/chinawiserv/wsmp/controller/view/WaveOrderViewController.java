@@ -51,11 +51,6 @@ public class WaveOrderViewController {
 	@Value("${mapservice.wdsl}")
 	private String mapUrl;
 
-    @GetMapping("/frequencyrange")
-    public String frequencyRange() {
-        return "waveorder/table_radio";
-    }
-
     @GetMapping(path = {"/", ""})
 	public String home(Model model, @RequestParam(required=false,name="areaCode") String areaCode) {
     	Optional.ofNullable(areaCode).ifPresent(a -> {

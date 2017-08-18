@@ -255,12 +255,12 @@ label, .control-label {
 	padding-left: 60px;
 }
 
-.content-wrap {
-	padding: 15px;
-}
-
 .content-wrap section {
 	margin-bottom: 25px;
+}
+
+.content-wrap {
+	padding : 15px;
 }
 
 .locate-coverage {
