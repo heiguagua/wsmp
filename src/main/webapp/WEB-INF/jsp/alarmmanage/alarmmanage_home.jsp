@@ -144,6 +144,21 @@
           <div id = "dayLevelChart" style="width: 700px;height: 300px"></div>
           <div id = "dayChart" style="width: 700px;height: 300px"></div>
         </div>
+<<<<<<< .mine
+
+
+
+
+
+
+=======
+        <div class="modal-body">
+          <div id='day'>
+			  <div id = "dayLevelChart" style="width: 800px;height: 300px"></div>
+          	  <div id = "dayChart" style="width: 800px;height: 300px"></div>
+          </div>
+        </div>
+>>>>>>> .theirs
       </div>
     </div>
   </div>

@@ -59,6 +59,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                 data.sigal = singal;
                 ajax.post("data/alarm/instersingal", data, function () {
                     alert("成功");
+                    $("#modalStationAlarm").modal('hide');
                     warnig_confirm();
                 });
             });

@@ -362,3 +362,19 @@ td.bs-checkbox{
 .mark-content textarea{
 	width:100%;
 }
+#stationWrap .table tr.selected {
+    background: antiquewhite;
+}
+#stationWrap .table tr.selected td {
+    position: relative;
+}
+#stationWrap .table tr.selected td:last-child:after{
+	    content: '';
+    width: 24px;
+    height: 24px;
+    background: url(../images/tick.png) no-repeat center transparent;
+    display: inline-block;
+    position: absolute;
+    right: 6px;
+    top: 4px;
+}
