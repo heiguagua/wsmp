@@ -27,7 +27,6 @@ import org.tempuri.*;
 
 import java.math.BigInteger;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -461,7 +460,7 @@ public class AlarmDataController {
         int limitNumber = Integer.parseInt(limit.toString());
 
         ArrayList<String> dr =new ArrayList<>(Arrays.asList(areaCodes)) ;
-
+        info.setSignalFreq(Double.parseDouble((String) param.get("centorFreq")));
         info.setAreaCodes(dr);
         
 
@@ -504,13 +503,13 @@ public class AlarmDataController {
             final FreqWarningQueryResponse response = (FreqWarningQueryResponse) service.freqWarnServiceCall("query",
                     mapper.writeValueAsString(signal.get("warmingId")), FreqWarningQueryRequest.class);
 
-            final FreqWarningDTO t = response.getWarningInfos().getFreqWarningDTO().size() > 0 ? response.getWarningInfos().getFreqWarningDTO().get(0)
+            final FreqWarningDTO t = response.getWarningInfos().getFreqWarningDTOs().size() > 0 ? response.getWarningInfos().getFreqWarningDTOs().get(0)
                     : new FreqWarningDTO();
 
             final BigInteger bandWidth = t.getBandWidth();
             final BigInteger centerFreq = t.getCenterFreq();
 
-            List<Map<String, String>> ids = response.getWarningInfos().getFreqWarningDTO().get(0).getStatList().getFreqWarningStatDTO().stream().map(m -> {
+            List<Map<String, String>> ids = response.getWarningInfos().getFreqWarningDTOs().get(0).getStatList().getFreqWarningStatDTOs().stream().map(m -> {
                 HashMap<String, String> map = Maps.newHashMap();
                 map.put("stationNumber", m.getStationGUID());
                 return map;
@@ -539,6 +538,8 @@ public class AlarmDataController {
 
             res = (RadioSignalOperationReponse) service.radioSignalServiceCall("insertRadioSignal",
                     mapper.writeValueAsString(station), RadioSignalDTO.class);
+             Map<String,Object> waringID = (Map<String, Object>) signal.get("warmingId");
+            service.getFreqWarnService().updateStatus((String)waringID.get("id") ,1);
             Logger.info("告警生成信号成功 操作时间{} 入参:{} 返回消息{}",LocalDateTime.now().toString(),JSON.toJSONString(param),JSON.toJSONString(res));
         } catch (JsonProcessingException e) {
 

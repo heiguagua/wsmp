@@ -1,13 +1,12 @@
 
 package org.tempuri;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -31,26 +30,26 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ArrayOfFreqWarningDTO", propOrder = {
-    "freqWarningDTO"
+    "freqWarningDTOs"
 })
 public class ArrayOfFreqWarningDTO {
 
     @XmlElement(name = "FreqWarningDTO", nillable = true)
-    protected List<FreqWarningDTO> freqWarningDTO;
+    protected List<FreqWarningDTO> freqWarningDTOs;
 
     /**
-     * Gets the value of the freqWarningDTO property.
+     * Gets the value of the freqWarningDTOs property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the freqWarningDTO property.
+     * This is why there is not a <CODE>set</CODE> method for the freqWarningDTOs property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getFreqWarningDTO().add(newItem);
+     *    getFreqWarningDTOs().add(newItem);
      * </pre>
      * 
      * 
@@ -60,11 +59,11 @@ public class ArrayOfFreqWarningDTO {
      * 
      * 
      */
-    public List<FreqWarningDTO> getFreqWarningDTO() {
-        if (freqWarningDTO == null) {
-            freqWarningDTO = new ArrayList<FreqWarningDTO>();
+    public List<FreqWarningDTO> getFreqWarningDTOs() {
+        if (freqWarningDTOs == null) {
+            freqWarningDTOs = new ArrayList<FreqWarningDTO>();
         }
-        return this.freqWarningDTO;
+        return this.freqWarningDTOs;
     }
 
 }

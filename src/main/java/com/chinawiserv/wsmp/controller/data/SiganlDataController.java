@@ -69,16 +69,17 @@ public class SiganlDataController {
 		try {
 			Map<String, Object>  map = hbaseClient.queryModulationMode(id, timeStart, timeStop, Long.parseLong(frequency));
 			List<String> lists = Lists.newLinkedList();
-			int sum =  map.values().stream().mapToInt(m->Integer.parseInt(m.toString())).reduce(0,(a, b) ->  a +  b);
+//			int sum =  map.values().stream().mapToInt(m->Integer.parseInt(m.toString())).reduce(0,(a, b) ->  a +  b);
 
 			List<Object> reslut = map.entrySet().stream().map(m -> {
-				HashMap<String, Double> mapReslut = Maps.newHashMap();
-				double d = (double) ((Integer) m.getValue() / sum);
-				mapReslut.put(m.getKey(),d );
+				HashMap<String, Object> mapReslut = Maps.newHashMap();
+//				double d = (double) ((Integer) m.getValue() / sum);
+				mapReslut.put("name", m.getKey());
+				mapReslut.put("value", (Integer) m.getValue());
 				lists.add(m.getKey());
 				return mapReslut;
 			}).collect(toList());
-
+			System.out.println(JSON.toJSONString(reslut));
 			resluteMap.put("name", lists);
 			resluteMap.put("value", reslut);
 			Logger.info("调制方式调用正常 操作时间：{} 入参：监测站id{}，开始时间{}，结束时间{}，中心频率{} 返回值：{}", LocalDateTime.now().toString(),id,timeStart,timeStop,frequency,JSON.toJSONString(map));

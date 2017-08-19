@@ -1,17 +1,17 @@
 
 package com.sefon.ws.model.freq.xsd;
 
-import java.math.BigDecimal;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.math.BigDecimal;
 
 
 /**
- * <p>FreqSelfInfo complex type的 Java 类。
+ * <p>FreqSelfInfo complex type�� Java �ࡣ
  * 
- * <p>以下模式片段指定包含在此类中的预期内容。
+ * <p>����ģʽƬ��ָ�������ڴ����е�Ԥ�����ݡ�
  * 
  * <pre>
  * &lt;complexType name="FreqSelfInfo"&gt;
@@ -85,7 +85,7 @@ public class FreqSelfInfo {
     protected String st;
 
     /**
-     * 获取channelBandwidth属性的值。
+     * ��ȡchannelBandwidth���Ե�ֵ��
      * 
      * @return
      *     possible object is
@@ -97,7 +97,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 设置channelBandwidth属性的值。
+     * ����channelBandwidth���Ե�ֵ��
      * 
      * @param value
      *     allowed object is
@@ -109,7 +109,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 获取deadTime属性的值。
+     * ��ȡdeadTime���Ե�ֵ��
      * 
      * @return
      *     possible object is
@@ -121,7 +121,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 设置deadTime属性的值。
+     * ����deadTime���Ե�ֵ��
      * 
      * @param value
      *     allowed object is
@@ -133,7 +133,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 获取effectiveTime属性的值。
+     * ��ȡeffectiveTime���Ե�ֵ��
      * 
      * @return
      *     possible object is
@@ -145,7 +145,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 设置effectiveTime属性的值。
+     * ����effectiveTime���Ե�ֵ��
      * 
      * @param value
      *     allowed object is
@@ -157,7 +157,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 获取freqDesc属性的值。
+     * ��ȡfreqDesc���Ե�ֵ��
      * 
      * @return
      *     possible object is
@@ -169,7 +169,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 设置freqDesc属性的值。
+     * ����freqDesc���Ե�ֵ��
      * 
      * @param value
      *     allowed object is
@@ -181,7 +181,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 获取freqMax属性的值。
+     * ��ȡfreqMax���Ե�ֵ��
      * 
      * @return
      *     possible object is
@@ -193,7 +193,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 设置freqMax属性的值。
+     * ����freqMax���Ե�ֵ��
      * 
      * @param value
      *     allowed object is
@@ -205,7 +205,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 获取freqMin属性的值。
+     * ��ȡfreqMin���Ե�ֵ��
      * 
      * @return
      *     possible object is
@@ -217,7 +217,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 设置freqMin属性的值。
+     * ����freqMin���Ե�ֵ��
      * 
      * @param value
      *     allowed object is
@@ -229,7 +229,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 获取freqSection属性的值。
+     * ��ȡfreqSection���Ե�ֵ��
      * 
      * @return
      *     possible object is
@@ -241,7 +241,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 设置freqSection属性的值。
+     * ����freqSection���Ե�ֵ��
      * 
      * @param value
      *     allowed object is
@@ -253,7 +253,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 获取id属性的值。
+     * ��ȡid���Ե�ֵ��
      * 
      * @return
      *     possible object is
@@ -265,7 +265,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 设置id属性的值。
+     * ����id���Ե�ֵ��
      * 
      * @param value
      *     allowed object is
@@ -277,7 +277,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 获取isManuallyAdd属性的值。
+     * ��ȡisManuallyAdd���Ե�ֵ��
      * 
      * @return
      *     possible object is
@@ -289,7 +289,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 设置isManuallyAdd属性的值。
+     * ����isManuallyAdd���Ե�ֵ��
      * 
      * @param value
      *     allowed object is
@@ -301,7 +301,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 获取isSeries属性的值。
+     * ��ȡisSeries���Ե�ֵ��
      * 
      * @return
      *     possible object is
@@ -313,7 +313,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 设置isSeries属性的值。
+     * ����isSeries���Ե�ֵ��
      * 
      * @param value
      *     allowed object is
@@ -325,7 +325,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 获取parentId属性的值。
+     * ��ȡparentId���Ե�ֵ��
      * 
      * @return
      *     possible object is
@@ -337,7 +337,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 设置parentId属性的值。
+     * ����parentId���Ե�ֵ��
      * 
      * @param value
      *     allowed object is
@@ -349,7 +349,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 获取serviceName属性的值。
+     * ��ȡserviceName���Ե�ֵ��
      * 
      * @return
      *     possible object is
@@ -361,7 +361,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 设置serviceName属性的值。
+     * ����serviceName���Ե�ֵ��
      * 
      * @param value
      *     allowed object is
@@ -373,7 +373,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 获取st属性的值。
+     * ��ȡst���Ե�ֵ��
      * 
      * @return
      *     possible object is
@@ -385,7 +385,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 设置st属性的值。
+     * ����st���Ե�ֵ��
      * 
      * @param value
      *     allowed object is

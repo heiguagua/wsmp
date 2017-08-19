@@ -299,21 +299,24 @@
   <input style="display: none" id ='mapUrl' value="${mapUrl}" />
   <input style="display: none" id ='FromSingal' value="${FromSingal}" />
   <link rel="stylesheet" type="text/css" href="3.9/js/esri/dijit/css/Popup.css" />
+
   <script src="3.9/init.js"></script>
   <script src="src/heatmap.js"></script>
   <script src="src/heatmap-arcgis.js"></script>
   <script type="text/javascript">
-    require(["jquery",  "home/signal/signal_map_init","dojo/domReady!","layer"],
+    require(["jquery",  "home/signal/signal_map_init","layer"],
       function($, mapInit) {
     	require(["bootstrap", "bootstrapTable","datetimepicker"],function(){
     		 require(["echarts","select2","home/signal/signal_manage","bootstrap_table_cn","datetimepicker_cn"], function(echarts,select2,signal_manage) {
                  signal_manage.init();
+
             	 var map = mapInit.init();
                  signal_manage.set(mapInit);
+
             })
     	})
-       
-       
+
+
       });
   </script>
 </body>

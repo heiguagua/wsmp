@@ -8,7 +8,11 @@ define(["home/signal/signal_manage", "ajax" ],
         dojo.require("esri.map");
         dojo.require("esri.layers.FeatureLayer");
         dojo.require("esri.symbols.SimpleMarkerSymbol");
-
+        dojo.require("esri.symbols.TextSymbol");
+        dojo.require("esri.symbols.Font");
+        dojo.require("esri.geometry.Circle");
+        dojo.require("esri.symbols.SimpleFillSymbol");
+        var heatLayer;
 		var testWidget = null;
         var pSymbol = null;
         var glayer = null;
@@ -23,12 +27,6 @@ define(["home/signal/signal_manage", "ajax" ],
 		//"http://127.0.0.1:8080/data/PBS/rest/services/MyPBSService1/MapServer"
 		function mapInit() {
 
-			var heatLayer;
-            var pSymbol = null;
-            var glayer = null;
-            var mapUtl = $("#mapUrl").val();
-            var map = null;
-
             var url = mapUrl;
             var agoLayer = new esri.layers.ArcGISTiledMapServiceLayer(url, {id: "街道地图"});
             console.log(agoLayer.initialExtent)
@@ -41,12 +39,12 @@ define(["home/signal/signal_manage", "ajax" ],
 
             map.addLayer(agoLayer);
             glayer = new esri.layers.GraphicsLayer();
+            console.log(glayer);
             pSymbol = new esri.symbols.SimpleMarkerSymbol();
             pSymbol.style = esri.symbols.SimpleMarkerSymbol.STYLE_CIRCLE; //设置点的类型为圆形
             pSymbol.setSize(12); //设置点的大小为12像素
             pSymbol.setColor(new dojo.Color("#FFFFCC")); //设置点的颜色
             map.addLayer(glayer);
-
             dojo.connect(map, 'onLoad', function (theMap) {
 
                 dojo.connect(dijit.byId('mapDiv'), 'resize', map, map.resize);
@@ -72,7 +70,8 @@ define(["home/signal/signal_manage", "ajax" ],
                 map.addLayer(heatLayer);
                 console.log("=======================")
                 // resize map
-                getFeatures(heatLayer);
+
+
                 map.resize();
             });
             console.log("+++++++++++++++++++++++++++++++++++++++++++");
@@ -82,44 +81,11 @@ define(["home/signal/signal_manage", "ajax" ],
 			return map;
 		}
 
-        function getFeatures(heatLayer) {
-            var point = [
-                {
-                    attributes: {
-                        count: 40
-                    },
-                    geometry: {
-                        spatialReference: {wkid: 4326},
-                        type: "point",
-                        x: 106.711123,
-                        y: 26.5712221
-                    }
-                },
-                {
-                    attributes: {
-                        count: 40
-                    },
-                    geometry: {
-                        spatialReference: {wkid: 4326},
-                        type: "point",
-                        x: 106.711123,
-                        y: 26.5712221
-                    }
-                }
-            ];
+        function getFeatures(result) {
 
-            console.log(point.length);
-
-            for (var index = 0; index < point.length; index++) {
-
-                var mercator = lonlat2mercator(point[index].geometry);
-
-                point[index].geometry.x = mercator.x;
-                point[index].geometry.y = mercator.y;
-
-
-            }
-            heatLayer.setData(point);
+            var k = result.kriking;
+            console.log(JSON.stringify(k));
+            heatLayer.setData(k);
         }
 
         function lonlat2mercator(lonlat) {
@@ -149,8 +115,21 @@ define(["home/signal/signal_manage", "ajax" ],
                     var centorfreq = $('#signal_list1').find('option:selected').attr("centorFreq");
 
                     var beginTime = $('#signal_list1').find('option:selected').attr("beginTime");
+                    var info = Binding.getUser();
+                    info = JSON.parse(info);
+                    var code = info.Area.Code;
+                    var stationObj = Binding.getMonitorNodes(code);
+                    console.log(stationObj);
+                    stationObj = JSON.parse(stationObj);
 
-                    var data = {"stationcode":codes,"frequency":centorfreq,"beginTime":beginTime};
+                    var codes = [];
+
+                    for (var index = 0 ;index<stationObj.length;index++){
+                        codes.push(stationObj[index].Num);
+
+                    }
+
+                    var data = {"stationCodes":codes,"frequency":centorfreq,"beginTime":beginTime};
 
                     ajax.post("data/alarm/getStation", data, function(reslut) {
                         glayer.clear();
@@ -161,14 +140,15 @@ define(["home/signal/signal_manage", "ajax" ],
                         var stationSize = arryOfStation.length;
                         var LevelSize = arryOfLevel.length;
 
+                        getFeatures(reslut);
 
                         for (var index = 0; index < stationSize; index++) {
 
-                            var p = new Point(arryOfStation[index]);
+                            var p = new esri.geometry.Point(arryOfStation[index]);
 
-                            var textSymbol = new TextSymbol(arryOfStation[index].count).setColor(
-                                new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
-                                new Font("12pt").setWeight(Font.WEIGHT_BOLD));
+                            var textSymbol = new esri.symbols.TextSymbol(arryOfStation[index].count).setColor(
+                                new esri.Color([ 0xFF, 0, 0 ])).setAlign(esri.symbols.Font.ALIGN_START).setFont(
+                                new esri.symbols.Font("12pt").setWeight(esri.symbols.Font.WEIGHT_BOLD));
 
                             var graphic = new esri.Graphic(p, textSymbol);
                             var textsyboml = new esri.Graphic(p, pSymbol);
@@ -181,13 +161,13 @@ define(["home/signal/signal_manage", "ajax" ],
 
                         for(var index = 0 ; index < LevelSize;index++){
 							console.log(arryOfLevel[index]);
-                            var p = new Point(arryOfLevel[index]);
-                            var circle = new Circle(p,{
+                            var p = new esri.geometry.Point(arryOfLevel[index]);
+                            var circle = new esri.geometry.Circle(p,{
                                 geodesic: true,
                                 radius: arryOfLevel[index].radius
                             });
 
-                            var symbol = new SimpleFillSymbol().setColor(null).outline.setColor("red");
+                            var symbol = new esri.symbols.SimpleFillSymbol().setColor(null).outline.setColor("red");
                             var circleGrap = new esri.Graphic(circle, symbol);
                             glayer.add(circleGrap);
 

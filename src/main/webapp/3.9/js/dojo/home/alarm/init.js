@@ -60,7 +60,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                 ajax.post("data/alarm/instersingal", data, function () {
                     alert("成功");
                     $("#modalStationAlarm").modal('hide');
-                    warnig_confirm();
+                    //warnig_confirm();
                 });
             });
 
@@ -289,82 +289,86 @@ define(["home/alarm/alarm_manage", "ajax"],
         }
 
 
-        function getFeatures() {
+        function getFeatures(result) {
 
-            var point = [
-                {
-                    attributes: {
-                        count: 40
-                    },
-                    geometry: {
-                        spatialReference: {wkid: 4326},
-                        type: "point",
-                        x: 106.711123,
-                        y: 26.5712221
-                    }
-                },
-                {
-                    attributes: {
-                        count: 40
-                    },
-                    geometry: {
-                        spatialReference: {wkid: 4326},
-                        type: "point",
-                        x: 106.711123,
-                        y: 26.5712221
-                    }
-                }
-            ];
+            var k = result.kriking;
+            console.log(JSON.stringify(k));
+            heatLayer.setData(k);
 
-            for(var index = 0;index<point.length ;index++){
-
-                var mercator = lonlat2mercator( point[index].geometry);
-                point[index].geometry.x = mercator.x;
-                point[index].geometry.y = mercator.y;
-            }
-
-            console.log(JSON.stringify(point[0]));
-            var value = $("#station_list").find('option:selected').val();
-            var kmz = $('#search').val();
-
-            var l = $('#signal_list').find('option:selected').attr("stationId");
-            var centorFreq = $('#signal_list').find('option:selected').attr("centorFreq");
-            var beginTime = $('#signal_list').find('option:selected').attr("beginTime");
-
-            if (l == null) {
-                return;
-            }
-
-            var info = Binding.getUser();
-            info = JSON.parse(info);
-
-            var code = info.Area.Code;
-
-            var stationObj = Binding.getMonitorNodes(code);
-            stationObj = JSON.parse(stationObj);
-
-            var codes = [];
-
-            for (var index = 0 ;index<stationObj.length;index++){
-                codes.push(stationObj[index].Num);
-            }
-            var data = {"stationCodes": codes, "frequency": centorFreq, "beginTime": beginTime};
-            alarm_manage.changeView();
-            $.ajax({
-
-                url : "data/alarm/getStation",
-                data : JSON.stringify(data),
-                type : "POST",
-                async : false,
-                contentType : 'application/json',
-                success : function(result){
-                    var k = result.kriking;
-                    console.log(JSON.stringify(k[0]));
-                    heatLayer.setData([k[0]]);
-                }
-            });
         }
 
+        // var point = [
+        //     {
+        //         attributes: {
+        //             count: 40
+        //         },
+        //         geometry: {
+        //             spatialReference: {wkid: 4326},
+        //             type: "point",
+        //             x: 106.711123,
+        //             y: 26.5712221
+        //         }
+        //     },
+        //     {
+        //         attributes: {
+        //             count: 40
+        //         },
+        //         geometry: {
+        //             spatialReference: {wkid: 4326},
+        //             type: "point",
+        //             x: 106.711123,
+        //             y: 26.5712221
+        //         }
+        //     }
+        // ];
+        //
+        // for(var index = 0;index<point.length ;index++){
+        //
+        //     var mercator = lonlat2mercator( point[index].geometry);
+        //     point[index].geometry.x = mercator.x;
+        //     point[index].geometry.y = mercator.y;
+        // }
+        //
+        // console.log(JSON.stringify(point[0]));
+        // var value = $("#station_list").find('option:selected').val();
+        // var kmz = $('#search').val();
+        //
+        // var l = $('#signal_list').find('option:selected').attr("stationId");
+        // var centorFreq = $('#signal_list').find('option:selected').attr("centorFreq");
+        // var beginTime = $('#signal_list').find('option:selected').attr("beginTime");
+        //
+        // if (l == null) {
+        //     return;
+        // }
+        //
+        // var info = Binding.getUser();
+        // info = JSON.parse(info);
+        //
+        // var code = info.Area.Code;
+        //
+        // var stationObj = Binding.getMonitorNodes(code);
+        // stationObj = JSON.parse(stationObj);
+        //
+        // var codes = [];
+        //
+        // for (var index = 0 ;index<stationObj.length;index++){
+        //     codes.push(stationObj[index].Num);
+        // }
+        // var data = {"stationCodes": codes, "frequency": centorFreq, "beginTime": beginTime};
+        // alarm_manage.changeView();
+        // $.ajax({
+        //
+        //     url : "data/alarm/getStation",
+        //     data : JSON.stringify(data),
+        //     type : "POST",
+        //     async : false,
+        //     contentType : 'application/json',
+        //     success : function(result){
+        //         var k = result.kriking;
+        //         console.log(JSON.stringify(k[0]));
+        //         heatLayer.setData([k[0]]);
+        //     }
+        // });
 
         function lonlat2mercator(lonlat) {
             var mercator = {x: 0, y: 0};
@@ -427,10 +431,13 @@ define(["home/alarm/alarm_manage", "ajax"],
                                 codeList.push(info.Area.Code);
                                 var codeStr = JSON.stringify(codeList);
 
+                                var centorFreq = $("#signal_list").find('option:selected').attr("centorfreq");
+                                params.centorFreq = centorFreq;
+
                                 console.log(codeStr);
                                 codeStr = codeStr.replace("[", "").replace("]", "");
                                 params.areaCode = codeStr;
-
+                                console.log(params);
                                 return params
                             }, //请求服务器时所传的参数
                             onClickRow: function (row) {
@@ -517,10 +524,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                                 codeStr = codeStr.replace("[", "").replace("]", "");
                                 params.areaCode = codeStr;
 
-                                return params
-
-
-                                return params
+                                return params;
                             }, //请求服务器时所传的参数
                             onClickRow: function (row) {
                                 //data.id = row.signalId;

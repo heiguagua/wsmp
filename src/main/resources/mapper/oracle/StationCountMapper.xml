@@ -18,7 +18,8 @@ FROM
 	(
 		SELECT
 			tb.NET_TS,
-			RO.ORG_SYS_CODE
+			RO.ORG_SYS_CODE,
+			RSBT_STATION.GUID
 		FROM
 			(
 				SELECT
@@ -50,6 +51,7 @@ FROM
 GROUP BY
 	NET_TS,
 	ORG_SYS_CODE
+	GUID,
 </select >
 
 <select id ="countBylastYear" resultMap = "countResult">
@@ -61,7 +63,8 @@ FROM
 	(
 		SELECT
 			tb.NET_TS,
-			RO.ORG_SYS_CODE
+			RO.ORG_SYS_CODE,
+			RSBT_STATION.GUID
 		FROM
 			(
 				SELECT
@@ -92,9 +95,8 @@ FROM
 	)
 GROUP BY
 	NET_TS,
-	ORG_SYS_CODE
+	ORG_SYS_CODE,
+	GUID
 </select>
-
-
 
 </mapper>
