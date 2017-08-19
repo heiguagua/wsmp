@@ -195,7 +195,8 @@
 						<input type="text" class="gate-filter" placeholder="请输入门阀" /> <button class="btn btn-submit" id="gate-btn">提交</button>电磁覆盖率:&nbsp; <span class='coverage-number'>90%</span>
 					</div>
 				</div>
-				<div id="mapDiv"padding: 10px; height: 960px"></div>
+				<div id="mapDiv"style= "padding: 10px"></div>
+				<div id="heatLayer"></div>
 			</div>
 		</section>
 		<section class='flex-row'>
@@ -296,10 +297,14 @@
   <input id = 'typeCode' class = 'after_modal_colse' style="display: none"/>
   <input id = 'stationKey' class = 'after_modal_colse'  style="display: none"/>
   <input style="display: none" id ='mapUrl' value="${mapUrl}" />
+  <input style="display: none" id ='FromSingal' value="${FromSingal}" />
+  <link rel="stylesheet" type="text/css" href="3.9/js/esri/dijit/css/Popup.css" />
   <script src="3.9/init.js"></script>
+  <script src="src/heatmap.js"></script>
+  <script src="src/heatmap-arcgis.js"></script>
   <script type="text/javascript">
-    require([ "home/signal/signal_map_init","jquery","dojo/domReady!","layer"],
-      function(mapInit) {
+    require(["jquery",  "home/signal/signal_map_init","dojo/domReady!","layer"],
+      function($, mapInit) {
     	require(["bootstrap", "bootstrapTable","datetimepicker"],function(){
     		 require(["echarts","select2","home/signal/signal_manage","bootstrap_table_cn","datetimepicker_cn"], function(echarts,select2,signal_manage) {
                  signal_manage.init();

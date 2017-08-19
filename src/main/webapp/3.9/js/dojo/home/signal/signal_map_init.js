@@ -2,108 +2,135 @@
  * Created by wuhaoran on 2017/2/25.
  */
 //
-define(["esri/symbols/SimpleFillSymbol","esri/geometry/Circle","home/signal/signal_manage", "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer", "dojo/request", "esri/layers/GraphicsLayer", "esri/dijit/Scalebar"
-	, "esri/symbols/TextSymbol", "esri/geometry/Point", "esri/graphic", "esri/symbols/Font", "esri/symbols/SimpleMarkerSymbol", "echarts" ],
-	function(SimpleFillSymbol,Circle,signal_manage,ajax, parser, Map, ArcGISTiledMapServiceLayer, request, GraphicsLayer, Scalebar, TextSymbol, Point, graphic, Font, SimpleMarkerSymbol, echarts) {
+define(["home/signal/signal_manage", "ajax" ],
+	function(signal_manage,ajax) {
+
+        dojo.require("esri.map");
+        dojo.require("esri.layers.FeatureLayer");
+        dojo.require("esri.symbols.SimpleMarkerSymbol");
+
 		var testWidget = null;
-
         var pSymbol = null;
-
         var glayer = null;
-
         var map = null;
-
-        var mapUtl = $("#mapUrl").val();
+        var mapUrl = $("#mapUrl").val();
 		//var map = null;
 		//config.defaults.io.corsEnabledServers.push("192.168.13.79:7080");
 		function pares() {
-			parser.parse();
+			//parser.parse();
 			var map = mapInit();
 		}
-
 		//"http://127.0.0.1:8080/data/PBS/rest/services/MyPBSService1/MapServer"
 		function mapInit() {
-			map = new Map("mapDiv", {
-				//center : [ 104.06, 30.67 ],
-				zoom : 10
-			});
-			//var url = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer";
-			//var url = "http://192.168.13.72:8083/PBS/rest/services/MyPBSService1/MapServer";
-			var url = mapUtl;
-			var agoLayer = new ArcGISTiledMapServiceLayer(url, {
-				id : "街道地图"
-			});
-			var attr = {
-				"Xcoord" : 104.06,
-				"Ycoord" : 30.67,
-				"Plant" : "Mesa Mint"
-			};
 
-			pSymbol = new SimpleMarkerSymbol();
-			pSymbol.style = SimpleMarkerSymbol.STYLE_CIRCLE; //设置点的类型为圆形
-			pSymbol.setSize(12); //设置点的大小为12像素
-			pSymbol.setColor(new dojo.Color("#FFFFCC")); //设置点的颜色
-			map.addLayer(agoLayer);
-			glayer = new GraphicsLayer();
-			map.addLayer(glayer);
-			var ti = $("#warning_confirm").attr("class");
-			console.log(ti);
+			var heatLayer;
+            var pSymbol = null;
+            var glayer = null;
+            var mapUtl = $("#mapUrl").val();
+            var map = null;
+
+            var url = mapUrl;
+            var agoLayer = new esri.layers.ArcGISTiledMapServiceLayer(url, {id: "街道地图"});
+            console.log(agoLayer.initialExtent)
+            var initiaEx = agoLayer.initialExtent;
+            map = new esri.Map("mapDiv", {
+                //center : [ 104.06, 30.67 ],
+                zoom: 10,
+                sliderStyle: "small"
+            });
+
+            map.addLayer(agoLayer);
+            glayer = new esri.layers.GraphicsLayer();
+            pSymbol = new esri.symbols.SimpleMarkerSymbol();
+            pSymbol.style = esri.symbols.SimpleMarkerSymbol.STYLE_CIRCLE; //设置点的类型为圆形
+            pSymbol.setSize(12); //设置点的大小为12像素
+            pSymbol.setColor(new dojo.Color("#FFFFCC")); //设置点的颜色
+            map.addLayer(glayer);
+
+            dojo.connect(map, 'onLoad', function (theMap) {
+
+                dojo.connect(dijit.byId('mapDiv'), 'resize', map, map.resize);
+                // create heat layer
+                heatLayer = new HeatmapLayer({
+                    config: {
+                        "useLocalMaximum": false,
+                        "radius": 40,
+                        "gradient": {
+                            0.45: "rgb(000,000,255)",
+                            0.55: "rgb(000,255,255)",
+                            0.65: "rgb(000,255,000)",
+                            0.95: "rgb(255,255,000)",
+                            1.00: "rgb(255,000,000)"
+                        }
+                    },
+                    "map": map,
+                    "domNodeId": "heatLayer",
+                    "opacity": 0.85
+                });
+                console.log("=======================")
+                // add heat layer to map
+                map.addLayer(heatLayer);
+                console.log("=======================")
+                // resize map
+                getFeatures(heatLayer);
+                map.resize();
+            });
+            console.log("+++++++++++++++++++++++++++++++++++++++++++");
 			
 			select_change();
-			
-		
-			
-			//$("#illegal").click();
 
-
-			//        var scaleba = new Scalebar({
-			//        	  map:map,
-			//        	  attachTo:"bottom-left"
-			//        	});
-
-			require([ "dojo/request", "home/geoJson2ArcJson", "home/init", "esri/geometry/Polygon", "esri/graphic" ],
-				function(request, geoJson2ArcJson, init, Polygon) {
-					//            request.get("../data/map/getGeoJson", {  
-					//                data: {  
-					//                    color: "blue",  
-					//                    answer: 42  
-					//                },  
-					//                headers: {  
-					//                    "X-Something": "A value"  
-					//                }  
-					//            }).then(function(text){
-					//            	 //console.log(text);
-					//            	 var obj=JSON.parse(text);
-					////            	 var result = eval("("+text+")");  
-					////            	 var jsonf = geoJson2ArcJson.init();
-					////            	 var json = jsonf.toEsri(result);
-					////            	 var features = json.rings;
-					////            	 console.log("The server returned: ", json);
-					////                 console.log("The server returned: ", features);
-					//            	 var sfs = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID,
-					//            	            new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_DASHDOT,
-					//            	                new dojo.Color([255, 0, 0]), 2), new dojo.Color([255, 0, 0, 0.25])
-					//            	        );
-					//            	 //var feature = obj[0];
-					//            	// console.log(feature);
-					//            	 //console.log(feature.type);
-					//            	 //console.log(feature.coordinates);
-					//            	 for(var index = 0;index < obj.length;index++){
-					//            		 var feature = obj[index];
-					//            		 //console.log(feature);
-					//            		 var polygon  = new Polygon(feature.coordinates);  
-					//                     var graphic  = new esri.Graphic(polygon,sfs);
-					//                     glayer.add(graphic);
-					//            	 }
-					//                 
-					//                // map.addLayer(graphic);  
-					//                
-					//            });  
-
-
-				});
 			return map;
 		}
+
+        function getFeatures(heatLayer) {
+            var point = [
+                {
+                    attributes: {
+                        count: 40
+                    },
+                    geometry: {
+                        spatialReference: {wkid: 4326},
+                        type: "point",
+                        x: 106.711123,
+                        y: 26.5712221
+                    }
+                },
+                {
+                    attributes: {
+                        count: 40
+                    },
+                    geometry: {
+                        spatialReference: {wkid: 4326},
+                        type: "point",
+                        x: 106.711123,
+                        y: 26.5712221
+                    }
+                }
+            ];
+
+            console.log(point.length);
+
+            for (var index = 0; index < point.length; index++) {
+
+                var mercator = lonlat2mercator(point[index].geometry);
+
+                point[index].geometry.x = mercator.x;
+                point[index].geometry.y = mercator.y;
+
+
+            }
+            heatLayer.setData(point);
+        }
+
+        function lonlat2mercator(lonlat) {
+            var mercator = {x: 0, y: 0};
+            var x = lonlat.x * 20037508.34 / 180;
+            var y = Math.log(Math.tan((90 + lonlat.y) * Math.PI / 360)) / (Math.PI / 180);
+            y = y * 20037508.34 / 180;
+            mercator.x = x;
+            mercator.y = y;
+            return mercator;
+        }
 
 		function select_change() {
 

@@ -9,6 +9,10 @@ define(["home/alarm/alarm_manage", "ajax"],
         dojo.require("esri.map");
         dojo.require("esri.layers.FeatureLayer");
         dojo.require("esri.symbols.SimpleMarkerSymbol");
+        dojo.require("esri.symbols.TextSymbol");
+        dojo.require("esri.symbols.Font");
+        dojo.require("esri.geometry.Circle");
+        dojo.require("esri.symbols.SimpleFillSymbol");
 
         var heatLayer
         var pSymbol = null;
@@ -103,10 +107,6 @@ define(["home/alarm/alarm_manage", "ajax"],
             });
         }
 
-        function getFeatures() {
-            heatLayer.setData(piont);
-        }
-
         function warnig_confirm() {
             var value = $("#signal_list").find('option:selected').val();
             var data = {};
@@ -131,9 +131,23 @@ define(["home/alarm/alarm_manage", "ajax"],
                 return;
             }
 
-            var arryId = l.split(",");
+            var info = Binding.getUser();
+            info = JSON.parse(info);
 
-            var data = {"stationcode": arryId, "frequency": centorFreq, "beginTime": beginTime};
+            var code = info.Area.Code;
+
+            var stationObj = Binding.getMonitorNodes(code);
+            console.log(stationObj);
+            stationObj = JSON.parse(stationObj);
+
+            var codes = [];
+
+            for (var index = 0 ;index<stationObj.length;index++){
+                codes.push(stationObj[index].Num);
+
+            }
+
+            var data = {"stationCodes": codes, "frequency": centorFreq, "beginTime": beginTime};
             //alarm_manage.changeView();
             ajax.post("data/alarm/getStation", data, function (reslut) {
                 glayer.clear();
@@ -144,14 +158,13 @@ define(["home/alarm/alarm_manage", "ajax"],
                 var stationSize = arryOfStation.length;
                 var LevelSize = arryOfLevel.length;
 
-
                 for (var index = 0; index < stationSize; index++) {
 
-                    var p = new Point(arryOfStation[index]);
+                    var p = new esri.geometry.Point(arryOfStation[index]);
 
-                    var textSymbol = new TextSymbol(arryOfStation[index].count).setColor(
-                        new esri.Color([0xFF, 0, 0])).setAlign(Font.ALIGN_START).setFont(
-                        new Font("12pt").setWeight(Font.WEIGHT_BOLD));
+                    var textSymbol = new esri.symbols.TextSymbol(arryOfStation[index].count).setColor(
+                        new esri.Color([0xFF, 0, 0])).setAlign(esri.symbols.Font.ALIGN_START).setFont(
+                        new esri.symbols.Font("12pt").setWeight(esri.symbols.Font.WEIGHT_BOLD));
 
                     var graphic = new esri.Graphic(p, textSymbol);
                     var textsyboml = new esri.Graphic(p, pSymbol);
@@ -164,18 +177,18 @@ define(["home/alarm/alarm_manage", "ajax"],
 
                 for (var index = 0; index < LevelSize; index++) {
 
-                    var p = new Point(arryOfLevel[index]);
-                    var circle = new Circle(p, {
+                    var p = new esri.geometry.Point(arryOfLevel[index]);
+                    var circle = new esri.geometry.Circle(p, {
                         geodesic: true,
                         radius: arryOfLevel[index].radius
                     });
 
-                    var symbol = new SimpleFillSymbol().setColor(null).outline.setColor("red");
+                    var symbol = new esri.symbols.SimpleFillSymbol().setColor(null).outline.setColor("red");
                     var circleGrap = new esri.Graphic(circle, symbol);
                     glayer.add(circleGrap);
 
                 }
-
+                getFeatures(reslut);
                 map.addLayer(glayer);
 
                 dojo.connect(map, "onClick", function (e) {
@@ -188,14 +201,14 @@ define(["home/alarm/alarm_manage", "ajax"],
                     }
                 });
 
-//					var p = new Point(reslut);
+//					var p = new esri.geometry.Point(reslut);
 //
 //					  var radius = 1000000000;
-//				      var circle = new Circle(p,{
+//				      var circle = new esri.geometry.Circle(p,{
 //				            geodesic: true,
 //				            radius: 10000
 //				        });
-//				    var symbol = new SimpleFillSymbol().setColor(null).outline.setColor("red");
+//				    var symbol = new esri.symbols.SimpleFillSymbol().setColor(null).outline.setColor("red");
 //					var textSymbol = new TextSymbol(reslut.count).setColor(
 //						new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
 //						new Font("12pt").setWeight(Font.WEIGHT_BOLD));
@@ -213,11 +226,7 @@ define(["home/alarm/alarm_manage", "ajax"],
         //"http://127.0.0.1:8080/data/PBS/rest/services/MyPBSService1/MapServer"
         function mapInit() {
 
-            var heatLayer
-            var pSymbol = null;
-            var glayer = null;
             var mapUtl = $("#mapUrl").val();
-            var map = null;
 
             var url = mapUtl;
             var agoLayer = new esri.layers.ArcGISTiledMapServiceLayer(url, {id: "街道地图"});
@@ -269,112 +278,101 @@ define(["home/alarm/alarm_manage", "ajax"],
                 // add heat layer to map
                 map.addLayer(heatLayer);
                 // resize map
-                getFeatures();
                 map.resize();
             });
-            function lonlat2mercator(lonlat) {
-                var mercator = {x: 0, y: 0};
-                var x = lonlat.x * 20037508.34 / 180;
-                var y = Math.log(Math.tan((90 + lonlat.y) * Math.PI / 360)) / (Math.PI / 180);
-                y = y * 20037508.34 / 180;
-                mercator.x = x;
-                mercator.y = y;
-                return mercator;
-            }
-
-            function getFeatures() {
-                var point = [
-                    {
-                        attributes: {
-                            count: 40
-                        },
-                        geometry: {
-                            spatialReference: {wkid: 4326},
-                            type: "point",
-                            x: 106.711123,
-                            y: 26.5712221
-                        }
-                    },
-                    {
-                        attributes: {
-                            count: 40
-                        },
-                        geometry: {
-                            spatialReference: {wkid: 4326},
-                            type: "point",
-                            x: 106.711123,
-                            y: 26.5712221
-                        }
-                    }
-                ];
-
-                console.log(point.length);
-
-                for (var index = 0; index < point.length; index++) {
-
-                    var mercator = lonlat2mercator(point[index].geometry);
-
-                    point[index].geometry.x = mercator.x;
-                    point[index].geometry.y = mercator.y;
-
-
-                }
-                heatLayer.setData(point);
-            }
 
             var ti = $("#warning_confirm").attr("class");
             signalClick(map, pSymbol, glayer);
             station_change(map, pSymbol, glayer);
-            //$("#illegal").click();
-
-
-            //        var scaleba = new Scalebar({
-            //        	  map:map,
-            //        	  attachTo:"bottom-left"
-            //        	});
-
-            require(["dojo/request", "home/geoJson2ArcJson", "home/init", "esri/geometry/Polygon", "esri/graphic"],
-                function (request, geoJson2ArcJson, init, Polygon) {
-                    //            request.get("../data/map/getGeoJson", {
-                    //                data: {
-                    //                    color: "blue",
-                    //                    answer: 42
-                    //                },
-                    //                headers: {
-                    //                    "X-Something": "A value"
-                    //                }
-                    //            }).then(function(text){
-                    //            	 //console.log(text);
-                    //            	 var obj=JSON.parse(text);
-                    ////            	 var result = eval("("+text+")");
-                    ////            	 var jsonf = geoJson2ArcJson.init();
-                    ////            	 var json = jsonf.toEsri(result);
-                    ////            	 var features = json.rings;
-                    ////            	 console.log("The server returned: ", json);
-                    ////                 console.log("The server returned: ", features);
-                    //            	 var sfs = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID,
-                    //            	            new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_DASHDOT,
-                    //            	                new dojo.Color([255, 0, 0]), 2), new dojo.Color([255, 0, 0, 0.25])
-                    //            	        );
-                    //            	 //var feature = obj[0];
-                    //            	// console.log(feature);
-                    //            	 //console.log(feature.type);
-                    //            	 //console.log(feature.coordinates);
-                    //            	 for(var index = 0;index < obj.length;index++){
-                    //            		 var feature = obj[index];
-                    //            		 //console.log(feature);
-                    //            		 var polygon  = new Polygon(feature.coordinates);
-                    //                     var graphic  = new esri.Graphic(polygon,sfs);
-                    //                     glayer.add(graphic);
-                    //            	 }
-                    //
-                    //                // map.addLayer(graphic);
-                    //
-                    //            });
-
-
-                });
             return map;
+        }
+
+
+        function getFeatures() {
+
+            var point = [
+                {
+                    attributes: {
+                        count: 40
+                    },
+                    geometry: {
+                        spatialReference: {wkid: 4326},
+                        type: "point",
+                        x: 106.711123,
+                        y: 26.5712221
+                    }
+                },
+                {
+                    attributes: {
+                        count: 40
+                    },
+                    geometry: {
+                        spatialReference: {wkid: 4326},
+                        type: "point",
+                        x: 106.711123,
+                        y: 26.5712221
+                    }
+                }
+            ];
+
+            for(var index = 0;index<point.length ;index++){
+
+                var mercator = lonlat2mercator( point[index].geometry);
+                point[index].geometry.x = mercator.x;
+                point[index].geometry.y = mercator.y;
+            }
+
+            console.log(JSON.stringify(point[0]));
+            var value = $("#station_list").find('option:selected').val();
+            var kmz = $('#search').val();
+
+            var l = $('#signal_list').find('option:selected').attr("stationId");
+            var centorFreq = $('#signal_list').find('option:selected').attr("centorFreq");
+            var beginTime = $('#signal_list').find('option:selected').attr("beginTime");
+
+            if (l == null) {
+                return;
+            }
+
+            var info = Binding.getUser();
+            info = JSON.parse(info);
+
+            var code = info.Area.Code;
+
+            var stationObj = Binding.getMonitorNodes(code);
+            stationObj = JSON.parse(stationObj);
+
+            var codes = [];
+
+            for (var index = 0 ;index<stationObj.length;index++){
+                codes.push(stationObj[index].Num);
+            }
+            var data = {"stationCodes": codes, "frequency": centorFreq, "beginTime": beginTime};
+            alarm_manage.changeView();
+            $.ajax({
+
+                url : "data/alarm/getStation",
+                data : JSON.stringify(data),
+                type : "POST",
+                async : false,
+                contentType : 'application/json',
+                success : function(result){
+                    var k = result.kriking;
+                    console.log(JSON.stringify(k[0]));
+                    heatLayer.setData([k[0]]);
+                }
+            });
+        }
+
+
+        function lonlat2mercator(lonlat) {
+            var mercator = {x: 0, y: 0};
+            var x = lonlat.x * 20037508.34 / 180;
+            var y = Math.log(Math.tan((90 + lonlat.y) * Math.PI / 360)) / (Math.PI / 180);
+            y = y * 20037508.34 / 180;
+            mercator.x = x;
+            mercator.y = y;
+            return mercator;
         }
 
         function closeModal() {

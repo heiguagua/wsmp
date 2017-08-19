@@ -18,6 +18,7 @@ import com.google.common.collect.Maps;
 import com.sefon.ws.model.xsd.StationInfoPagedResult;
 import com.sefon.ws.model.xsd.StationQuerySpecInfo;
 import com.sefon.ws.service.impl.StationService;
+import de.onlinehome.geomath.jk3d.Jk2d;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,8 @@ import org.springframework.web.context.WebApplicationContext;
 import org.tempuri.*;
 
 import java.math.BigInteger;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -48,6 +51,9 @@ public class AlarmDataController {
 
     @Autowired
     private com.chinawiserv.wsmp.levellocate.LevelLocate Locate;
+
+    @Autowired
+    private Jk2d jk2d;
 
     @Value("${upperBound.value:5000000}")
     long upperBound;
@@ -318,20 +324,19 @@ public class AlarmDataController {
 //        Long frequency = Long.parseLong((String) param.get("frequency"));
 //        List<LevelLocate> relate = hbaseClient.queryLevelLocate((String) param.get("beginTime"), frequency );
         Params params = new Params();
-
         List<LevelLocate> mapPoint = Collections.emptyList();
-        List<Map<String, Object>> levelPoint =   Collections.emptyList();
+        List<Map<String, Object>> levelPoint =  Lists.newLinkedList();
 
         try {
             List<LevelLocate> relate = hbaseClient.queryLevelLocate((String) param.get("beginTime"), Long.parseLong((String) param.get("frequency")));
 
             if (relate.size()!=0){
-                Logger.info("场强查询正常返回个数为0, 操作时间：{},入参：开始时间：{}，中心频率：{}",LocalDateTime.now().toString(),param.get("beginTime"),param.get("frequency"));
+                Logger.info("场强查询正常返回个数为"+relate.size()+", 操作时间：{},入参：开始时间：{}，中心频率：{}",LocalDateTime.now().toString(),param.get("beginTime"),param.get("frequency"));
             }
 
-            List<String> stationcode = (List<String>) param.get("stationcode");
+            List<String> stationcode = (List<String>) param.get("stationCodes");
 
-             relate.stream().filter(t -> stationcode.contains(t.getId())).collect(toList());
+            mapPoint = relate.stream().filter(t -> stationcode.contains(t.getId())).collect(toList());
 
             int[] ids = relate.stream().mapToInt(m -> Integer.parseInt(m.getId())).toArray();
 
@@ -351,6 +356,47 @@ public class AlarmDataController {
         } catch (NumberFormatException e) {
             Logger.error("场强查询异常 ,操作时间：{},入参：开始时间：{}，中心频率：{} 异常 ：{}",LocalDateTime.now(),param.get("beginTime"),param.get("frequency"),e);
         }
+
+        int coulm = mapPoint.size();
+
+        double [][] p = new double[coulm][3];
+
+        for (int index = 0;index<coulm;index++){
+            p[index][0] = mapPoint.get(index).getFlon();
+            p[index][1] = mapPoint.get(index).getFlat();
+            p[index][2] = mapPoint.get(index).getLevel();
+        }
+
+        System.out.println(JSON.toJSONString(p));
+//        double [][] t = jk2d.jk2d_ret(0.05,10,0.05,10,p);
+        double [][] t = p;
+        int size = t.length;
+        List<Map<String,Object>> kriking = Lists.newLinkedList();
+
+        Map<String,Object> spatialReference = Maps.newHashMap();
+        DecimalFormat xformart = new DecimalFormat("#.00000000");
+        DecimalFormat yformart = new DecimalFormat("#.000000000");
+        spatialReference.put("wkid", 4326);
+        for (int index = 0;index<size;index++){
+            Map<String,Object> element = Maps.newHashMap();
+            Map<String,Object> count = Maps.newHashMap();
+            Map<String,Object> geometry = Maps.newLinkedHashMap();
+            double val = t[index][2];
+            double x = t[index][0];
+            double y = t[index][1];
+            geometry.put("spatialReference",spatialReference);
+            geometry.put("type","point");
+            geometry.put("x",Double.valueOf(xformart.format(x * 20037508.34 / 180)));
+            y = Math.log(Math.tan((90 + y) * Math.PI / 360)) / (Math.PI / 180);
+            y = y * 20037508.34 / 180;
+            geometry.put("y",Double.valueOf(yformart.format(y)));
+            count.put("count",(int)val);
+            element.put("attributes",count);
+            element.put("geometry",geometry);
+            kriking.add(element);
+        }
+
+
 
         //测试或正式环境使用
         //List<String> stationcode = (List<String>) param.get("stationcode");
@@ -392,6 +438,7 @@ public class AlarmDataController {
 
         mapPiont.put("stationPiont", stationPiont);
         mapPiont.put("levelPoint", levelPoint);
+        mapPiont.put("kriking", kriking);
 
         // map.put("x", "106.709177096");
         // map.put("y", "26.6299067414");
@@ -399,6 +446,7 @@ public class AlarmDataController {
         // map.put("stationId", "oopsoo");
         return mapPiont;
     }
+
 
     @GetMapping(path = "/stationsf")
     public Object getStationBySF(@RequestParam Map<String, Object> param) {

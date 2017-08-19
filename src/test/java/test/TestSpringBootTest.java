@@ -59,8 +59,7 @@ public class TestSpringBootTest {
 		@SuppressWarnings("unchecked")
 		MeasureTaskParamDto resultList = (MeasureTaskParamDto) JSON.parseObject(response,type);
 		Logger.info("=================={}", JSON.toJSONString(resultList));	
-		
-		
+
 		//添加
 		//增加重点监测或更新(更新需要ID)
 		MeasureTaskParamDto dto = new MeasureTaskParamDto();
