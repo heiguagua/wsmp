@@ -214,6 +214,7 @@
 <input id="stationCode" value="" style="display: none;">
 <input id="stationId" class ="after_modal_colse" style="display: none;"  value="" >
 <input id="typeCode" class ="after_modal_colse" style="display: none;"  value="" >
+<input id="FormQZ"  style="display: none;"  value="${FromQz}" >
 <input style="display: none" id ='mapUrl' value="${mapUrl}" />
 <script>
     var wsmp_host = "/radio/app"

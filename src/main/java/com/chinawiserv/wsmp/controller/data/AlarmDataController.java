@@ -368,7 +368,7 @@ public class AlarmDataController {
         double [][] t = new double[0][0];
 
         if (p.length!=0){
-            t = jk2d.jk2d_ret(0.01,10,0.01,10,p);
+            t = jk2d.jk2d_ret(0.0001,10,0.0001,10,p);
         }
 
         int size = t.length;

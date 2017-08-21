@@ -235,7 +235,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 				}
 			})
 		});
-        var singal = $("#FromSingal").val();
+        var singal = $("#FormQZ").val();
         if (singal){
             var search = $("#search");
             search.val(singal);

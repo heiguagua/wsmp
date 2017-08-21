@@ -34,7 +34,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                 var stationId = $('#station_list').find('option:selected').val();
                 var signalId = $('#signal_list').find('option:selected').val();
                 var warningFreqID = $('#signal_list').find('option:selected').val();
-                var typeCode = $('.typeCode').val();
+                var typeCode = $('#typeCode').val();
                 var data = {};
                 var station = {};
                 var singal = {}
@@ -70,6 +70,8 @@ define(["home/alarm/alarm_manage", "ajax"],
             mapInit()
             // dojo.addOnLoad(());
             closeModal();
+
+
         }
 
         function getKriking(extent) {
