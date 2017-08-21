@@ -711,12 +711,16 @@ define(	["ajax", "dojo/parser", "esri/map",
 						columns : [{
 									field : 'redioName',
 									title : '频段名称',
+									width:'10%',
+									titleTooltip:'频段名称',
 									formatter : function(value, row, index) {
 										return value;
 									}
 								}, {
 									field : 'legalNormalStationNumber',
 									title : '合法正常信号',
+									width:'15%',
+									titleTooltip:'合法正常信号',
 									formatter : function(value, row, index) {
 										return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
 												+ monitorsID
@@ -731,6 +735,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 								}, {
 									field : 'legalUnNormalStationNumber',
 									title : '合法违规信号',
+									width:'15%',
+									titleTooltip:'合法违规信号',
 									formatter : function(value, row, index) {
 										return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
 												+ monitorsID
@@ -745,6 +751,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 								}, {
 									field : 'konwStationNumber',
 									title : '已知信号',
+									width:'10%',
+									titleTooltip:'已知信号',
 									formatter : function(value, row, index) {
 										return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
 												+ monitorsID
@@ -759,6 +767,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 								}, {
 									field : 'unKonw',
 									title : '不明信号',
+									width:'10%',
+									titleTooltip:'不明信号',
 									formatter : function(value, row, index) {
 										return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
 												+ monitorsID
@@ -773,6 +783,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 								}, {
 									field : 'illegalSignal',
 									title : '非法信号',
+									width:'10%',
+									titleTooltip:'非法信号',
 									formatter : function(value, row, index) {
 										return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
 												+ monitorsID
@@ -786,6 +798,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 									}
 								}, {
 									title : '重点监测',
+									width:'10%',
+									titleTooltip:'重点监测',
 									formatter : function(value, row, index) {
 										return '<a data-toggle="modal" data-target="#modalConfig" data-beginFreq="'
 												+ row.beginFreq
