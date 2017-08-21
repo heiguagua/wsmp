@@ -145,6 +145,7 @@ public class AlarmManagerViewController {
 
 		model.addAttribute("mapUrl",mapUrl);
 		model.addAttribute("FromQz",cenFreg);
+		model.addAttribute("redioType",redioType);
 		return "alarmmanage/alarmmanage_home";
 	}
 
