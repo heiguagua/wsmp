@@ -159,7 +159,6 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
         //init select2
         init_select2();
         var singal = $("#FormQZ").val();
-        alert(singal)
         if (singal){
             var search = $("#search");
             search.val(singal);
