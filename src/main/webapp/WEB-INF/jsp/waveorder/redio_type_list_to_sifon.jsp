@@ -35,7 +35,4 @@
               </div> <span class='signal-sign illegal'></span> <span class='number illegal-number'>${redio.illegalSignal}</span>
             </li>
           </ul>
-          <a class='btn btn-default btn-refresh pull-right'>
-            <img src='images/refresh.png' />&nbsp;&nbsp;刷新
-          </a>
         </div>
