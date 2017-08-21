@@ -107,7 +107,7 @@
           <span class='coverage-number'>90%</span>
         </div>
       </div>
-      <div id="mapDiv"style= "padding: 10px;"></div>
+      <div id="mapDiv"></div>
       <div id="heatLayer"></div>
     </div>
   </section>
