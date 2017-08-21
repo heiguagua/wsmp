@@ -13,12 +13,14 @@ define(["home/alarm/alarm_manage", "ajax"],
         dojo.require("esri.symbols.Font");
         dojo.require("esri.geometry.Circle");
         dojo.require("esri.symbols.SimpleFillSymbol");
+        dojo.require("dojo/on");
 
-        var heatLayer
+        var heatLayer;
         var pSymbol = null;
         var glayer = null;
         var mapUtl = $("#mapUrl").val();
         var map = null;
+        var k = null;
         //config.defaults.io.corsEnabledServers.push("192.168.13.79:7080");
         function pares() {
 
@@ -103,7 +105,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                 getFeatures();
 
                 // on map extent change
-                dojo.connect(map, "onExtentChange", getFeatures);
+
 
             });
         }
@@ -279,6 +281,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                 // add heat layer to map
                 map.addLayer(heatLayer);
                 // resize map
+                //dojo.connect(map, "onExtentChange", getFeatures);
                 map.resize();
             });
 
@@ -288,13 +291,14 @@ define(["home/alarm/alarm_manage", "ajax"],
             return map;
         }
 
-
         function getFeatures(result) {
-
-            var k = result.kriking;
+            console.log(result);
+            console.log("1111");
+            if (result){
+                k = result.kriking;
+            }
             console.log(JSON.stringify(k));
             heatLayer.setData(k);
-
         }
 
         // var point = [
@@ -397,6 +401,8 @@ define(["home/alarm/alarm_manage", "ajax"],
                         var kmz = $('#search').val();
                         var data = {};
                         data.type = "none";
+                        var typeCode = $(this).val();
+                        $("#typeCode").val(typeCode);
 
                         var temp = '<div class="header-search"><input type="text" placeholder="输入中心频率">' +
                             '<span class="search-icon"></span></div>' +
@@ -445,7 +451,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                                 console.log(row);
                                 $("#stationId").val(row.id);
 //									ajax.post("data/alarm/instersingal",data,function(){
-//									
+//
 //									});
                             },
                             sidePagination: 'server', //指定服务器端分页
@@ -485,6 +491,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                         var data = {};
                         var typeCode = $(this).val();
                         $("#typeCode").val(typeCode);
+
                         data.type = "none";
                         var temp = '<div class="header-search"><input type="text" placeholder="输入中心频率">' +
                             '<span class="search-icon"></span></div>' +
@@ -531,7 +538,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                                 console.log(row);
                                 $("#stationId").val(row.id);
 //									ajax.post("data/alarm/instersingal",data,function(){
-//									
+//
 //									});
                             },
                             sidePagination: 'server', //指定服务器端分页
@@ -607,7 +614,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                                 console.log(row);
                                 $("#stationId").val(row.id);
 //									ajax.post("data/alarm/instersingal",data,function(){
-//									
+//
 //									});
                             },
                             sidePagination: 'server', //指定服务器端分页
@@ -646,6 +653,8 @@ define(["home/alarm/alarm_manage", "ajax"],
                         var value = $('option:selected').val();
                         var kmz = $('#search').val();
                         var data = {"stationCode": value, "kmz": kmz};
+                        var typeCode = $(this).val();
+                        $("#typeCode").val(typeCode);
                         var temp =
                             '<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息"></textarea></div>';
                         $("#stationWrap").html("");
@@ -658,6 +667,9 @@ define(["home/alarm/alarm_manage", "ajax"],
                         var value = $('option:selected').val();
                         var kmz = $('#search').val();
                         var data = {"stationCode": value, "kmz": kmz};
+                        var typeCode = $(this).val();
+                        $("#typeCode").val(typeCode);
+
                         var temp =
                             '<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息"></textarea></div>';
                         $("#stationWrap").html("");
