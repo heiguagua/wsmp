@@ -1,6 +1,5 @@
 package com.chinawiserv.wsmp.controller.data;
 
-import com.chinawiserv.apps.util.logger.Logger;
 import com.chinawiserv.wsmp.pojo.Alarm;
 import com.chinawiserv.wsmp.pojo.RedioDetail;
 import com.chinawiserv.wsmp.pojo.RedioStatusCount;
@@ -10,9 +9,11 @@ import com.google.common.collect.Maps;
 import com.sefon.ws.model.freq.xsd.FrequencyRangeInfo;
 import com.sefon.ws.model.freq.xsd.FrequencyRangeQuerySpec;
 import com.sefon.ws.service.impl.FreqService;
-
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.tempuri.*;
 
 import java.math.BigDecimal;
@@ -137,7 +138,7 @@ public class WaveOrderDataController {
 		FreqWarningQueryResponse response = freqWarningWS.getFreqWarningWebServiceSoap().query(request);
 		// System.out.println("=============================response:"+JSON.toJSONString(response));
 		List<Alarm> alarmRows = Lists.newArrayList();
-		response.getWarningInfos().getFreqWarningDTO().stream().forEach(t -> {
+		response.getWarningInfos().getFreqWarningDTOs().stream().forEach(t -> {
 			Alarm alarm = new Alarm();
 //			Logger.info("===================================:{}", t.getID());
 			BigDecimal certerFreq = new BigDecimal(t.getCenterFreq());
@@ -147,7 +148,7 @@ public class WaveOrderDataController {
 			alarm.setLastingTime(t.getInvalidDate().toString().replace('T',' '));
 			alarm.setMark(t.getDescription());
 			List<String> stationID = Lists.newArrayList();
-			t.getStatList().getFreqWarningStatDTO().stream().forEach(t1 -> {
+			t.getStatList().getFreqWarningStatDTOs().stream().forEach(t1 -> {
 				stationID.add(t1.getStationGUID());
 			});
 			alarm.setStationID(stationID);
@@ -176,7 +177,7 @@ public class WaveOrderDataController {
 		FreqWarningQueryResponse response = freqWarningWS.getFreqWarningWebServiceSoap().query(request);
 		// System.out.println("=============================response:"+JSON.toJSONString(response));
 		List<Alarm> alarmRows = Lists.newArrayList();
-		response.getWarningInfos().getFreqWarningDTO().stream().forEach(t -> {
+		response.getWarningInfos().getFreqWarningDTOs().stream().forEach(t -> {
 			Alarm alarm = new Alarm();
 			BigDecimal certerFreq = new BigDecimal(t.getCenterFreq());
 			BigDecimal divisor = new BigDecimal(1000000);
@@ -185,7 +186,7 @@ public class WaveOrderDataController {
 			alarm.setLastingTime(t.getInvalidDate().toString().replace('T',' '));
 			alarm.setMark(t.getDescription());
 			List<String> stationID = Lists.newArrayList();
-			t.getStatList().getFreqWarningStatDTO().stream().forEach(t1 -> {
+			t.getStatList().getFreqWarningStatDTOs().stream().forEach(t1 -> {
 				stationID.add(t1.getStationGUID());
 			});
 			alarm.setStationID(stationID);

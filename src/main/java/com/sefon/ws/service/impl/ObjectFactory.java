@@ -30,51 +30,35 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link QueryFreqRangeDateOcc }
+     * Create an instance of {@link QuerySelfFreqInfoByID }
      * 
      */
-    public QueryFreqRangeDateOcc createQueryFreqRangeDateOcc() {
-        return new QueryFreqRangeDateOcc();
+    public QuerySelfFreqInfoByID createQuerySelfFreqInfoByID() {
+        return new QuerySelfFreqInfoByID();
     }
 
     /**
-     * Create an instance of {@link QueryFreqRangeDateOccResponse }
+     * Create an instance of {@link QuerySelfFreqInfoByIDResponse }
      * 
      */
-    public QueryFreqRangeDateOccResponse createQueryFreqRangeDateOccResponse() {
-        return new QueryFreqRangeDateOccResponse();
+    public QuerySelfFreqInfoByIDResponse createQuerySelfFreqInfoByIDResponse() {
+        return new QuerySelfFreqInfoByIDResponse();
     }
 
     /**
-     * Create an instance of {@link QueryFrequencyRange }
+     * Create an instance of {@link QuerySelfFreqInfoByPID }
      * 
      */
-    public QueryFrequencyRange createQueryFrequencyRange() {
-        return new QueryFrequencyRange();
+    public QuerySelfFreqInfoByPID createQuerySelfFreqInfoByPID() {
+        return new QuerySelfFreqInfoByPID();
     }
 
     /**
-     * Create an instance of {@link QueryFrequencyRangeResponse }
+     * Create an instance of {@link QuerySelfFreqInfoByPIDResponse }
      * 
      */
-    public QueryFrequencyRangeResponse createQueryFrequencyRangeResponse() {
-        return new QueryFrequencyRangeResponse();
-    }
-
-    /**
-     * Create an instance of {@link QueryContinuousFreqncyRange }
-     * 
-     */
-    public QueryContinuousFreqncyRange createQueryContinuousFreqncyRange() {
-        return new QueryContinuousFreqncyRange();
-    }
-
-    /**
-     * Create an instance of {@link QueryContinuousFreqncyRangeResponse }
-     * 
-     */
-    public QueryContinuousFreqncyRangeResponse createQueryContinuousFreqncyRangeResponse() {
-        return new QueryContinuousFreqncyRangeResponse();
+    public QuerySelfFreqInfoByPIDResponse createQuerySelfFreqInfoByPIDResponse() {
+        return new QuerySelfFreqInfoByPIDResponse();
     }
 
 }

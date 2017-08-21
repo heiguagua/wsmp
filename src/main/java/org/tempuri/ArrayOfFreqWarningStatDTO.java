@@ -1,13 +1,12 @@
 
 package org.tempuri;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -31,26 +30,26 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ArrayOfFreqWarningStatDTO", propOrder = {
-    "freqWarningStatDTO"
+    "freqWarningStatDTOs"
 })
 public class ArrayOfFreqWarningStatDTO {
 
     @XmlElement(name = "FreqWarningStatDTO", nillable = true)
-    protected List<FreqWarningStatDTO> freqWarningStatDTO;
+    protected List<FreqWarningStatDTO> freqWarningStatDTOs;
 
     /**
-     * Gets the value of the freqWarningStatDTO property.
+     * Gets the value of the freqWarningStatDTOs property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the freqWarningStatDTO property.
+     * This is why there is not a <CODE>set</CODE> method for the freqWarningStatDTOs property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getFreqWarningStatDTO().add(newItem);
+     *    getFreqWarningStatDTOs().add(newItem);
      * </pre>
      * 
      * 
@@ -60,11 +59,11 @@ public class ArrayOfFreqWarningStatDTO {
      * 
      * 
      */
-    public List<FreqWarningStatDTO> getFreqWarningStatDTO() {
-        if (freqWarningStatDTO == null) {
-            freqWarningStatDTO = new ArrayList<FreqWarningStatDTO>();
+    public List<FreqWarningStatDTO> getFreqWarningStatDTOs() {
+        if (freqWarningStatDTOs == null) {
+            freqWarningStatDTOs = new ArrayList<FreqWarningStatDTO>();
         }
-        return this.freqWarningStatDTO;
+        return this.freqWarningStatDTOs;
     }
 
 }

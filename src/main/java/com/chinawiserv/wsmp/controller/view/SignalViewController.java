@@ -30,7 +30,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -68,6 +67,16 @@ public class SignalViewController {
 		model.addAttribute("mapUrl",mapUrl);
 		return "signal/signal_home";
 	}
+
+	@RequestMapping(path = { "/", ""
+	},params = {"id=sefon"})
+	public String homeForSefan(Model model,@RequestParam String cenFreg) {
+
+		model.addAttribute("mapUrl",mapUrl);
+		model.addAttribute("FromSingal",cenFreg);
+		return "signal/signal_home";
+	}
+
 
 	@PostMapping(path = "/sigaldetail")
 	public String signal_detail(Model model, @RequestParam String centorfreq, @RequestParam String beginTime, @RequestParam String endTime,

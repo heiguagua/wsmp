@@ -5,7 +5,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
     var time = null;
 
     function setMap(init){
-
+        console.log("+++++++++++++++++++++");
         console.log(init);
         initMap = init;
     }
@@ -234,7 +234,15 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 					layer.alert(html.responseText);
 				}
 			})
-		});	
+		});
+        var singal = $("#FromSingal").val();
+        if (singal){
+            var search = $("#search");
+            search.val(singal);
+            var e = jQuery.Event("keydown");//模拟一个键盘事件
+            e.keyCode = 13;//keyCode=13是回车
+            $("input.pagination-num").trigger(e);//模拟页码框按下回车
+        }
     }
 
 
@@ -329,7 +337,6 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                     console.log(codeStr);
                     codeStr = codeStr.replace("[","").replace("]","");
                     params.areaCode = codeStr;
-
                     return params
                 }, //请求服务器时所传的参数
                 onClickRow : function(row) {

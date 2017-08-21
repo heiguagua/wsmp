@@ -3,14 +3,17 @@
  */
 //
 
-define([ "esri/symbols/SimpleFillSymbol", "esri/geometry/Circle", "home/alarm/alarm_manage", "ajax", "dojo/parser", "dojo/request", "esri/dijit/Scalebar"
-        , "esri/symbols/TextSymbol", "esri/geometry/Point", "esri/graphic", "esri/symbols/Font", "home/heatmap/heatmap", "home/heatmap/heatmap-arcgis"],
-    function (SimpleFillSymbol, Circle, alarm_manage, ajax, parser,
-               request, Scalebar, TextSymbol, Point, graphic, Font,Heatmap, HeatmapLayer) {
+define(["home/alarm/alarm_manage", "ajax"],
+    function (alarm_manage, ajax) {
         var testWidget = null;
         dojo.require("esri.map");
-        dojo.require("dijit.dijit");
+        dojo.require("esri.layers.FeatureLayer");
         dojo.require("esri.symbols.SimpleMarkerSymbol");
+        dojo.require("esri.symbols.TextSymbol");
+        dojo.require("esri.symbols.Font");
+        dojo.require("esri.geometry.Circle");
+        dojo.require("esri.symbols.SimpleFillSymbol");
+
         var heatLayer
         var pSymbol = null;
         var glayer = null;
@@ -18,6 +21,7 @@ define([ "esri/symbols/SimpleFillSymbol", "esri/geometry/Circle", "home/alarm/al
         var map = null;
         //config.defaults.io.corsEnabledServers.push("192.168.13.79:7080");
         function pares() {
+
             $("#submitButton").click(function () {
                 var stationID = $("#stationId").val();
                 var des = $("#des").val();
@@ -36,23 +40,16 @@ define([ "esri/symbols/SimpleFillSymbol", "esri/geometry/Circle", "home/alarm/al
                 station.des = des;
 
                 station.warningFreqID = warningFreqID;
-
                 station.radioStation = {};
-
                 station.radioStation.station = {};
-
                 station.radioStation.station.id = stationID;
 
                 if (typeCode == "1") {
-
                     station.radioStation.station.type = "L_B";
-
                 }
 
                 if (typeCode == "2") {
-
                     station.radioStation.station.type = "N_P";
-
                 }
 
                 station.stationKey = stationID;
@@ -62,14 +59,14 @@ define([ "esri/symbols/SimpleFillSymbol", "esri/geometry/Circle", "home/alarm/al
                 data.sigal = singal;
                 ajax.post("data/alarm/instersingal", data, function () {
                     alert("成功");
-                    warnig_confirm();
+                    $("#modalStationAlarm").modal('hide');
+                    //warnig_confirm();
                 });
             });
 
-            parser.parse();
-
-            dojo.addOnLoad(mapInit());
-
+            //parser.parse();
+            mapInit()
+            // dojo.addOnLoad(());
             closeModal();
         }
 
@@ -111,10 +108,6 @@ define([ "esri/symbols/SimpleFillSymbol", "esri/geometry/Circle", "home/alarm/al
             });
         }
 
-        function getFeatures() {
-            heatLayer.setData(piont);
-        }
-
         function warnig_confirm() {
             var value = $("#signal_list").find('option:selected').val();
             var data = {};
@@ -139,9 +132,23 @@ define([ "esri/symbols/SimpleFillSymbol", "esri/geometry/Circle", "home/alarm/al
                 return;
             }
 
-            var arryId = l.split(",");
+            var info = Binding.getUser();
+            info = JSON.parse(info);
 
-            var data = {"stationcode": arryId, "frequency": centorFreq, "beginTime": beginTime};
+            var code = info.Area.Code;
+
+            var stationObj = Binding.getMonitorNodes(code);
+            console.log(stationObj);
+            stationObj = JSON.parse(stationObj);
+
+            var codes = [];
+
+            for (var index = 0 ;index<stationObj.length;index++){
+                codes.push(stationObj[index].Num);
+
+            }
+
+            var data = {"stationCodes": codes, "frequency": centorFreq, "beginTime": beginTime};
             //alarm_manage.changeView();
             ajax.post("data/alarm/getStation", data, function (reslut) {
                 glayer.clear();
@@ -152,14 +159,13 @@ define([ "esri/symbols/SimpleFillSymbol", "esri/geometry/Circle", "home/alarm/al
                 var stationSize = arryOfStation.length;
                 var LevelSize = arryOfLevel.length;
 
-
                 for (var index = 0; index < stationSize; index++) {
 
-                    var p = new Point(arryOfStation[index]);
+                    var p = new esri.geometry.Point(arryOfStation[index]);
 
-                    var textSymbol = new TextSymbol(arryOfStation[index].count).setColor(
-                        new esri.Color([0xFF, 0, 0])).setAlign(Font.ALIGN_START).setFont(
-                        new Font("12pt").setWeight(Font.WEIGHT_BOLD));
+                    var textSymbol = new esri.symbols.TextSymbol(arryOfStation[index].count).setColor(
+                        new esri.Color([0xFF, 0, 0])).setAlign(esri.symbols.Font.ALIGN_START).setFont(
+                        new esri.symbols.Font("12pt").setWeight(esri.symbols.Font.WEIGHT_BOLD));
 
                     var graphic = new esri.Graphic(p, textSymbol);
                     var textsyboml = new esri.Graphic(p, pSymbol);
@@ -172,18 +178,18 @@ define([ "esri/symbols/SimpleFillSymbol", "esri/geometry/Circle", "home/alarm/al
 
                 for (var index = 0; index < LevelSize; index++) {
 
-                    var p = new Point(arryOfLevel[index]);
-                    var circle = new Circle(p, {
+                    var p = new esri.geometry.Point(arryOfLevel[index]);
+                    var circle = new esri.geometry.Circle(p, {
                         geodesic: true,
                         radius: arryOfLevel[index].radius
                     });
 
-                    var symbol = new SimpleFillSymbol().setColor(null).outline.setColor("red");
+                    var symbol = new esri.symbols.SimpleFillSymbol().setColor(null).outline.setColor("red");
                     var circleGrap = new esri.Graphic(circle, symbol);
                     glayer.add(circleGrap);
 
                 }
-
+                getFeatures(reslut);
                 map.addLayer(glayer);
 
                 dojo.connect(map, "onClick", function (e) {
@@ -196,14 +202,14 @@ define([ "esri/symbols/SimpleFillSymbol", "esri/geometry/Circle", "home/alarm/al
                     }
                 });
 
-//					var p = new Point(reslut);
+//					var p = new esri.geometry.Point(reslut);
 //
 //					  var radius = 1000000000;
-//				      var circle = new Circle(p,{
+//				      var circle = new esri.geometry.Circle(p,{
 //				            geodesic: true,
 //				            radius: 10000
 //				        });
-//				    var symbol = new SimpleFillSymbol().setColor(null).outline.setColor("red");
+//				    var symbol = new esri.symbols.SimpleFillSymbol().setColor(null).outline.setColor("red");
 //					var textSymbol = new TextSymbol(reslut.count).setColor(
 //						new esri.Color([ 0xFF, 0, 0 ])).setAlign(Font.ALIGN_START).setFont(
 //						new Font("12pt").setWeight(Font.WEIGHT_BOLD));
@@ -221,23 +227,27 @@ define([ "esri/symbols/SimpleFillSymbol", "esri/geometry/Circle", "home/alarm/al
         //"http://127.0.0.1:8080/data/PBS/rest/services/MyPBSService1/MapServer"
         function mapInit() {
 
+            var mapUtl = $("#mapUrl").val();
+
             var url = mapUtl;
-            var agoLayer = new esri.layers.ArcGISTiledMapServiceLayer(url, {
-                id: "街道地图"
-            });
+            var agoLayer = new esri.layers.ArcGISTiledMapServiceLayer(url, {id: "街道地图"});
+            console.log(agoLayer.initialExtent)
             var attr = {
                 "Xcoord": 104.06,
                 "Ycoord": 30.67,
                 "Plant": "Mesa Mint"
             };
 
+            var initExtent = new esri.geometry.Extent({type: "extent", xmin: -180, ymin: -90, xmax: 180, ymax: 90});
+
             console.log(JSON.stringify(agoLayer.initialExtent));
             var initiaEx = agoLayer.initialExtent;
-            map = new  esri.Map("mapDiv", {
+            map = new esri.Map("mapDiv", {
                 //center : [ 104.06, 30.67 ],
                 zoom: 10,
                 sliderStyle: "small"
             });
+
             map.addLayer(agoLayer);
             glayer = new esri.layers.GraphicsLayer();
             pSymbol = new esri.symbols.SimpleMarkerSymbol();
@@ -248,11 +258,11 @@ define([ "esri/symbols/SimpleFillSymbol", "esri/geometry/Circle", "home/alarm/al
 
             dojo.connect(map, 'onLoad', function (theMap) {
 
-                dojo.connect(dijit.byId('map'), 'resize', map, map.resize);
+                dojo.connect(dijit.byId('mapDiv'), 'resize', map, map.resize);
                 // create heat layer
                 heatLayer = new HeatmapLayer({
                     config: {
-                        "useLocalMaximum": true,
+                        "useLocalMaximum": false,
                         "radius": 40,
                         "gradient": {
                             0.45: "rgb(000,000,255)",
@@ -269,64 +279,105 @@ define([ "esri/symbols/SimpleFillSymbol", "esri/geometry/Circle", "home/alarm/al
                 // add heat layer to map
                 map.addLayer(heatLayer);
                 // resize map
-
                 map.resize();
-
             });
 
             var ti = $("#warning_confirm").attr("class");
             signalClick(map, pSymbol, glayer);
             station_change(map, pSymbol, glayer);
-            //$("#illegal").click();
-
-
-            //        var scaleba = new Scalebar({
-            //        	  map:map,
-            //        	  attachTo:"bottom-left"
-            //        	});
-
-            require(["dojo/request", "home/geoJson2ArcJson", "home/init", "esri/geometry/Polygon", "esri/graphic"],
-                function (request, geoJson2ArcJson, init, Polygon) {
-                    //            request.get("../data/map/getGeoJson", {
-                    //                data: {
-                    //                    color: "blue",
-                    //                    answer: 42
-                    //                },
-                    //                headers: {
-                    //                    "X-Something": "A value"
-                    //                }
-                    //            }).then(function(text){
-                    //            	 //console.log(text);
-                    //            	 var obj=JSON.parse(text);
-                    ////            	 var result = eval("("+text+")");
-                    ////            	 var jsonf = geoJson2ArcJson.init();
-                    ////            	 var json = jsonf.toEsri(result);
-                    ////            	 var features = json.rings;
-                    ////            	 console.log("The server returned: ", json);
-                    ////                 console.log("The server returned: ", features);
-                    //            	 var sfs = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID,
-                    //            	            new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_DASHDOT,
-                    //            	                new dojo.Color([255, 0, 0]), 2), new dojo.Color([255, 0, 0, 0.25])
-                    //            	        );
-                    //            	 //var feature = obj[0];
-                    //            	// console.log(feature);
-                    //            	 //console.log(feature.type);
-                    //            	 //console.log(feature.coordinates);
-                    //            	 for(var index = 0;index < obj.length;index++){
-                    //            		 var feature = obj[index];
-                    //            		 //console.log(feature);
-                    //            		 var polygon  = new Polygon(feature.coordinates);
-                    //                     var graphic  = new esri.Graphic(polygon,sfs);
-                    //                     glayer.add(graphic);
-                    //            	 }
-                    //
-                    //                // map.addLayer(graphic);
-                    //
-                    //            });
-
-
-                });
             return map;
+        }
+
+
+        function getFeatures(result) {
+
+            var k = result.kriking;
+            console.log(JSON.stringify(k));
+            heatLayer.setData(k);
+
+        }
+
+        // var point = [
+        //     {
+        //         attributes: {
+        //             count: 40
+        //         },
+        //         geometry: {
+        //             spatialReference: {wkid: 4326},
+        //             type: "point",
+        //             x: 106.711123,
+        //             y: 26.5712221
+        //         }
+        //     },
+        //     {
+        //         attributes: {
+        //             count: 40
+        //         },
+        //         geometry: {
+        //             spatialReference: {wkid: 4326},
+        //             type: "point",
+        //             x: 106.711123,
+        //             y: 26.5712221
+        //         }
+        //     }
+        // ];
+        //
+        // for(var index = 0;index<point.length ;index++){
+        //
+        //     var mercator = lonlat2mercator( point[index].geometry);
+        //     point[index].geometry.x = mercator.x;
+        //     point[index].geometry.y = mercator.y;
+        // }
+        //
+        // console.log(JSON.stringify(point[0]));
+        // var value = $("#station_list").find('option:selected').val();
+        // var kmz = $('#search').val();
+        //
+        // var l = $('#signal_list').find('option:selected').attr("stationId");
+        // var centorFreq = $('#signal_list').find('option:selected').attr("centorFreq");
+        // var beginTime = $('#signal_list').find('option:selected').attr("beginTime");
+        //
+        // if (l == null) {
+        //     return;
+        // }
+        //
+        // var info = Binding.getUser();
+        // info = JSON.parse(info);
+        //
+        // var code = info.Area.Code;
+        //
+        // var stationObj = Binding.getMonitorNodes(code);
+        // stationObj = JSON.parse(stationObj);
+        //
+        // var codes = [];
+        //
+        // for (var index = 0 ;index<stationObj.length;index++){
+        //     codes.push(stationObj[index].Num);
+        // }
+        // var data = {"stationCodes": codes, "frequency": centorFreq, "beginTime": beginTime};
+        // alarm_manage.changeView();
+        // $.ajax({
+        //
+        //     url : "data/alarm/getStation",
+        //     data : JSON.stringify(data),
+        //     type : "POST",
+        //     async : false,
+        //     contentType : 'application/json',
+        //     success : function(result){
+        //         var k = result.kriking;
+        //         console.log(JSON.stringify(k[0]));
+        //         heatLayer.setData([k[0]]);
+        //     }
+        // });
+
+        function lonlat2mercator(lonlat) {
+            var mercator = {x: 0, y: 0};
+            var x = lonlat.x * 20037508.34 / 180;
+            var y = Math.log(Math.tan((90 + lonlat.y) * Math.PI / 360)) / (Math.PI / 180);
+            y = y * 20037508.34 / 180;
+            mercator.x = x;
+            mercator.y = y;
+            return mercator;
         }
 
         function closeModal() {
@@ -380,10 +431,13 @@ define([ "esri/symbols/SimpleFillSymbol", "esri/geometry/Circle", "home/alarm/al
                                 codeList.push(info.Area.Code);
                                 var codeStr = JSON.stringify(codeList);
 
+                                var centorFreq = $("#signal_list").find('option:selected').attr("centorfreq");
+                                params.centorFreq = centorFreq;
+
                                 console.log(codeStr);
                                 codeStr = codeStr.replace("[", "").replace("]", "");
                                 params.areaCode = codeStr;
-
+                                console.log(params);
                                 return params
                             }, //请求服务器时所传的参数
                             onClickRow: function (row) {
@@ -470,10 +524,7 @@ define([ "esri/symbols/SimpleFillSymbol", "esri/geometry/Circle", "home/alarm/al
                                 codeStr = codeStr.replace("[", "").replace("]", "");
                                 params.areaCode = codeStr;
 
-                                return params
-
-
-                                return params
+                                return params;
                             }, //请求服务器时所传的参数
                             onClickRow: function (row) {
                                 //data.id = row.signalId;

@@ -683,6 +683,6 @@ border-radius: 4px;
     border-top:0;
     border-bottom:0;
     overflow: hidden;
-    background: rgba(239, 239, 239, 0.48);
+    background: rgba(239, 239, 239, 0.18);
     z-index:-1;
 }
