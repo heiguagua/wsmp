@@ -128,7 +128,7 @@ public class WaveOrderDataController {
 		URL url = new URL(urlFreqWarning);
 		FreqWarningWebService freqWarningWS = new FreqWarningWebService(url);
 		FreqWarningQueryRequest request = new FreqWarningQueryRequest();
-		request.setIsInvalid(false);
+		request.setStatus(0);
 		// 设置监测站ID列表
 		ArrayOfString stationArray = new ArrayOfString();
 		@SuppressWarnings("unchecked")
@@ -167,7 +167,7 @@ public class WaveOrderDataController {
 		URL url = new URL(urlFreqWarning);
 		FreqWarningWebService freqWarningWS = new FreqWarningWebService(url);
 		FreqWarningQueryRequest request = new FreqWarningQueryRequest();
-		request.setIsInvalid(true);
+		request.setStatus(1);
 		// 设置监测站ID列表
 		ArrayOfString stationArray = new ArrayOfString();
 		@SuppressWarnings("unchecked")

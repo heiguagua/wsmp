@@ -344,6 +344,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 					map2.addLayer(agoLayer2);
 					map2.addLayer(glayer2);
 				});
+				
 			}
 
 			// 区域切换
@@ -438,25 +439,25 @@ define(	["ajax", "dojo/parser", "esri/map",
 			function addPoint(monitors, signalType) {
 				var map1 = MAP1;
 				var glayer1 = map1.getLayer('graphicsLayer0');
+				console.log(glayer1);
 				var data = {};
 				data.monitorsNum = [];
 				data.signalType = signalType;
 				for (var i = 0; i < monitors.length; i++) {
 					data.monitorsNum[i] = monitors[i].Num;
 				}
+				// 顶层图标大小
 				// 监测站symbol
 				var monitorSymbol = new PictureMarkerSymbol({
 							"url" : "images/monitoring-station.svg",
-							"height" : 33,
-							"width" : 32
-							,
+							"height" : 28,
+							"width" : 28
 						});
 				// 计数点symbol
 				var countBackgroundSymbol = new PictureMarkerSymbol({
 							"url" : "images/legal.svg",
 							"height" : 18,
-							"width" : 43
-							,
+							"width" : 36
 						});
 				ajax.post("data/waveorder/monitorsPoint", data,
 						function(result) {
@@ -474,7 +475,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 
 										var monitorPoint = new Point(obj);
 										var countPoint = monitorPoint.offset(
-												0.06, 0.05);// 计数点位于右上角
+												0.01, 0.007);// 计数点位于右上角
 										var countSymbol = new TextSymbol(monitorPoint.count)
 												.setColor(new esri.Color([0xff,
 																0xff, 0xff]))
@@ -483,7 +484,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 																.setWeight(Font.WEIGHT_BOLD));
 
 										var countGraphic = new esri.Graphic(
-												countPoint, countSymbol);// 计数图
+												countPoint.offset(0,-0.001), countSymbol);// 计数图
 										var countBackgroundGraphic = new esri.Graphic(
 												countPoint,
 												countBackgroundSymbol);// 计数底图
@@ -706,6 +707,12 @@ define(	["ajax", "dojo/parser", "esri/map",
 						onLoadSuccess : function() {
 							MAP1 = mapInit();
 							addPoint(monitors, 0);// 默认选中0
+							// 图片缩放随地图缩放事件
+							MAP1.on("zoom-end",function(zoom){
+								console.log(zoom);
+								//以最大层级为标准，缩小就减小图标大小,并且只减小监测站图标
+								
+							});
 							console.log(MAP1);
 						},
 						columns : [{
