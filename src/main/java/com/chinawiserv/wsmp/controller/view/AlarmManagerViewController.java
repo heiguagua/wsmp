@@ -139,6 +139,15 @@ public class AlarmManagerViewController {
 		return "signal/signal_list";
 	}
 
+	@RequestMapping(path = { "/", ""
+	},params = {"id=QZ"})
+	public String homeForQz(Model model,@RequestParam String cenFreg) {
+
+		model.addAttribute("mapUrl",mapUrl);
+		model.addAttribute("FromQz",cenFreg);
+		return "alarmmanage/alarmmanage_home";
+	}
+
 	@RequestMapping(path = { ""
 	})
 	public ModelAndView test(ModelAndView modelAndView) throws IOException {

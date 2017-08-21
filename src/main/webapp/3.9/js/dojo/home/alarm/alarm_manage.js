@@ -158,18 +158,27 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
 
         //init select2
         init_select2();
+        var singal = $("#FormQZ").val();
+        alert(singal)
+        if (singal){
+            var search = $("#search");
+            search.val(singal);
+            var e = jQuery.Event("keydown");//模拟一个键盘事件
+            e.keyCode = 13;//keyCode=13是回车
+            $("#search").trigger(e);//模拟页码框按下回车
+        }
 
 
 //		// draw month data chart
 //		$("#month").load("alarmmanage/monthCharts", function() {
 //			month_charts.init();
 //		})
-//		
+//
 //		// 电平峰值
 //		$("#level").load("alarmmanage/levelCharts", function() {
 //			level_charts.init();
 //		})
-//		
+//
 //		$('#modalDay').on('shown.bs.modal', function(e) {
 //			$("#day").load("alarmmanage/dayCharts", function() {
 //				day_chart.init();

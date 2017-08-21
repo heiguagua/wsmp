@@ -325,7 +325,6 @@ public class AlarmDataController {
         Params params = new Params();
         List<LevelLocate> mapPoint = Collections.emptyList();
         List<Map<String, Object>> levelPoint =  Lists.newLinkedList();
-
         try {
             List<LevelLocate> relate = hbaseClient.queryLevelLocate((String) param.get("beginTime"), Long.parseLong((String) param.get("frequency")));
 
@@ -366,9 +365,12 @@ public class AlarmDataController {
             p[index][2] = mapPoint.get(index).getLevel();
         }
 
-        System.out.println(JSON.toJSONString(p));
-//        double [][] t = jk2d.jk2d_ret(0.05,10,0.05,10,p);
-        double [][] t = p;
+        double [][] t = new double[0][0];
+
+        if (p.length!=0){
+            t = jk2d.jk2d_ret(0.0001,10,0.0001,10,p);
+        }
+
         int size = t.length;
         List<Map<String,Object>> kriking = Lists.newLinkedList();
 
@@ -460,7 +462,7 @@ public class AlarmDataController {
         int limitNumber = Integer.parseInt(limit.toString());
 
         ArrayList<String> dr =new ArrayList<>(Arrays.asList(areaCodes)) ;
-        info.setSignalFreq(Double.parseDouble((String) param.get("centorFreq")));
+        info.setSignalFreq(Double.parseDouble((String) param.get("centorFreq"))/1000000);
         info.setAreaCodes(dr);
         
 
