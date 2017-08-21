@@ -139,19 +139,19 @@ define(	["ajax", "dojo/parser", "esri/map",
 						
 
 				// 告警未处理状态链接点击事件
-//				$("#table-alarm-undeal").on("click", ".alarmManageA",
-//						function(e) {
-//							console.log(e);
-//							var freq = e.target.text;
-//							const urlObj = {
-//								ServerName : 'host2',// 跳四方用host1,跳自己这边用host2
-//								//DisplayName : '单频率',
-//								MultiTabable : false,
-//								ReflushIfExist : true,
-//								Url : 'radio/app/alarmmanage?centorFreq='+freq;
-//							};
-//							Binding.openUrl(JSON.stringify(urlObj));
-//						})
+				$("#table-alarm-undeal").on("click", ".alarmManageA",
+						function(e) {
+							console.log(e);
+							var freq = e.target.attributes[1].value;
+							const urlObj = {
+								ServerName : 'host2',// 跳四方用host1,跳自己这边用host2
+								DisplayName : '告警管理_',
+								MultiTabable : false,
+								ReflushIfExist : true,
+								Url : 'radio/app/alarmmanage?id=QZ&cenFreg='+freq
+							};
+							Binding.openUrl(JSON.stringify(urlObj));
+						})
 
 				// 重点监测更新点击事件
 				$("#important_monitor").on("click", "#buttonUpdate",
@@ -657,7 +657,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 								field : 'status',
 								title : '状态',
 								formatter : function(value, row, index) {
-									return '<a class="alarmManageA" centorFreq='+row.radio+'>未确认</a>';
+									return '<a class="alarmManageA" data-centorFreq='+row.radio+'>未确认</a>';
 								}
 							}, {
 								field : 'mark',
