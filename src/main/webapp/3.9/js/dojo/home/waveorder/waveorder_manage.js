@@ -594,6 +594,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 					},
 					columns : [{
 								field : 'radio',
+						        width:'10%',
 								title : '频率',
 								formatter : function(value, row, index) {
 									return '<a class="centerFreqA">' + value
@@ -601,12 +602,15 @@ define(	["ajax", "dojo/parser", "esri/map",
 								}
 							}, {
 								field : 'firstTime',
+						        width:'20%',
 								title : '首次出现时间'
 							}, {
 								field : 'lastingTime',
+						        width:'20%',
 								title : '持续时间'
 							}, {
 								field : 'stationID',
+						        width:'15%',
 								title : '监测站',
 								formatter : function(value, row, index) {
 									var content = "";
@@ -625,14 +629,16 @@ define(	["ajax", "dojo/parser", "esri/map",
 								}
 							}, {
 								field : 'status',
+						        width:'10%',
 								title : '状态',
 								formatter : function(value, row, index) {
 									return '已确认';
 								}
 							}, {
 								field : 'mark',
+						        width:'10%',
 								title : '备注'
-								,
+
 							}],
 					onLoadSuccess : function() {
 						$("#table-alarm-dealed").find(".dpopover").popover({
@@ -669,19 +675,23 @@ define(	["ajax", "dojo/parser", "esri/map",
 					columns : [{
 								field : 'radio',
 								title : '频率',
+						        width:'10%',
 								formatter : function(value, row, index) {
 									return '<a class="centerFreqA">' + value
 											+ '</a>';
 								}
 							}, {
 								field : 'firstTime',
+						        width:'20%',
 								title : '首次出现时间'
 							}, {
 								field : 'lastingTime',
+						        width:'20%',
 								title : '持续时间'
 							}, {
 								field : 'stationID',
 								title : '监测站',
+						        width:'15%',
 								formatter : function(value, row, index) {
 									var content = "";
 									for (var i = 0; i < value.length; i++) {
@@ -699,14 +709,15 @@ define(	["ajax", "dojo/parser", "esri/map",
 								}
 							}, {
 								field : 'status',
+						        width:'10%',
 								title : '状态',
 								formatter : function(value, row, index) {
 									return '<a class="alarmManageA" data-centorFreq='+row.radio+'>未确认</a>';
 								}
 							}, {
 								field : 'mark',
+						        width:'10%',
 								title : '备注'
-								,
 							}],
 					onLoadSuccess : function() {
 						$("#table-alarm-undeal").find(".dpopover").popover({
