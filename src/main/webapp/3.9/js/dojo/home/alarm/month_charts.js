@@ -92,6 +92,10 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
 				]
 			};
 			maxlevel_total_length = reslut.monthOcc.xAxis.length;
+        	if(monthChart){
+				monthChart.clear();
+                monthChart.resize();
+        	}
 			monthChart = echarts.init($('#month')[0]);
 			monthChart.setOption(optionMonth);
 
