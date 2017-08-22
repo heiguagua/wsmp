@@ -23,7 +23,6 @@ define(["home/alarm/alarm_manage", "ajax"],
         var k = null;
         //config.defaults.io.corsEnabledServers.push("192.168.13.79:7080");
         function pares() {
-
             $("#submitButton").click(function () {
                 var stationID = $("#stationId").val();
                 var des = $("#des").val();
@@ -60,7 +59,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                 singal.typeCode = typeCode;
                 data.sigal = singal;
                 ajax.post("data/alarm/instersingal", data, function () {
-                    alert("成功");
+                    layer.msg("成功");
                     $("#modalStationAlarm").modal('hide');
                     //warnig_confirm();
                 });

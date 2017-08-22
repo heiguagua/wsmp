@@ -283,7 +283,7 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                     centerFrq = (parseFloat(centerFrq)) * 1000000;
                 }
                 else{
-                    alert("请输入数字！");
+                    layer.alert("请输入数字！");
                     return;
                 }
                 var info = Binding.getUser();
@@ -331,7 +331,7 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
         });
 
         //		var val = $(".select2-picker option:selected").val();
-        //		alert(val);
+        //		layer.alert(val);
 
         $(".search-icon").click(function () {
 
@@ -342,7 +342,7 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                 centerFrq = (parseFloat(centerFrq)) * 1000000;
             }
             else{
-                alert("请输入数字！");
+                layer.alert("请输入数字！");
                 return;
             }
 
