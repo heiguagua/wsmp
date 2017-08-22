@@ -276,10 +276,14 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
         $('.station-list').select2();
         $("#search").keydown(function (e) {
             if (e.keyCode == 13) {
-                var centerFrq = $(this).val();
-                console.log(centerFrq);
+                var centerFrq = $(this).val()
                 var data = {};
-                if (!isNaN(centerFrq)) {
+                if (centerFrq &&!isNaN(centerFrq)) {
+                    if(centerFrq=='0'){
+                        $(this).val(centerFrq+'Hz');
+                    }else{
+                        $(this).val(centerFrq+'MHz');
+                    }
                     centerFrq = (parseFloat(centerFrq)) * 1000000;
                 }
                 else{
@@ -338,7 +342,13 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
             var centerFrq = $("#search").val();
             console.log(centerFrq);
             var data = {};
-            if (!isNaN(centerFrq)) {
+            if (centerFrq &&!isNaN(centerFrq)) {
+                if(centerFrq=='0'){
+                    $(this).val(centerFrq+'Hz');
+                }else{
+                    $(this).val(centerFrq+'MHz');
+                }
+
                 centerFrq = (parseFloat(centerFrq)) * 1000000;
             }
             else{
