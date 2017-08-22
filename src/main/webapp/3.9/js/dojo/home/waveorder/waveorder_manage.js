@@ -62,8 +62,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 
 				// 信号类型切换点击事件
 				$("#redioType").on("click", "input", function(e) {
-							var monitors = getMonitors(AREACODE);
-							addPoint(monitors, e.target.value);
+							addPoint(MONITORS, Number(e.target.value));
 						});
 
 				// 重点监测点击事件
@@ -437,9 +436,12 @@ define(	["ajax", "dojo/parser", "esri/map",
 
 			// 根据监测站列表，信号类型绘出监测站点
 			function addPoint(monitors, signalType) {
-				var map1 = MAP1;
-				var glayer1 = map1.getLayer('graphicsLayer0');
-				console.log(glayer1);
+				var map = MAP1;
+				console.log(map);
+				var glayer_max = map.getLayer('graphicsLayer0');
+				var glayer_zoom = map.getLayer('graphicsLayer1');
+				glayer_max.clear();
+				glayer_zoom.clear();
 				var data = {};
 				data.monitorsNum = [];
 				data.signalType = signalType;
@@ -450,19 +452,40 @@ define(	["ajax", "dojo/parser", "esri/map",
 				// 监测站symbol
 				var monitorSymbol = new PictureMarkerSymbol({
 							"url" : "images/monitoring-station.svg",
-							"height" : 28,
-							"width" : 28
+							"height" : 26,
+							"width" : 26
 						});
 				// 计数点symbol
+				var url_countBackgrountSymbol = null;
+				switch (signalType) {
+				case 0:
+					url_countBackgrountSymbol = "images/legal.svg";
+					break;
+				case 1:
+					url_countBackgrountSymbol = "images/undeclared.svg";
+					break;
+				case 2:
+					url_countBackgrountSymbol = "images/known.svg";
+					break;
+				case 3:
+					url_countBackgrountSymbol = "images/unknown.svg";
+					break;
+				case 4:
+					url_countBackgrountSymbol = "images/illegal.svg";
+					break;
+				default:
+					break;
+				}
+				console.log(signalType);
+				console.log(url_countBackgrountSymbol);
 				var countBackgroundSymbol = new PictureMarkerSymbol({
-							"url" : "images/legal.svg",
-							"height" : 18,
-							"width" : 36
-						});
+					"url" : url_countBackgrountSymbol,
+					"height" : 18,
+					"width" : 34
+				});
 				ajax.post("data/waveorder/monitorsPoint", data,
 						function(result) {
 							console.log(result);
-							glayer1.clear();
 							for (var i = 0; i < result.length; i++) {
 								for (var j = 0; j < monitors.length; j++) {
 									if (result[i].monitorID == monitors[j].Num) {
@@ -475,31 +498,50 @@ define(	["ajax", "dojo/parser", "esri/map",
 
 										var monitorPoint = new Point(obj);
 										var countPoint = monitorPoint.offset(
-												0.01, 0.007);// 计数点位于右上角
+												0.009, 0.006);// 计数点位于右上角
 										var countSymbol = new TextSymbol(monitorPoint.count)
 												.setColor(new esri.Color([0xff,
 																0xff, 0xff]))
 												.setAlign(Font.ALIGN_START)
-												.setFont(new Font("12pt")
-																.setWeight(Font.WEIGHT_BOLD));
+												.setFont(new Font()
+															.setSize("12pt")
+															.setFamily(" .PingFangSC-Medium")
+														);
 
 										var countGraphic = new esri.Graphic(
-												countPoint.offset(0,-0.001), countSymbol);// 计数图
+												countPoint.offset(0,-0.0015), countSymbol);// 计数图
 										var countBackgroundGraphic = new esri.Graphic(
 												countPoint,
 												countBackgroundSymbol);// 计数底图
 										var monitorGraphic = new esri.Graphic(
 												monitorPoint, monitorSymbol);// 监测站图
-										glayer1.add(monitorGraphic);
-										glayer1.add(countBackgroundGraphic);
-										glayer1.add(countGraphic);
+										var monitorGraphic_zoom = new esri.Graphic(
+												monitorPoint, monitorSymbol);// 监测站图,一个图片对象只能赋予一个图层，所以这里必须要新复制一个对象
+										glayer_max.add(monitorGraphic);
+										glayer_max.add(countBackgroundGraphic);
+										glayer_max.add(countGraphic);
+										glayer_zoom.add(monitorGraphic_zoom);
 										break;
 									}
 
 								}
 							}
-							map1.addLayer(glayer1);
 						});
+				map.addLayer(glayer_max);
+				map.addLayer(glayer_zoom);
+				//缩放监听事件
+				map.on("zoom-end",function(zoom){
+					console.log(zoom);
+					//以最大层级为标准，缩小就减小图标大小,并且只减小监测站图标
+					if(zoom.level < map.getMaxZoom()) {
+						//先清除图片或者清除图片层或者隐藏图片层
+						glayer_max.hide();
+						glayer_zoom.show();
+					}else {
+						glayer_zoom.hide();
+						glayer_max.show();
+					}
+				});	
 			}
 
 			//下方地图初始化
@@ -507,21 +549,23 @@ define(	["ajax", "dojo/parser", "esri/map",
 
 				var mapUrl = $("#mapUrl").val();
 				var url = mapUrl;
-				var map1 = new Map("mapDiv1", {
+				var map = new Map("mapDiv1", {
 					center :[MONITORS[0].Longitude,MONITORS[0].Latitude],
 					maxZoom : 12,
 					minZoom :6,
 					zoom : 10,
-					logo : false
 				});
 
-				var agoLayer1 = new ArcGISTiledMapServiceLayer(url, {
+				var agoLayer = new ArcGISTiledMapServiceLayer(url, {
 					id : "街道地图"
 				});
-				var glayer1 = new GraphicsLayer();
-				map1.addLayer(agoLayer1);
-				map1.addLayer(glayer1);
-				return map1;
+				var glayer_max = new GraphicsLayer();
+				var glayer_zoom = new GraphicsLayer();
+				map.addLayer(agoLayer);
+				map.addLayer(glayer_max);
+				map.addLayer(glayer_zoom);
+				glayer_max.hide();
+				return map;
 			}
 
 			// 告警处理页面
@@ -707,13 +751,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 						onLoadSuccess : function() {
 							MAP1 = mapInit();
 							addPoint(monitors, 0);// 默认选中0
-							// 图片缩放随地图缩放事件
-							MAP1.on("zoom-end",function(zoom){
-								console.log(zoom);
-								//以最大层级为标准，缩小就减小图标大小,并且只减小监测站图标
-								
-							});
-							console.log(MAP1);
 						},
 						columns : [{
 									field : 'redioName',
