@@ -275,63 +275,68 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
     function init_select2() {
         $('.station-list').select2();
         $("#search").keydown(function (e) {
-            if (e.keyCode == 13) {
-                var centerFrq = $(this).val()
-                var data = {};
-                if (centerFrq &&!isNaN(centerFrq)) {
-                    if(centerFrq=='0'){
-                        $(this).val(centerFrq+'Hz');
-                    }else{
+            //数字0-9(keycode:48-57)，小键盘数字0-9（keycode:96-106,小数点keycode:110，enter键13或108,backspace键8）
+            if((e.keyCode>=48&&e.keyCode<=57 )|| (e.keyCode>=96&&e.keyCode<=106)||e.keyCode==110||e.keyCode==13||e.keyCode==108||e.keyCode==8){
+                if (e.keyCode == 13) {
+                    var centerFrq = $(this).val()
+                    var data = {};
+                    if (centerFrq &&!isNaN(centerFrq) && centerFrq!='0') {
                         $(this).val(centerFrq+'MHz');
+                        centerFrq = (parseFloat(centerFrq)) * 1000000;
+                    }else {
+                        layer.alert("操作失误，请输入大于0的数字！");
+                        return;
                     }
-                    centerFrq = (parseFloat(centerFrq)) * 1000000;
+
+                    var info = Binding.getUser();
+
+                    info = JSON.parse(info);
+                    console.log(info);
+
+                    var info = Binding.getUser();
+                    info = JSON.parse(info);
+
+                    var code = info.Area.Code;
+
+                    var stations = Binding.getMonitorNodes(code);
+                    stations = JSON.parse(stations);
+
+                    console.log(stations);
+
+                    var codes = info.Area.Code;
+                    var stationList = [];
+
+                    for (var index = 0;index<stations.length;index++){
+                        console.log(stations[index].Num);
+                        stationList.push(stations[index].Num);
+                    }
+
+                    var stationCodeList = {};
+                    stationCodeList.string = stationList;
+
+                    data.centerFreq = centerFrq;
+                    data.stationIDs = stationCodeList;
+
+                    console.log(data);
+                    data = JSON.stringify(data);
+                    $("#signal_list").children().remove();
+                    $("#signal_list").load("alarmmanage/singal",{param : data} , function () {
+                        stationselectinit();
+                        $('.select2-picker').select2();
+
+                        changeView();
+                        console.log(mapinit);
+                        mapinit.stationChange();
+                        //$("#illegal").click();
+                    });
                 }
-                else{
-                    layer.alert("请输入数字！");
-                    return;
-                }
-                var info = Binding.getUser();
+            }else {
+                layer.alert("操作失误，请输入大于0的数字！");
+                $("#search").blur();
+                return;
 
-                info = JSON.parse(info);
-                console.log(info);
-
-                var info = Binding.getUser();
-                info = JSON.parse(info);
-
-                var code = info.Area.Code;
-
-                var stations = Binding.getMonitorNodes(code);
-                stations = JSON.parse(stations);
-
-                console.log(stations);
-
-                var codes = info.Area.Code;
-                var stationList = [];
-
-                for (var index = 0;index<stations.length;index++){
-                    console.log(stations[index].Num);
-                    stationList.push(stations[index].Num);
-                }
-
-                var stationCodeList = {};
-                stationCodeList.string = stationList;
-
-                data.centerFreq = centerFrq;
-                data.stationIDs = stationCodeList;
-
-                console.log(data);
-                data = JSON.stringify(data);
-                $("#signal_list").children().remove();
-                $("#signal_list").load("alarmmanage/singal",{param : data} , function () {
-                    stationselectinit();
-                    $('.select2-picker').select2();
-
-                    changeView();
-                    console.log(mapinit);
-                    mapinit.stationChange();
-                    //$("#illegal").click();
-                });
             }
+
         });
 
         //		var val = $(".select2-picker option:selected").val();
@@ -342,17 +347,12 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
             var centerFrq = $("#search").val();
             console.log(centerFrq);
             var data = {};
-            if (centerFrq &&!isNaN(centerFrq)) {
-                if(centerFrq=='0'){
-                    $("#search").val(centerFrq+'Hz');
-                }else{
-                    $("#search").val(centerFrq+'MHz');
-                }
-
+            if (centerFrq &&!isNaN(centerFrq)&&centerFrq!='0') {
+                $("#search").val(centerFrq+'MHz');
                 centerFrq = (parseFloat(centerFrq)) * 1000000;
             }
             else{
-                layer.alert("请输入数字！");
+                layer.alert("操作失误，请输入大于0的数字！");
                 return;
             }
 
