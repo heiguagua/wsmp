@@ -283,7 +283,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                 // add heat layer to map
                 map.addLayer(heatLayer);
                 // resize map
-                //dojo.connect(map, "onExtentChange", getFeatures);
+                dojo.connect(map, "onExtentChange", getFeatures);
                 map.resize();
             });
 
@@ -294,9 +294,10 @@ define(["home/alarm/alarm_manage", "ajax"],
         }
 
         function getFeatures(result) {
-            console.log(result);
+            console.log("result ======" +JSON.stringify(result) );
             console.log("1111");
-            if (result){
+            console.log("K =======" + k);
+            if (result.type!='extent'){
                 k = result.kriking;
             }
             console.log(JSON.stringify(k));

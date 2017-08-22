@@ -1,12 +1,11 @@
 package com.chinawiserv.wsmp.configuration;
 
-import java.time.format.DateTimeFormatter;
-
+import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.config.CustomEditorConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.google.common.collect.ImmutableMap;
+import java.time.format.DateTimeFormatter;
 
 @Configuration
 public class BaseConfiguration {

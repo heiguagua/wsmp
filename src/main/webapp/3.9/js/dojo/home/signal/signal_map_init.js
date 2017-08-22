@@ -18,6 +18,7 @@ define(["home/signal/signal_manage", "ajax" ],
         var glayer = null;
         var map = null;
         var mapUrl = $("#mapUrl").val();
+		var k=null;
 		//var map = null;
 		//config.defaults.io.corsEnabledServers.push("192.168.13.79:7080");
 		function pares() {
@@ -82,8 +83,12 @@ define(["home/signal/signal_manage", "ajax" ],
 		}
 
         function getFeatures(result) {
-
-            var k = result.kriking;
+            console.log("result ======" +JSON.stringify(result) );
+            console.log("1111");
+            console.log("K =======" + k);
+            if (result.type!='extent'){
+                k = result.kriking;
+            }
             console.log(JSON.stringify(k));
             heatLayer.setData(k);
         }
