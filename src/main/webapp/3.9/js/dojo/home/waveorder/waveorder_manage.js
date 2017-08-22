@@ -333,7 +333,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 				});
 
 				// 初始化电磁环境评估地图事件
-				$('#modalEvaluate').on('show.bs.modal', function(e) {
+				$('#modalEvaluate').on('shown.bs.modal', function(e) {
 
 					var mapUrl = $("#mapUrl").val();
 					var url = mapUrl;
