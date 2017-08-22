@@ -344,9 +344,9 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
             var data = {};
             if (centerFrq &&!isNaN(centerFrq)) {
                 if(centerFrq=='0'){
-                    $(this).val(centerFrq+'Hz');
+                    $("#search").val(centerFrq+'Hz');
                 }else{
-                    $(this).val(centerFrq+'MHz');
+                    $("#search").val(centerFrq+'MHz');
                 }
 
                 centerFrq = (parseFloat(centerFrq)) * 1000000;
