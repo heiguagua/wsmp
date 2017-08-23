@@ -667,6 +667,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 getStations(s_val);
 
             }
+            $('.select2-picker').select2();
         });
 
     }
