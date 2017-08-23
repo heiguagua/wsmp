@@ -4,26 +4,6 @@
 
 <form id="important-monitor-form" class="form-horizontal">
 	<div class="form-box-wrap">
-		<%-- <div class="form-group col-sm-6">
-			<label for="" class="col-sm-3 control-label">开始时间</label>
-			<div class="col-sm-9">
-				<div class="input-group date time-picker" id="startTime">
-					<input name="beginTime" type="text" class=" date-control"
-						value="${dto.getBeginTime()}"> <span
-						class="input-group-addon"> <img src="images/date.png" /></span>
-				</div>
-			</div>
-		</div>
-		<div class="form-group col-sm-6">
-			<label for="" class="col-sm-3 control-label">结束时间</label>
-			<div class="col-sm-9">
-				<div class="input-group date time-picker" id="endTime">
-					<input name="endTime" type="text" class="date-control "
-						value="${dto.getEndTime()}"> <span
-						class="input-group-addon"> <img src="images/date.png" /></span>
-				</div>
-			</div>
-		</div> --%>
 		 <div class="form-group col-sm-6">
 			<label for="" class="col-xs-3 control-label">开始时间</label>
 		        <div class=' input-group date time-picker' id='startTime' style="padding-left:15px">
@@ -67,11 +47,11 @@
 
 	<div class="col-sm-6 box-title-wrap">
 		<label for="" class="col-sm-6 control-label"><span
-			class="wrap-title">参数</span></label>
+			class="wrap-title">单次采集数</span></label>
 	</div>
 	<div class="col-sm-6 box-title-wrap">
 		<label for="" class="col-sm-6 control-label"><span
-			class="wrap-title">采集总时间</span></label>
+			class="wrap-title">采集总数</span></label>
 	</div>
 	<div class="form-box-wrap form-box-down">
 		<div class="form-group col-sm-6">
@@ -79,8 +59,8 @@
 			<div class="col-sm-9">
 				<div class="input-group">
 					<input name="IQCount" value="${dto.getIQCount()}" type="text"
-						class="form-control " placeholder="单位(次)">
-					<span class="input-group-addon unit">次</span>
+						class="form-control " placeholder="单位(帧)">
+					<span class="input-group-addon unit">帧</span>
 				</div>
 			</div>
 		</div>
@@ -89,8 +69,8 @@
 				<div class="input-group">
 					<input name="totalIQCount" type="text"
 						value="${dto.getTotalIQCount()}" class="form-control "
-						placeholder="单位(次)">
-					<span class="input-group-addon unit">次</span>
+						placeholder="单位(帧)">
+					<span class="input-group-addon unit">帧</span>
 				</div>
 			</div>
 		</div>
@@ -99,8 +79,8 @@
 			<div class="col-sm-9">
 				<div class="input-group">
 					<input name="specCount" value="${dto.getSpecCount()}" type="text"
-						class="form-control " placeholder="单位(次)">
-					<span class="input-group-addon unit">次</span>
+						class="form-control " placeholder="单位(帧)">
+					<span class="input-group-addon unit">帧</span>
 				</div>
 			</div>
 		</div>
@@ -108,8 +88,8 @@
 			<div class="col-sm-6 padding_0_8">
 				<div class="input-group">
 					<input name="totalSpecCount" value="${dto.getTotalSpecCount()}"
-						type="text" class="form-control " placeholder="单位(次)">
-					<span class="input-group-addon unit">次</span>
+						type="text" class="form-control " placeholder="单位(帧)">
+					<span class="input-group-addon unit">帧</span>
 				</div>
 			</div>
 		</div>
@@ -118,8 +98,8 @@
 			<div class="col-sm-9">
 				<div class="input-group">
 					<input name="featureCount" value="${dto.getFeatureCount()}"
-						type="text" class="form-control " placeholder="单位(次)">
-					<span class="input-group-addon unit">次</span>
+						type="text" class="form-control " placeholder="单位(帧)">
+					<span class="input-group-addon unit">帧</span>
 				</div>
 			</div>
 		</div>
@@ -128,8 +108,8 @@
 				<div class="input-group">
 					<input name="totalFeatureCount"
 						value="${dto.getTotalFeatureCount()}" type="text"
-						class="form-control " placeholder="单位(次)">
-					<span class="input-group-addon unit">次</span>
+						class="form-control " placeholder="单位(帧)">
+					<span class="input-group-addon unit">帧</span>
 				</div>
 			</div>
 		</div>
@@ -138,8 +118,8 @@
 			<div class="col-sm-9">
 				<div class="input-group">
 					<input name="ITUCount" value="${dto.getITUCount()}" type="text"
-						class="form-control " placeholder="单位(次)">
-					<span class="input-group-addon unit">次</span>
+						class="form-control " placeholder="单位(帧)">
+					<span class="input-group-addon unit">帧</span>
 				</div>
 			</div>
 		</div>
@@ -147,8 +127,8 @@
 			<div class="col-sm-6 padding_0_8">
 				<div class="input-group">
 					<input name="totalITUCount" value="${dto.getTotalITUCount()}"
-						type="text" class="form-control " placeholder="单位(次)">
-					<span class="input-group-addon unit">次</span>
+						type="text" class="form-control " placeholder="单位(帧)">
+					<span class="input-group-addon unit">帧</span>
 				</div>
 			</div>
 		</div>
@@ -167,8 +147,8 @@
 				<div class="input-group">
 					<input name="totalAudioTimespan"
 						value="${dto.getTotalAudioTimespan()}" type="text"
-						class="form-control " placeholder="单位(次)">
-					<span class="input-group-addon unit">次</span>
+						class="form-control " placeholder="单位(秒)">
+					<span class="input-group-addon unit">秒</span>
 				</div>
 			</div>
 		</div>
@@ -182,8 +162,8 @@
 			<button type="button" id="buttonDelete" class="btn btn-default btn-apply">删除</button>
 		</div>
 	</div>
-
-
+	
+	
 	<input name="ID" value="${dto.getID()}" hidden="true"> 
 	<input name="freqRange" value="${dto.isFreqRange()}" hidden="true">
 	<input name="beginFreq" value="${dto.getBeginFreq()}" hidden="true">
