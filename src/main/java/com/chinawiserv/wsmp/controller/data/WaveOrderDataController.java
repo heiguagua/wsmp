@@ -1,5 +1,6 @@
 package com.chinawiserv.wsmp.controller.data;
 
+import com.chinawiserv.apps.logger.Logger;
 import com.chinawiserv.wsmp.pojo.Alarm;
 import com.chinawiserv.wsmp.pojo.RedioDetail;
 import com.chinawiserv.wsmp.pojo.RedioStatusCount;
@@ -21,9 +22,11 @@ import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @RestController
@@ -254,19 +257,15 @@ public class WaveOrderDataController {
 	}
 
 	@PostMapping("/monitorsPoint")
-	public List<Map<String, ?>> getMonitorsPoint(@RequestBody Map<String,Object> param) throws MalformedURLException {
-		
-		//请求参数为监测站ID列表,和信号类型值。
-//		Logger.info("============监测站地图===========================param {}",  param);
-		
-		final List<?> monitorsID = (List<?>) param.get("monitorsNum");
-//		System.out.println("=========================================monitorsList:"+monitorsID);
-		
-		//根据信号类型，监测站列表（id or name）查询能够监测到该信号的监测站ID和个数，和每个监测站的该信号个数。
+	public List<HashMap<String, Object>> getMonitorsPoint(@RequestBody Map<String,Object> param) throws MalformedURLException {
+		@SuppressWarnings("unchecked")
+		final List<Map<String,Object>> monitors = (List<Map<String, Object>>) param.get("monitors");
+		Logger.info("========{}", monitors);
+		// 根据信号类型，监测站列表（id or name）查询能够监测到该信号的监测站ID和个数，和每个监测站的该信号个数。
 		URL url = new URL(urlRadioSignal);
 		RadioSignalWebService service = new RadioSignalWebService(url);
 		RadioSignalQueryRequest request = new RadioSignalQueryRequest();
-//		 设置信号类型
+		// 设置信号类型
 		ArrayOfSignalTypeDTO value = new ArrayOfSignalTypeDTO();
 		List<SignalTypeDTO> signalTypeDTO = Lists.newArrayList();
 		SignalTypeDTO dto = new SignalTypeDTO();
@@ -274,22 +273,50 @@ public class WaveOrderDataController {
 		signalTypeDTO.add(dto);
 		value.setSignalTypeDTO(signalTypeDTO);
 		request.setTypeCodes(value);
-//		 设置监测站，过滤有信号的监测站ID
+		// 设置监测站，过滤有信号的监测站ID
 		ArrayOfString value1 = new ArrayOfString();
+		final List<?> monitorsID = (List<?>) param.get("monitorsNum");
+		// System.out.println("=========================================monitorsList:"+monitorsID);
 		List<String> string = monitorsID.stream().map(o -> o.toString()).collect(Collectors.toList());
 		value1.setString(string);
 		request.setStationIDs(value1);
 		RadioSignalQueryResponse response = service.getRadioSignalWebServiceSoap().queryRadioSignal(request);
-//		System.out.println("====================:" + JSON.toJSONString(response));
+		// System.out.println("====================:"+JSON.toJSONString(response));
 		Map<String, List<RadioSignalStationDTO>> map1 = response.getRadioSignals().getRadioSignalDTO().stream()
 				.flatMap(t -> t.getStationDTOs().getRadioSignalStationDTO().stream())
 				.collect(Collectors.groupingBy(RadioSignalStationDTO::getStationNumber));
 		
-		final List<Map<String,?>> resultList = map1.entrySet().stream()
-			.map(e -> ImmutableMap.of("monitorID", e.getKey(), "count", Integer.valueOf(e.getValue().size())))
-			.collect(Collectors.toList());
+		//统计有信号的同一种监测站的信号数
+		@SuppressWarnings("serial")
+		List<HashMap<String, Object>> countList = map1.entrySet().stream()
+			.map(e -> new HashMap<String,Object>(){{
+				put("monitorID",e.getKey());
+				put("count",e.getValue().size());
+			}}).collect(Collectors.toList());
 		
-//		System.out.println("===================:"+resultList);
+		System.out.println("=======countList"+countList);
+		
+		//重新封装结果集
+		@SuppressWarnings("serial")
+		List<HashMap<String, Object>> monitorsList = monitors.stream()
+			.map(e -> new HashMap<String,Object>(){{
+				put("monitorID",e.get("Num"));
+				put("count",0);
+				put("monitorName",e.get("Name"));
+				put("x",e.get("Longitude"));
+				put("y",e.get("Latitude"));
+			}}).collect(Collectors.toList());
+		
+		//循环遍历两个List,得到resultList
+		List<HashMap<String,Object>> resultList = monitorsList.stream().peek(t -> {
+			countList.stream().forEach(t1 -> {
+				if(t.get("monitorID").equals(t1.get("monitorID"))) {
+					t.put("count", t1.get("count"));
+				}
+			});
+		}).collect(Collectors.toList());
+		
+		System.out.println("=================="+resultList);
 		return resultList;
 	}
 	
