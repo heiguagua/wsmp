@@ -27,7 +27,7 @@
 <div class='header-bar'>
   <span class='module-name'>告警管理</span>
   <div class='header-search'>
-    <input type='text' id="search" />
+    <input type='text' id="search" placeholder="请输入信号频率"/>
     <span class='search-icon'></span>
   </div>
   <span id="signal_list">

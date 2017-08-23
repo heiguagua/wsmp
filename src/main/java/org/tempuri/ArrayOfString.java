@@ -66,7 +66,7 @@ public class ArrayOfString {
         return this.strings;
     }
 
-    public void setString(List<String> stationString) {
-        this.strings = stationString;
+    public void setStrings(List<String> strings) {
+        this.strings = strings;
     }
 }

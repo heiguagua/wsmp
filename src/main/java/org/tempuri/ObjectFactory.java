@@ -46,75 +46,219 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Query }
+     * Create an instance of {@link QueryRadioSignal }
      * 
      */
-    public Query createQuery() {
-        return new Query();
+    public QueryRadioSignal createQueryRadioSignal() {
+        return new QueryRadioSignal();
     }
 
     /**
-     * Create an instance of {@link FreqWarningQueryRequest }
+     * Create an instance of {@link RadioSignalQueryRequest }
      * 
      */
-    public FreqWarningQueryRequest createFreqWarningQueryRequest() {
-        return new FreqWarningQueryRequest();
+    public RadioSignalQueryRequest createRadioSignalQueryRequest() {
+        return new RadioSignalQueryRequest();
     }
 
     /**
-     * Create an instance of {@link QueryResponse }
+     * Create an instance of {@link QueryRadioSignalResponse }
      * 
      */
-    public QueryResponse createQueryResponse() {
-        return new QueryResponse();
+    public QueryRadioSignalResponse createQueryRadioSignalResponse() {
+        return new QueryRadioSignalResponse();
     }
 
     /**
-     * Create an instance of {@link FreqWarningQueryResponse }
+     * Create an instance of {@link RadioSignalQueryResponse }
      * 
      */
-    public FreqWarningQueryResponse createFreqWarningQueryResponse() {
-        return new FreqWarningQueryResponse();
+    public RadioSignalQueryResponse createRadioSignalQueryResponse() {
+        return new RadioSignalQueryResponse();
     }
 
     /**
-     * Create an instance of {@link Insert }
+     * Create an instance of {@link QueryRadioSignalClassified }
      * 
      */
-    public Insert createInsert() {
-        return new Insert();
+    public QueryRadioSignalClassified createQueryRadioSignalClassified() {
+        return new QueryRadioSignalClassified();
     }
 
     /**
-     * Create an instance of {@link FreqWarningDTO }
+     * Create an instance of {@link RadioSignalClassifiedQueryRequest }
      * 
      */
-    public FreqWarningDTO createFreqWarningDTO() {
-        return new FreqWarningDTO();
+    public RadioSignalClassifiedQueryRequest createRadioSignalClassifiedQueryRequest() {
+        return new RadioSignalClassifiedQueryRequest();
     }
 
     /**
-     * Create an instance of {@link InsertResponse }
+     * Create an instance of {@link QueryRadioSignalClassifiedResponse }
      * 
      */
-    public InsertResponse createInsertResponse() {
-        return new InsertResponse();
+    public QueryRadioSignalClassifiedResponse createQueryRadioSignalClassifiedResponse() {
+        return new QueryRadioSignalClassifiedResponse();
     }
 
     /**
-     * Create an instance of {@link FreqWarningOperationResponse }
+     * Create an instance of {@link RadioSignalClassifiedQueryResponse }
      * 
      */
-    public FreqWarningOperationResponse createFreqWarningOperationResponse() {
-        return new FreqWarningOperationResponse();
+    public RadioSignalClassifiedQueryResponse createRadioSignalClassifiedQueryResponse() {
+        return new RadioSignalClassifiedQueryResponse();
     }
 
     /**
-     * Create an instance of {@link Remove }
+     * Create an instance of {@link QueryAbnormalHistory }
      * 
      */
-    public Remove createRemove() {
-        return new Remove();
+    public QueryAbnormalHistory createQueryAbnormalHistory() {
+        return new QueryAbnormalHistory();
+    }
+
+    /**
+     * Create an instance of {@link AbnormalHistoryRequest }
+     * 
+     */
+    public AbnormalHistoryRequest createAbnormalHistoryRequest() {
+        return new AbnormalHistoryRequest();
+    }
+
+    /**
+     * Create an instance of {@link QueryAbnormalHistoryResponse }
+     * 
+     */
+    public QueryAbnormalHistoryResponse createQueryAbnormalHistoryResponse() {
+        return new QueryAbnormalHistoryResponse();
+    }
+
+    /**
+     * Create an instance of {@link AbnormalHistoryQueryResponse }
+     * 
+     */
+    public AbnormalHistoryQueryResponse createAbnormalHistoryQueryResponse() {
+        return new AbnormalHistoryQueryResponse();
+    }
+
+    /**
+     * Create an instance of {@link InsertRadioSignal }
+     * 
+     */
+    public InsertRadioSignal createInsertRadioSignal() {
+        return new InsertRadioSignal();
+    }
+
+    /**
+     * Create an instance of {@link RadioSignalDTO }
+     * 
+     */
+    public RadioSignalDTO createRadioSignalDTO() {
+        return new RadioSignalDTO();
+    }
+
+    /**
+     * Create an instance of {@link InsertRadioSignalResponse }
+     * 
+     */
+    public InsertRadioSignalResponse createInsertRadioSignalResponse() {
+        return new InsertRadioSignalResponse();
+    }
+
+    /**
+     * Create an instance of {@link RadioSignalOperationReponse }
+     * 
+     */
+    public RadioSignalOperationReponse createRadioSignalOperationReponse() {
+        return new RadioSignalOperationReponse();
+    }
+
+    /**
+     * Create an instance of {@link InsertAbnormalHistory }
+     * 
+     */
+    public InsertAbnormalHistory createInsertAbnormalHistory() {
+        return new InsertAbnormalHistory();
+    }
+
+    /**
+     * Create an instance of {@link RadioSignalAbnormalHistoryDTO }
+     * 
+     */
+    public RadioSignalAbnormalHistoryDTO createRadioSignalAbnormalHistoryDTO() {
+        return new RadioSignalAbnormalHistoryDTO();
+    }
+
+    /**
+     * Create an instance of {@link InsertAbnormalHistoryResponse }
+     * 
+     */
+    public InsertAbnormalHistoryResponse createInsertAbnormalHistoryResponse() {
+        return new InsertAbnormalHistoryResponse();
+    }
+
+    /**
+     * Create an instance of {@link UpdateRadioSignal }
+     * 
+     */
+    public UpdateRadioSignal createUpdateRadioSignal() {
+        return new UpdateRadioSignal();
+    }
+
+    /**
+     * Create an instance of {@link UpdateRadioSignalResponse }
+     * 
+     */
+    public UpdateRadioSignalResponse createUpdateRadioSignalResponse() {
+        return new UpdateRadioSignalResponse();
+    }
+
+    /**
+     * Create an instance of {@link UpdateRadioSignalForRequest }
+     * 
+     */
+    public UpdateRadioSignalForRequest createUpdateRadioSignalForRequest() {
+        return new UpdateRadioSignalForRequest();
+    }
+
+    /**
+     * Create an instance of {@link RadioSignalUpdateRequest }
+     * 
+     */
+    public RadioSignalUpdateRequest createRadioSignalUpdateRequest() {
+        return new RadioSignalUpdateRequest();
+    }
+
+    /**
+     * Create an instance of {@link UpdateRadioSignalForRequestResponse }
+     * 
+     */
+    public UpdateRadioSignalForRequestResponse createUpdateRadioSignalForRequestResponse() {
+        return new UpdateRadioSignalForRequestResponse();
+    }
+
+    /**
+     * Create an instance of {@link UpdateAbnormalHistory }
+     * 
+     */
+    public UpdateAbnormalHistory createUpdateAbnormalHistory() {
+        return new UpdateAbnormalHistory();
+    }
+
+    /**
+     * Create an instance of {@link UpdateAbnormalHistoryResponse }
+     * 
+     */
+    public UpdateAbnormalHistoryResponse createUpdateAbnormalHistoryResponse() {
+        return new UpdateAbnormalHistoryResponse();
+    }
+
+    /**
+     * Create an instance of {@link RemoveRadioSignal }
+     * 
+     */
+    public RemoveRadioSignal createRemoveRadioSignal() {
+        return new RemoveRadioSignal();
     }
 
     /**
@@ -126,163 +270,187 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link RemoveResponse }
+     * Create an instance of {@link RemoveRadioSignalResponse }
      * 
      */
-    public RemoveResponse createRemoveResponse() {
-        return new RemoveResponse();
+    public RemoveRadioSignalResponse createRemoveRadioSignalResponse() {
+        return new RemoveRadioSignalResponse();
     }
 
     /**
-     * Create an instance of {@link Update }
+     * Create an instance of {@link RemoveAbnormalHistory }
      * 
      */
-    public Update createUpdate() {
-        return new Update();
+    public RemoveAbnormalHistory createRemoveAbnormalHistory() {
+        return new RemoveAbnormalHistory();
     }
 
     /**
-     * Create an instance of {@link UpdateResponse }
+     * Create an instance of {@link RemoveAbnormalHistoryResponse }
      * 
      */
-    public UpdateResponse createUpdateResponse() {
-        return new UpdateResponse();
+    public RemoveAbnormalHistoryResponse createRemoveAbnormalHistoryResponse() {
+        return new RemoveAbnormalHistoryResponse();
     }
 
     /**
-     * Create an instance of {@link UpdateKeyword }
+     * Create an instance of {@link ArrayOfSignalTypeDTO }
      * 
      */
-    public UpdateKeyword createUpdateKeyword() {
-        return new UpdateKeyword();
+    public ArrayOfSignalTypeDTO createArrayOfSignalTypeDTO() {
+        return new ArrayOfSignalTypeDTO();
     }
 
     /**
-     * Create an instance of {@link UpdateKeywordResponse }
+     * Create an instance of {@link SignalTypeDTO }
      * 
      */
-    public UpdateKeywordResponse createUpdateKeywordResponse() {
-        return new UpdateKeywordResponse();
+    public SignalTypeDTO createSignalTypeDTO() {
+        return new SignalTypeDTO();
     }
 
     /**
-     * Create an instance of {@link UpdateStatus }
+     * Create an instance of {@link ArrayOfInt }
      * 
      */
-    public UpdateStatus createUpdateStatus() {
-        return new UpdateStatus();
+    public ArrayOfInt createArrayOfInt() {
+        return new ArrayOfInt();
     }
 
     /**
-     * Create an instance of {@link UpdateStatusResponse }
+     * Create an instance of {@link ArrayOfRadioSignalDTO }
      * 
      */
-    public UpdateStatusResponse createUpdateStatusResponse() {
-        return new UpdateStatusResponse();
+    public ArrayOfRadioSignalDTO createArrayOfRadioSignalDTO() {
+        return new ArrayOfRadioSignalDTO();
     }
 
     /**
-     * Create an instance of {@link InsertStat }
+     * Create an instance of {@link ArrayOfRadioSignalAppendDTO }
      * 
      */
-    public InsertStat createInsertStat() {
-        return new InsertStat();
+    public ArrayOfRadioSignalAppendDTO createArrayOfRadioSignalAppendDTO() {
+        return new ArrayOfRadioSignalAppendDTO();
     }
 
     /**
-     * Create an instance of {@link FreqWarningStatDTO }
+     * Create an instance of {@link RadioSignalAppendDTO }
      * 
      */
-    public FreqWarningStatDTO createFreqWarningStatDTO() {
-        return new FreqWarningStatDTO();
+    public RadioSignalAppendDTO createRadioSignalAppendDTO() {
+        return new RadioSignalAppendDTO();
     }
 
     /**
-     * Create an instance of {@link InsertStatResponse }
+     * Create an instance of {@link ArrayOfRadioSignalStationDTO }
      * 
      */
-    public InsertStatResponse createInsertStatResponse() {
-        return new InsertStatResponse();
+    public ArrayOfRadioSignalStationDTO createArrayOfRadioSignalStationDTO() {
+        return new ArrayOfRadioSignalStationDTO();
     }
 
     /**
-     * Create an instance of {@link UpdateStat }
+     * Create an instance of {@link RadioSignalStationDTO }
      * 
      */
-    public UpdateStat createUpdateStat() {
-        return new UpdateStat();
+    public RadioSignalStationDTO createRadioSignalStationDTO() {
+        return new RadioSignalStationDTO();
     }
 
     /**
-     * Create an instance of {@link UpdateStatResponse }
+     * Create an instance of {@link RadioStationSignalDTO }
      * 
      */
-    public UpdateStatResponse createUpdateStatResponse() {
-        return new UpdateStatResponse();
+    public RadioStationSignalDTO createRadioStationSignalDTO() {
+        return new RadioStationSignalDTO();
     }
 
     /**
-     * Create an instance of {@link RemoveStat }
+     * Create an instance of {@link RadioStationDTO }
      * 
      */
-    public RemoveStat createRemoveStat() {
-        return new RemoveStat();
+    public RadioStationDTO createRadioStationDTO() {
+        return new RadioStationDTO();
     }
 
     /**
-     * Create an instance of {@link RemoveStatResponse }
+     * Create an instance of {@link RadioFreqDTO }
      * 
      */
-    public RemoveStatResponse createRemoveStatResponse() {
-        return new RemoveStatResponse();
+    public RadioFreqDTO createRadioFreqDTO() {
+        return new RadioFreqDTO();
     }
 
     /**
-     * Create an instance of {@link QueryStat }
+     * Create an instance of {@link ArrayOfRadioSignalAbnormalHistoryDTO }
      * 
      */
-    public QueryStat createQueryStat() {
-        return new QueryStat();
+    public ArrayOfRadioSignalAbnormalHistoryDTO createArrayOfRadioSignalAbnormalHistoryDTO() {
+        return new ArrayOfRadioSignalAbnormalHistoryDTO();
     }
 
     /**
-     * Create an instance of {@link FreqWarningStatQueryRequest }
+     * Create an instance of {@link ArrayOfFrequencyBand }
      * 
      */
-    public FreqWarningStatQueryRequest createFreqWarningStatQueryRequest() {
-        return new FreqWarningStatQueryRequest();
+    public ArrayOfFrequencyBand createArrayOfFrequencyBand() {
+        return new ArrayOfFrequencyBand();
     }
 
     /**
-     * Create an instance of {@link QueryStatResponse }
+     * Create an instance of {@link FrequencyBand }
      * 
      */
-    public QueryStatResponse createQueryStatResponse() {
-        return new QueryStatResponse();
+    public FrequencyBand createFrequencyBand() {
+        return new FrequencyBand();
     }
 
     /**
-     * Create an instance of {@link FreqWarningStatQueryResponse }
+     * Create an instance of {@link ArrayOfSignalStaticsOnFreqBand }
      * 
      */
-    public FreqWarningStatQueryResponse createFreqWarningStatQueryResponse() {
-        return new FreqWarningStatQueryResponse();
+    public ArrayOfSignalStaticsOnFreqBand createArrayOfSignalStaticsOnFreqBand() {
+        return new ArrayOfSignalStaticsOnFreqBand();
     }
 
     /**
-     * Create an instance of {@link ArrayOfFreqWarningDTO }
+     * Create an instance of {@link SignalStaticsOnFreqBand }
      * 
      */
-    public ArrayOfFreqWarningDTO createArrayOfFreqWarningDTO() {
-        return new ArrayOfFreqWarningDTO();
+    public SignalStaticsOnFreqBand createSignalStaticsOnFreqBand() {
+        return new SignalStaticsOnFreqBand();
     }
 
     /**
-     * Create an instance of {@link ArrayOfFreqWarningStatDTO }
+     * Create an instance of {@link ArrayOfSignalStatics }
      * 
      */
-    public ArrayOfFreqWarningStatDTO createArrayOfFreqWarningStatDTO() {
-        return new ArrayOfFreqWarningStatDTO();
+    public ArrayOfSignalStatics createArrayOfSignalStatics() {
+        return new ArrayOfSignalStatics();
+    }
+
+    /**
+     * Create an instance of {@link SignalStatics }
+     * 
+     */
+    public SignalStatics createSignalStatics() {
+        return new SignalStatics();
+    }
+
+    /**
+     * Create an instance of {@link ArrayOfSignalStaticsOnStation }
+     * 
+     */
+    public ArrayOfSignalStaticsOnStation createArrayOfSignalStaticsOnStation() {
+        return new ArrayOfSignalStaticsOnStation();
+    }
+
+    /**
+     * Create an instance of {@link SignalStaticsOnStation }
+     * 
+     */
+    public SignalStaticsOnStation createSignalStaticsOnStation() {
+        return new SignalStaticsOnStation();
     }
 
 }

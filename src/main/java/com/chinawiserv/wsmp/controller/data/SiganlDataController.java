@@ -13,10 +13,7 @@ import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
-import org.tempuri.RadioSignalDTO;
-import org.tempuri.RadioSignalOperationReponse;
-import org.tempuri.RadioSignalQueryRequest;
-import org.tempuri.RadioSignalQueryResponse;
+import org.tempuri.*;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -120,7 +117,7 @@ public class SiganlDataController {
 			final RadioSignalQueryResponse responce = (RadioSignalQueryResponse) service.radioSignalServiceCall("queryRadioSignal",
                     mapper.writeValueAsString(param), RadioSignalQueryRequest.class);
 
-			return responce.getRadioSignals().getRadioSignalDTO().stream().map(t -> {
+			return responce.getRadioSignals().getRadioSignalDTOs().stream().map(t -> {
 
                 final Singal singal = new Singal();
                 final String id = t.getID();
@@ -148,7 +145,7 @@ public class SiganlDataController {
 			final RadioSignalQueryResponse responce = (RadioSignalQueryResponse) service.radioSignalServiceCall("queryRadioSignal",
                     mapper.writeValueAsString(param), RadioSignalQueryRequest.class);
 
-			responce.getRadioSignals().getRadioSignalDTO().forEach(z -> z.getStationDTOs().getRadioSignalStationDTO().forEach(f -> reslutList.add(f.getStationNumber())));
+			responce.getRadioSignals().getRadioSignalDTOs().forEach(z -> z.getStationDTOs().getRadioSignalStationDTOs().forEach(f -> reslutList.add(f.getStationNumber())));
 			Logger.info("获取监测站列表时间成功 操作时间：{} 入参：{} 返回值：{}",LocalDateTime.now().toString(), JSON.toJSONString(param));
 		} catch (JsonProcessingException e) {
 			Logger.error("获取监测站表时间异常 操作时间：{} 入参：{} 异常：{}",LocalDateTime.now().toString(), JSON.toJSONString(param),e);
@@ -165,7 +162,7 @@ public class SiganlDataController {
 			final RadioSignalQueryResponse responce = (RadioSignalQueryResponse) service.radioSignalServiceCall("queryRadioSignal",
                     mapper.writeValueAsString(param), RadioSignalQueryRequest.class);
 
-			radioSignals  = responce.getRadioSignals().getRadioSignalDTO();
+			radioSignals  = responce.getRadioSignals().getRadioSignalDTOs();
 
 			Logger.info("查询一条信号记录成功 入参：{} 返回值{}",JSON.toJSONString(param),JSON.toJSONString(radioSignals));
 
@@ -182,7 +179,7 @@ public class SiganlDataController {
 
 		try {
 			RadioSignalOperationReponse reponce = (RadioSignalOperationReponse) service.radioSignalServiceCall("updateRadioSignalForRequest", param,
-                    RadioSignalDTO.class);
+					RadioSignalUpdateRequest.class);
 			Logger.info("更新一条信号记录成功 入参：{} 返回值{}",JSON.toJSONString(param),JSON.toJSONString(reponce));
 		} catch (JsonProcessingException e) {
 			Logger.error("查询一条信号记录异常 操作时间:{} 入参：{} 返回值{} 异常{}",LocalDateTime.now().toString(),param,e);

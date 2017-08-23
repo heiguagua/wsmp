@@ -30,26 +30,26 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ArrayOfRadioSignalAbnormalHistoryDTO", propOrder = {
-    "radioSignalAbnormalHistoryDTO"
+    "radioSignalAbnormalHistoryDTOs"
 })
 public class ArrayOfRadioSignalAbnormalHistoryDTO {
 
     @XmlElement(name = "RadioSignalAbnormalHistoryDTO", nillable = true)
-    protected List<RadioSignalAbnormalHistoryDTO> radioSignalAbnormalHistoryDTO;
+    protected List<RadioSignalAbnormalHistoryDTO> radioSignalAbnormalHistoryDTOs;
 
     /**
-     * Gets the value of the radioSignalAbnormalHistoryDTO property.
+     * Gets the value of the radioSignalAbnormalHistoryDTOs property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the radioSignalAbnormalHistoryDTO property.
+     * This is why there is not a <CODE>set</CODE> method for the radioSignalAbnormalHistoryDTOs property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getRadioSignalAbnormalHistoryDTO().add(newItem);
+     *    getRadioSignalAbnormalHistoryDTOs().add(newItem);
      * </pre>
      * 
      * 
@@ -59,11 +59,11 @@ public class ArrayOfRadioSignalAbnormalHistoryDTO {
      * 
      * 
      */
-    public List<RadioSignalAbnormalHistoryDTO> getRadioSignalAbnormalHistoryDTO() {
-        if (radioSignalAbnormalHistoryDTO == null) {
-            radioSignalAbnormalHistoryDTO = new ArrayList<RadioSignalAbnormalHistoryDTO>();
+    public List<RadioSignalAbnormalHistoryDTO> getRadioSignalAbnormalHistoryDTOs() {
+        if (radioSignalAbnormalHistoryDTOs == null) {
+            radioSignalAbnormalHistoryDTOs = new ArrayList<RadioSignalAbnormalHistoryDTO>();
         }
-        return this.radioSignalAbnormalHistoryDTO;
+        return this.radioSignalAbnormalHistoryDTOs;
     }
 
 }

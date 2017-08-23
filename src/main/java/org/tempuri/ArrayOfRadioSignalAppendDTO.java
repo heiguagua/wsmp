@@ -30,26 +30,26 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ArrayOfRadioSignalAppendDTO", propOrder = {
-    "radioSignalAppendDTO"
+    "radioSignalAppendDTOs"
 })
 public class ArrayOfRadioSignalAppendDTO {
 
     @XmlElement(name = "RadioSignalAppendDTO", nillable = true)
-    protected List<RadioSignalAppendDTO> radioSignalAppendDTO;
+    protected List<RadioSignalAppendDTO> radioSignalAppendDTOs;
 
     /**
-     * Gets the value of the radioSignalAppendDTO property.
+     * Gets the value of the radioSignalAppendDTOs property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the radioSignalAppendDTO property.
+     * This is why there is not a <CODE>set</CODE> method for the radioSignalAppendDTOs property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getRadioSignalAppendDTO().add(newItem);
+     *    getRadioSignalAppendDTOs().add(newItem);
      * </pre>
      * 
      * 
@@ -59,11 +59,11 @@ public class ArrayOfRadioSignalAppendDTO {
      * 
      * 
      */
-    public List<RadioSignalAppendDTO> getRadioSignalAppendDTO() {
-        if (radioSignalAppendDTO == null) {
-            radioSignalAppendDTO = new ArrayList<RadioSignalAppendDTO>();
+    public List<RadioSignalAppendDTO> getRadioSignalAppendDTOs() {
+        if (radioSignalAppendDTOs == null) {
+            radioSignalAppendDTOs = new ArrayList<RadioSignalAppendDTO>();
         }
-        return this.radioSignalAppendDTO;
+        return this.radioSignalAppendDTOs;
     }
 
 }
