@@ -66,10 +66,11 @@ public class WaveOrderDataController {
 			freq.setFreqMax(freqMax);
 			freqList.add(freq);
 		});
-		// 根据自定义频段和区域码查询信号类型
+		// 根据自定义频段和监测站查询信号类型
 		URL url2 = new URL(urlRadioSignal);
 		RadioSignalWebService service2 = new RadioSignalWebService(url2);
 		RadioSignalClassifiedQueryRequest request2 = new RadioSignalClassifiedQueryRequest();
+		//设置自定义频段
 		ArrayOfFrequencyBand array = new ArrayOfFrequencyBand();
 		array.setFrequencyBand(freqList);
 		request2.setFreqBandList(array);
@@ -124,10 +125,11 @@ public class WaveOrderDataController {
 	@PostMapping("/alarmundealed")
 	public Map<String, Object> getAlarmUnDealed(@RequestBody Map<String, Object> param) throws MalformedURLException {
 //		 System.out.println("=============================param:"+param);
-		// 根据未确认和区域码查询告警
+		// 根据未确认和监测站查询告警
 		URL url = new URL(urlFreqWarning);
 		FreqWarningWebService freqWarningWS = new FreqWarningWebService(url);
 		FreqWarningQueryRequest request = new FreqWarningQueryRequest();
+		//未确认
 		request.setStatus(0);
 		// 设置监测站ID列表
 		ArrayOfString stationArray = new ArrayOfString();
@@ -163,10 +165,11 @@ public class WaveOrderDataController {
 	@PostMapping("/alarmdealed")
 	public Map<String, Object> getAlarmDealed(@RequestBody Map<String, Object> param) throws MalformedURLException {
 //		 System.out.println("=============================param:"+param);
-		// 根据未确认和区域码查询告警
+		// 根据未确认和监测站查询告警
 		URL url = new URL(urlFreqWarning);
 		FreqWarningWebService freqWarningWS = new FreqWarningWebService(url);
 		FreqWarningQueryRequest request = new FreqWarningQueryRequest();
+		//确认
 		request.setStatus(1);
 		// 设置监测站ID列表
 		ArrayOfString stationArray = new ArrayOfString();
