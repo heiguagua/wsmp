@@ -27,6 +27,7 @@ import org.tempuri.*;
 import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.BinaryOperator;
 
@@ -63,6 +64,8 @@ public class AlarmDataController {
 
     private ObjectMapper mapper = new ObjectMapper();
 
+    @Value("${asio.formatter:yyyyMMddHHmmss}")
+    DateTimeFormatter formatter;
 
     @GetMapping(path = "/secondLevelChart")
     public Object secondLevelChart(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
@@ -111,6 +114,10 @@ public class AlarmDataController {
 
                 LinkedList<Object> xAxis = Lists.newLinkedList();
                 LinkedList<Object> series = Lists.newLinkedList();
+                System.out.println(Occ);
+                Occ = Occ.entrySet().stream().sorted((c1,c2)-> Integer.parseInt(c1.getKey())>Integer.parseInt(c2.getKey())?1:-1)
+                        .collect(toMap(Map.Entry::getKey,Map.Entry::getValue,throwingMerger(), LinkedHashMap::new));
+
                 Occ.forEach((k, v) -> {
                     xAxis.add(k);
                     series.add(v);
@@ -226,20 +233,19 @@ public class AlarmDataController {
                     Logger.info("以三个月计算占用度从hbase中查询正常返回值为空 查询时间为{}，页面入参：监测站id{}，开始时间{},中心频率{}", LocalDateTime.now().toString(), stationCode, beginTime, centorFreq);
                 } else {
 
+
                     LinkedList<Object> xAxis = Lists.newLinkedList();
                     LinkedList<Object> series = Lists.newLinkedList();
-
-                    occ.entrySet().stream().sorted()
 
                     occ.forEach((k, v) -> {
                         xAxis.add(k);
                         series.add(v);
                     });
 
-
-                    occReslute.put("xAxis", xAxis);
+                    occ = occ.entrySet().stream().sorted((c1,c2)-> Integer.parseInt(c1.toString())>Integer.parseInt(c2.toString())?1:-1)
+                            .collect(toMap(Map.Entry::getKey,Map.Entry::getValue,throwingMerger(), LinkedHashMap::new));
                     occReslute.put("series", series);
-
+                    occReslute.put("xAxis", xAxis);
                     reslutMap.put("monthOcc", occReslute);
                     Logger.info("以三个月计算占用度从hbase中查询正常有返回值为{} ， 查询时间为{}，页面入参：监测站id{}，开始时间{},中心频率{}", occ, LocalDateTime.now().toString(), stationCode, beginTime, centorFreq);
                 }
