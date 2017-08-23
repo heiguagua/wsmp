@@ -1,12 +1,12 @@
 
 package org.tempuri;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -30,30 +30,26 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ArrayOfSignalTypeDTO", propOrder = {
-    "signalTypeDTOs"
+    "signalTypeDTO"
 })
 public class ArrayOfSignalTypeDTO {
 
-    public void setSignalTypeDTOs(List<SignalTypeDTO> signalTypeDTOs) {
-        this.signalTypeDTOs = signalTypeDTOs;
-    }
-
     @XmlElement(name = "SignalTypeDTO", nillable = true)
-    protected List<SignalTypeDTO> signalTypeDTOs;
+    protected List<SignalTypeDTO> signalTypeDTO;
 
     /**
-     * Gets the value of the signalTypeDTOs property.
+     * Gets the value of the signalTypeDTO property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the signalTypeDTOs property.
+     * This is why there is not a <CODE>set</CODE> method for the signalTypeDTO property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getSignalTypeDTOs().add(newItem);
+     *    getSignalTypeDTO().add(newItem);
      * </pre>
      * 
      * 
@@ -63,11 +59,15 @@ public class ArrayOfSignalTypeDTO {
      * 
      * 
      */
-    public List<SignalTypeDTO> getSignalTypeDTOs() {
-        if (signalTypeDTOs == null) {
-            signalTypeDTOs = new ArrayList<SignalTypeDTO>();
+    public List<SignalTypeDTO> getSignalTypeDTO() {
+        if (signalTypeDTO == null) {
+            signalTypeDTO = new ArrayList<SignalTypeDTO>();
         }
-        return this.signalTypeDTOs;
+        return this.signalTypeDTO;
     }
+
+	public void setSignalTypeDTO(List<SignalTypeDTO> signalTypeDTO) {
+		this.signalTypeDTO = signalTypeDTO;
+	}
 
 }

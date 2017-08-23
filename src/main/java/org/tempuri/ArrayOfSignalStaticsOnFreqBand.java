@@ -30,26 +30,26 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ArrayOfSignalStaticsOnFreqBand", propOrder = {
-    "signalStaticsOnFreqBands"
+    "signalStaticsOnFreqBand"
 })
 public class ArrayOfSignalStaticsOnFreqBand {
 
     @XmlElement(name = "SignalStaticsOnFreqBand", nillable = true)
-    protected List<SignalStaticsOnFreqBand> signalStaticsOnFreqBands;
+    protected List<SignalStaticsOnFreqBand> signalStaticsOnFreqBand;
 
     /**
-     * Gets the value of the signalStaticsOnFreqBands property.
+     * Gets the value of the signalStaticsOnFreqBand property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the signalStaticsOnFreqBands property.
+     * This is why there is not a <CODE>set</CODE> method for the signalStaticsOnFreqBand property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getSignalStaticsOnFreqBands().add(newItem);
+     *    getSignalStaticsOnFreqBand().add(newItem);
      * </pre>
      * 
      * 
@@ -59,11 +59,11 @@ public class ArrayOfSignalStaticsOnFreqBand {
      * 
      * 
      */
-    public List<SignalStaticsOnFreqBand> getSignalStaticsOnFreqBands() {
-        if (signalStaticsOnFreqBands == null) {
-            signalStaticsOnFreqBands = new ArrayList<SignalStaticsOnFreqBand>();
+    public List<SignalStaticsOnFreqBand> getSignalStaticsOnFreqBand() {
+        if (signalStaticsOnFreqBand == null) {
+            signalStaticsOnFreqBand = new ArrayList<SignalStaticsOnFreqBand>();
         }
-        return this.signalStaticsOnFreqBands;
+        return this.signalStaticsOnFreqBand;
     }
 
 }

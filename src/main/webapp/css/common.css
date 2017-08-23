@@ -686,3 +686,12 @@ border-radius: 4px;
     background: rgba(239, 239, 239, 0.18);
     z-index:-1;
 }
+.unit {
+	padding: 4px 8px;
+	height: 30px;
+	border: 1px solid #DAE5F0;
+	border-left: none;
+	border-bottom-right-radius: 4px !important;
+	box-shadow: none;
+	border-top-right-radius: 4px !important;
+}

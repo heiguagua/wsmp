@@ -506,13 +506,13 @@ public class AlarmDataController {
             final FreqWarningQueryResponse response = (FreqWarningQueryResponse) service.freqWarnServiceCall("query",
                     mapper.writeValueAsString(signal.get("warmingId")), FreqWarningQueryRequest.class);
 
-            final FreqWarningDTO t = response.getWarningInfos().getFreqWarningDTOs().size() > 0 ? response.getWarningInfos().getFreqWarningDTOs().get(0)
+            final FreqWarningDTO t = response.getWarningInfos().getFreqWarningDTO().size() > 0 ? response.getWarningInfos().getFreqWarningDTO().get(0)
                     : new FreqWarningDTO();
 
             final BigInteger bandWidth = t.getBandWidth();
             final BigInteger centerFreq = t.getCenterFreq();
 
-            List<Map<String, String>> ids = response.getWarningInfos().getFreqWarningDTOs().get(0).getStatList().getFreqWarningStatDTOs().stream().map(m -> {
+            List<Map<String, String>> ids = response.getWarningInfos().getFreqWarningDTO().get(0).getStatList().getFreqWarningStatDTO().stream().map(m -> {
                 HashMap<String, String> map = Maps.newHashMap();
                 map.put("stationNumber", m.getStationGUID());
                 return map;

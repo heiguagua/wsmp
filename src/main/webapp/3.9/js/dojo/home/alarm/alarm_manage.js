@@ -275,10 +275,10 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
     function init_select2() {
         $('.station-list').select2();
         $("#search").keydown(function (e) {
-            //数字0-9(keycode:48-57)，小键盘数字0-9（keycode:96-106,小数点keycode:110，enter键13或108,backspace键8）
-            if((e.keyCode>=48&&e.keyCode<=57 )|| (e.keyCode>=96&&e.keyCode<=106)||e.keyCode==110||e.keyCode==13||e.keyCode==108||e.keyCode==8){
+            //数字0-9(keycode:48-57)，小键盘数字0-9（keycode:96-106,小数点keycode:110 190，enter键13或108,backspace键8）
+            if((e.keyCode>=48&&e.keyCode<=57 )|| (e.keyCode>=96&&e.keyCode<=106)||e.keyCode==110||e.keyCode==190||e.keyCode==13||e.keyCode==108||e.keyCode==8){
                 if (e.keyCode == 13) {
-                    var centerFrq = $(this).val()
+                    var centerFrq = $(this).val().replace("MHz","");
                     var data = {};
                     if (centerFrq &&!isNaN(centerFrq) && centerFrq!='0') {
                         $(this).val(centerFrq+'MHz');
@@ -350,7 +350,7 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
 
         $(".search-icon").click(function () {
 
-            var centerFrq = $("#search").val();
+            var centerFrq = $("#search").val().replace("MHz","");
             console.log(centerFrq);
             var data = {};
             if (centerFrq &&!isNaN(centerFrq)&&centerFrq!='0') {

@@ -507,6 +507,15 @@ define(["home/alarm/alarm_manage", "ajax"],
                         $('.addStation').click(function(){
                             $('#modalStationAlarm').modal('hide');//关闭模态框
                             //跳转到博创的台站数据分析模块中添加台站
+                            var reopenParam = {};
+                            reopenParam.ServerName = "host";
+                            reopenParam.DisplayName = "台站数据分析";
+                            reopenParam.MultiTabable = "False";
+                            reopenParam.ReflushIfExist = "False";
+                            reopenParam.Url = "RadioStationViewModel";
+                            var  paramStr = JSON.stringify(reopenParam)
+                            //console.log(paramStr)
+                            Binding.openUrl(paramStr);
                         });
                         $('#table-station-list').bootstrapTable({
                             method: 'get',
@@ -602,6 +611,15 @@ define(["home/alarm/alarm_manage", "ajax"],
                         $('.addStation').click(function(){
                             $('#modalStationAlarm').modal('hide');//关闭模态框
                             //跳转到博创的台站数据分析模块中添加台站
+                            var reopenParam = {};
+                            reopenParam.ServerName = "host";
+                            reopenParam.DisplayName = "台站数据分析";
+                            reopenParam.MultiTabable = "False";
+                            reopenParam.ReflushIfExist = "False";
+                            reopenParam.Url = "RadioStationViewModel";
+                            var  paramStr = JSON.stringify(reopenParam)
+                            //console.log(paramStr)
+                            Binding.openUrl(paramStr);
                         });
                         $('#table-station-list').bootstrapTable({
                             method: 'get',

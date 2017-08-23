@@ -1,18 +1,18 @@
 
 package org.tempuri;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
- * <p>ArrayOfFreqWarningStatDTO complex typeï¿½ï¿½ Java ï¿½à¡£
+ * <p>ArrayOfFreqWarningStatDTO complex typeµÄ Java Àà¡£
  * 
- * <p>ï¿½ï¿½ï¿½ï¿½Ä£Ê½Æ¬ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½ï¿½ï¿½ï¿½Ðµï¿½Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½Ý¡ï¿½
+ * <p>ÒÔÏÂÄ£Ê½Æ¬¶ÎÖ¸¶¨°üº¬ÔÚ´ËÀàÖÐµÄÔ¤ÆÚÄÚÈÝ¡£
  * 
  * <pre>
  * &lt;complexType name="ArrayOfFreqWarningStatDTO"&gt;
@@ -30,26 +30,26 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ArrayOfFreqWarningStatDTO", propOrder = {
-    "freqWarningStatDTOs"
+    "freqWarningStatDTO"
 })
 public class ArrayOfFreqWarningStatDTO {
 
     @XmlElement(name = "FreqWarningStatDTO", nillable = true)
-    protected List<FreqWarningStatDTO> freqWarningStatDTOs;
+    protected List<FreqWarningStatDTO> freqWarningStatDTO;
 
     /**
-     * Gets the value of the freqWarningStatDTOs property.
+     * Gets the value of the freqWarningStatDTO property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the freqWarningStatDTOs property.
+     * This is why there is not a <CODE>set</CODE> method for the freqWarningStatDTO property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getFreqWarningStatDTOs().add(newItem);
+     *    getFreqWarningStatDTO().add(newItem);
      * </pre>
      * 
      * 
@@ -59,11 +59,11 @@ public class ArrayOfFreqWarningStatDTO {
      * 
      * 
      */
-    public List<FreqWarningStatDTO> getFreqWarningStatDTOs() {
-        if (freqWarningStatDTOs == null) {
-            freqWarningStatDTOs = new ArrayList<FreqWarningStatDTO>();
+    public List<FreqWarningStatDTO> getFreqWarningStatDTO() {
+        if (freqWarningStatDTO == null) {
+            freqWarningStatDTO = new ArrayList<FreqWarningStatDTO>();
         }
-        return this.freqWarningStatDTOs;
+        return this.freqWarningStatDTO;
     }
 
 }

@@ -1,18 +1,18 @@
 
 package org.tempuri;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
- * <p>ArrayOfRadioSignalDTO complex typeï¿½ï¿½ Java ï¿½à¡£
+ * <p>ArrayOfRadioSignalDTO complex typeµÄ Java Àà¡£
  * 
- * <p>ï¿½ï¿½ï¿½ï¿½Ä£Ê½Æ¬ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½ï¿½ï¿½ï¿½Ðµï¿½Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½Ý¡ï¿½
+ * <p>ÒÔÏÂÄ£Ê½Æ¬¶ÎÖ¸¶¨°üº¬ÔÚ´ËÀàÖÐµÄÔ¤ÆÚÄÚÈÝ¡£
  * 
  * <pre>
  * &lt;complexType name="ArrayOfRadioSignalDTO"&gt;
@@ -30,26 +30,26 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ArrayOfRadioSignalDTO", propOrder = {
-    "radioSignalDTOs"
+    "radioSignalDTO"
 })
 public class ArrayOfRadioSignalDTO {
 
     @XmlElement(name = "RadioSignalDTO", nillable = true)
-    protected List<RadioSignalDTO> radioSignalDTOs;
+    protected List<RadioSignalDTO> radioSignalDTO;
 
     /**
-     * Gets the value of the radioSignalDTOs property.
+     * Gets the value of the radioSignalDTO property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the radioSignalDTOs property.
+     * This is why there is not a <CODE>set</CODE> method for the radioSignalDTO property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getRadioSignalDTOs().add(newItem);
+     *    getRadioSignalDTO().add(newItem);
      * </pre>
      * 
      * 
@@ -59,11 +59,11 @@ public class ArrayOfRadioSignalDTO {
      * 
      * 
      */
-    public List<RadioSignalDTO> getRadioSignalDTOs() {
-        if (radioSignalDTOs == null) {
-            radioSignalDTOs = new ArrayList<RadioSignalDTO>();
+    public List<RadioSignalDTO> getRadioSignalDTO() {
+        if (radioSignalDTO == null) {
+            radioSignalDTO = new ArrayList<RadioSignalDTO>();
         }
-        return this.radioSignalDTOs;
+        return this.radioSignalDTO;
     }
 
 }

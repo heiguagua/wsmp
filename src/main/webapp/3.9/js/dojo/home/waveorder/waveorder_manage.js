@@ -450,6 +450,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 				var data = {};
 				data.monitorsNum = [];
 				data.signalType = signalType;
+				data.monitors = monitors;
 				for (var i = 0; i < monitors.length; i++) {
 					data.monitorsNum[i] = monitors[i].Num;
 				}
@@ -461,58 +462,51 @@ define(	["ajax", "dojo/parser", "esri/map",
 							"width" : 26
 						});
 				// 计数点symbol
-				var url_countBackgrountSymbol = null;
+				var url_countBackgroundSymbol = null;
 				switch (signalType) {
 				case 0:
-					url_countBackgrountSymbol = "images/legal.svg";
+					url_countBackgroundSymbol = "images/legal.svg";
 					break;
 				case 1:
-					url_countBackgrountSymbol = "images/undeclared.svg";
+					url_countBackgroundSymbol = "images/undeclared.svg";
 					break;
 				case 2:
-					url_countBackgrountSymbol = "images/known.svg";
+					url_countBackgroundSymbol = "images/known.svg";
 					break;
 				case 3:
-					url_countBackgrountSymbol = "images/unknown.svg";
+					url_countBackgroundSymbol = "images/unknown.svg";
 					break;
 				case 4:
-					url_countBackgrountSymbol = "images/illegal.svg";
+					url_countBackgroundSymbol = "images/illegal.svg";
 					break;
 				default:
 					break;
 				}
 				var countBackgroundSymbol = new PictureMarkerSymbol({
-					"url" : url_countBackgrountSymbol,
+					"url" : url_countBackgroundSymbol,
 					"height" : 18,
 					"width" : 34
 				});
-				ajax.post("data/waveorder/monitorsPoint", data,
-						function(result) {
-							console.log(result);
-							for (var i = 0; i < result.length; i++) {
-								for (var j = 0; j < monitors.length; j++) {
-									if (result[i].monitorID == monitors[j].Num) {
-
-										var obj = {};
-										obj.x = monitors[j].Longitude;
-										obj.y = monitors[j].Latitude;
-										obj.count = result[i].count;
-										obj.monitorID = result[i].monitorID;
-
-										var monitorPoint = new Point(obj);
+				ajax.post("data/waveorder/monitorsPoint", data,function(result) {
+									console.log(result);
+									for (var i = 0; i < result.length; i++) {
+										var monitorPoint = new Point(result[i]);
 										var countPoint = monitorPoint.offset(
 												0.009, 0.006);// 计数点位于右上角
-										var countSymbol = new TextSymbol(monitorPoint.count)
-												.setColor(new esri.Color([0xff,
-																0xff, 0xff]))
+										var countSymbol = new TextSymbol(String(monitorPoint.count))
+												.setColor(
+														new esri.Color([ 0xff,
+																0xff, 0xff ]))
 												.setAlign(Font.ALIGN_START)
-												.setFont(new Font()
-															.setSize("12pt")
-															.setFamily(" .PingFangSC-Medium")
-														);
+												.setFont(
+														new Font()
+																.setSize("12pt")
+																.setFamily(
+																		" .PingFangSC-Medium"));
 
 										var countGraphic = new esri.Graphic(
-												countPoint.offset(0,-0.0015), countSymbol);// 计数图
+												countPoint.offset(0, -0.0015),
+												countSymbol);// 计数图
 										var countBackgroundGraphic = new esri.Graphic(
 												countPoint,
 												countBackgroundSymbol);// 计数底图
@@ -524,11 +518,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 										glayer_max.add(countBackgroundGraphic);
 										glayer_max.add(countGraphic);
 										glayer_zoom.add(monitorGraphic_zoom);
-										break;
 									}
-
-								}
-							}
 						});
 				map.addLayer(glayer_max);
 				map.addLayer(glayer_zoom);
@@ -546,6 +536,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 					}
 				});	
 			}
+			
 
 			//下方地图初始化
 			function mapInit() {

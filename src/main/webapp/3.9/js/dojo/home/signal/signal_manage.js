@@ -271,7 +271,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             data.des = des;
 
             ajax.put("data/signal/one/update", data, function() {
-                alert('sucssed');
+                layer.msg('成功');
             });
         });
     }
@@ -283,7 +283,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             var params = $("#configFrom").serializeObject(); //将表单序列化为JSON对象
             ajax.post("data/signal/insterConfig", params, function() {
 
-                alert("成功");
+                layer.msg("成功");
 
             });
 
@@ -294,7 +294,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
     }
 
     function signalClick(map, pSymbol, glayer) {
-
+        //合法正常信号 (合法)
         $("#legal-normal").click(function() {
             //					var value = $('option:selected').val();
             var value = $("#station_list").find('option:selected').text();
@@ -305,9 +305,69 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             var temp = '<div class="header-search"><input type="text" placeholder="输入中心频率">' +
                 '<span class="search-icon"></span></div>' +
                 '<table class="table table-striped" id="table-station-list"></table>' +
-                '<div class="mark-content"><p>备注</p><textarea id = "des" rows="5" placeholder="请输入备注信息" cols="120"></textarea></div>';
+                '<div class="mark-content">' +
+                '<p>添加违规记录</p>'+
+                '<form id="important-monitor-form" class="form-horizontal ">'+
+                '	<div class="form-box-wrap">'+
+                '		 <div class="form-group col-sm-6">'+
+                '			<label for="" class="col-xs-3 control-label">开始时间</label>'+
+                '		        <div class="input-group date time-picker"  style="padding-left:15px">'+
+                '		          <input id="startTime" name="beginTime" type="text" class="form-control " value="" />'+
+                '		          <span class="input-group-addon">'+
+                '		            <span class="glyphicon glyphicon-calendar"></span>'+
+                '		          </span>'+
+                '		        </div> '+
+                '		</div> '+
+                '		 <div class="form-group col-sm-6 endTimeForm"style="display: none">'+
+                '			<label for="" class="col-xs-4 control-label">结束时间</label>'+
+                '		        <div class="input-group date time-picker" style="padding-left:15px">'+
+                '		          <input  id="endTime" name="endTime" type="text" class="form-control " value=""/>'+
+                '		          <span class="input-group-addon">'+
+                '		            <span class="glyphicon glyphicon-calendar"></span>'+
+                '		          </span>'+
+                '		        </div> '+
+                '		</div> '+
+                '		<div class="form-group col-sm-6">'+
+                '			<label for="" class="col-xs-3 control-label">类型</label>'+
+                '			<div class="col-xs-9">'+
+                '				<select class="form-control">'+
+                '                 <option value="">带宽超宽</option>'+
+                '                 <option value="">功率超标</option>'+
+                '                 <option value="">位置改变</option>'+
+                '                 <option value="">其它</option>'+
+                '               </select>'+
+                '			 </div>'+
+                '		</div>'+
+                '		<div class="form-group col-sm-6 ">'+
+                '			<label for="" class="col-xs-4 control-label">是否恢复正常</label>'+
+                '			<div class="col-xs-8">'+
+                '                <div class="radio radio-primary flex1 ">'+
+                '                    <input type="radio" value="1" name="signal-type" id="isNormal" >'+
+                '                    <label for="isNormal"> 是 </label>'+
+                '                </div>'+
+                '                <div class="radio radio-primary flex1 ">'+
+                '                   <input type="radio" value="0" name="signal-type" id="noNormal" checked="checked">'+
+                '                   <label for="noNormal"> 否 </label>'+
+                '                </div>'+
+                '			</div>'+
+                '		</div>'+
+                '	</div>'+
+                '</form>'+
+
+                '<p>备注</p><textarea id = "des" rows="5" placeholder="请输入备注信息" cols="120"></textarea></div>';
             $("#stationWrap").html("");
             $("#stationWrap").html(temp);
+            //日期插件初始化
+            $("#stationWrap").find(".time-picker").datetimepicker({});
+            //是否恢复正常：默认为否，选择为是的时候弹出结束时间，否的时候不弹出结束时间
+            $("#isNormal").click(function(){
+
+                $("#stationWrap").find(".endTimeForm").attr('style','display:block');
+            })
+            $("#noNormal").click(function(){
+
+                $("#stationWrap").find(".endTimeForm").attr('style','display:none');
+            })
             $('#table-station-list').bootstrapTable({
                 method : 'get',
                 contentType : "application/x-www-form-urlencoded", //必须要有！！！！
@@ -337,7 +397,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                     console.log(codeStr);
                     codeStr = codeStr.replace("[","").replace("]","");
                     var centorFreq = $('#signal_list1').find('option:selected').attr("centorFreq");
-                    alert(centorFreq);
+                    //console.log(centorFreq);
                     params.areaCode = codeStr;
                     params.centorFreq = centorFreq;
                     return params
@@ -379,7 +439,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             $("#modalStationAlarm").modal();
 
         });
-
+         //合法违规信号
         $("#undeclared").click(function() {
             var value = $('option:selected').val();
             var kmz = $('#search').val();
@@ -462,7 +522,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             $("#modalStationAlarm").modal();
         });
 
-
+        //已知信号(已知)
         $("#nonlocal_station").click(function() {
             var value = $('option:selected').val();
             var kmz = $('#search').val();
@@ -473,9 +533,25 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             var temp = '<div class="header-search"><input type="text" placeholder="输入中心频率">' +
                 '<span class="search-icon"></span></div>' +
                 '<table class="table table-striped" id="table-station-list"></table>' +
+                '<button type="button" class="btn btn-primary addStation">添加台站</button>'+
                 '<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息"></textarea></div>';
             $("#stationWrap").html("");
             $("#stationWrap").html(temp);
+            //合法违规和已知单击触发时，，点击添加台站按钮之后关闭弹出窗口，然后跳转到博创的台站数据分析模块中添加台站（需要博创提供链接）
+            $('.addStation').click(function(){
+                $('#modalStationAlarm').modal('hide');//关闭模态框
+                //跳转到博创的台站数据分析模块中添加台站
+                var reopenParam = {};
+                reopenParam.ServerName = "host";
+                reopenParam.DisplayName = "台站数据分析";
+                reopenParam.MultiTabable = "False";
+                reopenParam.ReflushIfExist = "False";
+                reopenParam.Url = "RadioStationViewModel";
+                var  paramStr = JSON.stringify(reopenParam)
+                //console.log(paramStr)
+                Binding.openUrl(paramStr);
+
+            });
             $('#table-station-list').bootstrapTable({
                 method : 'get',
                 contentType : "application/x-www-form-urlencoded", //必须要有！！！！
@@ -545,7 +621,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             $("#modalStationAlarm").modal();
 
         });
-
+        //非法信号（非法）
         $("#illegal").click(function() {
             var value = $('option:selected').val();
             var kmz = $('#search').val();
@@ -561,7 +637,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             $("#modalStationAlarm").modal();
 
         });
-
+        //不明信号（不明）
         $("#unknown").click(function() {
             var value = $('option:selected').val();
             var kmz = $('#search').val();
@@ -612,8 +688,8 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 
         $('.select2-picker').select2();
         $("#search").keydown(function(e) {
-            //数字0-9(keycode:48-57)，小键盘数字0-9（keycode:96-106,小数点keycode:110，enter键13或108,backspace键8）
-            if((e.keyCode>=48&&e.keyCode<=57 )|| (e.keyCode>=96&&e.keyCode<=106)||e.keyCode==110||e.keyCode==13||e.keyCode==108||e.keyCode==8){
+            //数字0-9(keycode:48-57)，小键盘数字0-9（keycode:96-106,小数点keycode:110 190，enter键13或108,backspace键8）
+            if((e.keyCode>=48&&e.keyCode<=57 )|| (e.keyCode>=96&&e.keyCode<=106)||e.keyCode==110||e.keyCode==190||e.keyCode==13||e.keyCode==108||e.keyCode==8){
 
                 if (e.keyCode == 13) {
                     getFreqList();
@@ -634,7 +710,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
     function getFreqList(){
     	// 清除图表
     	destroy_chart_table();
-    	var val = $("#search").val();
+    	var val = $("#search").val().replace("MHz","");
         var data = {};
         if (val && !isNaN(val) && val!='0') {
             $("#search").val(val+'MHz');
