@@ -688,8 +688,8 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 
         $('.select2-picker').select2();
         $("#search").keydown(function(e) {
-            //数字0-9(keycode:48-57)，小键盘数字0-9（keycode:96-106,小数点keycode:110，enter键13或108,backspace键8）
-            if((e.keyCode>=48&&e.keyCode<=57 )|| (e.keyCode>=96&&e.keyCode<=106)||e.keyCode==110||e.keyCode==13||e.keyCode==108||e.keyCode==8){
+            //数字0-9(keycode:48-57)，小键盘数字0-9（keycode:96-106,小数点keycode:110 190，enter键13或108,backspace键8）
+            if((e.keyCode>=48&&e.keyCode<=57 )|| (e.keyCode>=96&&e.keyCode<=106)||e.keyCode==110||e.keyCode==190||e.keyCode==13||e.keyCode==108||e.keyCode==8){
 
                 if (e.keyCode == 13) {
                     getFreqList();
@@ -710,7 +710,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
     function getFreqList(){
     	// 清除图表
     	destroy_chart_table();
-    	var val = $("#search").val();
+    	var val = $("#search").val().replace("MHz","");
         var data = {};
         if (val && !isNaN(val) && val!='0') {
             $("#search").val(val+'MHz');
