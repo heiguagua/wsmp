@@ -121,3 +121,6 @@
     overflow: hidden;
     background: rgba(239, 239, 239, 0.18);
 }
+.addStation {
+  margin-left: 45%;
+}

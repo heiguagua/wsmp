@@ -66,7 +66,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						});
 
 				// 重点监测点击事件
-				$("#modalConfig").on("shown.bs.modal", function(e) {
+				$("#modalConfig").on("show.bs.modal", function(e) {
 					var a = $(e.relatedTarget);
 					var beginFreq = a.data('beginfreq');
 					var endFreq = a.data('endfreq');
@@ -85,7 +85,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 									$("#modalConfig").find(".time-picker")
 											.datetimepicker({});
 								}
-								,
 							})
 				});
 
@@ -144,7 +143,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 							var freq = e.target.attributes[1].value;
 							const urlObj = {
 								ServerName : 'host2',// 跳四方用host1,跳自己这边用host2
-								DisplayName : '告警管理_',
+								DisplayName : '告警管理',
 								MultiTabable : false,
 								ReflushIfExist : true,
 								Url : 'radio/app/alarmmanage?id=QZ&cenFreg='+freq
@@ -164,6 +163,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 								success : function(html) {
 									layer.msg("更新成功！");
 									$("#important_monitor").html(html);
+									$("#modalConfig").find(".time-picker")
+									.datetimepicker({});
 								},
 								error : function(html) {
 									console.log(html);
@@ -184,6 +185,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 								success : function(html) {
 									layer.msg("添加成功！");
 									$("#important_monitor").html(html);
+									$("#modalConfig").find(".time-picker")
+									.datetimepicker({});
 								},
 								error : function(html) {
 									console.log(html);
@@ -211,6 +214,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 										success : function(html) {
 											layer.msg("删除成功!");
 											$("#important_monitor").html(html);
+											$("#modalConfig").find(".time-picker")
+											.datetimepicker({});
 										},
 										error : function(html) {
 											console.log(html);
@@ -220,7 +225,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						});
 
 				// 信号统计点击事件
-				$("#modalSignal").on("shown.bs.modal", function(e) {
+				$("#modalSignal").on("show.bs.modal", function(e) {
 					var a = $(e.relatedTarget);
 					var beginFreq = a.data('beginfreq');// data()函数里面要取小写
 					var endFreq = a.data('endfreq');
@@ -359,7 +364,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 				for (var i = 0; i < monitors.length; i++) {
 					monitorsID[i] = monitors[i].Num;
 				}
-				table_radio_init(true, monitors, userID);
+				table_radio_init(monitors, userID);
 				table_alarm_undealed(monitorsID, monitors);
 				table_alarm_dealed(monitorsID, monitors);
 
@@ -476,8 +481,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 				default:
 					break;
 				}
-				console.log(signalType);
-				console.log(url_countBackgrountSymbol);
 				var countBackgroundSymbol = new PictureMarkerSymbol({
 					"url" : url_countBackgrountSymbol,
 					"height" : 18,
@@ -607,7 +610,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 							}, {
 								field : 'lastingTime',
 						        width:'20%',
-								title : '持续时间'
+								title : '最后出现时间'
 							}, {
 								field : 'stationID',
 						        width:'15%',
@@ -687,7 +690,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 							}, {
 								field : 'lastingTime',
 						        width:'20%',
-								title : '持续时间'
+								title : '最后出现时间'
 							}, {
 								field : 'stationID',
 								title : '监测站',
@@ -730,208 +733,155 @@ define(	["ajax", "dojo/parser", "esri/map",
 			}
 
 			// 信号统计表格
-			function table_radio_init(bool, monitors, userID) {
+			function table_radio_init(monitors, userID) {
 				var monitorsID = new Array();
 				for (var i = 0; i < monitors.length; i++) {
 					monitorsID[i] = monitors[i].Num;
 				}
-				if (bool) {
-					$('#table-radio').bootstrapTable({
-						method : 'post',
-						contentType : "application/json", // 必须要有！！！！
-						url : "data/waveorder/rediostatus", // 要请求数据的文件路径
-						striped : true, // 是否显示行间隔色
-						dataField : "data",
-						detailView : false,
-						sidePagination : 'client',
-						pageNumber : 1, // 初始化加载第一页，默认第一页
-						pagination : true, // 是否分页
-						queryParamsType : 'limit', // 查询参数组织方式
-						queryParams : function(params) {
-							params.monitorsID = monitorsID;
-							params.userID = userID;
-							return params
-						},
-						pageSize : 9, // 单页记录数
-						pageList : [5, 10, 20, 30], // 分页步进值
-						clickToSelect : true, // 是否启用点击选中行
-						responseHandler : function(res) {
-							return res;
-						},
-						// 必须要在此bootstraptable渲染成功之后才能渲染地图,不然地图会有错误
-						onLoadSuccess : function() {
-							MAP1 = mapInit();
-							addPoint(monitors, 0);// 默认选中0
-						},
-						columns : [{
-									field : 'redioName',
-									title : '频段名称',
-									width:'10%',
-									titleTooltip:'频段名称',
-									formatter : function(value, row, index) {
-										return value;
-									}
-								}, {
-									field : 'legalNormalStationNumber',
-									title : '合法正常信号',
-									width:'15%',
-									titleTooltip:'合法正常信号',
-									formatter : function(value, row, index) {
-										return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
-												+ monitorsID
-												+ '" data-radioType="0" data-beginFreq="'
-												+ row.beginFreq
-												+ '" data-endFreq="'
-												+ row.endFreq
-												+ '">'
-												+ value
-												+ '</a>';
-									}
-								}, {
-									field : 'legalUnNormalStationNumber',
-									title : '合法违规信号',
-									width:'15%',
-									titleTooltip:'合法违规信号',
-									formatter : function(value, row, index) {
-										return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
-												+ monitorsID
-												+ '" data-radioType="1" data-beginFreq="'
-												+ row.beginFreq
-												+ '" data-endFreq="'
-												+ row.endFreq
-												+ '">'
-												+ value
-												+ '</a>';
-									}
-								}, {
-									field : 'konwStationNumber',
-									title : '已知信号',
-									width:'10%',
-									titleTooltip:'已知信号',
-									formatter : function(value, row, index) {
-										return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
-												+ monitorsID
-												+ '" data-radioType="2" data-beginFreq="'
-												+ row.beginFreq
-												+ '" data-endFreq="'
-												+ row.endFreq
-												+ '">'
-												+ value
-												+ '</a>';
-									}
-								}, {
-									field : 'unKonw',
-									title : '不明信号',
-									width:'10%',
-									titleTooltip:'不明信号',
-									formatter : function(value, row, index) {
-										return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
-												+ monitorsID
-												+ '" data-radioType="3" data-beginFreq="'
-												+ row.beginFreq
-												+ '" data-endFreq="'
-												+ row.endFreq
-												+ '">'
-												+ value
-												+ '</a>';
-									}
-								}, {
-									field : 'illegalSignal',
-									title : '非法信号',
-									width:'10%',
-									titleTooltip:'非法信号',
-									formatter : function(value, row, index) {
-										return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
-												+ monitorsID
-												+ '" data-radioType="4" data-beginFreq="'
-												+ row.beginFreq
-												+ '" data-endFreq="'
-												+ row.endFreq
-												+ '">'
-												+ value
-												+ '</a>';
-									}
-								}, {
-									title : '重点监测',
-									width:'10%',
-									titleTooltip:'重点监测',
-									formatter : function(value, row, index) {
-										return '<a data-toggle="modal" data-target="#modalConfig" data-beginFreq="'
-												+ row.beginFreq
-												+ '" data-endFreq="'
-												+ row.endFreq
-												+ '"> <img src="images/Fill 29.png"> </img></a>';
-									}
-								}]
-					});
-				} else {
-					$('#table-radio').bootstrapTable({
-						method : 'post',
-						contentType : "application/json", // 必须要有！！！！
-						url : "data/waveorder/rediostatus", // 要请求数据的文件路径
-						striped : true, // 是否显示行间隔色
-						dataField : "data",
-						detailView : false,
-						pageNumber : 1, // 初始化加载第一页，默认第一页
-						pagination : true, // 是否分页
-						queryParamsType : 'limit', // 查询参数组织方式
-						queryParams : function(params) {
-							params.monitorsID = monitorsID;
-							params.userID = userID;
-							return params
-						}, // 请求服务器时所传的参数
-						sidePagination : 'client', // 指定服务器端分页
-						pageSize : 9, // 单页记录数
-						pageList : [5, 10, 20, 30], // 分页步进值
-						clickToSelect : true, // 是否启用点击选中行
-						responseHandler : function(res) {
-							return res;
-						},
-						columns : [{
-									field : 'redioName',
-									title : '频段名称',
-									formatter : function(value, row, index) {
-										return value;
-									}
-								}, {
-									field : 'legalNormalStationNumber',
-									title : '合法正常信号',
-									formatter : function(value, row, index) {
-										return '<a data-toggle="modal" data-target="#modalStation">'
-												+ value + '</a>';
-									}
-								}, {
-									field : 'legalUnNormalStationNumber',
-									title : '合法违规信号',
-									formatter : function(value, row, index) {
-										return '<a>' + value + '</a>';
-									}
-								}, {
-									field : 'konwStationNumber',
-									title : '已知信号',
-									formatter : function(value, row, index) {
-										return '<a>' + value + '</a>';
-									}
-								}, {
-									field : 'unKonw',
-									title : '不明信号',
-									formatter : function(value, row, index) {
-										return '<a>' + value + '</a>';
-									}
-								}, {
-									field : 'illegalSignal',
-									title : '非法信号',
-									formatter : function(value, row, index) {
-										return '<a>' + value + '</a>';
-									}
-								}, {
-									title : '重点监测',
-									formatter : function(value, row, index) {
-										return '<a data-toggle="modal" data-target="#modalConfig"> <img src="images/Fill 29.png"> </img></a>';
-									}
-								}]
-					});
-				}
+					$('#table-radio')
+						.bootstrapTable(
+								{
+									method : 'post',
+									contentType : "application/json", // 必须要有！！！！
+									url : "data/waveorder/rediostatus", // 要请求数据的文件路径
+									striped : true, // 是否显示行间隔色
+									dataField : "data",
+									detailView : false,
+									sidePagination : 'client',
+									pageNumber : 1, // 初始化加载第一页，默认第一页
+									pagination : true, // 是否分页
+									queryParamsType : 'limit', // 查询参数组织方式
+									queryParams : function(params) {
+										params.monitorsID = monitorsID;
+										params.userID = userID;
+										return params
+									},
+									pageSize : 9, // 单页记录数
+									pageList : [ 5, 10, 20, 30 ], // 分页步进值
+									clickToSelect : true, // 是否启用点击选中行
+									responseHandler : function(res) {
+										return res;
+									},
+									// 必须要在此bootstraptable渲染成功之后才能渲染地图,不然地图会有错误
+									onLoadSuccess : function() {
+										MAP1 = mapInit();
+										addPoint(monitors, 0);// 默认选中0
+									},
+									columns : [
+											{
+												field : 'redioName',
+												title : '频段名称',
+												width : '20%',
+												titleTooltip : '频段名称',
+												formatter : function(value,
+														row, index) {
+													return value;
+												}
+											},
+											{
+												field : 'legalNormalStationNumber',
+												title : '合法正常信号',
+												width : '15%',
+												titleTooltip : '合法正常信号',
+												formatter : function(value,
+														row, index) {
+													return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
+															+ monitorsID
+															+ '" data-radioType="0" data-beginFreq="'
+															+ row.beginFreq
+															+ '" data-endFreq="'
+															+ row.endFreq
+															+ '">'
+															+ value
+															+ '</a>';
+												}
+											},
+											{
+												field : 'legalUnNormalStationNumber',
+												title : '合法违规信号',
+												width : '15%',
+												titleTooltip : '合法违规信号',
+												formatter : function(value,
+														row, index) {
+													return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
+															+ monitorsID
+															+ '" data-radioType="1" data-beginFreq="'
+															+ row.beginFreq
+															+ '" data-endFreq="'
+															+ row.endFreq
+															+ '">'
+															+ value
+															+ '</a>';
+												}
+											},
+											{
+												field : 'konwStationNumber',
+												title : '已知信号',
+												width : '10%',
+												titleTooltip : '已知信号',
+												formatter : function(value,
+														row, index) {
+													return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
+															+ monitorsID
+															+ '" data-radioType="2" data-beginFreq="'
+															+ row.beginFreq
+															+ '" data-endFreq="'
+															+ row.endFreq
+															+ '">'
+															+ value
+															+ '</a>';
+												}
+											},
+											{
+												field : 'unKonw',
+												title : '不明信号',
+												width : '10%',
+												titleTooltip : '不明信号',
+												formatter : function(value,
+														row, index) {
+													return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
+															+ monitorsID
+															+ '" data-radioType="3" data-beginFreq="'
+															+ row.beginFreq
+															+ '" data-endFreq="'
+															+ row.endFreq
+															+ '">'
+															+ value
+															+ '</a>';
+												}
+											},
+											{
+												field : 'illegalSignal',
+												title : '非法信号',
+												width : '10%',
+												titleTooltip : '非法信号',
+												formatter : function(value,
+														row, index) {
+													return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
+															+ monitorsID
+															+ '" data-radioType="4" data-beginFreq="'
+															+ row.beginFreq
+															+ '" data-endFreq="'
+															+ row.endFreq
+															+ '">'
+															+ value
+															+ '</a>';
+												}
+											},
+											{
+												title : '重点监测',
+												width : '10%',
+												titleTooltip : '重点监测',
+												formatter : function(value,
+														row, index) {
+													return '<a data-toggle="modal" data-target="#modalConfig" data-beginFreq="'
+															+ row.beginFreq
+															+ '" data-endFreq="'
+															+ row.endFreq
+															+ '"> <img src="images/Fill 29.png"> </img></a>';
+												}
+											} ]
+								});
 			}
 
 			return {

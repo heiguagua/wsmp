@@ -612,8 +612,17 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 
         $('.select2-picker').select2();
         $("#search").keydown(function(e) {
-            if (e.keyCode == 13) {
-            	getFreqList();
+            //数字0-9(keycode:48-57)，小键盘数字0-9（keycode:96-106,小数点keycode:110，enter键13或108,backspace键8）
+            if((e.keyCode>=48&&e.keyCode<=57 )|| (e.keyCode>=96&&e.keyCode<=106)||e.keyCode==110||e.keyCode==13||e.keyCode==108||e.keyCode==8){
+
+                if (e.keyCode == 13) {
+                    getFreqList();
+                }
+            }else {
+                layer.alert("操作失误，请输入大于0的数字！");
+                $("#search").blur();
+                return;
+
             }
         });
 
@@ -627,11 +636,14 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
     	destroy_chart_table();
     	var val = $("#search").val();
         var data = {};
-        if (isNaN(val)) {
-            alert("请输入数字");
+        if (val && !isNaN(val) && val!='0') {
+            $("#search").val(val+'MHz');
+            val = parseFloat(val) * 1000000;
+        }else{
+            layer.alert("操作失误，请输入大于0的数字！");
             return;
         }
-    	val = parseFloat(val) * 1000000;
+
         data.beginFreq = val;
         data.endFreq = val;
 
@@ -665,11 +677,20 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
         $("#signal_list1 .select2-picker").html('');
         data = JSON.stringify(data);
         $("#signal_list1 .select2-picker").load("signal/singallist",{param:data}, function() {
+            if($(".select2-picker").find("option").length==0){//没有相关的日期选项时
+
+                $("#signal_list1 .select2-picker").html('<option class = "redio" disabled>未查询到数据</option>');
+                $("#station-list2").html('<option style="width: 300px;" class="station">未查询到数据</option>')
+                return;
+            }
             var s_val = $('#signal_list1').find('option:selected').val();
             if (s_val) {
                 getStations(s_val);
 
+            }else{
+                $("#station-list2").children().remove();
             }
+            $('.select2-picker').select2();
         });
 
     }

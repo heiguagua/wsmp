@@ -486,7 +486,7 @@ define(["home/alarm/alarm_manage", "ajax"],
 
                         $("#modalStationAlarm").modal();
                     });
-
+                    //合法违规
                     $("#legal-wrong").click(function () {
                         var value = $('option:selected').val();
                         var kmz = $('#search').val();
@@ -498,9 +498,16 @@ define(["home/alarm/alarm_manage", "ajax"],
                         var temp = '<div class="header-search"><input type="text" placeholder="输入中心频率">' +
                             '<span class="search-icon"></span></div>' +
                             '<table class="table table-striped" id="table-station-list"></table>' +
-                            '<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息"></textarea></div>';
+                            '<div class="mark-content">' +
+                            '<button type="button" class="btn btn-primary addStation">添加台站</button>'+
+                            '<p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息"></textarea></div>';
                         $("#stationWrap").html("");
                         $("#stationWrap").html(temp);
+                        //合法违规和已知单击触发时，，点击添加台站按钮之后关闭弹出窗口，然后跳转到博创的台站数据分析模块中添加台站（需要博创提供链接）
+                        $('.addStation').click(function(){
+                            $('#modalStationAlarm').modal('hide');//关闭模态框
+                            //跳转到博创的台站数据分析模块中添加台站
+                        });
                         $('#table-station-list').bootstrapTable({
                             method: 'get',
                             contentType: "application/x-www-form-urlencoded", //必须要有！！！！
@@ -575,7 +582,7 @@ define(["home/alarm/alarm_manage", "ajax"],
 
                     });
 
-
+                    //已知
                     $("#legal").click(function () {
                         var value = $('option:selected').val();
                         var kmz = $('#search').val();
@@ -586,9 +593,16 @@ define(["home/alarm/alarm_manage", "ajax"],
                         var temp = '<div class="header-search"><input type="text" placeholder="输入中心频率">' +
                             '<span class="search-icon"></span></div>' +
                             '<table class="table table-striped" id="table-station-list"></table>' +
-                            '<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息"></textarea></div>';
+                            '<div class="mark-content">' +
+                            '<button type="button" class="btn btn-primary addStation">添加台站</button>'+
+                            '<p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息"></textarea></div>';
                         $("#stationWrap").html("");
                         $("#stationWrap").html(temp);
+                        //合法违规和已知单击触发时，，点击添加台站按钮之后关闭弹出窗口，然后跳转到博创的台站数据分析模块中添加台站（需要博创提供链接）
+                        $('.addStation').click(function(){
+                            $('#modalStationAlarm').modal('hide');//关闭模态框
+                            //跳转到博创的台站数据分析模块中添加台站
+                        });
                         $('#table-station-list').bootstrapTable({
                             method: 'get',
                             contentType: "application/x-www-form-urlencoded", //必须要有！！！！
