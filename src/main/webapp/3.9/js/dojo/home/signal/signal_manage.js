@@ -336,7 +336,10 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 
                     console.log(codeStr);
                     codeStr = codeStr.replace("[","").replace("]","");
+                    var centorFreq = $('#signal_list1').find('option:selected').attr("centorFreq");
+                    alert(centorFreq);
                     params.areaCode = codeStr;
+                    params.centorFreq = centorFreq;
                     return params
                 }, //请求服务器时所传的参数
                 onClickRow : function(row) {

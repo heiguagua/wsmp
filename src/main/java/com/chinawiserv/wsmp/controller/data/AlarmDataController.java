@@ -28,8 +28,12 @@ import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.function.BinaryOperator;
+import java.util.stream.Stream;
 
+import static java.util.Comparator.comparingDouble;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 
 @RestControllerAdvice
 @RequestMapping("/data/alarm")
@@ -199,80 +203,89 @@ public class AlarmDataController {
         HashMap<String, Object> occReslute = Maps.newHashMap();
         try {
 
-            String id = "52010126";
-            long frequency = (long) (88.8 * 1000000);
-            //测试或者正式环境使用
-//            Map<Object, Object> max = hbaseClient.queryMaxLevels(stationCode, centorFreq, upperBound, lowerBound, beginTime);
-//            Map<String, Object> occ = hbaseClient.queryOccDay(stationCode, beginTime, 90, centorFreq).getOcc();
+                String id = "52010126";
+                long frequency = (long) (88.8 * 1000000);
+                //测试或者正式环境使用
+    //            Map<Object, Object> max = hbaseClient.queryMaxLevels(stationCode, centorFreq, upperBound, lowerBound, beginTime);
+    //            Map<String, Object> occ = hbaseClient.queryOccDay(stationCode, beginTime, 90, centorFreq).getOcc();
 
-            Map<Object, Object> max = hbaseClient.queryMaxLevels(stationCode, centorFreq, upperBound, lowerBound, beginTime);
-            Map<String, Object> occ = hbaseClient.queryOccDay(stationCode, beginTime, 90, frequency).getOcc();
+                Map<Object, Object> max = hbaseClient.queryMaxLevels(stationCode, centorFreq, upperBound, lowerBound, beginTime);
+                Map<String, Object> occ = hbaseClient.queryOccDay(stationCode, beginTime, 90, frequency).getOcc();
 
-            if (occ.size() == 0) {
+                occ = occ.entrySet().stream().sorted((Map.Entry<String, Object> c1, Map.Entry<String, Object> c2) -> Double.parseDouble(c1.getValue().toString())>Double.parseDouble(c2.getValue().toString())? 1:0
+                ).collect(toMap(Map.Entry::getKey,Map.Entry::getValue,throwingMerger(), LinkedHashMap::new));
 
-                HashMap<String, Object> restlutHashMap = Maps.newHashMap();
+                if (occ.size() == 0) {
 
-                String[] xAxis = new String[]{};
-                double[] series = new double[]{};
+                    HashMap<String, Object> restlutHashMap = Maps.newHashMap();
 
-                restlutHashMap.put("xAxis", xAxis);
-                restlutHashMap.put("series", series);
+                    String[] xAxis = new String[]{};
+                    double[] series = new double[]{};
 
-                reslutMap.put("monthOcc", restlutHashMap);
-                Logger.info("以三个月计算占用度从hbase中查询正常返回值为空 查询时间为{}，页面入参：监测站id{}，开始时间{},中心频率{}", LocalDateTime.now().toString(), stationCode, beginTime, centorFreq);
-            } else {
+                    restlutHashMap.put("xAxis", xAxis);
+                    restlutHashMap.put("series", series);
+                    reslutMap.put("monthOcc", restlutHashMap);
+                    Logger.info("以三个月计算占用度从hbase中查询正常返回值为空 查询时间为{}，页面入参：监测站id{}，开始时间{},中心频率{}", LocalDateTime.now().toString(), stationCode, beginTime, centorFreq);
+                } else {
 
-                LinkedList<Object> xAxis = Lists.newLinkedList();
-                LinkedList<Object> series = Lists.newLinkedList();
+                    LinkedList<Object> xAxis = Lists.newLinkedList();
+                    LinkedList<Object> series = Lists.newLinkedList();
 
-                occ.forEach((k, v) -> {
-                    xAxis.add(k);
-                    series.add(v);
-                });
+                    occ.forEach((k, v) -> {
+                        xAxis.add(k);
+                        series.add(v);
+                    });
 
 
-                occReslute.put("xAxis", xAxis);
-                occReslute.put("series", series);
+                    occReslute.put("xAxis", xAxis);
+                    occReslute.put("series", series);
 
-                reslutMap.put("monthOcc", occReslute);
-                Logger.info("以三个月计算占用度从hbase中查询正常有返回值为{} ， 查询时间为{}，页面入参：监测站id{}，开始时间{},中心频率{}", occ, LocalDateTime.now().toString(), stationCode, beginTime, centorFreq);
-            }
+                    reslutMap.put("monthOcc", occReslute);
+                    Logger.info("以三个月计算占用度从hbase中查询正常有返回值为{} ， 查询时间为{}，页面入参：监测站id{}，开始时间{},中心频率{}", occ, LocalDateTime.now().toString(), stationCode, beginTime, centorFreq);
+                }
 
-            if (max.size() == 0) {
+                if (max.size() == 0) {
 
-                String[] xAxis = new String[]{};
-                double[] series = new double[]{};
+                    String[] xAxis = new String[]{};
+                    double[] series = new double[]{};
 
-                resoluteHashMap.put("xAxis", xAxis);
-                resoluteHashMap.put("series", series);
+                    resoluteHashMap.put("xAxis", xAxis);
+                    resoluteHashMap.put("series", series);
 
-                reslutMap.put("max", resoluteHashMap);
-                Logger.info("以三个月计算占用度从hbase中查询正常返回值为空 查询时间为{}，页面入参：监测站id{}，开始时间{},中心频率{}", LocalDateTime.now().toString(), stationCode, beginTime, centorFreq);
+                    reslutMap.put("max", resoluteHashMap);
+                    Logger.info("以三个月计算占用度从hbase中查询正常返回值为空 查询时间为{}，页面入参：监测站id{}，开始时间{},中心频率{}", LocalDateTime.now().toString(), stationCode, beginTime, centorFreq);
+                    return reslutMap;
+                } else {
+
+                    LinkedList<Double> xAxis = Lists.newLinkedList();
+                    LinkedList<Object> series = Lists.newLinkedList();
+
+                    double [] f = new double[max.size()];
+                    final double pow = Math.pow(10, 6);
+                    int index = 0;
+                    for (Map.Entry<Object, Object> objectObjectEntry : max.entrySet()) {
+                        final double key = Double.parseDouble(objectObjectEntry.getValue().toString()) / pow;
+                        System.out.println(key);
+                        f[index] = key;
+                    }
+                    System.out.println("--------------------"+Stream.of(f).sorted(comparingDouble(t->Double.parseDouble(t.toString()))));
+                    max.forEach((k, v) -> {
+
+                        final double key = Double.parseDouble(k.toString()) / pow;
+                        xAxis.add(key);
+                        series.add(v);
+                    });
+
+                    double [] test = Stream.of(xAxis).mapToDouble(x->x.pollFirst()).sorted().toArray();
+                    System.out.println(test);
+                    resoluteHashMap.put("xAxis", xAxis);
+                    resoluteHashMap.put("series", series);
+
+                    reslutMap.put("max", resoluteHashMap);
+                    Logger.info("以三个月计算峰值从hbase中查询正常有返回值为{} ， 查询时间为{}，页面入参：监测站id{}，开始时间{},中心频率{}", max, LocalDateTime.now().toString(), stationCode, beginTime, centorFreq);
+                }
+
                 return reslutMap;
-            } else {
-
-                LinkedList<Object> xAxis = Lists.newLinkedList();
-                LinkedList<Object> series = Lists.newLinkedList();
-
-                final double pow = Math.pow(10, 6);
-
-                max.forEach((k, v) -> {
-
-                    final double key = Double.parseDouble(k.toString()) / pow;
-
-                    xAxis.add(key);
-                    series.add(v);
-                });
-
-
-                resoluteHashMap.put("xAxis", xAxis);
-                resoluteHashMap.put("series", series);
-
-                reslutMap.put("max", resoluteHashMap);
-                Logger.info("以三个月计算峰值从hbase中查询正常有返回值为{} ， 查询时间为{}，页面入参：监测站id{}，开始时间{},中心频率{}", max, LocalDateTime.now().toString(), stationCode, beginTime, centorFreq);
-            }
-
-            return reslutMap;
         } catch (Exception e) {
             Logger.error("以三个月计算峰值和占用度从hbase中查询其中一个或都出现异常 ， 查询时间为{}，页面入参：监测站id{}，开始时间{},中心频率{}， 异常为{}", LocalDateTime.now().toString(), stationCode, beginTime, centorFreq, e);
             String[] xAxis = new String[]{};
@@ -456,9 +469,9 @@ public class AlarmDataController {
         int limitNumber = Integer.parseInt(limit.toString());
 
         ArrayList<String> dr = new ArrayList<>(Arrays.asList(areaCodes));
-        info.setSignalFreq(Double.parseDouble((String) param.get("centorFreq")) / 1000000);
-        info.setAreaCodes(dr);
 
+        info.setAreaCodes(dr);
+        //info.setSignalFreq(Double.parseDouble((String) param.get("centorFreq")));
 
         Map<String, Object> hasMap = Maps.newLinkedHashMap();
 
@@ -593,6 +606,10 @@ public class AlarmDataController {
             Logger.error("博创台情webservice接口调用异常 操作时间{} 入参{} 异常:{}", LocalDateTime.now().toString(), map, e);
         }
         return reslut;
+    }
+
+    private static <T> BinaryOperator<T> throwingMerger() {
+        return (u,v) -> { throw new IllegalStateException(String.format("Duplicate key %s", u)); };
     }
 
 //    @GetMapping("/maxlevel")
