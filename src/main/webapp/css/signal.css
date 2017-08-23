@@ -378,3 +378,20 @@ td.bs-checkbox{
     right: 6px;
     top: 4px;
 }
+#stationWrap .mark-content {
+    margin-left: 20px;
+    margin-right: 15px;
+}
+#stationWrap .mark-content form {
+    margin-top: 10px;
+}
+#stationWrap .mark-content .form-control{
+    padding: 4px 8px;
+    height: 30px;
+    border: 1px solid #DAE5F0;
+    border-radius: 4px !important;
+    box-shadow: none;
+}
+.addStation {
+    margin-left: 45%;
+}
