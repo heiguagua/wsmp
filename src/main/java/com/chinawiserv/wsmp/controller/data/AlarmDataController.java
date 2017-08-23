@@ -114,7 +114,7 @@ public class AlarmDataController {
 
                 LinkedList<Object> xAxis = Lists.newLinkedList();
                 LinkedList<Object> series = Lists.newLinkedList();
-                System.out.println(Occ);
+
                 Occ = Occ.entrySet().stream().sorted((c1,c2)-> Integer.parseInt(c1.getKey())>Integer.parseInt(c2.getKey())?1:-1)
                         .collect(toMap(Map.Entry::getKey,Map.Entry::getValue,throwingMerger(), LinkedHashMap::new));
 
