@@ -113,7 +113,7 @@ public class ASIQDataController {
                     this.formatter).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 
 			List<IQ>  iq = this.client.queryIQ(id, centerFreq, timeStartLong, timeStopLong);
-			Logger.info("iq 数据查询正常 基站id{} 中心频率为{} 开始时间{} 返回值 {}",id,centerFreq,timeStart);
+			Logger.info("iq 数据查询正常 基站id{} 中心频率为{} 开始时间{} 返回值个数 {}",id,centerFreq,timeStart,iq.size());
 
 			return  iq;
 		} catch (Exception e) {

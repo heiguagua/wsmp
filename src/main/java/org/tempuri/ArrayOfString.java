@@ -34,30 +34,27 @@ import java.util.List;
 })
 public class ArrayOfString {
 
-    @XmlElement(name = "string", nillable = true)
-    protected List<String> strings;
-
     /**
      * Gets the value of the strings property.
-     * 
+     *
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the strings property.
-     * 
+     *
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getStrings().add(newItem);
      * </pre>
-     * 
-     * 
+     *
+     *
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link String }
-     * 
-     * 
+     *
+     *
      */
     public List<String> getStrings() {
         if (strings == null) {
@@ -69,4 +66,8 @@ public class ArrayOfString {
     public void setStrings(List<String> strings) {
         this.strings = strings;
     }
+
+    @XmlElement(name = "string", nillable = true)
+    protected List<String> strings;
+
 }

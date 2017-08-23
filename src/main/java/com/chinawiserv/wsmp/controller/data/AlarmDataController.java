@@ -29,9 +29,7 @@ import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.BinaryOperator;
-import java.util.stream.Stream;
 
-import static java.util.Comparator.comparingDouble;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
@@ -146,6 +144,9 @@ public class AlarmDataController {
 
                 final double pow = Math.pow(10, 6);
 
+                Max = Max.entrySet().stream().sorted(( c1,  c2) -> Integer.parseInt(c1.getKey().toString())>Integer.parseInt(c2.getKey().toString())?  1:-1
+                ).collect(toMap(Map.Entry::getKey,Map.Entry::getValue,throwingMerger(), LinkedHashMap::new));
+
                 Max.forEach((k, v) -> {
 
                     final double key = Double.parseDouble(k) / pow;
@@ -212,9 +213,6 @@ public class AlarmDataController {
                 Map<Object, Object> max = hbaseClient.queryMaxLevels(stationCode, centorFreq, upperBound, lowerBound, beginTime);
                 Map<String, Object> occ = hbaseClient.queryOccDay(stationCode, beginTime, 90, frequency).getOcc();
 
-                occ = occ.entrySet().stream().sorted((Map.Entry<String, Object> c1, Map.Entry<String, Object> c2) -> Double.parseDouble(c1.getValue().toString())>Double.parseDouble(c2.getValue().toString())? 1:0
-                ).collect(toMap(Map.Entry::getKey,Map.Entry::getValue,throwingMerger(), LinkedHashMap::new));
-
                 if (occ.size() == 0) {
 
                     HashMap<String, Object> restlutHashMap = Maps.newHashMap();
@@ -230,6 +228,8 @@ public class AlarmDataController {
 
                     LinkedList<Object> xAxis = Lists.newLinkedList();
                     LinkedList<Object> series = Lists.newLinkedList();
+
+                    occ.entrySet().stream().sorted()
 
                     occ.forEach((k, v) -> {
                         xAxis.add(k);
@@ -260,15 +260,11 @@ public class AlarmDataController {
                     LinkedList<Double> xAxis = Lists.newLinkedList();
                     LinkedList<Object> series = Lists.newLinkedList();
 
-                    double [] f = new double[max.size()];
                     final double pow = Math.pow(10, 6);
-                    int index = 0;
-                    for (Map.Entry<Object, Object> objectObjectEntry : max.entrySet()) {
-                        final double key = Double.parseDouble(objectObjectEntry.getValue().toString()) / pow;
-                        System.out.println(key);
-                        f[index] = key;
-                    }
-                    System.out.println("--------------------"+Stream.of(f).sorted(comparingDouble(t->Double.parseDouble(t.toString()))));
+
+                    max = max.entrySet().stream().sorted(( c1,  c2) -> Integer.parseInt(c1.getKey().toString())>Integer.parseInt(c2.getKey().toString())?  1:-1
+                    ).collect(toMap(Map.Entry::getKey,Map.Entry::getValue,throwingMerger(), LinkedHashMap::new));
+
                     max.forEach((k, v) -> {
 
                         final double key = Double.parseDouble(k.toString()) / pow;
@@ -276,8 +272,6 @@ public class AlarmDataController {
                         series.add(v);
                     });
 
-                    double [] test = Stream.of(xAxis).mapToDouble(x->x.pollFirst()).sorted().toArray();
-                    System.out.println(test);
                     resoluteHashMap.put("xAxis", xAxis);
                     resoluteHashMap.put("series", series);
 
