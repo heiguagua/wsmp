@@ -271,7 +271,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             data.des = des;
 
             ajax.put("data/signal/one/update", data, function() {
-                alert('sucssed');
+                layer.msg('成功');
             });
         });
     }
@@ -283,7 +283,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             var params = $("#configFrom").serializeObject(); //将表单序列化为JSON对象
             ajax.post("data/signal/insterConfig", params, function() {
 
-                alert("成功");
+                layer.msg("成功");
 
             });
 
@@ -306,7 +306,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 '<span class="search-icon"></span></div>' +
                 '<table class="table table-striped" id="table-station-list"></table>' +
                 '<div class="mark-content">' +
-                '<button type="button" class="btn btn-primary">添加违规记录</button>'+
+                '<p>添加违规记录</p>'+
                 '<form id="important-monitor-form" class="form-horizontal ">'+
                 '	<div class="form-box-wrap">'+
                 '		 <div class="form-group col-sm-6">'+
@@ -397,7 +397,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                     console.log(codeStr);
                     codeStr = codeStr.replace("[","").replace("]","");
                     var centorFreq = $('#signal_list1').find('option:selected').attr("centorFreq");
-                    alert(centorFreq);
+                    //console.log(centorFreq);
                     params.areaCode = codeStr;
                     params.centorFreq = centorFreq;
                     return params
@@ -541,6 +541,16 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             $('.addStation').click(function(){
                 $('#modalStationAlarm').modal('hide');//关闭模态框
                 //跳转到博创的台站数据分析模块中添加台站
+                var reopenParam = {};
+                reopenParam.ServerName = "host";
+                reopenParam.DisplayName = "台站数据分析";
+                reopenParam.MultiTabable = "False";
+                reopenParam.ReflushIfExist = "False";
+                reopenParam.Url = "RadioStationViewModel";
+                var  paramStr = JSON.stringify(reopenParam)
+                //console.log(paramStr)
+                Binding.openUrl(paramStr);
+
             });
             $('#table-station-list').bootstrapTable({
                 method : 'get',
