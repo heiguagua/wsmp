@@ -89,7 +89,7 @@ public class AlarmManagerViewController {
 		try {
 			response = (FreqWarningQueryResponse) service.freqWarnServiceCall("query", jsonStr, FreqWarningQueryRequest.class);
 
-			reslutList = response.getWarningInfos().getFreqWarningDTOs().stream().map(t -> {
+			reslutList = response.getWarningInfos().getFreqWarningDTO().stream().map(t -> {
 
                 final Singal singal = new Singal();
 
@@ -108,7 +108,7 @@ public class AlarmManagerViewController {
                 String beginTime = t.getSaveDate().toString().replaceAll(":", "").replaceAll("T", "").replaceAll("-", "");
                 singal.setBeginTime(beginTime);
 
-                t.getStatList().getFreqWarningStatDTOs().stream().map(m -> {
+                t.getStatList().getFreqWarningStatDTO().stream().map(m -> {
                     return m.getStationGUID();
                 }).forEach(z -> {
                     listId.add(z);

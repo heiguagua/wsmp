@@ -30,26 +30,26 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ArrayOfRadioSignalAbnormalHistoryDTO", propOrder = {
-    "radioSignalAbnormalHistoryDTOs"
+    "radioSignalAbnormalHistoryDTO"
 })
 public class ArrayOfRadioSignalAbnormalHistoryDTO {
 
     @XmlElement(name = "RadioSignalAbnormalHistoryDTO", nillable = true)
-    protected List<RadioSignalAbnormalHistoryDTO> radioSignalAbnormalHistoryDTOs;
+    protected List<RadioSignalAbnormalHistoryDTO> radioSignalAbnormalHistoryDTO;
 
     /**
-     * Gets the value of the radioSignalAbnormalHistoryDTOs property.
+     * Gets the value of the radioSignalAbnormalHistoryDTO property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the radioSignalAbnormalHistoryDTOs property.
+     * This is why there is not a <CODE>set</CODE> method for the radioSignalAbnormalHistoryDTO property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getRadioSignalAbnormalHistoryDTOs().add(newItem);
+     *    getRadioSignalAbnormalHistoryDTO().add(newItem);
      * </pre>
      * 
      * 
@@ -59,11 +59,11 @@ public class ArrayOfRadioSignalAbnormalHistoryDTO {
      * 
      * 
      */
-    public List<RadioSignalAbnormalHistoryDTO> getRadioSignalAbnormalHistoryDTOs() {
-        if (radioSignalAbnormalHistoryDTOs == null) {
-            radioSignalAbnormalHistoryDTOs = new ArrayList<RadioSignalAbnormalHistoryDTO>();
+    public List<RadioSignalAbnormalHistoryDTO> getRadioSignalAbnormalHistoryDTO() {
+        if (radioSignalAbnormalHistoryDTO == null) {
+            radioSignalAbnormalHistoryDTO = new ArrayList<RadioSignalAbnormalHistoryDTO>();
         }
-        return this.radioSignalAbnormalHistoryDTOs;
+        return this.radioSignalAbnormalHistoryDTO;
     }
 
 }

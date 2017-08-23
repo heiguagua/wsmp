@@ -148,7 +148,7 @@ public class WaveOrderViewController {
 		ArrayOfString value = new ArrayOfString();
 		@SuppressWarnings("unchecked")
 		List<String> monitorsNum = (List<String>) map.get("monitorsNum");
-		value.setStrings(monitorsNum);
+		value.setString(monitorsNum);
 		request.setStationNumber(value);
 		RadioSignalClassifiedQueryResponse response = service.getRadioSignalWebServiceSoap().queryRadioSignalClassified(request);
 		//System.out.println("===============================response:"+JSON.toJSONString(response));
@@ -159,7 +159,7 @@ public class WaveOrderViewController {
 		AtomicInteger index2 = new AtomicInteger();
 		AtomicInteger index3 = new AtomicInteger();
 		AtomicInteger index4 = new AtomicInteger();
-		response.getLstOnStation().getSignalStaticsOnStations().stream().forEach(t -> {
+		response.getLstOnStation().getSignalStaticsOnStation().stream().forEach(t -> {
 			RedioStatusCount rsCount = new RedioStatusCount();
 			t.getSignalStaticsLst().getSignalStatics().forEach(t1 -> {
 				int type = t1.getSignalType();
@@ -208,7 +208,7 @@ public class WaveOrderViewController {
 		ArrayOfString value = new ArrayOfString();
 		@SuppressWarnings("unchecked")
 		List<String> monitorsNum = (List<String>) map.get("monitorsNum");
-		value.setStrings(monitorsNum);
+		value.setString(monitorsNum);
 		request.setStationNumber(value);
 		RadioSignalClassifiedQueryResponse response = service.getRadioSignalWebServiceSoap().queryRadioSignalClassified(request);
 		//System.out.println("===============================response:"+JSON.toJSONString(response));
@@ -219,7 +219,7 @@ public class WaveOrderViewController {
 		AtomicInteger index2 = new AtomicInteger();
 		AtomicInteger index3 = new AtomicInteger();
 		AtomicInteger index4 = new AtomicInteger();
-		response.getLstOnStation().getSignalStaticsOnStations().stream().forEach(t -> {
+		response.getLstOnStation().getSignalStaticsOnStation().stream().forEach(t -> {
 			RedioStatusCount rsCount = new RedioStatusCount();
 			t.getSignalStaticsLst().getSignalStatics().forEach(t1 -> {
 				int type = t1.getSignalType();

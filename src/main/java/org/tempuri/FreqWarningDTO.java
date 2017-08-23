@@ -1,15 +1,19 @@
 
 package org.tempuri;
 
-import javax.xml.bind.annotation.*;
-import javax.xml.datatype.XMLGregorianCalendar;
 import java.math.BigInteger;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * <p>FreqWarningDTO complex type锟斤拷 Java 锟洁。
+ * <p>FreqWarningDTO complex type的 Java 类。
  * 
- * <p>锟斤拷锟斤拷模式片锟斤拷指锟斤拷锟斤拷锟斤拷锟节达拷锟斤拷锟叫碉拷预锟斤拷锟斤拷锟捷★拷
+ * <p>以下模式片段指定包含在此类中的预期内容。
  * 
  * <pre>
  * &lt;complexType name="FreqWarningDTO"&gt;
@@ -25,6 +29,7 @@ import java.math.BigInteger;
  *         &lt;element name="ELevel" type="{http://www.w3.org/2001/XMLSchema}unsignedLong"/&gt;
  *         &lt;element name="StationKey" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="SaveDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
+ *         &lt;element name="LastTimeDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
  *         &lt;element name="IsInvalid" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
  *         &lt;element name="InvalidDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
  *         &lt;element name="Description" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
@@ -48,6 +53,7 @@ import java.math.BigInteger;
     "eLevel",
     "stationKey",
     "saveDate",
+    "lastTimeDate",
     "isInvalid",
     "invalidDate",
     "description",
@@ -77,6 +83,9 @@ public class FreqWarningDTO {
     @XmlElement(name = "SaveDate", required = true)
     @XmlSchemaType(name = "dateTime")
     protected XMLGregorianCalendar saveDate;
+    @XmlElement(name = "LastTimeDate", required = true)
+    @XmlSchemaType(name = "dateTime")
+    protected XMLGregorianCalendar lastTimeDate;
     @XmlElement(name = "IsInvalid")
     protected boolean isInvalid;
     @XmlElement(name = "InvalidDate", required = true)
@@ -88,7 +97,7 @@ public class FreqWarningDTO {
     protected ArrayOfFreqWarningStatDTO statList;
 
     /**
-     * 锟斤拷取id锟斤拷锟皆碉拷值锟斤拷
+     * 获取id属性的值。
      * 
      * @return
      *     possible object is
@@ -100,7 +109,7 @@ public class FreqWarningDTO {
     }
 
     /**
-     * 锟斤拷锟斤拷id锟斤拷锟皆碉拷值锟斤拷
+     * 设置id属性的值。
      * 
      * @param value
      *     allowed object is
@@ -112,7 +121,7 @@ public class FreqWarningDTO {
     }
 
     /**
-     * 锟斤拷取centerFreq锟斤拷锟皆碉拷值锟斤拷
+     * 获取centerFreq属性的值。
      * 
      * @return
      *     possible object is
@@ -124,7 +133,7 @@ public class FreqWarningDTO {
     }
 
     /**
-     * 锟斤拷锟斤拷centerFreq锟斤拷锟皆碉拷值锟斤拷
+     * 设置centerFreq属性的值。
      * 
      * @param value
      *     allowed object is
@@ -136,7 +145,7 @@ public class FreqWarningDTO {
     }
 
     /**
-     * 锟斤拷取bandWidth锟斤拷锟皆碉拷值锟斤拷
+     * 获取bandWidth属性的值。
      * 
      * @return
      *     possible object is
@@ -148,7 +157,7 @@ public class FreqWarningDTO {
     }
 
     /**
-     * 锟斤拷锟斤拷bandWidth锟斤拷锟皆碉拷值锟斤拷
+     * 设置bandWidth属性的值。
      * 
      * @param value
      *     allowed object is
@@ -160,7 +169,7 @@ public class FreqWarningDTO {
     }
 
     /**
-     * 锟斤拷取status锟斤拷锟皆碉拷值锟斤拷
+     * 获取status属性的值。
      * 
      */
     public int getStatus() {
@@ -168,7 +177,7 @@ public class FreqWarningDTO {
     }
 
     /**
-     * 锟斤拷锟斤拷status锟斤拷锟皆碉拷值锟斤拷
+     * 设置status属性的值。
      * 
      */
     public void setStatus(int value) {
@@ -176,7 +185,7 @@ public class FreqWarningDTO {
     }
 
     /**
-     * 锟斤拷取areaCode锟斤拷锟皆碉拷值锟斤拷
+     * 获取areaCode属性的值。
      * 
      */
     public int getAreaCode() {
@@ -184,7 +193,7 @@ public class FreqWarningDTO {
     }
 
     /**
-     * 锟斤拷锟斤拷areaCode锟斤拷锟皆碉拷值锟斤拷
+     * 设置areaCode属性的值。
      * 
      */
     public void setAreaCode(int value) {
@@ -192,7 +201,7 @@ public class FreqWarningDTO {
     }
 
     /**
-     * 锟斤拷取keyword锟斤拷锟皆碉拷值锟斤拷
+     * 获取keyword属性的值。
      * 
      * @return
      *     possible object is
@@ -204,7 +213,7 @@ public class FreqWarningDTO {
     }
 
     /**
-     * 锟斤拷锟斤拷keyword锟斤拷锟皆碉拷值锟斤拷
+     * 设置keyword属性的值。
      * 
      * @param value
      *     allowed object is
@@ -216,7 +225,7 @@ public class FreqWarningDTO {
     }
 
     /**
-     * 锟斤拷取eLevel锟斤拷锟皆碉拷值锟斤拷
+     * 获取eLevel属性的值。
      * 
      * @return
      *     possible object is
@@ -228,7 +237,7 @@ public class FreqWarningDTO {
     }
 
     /**
-     * 锟斤拷锟斤拷eLevel锟斤拷锟皆碉拷值锟斤拷
+     * 设置eLevel属性的值。
      * 
      * @param value
      *     allowed object is
@@ -240,7 +249,7 @@ public class FreqWarningDTO {
     }
 
     /**
-     * 锟斤拷取stationKey锟斤拷锟皆碉拷值锟斤拷
+     * 获取stationKey属性的值。
      * 
      * @return
      *     possible object is
@@ -252,7 +261,7 @@ public class FreqWarningDTO {
     }
 
     /**
-     * 锟斤拷锟斤拷stationKey锟斤拷锟皆碉拷值锟斤拷
+     * 设置stationKey属性的值。
      * 
      * @param value
      *     allowed object is
@@ -264,7 +273,7 @@ public class FreqWarningDTO {
     }
 
     /**
-     * 锟斤拷取saveDate锟斤拷锟皆碉拷值锟斤拷
+     * 获取saveDate属性的值。
      * 
      * @return
      *     possible object is
@@ -276,7 +285,7 @@ public class FreqWarningDTO {
     }
 
     /**
-     * 锟斤拷锟斤拷saveDate锟斤拷锟皆碉拷值锟斤拷
+     * 设置saveDate属性的值。
      * 
      * @param value
      *     allowed object is
@@ -288,7 +297,31 @@ public class FreqWarningDTO {
     }
 
     /**
-     * 锟斤拷取isInvalid锟斤拷锟皆碉拷值锟斤拷
+     * 获取lastTimeDate属性的值。
+     * 
+     * @return
+     *     possible object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public XMLGregorianCalendar getLastTimeDate() {
+        return lastTimeDate;
+    }
+
+    /**
+     * 设置lastTimeDate属性的值。
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public void setLastTimeDate(XMLGregorianCalendar value) {
+        this.lastTimeDate = value;
+    }
+
+    /**
+     * 获取isInvalid属性的值。
      * 
      */
     public boolean isIsInvalid() {
@@ -296,7 +329,7 @@ public class FreqWarningDTO {
     }
 
     /**
-     * 锟斤拷锟斤拷isInvalid锟斤拷锟皆碉拷值锟斤拷
+     * 设置isInvalid属性的值。
      * 
      */
     public void setIsInvalid(boolean value) {
@@ -304,7 +337,7 @@ public class FreqWarningDTO {
     }
 
     /**
-     * 锟斤拷取invalidDate锟斤拷锟皆碉拷值锟斤拷
+     * 获取invalidDate属性的值。
      * 
      * @return
      *     possible object is
@@ -316,7 +349,7 @@ public class FreqWarningDTO {
     }
 
     /**
-     * 锟斤拷锟斤拷invalidDate锟斤拷锟皆碉拷值锟斤拷
+     * 设置invalidDate属性的值。
      * 
      * @param value
      *     allowed object is
@@ -328,7 +361,7 @@ public class FreqWarningDTO {
     }
 
     /**
-     * 锟斤拷取description锟斤拷锟皆碉拷值锟斤拷
+     * 获取description属性的值。
      * 
      * @return
      *     possible object is
@@ -340,7 +373,7 @@ public class FreqWarningDTO {
     }
 
     /**
-     * 锟斤拷锟斤拷description锟斤拷锟皆碉拷值锟斤拷
+     * 设置description属性的值。
      * 
      * @param value
      *     allowed object is
@@ -352,7 +385,7 @@ public class FreqWarningDTO {
     }
 
     /**
-     * 锟斤拷取statList锟斤拷锟皆碉拷值锟斤拷
+     * 获取statList属性的值。
      * 
      * @return
      *     possible object is
@@ -364,7 +397,7 @@ public class FreqWarningDTO {
     }
 
     /**
-     * 锟斤拷锟斤拷statList锟斤拷锟皆碉拷值锟斤拷
+     * 设置statList属性的值。
      * 
      * @param value
      *     allowed object is

@@ -1,12 +1,12 @@
 
 package org.tempuri;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -30,30 +30,26 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ArrayOfFrequencyBand", propOrder = {
-    "frequencyBands"
+    "frequencyBand"
 })
 public class ArrayOfFrequencyBand {
 
-    public void setFrequencyBands(List<FrequencyBand> frequencyBands) {
-        this.frequencyBands = frequencyBands;
-    }
-
     @XmlElement(name = "FrequencyBand", nillable = true)
-    protected List<FrequencyBand> frequencyBands;
+    protected List<FrequencyBand> frequencyBand;
 
     /**
-     * Gets the value of the frequencyBands property.
+     * Gets the value of the frequencyBand property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the frequencyBands property.
+     * This is why there is not a <CODE>set</CODE> method for the frequencyBand property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getFrequencyBands().add(newItem);
+     *    getFrequencyBand().add(newItem);
      * </pre>
      * 
      * 
@@ -63,11 +59,15 @@ public class ArrayOfFrequencyBand {
      * 
      * 
      */
-    public List<FrequencyBand> getFrequencyBands() {
-        if (frequencyBands == null) {
-            frequencyBands = new ArrayList<FrequencyBand>();
+    public List<FrequencyBand> getFrequencyBand() {
+        if (frequencyBand == null) {
+            frequencyBand = new ArrayList<FrequencyBand>();
         }
-        return this.frequencyBands;
+        return this.frequencyBand;
     }
+
+	public void setFrequencyBand(List<FrequencyBand> frequencyBand) {
+		this.frequencyBand = frequencyBand;
+	}
 
 }
