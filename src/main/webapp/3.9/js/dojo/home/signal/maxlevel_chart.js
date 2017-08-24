@@ -12,7 +12,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                 formatter:function(param){
                 	maxlevel_start_index_temp = param[0].dataIndex;
                 	maxlevel_end_index = param[0].dataIndex;
-                  return param[0].name + " : " + param[0].value;
+                    return "信号频率"+param[0].name + "MHz 的电平峰值 " + param[0].value+"dBμV";
                 }
             },
             dataZoom : [{

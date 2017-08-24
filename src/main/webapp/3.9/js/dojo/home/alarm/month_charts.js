@@ -15,8 +15,19 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
 	                formatter:function(param){
 	                	maxlevel_start_index_temp = param[0].dataIndex;
 	                	maxlevel_end_index = param[0].dataIndex;
+
 	                	if(param && param[0] && param[0].name && param[0].value) {
-	                		return param[0].name + " : " + param[0].value;
+							var time =param[0].name+'';
+							var year =time.substring(0,4);
+							var month =time.substring(4,6);
+							var day =time.substring(6);
+							if(month.substring(0,1)=='0'){
+								month = month.substring(1);
+							}
+							if(day.substring(0,1)=='0'){
+								day = day.substring(1);
+							}
+	                		return year+'年'+month+'月'+day+'日' + "占用度" + param[0].value.toFixed(2)+"%";
 	                	}
 	                  
 	                }
