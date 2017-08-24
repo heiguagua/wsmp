@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import org.tempuri.*;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static java.util.stream.Collectors.toList;
@@ -29,6 +31,9 @@ public class SiganlDataController {
 	private WebServiceSoapFactory service;
 
 	private ObjectMapper mapper = new ObjectMapper();
+
+	@Value("${asio.formatter:yyyyMMddHHmmss}")
+	DateTimeFormatter formatter;
 
 	@Autowired
     private HbaseClient hbaseClient;
@@ -118,7 +123,7 @@ public class SiganlDataController {
 			final RadioSignalQueryResponse responce = (RadioSignalQueryResponse) service.radioSignalServiceCall("queryRadioSignal",
                     mapper.writeValueAsString(param), RadioSignalQueryRequest.class);
 
-			return responce.getRadioSignals().getRadioSignalDTOs().stream().map(t -> {
+			return responce.getRadioSignals().getRadioSignalDTO().stream().map(t -> {
 
                 final Singal singal = new Singal();
                 final String id = t.getID();
@@ -146,7 +151,7 @@ public class SiganlDataController {
 			final RadioSignalQueryResponse responce = (RadioSignalQueryResponse) service.radioSignalServiceCall("queryRadioSignal",
                     mapper.writeValueAsString(param), RadioSignalQueryRequest.class);
 
-			responce.getRadioSignals().getRadioSignalDTOs().forEach(z -> z.getStationDTOs().getRadioSignalStationDTOs().forEach(f -> reslutList.add(f.getStationNumber())));
+			responce.getRadioSignals().getRadioSignalDTO().forEach(z -> z.getStationDTOs().getRadioSignalStationDTO().forEach(f -> reslutList.add(f.getStationNumber())));
 			Logger.info("获取监测站列表时间成功 操作时间：{} 入参：{} 返回值：{}",LocalDateTime.now().toString(), JSON.toJSONString(param));
 		} catch (JsonProcessingException e) {
 			Logger.error("获取监测站表时间异常 操作时间：{} 入参：{} 异常：{}",LocalDateTime.now().toString(), JSON.toJSONString(param),e);
@@ -163,7 +168,7 @@ public class SiganlDataController {
 			final RadioSignalQueryResponse responce = (RadioSignalQueryResponse) service.radioSignalServiceCall("queryRadioSignal",
                     mapper.writeValueAsString(param), RadioSignalQueryRequest.class);
 
-			radioSignals  = responce.getRadioSignals().getRadioSignalDTOs();
+			radioSignals  = responce.getRadioSignals().getRadioSignalDTO();
 
 			Logger.info("查询一条信号记录成功 入参：{} 返回值{}",JSON.toJSONString(param),JSON.toJSONString(radioSignals));
 
@@ -290,7 +295,7 @@ public class SiganlDataController {
 		Map<Object,Object> reslute = Maps.newHashMap();
 
 		AbnormalHistoryQueryResponse response = (AbnormalHistoryQueryResponse) service.radioSignalServiceCall("queryAbnormalHistory",paramStr,AbnormalHistoryRequest.class);
-		List<RadioSignalAbnormalHistoryDTO> dto = response.getHistorys().getRadioSignalAbnormalHistoryDTOs();
+		List<RadioSignalAbnormalHistoryDTO> dto = response.getHistorys().getRadioSignalAbnormalHistoryDTO();
 		RadioSignalAbnormalHistoryDTO historyDTO = dto.stream().findFirst().orElseGet(()-> new RadioSignalAbnormalHistoryDTO());
 
 		String id = historyDTO.getID();
@@ -307,23 +312,67 @@ public class SiganlDataController {
 		return  reslute;
 	}
 
-	@PostMapping("/AbnormalHistory")
+	@PostMapping( value =  "/AbnormalHistory",headers = {"contentType=application/json"})
 	public  @ResponseBody String  insterAbnormalHistory(@RequestBody Map<String,Object> param) throws JsonProcessingException {
 
-		service.radioSignalServiceCall("insertAbnormalHistory",JSON.toJSONString(param),AbnormalHistoryRequest.class);
+		String  startTime = (String) param.get("startTime");
+
+		final long timeStartLong = LocalDateTime.parse(startTime,
+				formatter).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+
+		Calendar calendar = Calendar.getInstance();
+
+		calendar.setTime(new Date(timeStartLong));
+
+		param.remove("startTime",calendar);
+
+		service.radioSignalServiceCall("insertAbnormalHistory",JSON.toJSONString(param),RadioSignalAbnormalHistoryDTO.class);
 
 		return  "sussed";
 	}
 
-	@PutMapping(path = {"/AbnormalHistory"},params = {"isInvalid=0"})
+	@PutMapping(path = {"/AbnormalHistory"},params = {"isInvalid=0"},headers = {"contentType=application/json"})
 	public  @ResponseBody String  updateAbnormalHistory(@RequestBody Map<String,Object> param) throws JsonProcessingException {
+		final String  startTime = (String) param.get("startTime");
+
+		final long timeStartLong = LocalDateTime.parse(startTime,
+				formatter).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+
+		Calendar beginCalendar = Calendar.getInstance();
+		Calendar endCalendar = Calendar.getInstance();
+
+		beginCalendar.setTime(new Date(timeStartLong));
+
+		param.replace("startTime",beginCalendar);
+		param.replace("invalidDate",endCalendar);
+		param.replace("isInvalid",true);
 
 		service.radioSignalServiceCall("updateAbnormalHistory",JSON.toJSONString(param),RadioSignalAbnormalHistoryDTO.class);
 		return  "sussed";
 	}
 
-	@PutMapping(path={"/AbnormalHistory",""},params = {"isInvalid=1"})
+	@PutMapping(path={"/AbnormalHistory",""},params = {"isInvalid=1"},headers = {"contentType=application/json"})
 	public  @ResponseBody  String recoveryAbnormalHistory(@RequestBody Map<String,Object> param) throws JsonProcessingException {
+
+		final String  startTime = (String) param.get("startTime");
+		final String  endTime = (String) param.get("invalidDate");
+
+		final long timeStartLong = LocalDateTime.parse(startTime,
+				formatter).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+
+		final long timeEndLong = LocalDateTime.parse(endTime,
+				formatter).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+
+		Calendar beginCalendar = Calendar.getInstance();
+		Calendar endCalendar = Calendar.getInstance();
+
+		beginCalendar.setTime(new Date(timeStartLong));
+		beginCalendar.setTime(new Date(timeEndLong));
+
+		param.replace("startTime",beginCalendar);
+		param.replace("invalidDate",endCalendar);
+		param.replace("isInvalid",false);
+
 		service.radioSignalServiceCall("updateAbnormalHistory",JSON.toJSONString(param),RadioSignalAbnormalHistoryDTO.class);
 		return "sussed";
 	}

@@ -95,9 +95,8 @@ public class AlarmManagerViewController {
 
                 List<String> listId = Lists.newArrayList();
 
-                singal.setContext(t.getCenterFreq().toString().concat("  ").concat(t.getSaveDate().toString()));
+                singal.setContext(t.getSaveDate().toString().replaceAll("T", " "));
                 singal.setInteger(t.getCenterFreq());
-                System.out.println(t.getID());
                 singal.setId(t.getID());
 
                 int id = t.getStatus();
@@ -107,6 +106,7 @@ public class AlarmManagerViewController {
 
                 String beginTime = t.getSaveDate().toString().replaceAll(":", "").replaceAll("T", "").replaceAll("-", "");
                 singal.setBeginTime(beginTime);
+				singal.setDes(t.getDescription());
 
                 t.getStatList().getFreqWarningStatDTO().stream().map(m -> {
                     return m.getStationGUID();

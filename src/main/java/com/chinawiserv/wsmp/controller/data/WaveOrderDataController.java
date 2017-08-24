@@ -72,19 +72,19 @@ public class WaveOrderDataController {
 		RadioSignalClassifiedQueryRequest request2 = new RadioSignalClassifiedQueryRequest();
 		//设置自定义频段
 		ArrayOfFrequencyBand array = new ArrayOfFrequencyBand();
-		array.setFrequencyBands(freqList);
+		array.setFrequencyBand(freqList);
 		request2.setFreqBandList(array);
 		//设置监测站ID列表
 		ArrayOfString stationArray = new ArrayOfString();
 		@SuppressWarnings("unchecked")
 		List<String> stationString = (List<String>) param.get("monitorsID");
-		stationArray.setStrings(stationString );
+		stationArray.setString(stationString );
 		request2.setStationNumber(stationArray);
 		RadioSignalClassifiedQueryResponse response2 = service2.getRadioSignalWebServiceSoap().queryRadioSignalClassified(request2);
 		// System.out.println("==========================response2"+JSON.toJSONString(response2));
 		List<RedioStatusCount> rsCountRows = Lists.newArrayList();
 		AtomicInteger index = new AtomicInteger();
-		response2.getLstOnFreqBand().getSignalStaticsOnFreqBands().stream().forEach(t -> {
+		response2.getLstOnFreqBand().getSignalStaticsOnFreqBand().stream().forEach(t -> {
 			RedioStatusCount rsCount = new RedioStatusCount();
 			rsCount.setRedioName(freqNames.get(index.getAndIncrement()));
 			rsCount.setBeginFreq(t.getBand().getFreqMin());
@@ -135,7 +135,7 @@ public class WaveOrderDataController {
 		ArrayOfString stationArray = new ArrayOfString();
 		@SuppressWarnings("unchecked")
 		List<String> stationString = (List<String>) param.get("monitorsID");
-		stationArray.setStrings(stationString);
+		stationArray.setString(stationString);
 		request.setStationIDs(stationArray);
 		FreqWarningQueryResponse response = freqWarningWS.getFreqWarningWebServiceSoap().query(request);
 		// System.out.println("=============================response:"+JSON.toJSONString(response));
@@ -175,7 +175,7 @@ public class WaveOrderDataController {
 		ArrayOfString stationArray = new ArrayOfString();
 		@SuppressWarnings("unchecked")
 		List<String> stationString = (List<String>) param.get("monitorsID");
-		stationArray.setStrings(stationString);
+		stationArray.setString(stationString);
 		request.setStationIDs(stationArray);
 		FreqWarningQueryResponse response = freqWarningWS.getFreqWarningWebServiceSoap().query(request);
 		// System.out.println("=============================response:"+JSON.toJSONString(response));
@@ -212,7 +212,7 @@ public class WaveOrderDataController {
 		ArrayOfString stationArray = new ArrayOfString();
 		String stations = (String) param.get("monitorsID");
 		String[] stationString = stations.split(",");
-		stationArray.setStrings(Arrays.asList(stationString));
+		stationArray.setString(Arrays.asList(stationString));
 		request.setStationIDs(stationArray);
 		// 入参:信号类型
 		ArrayOfSignalTypeDTO signaTypeArray = new ArrayOfSignalTypeDTO();
@@ -220,7 +220,7 @@ public class WaveOrderDataController {
 		SignalTypeDTO signalType = new SignalTypeDTO();
 		signalType.setSignalType(Integer.valueOf(param.get("radioType").toString()));
 		signalTypeDTO.add(signalType);
-		signaTypeArray.setSignalTypeDTOs(signalTypeDTO);
+		signaTypeArray.setSignalTypeDTO(signalTypeDTO);
 		request.setTypeCodes(signaTypeArray);
 		// 入参:频段范围
 		request.setBeginFreq(new BigInteger(param.get("beginFreq").toString()));
@@ -230,7 +230,7 @@ public class WaveOrderDataController {
 		// System.out.println("==============================================response:"+JSON.toJSONString(response));
 		// System.out.println("==============================================total:"+response.getTotalCount());
 		List<RedioDetail> redioRows = Lists.newArrayList();
-		response.getRadioSignals().getRadioSignalDTOs().stream().forEach(t -> {
+		response.getRadioSignals().getRadioSignalDTO().stream().forEach(t -> {
 			// System.out.println("====信号频率："+t.getCenterFreq());
 			RedioDetail redio = new RedioDetail();
 			BigDecimal cFreq = new BigDecimal(t.getCenterFreq());
@@ -239,7 +239,7 @@ public class WaveOrderDataController {
 			redio.setBand(t.getBandWidth());
 			// 设置监测站
 			List<String> monitorID = Lists.newArrayList();
-			t.getStationDTOs().getRadioSignalStationDTOs().stream().forEach(t1 -> {
+			t.getStationDTOs().getRadioSignalStationDTO().stream().forEach(t1 -> {
 				// System.out.println("=====监测站ID:"+t1.getStationNumber());
 				monitorID.add(t1.getStationNumber());
 			});
@@ -267,19 +267,19 @@ public class WaveOrderDataController {
 		SignalTypeDTO dto = new SignalTypeDTO();
 		dto.setSignalType(Integer.valueOf(param.get("signalType").toString()));
 		signalTypeDTO.add(dto);
-		value.setSignalTypeDTOs(signalTypeDTO);
+		value.setSignalTypeDTO(signalTypeDTO);
 		request.setTypeCodes(value);
 		// 设置监测站，过滤有信号的监测站ID
 		ArrayOfString value1 = new ArrayOfString();
 		final List<?> monitorsID = (List<?>) param.get("monitorsNum");
 		// System.out.println("=========================================monitorsList:"+monitorsID);
 		List<String> string = monitorsID.stream().map(o -> o.toString()).collect(Collectors.toList());
-		value1.setStrings(string);
+		value1.setString(string);
 		request.setStationIDs(value1);
 		RadioSignalQueryResponse response = service.getRadioSignalWebServiceSoap().queryRadioSignal(request);
 		// System.out.println("====================:"+JSON.toJSONString(response));
-		Map<String, List<RadioSignalStationDTO>> map1 = response.getRadioSignals().getRadioSignalDTOs().stream()
-				.flatMap(t -> t.getStationDTOs().getRadioSignalStationDTOs().stream())
+		Map<String, List<RadioSignalStationDTO>> map1 = response.getRadioSignals().getRadioSignalDTO().stream()
+				.flatMap(t -> t.getStationDTOs().getRadioSignalStationDTO().stream())
 				.collect(Collectors.groupingBy(RadioSignalStationDTO::getStationNumber));
 		
 		//统计有信号的同一种监测站的信号数

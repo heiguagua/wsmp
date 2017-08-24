@@ -1,18 +1,17 @@
 
 package org.tempuri;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.datatype.XMLGregorianCalendar;
+import org.w3._2001.xmlschema.Adapter1;
+
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.Calendar;
 
 
 /**
- * <p>RadioSignalAbnormalHistoryDTO complex typeµÄ Java Àà¡£
+ * <p>RadioSignalAbnormalHistoryDTO complex typeï¿½ï¿½ Java ï¿½à¡£
  * 
- * <p>ÒÔÏÂÄ£Ê½Æ¬¶ÎÖ¸¶¨°üº¬ÔÚ´ËÀàÖÐµÄÔ¤ÆÚÄÚÈÝ¡£
+ * <p>ï¿½ï¿½ï¿½ï¿½Ä£Ê½Æ¬ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½ï¿½ï¿½ï¿½Ðµï¿½Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½Ý¡ï¿½
  * 
  * <pre>
  * &lt;complexType name="RadioSignalAbnormalHistoryDTO"&gt;
@@ -37,7 +36,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "RadioSignalAbnormalHistoryDTO", propOrder = {
     "id",
-    "freqguid",
+    "freq_GUID",
     "isInvalid",
     "saveDate",
     "invalidDate",
@@ -49,22 +48,24 @@ public class RadioSignalAbnormalHistoryDTO {
     @XmlElement(name = "ID")
     protected String id;
     @XmlElement(name = "FREQ_GUID")
-    protected String freqguid;
+    protected String freq_GUID;
     @XmlElement(name = "IsInvalid")
     protected boolean isInvalid;
-    @XmlElement(name = "SaveDate", required = true)
+    @XmlElement(name = "SaveDate", required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "dateTime")
-    protected XMLGregorianCalendar saveDate;
-    @XmlElement(name = "InvalidDate", required = true)
+    protected Calendar saveDate;
+    @XmlElement(name = "InvalidDate", required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "dateTime")
-    protected XMLGregorianCalendar invalidDate;
+    protected Calendar invalidDate;
     @XmlElement(name = "HistoryType")
     protected int historyType;
     @XmlElement(name = "Des")
     protected String des;
 
     /**
-     * »ñÈ¡idÊôÐÔµÄÖµ¡£
+     * ï¿½ï¿½È¡idï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
      * 
      * @return
      *     possible object is
@@ -76,7 +77,7 @@ public class RadioSignalAbnormalHistoryDTO {
     }
 
     /**
-     * ÉèÖÃidÊôÐÔµÄÖµ¡£
+     * ï¿½ï¿½ï¿½ï¿½idï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
      * 
      * @param value
      *     allowed object is
@@ -88,31 +89,31 @@ public class RadioSignalAbnormalHistoryDTO {
     }
 
     /**
-     * »ñÈ¡freqguidÊôÐÔµÄÖµ¡£
+     * ï¿½ï¿½È¡freq_GUIDï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getFREQGUID() {
-        return freqguid;
+    public String getFREQ_GUID() {
+        return freq_GUID;
     }
 
     /**
-     * ÉèÖÃfreqguidÊôÐÔµÄÖµ¡£
+     * ï¿½ï¿½ï¿½ï¿½freq_GUIDï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setFREQGUID(String value) {
-        this.freqguid = value;
+    public void setFREQ_GUID(String value) {
+        this.freq_GUID = value;
     }
 
     /**
-     * »ñÈ¡isInvalidÊôÐÔµÄÖµ¡£
+     * ï¿½ï¿½È¡isInvalidï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
      * 
      */
     public boolean isIsInvalid() {
@@ -120,7 +121,7 @@ public class RadioSignalAbnormalHistoryDTO {
     }
 
     /**
-     * ÉèÖÃisInvalidÊôÐÔµÄÖµ¡£
+     * ï¿½ï¿½ï¿½ï¿½isInvalidï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
      * 
      */
     public void setIsInvalid(boolean value) {
@@ -128,55 +129,55 @@ public class RadioSignalAbnormalHistoryDTO {
     }
 
     /**
-     * »ñÈ¡saveDateÊôÐÔµÄÖµ¡£
+     * ï¿½ï¿½È¡saveDateï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
      * 
      * @return
      *     possible object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link String }
      *     
      */
-    public XMLGregorianCalendar getSaveDate() {
+    public Calendar getSaveDate() {
         return saveDate;
     }
 
     /**
-     * ÉèÖÃsaveDateÊôÐÔµÄÖµ¡£
+     * ï¿½ï¿½ï¿½ï¿½saveDateï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
      * 
      * @param value
      *     allowed object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link String }
      *     
      */
-    public void setSaveDate(XMLGregorianCalendar value) {
+    public void setSaveDate(Calendar value) {
         this.saveDate = value;
     }
 
     /**
-     * »ñÈ¡invalidDateÊôÐÔµÄÖµ¡£
+     * ï¿½ï¿½È¡invalidDateï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
      * 
      * @return
      *     possible object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link String }
      *     
      */
-    public XMLGregorianCalendar getInvalidDate() {
+    public Calendar getInvalidDate() {
         return invalidDate;
     }
 
     /**
-     * ÉèÖÃinvalidDateÊôÐÔµÄÖµ¡£
+     * ï¿½ï¿½ï¿½ï¿½invalidDateï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
      * 
      * @param value
      *     allowed object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link String }
      *     
      */
-    public void setInvalidDate(XMLGregorianCalendar value) {
+    public void setInvalidDate(Calendar value) {
         this.invalidDate = value;
     }
 
     /**
-     * »ñÈ¡historyTypeÊôÐÔµÄÖµ¡£
+     * ï¿½ï¿½È¡historyTypeï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
      * 
      */
     public int getHistoryType() {
@@ -184,7 +185,7 @@ public class RadioSignalAbnormalHistoryDTO {
     }
 
     /**
-     * ÉèÖÃhistoryTypeÊôÐÔµÄÖµ¡£
+     * ï¿½ï¿½ï¿½ï¿½historyTypeï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
      * 
      */
     public void setHistoryType(int value) {
@@ -192,7 +193,7 @@ public class RadioSignalAbnormalHistoryDTO {
     }
 
     /**
-     * »ñÈ¡desÊôÐÔµÄÖµ¡£
+     * ï¿½ï¿½È¡desï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
      * 
      * @return
      *     possible object is
@@ -204,7 +205,7 @@ public class RadioSignalAbnormalHistoryDTO {
     }
 
     /**
-     * ÉèÖÃdesÊôÐÔµÄÖµ¡£
+     * ï¿½ï¿½ï¿½ï¿½desï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
      * 
      * @param value
      *     allowed object is

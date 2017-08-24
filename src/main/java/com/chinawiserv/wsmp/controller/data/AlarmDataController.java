@@ -547,8 +547,11 @@ public class AlarmDataController {
 
             res = (RadioSignalOperationReponse) service.radioSignalServiceCall("insertRadioSignal",
                     mapper.writeValueAsString(station), RadioSignalDTO.class);
+
             Map<String, Object> waringID = (Map<String, Object>) signal.get("warmingId");
-            service.getFreqWarnService().updateStatus((String) waringID.get("id"), 1);
+            //service.getFreqWarnService().updateStatus((String) waringID.get("id"), 1);
+            service.getFreqWarnService().updateSelected((String) waringID.get("id"),1,null,(String) station.get("des"));
+
             Logger.info("告警生成信号成功 操作时间{} 入参:{} 返回消息{}", LocalDateTime.now().toString(), JSON.toJSONString(param), JSON.toJSONString(res));
         } catch (JsonProcessingException e) {
 
