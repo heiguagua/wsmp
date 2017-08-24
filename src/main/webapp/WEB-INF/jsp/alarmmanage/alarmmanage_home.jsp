@@ -40,8 +40,7 @@
       </select>
     </span>
   <div id="configWFreqWarming" class='config pull-right'>
-    <a class='btn btn-default btn-config' data-toggle="modal"
-       data-target="#modalConfig"> <img src='images/config.png' />&nbsp;&nbsp;配置
+    <a class='btn btn-default btn-config'  id="clickModalConfig"> <img src='images/config.png' />&nbsp;&nbsp;配置
     </a>
   </div>
 </div>

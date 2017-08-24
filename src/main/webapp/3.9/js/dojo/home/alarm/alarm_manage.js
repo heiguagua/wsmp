@@ -16,32 +16,55 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
 				format: 'yyyy-mm-dd hh:ii:ss',
 				autoclose:true,
 				minView:2
-		}	
-		
+		}
+        //点击配置按钮，如果有信号管理输入频率能查到值时，弹出重点监测配置，否则不弹出
+        $("#clickModalConfig").click(function(){
+            var warningID = $("#signal_list").find('option:selected').attr("value");
+            var centorFreq = $("#signal_list").find('option:selected').attr("centorfreq");
+            console.log(warningID);
+            var data = {};
+            data.warningID = warningID;
+            data.centorFreq = centorFreq;
+            var str = JSON.stringify(data);
+            $.ajax({
+                url : 'alarmmanage/importantMonitor',
+                type : 'post',
+                data : str,//传输数据
+                contentType : 'application/json',//传输数据类型
+                dataType : 'html',//返回数据类型
+                success : function (html) {
+                    $("#important_monitor").html(html);
+                    $("#modalConfig").modal('show');
+                    $("#modalConfig").find(".time-picker").datetimepicker({
+
+                    });
+                }
+            })
+        });
 		// 重点监测配置点击事件
-        $("#modalConfig").on("shown.bs.modal",function(e){
-        	var warningID = $("#signal_list").find('option:selected').attr("value");
-        	var centorFreq = $("#signal_list").find('option:selected').attr("centorfreq");
-        	console.log(warningID);
-        	var data = {};
-        	data.warningID = warningID;
-        	data.centorFreq = centorFreq;
-        	var str = JSON.stringify(data);
-        	$.ajax({
-    			url : 'alarmmanage/importantMonitor',
-    			type : 'post',
-    			data : str,//传输数据
-    			contentType : 'application/json',//传输数据类型
-    			dataType : 'html',//返回数据类型
-    			success : function (html) {
-    				$("#important_monitor").html(html);
-    				$("#modalConfig").find(".time-picker").datetimepicker({
-    				
-    				});
-    			}
-    		})
-		});
-		
+        //$("#modalConfig").on("shown.bs.modal",function(e){
+        	//var warningID = $("#signal_list").find('option:selected').attr("value");
+        	//var centorFreq = $("#signal_list").find('option:selected').attr("centorfreq");
+        	//console.log(warningID);
+        	//var data = {};
+        	//data.warningID = warningID;
+        	//data.centorFreq = centorFreq;
+        	//var str = JSON.stringify(data);
+        	//$.ajax({
+    		//	url : 'alarmmanage/importantMonitor',
+    		//	type : 'post',
+    		//	data : str,//传输数据
+    		//	contentType : 'application/json',//传输数据类型
+    		//	dataType : 'html',//返回数据类型
+    		//	success : function (html) {
+    		//		$("#important_monitor").html(html);
+    		//		$("#modalConfig").find(".time-picker").datetimepicker({
+    		//
+    		//		});
+    		//	}
+    		//})
+		//});
+		//
 		//重点监测更新点击事件
 		$("#important_monitor").on("click","#buttonUpdate",function(e) {
 			var str = $("#important-monitor-form").serialize();

@@ -51,7 +51,7 @@
       <a class='btn btn-default btn-config'>
         <img src='images/export.png' />&nbsp;&nbsp;导出报表
       </a>
-      <a class='btn btn-default btn-config' data-toggle="modal" data-target="#modalConfig">
+      <a class='btn btn-default btn-config' id="clickModalConfig" >
         <img src='images/config.png' />&nbsp;&nbsp;配置
       </a>
     </div>
