@@ -265,9 +265,14 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
 
         ajax.get("data/alarm/firstLevelChart", data, function (reslut) {
             console.log(reslut);
+            var name = $('#station_picker').find('option:selected').text();//选中的台站名称
+            console.log(name)
+            name=name.replace("未查询到数据","");
+            $("#levelTitle").html(name+"——电平峰值");
+            $("#monthTitle").html(name+"——近3个月占用度（按天统计）");
             level_charts.init(reslut);
 
-            month_charts.init(reslut);
+            month_charts.init(reslut,name);
         });
 
     }
@@ -276,7 +281,7 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
         $('.station-list').select2();
         $("#search").keydown(function (e) {
             //数字0-9(keycode:48-57)，小键盘数字0-9（keycode:96-106,小数点keycode:110 190，enter键13或108,backspace键8）
-            if((e.keyCode>=48&&e.keyCode<=57 )|| (e.keyCode>=96&&e.keyCode<=106)||e.keyCode==110||e.keyCode==190||e.keyCode==13||e.keyCode==108||e.keyCode==8){
+            if((e.keyCode>=48&&e.keyCode<=57 )|| (e.keyCode>=96&&e.keyCode<=106)||e.keyCode==110||e.keyCode==190||e.keyCode==13||e.keyCode==108||e.keyCode==8||e.keyCode==16||e.keyCode==229){
                 if (e.keyCode == 13) {
                     var centerFrq = $(this).val().replace("MHz","");
                     var data = {};

@@ -202,7 +202,7 @@
 		<section class='flex-row'>
 			<div class='box'>
 				<div class='month-data flex-column'>
-					<h4 class='title'>电平峰值</h4>
+					<h4 id='levelChartTitle' class='title'>电平峰值</h4>
 					<div class='flex1' id='levelChart'></div>
 				</div>
 			</div>
@@ -210,7 +210,7 @@
 		<section class='flex-row'>
 			<div class='box'>
 				<div class='month-data flex-column'>
-					<h4 class='title'>近3个月占用度（按天统计）</h4>
+					<h4 id='monthChartTitle' class='title'>近3个月占用度（按天统计）</h4>
 					<div class='flex1' id='monthChart'></div>
 				</div>
 			</div>
@@ -228,8 +228,15 @@
           <h4 class="modal-title" id="modalDayLabel">峰值与日占用度（按24小时统计）</h4>
         </div>
         <div class="modal-body">
-			<div id = "dayLevelChart" style="width: 700px;height: 300px"></div>
-            <div id='dayChart'></div>
+			<div class="box">
+				<h5 id="dayLevelChartTitle" class="text-center" ></h5>
+				<div id = "dayLevelChart" style="width: 800px;height: 300px"></div>
+			</div>
+			<div class="box" style="margin-top:10px">
+				<h5 id="dayChartTitle" class="text-center" ></h5>
+				<div id='dayChart' style="width: 800px;height: 300px"></div>
+			</div>
+
         </div>
       </div>
     </div>
@@ -255,7 +262,7 @@
   <!-- Modal 重点监测参数配置-->
   <div class="modal fade" id="modalConfig" tabindex="-1" role="dialog"
 		aria-labelledby="modalConfigLabel">
-		<div class="modal-dialog " role="document">
+		<div class="modal-dialog modal-width " role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"

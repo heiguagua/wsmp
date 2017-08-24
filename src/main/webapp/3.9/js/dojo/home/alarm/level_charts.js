@@ -28,13 +28,19 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
 	            }],
 				grid : {
 					left : '1%',
-					right : '1%',
+					right : '4%',
 					bottom : '2%',
 					top : 30,
 					containLabel : true
 				},
+				textStyle: {
+					color: "#505363"
+				},
 				xAxis : {
 					type : 'category',
+					name:'信号频率(MHz)',
+					nameRotate:'-90',
+				    nameLocation:'end',
 					boundaryGap : false,
 					axisLine : {
 						lineStyle : {
@@ -54,6 +60,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
 				},
 				yAxis : {
 					type : 'value',
+					name:'电平(dBμV)',
 					max : 120,
 					min : -40,
 					splitNumber : 10,
