@@ -27,11 +27,10 @@ import org.tempuri.*;
 import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.BinaryOperator;
-import java.util.stream.Stream;
 
-import static java.util.Comparator.comparingDouble;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
@@ -65,6 +64,8 @@ public class AlarmDataController {
 
     private ObjectMapper mapper = new ObjectMapper();
 
+    @Value("${asio.formatter:yyyyMMddHHmmss}")
+    DateTimeFormatter formatter;
 
     @GetMapping(path = "/secondLevelChart")
     public Object secondLevelChart(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
@@ -113,6 +114,10 @@ public class AlarmDataController {
 
                 LinkedList<Object> xAxis = Lists.newLinkedList();
                 LinkedList<Object> series = Lists.newLinkedList();
+
+                Occ = Occ.entrySet().stream().sorted((c1,c2)-> Integer.parseInt(c1.getKey())>Integer.parseInt(c2.getKey())?1:-1)
+                        .collect(toMap(Map.Entry::getKey,Map.Entry::getValue,throwingMerger(), LinkedHashMap::new));
+
                 Occ.forEach((k, v) -> {
                     xAxis.add(k);
                     series.add(v);
@@ -145,6 +150,9 @@ public class AlarmDataController {
                 LinkedList<Object> series = Lists.newLinkedList();
 
                 final double pow = Math.pow(10, 6);
+
+                Max = Max.entrySet().stream().sorted(( c1,  c2) -> Integer.parseInt(c1.getKey().toString())>Integer.parseInt(c2.getKey().toString())?  1:-1
+                ).collect(toMap(Map.Entry::getKey,Map.Entry::getValue,throwingMerger(), LinkedHashMap::new));
 
                 Max.forEach((k, v) -> {
 
@@ -212,9 +220,6 @@ public class AlarmDataController {
                 Map<Object, Object> max = hbaseClient.queryMaxLevels(stationCode, centorFreq, upperBound, lowerBound, beginTime);
                 Map<String, Object> occ = hbaseClient.queryOccDay(stationCode, beginTime, 90, frequency).getOcc();
 
-                occ = occ.entrySet().stream().sorted((Map.Entry<String, Object> c1, Map.Entry<String, Object> c2) -> Double.parseDouble(c1.getValue().toString())>Double.parseDouble(c2.getValue().toString())? 1:0
-                ).collect(toMap(Map.Entry::getKey,Map.Entry::getValue,throwingMerger(), LinkedHashMap::new));
-
                 if (occ.size() == 0) {
 
                     HashMap<String, Object> restlutHashMap = Maps.newHashMap();
@@ -228,6 +233,7 @@ public class AlarmDataController {
                     Logger.info("以三个月计算占用度从hbase中查询正常返回值为空 查询时间为{}，页面入参：监测站id{}，开始时间{},中心频率{}", LocalDateTime.now().toString(), stationCode, beginTime, centorFreq);
                 } else {
 
+
                     LinkedList<Object> xAxis = Lists.newLinkedList();
                     LinkedList<Object> series = Lists.newLinkedList();
 
@@ -236,10 +242,10 @@ public class AlarmDataController {
                         series.add(v);
                     });
 
-
-                    occReslute.put("xAxis", xAxis);
+                    occ = occ.entrySet().stream().sorted((c1,c2)-> Integer.parseInt(c1.toString())>Integer.parseInt(c2.toString())?1:-1)
+                            .collect(toMap(Map.Entry::getKey,Map.Entry::getValue,throwingMerger(), LinkedHashMap::new));
                     occReslute.put("series", series);
-
+                    occReslute.put("xAxis", xAxis);
                     reslutMap.put("monthOcc", occReslute);
                     Logger.info("以三个月计算占用度从hbase中查询正常有返回值为{} ， 查询时间为{}，页面入参：监测站id{}，开始时间{},中心频率{}", occ, LocalDateTime.now().toString(), stationCode, beginTime, centorFreq);
                 }
@@ -260,15 +266,11 @@ public class AlarmDataController {
                     LinkedList<Double> xAxis = Lists.newLinkedList();
                     LinkedList<Object> series = Lists.newLinkedList();
 
-                    double [] f = new double[max.size()];
                     final double pow = Math.pow(10, 6);
-                    int index = 0;
-                    for (Map.Entry<Object, Object> objectObjectEntry : max.entrySet()) {
-                        final double key = Double.parseDouble(objectObjectEntry.getValue().toString()) / pow;
-                        System.out.println(key);
-                        f[index] = key;
-                    }
-                    System.out.println("--------------------"+Stream.of(f).sorted(comparingDouble(t->Double.parseDouble(t.toString()))));
+
+                    max = max.entrySet().stream().sorted(( c1,  c2) -> Integer.parseInt(c1.getKey().toString())>Integer.parseInt(c2.getKey().toString())?  1:-1
+                    ).collect(toMap(Map.Entry::getKey,Map.Entry::getValue,throwingMerger(), LinkedHashMap::new));
+
                     max.forEach((k, v) -> {
 
                         final double key = Double.parseDouble(k.toString()) / pow;
@@ -276,8 +278,6 @@ public class AlarmDataController {
                         series.add(v);
                     });
 
-                    double [] test = Stream.of(xAxis).mapToDouble(x->x.pollFirst()).sorted().toArray();
-                    System.out.println(test);
                     resoluteHashMap.put("xAxis", xAxis);
                     resoluteHashMap.put("series", series);
 
@@ -547,8 +547,11 @@ public class AlarmDataController {
 
             res = (RadioSignalOperationReponse) service.radioSignalServiceCall("insertRadioSignal",
                     mapper.writeValueAsString(station), RadioSignalDTO.class);
+
             Map<String, Object> waringID = (Map<String, Object>) signal.get("warmingId");
-            service.getFreqWarnService().updateStatus((String) waringID.get("id"), 1);
+            //service.getFreqWarnService().updateStatus((String) waringID.get("id"), 1);
+            service.getFreqWarnService().updateSelected((String) waringID.get("id"),1,null,(String) station.get("des"));
+
             Logger.info("告警生成信号成功 操作时间{} 入参:{} 返回消息{}", LocalDateTime.now().toString(), JSON.toJSONString(param), JSON.toJSONString(res));
         } catch (JsonProcessingException e) {
 

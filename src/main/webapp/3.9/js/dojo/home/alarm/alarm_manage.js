@@ -16,32 +16,55 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
 				format: 'yyyy-mm-dd hh:ii:ss',
 				autoclose:true,
 				minView:2
-		}	
-		
+		}
+        //点击配置按钮，如果有信号管理输入频率能查到值时，弹出重点监测配置，否则不弹出
+        $("#clickModalConfig").click(function(){
+            var warningID = $("#signal_list").find('option:selected').attr("value");
+            var centorFreq = $("#signal_list").find('option:selected').attr("centorfreq");
+            console.log(warningID);
+            var data = {};
+            data.warningID = warningID;
+            data.centorFreq = centorFreq;
+            var str = JSON.stringify(data);
+            $.ajax({
+                url : 'alarmmanage/importantMonitor',
+                type : 'post',
+                data : str,//传输数据
+                contentType : 'application/json',//传输数据类型
+                dataType : 'html',//返回数据类型
+                success : function (html) {
+                    $("#important_monitor").html(html);
+                    $("#modalConfig").modal('show');
+                    $("#modalConfig").find(".time-picker").datetimepicker({
+
+                    });
+                }
+            })
+        });
 		// 重点监测配置点击事件
-        $("#modalConfig").on("shown.bs.modal",function(e){
-        	var warningID = $("#signal_list").find('option:selected').attr("value");
-        	var centorFreq = $("#signal_list").find('option:selected').attr("centorfreq");
-        	console.log(warningID);
-        	var data = {};
-        	data.warningID = warningID;
-        	data.centorFreq = centorFreq;
-        	var str = JSON.stringify(data);
-        	$.ajax({
-    			url : 'alarmmanage/importantMonitor',
-    			type : 'post',
-    			data : str,//传输数据
-    			contentType : 'application/json',//传输数据类型
-    			dataType : 'html',//返回数据类型
-    			success : function (html) {
-    				$("#important_monitor").html(html);
-    				$("#modalConfig").find(".time-picker").datetimepicker({
-    				
-    				});
-    			}
-    		})
-		});
-		
+        //$("#modalConfig").on("shown.bs.modal",function(e){
+        	//var warningID = $("#signal_list").find('option:selected').attr("value");
+        	//var centorFreq = $("#signal_list").find('option:selected').attr("centorfreq");
+        	//console.log(warningID);
+        	//var data = {};
+        	//data.warningID = warningID;
+        	//data.centorFreq = centorFreq;
+        	//var str = JSON.stringify(data);
+        	//$.ajax({
+    		//	url : 'alarmmanage/importantMonitor',
+    		//	type : 'post',
+    		//	data : str,//传输数据
+    		//	contentType : 'application/json',//传输数据类型
+    		//	dataType : 'html',//返回数据类型
+    		//	success : function (html) {
+    		//		$("#important_monitor").html(html);
+    		//		$("#modalConfig").find(".time-picker").datetimepicker({
+    		//
+    		//		});
+    		//	}
+    		//})
+		//});
+		//
 		//重点监测更新点击事件
 		$("#important_monitor").on("click","#buttonUpdate",function(e) {
 			var str = $("#important-monitor-form").serialize();
@@ -263,11 +286,19 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
         data.beginTime = beginTime;
         data.centorFreq = centorFreq;
 
-        ajax.get("data/alarm/firstLevelChart", data, function (reslut) {
-            console.log(reslut);
-            level_charts.init(reslut);
+        ajax.get("data/alarm/firstLevelChart", data, function (result) {
+            console.log(result);
+            var name = $('#station_picker').find('option:selected').text();//选中的台站名称
+            console.log(name)
+            name=name.replace("未查询到数据","");
+            $("#levelTitle").html(name+"——电平峰值");
+            $("#monthTitle").html(name+"——近3个月占用度（按天统计）");
+            month_charts.init(result,name);
+            level_charts.init(result);
 
-            month_charts.init(reslut);
+
+
+
         });
 
     }
@@ -276,7 +307,7 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
         $('.station-list').select2();
         $("#search").keydown(function (e) {
             //数字0-9(keycode:48-57)，小键盘数字0-9（keycode:96-106,小数点keycode:110 190，enter键13或108,backspace键8）
-            if((e.keyCode>=48&&e.keyCode<=57 )|| (e.keyCode>=96&&e.keyCode<=106)||e.keyCode==110||e.keyCode==190||e.keyCode==13||e.keyCode==108||e.keyCode==8){
+            if((e.keyCode>=48&&e.keyCode<=57 )|| (e.keyCode>=96&&e.keyCode<=106)||e.keyCode==110||e.keyCode==190||e.keyCode==13||e.keyCode==108||e.keyCode==8||e.keyCode==16||e.keyCode==229){
                 if (e.keyCode == 13) {
                     var centerFrq = $(this).val().replace("MHz","");
                     var data = {};

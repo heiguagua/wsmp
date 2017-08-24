@@ -1,12 +1,14 @@
 
 package org.tempuri;
 
+import java.util.Calendar;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.w3._2001.xmlschema.Adapter1;
 
 
 /**
@@ -48,12 +50,14 @@ public class RadioSignalStationDTO {
     protected String signalID;
     @XmlElement(name = "StationNumber")
     protected String stationNumber;
-    @XmlElement(name = "StartTime", required = true)
+    @XmlElement(name = "StartTime", required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "dateTime")
-    protected XMLGregorianCalendar startTime;
-    @XmlElement(name = "StopTime", required = true)
+    protected Calendar startTime;
+    @XmlElement(name = "StopTime", required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "dateTime")
-    protected XMLGregorianCalendar stopTime;
+    protected Calendar stopTime;
 
     /**
      * 获取id属性的值。
@@ -132,10 +136,10 @@ public class RadioSignalStationDTO {
      * 
      * @return
      *     possible object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link String }
      *     
      */
-    public XMLGregorianCalendar getStartTime() {
+    public Calendar getStartTime() {
         return startTime;
     }
 
@@ -144,10 +148,10 @@ public class RadioSignalStationDTO {
      * 
      * @param value
      *     allowed object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link String }
      *     
      */
-    public void setStartTime(XMLGregorianCalendar value) {
+    public void setStartTime(Calendar value) {
         this.startTime = value;
     }
 
@@ -156,10 +160,10 @@ public class RadioSignalStationDTO {
      * 
      * @return
      *     possible object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link String }
      *     
      */
-    public XMLGregorianCalendar getStopTime() {
+    public Calendar getStopTime() {
         return stopTime;
     }
 
@@ -168,10 +172,10 @@ public class RadioSignalStationDTO {
      * 
      * @param value
      *     allowed object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link String }
      *     
      */
-    public void setStopTime(XMLGregorianCalendar value) {
+    public void setStopTime(Calendar value) {
         this.stopTime = value;
     }
 

@@ -111,7 +111,6 @@ public class WebServiceSoapFactory {
 
 		try {
 			Method method = this.radioSignalService.getClass().getMethod(methodName, parameterTypes);
-
 			final JSON json =  (JSON)JSON.parse(param);
 			Object object = JSON.toJavaObject(json, parameterTypes);
 

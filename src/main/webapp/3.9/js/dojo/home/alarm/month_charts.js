@@ -7,42 +7,65 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
     var maxlevel_end_index = 0;        // mouseup时的x轴index
     var maxlevel_total_length = 0;     // x轴数据总数
     var drag_flag = false;             // 月占用度是否拖拽
-	function charts_init(reslut) {
-			var optionMonth = {
+	function charts_init(reslut,name) {
+		var optionMonth ={};
+
+		if(reslut.monthOcc &&(reslut.monthOcc.xAxis.length >0)&&(reslut.monthOcc.series.length>0)){
+			optionMonth ={
 				color : [ 'rgb(55,165,255)' ],
 				tooltip : {
-	                'trigger' : 'axis',
-	                formatter:function(param){
-	                	maxlevel_start_index_temp = param[0].dataIndex;
-	                	maxlevel_end_index = param[0].dataIndex;
-	                	if(param && param[0] && param[0].name && param[0].value) {
-	                		return param[0].name + " : " + param[0].value;
-	                	}
-	                  
-	                }
-	            },
+					'trigger' : 'axis',
+					formatter:function(param){
+						maxlevel_start_index_temp = param[0].dataIndex;
+						maxlevel_end_index = param[0].dataIndex;
+
+						if(param && param[0] && param[0].name && param[0].value) {
+							var time =param[0].name+'';
+							var year =time.substring(0,4);
+							var month =time.substring(4,6);
+							var day =time.substring(6);
+							if(month.substring(0,1)=='0'){
+								month = month.substring(1);
+							}
+							if(day.substring(0,1)=='0'){
+								day = day.substring(1);
+							}
+							return year+'年'+month+'月'+day+'日' + "占用度" + param[0].value.toFixed(2)+"%";
+						}
+
+					}
+				},
 				dataZoom : [{
-	                show:false,
-	                type : 'slider',
-	                start : 0,
-	                end : 100,
-	                height : 15,
-	                y : 260
-	            }],
+					show:false,
+					type : 'slider',
+					start : 0,
+					end : 100,
+					height : 15,
+					y : 260
+				}],
 				grid : {
 					left : '1%',
-					right : '1%',
+					right : '4%',
 					bottom : '2%',
 					top : 30,
 					containLabel : true
 				},
+				textStyle: {
+					color: "#505363"
+				},
 				xAxis : {
 					type : 'category',
+					name:'时间',
 					boundaryGap : false,
 					axisLine : {
 						lineStyle : {
 							color : '#DAE5F0'
+						},
+						textStyle: {
+							color: '#DAE5F0',
+							fontSize: 12
 						}
+
 					},
 					axisTick : {
 						show : false
@@ -53,10 +76,11 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
 						}
 					},
 					data : reslut.monthOcc.xAxis
-						//
+					//
 				},
 				yAxis : {
 					type : 'value',
+					name:'百分比(%)',
 					max : 100,
 					min : 0,
 					splitNumber : 10,
@@ -85,39 +109,54 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
 						type : 'line',
 						showSymbol : false,
 						symbolSize : 6,
-						data : reslut.monthOcc.series 
-							// reslut.series 
-							//[ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, ]
+						data : reslut.monthOcc.series
+						// reslut.series
+						//[ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, ]
 					}
 				]
 			};
 			maxlevel_total_length = reslut.monthOcc.xAxis.length;
-        	if(monthChart){
-				monthChart.clear();
-                monthChart.resize();
-        	}
-			monthChart = echarts.init($('#month')[0]);
-			monthChart.setOption(optionMonth);
+		}
 
-			monthChart.on('click', function(params) {
-				if(drag_flag){
-	        		drag_flag = false;
-	        		return;
-	        	}
-				$('#modalDay').modal();
-				
-				changeView(params.name);
-				
-			})
-			
-			window.onresize = function(){
-				monthChart.clear();
-				monthChart.resize();
-				monthChart.setOption(optionMonth);
+		if(monthChart){
+			monthChart.clear();
+			monthChart.resize();
+		}
+		monthChart = echarts.init($('#month')[0]);
+		monthChart.setOption(optionMonth);
+
+		monthChart.on('click', function(params) {
+			console.log(params.name)
+			var time =params.name+'';
+			var year =time.substring(0,4);
+			var month =time.substring(4,6);
+			var day =time.substring(6);
+			if(month.substring(0,1)=='0'){
+				month = month.substring(1);
 			}
-			
-			load_month_mouse_event();
+			if(day.substring(0,1)=='0'){
+				day = day.substring(1);
+			}
+			$("#modalDayLabel").html(year+'年'+month+'月'+day+'日'+name+'的峰值与日占用度（按24小时统计）');
+			$("#dayLevelChartTitle").html(year+'年'+month+'月'+day+'日的峰值');
+			$("#dayChartTitle").html(year+'年'+month+'月'+day+'日的日占用度');
+			if(drag_flag){
+				drag_flag = false;
+				return;
+			}
+			$('#modalDay').modal();
 
+			changeView(params.name);
+
+		})
+
+		window.onresize = function(){
+			monthChart.clear();
+			monthChart.resize();
+			monthChart.setOption(optionMonth);
+		}
+
+		load_month_mouse_event();
 
 	}
 	
@@ -241,28 +280,30 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
         $("#month").on("mousemove",mousemove);
     }
 	
-function changeView(time){
-		
-		var statiocode  =$('#station_list').find('option:selected').val();
-		var centorFreq = $('#signal_list').find('option:selected').attr("centorfreq");
-		
-		var data ={};					
-		data.stationCode = statiocode;
-		data.beginTime = time;
-		data.centorFreq = centorFreq;
-		
-		ajax.get("data/alarm/secondLevelChart",data,function(reslut){
-			
-//			level_charts.init(reslut);
-//			
-//			month_charts.init(reslut);
-			day_chart.init(reslut);
-            day_levelcharts.init(reslut);
-		});
-		
-	}
+	function changeView(time){
+			var statiocode  =$('#station_list').find('option:selected').val();
+			var centorFreq = $('#signal_list').find('option:selected').attr("centorfreq");
 
-	return {
-		init : charts_init
-	}
-});
+			var data ={};
+			data.stationCode = statiocode;
+			data.beginTime = time;
+			data.centorFreq = centorFreq;
+
+			ajax.get("data/alarm/secondLevelChart",data,function(reslut){
+
+	//			level_charts.init(reslut);
+	//
+	//			month_charts.init(reslut);
+
+				day_chart.init(reslut);
+				day_levelcharts.init(reslut);
+
+
+			});
+
+		}
+
+		return {
+			init : charts_init
+		}
+	});

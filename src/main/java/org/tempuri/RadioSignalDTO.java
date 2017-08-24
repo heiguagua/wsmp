@@ -2,12 +2,14 @@
 package org.tempuri;
 
 import java.math.BigInteger;
+import java.util.Calendar;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.w3._2001.xmlschema.Adapter1;
 
 
 /**
@@ -97,16 +99,18 @@ public class RadioSignalDTO {
     protected String stationKey;
     @XmlElement(name = "IsInvalid")
     protected boolean isInvalid;
-    @XmlElement(name = "SaveDate", required = true)
+    @XmlElement(name = "SaveDate", required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "dateTime")
-    protected XMLGregorianCalendar saveDate;
+    protected Calendar saveDate;
     @XmlElement(name = "ExtendFields")
     protected String extendFields;
     @XmlElement(name = "WarningFreqID")
     protected String warningFreqID;
-    @XmlElement(name = "InvalidDate", required = true)
+    @XmlElement(name = "InvalidDate", required = true, type = String.class)
+    @XmlJavaTypeAdapter(Adapter1 .class)
     @XmlSchemaType(name = "dateTime")
-    protected XMLGregorianCalendar invalidDate;
+    protected Calendar invalidDate;
     @XmlElement(name = "Des")
     protected String des;
     @XmlElement(name = "AppendDTOs")
@@ -331,10 +335,10 @@ public class RadioSignalDTO {
      * 
      * @return
      *     possible object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link String }
      *     
      */
-    public XMLGregorianCalendar getSaveDate() {
+    public Calendar getSaveDate() {
         return saveDate;
     }
 
@@ -343,10 +347,10 @@ public class RadioSignalDTO {
      * 
      * @param value
      *     allowed object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link String }
      *     
      */
-    public void setSaveDate(XMLGregorianCalendar value) {
+    public void setSaveDate(Calendar value) {
         this.saveDate = value;
     }
 
@@ -403,10 +407,10 @@ public class RadioSignalDTO {
      * 
      * @return
      *     possible object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link String }
      *     
      */
-    public XMLGregorianCalendar getInvalidDate() {
+    public Calendar getInvalidDate() {
         return invalidDate;
     }
 
@@ -415,10 +419,10 @@ public class RadioSignalDTO {
      * 
      * @param value
      *     allowed object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link String }
      *     
      */
-    public void setInvalidDate(XMLGregorianCalendar value) {
+    public void setInvalidDate(Calendar value) {
         this.invalidDate = value;
     }
 

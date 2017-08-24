@@ -106,10 +106,10 @@ public class SignalViewController {
 
 			radio = radio == null ? new RadioSignalDTO() : radio;
 
-			int center = 0;
+			double center = 0;
 
 			if (radio.getCenterFreq() != null) {
-				center = radio.getCenterFreq().intValue();
+				center = radio.getCenterFreq().doubleValue();
 			}
 
 			long bandWidth = radio.getBandWidth();

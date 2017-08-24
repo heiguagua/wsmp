@@ -12,10 +12,13 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.tempuri.*;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static java.util.stream.Collectors.toList;
@@ -28,6 +31,9 @@ public class SiganlDataController {
 	private WebServiceSoapFactory service;
 
 	private ObjectMapper mapper = new ObjectMapper();
+
+	@Value("${asio.formatter:yyyyMMddHHmmss}")
+	DateTimeFormatter formatter;
 
 	@Autowired
     private HbaseClient hbaseClient;
@@ -281,4 +287,93 @@ public class SiganlDataController {
 
 	}
 
+	@GetMapping("/AbnormalHistory")
+	public  Object getAbnormalHistory(@RequestParam Map<Object,Object> param) throws JsonProcessingException {
+
+		String paramStr = JSON.toJSONString(param);
+
+		Map<Object,Object> reslute = Maps.newHashMap();
+
+		AbnormalHistoryQueryResponse response = (AbnormalHistoryQueryResponse) service.radioSignalServiceCall("queryAbnormalHistory",paramStr,AbnormalHistoryRequest.class);
+		List<RadioSignalAbnormalHistoryDTO> dto = response.getHistorys().getRadioSignalAbnormalHistoryDTO();
+		RadioSignalAbnormalHistoryDTO historyDTO = dto.stream().findFirst().orElseGet(()-> new RadioSignalAbnormalHistoryDTO());
+
+		String id = historyDTO.getID();
+		if (StringUtils.isEmpty(id)){
+			reslute.put("id","");
+		}else{
+			reslute.put("id",id);
+		}
+
+		reslute.put("saveDate",historyDTO.getSaveDate());
+		reslute.put("historyType",historyDTO.getHistoryType());
+		reslute.put("invalidDate",historyDTO.getInvalidDate().toString());
+		reslute.put("des",historyDTO.getDes());
+		return  reslute;
+	}
+
+	@PostMapping( value =  "/AbnormalHistory",headers = {"contentType=application/json"})
+	public  @ResponseBody String  insterAbnormalHistory(@RequestBody Map<String,Object> param) throws JsonProcessingException {
+
+		String  startTime = (String) param.get("startTime");
+
+		final long timeStartLong = LocalDateTime.parse(startTime,
+				formatter).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+
+		Calendar calendar = Calendar.getInstance();
+
+		calendar.setTime(new Date(timeStartLong));
+
+		param.remove("startTime",calendar);
+
+		service.radioSignalServiceCall("insertAbnormalHistory",JSON.toJSONString(param),RadioSignalAbnormalHistoryDTO.class);
+
+		return  "sussed";
+	}
+
+	@PutMapping(path = {"/AbnormalHistory"},params = {"isInvalid=0"},headers = {"contentType=application/json"})
+	public  @ResponseBody String  updateAbnormalHistory(@RequestBody Map<String,Object> param) throws JsonProcessingException {
+		final String  startTime = (String) param.get("startTime");
+
+		final long timeStartLong = LocalDateTime.parse(startTime,
+				formatter).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+
+		Calendar beginCalendar = Calendar.getInstance();
+		Calendar endCalendar = Calendar.getInstance();
+
+		beginCalendar.setTime(new Date(timeStartLong));
+
+		param.replace("startTime",beginCalendar);
+		param.replace("invalidDate",endCalendar);
+		param.replace("isInvalid",true);
+
+		service.radioSignalServiceCall("updateAbnormalHistory",JSON.toJSONString(param),RadioSignalAbnormalHistoryDTO.class);
+		return  "sussed";
+	}
+
+	@PutMapping(path={"/AbnormalHistory",""},params = {"isInvalid=1"},headers = {"contentType=application/json"})
+	public  @ResponseBody  String recoveryAbnormalHistory(@RequestBody Map<String,Object> param) throws JsonProcessingException {
+
+		final String  startTime = (String) param.get("startTime");
+		final String  endTime = (String) param.get("invalidDate");
+
+		final long timeStartLong = LocalDateTime.parse(startTime,
+				formatter).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+
+		final long timeEndLong = LocalDateTime.parse(endTime,
+				formatter).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+
+		Calendar beginCalendar = Calendar.getInstance();
+		Calendar endCalendar = Calendar.getInstance();
+
+		beginCalendar.setTime(new Date(timeStartLong));
+		beginCalendar.setTime(new Date(timeEndLong));
+
+		param.replace("startTime",beginCalendar);
+		param.replace("invalidDate",endCalendar);
+		param.replace("isInvalid",false);
+
+		service.radioSignalServiceCall("updateAbnormalHistory",JSON.toJSONString(param),RadioSignalAbnormalHistoryDTO.class);
+		return "sussed";
+	}
 }
