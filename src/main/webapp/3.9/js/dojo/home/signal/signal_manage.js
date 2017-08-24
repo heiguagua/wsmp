@@ -186,6 +186,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 				success : function(html) {
 					layer.msg("更新成功！");
 					$("#important_monitor").html(html);
+                    $("#modalConfig").modal("hide");
 				},
 				error : function(html) {
 					console.log(html);
@@ -205,6 +206,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 				success : function(html) {
 						layer.msg("添加成功！");
 						$("#important_monitor").html(html);
+                        $("#modalConfig").modal("hide");
 						},
 				error : function(html) {
 					console.log(html);
@@ -230,6 +232,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 				success : function(html) {
 					layer.msg("删除成功!");
 					$("#important_monitor").html(html);
+                    $("#modalConfig").modal("hide");
 					},
 				error : function(html) {
 					console.log(html);
@@ -274,6 +277,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 
             ajax.put("data/signal/one/update", data, function() {
                 layer.msg('成功');
+                $("#modalStationAlarm").modal('hide');
             });
         });
     }
@@ -296,7 +300,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
     }
 
     function signalClick(map, pSymbol, glayer) {
-        //合法正常信号 (合法)
+        //合法信号 (合法)
         $("#legal-normal").click(function() {
             //					var value = $('option:selected').val();
             var value = $("#station_list").find('option:selected').text();
@@ -873,10 +877,9 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
         fisrtLevel.beginTime = beginTime;
         fisrtLevel.centorFreq = centorfreq;
 
-        ajax.get("data/alarm/firstLevelChart", fisrtLevel, function(back) {
-
-            initMonthchart(back);
-            maxlevel_chart.init(back);
+        ajax.get("data/alarm/firstLevelChart", fisrtLevel, function(result) {
+            initMonthchart(result);//月占用度
+            maxlevel_chart.init(result);//电平峰值
         });
 
     }
@@ -889,101 +892,104 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
     var month_total_length = 0;     // x轴数据总数
     var drag_flag = false;             // 月占用度是否拖拽
     function initMonthchart(levelParam) {
+        var optionMonth = {};
+        if(levelParam.monthOcc &&levelParam.monthOcc.xAxis.length&&levelParam.monthOcc.series.length){
+            optionMonth = {
+                color : ['rgb(55,165,255)'],
+                tooltip : {
+                    'trigger' : 'axis',
+                    formatter:function(param){
+                        month_start_index_temp = param[0].dataIndex;
+                        month_end_index = param[0].dataIndex;
+                        var time =param[0].name+'';
+                        var year =time.substring(0,4);
+                        var month =time.substring(4,6);
+                        var day =time.substring(6);
+                        if(month.substring(0,1)=='0'){
+                            month = month.substring(1);
+                        }
+                        if(day.substring(0,1)=='0'){
+                            day = day.substring(1);
+                        }
+                        return year+'年'+month+'月'+day+'日' + "占用度" + param[0].value.toFixed(2)+"%";
 
-        var optionMonth = {
-            color : ['rgb(55,165,255)'],
-            tooltip : {
-                'trigger' : 'axis',
-                formatter:function(param){
-                	month_start_index_temp = param[0].dataIndex;
-                	month_end_index = param[0].dataIndex;
-                    var time =param[0].name+'';
-                    var year =time.substring(0,4);
-                    var month =time.substring(4,6);
-                    var day =time.substring(6);
-                    if(month.substring(0,1)=='0'){
-                        month = month.substring(1);
                     }
-                    if(day.substring(0,1)=='0'){
-                        day = day.substring(1);
+                },
+                dataZoom : [{
+                    show:false,
+                    type : 'slider',
+                    start : 0,
+                    end : 100,
+                    height : 15,
+                    y : 260
+                }],
+                grid : {
+                    left : '1%',
+                    right : '4%',
+                    bottom : '2%',
+                    top : 30,
+                    containLabel : true
+                },
+                textStyle: {
+                    color: "#505363"
+                },
+                xAxis : {
+                    type : 'category',
+                    name:'时间',
+                    boundaryGap : false,
+                    axisLine : {
+                        lineStyle : {
+                            color : '#DAE5F0'
+                        }
+                    },
+                    axisTick : {
+                        show : false
+                    },
+                    axisLabel : {
+                        textStyle : {
+                            color : '#505363'
+                        }
+                    },
+                    data : levelParam.monthOcc.xAxis
+                },
+                yAxis : {
+                    type : 'value',
+                    name:'百分比(%)',
+                    max : 100,
+                    splitNumber : 10,
+                    axisLine : {
+                        lineStyle : {
+                            color : '#DAE5F0'
+                        }
+                    },
+                    axisTick : {
+                        show : false
+                    },
+                    axisLabel : {
+                        textStyle : {
+                            color : '#505363'
+                        }
+                    },
+                    splitLine : {
+                        lineStyle : {
+                            color : '#DAE5F0'
+                        }
                     }
-                    return year+'年'+month+'月'+day+'日' + "占用度" + param[0].value.toFixed(2)+"%";
+                },
+                series : [
+                    {
+                        name : '',
+                        type : 'line',
+                        showSymbol : false,
+                        symbolSize : 6,
+                        data : levelParam.monthOcc.series
+                    }
 
-                }
-            },
-			dataZoom : [{
-                show:false,
-                type : 'slider',
-                start : 0,
-                end : 100,
-                height : 15,
-                y : 260
-            }],
-            grid : {
-                left : '1%',
-                right : '4%',
-                bottom : '2%',
-                top : 30,
-                containLabel : true
-            },
-            textStyle: {
-                color: "#505363"
-            },
-            xAxis : {
-                type : 'category',
-                name:'时间',
-                boundaryGap : false,
-                axisLine : {
-                    lineStyle : {
-                        color : '#DAE5F0'
-                    }
-                },
-                axisTick : {
-                    show : false
-                },
-                axisLabel : {
-                    textStyle : {
-                        color : '#505363'
-                    }
-                },
-                data : levelParam.monthOcc.xAxis
-            },
-            yAxis : {
-                type : 'value',
-                name:'百分比(%)',
-                max : 100,
-                splitNumber : 10,
-                axisLine : {
-                    lineStyle : {
-                        color : '#DAE5F0'
-                    }
-                },
-                axisTick : {
-                    show : false
-                },
-                axisLabel : {
-                    textStyle : {
-                        color : '#505363'
-                    }
-                },
-                splitLine : {
-                    lineStyle : {
-                        color : '#DAE5F0'
-                    }
-                }
-            },
-            series : [
-                {
-                    name : '',
-                    type : 'line',
-                    showSymbol : false,
-                    symbolSize : 6,
-                    data : levelParam.monthOcc.series
-                }
-          
                 ]
-        };
-        month_total_length = levelParam.monthOcc.xAxis.length;
+            };
+            month_total_length = levelParam.monthOcc.xAxis.length;
+        }
+
         monthChart = echarts.init($('#monthChart')[0]);
         monthChart.setOption(optionMonth);
         //渲染图表title，添加监测站名称
@@ -1231,8 +1237,9 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 
         ajax.get("data/alarm/secondLevelChart", secondLevel, function(reslut) {
         	console.log(reslut);
+            var optionDay ={};
             if(reslut.dayOcc &&reslut.dayOcc.xAxis.length&&reslut.dayOcc.series.length){
-                var optionDay = {
+                 optionDay = {
                     color : ['rgb(55,165,255)'],
                     tooltip : {
                         trigger : 'axis',
@@ -1311,11 +1318,8 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 
             var element = document.getElementById("dayChart");
             var dayChart = echarts.init(element);
-            dayChart.setOption(optionDay);
-            if(reslut.max &&reslut.max.xAxis.length&&reslut.max.series.length){
-                daylevel_chart.init(reslut);
-            }
-
+            dayChart.setOption(optionDay);//某天的占用度
+            daylevel_chart.init(reslut);//某天的峰值
         });
 
     }

@@ -7,12 +7,12 @@
         <div class='signal-profile flex-row'>
           <div class='item info flex1 flex-column justify-center'>
             <div class='radio-info flex-row'>
-              <div class='r-i-item flex1 flex-column justify-center'>${redioDetail.centor}MHz</div>
               <div class='r-i-item flex1 flex-column justify-center'>${redioDetail.band}KHz</div>
+              <div class='r-i-item flex1 flex-column justify-center'>${redioDetail.centor}MHz</div>
             </div>
             <div class='type-info flex-row'>
-            <!-- <div class='t-i-item flex1 flex-column justify-center'>常发 / 偶发</div>
-              <div class='t-i-item flex1 flex-column justify-center'>固定移动</div> -->
+             <div class='t-i-item flex1 flex-column justify-center'>频率</div>
+              <div class='t-i-item flex1 flex-column justify-center'>带宽</div>
             </div>
           </div>
           <div class='item chart flex2 flex-column'>
@@ -26,7 +26,7 @@
                   <div class='item-value'>${redioDetail.rMax}</div></li>
                 <li><div class='item-name'>频谱周期性</div>
                   <div class='item-value'>${redioDetail.specT}</div></li>
-                <li><div class='item-name'>马速率</div>
+                <li><div class='item-name'>码速率</div>
                   <div class='item-value'>${redioDetail.symRate}</div></li>
                 <li><div class='item-name'>功率谱平稳度指数</div>
                   <div class='item-value'>${redioDetail.flatDegree}</div></li>
@@ -58,18 +58,19 @@
             <div class='flex1 flex-row align-center mrg-top15'>
               <div class="radio radio-primary flex1 ">
                 <input type="radio" value = '0' name="signal-type" id="legal-normal">
-                <label for="legal-normal"> 合法正常信号 </label>
+                <label for="legal-normal"> 合法信号 </label>
               </div>
-              <div class="radio radio-primary flex1 ">
-                <input type="radio" value = '1' name="signal-type" id="undeclared">
-                <label for="legal-wrong"> 合法违规信号 </label>
-              </div>
-            </div>
-            <div class='flex1 flex-row align-center mrg-bottom15'>
               <div class="radio radio-primary flex1 ">
                 <input type="radio" value = '2' name="signal-type" id="nonlocal_station">
-                <label for="legal"> 已知信号 </label>
+                <label for="nonlocal_station"> 已知信号 </label>
               </div>
+              <%--<div class="radio radio-primary flex1 ">--%>
+                <%--<input type="radio" value = '1' name="signal-type" id="undeclared">--%>
+                <%--<label for="legal-wrong"> 合法违规信号 </label>--%>
+              <%--</div>--%>
+            </div>
+            <div class='flex1 flex-row align-center mrg-bottom15'>
+
               <div class="radio radio-primary flex1 ">
                 <input type="radio" value = '3' name="signal-type" id="illegal" checked>
                 <label for="illegal"> 非法信号 </label>

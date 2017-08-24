@@ -7,95 +7,97 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
 	    var maxlevel_end_index = 0;        // mouseup时的x轴index
 	    var maxlevel_total_length = 0;     // x轴数据总数
 		function charts_init(reslut) {
-		
-			var optionMonth = {
-				color : [ 'rgb(55,165,255)' ],
-				tooltip : {
-	                'trigger' : 'axis',
-	                formatter:function(param){
-	                	maxlevel_start_index_temp = param[0].dataIndex;
-	                	maxlevel_end_index = param[0].dataIndex;
-						return "信号频率"+param[0].name + "MHz 的电平峰值 " + param[0].value+"dBμV";
-	                }
-	            },
-				dataZoom : [{
-	                show:false,
-	                type : 'slider',
-	                start : 0,
-	                end : 100,
-	                height : 15,
-	                y : 260
-	            }],
-				grid : {
-					left : '1%',
-					right : '4%',
-					bottom : '2%',
-					top : 30,
-					containLabel : true
-				},
-				textStyle: {
-					color: "#505363"
-				},
-				xAxis : {
-					type : 'category',
-					name:'信号频率(MHz)',
-					nameRotate:'-90',
-				    nameLocation:'end',
-					boundaryGap : false,
-					axisLine : {
-						lineStyle : {
-							color : '#DAE5F0'
+			var optionMonth ={};
+			if(reslut.max &&(reslut.max.xAxis.length>0)&&(reslut.max.series.length>0)){
+				optionMonth = {
+					color : [ 'rgb(55,165,255)' ],
+					tooltip : {
+						'trigger' : 'axis',
+						formatter:function(param){
+							maxlevel_start_index_temp = param[0].dataIndex;
+							maxlevel_end_index = param[0].dataIndex;
+							return "信号频率"+param[0].name + "MHz 的电平峰值 " + param[0].value+"dBμV";
 						}
 					},
-					axisTick : {
-						show : false
+					dataZoom : [{
+						show:false,
+						type : 'slider',
+						start : 0,
+						end : 100,
+						height : 15,
+						y : 260
+					}],
+					grid : {
+						left : '1%',
+						right : '4%',
+						bottom : '2%',
+						top : 30,
+						containLabel : true
 					},
-					axisLabel : {
-						textStyle : {
-							color : '#505363'
-						}
+					textStyle: {
+						color: "#505363"
 					},
-					data : reslut.max.xAxis
+					xAxis : {
+						type : 'category',
+						name:'信号频率(MHz)',
+						nameRotate:'-90',
+						nameLocation:'end',
+						boundaryGap : false,
+						axisLine : {
+							lineStyle : {
+								color : '#DAE5F0'
+							}
+						},
+						axisTick : {
+							show : false
+						},
+						axisLabel : {
+							textStyle : {
+								color : '#505363'
+							}
+						},
+						data : reslut.max.xAxis
 						//
-				},
-				yAxis : {
-					type : 'value',
-					name:'电平(dBμV)',
-					max : 120,
-					min : -40,
-					splitNumber : 10,
-					axisLine : {
-						lineStyle : {
-							color : '#DAE5F0'
+					},
+					yAxis : {
+						type : 'value',
+						name:'电平(dBμV)',
+						max : 120,
+						min : -40,
+						splitNumber : 10,
+						axisLine : {
+							lineStyle : {
+								color : '#DAE5F0'
+							}
+						},
+						axisTick : {
+							show : false
+						},
+						axisLabel : {
+							textStyle : {
+								color : '#505363'
+							}
+						},
+						splitLine : {
+							lineStyle : {
+								color : '#DAE5F0'
+							}
 						}
 					},
-					axisTick : {
-						show : false
-					},
-					axisLabel : {
-						textStyle : {
-							color : '#505363'
-						}
-					},
-					splitLine : {
-						lineStyle : {
-							color : '#DAE5F0'
-						}
-					}
-				},
-				series : [
-					{
-						name : '',
-						type : 'line',
-						showSymbol : false,
-						symbolSize : 6,
-						data : reslut.max.series 
-							// reslut.series 
+					series : [
+						{
+							name : '',
+							type : 'line',
+							showSymbol : false,
+							symbolSize : 6,
+							data : reslut.max.series
+							// reslut.series
 							//[ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, ]
-					}
-				]
-			};
-			maxlevel_total_length = reslut.max.xAxis.length;
+						}
+					]
+				};
+				maxlevel_total_length = reslut.max.xAxis.length;
+			}
 			maxlevelChart = echarts.init($('.levelChart')[0]);
 			maxlevelChart.setOption(optionMonth);
 
