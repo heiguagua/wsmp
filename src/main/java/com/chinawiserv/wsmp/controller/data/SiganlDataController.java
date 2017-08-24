@@ -12,6 +12,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.tempuri.*;
 
@@ -281,4 +282,49 @@ public class SiganlDataController {
 
 	}
 
+	@GetMapping("/AbnormalHistory")
+	public  Object getAbnormalHistory(@RequestParam Map<Object,Object> param) throws JsonProcessingException {
+
+		String paramStr = JSON.toJSONString(param);
+
+		Map<Object,Object> reslute = Maps.newHashMap();
+
+		AbnormalHistoryQueryResponse response = (AbnormalHistoryQueryResponse) service.radioSignalServiceCall("queryAbnormalHistory",paramStr,AbnormalHistoryRequest.class);
+		List<RadioSignalAbnormalHistoryDTO> dto = response.getHistorys().getRadioSignalAbnormalHistoryDTOs();
+		RadioSignalAbnormalHistoryDTO historyDTO = dto.stream().findFirst().orElseGet(()-> new RadioSignalAbnormalHistoryDTO());
+
+		String id = historyDTO.getID();
+		if (StringUtils.isEmpty(id)){
+			reslute.put("id","");
+		}else{
+			reslute.put("id",id);
+		}
+
+		reslute.put("saveDate",historyDTO.getSaveDate());
+		reslute.put("historyType",historyDTO.getHistoryType());
+		reslute.put("invalidDate",historyDTO.getInvalidDate().toString());
+		reslute.put("des",historyDTO.getDes());
+		return  reslute;
+	}
+
+	@PostMapping("/AbnormalHistory")
+	public  @ResponseBody String  insterAbnormalHistory(@RequestBody Map<String,Object> param) throws JsonProcessingException {
+
+		service.radioSignalServiceCall("insertAbnormalHistory",JSON.toJSONString(param),AbnormalHistoryRequest.class);
+
+		return  "sussed";
+	}
+
+	@PutMapping(path = {"/AbnormalHistory"},params = {"isInvalid=0"})
+	public  @ResponseBody String  updateAbnormalHistory(@RequestBody Map<String,Object> param) throws JsonProcessingException {
+
+		service.radioSignalServiceCall("updateAbnormalHistory",JSON.toJSONString(param),RadioSignalAbnormalHistoryDTO.class);
+		return  "sussed";
+	}
+
+	@PutMapping(path={"/AbnormalHistory",""},params = {"isInvalid=1"})
+	public  @ResponseBody  String recoveryAbnormalHistory(@RequestBody Map<String,Object> param) throws JsonProcessingException {
+		service.radioSignalServiceCall("updateAbnormalHistory",JSON.toJSONString(param),RadioSignalAbnormalHistoryDTO.class);
+		return "sussed";
+	}
 }
