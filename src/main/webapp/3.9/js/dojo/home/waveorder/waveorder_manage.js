@@ -328,7 +328,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						"x" : MONITORS[0].Longitude,
 						"y" : MONITORS[0].Latitude
 					});
-					MAP1.setZoom(10);
+					MAP1.setZoom(12);
 					MAP1.centerAt(center);
 				});
 
@@ -464,10 +464,10 @@ define(	["ajax", "dojo/parser", "esri/map",
 				// 计数点symbol
 				var url_countBackgroundSymbol = null;
 				switch (signalType) {
-				case 0:
+				case 1:
 					url_countBackgroundSymbol = "images/legal.svg";
 					break;
-				case 1:
+				case 0:
 					url_countBackgroundSymbol = "images/undeclared.svg";
 					break;
 				case 2:
@@ -547,7 +547,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 					center :[MONITORS[0].Longitude,MONITORS[0].Latitude],
 					maxZoom : 12,
 					minZoom :6,
-					zoom : 10,
+					zoom : 12,
 				});
 
 				var agoLayer = new ArcGISTiledMapServiceLayer(url, {
@@ -558,7 +558,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 				map.addLayer(agoLayer);
 				map.addLayer(glayer_max);
 				map.addLayer(glayer_zoom);
-				glayer_max.hide();
 				return map;
 			}
 
@@ -756,7 +755,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 									// 必须要在此bootstraptable渲染成功之后才能渲染地图,不然地图会有错误
 									onLoadSuccess : function() {
 										MAP1 = mapInit();
-										addPoint(monitors, 0);// 默认选中0
+										addPoint(monitors, 1);// 默认选中1
 									},
 									columns : [
 											{
@@ -778,7 +777,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 														row, index) {
 													return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
 															+ monitorsID
-															+ '" data-radioType="0" data-beginFreq="'
+															+ '" data-radioType="1" data-beginFreq="'
 															+ row.beginFreq
 															+ '" data-endFreq="'
 															+ row.endFreq
@@ -796,7 +795,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 														row, index) {
 													return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
 															+ monitorsID
-															+ '" data-radioType="1" data-beginFreq="'
+															+ '" data-radioType="0" data-beginFreq="'
 															+ row.beginFreq
 															+ '" data-endFreq="'
 															+ row.endFreq

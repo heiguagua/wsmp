@@ -6,13 +6,13 @@
           <ul class='signal-category'>
             <li class='item'>
               <div class="radio radio-primary  ">
-                <input type="radio" name="signal-type" id="legal" checked="checked" value="0">
+                <input type="radio" name="signal-type" id="legal" checked="checked" value="1">
                 <label for="legal"> 合法正常信号</label>
               </div> <span class='signal-sign legal'></span> <span class='number legal-number'>${redio.legalNormalStationNumber}</span>
             </li>
             <li class='item'>
               <div class="radio radio-primary  ">
-                <input type="radio" name="signal-type" id="unregist" value="1">
+                <input type="radio" name="signal-type" id="unregist" value="0">
                 <label for="unregist"> 合法违规信号</label>
               </div> <span class='signal-sign legal-wrong'></span> <span class='number legal-wrong-number'>${redio.legalUnNormalStationNumber}</span>
             </li>

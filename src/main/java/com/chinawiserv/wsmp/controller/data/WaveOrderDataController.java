@@ -96,11 +96,8 @@ public class WaveOrderDataController {
 				// System.out.println("===type:"+type);
 				// System.out.println("===count:"+count);
 				switch (type) {
-				case 0:
-					rsCount.setLegalNormalStationNumber(count);
-					break;
 				case 1:
-					rsCount.setLegalUnNormalStationNumber(count);
+					rsCount.setLegalNormalStationNumber(count);
 					break;
 				case 2:
 					rsCount.setKonwStationNumber(count);

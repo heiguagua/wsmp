@@ -166,12 +166,12 @@ public class WaveOrderViewController {
 				int type = t1.getSignalType();
 				int count = t1.getCount();
 				switch(type) {
-				case 0:
+				case 1:
 					rsCount.setLegalNormalStationNumber(count);
 					break;
-				case 1:
-					rsCount.setLegalUnNormalStationNumber(count);
-					break;
+//				case 1:
+//					rsCount.setLegalUnNormalStationNumber(count);
+//					break;
 				case 2:
 					rsCount.setKonwStationNumber(count);
 					break;
@@ -226,12 +226,12 @@ public class WaveOrderViewController {
 				int type = t1.getSignalType();
 				int count = t1.getCount();
 				switch(type) {
-				case 0:
+				case 1:
 					rsCount.setLegalNormalStationNumber(count);
 					break;
-				case 1:
-					rsCount.setLegalUnNormalStationNumber(count);
-					break;
+//				case 1:
+//					rsCount.setLegalUnNormalStationNumber(count);
+//					break;
 				case 2:
 					rsCount.setKonwStationNumber(count);
 					break;
