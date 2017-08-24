@@ -147,7 +147,7 @@ public class WaveOrderDataController {
 			BigDecimal divisor = new BigDecimal(1000000);
 			alarm.setRadio(certerFreq.divide(divisor).toString());
 			alarm.setFirstTime(t.getSaveDate().toString().replace('T',' '));
-			alarm.setLastingTime(t.getInvalidDate().toString().replace('T',' '));
+			alarm.setLastingTime(t.getLastTimeDate().toString().replace('T',' '));
 			alarm.setMark(t.getDescription());
 			List<String> stationID = Lists.newArrayList();
 			t.getStatList().getFreqWarningStatDTO().stream().forEach(t1 -> {
@@ -186,7 +186,7 @@ public class WaveOrderDataController {
 			BigDecimal divisor = new BigDecimal(1000000);
 			alarm.setRadio(certerFreq.divide(divisor).toString());
 			alarm.setFirstTime(t.getSaveDate().toString().replace('T',' '));
-			alarm.setLastingTime(t.getInvalidDate().toString().replace('T',' '));
+			alarm.setLastingTime(t.getLastTimeDate().toString().replace('T',' '));
 			alarm.setMark(t.getDescription());
 			List<String> stationID = Lists.newArrayList();
 			t.getStatList().getFreqWarningStatDTO().stream().forEach(t1 -> {
