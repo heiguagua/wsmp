@@ -695,3 +695,6 @@ border-radius: 4px;
 	box-shadow: none;
 	border-top-right-radius: 4px !important;
 }
+.modal-width {
+	width: 700px;
+}

@@ -7,7 +7,7 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
     var maxlevel_end_index = 0;        // mouseup时的x轴index
     var maxlevel_total_length = 0;     // x轴数据总数
     var drag_flag = false;             // 月占用度是否拖拽
-	function charts_init(reslut) {
+	function charts_init(reslut,name) {
 			var optionMonth = {
 				color : [ 'rgb(55,165,255)' ],
 				tooltip : {
@@ -31,18 +31,27 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
 	            }],
 				grid : {
 					left : '1%',
-					right : '1%',
+					right : '4%',
 					bottom : '2%',
 					top : 30,
 					containLabel : true
 				},
+				textStyle: {
+					color: "#505363"
+				},
 				xAxis : {
 					type : 'category',
+					name:'时间',
 					boundaryGap : false,
 					axisLine : {
 						lineStyle : {
 							color : '#DAE5F0'
+						},
+						textStyle: {
+							color: '#DAE5F0',
+							fontSize: 12
 						}
+
 					},
 					axisTick : {
 						show : false
@@ -57,6 +66,7 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
 				},
 				yAxis : {
 					type : 'value',
+					name:'百分比(%)',
 					max : 100,
 					min : 0,
 					splitNumber : 10,
@@ -100,6 +110,20 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
 			monthChart.setOption(optionMonth);
 
 			monthChart.on('click', function(params) {
+				console.log(params.name)
+				var time =params.name+'';
+				var year =time.substring(0,4);
+				var month =time.substring(4,6);
+				var day =time.substring(6);
+                if(month.substring(0,1)=='0'){
+					month = month.substring(1);
+				}
+				if(day.substring(0,1)=='0'){
+					day = day.substring(1);
+				}
+				$("#modalDayLabel").html(year+'年'+month+'月'+day+'日'+name+'的峰值与日占用度（按24小时统计）');
+				$("#dayLevelChartTitle").html(year+'年'+month+'月'+day+'日的峰值');
+				$("#dayChartTitle").html(year+'年'+month+'月'+day+'日的日占用度');
 				if(drag_flag){
 	        		drag_flag = false;
 	        		return;
@@ -241,28 +265,28 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
         $("#month").on("mousemove",mousemove);
     }
 	
-function changeView(time){
-		
-		var statiocode  =$('#station_list').find('option:selected').val();
-		var centorFreq = $('#signal_list').find('option:selected').attr("centorfreq");
-		
-		var data ={};					
-		data.stationCode = statiocode;
-		data.beginTime = time;
-		data.centorFreq = centorFreq;
-		
-		ajax.get("data/alarm/secondLevelChart",data,function(reslut){
-			
-//			level_charts.init(reslut);
-//			
-//			month_charts.init(reslut);
-			day_chart.init(reslut);
-            day_levelcharts.init(reslut);
-		});
-		
-	}
+	function changeView(time){
+			var statiocode  =$('#station_list').find('option:selected').val();
+			var centorFreq = $('#signal_list').find('option:selected').attr("centorfreq");
 
-	return {
-		init : charts_init
-	}
-});
+			var data ={};
+			data.stationCode = statiocode;
+			data.beginTime = time;
+			data.centorFreq = centorFreq;
+
+			ajax.get("data/alarm/secondLevelChart",data,function(reslut){
+
+	//			level_charts.init(reslut);
+	//
+	//			month_charts.init(reslut);
+				day_chart.init(reslut);
+				day_levelcharts.init(reslut);
+
+			});
+
+		}
+
+		return {
+			init : charts_init
+		}
+	});

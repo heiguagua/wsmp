@@ -13,13 +13,17 @@ define([ "ajax", "echarts", "jquery" ], function(ajax,echarts) {
 				},
 				grid : {
 					left : '1%',
-					right : '2%',
+					right : '7%',
 					bottom : '2%',
 					top : 30,
 					containLabel : true
 				},
+				textStyle: {
+					color: "#505363"
+				},
 				xAxis : {
 					type : 'category',
+					name:'时间(h)',
 					boundaryGap : false,
 					axisLine : {
 						lineStyle : {
@@ -39,6 +43,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax,echarts) {
 				},
 				yAxis : {
 					type : 'value',
+					name:'百分比(%)',
 					max : 100,
 					splitNumber : 10,
 					axisLine : {
@@ -73,7 +78,6 @@ define([ "ajax", "echarts", "jquery" ], function(ajax,echarts) {
 			};
 			var dayChart = echarts.init($('#dayChart')[0]);
 			dayChart.setOption(optionDay);
-			
 			// dayChart.on('click', function() {
 			// 	$('#modalHour').modal()
 			// })

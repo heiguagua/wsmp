@@ -688,8 +688,8 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 
         $('.select2-picker').select2();
         $("#search").keydown(function(e) {
-            //数字0-9(keycode:48-57)，小键盘数字0-9（keycode:96-106,小数点keycode:110 190，enter键13或108,backspace键8）
-            if((e.keyCode>=48&&e.keyCode<=57 )|| (e.keyCode>=96&&e.keyCode<=106)||e.keyCode==110||e.keyCode==190||e.keyCode==13||e.keyCode==108||e.keyCode==8){
+            //数字0-9(keycode:48-57)，小键盘数字0-9（keycode:96-106,小数点keycode:110 190，enter键13或108,backspace键8，shift按键）
+            if((e.keyCode>=48&&e.keyCode<=57 )|| (e.keyCode>=96&&e.keyCode<=106)||e.keyCode==110||e.keyCode==190||e.keyCode==13||e.keyCode==108||e.keyCode==8||e.keyCode==16||e.keyCode==229){
 
                 if (e.keyCode == 13) {
                     getFreqList();
@@ -874,7 +874,6 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
         ajax.get("data/alarm/firstLevelChart", fisrtLevel, function(back) {
 
             initMonthchart(back);
-
             maxlevel_chart.init(back);
         });
 
@@ -909,13 +908,17 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             }],
             grid : {
                 left : '1%',
-                right : '1%',
+                right : '4%',
                 bottom : '2%',
                 top : 30,
                 containLabel : true
             },
+            textStyle: {
+                color: "#505363"
+            },
             xAxis : {
                 type : 'category',
+                name:'时间',
                 boundaryGap : false,
                 axisLine : {
                     lineStyle : {
@@ -934,6 +937,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             },
             yAxis : {
                 type : 'value',
+                name:'百分比(%)',
                 max : 100,
                 splitNumber : 10,
                 axisLine : {
@@ -969,7 +973,13 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
         month_total_length = levelParam.monthOcc.xAxis.length;
         monthChart = echarts.init($('#monthChart')[0]);
         monthChart.setOption(optionMonth);
-        
+        //渲染图表title，添加监测站名称
+        var name = $('#station-list2').find('option:selected').text();//选中的台站名称
+        console.log(name)
+        name=name.replace("未查询到数据","");
+        $("#levelChartTitle").html(name+"——电平峰值");
+        $("#monthChartTitle").html(name+"——近3个月占用度（按天统计）");
+
         load_month_mouse_event();
 
         window.onresize = function() {
@@ -981,7 +991,20 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
         		drag_flag = false;
         		return;
         	}
-        	time = params.name;
+            console.log(params.name)
+            var time =params.name+'';
+            var year =time.substring(0,4);
+            var month =time.substring(4,6);
+            var day =time.substring(6);
+            if(month.substring(0,1)=='0'){
+                month = month.substring(1);
+            }
+            if(day.substring(0,1)=='0'){
+                day = day.substring(1);
+            }
+            $("#modalDayLabel").html(year+'年'+month+'月'+day+'日'+name+'的峰值与日占用度（按24小时统计）');
+            $("#dayLevelChartTitle").html(year+'年'+month+'月'+day+'日的峰值');
+            $("#dayChartTitle").html(year+'年'+month+'月'+day+'日的日占用度');
         	$('#modalDay').modal();
 
         });
@@ -1195,73 +1218,84 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 
         ajax.get("data/alarm/secondLevelChart", secondLevel, function(reslut) {
         	console.log(reslut);
-            var optionDay = {
-                color : ['rgb(55,165,255)'],
-                tooltip : {
-                    trigger : 'axis'
-                },
-                grid : {
-                    left : '1%',
-                    right : '2%',
-                    bottom : '2%',
-                    top : 30,
-                    containLabel : true
-                },
-                xAxis : {
-                    type : 'category',
-                    boundaryGap : false,
-                    axisLine : {
-                        lineStyle : {
-                            color : '#DAE5F0'
+            if(reslut.dayOcc &&reslut.dayOcc.xAxis.length&&reslut.dayOcc.series.length){
+                var optionDay = {
+                    color : ['rgb(55,165,255)'],
+                    tooltip : {
+                        trigger : 'axis'
+                    },
+                    grid : {
+                        left : '1%',
+                        right : '7%',
+                        bottom : '2%',
+                        top : 30,
+                        containLabel : true
+                    },
+                    textStyle: {
+                        color: "#505363"
+                    },
+                    xAxis : {
+                        type : 'category',
+                        name:'时间(h)',
+                        boundaryGap : false,
+                        axisLine : {
+                            lineStyle : {
+                                color : '#DAE5F0'
+                            }
+                        },
+                        axisTick : {
+                            show : false
+                        },
+                        axisLabel : {
+                            textStyle : {
+                                color : '#505363'
+                            }
+                        },
+                        data : reslut.dayOcc.xAxis
+                    },
+                    yAxis : {
+                        type : 'value',
+                        name:'百分比(%)',
+                        max : 100,
+                        splitNumber : 10,
+                        axisLine : {
+                            lineStyle : {
+                                color : '#DAE5F0'
+                            }
+                        },
+                        axisTick : {
+                            show : false
+                        },
+                        axisLabel : {
+                            textStyle : {
+                                color : '#505363'
+                            }
+                        },
+                        splitLine : {
+                            lineStyle : {
+                                color : '#DAE5F0'
+                            }
                         }
                     },
-                    axisTick : {
-                        show : false
-                    },
-                    axisLabel : {
-                        textStyle : {
-                            color : '#505363'
+                    series : [
+                        {
+                            name : '',
+                            type : 'line',
+                            showSymbol : false,
+                            symbolSize : 6,
+                            data : reslut.dayOcc.series
                         }
-                    },
-                    data : reslut.dayOcc.xAxis
-                },
-                yAxis : {
-                    type : 'value',
-                    max : 100,
-                    splitNumber : 10,
-                    axisLine : {
-                        lineStyle : {
-                            color : '#DAE5F0'
-                        }
-                    },
-                    axisTick : {
-                        show : false
-                    },
-                    axisLabel : {
-                        textStyle : {
-                            color : '#505363'
-                        }
-                    },
-                    splitLine : {
-                        lineStyle : {
-                            color : '#DAE5F0'
-                        }
-                    }
-                },
-                series : [
-                    {
-                        name : '',
-                        type : 'line',
-                        showSymbol : false,
-                        symbolSize : 6,
-                        data : reslut.dayOcc.series
-                    }
-                ]
-            };
+                    ]
+                };
+            }
+
             var element = document.getElementById("dayChart");
             var dayChart = echarts.init(element);
             dayChart.setOption(optionDay);
-            daylevel_chart.init(reslut);
+            if(reslut.max &&reslut.max.xAxis.length&&reslut.max.series.length){
+                daylevel_chart.init(reslut);
+            }
+
         });
 
     }

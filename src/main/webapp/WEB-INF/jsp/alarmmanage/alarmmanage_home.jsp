@@ -114,7 +114,7 @@
   <section class='flex-row'>
     <div class='box'>
       <div class='month-data flex-column'>
-        <h4 class="text-center">电平峰值</h4>
+        <h4 id="levelTitle" class="text-center">电平峰值</h4>
         <div id="level" class='title levelChart' style="height: 400px"></div>
       </div>
     </div>
@@ -122,7 +122,7 @@
   <section class='flex-row'>
     <div class='box'>
       <div class='month-data flex-column'>
-        <h4 class="text-center">近3个月占用度（按天统计）</h4>
+        <h4 id="monthTitle" class="text-center">近3个月占用度（按天统计）</h4>
         <div id="month" class='title flex1 flex-column' style="height: 100%"></div>
       </div>
     </div>
@@ -137,12 +137,18 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title" id="modalDayLabel" style="height: 100%">峰值与日占用度（按24小时统计）</h4>
+        <h4 class="modal-title" id="modalDayLabel" style="height: 100%"></h4>
       </div>
       <div class="modal-body">
         <div id='day'>
-          <div id = "dayLevelChart" style="width: 700px;height: 300px"></div>
-          <div id = "dayChart" style="width: 700px;height: 300px"></div>
+          <div class="box">
+            <h5 class="text-center" id="dayLevelChartTitle"></h5>
+            <div id = "dayLevelChart" style="width: 800px;height: 300px"></div>
+          </div>
+          <div class="box" style="margin-top:10px">
+            <h5 class="text-center" id="dayChartTitle"></h5>
+            <div id = "dayChart" style="width: 800px;height: 300px"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -190,7 +196,7 @@
 <!-- Modal 重点监测参数配置-->
 <div class="modal fade" id="modalConfig" tabindex="-1" role="dialog"
      aria-labelledby="modalConfigLabel">
-  <div class="modal-dialog " role="document">
+  <div class="modal-dialog modal-with" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"
