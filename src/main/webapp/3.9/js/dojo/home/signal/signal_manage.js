@@ -24,12 +24,14 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 		
         // 信号列表change事件
         $("#signal_list1 .select2-picker").change(function() {
+            destroy_chart_table();
             var selected_val = $(this).val();
             getStations(selected_val);
 
         });
 
         $("#station_list").change(function () {
+            destroy_chart_table();
             var stationCode = $(this).val();
             changeView(stationCode);
         });
