@@ -1,12 +1,12 @@
 
 package org.tempuri;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -30,26 +30,30 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ArrayOfString", propOrder = {
-    "string"
+    "strings"
 })
 public class ArrayOfString {
 
-    @XmlElement(nillable = true)
-    protected List<String> string;
+    public void setStrings(List<String> strings) {
+        this.strings = strings;
+    }
+
+    @XmlElement(name = "string", nillable = true)
+    protected List<String> strings;
 
     /**
-     * Gets the value of the string property.
+     * Gets the value of the strings property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the string property.
+     * This is why there is not a <CODE>set</CODE> method for the strings property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getString().add(newItem);
+     *    getStrings().add(newItem);
      * </pre>
      * 
      * 
@@ -59,15 +63,11 @@ public class ArrayOfString {
      * 
      * 
      */
-    public List<String> getString() {
-        if (string == null) {
-            string = new ArrayList<String>();
+    public List<String> getStrings() {
+        if (strings == null) {
+            strings = new ArrayList<String>();
         }
-        return this.string;
+        return this.strings;
     }
-
-	public void setString(List<String> string) {
-		this.string = string;
-	}
 
 }

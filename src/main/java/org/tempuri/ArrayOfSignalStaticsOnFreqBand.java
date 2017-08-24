@@ -1,18 +1,18 @@
 
 package org.tempuri;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
- * <p>ArrayOfSignalStaticsOnFreqBand complex typeµÄ Java Àà¡£
+ * <p>ArrayOfSignalStaticsOnFreqBand complex typeï¿½ï¿½ Java ï¿½à¡£
  * 
- * <p>ÒÔÏÂÄ£Ê½Æ¬¶ÎÖ¸¶¨°üº¬ÔÚ´ËÀàÖÐµÄÔ¤ÆÚÄÚÈÝ¡£
+ * <p>ï¿½ï¿½ï¿½ï¿½Ä£Ê½Æ¬ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½ï¿½ï¿½ï¿½Ðµï¿½Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½Ý¡ï¿½
  * 
  * <pre>
  * &lt;complexType name="ArrayOfSignalStaticsOnFreqBand"&gt;
@@ -30,26 +30,26 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ArrayOfSignalStaticsOnFreqBand", propOrder = {
-    "signalStaticsOnFreqBand"
+    "signalStaticsOnFreqBands"
 })
 public class ArrayOfSignalStaticsOnFreqBand {
 
     @XmlElement(name = "SignalStaticsOnFreqBand", nillable = true)
-    protected List<SignalStaticsOnFreqBand> signalStaticsOnFreqBand;
+    protected List<SignalStaticsOnFreqBand> signalStaticsOnFreqBands;
 
     /**
-     * Gets the value of the signalStaticsOnFreqBand property.
+     * Gets the value of the signalStaticsOnFreqBands property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the signalStaticsOnFreqBand property.
+     * This is why there is not a <CODE>set</CODE> method for the signalStaticsOnFreqBands property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getSignalStaticsOnFreqBand().add(newItem);
+     *    getSignalStaticsOnFreqBands().add(newItem);
      * </pre>
      * 
      * 
@@ -59,11 +59,11 @@ public class ArrayOfSignalStaticsOnFreqBand {
      * 
      * 
      */
-    public List<SignalStaticsOnFreqBand> getSignalStaticsOnFreqBand() {
-        if (signalStaticsOnFreqBand == null) {
-            signalStaticsOnFreqBand = new ArrayList<SignalStaticsOnFreqBand>();
+    public List<SignalStaticsOnFreqBand> getSignalStaticsOnFreqBands() {
+        if (signalStaticsOnFreqBands == null) {
+            signalStaticsOnFreqBands = new ArrayList<SignalStaticsOnFreqBand>();
         }
-        return this.signalStaticsOnFreqBand;
+        return this.signalStaticsOnFreqBands;
     }
 
 }

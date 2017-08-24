@@ -98,7 +98,7 @@ public class SignalViewController {
 			final RadioSignalQueryResponse responce = (RadioSignalQueryResponse) service.radioSignalServiceCall("queryRadioSignal",
 					mapper.writeValueAsString(requestPara), RadioSignalQueryRequest.class);
 
-			RadioSignalDTO radio = responce.getRadioSignals().getRadioSignalDTO().stream().findFirst().orElseGet(() -> {
+			RadioSignalDTO radio = responce.getRadioSignals().getRadioSignalDTOs().stream().findFirst().orElseGet(() -> {
 
 				RadioSignalDTO dto = new RadioSignalDTO();
 				return dto;
@@ -143,7 +143,7 @@ public class SignalViewController {
 			final RadioSignalQueryResponse responce = (RadioSignalQueryResponse) service.radioSignalServiceCall("queryRadioSignal",
                     jsonStr, RadioSignalQueryRequest.class);
 
-			final List<Singal> redio = responce.getRadioSignals().getRadioSignalDTO().stream().map(t -> {
+			final List<Singal> redio = responce.getRadioSignals().getRadioSignalDTOs().stream().map(t -> {
 
                 final Singal singal = new Singal();
                 final String id = t.getID();

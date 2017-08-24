@@ -30,26 +30,26 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ArrayOfInt", propOrder = {
-    "_int"
+    "ints"
 })
 public class ArrayOfInt {
 
     @XmlElement(name = "int", type = Integer.class)
-    protected List<Integer> _int;
+    protected List<Integer> ints;
 
     /**
-     * Gets the value of the int property.
+     * Gets the value of the ints property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the int property.
+     * This is why there is not a <CODE>set</CODE> method for the ints property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getInt().add(newItem);
+     *    getInts().add(newItem);
      * </pre>
      * 
      * 
@@ -59,11 +59,11 @@ public class ArrayOfInt {
      * 
      * 
      */
-    public List<Integer> getInt() {
-        if (_int == null) {
-            _int = new ArrayList<Integer>();
+    public List<Integer> getInts() {
+        if (ints == null) {
+            ints = new ArrayList<Integer>();
         }
-        return this._int;
+        return this.ints;
     }
 
 }

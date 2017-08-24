@@ -30,26 +30,26 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ArrayOfSignalStaticsOnStation", propOrder = {
-    "signalStaticsOnStation"
+    "signalStaticsOnStations"
 })
 public class ArrayOfSignalStaticsOnStation {
 
     @XmlElement(name = "SignalStaticsOnStation", nillable = true)
-    protected List<SignalStaticsOnStation> signalStaticsOnStation;
+    protected List<SignalStaticsOnStation> signalStaticsOnStations;
 
     /**
-     * Gets the value of the signalStaticsOnStation property.
+     * Gets the value of the signalStaticsOnStations property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the signalStaticsOnStation property.
+     * This is why there is not a <CODE>set</CODE> method for the signalStaticsOnStations property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getSignalStaticsOnStation().add(newItem);
+     *    getSignalStaticsOnStations().add(newItem);
      * </pre>
      * 
      * 
@@ -59,11 +59,11 @@ public class ArrayOfSignalStaticsOnStation {
      * 
      * 
      */
-    public List<SignalStaticsOnStation> getSignalStaticsOnStation() {
-        if (signalStaticsOnStation == null) {
-            signalStaticsOnStation = new ArrayList<SignalStaticsOnStation>();
+    public List<SignalStaticsOnStation> getSignalStaticsOnStations() {
+        if (signalStaticsOnStations == null) {
+            signalStaticsOnStations = new ArrayList<SignalStaticsOnStation>();
         }
-        return this.signalStaticsOnStation;
+        return this.signalStaticsOnStations;
     }
 
 }
