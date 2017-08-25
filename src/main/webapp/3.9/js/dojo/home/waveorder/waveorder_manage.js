@@ -62,7 +62,9 @@ define(	["ajax", "dojo/parser", "esri/map",
 
 				// 信号类型切换点击事件
 				$("#redioType").on("click", "input", function(e) {
-							addPoint(MONITORS, Number(e.target.value));
+							var typeCode = Number(e.target.value)
+							var isSubType = e.target.getAttribute("issubtype");
+							addPoint(MONITORS, typeCode, isSubType);
 						});
 
 				// 重点监测点击事件
@@ -140,7 +142,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 				$("#table-alarm-undeal").on("click", ".alarmManageA",
 						function(e) {
 							console.log(e);
-							var freq = e.target.attributes[1].value;
+							var freq = e.target.getAttribute("centorfreq");
+							console.log(freq);
 							const urlObj = {
 								ServerName : 'host2',// 跳四方用host1,跳自己这边用host2
 								DisplayName : '告警管理',
@@ -231,13 +234,12 @@ define(	["ajax", "dojo/parser", "esri/map",
 					var endFreq = a.data('endfreq');
 					var radioType = a.data('radiotype');
 					var monitorsID = a.data('monitorsid');
+					var isSubType = a.data('issubtype');
 					$('#table-signal-list').bootstrapTable("destroy");
 					$('#table-signal-list').bootstrapTable({
 						method : 'post',
 						cache : false,
-						contentType : "application/json", // 必须要有！！！！
-						// url : "assets/json/signal-list.json", //要请求数据的文件路径
-						// TODO 修改为真实url地址
+						contentType : "application/json", 
 						url : "data/waveorder/radioDetail",
 						striped : true, // 是否显示行间隔色
 						dataField : "data",
@@ -250,6 +252,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 							params.endFreq = endFreq;
 							params.radioType = radioType;
 							params.monitorsID = monitorsID;
+							params.isSubType = isSubType;
 							return params
 						}, // 请求服务器时所传的参数
 						sidePagination : 'client', // 指定服务器端分页
@@ -440,7 +443,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 			}
 
 			// 根据监测站列表，信号类型绘出监测站点
-			function addPoint(monitors, signalType) {
+			function addPoint(monitors, signalType, isSubType) {
 				var map = MAP1;
 				console.log(map);
 				var glayer_max = map.getLayer('graphicsLayer0');
@@ -451,6 +454,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 				data.monitorsNum = [];
 				data.signalType = signalType;
 				data.monitors = monitors;
+				data.isSubType = isSubType;
 				for (var i = 0; i < monitors.length; i++) {
 					data.monitorsNum[i] = monitors[i].Num;
 				}
@@ -463,24 +467,31 @@ define(	["ajax", "dojo/parser", "esri/map",
 						});
 				// 计数点symbol
 				var url_countBackgroundSymbol = null;
-				switch (signalType) {
-				case 1:
-					url_countBackgroundSymbol = "images/legal.svg";
-					break;
-				case 0:
-					url_countBackgroundSymbol = "images/undeclared.svg";
-					break;
-				case 2:
-					url_countBackgroundSymbol = "images/known.svg";
-					break;
-				case 3:
-					url_countBackgroundSymbol = "images/unknown.svg";
-					break;
-				case 4:
-					url_countBackgroundSymbol = "images/illegal.svg";
-					break;
-				default:
-					break;
+				if(isSubType == "true") {
+					switch (signalType) {
+					case 1:
+						url_countBackgroundSymbol = "images/undeclared.svg";
+						break;
+					default:
+						break;
+					}
+				}else {
+					switch (signalType) {
+					case 1:
+						url_countBackgroundSymbol = "images/legal.svg";
+						break;
+					case 2:
+						url_countBackgroundSymbol = "images/known.svg";
+						break;
+					case 3:
+						url_countBackgroundSymbol = "images/unknown.svg";
+						break;
+					case 4:
+						url_countBackgroundSymbol = "images/illegal.svg";
+						break;
+					default:
+						break;
+					}
 				}
 				var countBackgroundSymbol = new PictureMarkerSymbol({
 					"url" : url_countBackgroundSymbol,
@@ -705,7 +716,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						        width:'10%',
 								title : '状态',
 								formatter : function(value, row, index) {
-									return '<a class="alarmManageA" data-centorFreq='+row.radio+'>未确认</a>';
+									return '<a class="alarmManageA" centorFreq='+row.radio+'>未确认</a>';
 								}
 							}, {
 								field : 'mark',
@@ -755,7 +766,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 									// 必须要在此bootstraptable渲染成功之后才能渲染地图,不然地图会有错误
 									onLoadSuccess : function() {
 										MAP1 = mapInit();
-										addPoint(monitors, 1);// 默认选中1
+										addPoint(monitors, 1, "false");// 默认选中1，子类型为false
 									},
 									columns : [
 											{
@@ -777,7 +788,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 														row, index) {
 													return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
 															+ monitorsID
-															+ '" data-radioType="1" data-beginFreq="'
+															+ '" data-radioType="1" data-isSubType="false" data-beginFreq="'
 															+ row.beginFreq
 															+ '" data-endFreq="'
 															+ row.endFreq
@@ -795,7 +806,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 														row, index) {
 													return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
 															+ monitorsID
-															+ '" data-radioType="0" data-beginFreq="'
+															+ '" data-radioType="1" data-isSubType="true" data-beginFreq="'
 															+ row.beginFreq
 															+ '" data-endFreq="'
 															+ row.endFreq
@@ -813,7 +824,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 														row, index) {
 													return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
 															+ monitorsID
-															+ '" data-radioType="2" data-beginFreq="'
+															+ '" data-radioType="2" data-isSubType="false" data-beginFreq="'
 															+ row.beginFreq
 															+ '" data-endFreq="'
 															+ row.endFreq
@@ -831,7 +842,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 														row, index) {
 													return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
 															+ monitorsID
-															+ '" data-radioType="3" data-beginFreq="'
+															+ '" data-radioType="3" data-isSubType="false" data-beginFreq="'
 															+ row.beginFreq
 															+ '" data-endFreq="'
 															+ row.endFreq
@@ -849,7 +860,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 														row, index) {
 													return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
 															+ monitorsID
-															+ '" data-radioType="4" data-beginFreq="'
+															+ '" data-radioType="4" data-isSubType="false" data-beginFreq="'
 															+ row.beginFreq
 															+ '" data-endFreq="'
 															+ row.endFreq

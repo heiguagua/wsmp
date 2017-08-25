@@ -1,12 +1,12 @@
 
 package org.tempuri;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -33,10 +33,6 @@ import java.util.List;
     "signalTypeDTO"
 })
 public class ArrayOfSignalTypeDTO {
-
-    public void setSignalTypeDTO(List<SignalTypeDTO> signalTypeDTO) {
-        this.signalTypeDTO = signalTypeDTO;
-    }
 
     @XmlElement(name = "SignalTypeDTO", nillable = true)
     protected List<SignalTypeDTO> signalTypeDTO;
@@ -69,5 +65,9 @@ public class ArrayOfSignalTypeDTO {
         }
         return this.signalTypeDTO;
     }
+
+	public void setSignalTypeDTO(List<SignalTypeDTO> signalTypeDTO) {
+		this.signalTypeDTO = signalTypeDTO;
+	}
 
 }
