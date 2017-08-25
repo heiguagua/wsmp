@@ -292,7 +292,9 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             //不恢复 PUT请求 必须的参数为isInvalid=0
             //恢复 PUT请求 必须的参数为isInvalid=1
             var params ={};
-            params.freq_GUID = $("#signal_list1").find("option:selected").val();
+            var addOpUpdate =$("#searchId").val();//修改还是新增，id
+            var freId =$("#signal_list1").find("option:selected").val();//信号搜索时选择的时间id
+            params.freq_GUID = (addOpUpdate)?addOpUpdate:freId;
             var saveDate =$('#startTime').val();
             if(saveDate){
                 saveDate = saveDate.split(' ')[0].replace(/-/g,"")+saveDate.split(' ')[1].replace(/:/g,"");
@@ -320,8 +322,6 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             }
             //params= JSON.stringify(params);
             console.log("添加违规记录参数："+params);
-
-            var addOpUpdate =$("#searchId").val();
             console.log("添加还是修改："+addOpUpdate);
             if(addOpUpdate){
                 if(params.isInvalid ==1){
@@ -334,7 +334,8 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                     });
                 }
 
-            }else if($("#searchId").val()==''){
+            }else {
+                params= JSON.stringify(params);
                 $.ajax({
                     url : 'data/signal/AbnormalHistory',
                     type : 'post',
