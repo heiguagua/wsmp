@@ -294,7 +294,9 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             var params ={};
             var addOpUpdate =$("#searchId").val();//修改还是新增，id
             var freId =$("#signal_list1").find("option:selected").val();//信号搜索时选择的时间id
-            params.freq_GUID = (addOpUpdate)?addOpUpdate:freId;
+            params.freqguid = (addOpUpdate)?addOpUpdate:freId;
+            params.idz = addOpUpdate;
+            params.freIdz = $("#signal_list1").find("option:selected").val();
             var saveDate =$('#startTime').val();
             if(saveDate){
                 saveDate = saveDate.split(' ')[0].replace(/-/g,"")+saveDate.split(' ')[1].replace(/:/g,"");

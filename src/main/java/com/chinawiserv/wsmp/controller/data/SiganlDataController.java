@@ -293,8 +293,9 @@ public class SiganlDataController {
 	@GetMapping("/AbnormalHistory")
 	public  Object getAbnormalHistory(@RequestParam Map<Object,Object> param) throws JsonProcessingException {
 
+		System.out.println(param);
 		String paramStr = JSON.toJSONString(param);
-
+		System.out.println(paramStr);
 		Map<Object,Object> reslute = Maps.newHashMap();
 
 		AbnormalHistoryQueryResponse response = (AbnormalHistoryQueryResponse) service.radioSignalServiceCall("queryAbnormalHistory",paramStr,AbnormalHistoryRequest.class);
@@ -328,12 +329,13 @@ public class SiganlDataController {
 
 		param.replace("saveDate",beginCalendar);
 		param.replace("isInvalid",false);
+		param.remove("id");
 		service.radioSignalServiceCall("insertAbnormalHistory",JSON.toJSONString(param),RadioSignalAbnormalHistoryDTO.class);
 
 		return  "sussed";
 	}
 
-	@PutMapping(path = {"/AbnormalHistory"},params = {"isInvalid=0"})
+	@PutMapping(path = {"/AbnormalHistory"})
 	public  @ResponseBody String  updateAbnormalHistory(@RequestBody Map<String,Object> param) throws JsonProcessingException, DatatypeConfigurationException {
 		final String  startTime = (String) param.get("saveDate");
 
@@ -344,15 +346,20 @@ public class SiganlDataController {
 		GregorianCalendar beginGregorianCalendar =new GregorianCalendar();
 		beginGregorianCalendar.setTime(new Date(timeStartLong));
 		XMLGregorianCalendar beginCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(beginGregorianCalendar);
-
 		param.replace("saveDate",beginCalendar);
-		param.replace("isInvalid",true);
+		param.replace("isInvalid",false);
 
+		param.remove("freqguid");
+		param.remove("id");
+
+		param.put("id",param.get("idz"));
+		param.put("freqguid",param.get("freIdz"));
+		System.out.println(param);
 		service.radioSignalServiceCall("updateAbnormalHistory",JSON.toJSONString(param),RadioSignalAbnormalHistoryDTO.class);
 		return  "sussed";
 	}
 
-	@PutMapping(path={"/AbnormalHistory"},params = {"isInvalid=1"})
+	@PutMapping(path={"/AbnormalHistoryByInvaliDate"})
 	public  @ResponseBody  String recoveryAbnormalHistory(@RequestBody Map<String,Object> param) throws JsonProcessingException, DatatypeConfigurationException {
 
 		final String  startTime = (String) param.get("saveDate");
@@ -375,7 +382,9 @@ public class SiganlDataController {
 
 		param.replace("saveDate",beginCalendar);
 		param.replace("invalidDate",endCalendar);
-		param.replace("isInvalid",false);
+		param.replace("isInvalid",true);
+		param.put("id",param.get("freqguid"));
+		param.put("freqguid",param.get("freIdz"));
 
 		service.radioSignalServiceCall("updateAbnormalHistory",JSON.toJSONString(param),RadioSignalAbnormalHistoryDTO.class);
 		return "sussed";
