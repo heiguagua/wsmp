@@ -328,7 +328,7 @@ public class SiganlDataController {
 		XMLGregorianCalendar beginCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(beginGregorianCalendar);
 
 		param.replace("startTime",beginCalendar);
-		param.replace("isInvalid",true);
+		param.replace("isInvalid",false);
 		service.radioSignalServiceCall("insertAbnormalHistory",JSON.toJSONString(param),RadioSignalAbnormalHistoryDTO.class);
 
 		return  "sussed";
@@ -347,7 +347,7 @@ public class SiganlDataController {
 		XMLGregorianCalendar beginCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(beginGregorianCalendar);
 
 		param.replace("startTime",beginCalendar);
-		param.replace("isInvalid",true);
+		param.replace("isInvalid",false);
 
 		service.radioSignalServiceCall("updateAbnormalHistory",JSON.toJSONString(param),RadioSignalAbnormalHistoryDTO.class);
 		return  "sussed";
@@ -376,7 +376,7 @@ public class SiganlDataController {
 
 		param.replace("startTime",beginCalendar);
 		param.replace("invalidDate",endCalendar);
-		param.replace("isInvalid",false);
+		param.replace("isInvalid",true);
 
 		service.radioSignalServiceCall("updateAbnormalHistory",JSON.toJSONString(param),RadioSignalAbnormalHistoryDTO.class);
 		return "sussed";
