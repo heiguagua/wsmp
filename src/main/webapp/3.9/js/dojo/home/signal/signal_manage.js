@@ -20,7 +20,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 				format: 'yyyy-mm-dd hh:ii:ss',
 				autoclose:true,
 				minView:2
-		}	
+		}
 		
         // 信号列表change事件
         $("#signal_list1 .select2-picker").change(function() {
@@ -43,15 +43,16 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
         //spectrum_player();
 
         configModalSubmit();
-
-        $("#audio").on("click", function() {
-            if ($(this).is(":checked")) {
-                $("#audio-wrap").slideDown();
-            } else {
-                $("#audio-wrap").slideUp();
-                wavesurfer.destroy();
-            }
-        })
+        //音频点击操作事件
+        audio_data.autoClickInit();
+        //$("#audio").on("click", function() {
+        //    if ($(this).is(":checked")) {
+        //        $("#audio-wrap").slideDown();
+        //    } else {
+        //        $("#audio-wrap").slideUp();
+        //        wavesurfer.destroy();
+        //    }
+        //})
 
         // 频谱数据选择数据按钮事件
         $("#spectrum-choose-btn").on("click", function(ev) {
@@ -85,11 +86,12 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
         })
 
         //关闭音频播放
-        $("#audio-close").on("click", function() {
-            $("#audio-wrap").slideUp();
-            $("#audio").prop("checked", false);
-            wavesurfer.destroy();
-        })
+        audio_data.audioloseClick();
+        //$("#audio-close").on("click", function() {
+        //    $("#audio-wrap").slideUp();
+        //    $("#audio").prop("checked", false);
+        //    wavesurfer.destroy();
+        //})
 
         // 选择IQ数据
         $("#IQ").on("click", function() {
@@ -286,7 +288,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
     function submitButton() {
 
         $("#submitButton").click(function() {
-            //新增违规记录 POST请求
+            //新增违规记录 POST请求,修改put,通过$("#searchId").val()判断
             //不恢复 PUT请求 必须的参数为isInvalid=0
             //恢复 PUT请求 必须的参数为isInvalid=1
             var params ={};
@@ -318,9 +320,13 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             }
             params= JSON.stringify(params);
             console.log("添加违规记录参数："+params);
+            var ajaxType ='post';
+            if($("#searchId").val()!=''){
+                ajaxType ='put';
+            }
             $.ajax({
                 url : 'data/signal/AbnormalHistory',
-                type : 'post',
+                type : ajaxType,
                 data : params,//传输数据
                 contentType : 'application/json',//传输数据类型
                 //dataType : 'html',//返回数据类型
@@ -379,7 +385,8 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 '<span class="search-icon"></span></div>' +
                 '<table class="table table-striped" id="table-station-list"></table>' +
                 '<div class="mark-content">' +
-                '<p>添加违规记录</p>'+
+                '<p id="addOrUpdate" searchId>添加违规记录</p>'+
+                '<input id="searchId"  value="" style="display: none"/>'+
                 '<form id="important-monitor-form" class="form-horizontal ">'+
                 '	<div class="form-box-wrap">'+
                 '		 <div class="form-group col-sm-6">'+
@@ -451,6 +458,8 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 ajax.get("data/signal/AbnormalHistory", data, function (result) {
                     console.log(result);
                     if(result.id!=''){
+                        $("#addOrUpdate").html('修改违规记录');
+                        $("#searchId").val(result.id);//通过此value判断是否是修改违规记录还是新增违规记录
                         $('#startTime').val(result.saveDate); //开始时间
                         $('#typeCodes').val(result.historyType);//类型
                         ////结果类型是否恢复正常，是显示结束时间，否不显示
@@ -1435,7 +1444,11 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
     function getSinalDetail(data) {
 
         $("#signal_detail").load("signal/sigaldetail", data, function() {
-
+            //无带宽以“-”替代
+            //console.log($("#redioDetailCentor").html())
+            if( $("#redioDetailCentor").html().indexOf('0.0')==0){
+                $("#redioDetailCentor").html('-')
+            }
             var type = $("#redio-type").val();
             type = parseInt(type);
             switch (type) {
