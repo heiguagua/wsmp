@@ -308,7 +308,6 @@ public class SiganlDataController {
 			reslute.put("id",id);
 			reslute.put("saveDate",historyDTO.getSaveDate().toString().replace("T"," "));
 			reslute.put("historyType",historyDTO.getHistoryType());
-			reslute.put("invalidDate",historyDTO.getInvalidDate().toString().replace("T"," "));
 			reslute.put("des",historyDTO.getDes());
 		}
 
