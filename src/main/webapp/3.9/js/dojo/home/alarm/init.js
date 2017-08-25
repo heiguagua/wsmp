@@ -400,6 +400,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                     $("#legal-normal").click(function () {
 //						var value = $('option:selected').val();
                         var value = $("#station_list").find('option:selected').text();
+                        var text = $("#signal_list").find('option:selected').attr("des");
                         var kmz = $('#search').val();
                         var data = {};
                         data.type = "none";
@@ -409,7 +410,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                         var temp = '<div class="header-search"><input type="text" placeholder="输入中心频率">' +
                             '<span class="search-icon"></span></div>' +
                             '<table class="table table-striped" id="table-station-list"></table>' +
-                            '<div class="mark-content"><p>备注</p><textarea id = "des" rows="5" placeholder="请输入备注信息"></textarea></div>';
+                            '<div class="mark-content"><p>备注</p><textarea id = "des" rows="5" placeholder="请输入备注信息">'+text+'</textarea></div>';
                         $("#stationWrap").html("");
                         $("#stationWrap").html(temp);
                         $('#table-station-list').bootstrapTable({
@@ -490,6 +491,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                     $("#legal-wrong").click(function () {
                         var value = $('option:selected').val();
                         var kmz = $('#search').val();
+                        var text = $("#signal_list").find('option:selected').attr("des");
                         var data = {};
                         var typeCode = $(this).val();
                         $("#typeCode").val(typeCode);
@@ -500,7 +502,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                             '<table class="table table-striped" id="table-station-list"></table>' +
                             '<div class="mark-content">' +
                             '<button type="button" class="btn btn-primary addStation">添加台站</button>'+
-                            '<p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息"></textarea></div>';
+                            '<p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息">'+text+'</textarea></div>';
                         $("#stationWrap").html("");
                         $("#stationWrap").html(temp);
                         //合法违规和已知单击触发时，，点击添加台站按钮之后关闭弹出窗口，然后跳转到博创的台站数据分析模块中添加台站（需要博创提供链接）
@@ -595,6 +597,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                     $("#legal").click(function () {
                         var value = $('option:selected').val();
                         var kmz = $('#search').val();
+                        var text = $("#signal_list").find('option:selected').attr("des");
                         var data = {};
                         var typeCode = $(this).val();
                         $("#typeCode").val(typeCode);
@@ -604,7 +607,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                             '<table class="table table-striped" id="table-station-list"></table>' +
                             '<div class="mark-content">' +
                             '<button type="button" class="btn btn-primary addStation">添加台站</button>'+
-                            '<p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息"></textarea></div>';
+                            '<p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息">'+text+'</textarea></div>';
                         $("#stationWrap").html("");
                         $("#stationWrap").html(temp);
                         //合法违规和已知单击触发时，，点击添加台站按钮之后关闭弹出窗口，然后跳转到博创的台站数据分析模块中添加台站（需要博创提供链接）
@@ -686,11 +689,12 @@ define(["home/alarm/alarm_manage", "ajax"],
                     $("#illegal").click(function () {
                         var value = $('option:selected').val();
                         var kmz = $('#search').val();
+                        var text = $("#signal_list").find('option:selected').attr("des");
                         var data = {"stationCode": value, "kmz": kmz};
                         var typeCode = $(this).val();
                         $("#typeCode").val(typeCode);
                         var temp =
-                            '<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息"></textarea></div>';
+                            '<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息">'+text+'</textarea></div>';
                         $("#stationWrap").html("");
                         $("#stationWrap").html(temp);
 
@@ -698,6 +702,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                     });
 
                     $("#unknown").click(function () {
+                        var text = $("#signal_list").find('option:selected').attr("des");
                         var value = $('option:selected').val();
                         var kmz = $('#search').val();
                         var data = {"stationCode": value, "kmz": kmz};
@@ -705,7 +710,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                         $("#typeCode").val(typeCode);
 
                         var temp =
-                            '<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息"></textarea></div>';
+                            '<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息">'+text+'</textarea></div>';
                         $("#stationWrap").html("");
                         $("#stationWrap").html(temp);
 

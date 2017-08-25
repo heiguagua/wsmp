@@ -16,6 +16,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.tempuri.*;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -296,65 +299,63 @@ public class SiganlDataController {
 
 		AbnormalHistoryQueryResponse response = (AbnormalHistoryQueryResponse) service.radioSignalServiceCall("queryAbnormalHistory",paramStr,AbnormalHistoryRequest.class);
 		List<RadioSignalAbnormalHistoryDTO> dto = response.getHistorys().getRadioSignalAbnormalHistoryDTO();
-		RadioSignalAbnormalHistoryDTO historyDTO = dto.stream().findFirst().orElseGet(()-> new RadioSignalAbnormalHistoryDTO());
+		RadioSignalAbnormalHistoryDTO historyDTO = dto.stream().filter((t)->t.isIsInvalid()==false).findFirst().orElseGet(()-> new RadioSignalAbnormalHistoryDTO());
 
 		String id = historyDTO.getID();
 		if (StringUtils.isEmpty(id)){
 			reslute.put("id","");
 		}else{
 			reslute.put("id",id);
+			reslute.put("saveDate",historyDTO.getSaveDate().toString().replace("T"," "));
+			reslute.put("historyType",historyDTO.getHistoryType());
+			reslute.put("des",historyDTO.getDes());
 		}
 
-		reslute.put("saveDate",historyDTO.getSaveDate());
-		reslute.put("historyType",historyDTO.getHistoryType());
-		reslute.put("invalidDate",historyDTO.getInvalidDate().toString());
-		reslute.put("des",historyDTO.getDes());
 		return  reslute;
 	}
 
-	@PostMapping( value =  "/AbnormalHistory",headers = {"contentType=application/json"})
-	public  @ResponseBody String  insterAbnormalHistory(@RequestBody Map<String,Object> param) throws JsonProcessingException {
+	@PostMapping( value =  "/AbnormalHistory")
+	public  @ResponseBody String  insterAbnormalHistory(@RequestBody Map<String,Object> param) throws JsonProcessingException, DatatypeConfigurationException {
 
-		String  startTime = (String) param.get("startTime");
-
+		String  startTime = (String) param.get("saveDate");
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 		final long timeStartLong = LocalDateTime.parse(startTime,
-				formatter).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+				dateTimeFormatter).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 
-		Calendar calendar = Calendar.getInstance();
+		GregorianCalendar beginGregorianCalendar =new GregorianCalendar();
+		beginGregorianCalendar.setTime(new Date(timeStartLong));
+		XMLGregorianCalendar beginCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(beginGregorianCalendar);
 
-		calendar.setTime(new Date(timeStartLong));
-
-		param.remove("startTime",calendar);
-
+		param.replace("saveDate",beginCalendar);
+		param.replace("isInvalid",false);
 		service.radioSignalServiceCall("insertAbnormalHistory",JSON.toJSONString(param),RadioSignalAbnormalHistoryDTO.class);
 
 		return  "sussed";
 	}
 
-	@PutMapping(path = {"/AbnormalHistory"},params = {"isInvalid=0"},headers = {"contentType=application/json"})
-	public  @ResponseBody String  updateAbnormalHistory(@RequestBody Map<String,Object> param) throws JsonProcessingException {
-		final String  startTime = (String) param.get("startTime");
+	@PutMapping(path = {"/AbnormalHistory"})
+	public  @ResponseBody String  updateAbnormalHistory(@RequestBody Map<String,Object> param) throws JsonProcessingException, DatatypeConfigurationException {
+		final String  startTime = (String) param.get("saveDate");
 
 		final long timeStartLong = LocalDateTime.parse(startTime,
 				formatter).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 
-		Calendar beginCalendar = Calendar.getInstance();
-		Calendar endCalendar = Calendar.getInstance();
 
-		beginCalendar.setTime(new Date(timeStartLong));
+		GregorianCalendar beginGregorianCalendar =new GregorianCalendar();
+		beginGregorianCalendar.setTime(new Date(timeStartLong));
+		XMLGregorianCalendar beginCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(beginGregorianCalendar);
 
-		param.replace("startTime",beginCalendar);
-		param.replace("invalidDate",endCalendar);
+		param.replace("saveDate",beginCalendar);
 		param.replace("isInvalid",true);
 
 		service.radioSignalServiceCall("updateAbnormalHistory",JSON.toJSONString(param),RadioSignalAbnormalHistoryDTO.class);
 		return  "sussed";
 	}
 
-	@PutMapping(path={"/AbnormalHistory",""},params = {"isInvalid=1"},headers = {"contentType=application/json"})
-	public  @ResponseBody  String recoveryAbnormalHistory(@RequestBody Map<String,Object> param) throws JsonProcessingException {
+	@PutMapping(path={"/AbnormalHistoryByInvaliDate"})
+	public  @ResponseBody  String recoveryAbnormalHistory(@RequestBody Map<String,Object> param) throws JsonProcessingException, DatatypeConfigurationException {
 
-		final String  startTime = (String) param.get("startTime");
+		final String  startTime = (String) param.get("saveDate");
 		final String  endTime = (String) param.get("invalidDate");
 
 		final long timeStartLong = LocalDateTime.parse(startTime,
@@ -363,13 +364,16 @@ public class SiganlDataController {
 		final long timeEndLong = LocalDateTime.parse(endTime,
 				formatter).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 
-		Calendar beginCalendar = Calendar.getInstance();
-		Calendar endCalendar = Calendar.getInstance();
+		GregorianCalendar beginGregorianCalendar =new GregorianCalendar();
+		GregorianCalendar endGregorianCalendar =new GregorianCalendar();
 
-		beginCalendar.setTime(new Date(timeStartLong));
-		beginCalendar.setTime(new Date(timeEndLong));
+		beginGregorianCalendar.setTime(new Date(timeStartLong));
+		endGregorianCalendar.setTime(new Date(timeEndLong));
 
-		param.replace("startTime",beginCalendar);
+		XMLGregorianCalendar beginCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(beginGregorianCalendar);
+		XMLGregorianCalendar endCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(endGregorianCalendar);
+
+		param.replace("saveDate",beginCalendar);
 		param.replace("invalidDate",endCalendar);
 		param.replace("isInvalid",false);
 

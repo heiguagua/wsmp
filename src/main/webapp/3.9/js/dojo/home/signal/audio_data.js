@@ -8,7 +8,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
         //var url = "assets/json/audio-player-list.json";
         ajax.get(url, null, function(result) {
             var data = result;
-            if(data && data.length == 0) {
+            if(!data) {
                 data = null;
             }
             $('#audio-table').bootstrapTable({
@@ -153,15 +153,39 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
 
         }
 
-    }
 
+    }
     function destroy(){
         $('#audio-table').bootstrapTable('destroy');
     }
+    function autoClickInit(){
+        $("#audio").on("click", function() {
+            if ($(this).is(":checked")) {
+                $("#audio-wrap").slideDown();
+            } else {
+                $("#audio-wrap").slideUp();
+                if(wavesurfer){
+                    wavesurfer.destroy();
+                }
+            }
+        })
+    }
+    function audioloseClick(){
+        //关闭音频播放
+        $("#audio-close").on("click", function() {
+            $("#audio-wrap").slideUp();
+            $("#audio").prop("checked", false);
+            if(wavesurfer){
+                wavesurfer.destroy();
+            }
 
+        })
+    }
 	return {
 		init:load_audio_data,
 		play:audio_player,
-        destroy:destroy
+        destroy:destroy,
+        autoClickInit: autoClickInit,
+        audioloseClick:audioloseClick
 	}
 })

@@ -20,7 +20,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 				format: 'yyyy-mm-dd hh:ii:ss',
 				autoclose:true,
 				minView:2
-		}	
+		}
 		
         // 信号列表change事件
         $("#signal_list1 .select2-picker").change(function() {
@@ -43,15 +43,16 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
         //spectrum_player();
 
         configModalSubmit();
-
-        $("#audio").on("click", function() {
-            if ($(this).is(":checked")) {
-                $("#audio-wrap").slideDown();
-            } else {
-                $("#audio-wrap").slideUp();
-                wavesurfer.destroy();
-            }
-        })
+        //音频点击操作事件
+        audio_data.autoClickInit();
+        //$("#audio").on("click", function() {
+        //    if ($(this).is(":checked")) {
+        //        $("#audio-wrap").slideDown();
+        //    } else {
+        //        $("#audio-wrap").slideUp();
+        //        wavesurfer.destroy();
+        //    }
+        //})
 
         // 频谱数据选择数据按钮事件
         $("#spectrum-choose-btn").on("click", function(ev) {
@@ -85,11 +86,12 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
         })
 
         //关闭音频播放
-        $("#audio-close").on("click", function() {
-            $("#audio-wrap").slideUp();
-            $("#audio").prop("checked", false);
-            wavesurfer.destroy();
-        })
+        audio_data.audioloseClick();
+        //$("#audio-close").on("click", function() {
+        //    $("#audio-wrap").slideUp();
+        //    $("#audio").prop("checked", false);
+        //    wavesurfer.destroy();
+        //})
 
         // 选择IQ数据
         $("#IQ").on("click", function() {
@@ -286,8 +288,66 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
     function submitButton() {
 
         $("#submitButton").click(function() {
-            var data = {};
+            //新增违规记录 POST请求,修改put,通过$("#searchId").val()判断
+            //不恢复 PUT请求 必须的参数为isInvalid=0
+            //恢复 PUT请求 必须的参数为isInvalid=1
+            var params ={};
+            params.freq_GUID = $("#signal_list1").find("option:selected").val();
+            var saveDate =$('#startTime').val();
+            if(saveDate){
+                saveDate = saveDate.split(' ')[0].replace(/-/g,"")+saveDate.split(' ')[1].replace(/:/g,"");
+            }else{
+                layer.alert("开始时间必填！");
+                $('#startTime').focus();
+                return;
+            }
+            params.saveDate =saveDate;
 
+            params.historyType =$('#typeCodes').val();
+            var isInvalid =$('#isNormal').is(":checked")?$('#isNormal').val():$('#noNormal').val();
+            params.isInvalid =parseInt(isInvalid);
+            console.log('isInvalid:'+params.isInvalid);
+            if(params.isInvalid){//恢复正常,结束时间可选；
+                var invalidDate = $('#stopTime').val();
+                if(invalidDate){
+                    invalidDate = invalidDate.split(' ')[0].replace(/-/g,"")+invalidDate.split(' ')[1].replace(/:/g,"");
+                }else{
+                    layer.alert("是否恢复正常选择是时，结束时间必填！");
+                    $('#stopTime').focus();
+                    return;
+                }
+                params.invalidDate = invalidDate;
+            }
+            //params= JSON.stringify(params);
+            console.log("添加违规记录参数："+params);
+
+            var addOpUpdate =$("#searchId").val();
+            console.log("添加还是修改："+addOpUpdate);
+            if(addOpUpdate){
+                if(params.isInvalid ==1){
+                    ajax.put("data/signal/AbnormalHistoryByInvaliDate", params, function() {
+                        layer.msg('修改违规记录成功');
+                    });
+                }else if(params.isInvalid ==0){
+                    ajax.put("data/signal/AbnormalHistory", params, function() {
+                        layer.msg('修改违规记录成功');
+                    });
+                }
+
+            }else if($("#searchId").val()==''){
+                $.ajax({
+                    url : 'data/signal/AbnormalHistory',
+                    type : 'post',
+                    data : params,//传输数据
+                    contentType : 'application/json',//传输数据类型
+                    success : function (result) {
+                        layer.msg('添加违规记录成功');
+                    }
+                });
+
+            }
+
+            var data = {};
             var stationKey = $("#stationKey").val();
             var typeCode = $("#typeCode").val();
             var des = $("#des").val();
@@ -303,6 +363,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 layer.msg('成功');
                 $("#modalStationAlarm").modal('hide');
             });
+
         });
     }
 
@@ -329,6 +390,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             //					var value = $('option:selected').val();
             var value = $("#station_list").find('option:selected').text();
             var kmz = $('#search').val();
+            var id = $("#signal_list1").find('option:selected').val();//选中的时间的id
             $("#typeCode").val($(this).val());
             var data = {};
             data.type = "none";
@@ -336,22 +398,23 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 '<span class="search-icon"></span></div>' +
                 '<table class="table table-striped" id="table-station-list"></table>' +
                 '<div class="mark-content">' +
-                '<p>添加违规记录</p>'+
+                '<p id="addOrUpdate" searchId>添加违规记录</p>'+
+                '<input id="searchId"  value="" style="display: none"/>'+
                 '<form id="important-monitor-form" class="form-horizontal ">'+
                 '	<div class="form-box-wrap">'+
                 '		 <div class="form-group col-sm-6">'+
                 '			<label for="" class="col-xs-3 control-label">开始时间</label>'+
                 '		        <div class="input-group date time-picker"  style="padding-left:15px">'+
-                '		          <input id="startTime" name="beginTime" type="text" class="form-control " value="" />'+
+                '		          <input id="startTime" name="beginTime" type="text" class="form-control " value="" readonly/>'+
                 '		          <span class="input-group-addon">'+
                 '		            <span class="glyphicon glyphicon-calendar"></span>'+
                 '		          </span>'+
                 '		        </div> '+
                 '		</div> '+
-                '		 <div class="form-group col-sm-6 endTimeForm"style="display: none">'+
+                '		 <div class="form-group col-sm-6 endTimeForm">'+
                 '			<label for="" class="col-xs-4 control-label">结束时间</label>'+
                 '		        <div class="input-group date time-picker" style="padding-left:15px">'+
-                '		          <input  id="endTime" name="endTime" type="text" class="form-control " value=""/>'+
+                '		          <input  id="stopTime" name="stopTime" type="text" class="form-control " value=""readonly />'+
                 '		          <span class="input-group-addon">'+
                 '		            <span class="glyphicon glyphicon-calendar"></span>'+
                 '		          </span>'+
@@ -360,11 +423,11 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 '		<div class="form-group col-sm-6">'+
                 '			<label for="" class="col-xs-3 control-label">类型</label>'+
                 '			<div class="col-xs-9">'+
-                '				<select class="form-control">'+
-                '                 <option value="">带宽超宽</option>'+
-                '                 <option value="">功率超标</option>'+
-                '                 <option value="">位置改变</option>'+
-                '                 <option value="">其它</option>'+
+                '				<select class="form-control" id="typeCodes">'+
+                '                 <option value="11">带宽超宽</option>'+
+                '                 <option value="12">功率超标</option>'+
+                '                 <option value="13">位置改变</option>'+
+                '                 <option value="14">其它</option>'+
                 '               </select>'+
                 '			 </div>'+
                 '		</div>'+
@@ -376,7 +439,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 '                    <label for="isNormal"> 是 </label>'+
                 '                </div>'+
                 '                <div class="radio radio-primary flex1 ">'+
-                '                   <input type="radio" value="0" name="signal-type" id="noNormal" checked="checked">'+
+                '                   <input type="radio" value="0" name="signal-type" id="noNormal">'+
                 '                   <label for="noNormal"> 否 </label>'+
                 '                </div>'+
                 '			</div>'+
@@ -391,13 +454,51 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             $("#stationWrap").find(".time-picker").datetimepicker({});
             //是否恢复正常：默认为否，选择为是的时候弹出结束时间，否的时候不弹出结束时间
             $("#isNormal").click(function(){
-
+                $("#isNormal").attr("checked", "checked");
+                $("#noNormal").removeAttr("checked");
                 $("#stationWrap").find(".endTimeForm").attr('style','display:block');
-            })
+            });
             $("#noNormal").click(function(){
-
+                $("#noNormal").attr("checked", "checked");
+                $("#isNormal").removeAttr("checked");
                 $("#stationWrap").find(".endTimeForm").attr('style','display:none');
-            })
+            });
+            //查询违规记录
+            var data = {};
+            console.log('查询违规记录:'+id);
+            if(id!=""){
+                data.id = id;
+                ajax.get("data/signal/AbnormalHistory", data, function (result) {
+                    console.log(result);
+                    if(result.id!=''){
+                        $("#addOrUpdate").html('修改违规记录');
+                        $("#searchId").val(result.id);//通过此value判断是否是修改违规记录还是新增违规记录
+                        $('#startTime').val(result.saveDate); //开始时间
+                        $('#typeCodes').val(result.historyType);//类型
+                        ////结果类型是否恢复正常，是显示结束时间，否不显示
+                        //var type= parseInt(result.isInvalid);
+                        //switch (type) {
+                        //    case 0:
+                        //        $("#noNormal").attr("checked", "checked");
+                        //        $("#stationWrap").find(".endTimeForm").attr('style','display:none');
+                        //        break;
+                        //    case 1:
+                        //        $("#isNormal").attr("checked", "checked");
+                        //        $('#stopTime').val(result.historyType);//结束时间
+                        //        $("#stationWrap").find(".endTimeForm").attr('style','display:block');
+                        //        break
+                        //}
+                        $("#noNormal").attr("checked", "checked");
+                        $("#stationWrap").find(".endTimeForm").attr('style','display:none');
+
+                    }else{
+                        $("#isNormal").attr('disabled','true');
+                        $("#noNormal").attr("checked", "checked");
+                        $("#stationWrap").find(".endTimeForm").attr('style','display:none');
+                    }
+
+                });
+            }
             $('#table-station-list').bootstrapTable({
                 method : 'get',
                 contentType : "application/x-www-form-urlencoded", //必须要有！！！！
@@ -1356,7 +1457,11 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
     function getSinalDetail(data) {
 
         $("#signal_detail").load("signal/sigaldetail", data, function() {
-
+            //无带宽以“-”替代
+            //console.log($("#redioDetailCentor").html())
+            if( $("#redioDetailCentor").html().indexOf('0.0')==0){
+                $("#redioDetailCentor").html('-')
+            }
             var type = $("#redio-type").val();
             type = parseInt(type);
             switch (type) {

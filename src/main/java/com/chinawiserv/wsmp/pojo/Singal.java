@@ -1,5 +1,7 @@
 package com.chinawiserv.wsmp.pojo;
 
+import org.springframework.util.StringUtils;
+
 import java.math.BigInteger;
 
 public class Singal {
@@ -24,14 +26,17 @@ public class Singal {
 
 	private String warnimgId;
 
-	private  String des;
+	private  String des =" ";
 
 	public String getDes() {
 		return des;
 	}
 
 	public void setDes(String des) {
-		this.des = des;
+
+		if (!StringUtils.isEmpty(des)){
+			this.des = des;
+		}
 	}
 
 	public String getWarnimgId() {
