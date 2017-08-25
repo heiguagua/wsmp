@@ -286,8 +286,33 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
     function submitButton() {
 
         $("#submitButton").click(function() {
-            var data = {};
+            //新增违规记录 POST请求
+            //不恢复 PUT请求 必须的参数为isInvalid=0
+            //恢复 PUT请求 必须的参数为isInvalid=1
+            var params ={};
+            params.freq_GUID = $("#signal_list1").find("option:selected").val();
+            params.saveDate =$('#startTime').val();
 
+            params.historyType =$('#typeCodes').val();
+            var isInvalid =$('#isNormal').is(":checked")?$('#isNormal').val():$('#noNormal').val();
+            params.isInvalid =parseInt(isInvalid);
+            console.log('isInvalid:'+params.isInvalid);
+            if(params.isInvalid){//恢复正常,结束时间可选；
+                params.invalidDate = $('#stopTime').val();
+            }
+            params= JSON.stringify("添加违规记录参数："+params);
+            console.log(params);
+            $.ajax({
+                url : 'data/signal/AbnormalHistory',
+                type : 'post',
+                data : params,//传输数据
+                contentType : 'application/json',//传输数据类型
+                //dataType : 'html',//返回数据类型
+                success : function (result) {
+                    console.log(result)
+                }
+            });
+            var data = {};
             var stationKey = $("#stationKey").val();
             var typeCode = $("#typeCode").val();
             var des = $("#des").val();
@@ -303,6 +328,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 layer.msg('成功');
                 $("#modalStationAlarm").modal('hide');
             });
+
         });
     }
 
@@ -329,6 +355,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             //					var value = $('option:selected').val();
             var value = $("#station_list").find('option:selected').text();
             var kmz = $('#search').val();
+            var id = $("#signal_list1").find('option:selected').val();//选中的时间的id
             $("#typeCode").val($(this).val());
             var data = {};
             data.type = "none";
@@ -348,10 +375,10 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 '		          </span>'+
                 '		        </div> '+
                 '		</div> '+
-                '		 <div class="form-group col-sm-6 endTimeForm"style="display: none">'+
+                '		 <div class="form-group col-sm-6 endTimeForm">'+
                 '			<label for="" class="col-xs-4 control-label">结束时间</label>'+
                 '		        <div class="input-group date time-picker" style="padding-left:15px">'+
-                '		          <input  id="endTime" name="endTime" type="text" class="form-control " value=""/>'+
+                '		          <input  id="stopTime" name="stopTime" type="text" class="form-control " value=""/>'+
                 '		          <span class="input-group-addon">'+
                 '		            <span class="glyphicon glyphicon-calendar"></span>'+
                 '		          </span>'+
@@ -360,11 +387,11 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 '		<div class="form-group col-sm-6">'+
                 '			<label for="" class="col-xs-3 control-label">类型</label>'+
                 '			<div class="col-xs-9">'+
-                '				<select class="form-control">'+
-                '                 <option value="">带宽超宽</option>'+
-                '                 <option value="">功率超标</option>'+
-                '                 <option value="">位置改变</option>'+
-                '                 <option value="">其它</option>'+
+                '				<select class="form-control" id="typeCodes">'+
+                '                 <option value="11">带宽超宽</option>'+
+                '                 <option value="12">功率超标</option>'+
+                '                 <option value="13">位置改变</option>'+
+                '                 <option value="14">其它</option>'+
                 '               </select>'+
                 '			 </div>'+
                 '		</div>'+
@@ -376,7 +403,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 '                    <label for="isNormal"> 是 </label>'+
                 '                </div>'+
                 '                <div class="radio radio-primary flex1 ">'+
-                '                   <input type="radio" value="0" name="signal-type" id="noNormal" checked="checked">'+
+                '                   <input type="radio" value="0" name="signal-type" id="noNormal">'+
                 '                   <label for="noNormal"> 否 </label>'+
                 '                </div>'+
                 '			</div>'+
@@ -391,13 +418,47 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             $("#stationWrap").find(".time-picker").datetimepicker({});
             //是否恢复正常：默认为否，选择为是的时候弹出结束时间，否的时候不弹出结束时间
             $("#isNormal").click(function(){
-
+                $("#isNormal").attr("checked", "checked");
+                $("#noNormal").removeAttr("checked");
                 $("#stationWrap").find(".endTimeForm").attr('style','display:block');
-            })
+            });
             $("#noNormal").click(function(){
-
+                $("#noNormal").attr("checked", "checked");
+                $("#isNormal").removeAttr("checked");
                 $("#stationWrap").find(".endTimeForm").attr('style','display:none');
-            })
+            });
+            //查询违规记录
+            var data = {};
+            console.log('查询违规记录:'+id);
+            if(id!=""){
+                data.id = id;
+                ajax.get("data/signal/AbnormalHistory", data, function (result) {
+                    console.log(result);
+                    if(result.id!=''){
+                        $('#startTime').val('20170809123423');//开始时间
+
+                        $('#typeCodes').val('12');//类型
+                        //结果类型是否恢复正常，是显示结束时间，否不显示
+                        var type= parseInt(result.isInvalid);
+                        switch (type) {
+                            case 0:
+                                $("#noNormal").attr("checked", "checked");
+                                $("#stationWrap").find(".endTimeForm").attr('style','display:none');
+                                break;
+                            case 1:
+                                $("#isNormal").attr("checked", "checked");
+                                $('#stopTime').val('20170809123423');//结束时间
+                                $("#stationWrap").find(".endTimeForm").attr('style','display:block');
+                                break
+                        }
+
+                    }else{
+                        $("#noNormal").attr("checked", "checked");
+                        $("#stationWrap").find(".endTimeForm").attr('style','display:none');
+                    }
+
+                });
+            }
             $('#table-station-list').bootstrapTable({
                 method : 'get',
                 contentType : "application/x-www-form-urlencoded", //必须要有！！！！
