@@ -294,7 +294,17 @@ public class SiganlDataController {
 	public  Object getAbnormalHistory(@RequestParam Map<Object,Object> param) throws JsonProcessingException {
 
 		String paramStr = JSON.toJSONString(param);
+		ArrayOfSignalTypeDTO arrayOfSignalTypeDTO = new ArrayOfSignalTypeDTO();
 
+		List<SignalTypeDTO> dtos = Lists.newLinkedList();
+		SignalTypeDTO signalTypeDTO = new SignalTypeDTO();
+		signalTypeDTO.setIsInvalid(false);
+
+		dtos.add(signalTypeDTO);
+		arrayOfSignalTypeDTO.setSignalTypeDTO(dtos);
+
+		param.put("typeCodes",arrayOfSignalTypeDTO);
+		
 		Map<Object,Object> reslute = Maps.newHashMap();
 
 		AbnormalHistoryQueryResponse response = (AbnormalHistoryQueryResponse) service.radioSignalServiceCall("queryAbnormalHistory",paramStr,AbnormalHistoryRequest.class);
