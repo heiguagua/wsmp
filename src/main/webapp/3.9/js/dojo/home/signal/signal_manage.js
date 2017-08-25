@@ -291,17 +291,33 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             //恢复 PUT请求 必须的参数为isInvalid=1
             var params ={};
             params.freq_GUID = $("#signal_list1").find("option:selected").val();
-            params.saveDate =$('#startTime').val();
+            var saveDate =$('#startTime').val();
+            if(saveDate){
+                saveDate = saveDate.split(' ')[0].replace(/-/g,"")+saveDate.split(' ')[1].replace(/:/g,"");
+            }else{
+                layer.alert("开始时间必填！");
+                $('#startTime').focus();
+                return;
+            }
+            params.saveDate =saveDate;
 
             params.historyType =$('#typeCodes').val();
             var isInvalid =$('#isNormal').is(":checked")?$('#isNormal').val():$('#noNormal').val();
             params.isInvalid =parseInt(isInvalid);
             console.log('isInvalid:'+params.isInvalid);
             if(params.isInvalid){//恢复正常,结束时间可选；
-                params.invalidDate = $('#stopTime').val();
+                var invalidDate = $('#stopTime').val();
+                if(invalidDate){
+                    invalidDate = invalidDate.split(' ')[0].replace(/-/g,"")+invalidDate.split(' ')[1].replace(/:/g,"");
+                }else{
+                    layer.alert("是否恢复正常选择是时，结束时间必填！");
+                    $('#stopTime').focus();
+                    return;
+                }
+                params.invalidDate = invalidDate;
             }
-            params= JSON.stringify("添加违规记录参数："+params);
-            console.log(params);
+            params= JSON.stringify(params);
+            console.log("添加违规记录参数："+params);
             $.ajax({
                 url : 'data/signal/AbnormalHistory',
                 type : 'post',
@@ -309,7 +325,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 contentType : 'application/json',//传输数据类型
                 //dataType : 'html',//返回数据类型
                 success : function (result) {
-                    console.log(result)
+                    layer.msg('添加违规记录成功');
                 }
             });
             var data = {};
@@ -369,7 +385,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 '		 <div class="form-group col-sm-6">'+
                 '			<label for="" class="col-xs-3 control-label">开始时间</label>'+
                 '		        <div class="input-group date time-picker"  style="padding-left:15px">'+
-                '		          <input id="startTime" name="beginTime" type="text" class="form-control " value="" />'+
+                '		          <input id="startTime" name="beginTime" type="text" class="form-control " value="" readonly/>'+
                 '		          <span class="input-group-addon">'+
                 '		            <span class="glyphicon glyphicon-calendar"></span>'+
                 '		          </span>'+
@@ -378,7 +394,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 '		 <div class="form-group col-sm-6 endTimeForm">'+
                 '			<label for="" class="col-xs-4 control-label">结束时间</label>'+
                 '		        <div class="input-group date time-picker" style="padding-left:15px">'+
-                '		          <input  id="stopTime" name="stopTime" type="text" class="form-control " value=""/>'+
+                '		          <input  id="stopTime" name="stopTime" type="text" class="form-control " value=""readonly />'+
                 '		          <span class="input-group-addon">'+
                 '		            <span class="glyphicon glyphicon-calendar"></span>'+
                 '		          </span>'+
@@ -435,24 +451,26 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 ajax.get("data/signal/AbnormalHistory", data, function (result) {
                     console.log(result);
                     if(result.id!=''){
-                        $('#startTime').val('20170809123423');//开始时间
-
-                        $('#typeCodes').val('12');//类型
-                        //结果类型是否恢复正常，是显示结束时间，否不显示
-                        var type= parseInt(result.isInvalid);
-                        switch (type) {
-                            case 0:
-                                $("#noNormal").attr("checked", "checked");
-                                $("#stationWrap").find(".endTimeForm").attr('style','display:none');
-                                break;
-                            case 1:
-                                $("#isNormal").attr("checked", "checked");
-                                $('#stopTime').val('20170809123423');//结束时间
-                                $("#stationWrap").find(".endTimeForm").attr('style','display:block');
-                                break
-                        }
+                        $('#startTime').val(result.saveDate); //开始时间
+                        $('#typeCodes').val(result.historyType);//类型
+                        ////结果类型是否恢复正常，是显示结束时间，否不显示
+                        //var type= parseInt(result.isInvalid);
+                        //switch (type) {
+                        //    case 0:
+                        //        $("#noNormal").attr("checked", "checked");
+                        //        $("#stationWrap").find(".endTimeForm").attr('style','display:none');
+                        //        break;
+                        //    case 1:
+                        //        $("#isNormal").attr("checked", "checked");
+                        //        $('#stopTime').val(result.historyType);//结束时间
+                        //        $("#stationWrap").find(".endTimeForm").attr('style','display:block');
+                        //        break
+                        //}
+                        $("#noNormal").attr("checked", "checked");
+                        $("#stationWrap").find(".endTimeForm").attr('style','display:none');
 
                     }else{
+                        $("#isNormal").attr('disabled','true');
                         $("#noNormal").attr("checked", "checked");
                         $("#stationWrap").find(".endTimeForm").attr('style','display:none');
                     }
