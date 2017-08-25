@@ -10,17 +10,19 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * <p>AbnormalHistoryRequest complex type的 Java 类。
+ * <p>RadioSignalSubClassifiedQueryRequest complex type的 Java 类。
  * 
  * <p>以下模式片段指定包含在此类中的预期内容。
  * 
  * <pre>
- * &lt;complexType name="AbnormalHistoryRequest"&gt;
+ * &lt;complexType name="RadioSignalSubClassifiedQueryRequest"&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="ID" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="TypeCodes" type="{http://tempuri.org/}ArrayOfSignalTypeDTO" minOccurs="0"/&gt;
+ *         &lt;element name="Type" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="FreqBandList" type="{http://tempuri.org/}ArrayOfFrequencyBand" minOccurs="0"/&gt;
+ *         &lt;element name="StationNumber" type="{http://tempuri.org/}ArrayOfString" minOccurs="0"/&gt;
+ *         &lt;element name="AreaCodes" type="{http://tempuri.org/}ArrayOfInt" minOccurs="0"/&gt;
  *         &lt;element name="StartTime" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
  *         &lt;element name="StopTime" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
  *       &lt;/sequence&gt;
@@ -32,18 +34,24 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "AbnormalHistoryRequest", propOrder = {
-    "id",
-    "typeCodes",
+@XmlType(name = "RadioSignalSubClassifiedQueryRequest", propOrder = {
+    "type",
+    "freqBandList",
+    "stationNumber",
+    "areaCodes",
     "startTime",
     "stopTime"
 })
-public class AbnormalHistoryRequest {
+public class RadioSignalSubClassifiedQueryRequest {
 
-    @XmlElement(name = "ID")
-    protected String id;
-    @XmlElement(name = "TypeCodes")
-    protected ArrayOfSignalTypeDTO typeCodes;
+    @XmlElement(name = "Type")
+    protected int type;
+    @XmlElement(name = "FreqBandList")
+    protected ArrayOfFrequencyBand freqBandList;
+    @XmlElement(name = "StationNumber")
+    protected ArrayOfString stationNumber;
+    @XmlElement(name = "AreaCodes")
+    protected ArrayOfInt areaCodes;
     @XmlElement(name = "StartTime", required = true, nillable = true)
     @XmlSchemaType(name = "dateTime")
     protected XMLGregorianCalendar startTime;
@@ -52,51 +60,91 @@ public class AbnormalHistoryRequest {
     protected XMLGregorianCalendar stopTime;
 
     /**
-     * 获取id属性的值。
+     * 获取type属性的值。
+     * 
+     */
+    public int getType() {
+        return type;
+    }
+
+    /**
+     * 设置type属性的值。
+     * 
+     */
+    public void setType(int value) {
+        this.type = value;
+    }
+
+    /**
+     * 获取freqBandList属性的值。
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link ArrayOfFrequencyBand }
      *     
      */
-    public String getID() {
-        return id;
+    public ArrayOfFrequencyBand getFreqBandList() {
+        return freqBandList;
     }
 
     /**
-     * 设置id属性的值。
+     * 设置freqBandList属性的值。
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link ArrayOfFrequencyBand }
      *     
      */
-    public void setID(String value) {
-        this.id = value;
+    public void setFreqBandList(ArrayOfFrequencyBand value) {
+        this.freqBandList = value;
     }
 
     /**
-     * 获取typeCodes属性的值。
+     * 获取stationNumber属性的值。
      * 
      * @return
      *     possible object is
-     *     {@link ArrayOfSignalTypeDTO }
+     *     {@link ArrayOfString }
      *     
      */
-    public ArrayOfSignalTypeDTO getTypeCodes() {
-        return typeCodes;
+    public ArrayOfString getStationNumber() {
+        return stationNumber;
     }
 
     /**
-     * 设置typeCodes属性的值。
+     * 设置stationNumber属性的值。
      * 
      * @param value
      *     allowed object is
-     *     {@link ArrayOfSignalTypeDTO }
+     *     {@link ArrayOfString }
      *     
      */
-    public void setTypeCodes(ArrayOfSignalTypeDTO value) {
-        this.typeCodes = value;
+    public void setStationNumber(ArrayOfString value) {
+        this.stationNumber = value;
+    }
+
+    /**
+     * 获取areaCodes属性的值。
+     * 
+     * @return
+     *     possible object is
+     *     {@link ArrayOfInt }
+     *     
+     */
+    public ArrayOfInt getAreaCodes() {
+        return areaCodes;
+    }
+
+    /**
+     * 设置areaCodes属性的值。
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link ArrayOfInt }
+     *     
+     */
+    public void setAreaCodes(ArrayOfInt value) {
+        this.areaCodes = value;
     }
 
     /**

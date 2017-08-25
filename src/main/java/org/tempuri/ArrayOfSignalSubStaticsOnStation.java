@@ -10,16 +10,16 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>ArrayOfRadioSignalStationDTO complex type的 Java 类。
+ * <p>ArrayOfSignalSubStaticsOnStation complex type的 Java 类。
  * 
  * <p>以下模式片段指定包含在此类中的预期内容。
  * 
  * <pre>
- * &lt;complexType name="ArrayOfRadioSignalStationDTO"&gt;
+ * &lt;complexType name="ArrayOfSignalSubStaticsOnStation"&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="RadioSignalStationDTO" type="{http://tempuri.org/}RadioSignalStationDTO" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *         &lt;element name="SignalSubStaticsOnStation" type="{http://tempuri.org/}SignalSubStaticsOnStation" maxOccurs="unbounded" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -29,41 +29,41 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ArrayOfRadioSignalStationDTO", propOrder = {
-    "radioSignalStationDTO"
+@XmlType(name = "ArrayOfSignalSubStaticsOnStation", propOrder = {
+    "signalSubStaticsOnStation"
 })
-public class ArrayOfRadioSignalStationDTO {
+public class ArrayOfSignalSubStaticsOnStation {
 
-    @XmlElement(name = "RadioSignalStationDTO", nillable = true)
-    protected List<RadioSignalStationDTO> radioSignalStationDTO;
+    @XmlElement(name = "SignalSubStaticsOnStation", nillable = true)
+    protected List<SignalSubStaticsOnStation> signalSubStaticsOnStation;
 
     /**
-     * Gets the value of the radioSignalStationDTO property.
+     * Gets the value of the signalSubStaticsOnStation property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the radioSignalStationDTO property.
+     * This is why there is not a <CODE>set</CODE> method for the signalSubStaticsOnStation property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getRadioSignalStationDTO().add(newItem);
+     *    getSignalSubStaticsOnStation().add(newItem);
      * </pre>
      * 
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link RadioSignalStationDTO }
+     * {@link SignalSubStaticsOnStation }
      * 
      * 
      */
-    public List<RadioSignalStationDTO> getRadioSignalStationDTO() {
-        if (radioSignalStationDTO == null) {
-            radioSignalStationDTO = new ArrayList<RadioSignalStationDTO>();
+    public List<SignalSubStaticsOnStation> getSignalSubStaticsOnStation() {
+        if (signalSubStaticsOnStation == null) {
+            signalSubStaticsOnStation = new ArrayList<SignalSubStaticsOnStation>();
         }
-        return this.radioSignalStationDTO;
+        return this.signalSubStaticsOnStation;
     }
 
 }

@@ -110,6 +110,38 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link QueryRadioSignalSubClassified }
+     * 
+     */
+    public QueryRadioSignalSubClassified createQueryRadioSignalSubClassified() {
+        return new QueryRadioSignalSubClassified();
+    }
+
+    /**
+     * Create an instance of {@link RadioSignalSubClassifiedQueryRequest }
+     * 
+     */
+    public RadioSignalSubClassifiedQueryRequest createRadioSignalSubClassifiedQueryRequest() {
+        return new RadioSignalSubClassifiedQueryRequest();
+    }
+
+    /**
+     * Create an instance of {@link QueryRadioSignalSubClassifiedResponse }
+     * 
+     */
+    public QueryRadioSignalSubClassifiedResponse createQueryRadioSignalSubClassifiedResponse() {
+        return new QueryRadioSignalSubClassifiedResponse();
+    }
+
+    /**
+     * Create an instance of {@link RadioSignalSubClassifiedQueryResponse }
+     * 
+     */
+    public RadioSignalSubClassifiedQueryResponse createRadioSignalSubClassifiedQueryResponse() {
+        return new RadioSignalSubClassifiedQueryResponse();
+    }
+
+    /**
      * Create an instance of {@link QueryAbnormalHistory }
      * 
      */
@@ -451,6 +483,38 @@ public class ObjectFactory {
      */
     public SignalStaticsOnStation createSignalStaticsOnStation() {
         return new SignalStaticsOnStation();
+    }
+
+    /**
+     * Create an instance of {@link ArrayOfSignalSubStaticsOnFreqBand }
+     * 
+     */
+    public ArrayOfSignalSubStaticsOnFreqBand createArrayOfSignalSubStaticsOnFreqBand() {
+        return new ArrayOfSignalSubStaticsOnFreqBand();
+    }
+
+    /**
+     * Create an instance of {@link SignalSubStaticsOnFreqBand }
+     * 
+     */
+    public SignalSubStaticsOnFreqBand createSignalSubStaticsOnFreqBand() {
+        return new SignalSubStaticsOnFreqBand();
+    }
+
+    /**
+     * Create an instance of {@link ArrayOfSignalSubStaticsOnStation }
+     * 
+     */
+    public ArrayOfSignalSubStaticsOnStation createArrayOfSignalSubStaticsOnStation() {
+        return new ArrayOfSignalSubStaticsOnStation();
+    }
+
+    /**
+     * Create an instance of {@link SignalSubStaticsOnStation }
+     * 
+     */
+    public SignalSubStaticsOnStation createSignalSubStaticsOnStation() {
+        return new SignalSubStaticsOnStation();
     }
 
 }
