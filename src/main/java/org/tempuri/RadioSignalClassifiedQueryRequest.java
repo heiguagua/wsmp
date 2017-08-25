@@ -1,14 +1,12 @@
 
 package org.tempuri;
 
-import java.util.Calendar;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import org.w3._2001.xmlschema.Adapter1;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
@@ -50,14 +48,12 @@ public class RadioSignalClassifiedQueryRequest {
     protected ArrayOfString stationNumber;
     @XmlElement(name = "AreaCodes")
     protected ArrayOfInt areaCodes;
-    @XmlElement(name = "StartTime", required = true, type = String.class, nillable = true)
-    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlElement(name = "StartTime", required = true, nillable = true)
     @XmlSchemaType(name = "dateTime")
-    protected Calendar startTime;
-    @XmlElement(name = "StopTime", required = true, type = String.class, nillable = true)
-    @XmlJavaTypeAdapter(Adapter1 .class)
+    protected XMLGregorianCalendar startTime;
+    @XmlElement(name = "StopTime", required = true, nillable = true)
     @XmlSchemaType(name = "dateTime")
-    protected Calendar stopTime;
+    protected XMLGregorianCalendar stopTime;
 
     /**
      * 获取freqBandList属性的值。
@@ -136,10 +132,10 @@ public class RadioSignalClassifiedQueryRequest {
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public Calendar getStartTime() {
+    public XMLGregorianCalendar getStartTime() {
         return startTime;
     }
 
@@ -148,10 +144,10 @@ public class RadioSignalClassifiedQueryRequest {
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setStartTime(Calendar value) {
+    public void setStartTime(XMLGregorianCalendar value) {
         this.startTime = value;
     }
 
@@ -160,10 +156,10 @@ public class RadioSignalClassifiedQueryRequest {
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public Calendar getStopTime() {
+    public XMLGregorianCalendar getStopTime() {
         return stopTime;
     }
 
@@ -172,10 +168,10 @@ public class RadioSignalClassifiedQueryRequest {
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setStopTime(Calendar value) {
+    public void setStopTime(XMLGregorianCalendar value) {
         this.stopTime = value;
     }
 

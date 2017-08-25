@@ -289,7 +289,7 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
         ajax.get("data/alarm/firstLevelChart", data, function (result) {
             console.log(result);
             var name = $('#station_picker').find('option:selected').text();//选中的台站名称
-            console.log(name)
+            $("#stationName").html(name);
             name=name.replace("未查询到数据","");
             $("#levelTitle").html(name+"——电平峰值");
             $("#monthTitle").html(name+"——近3个月占用度（按天统计）");

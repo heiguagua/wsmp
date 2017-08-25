@@ -16,6 +16,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.tempuri.*;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -313,38 +316,37 @@ public class SiganlDataController {
 	}
 
 	@PostMapping( value =  "/AbnormalHistory",headers = {"contentType=application/json"})
-	public  @ResponseBody String  insterAbnormalHistory(@RequestBody Map<String,Object> param) throws JsonProcessingException {
+	public  @ResponseBody String  insterAbnormalHistory(@RequestBody Map<String,Object> param) throws JsonProcessingException, DatatypeConfigurationException {
 
 		String  startTime = (String) param.get("startTime");
-
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 		final long timeStartLong = LocalDateTime.parse(startTime,
-				formatter).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+				dateTimeFormatter).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 
-		Calendar calendar = Calendar.getInstance();
+		GregorianCalendar beginGregorianCalendar =new GregorianCalendar();
+		beginGregorianCalendar.setTime(new Date(timeStartLong));
+		XMLGregorianCalendar beginCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(beginGregorianCalendar);
 
-		calendar.setTime(new Date(timeStartLong));
-
-		param.remove("startTime",calendar);
-
+		param.replace("startTime",beginCalendar);
+		param.replace("isInvalid",true);
 		service.radioSignalServiceCall("insertAbnormalHistory",JSON.toJSONString(param),RadioSignalAbnormalHistoryDTO.class);
 
 		return  "sussed";
 	}
 
 	@PutMapping(path = {"/AbnormalHistory"},params = {"isInvalid=0"},headers = {"contentType=application/json"})
-	public  @ResponseBody String  updateAbnormalHistory(@RequestBody Map<String,Object> param) throws JsonProcessingException {
+	public  @ResponseBody String  updateAbnormalHistory(@RequestBody Map<String,Object> param) throws JsonProcessingException, DatatypeConfigurationException {
 		final String  startTime = (String) param.get("startTime");
 
 		final long timeStartLong = LocalDateTime.parse(startTime,
 				formatter).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 
-		Calendar beginCalendar = Calendar.getInstance();
-		Calendar endCalendar = Calendar.getInstance();
 
-		beginCalendar.setTime(new Date(timeStartLong));
+		GregorianCalendar beginGregorianCalendar =new GregorianCalendar();
+		beginGregorianCalendar.setTime(new Date(timeStartLong));
+		XMLGregorianCalendar beginCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(beginGregorianCalendar);
 
 		param.replace("startTime",beginCalendar);
-		param.replace("invalidDate",endCalendar);
 		param.replace("isInvalid",true);
 
 		service.radioSignalServiceCall("updateAbnormalHistory",JSON.toJSONString(param),RadioSignalAbnormalHistoryDTO.class);
@@ -352,7 +354,7 @@ public class SiganlDataController {
 	}
 
 	@PutMapping(path={"/AbnormalHistory",""},params = {"isInvalid=1"},headers = {"contentType=application/json"})
-	public  @ResponseBody  String recoveryAbnormalHistory(@RequestBody Map<String,Object> param) throws JsonProcessingException {
+	public  @ResponseBody  String recoveryAbnormalHistory(@RequestBody Map<String,Object> param) throws JsonProcessingException, DatatypeConfigurationException {
 
 		final String  startTime = (String) param.get("startTime");
 		final String  endTime = (String) param.get("invalidDate");
@@ -363,11 +365,14 @@ public class SiganlDataController {
 		final long timeEndLong = LocalDateTime.parse(endTime,
 				formatter).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 
-		Calendar beginCalendar = Calendar.getInstance();
-		Calendar endCalendar = Calendar.getInstance();
+		GregorianCalendar beginGregorianCalendar =new GregorianCalendar();
+		GregorianCalendar endGregorianCalendar =new GregorianCalendar();
 
-		beginCalendar.setTime(new Date(timeStartLong));
-		beginCalendar.setTime(new Date(timeEndLong));
+		beginGregorianCalendar.setTime(new Date(timeStartLong));
+		endGregorianCalendar.setTime(new Date(timeEndLong));
+
+		XMLGregorianCalendar beginCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(beginGregorianCalendar);
+		XMLGregorianCalendar endCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(endGregorianCalendar);
 
 		param.replace("startTime",beginCalendar);
 		param.replace("invalidDate",endCalendar);

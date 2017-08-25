@@ -1,17 +1,18 @@
 
 package org.tempuri;
 
-import org.w3._2001.xmlschema.Adapter1;
-
-import javax.xml.bind.annotation.*;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.util.Calendar;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * <p>AbnormalHistoryRequest complex typeï¿½ï¿½ Java ï¿½à¡£
+ * <p>AbnormalHistoryRequest complex typeµÄ Java Àà¡£
  * 
- * <p>ï¿½ï¿½ï¿½ï¿½Ä£Ê½Æ¬ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½ï¿½ï¿½ï¿½Ðµï¿½Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½Ý¡ï¿½
+ * <p>ÒÔÏÂÄ£Ê½Æ¬¶ÎÖ¸¶¨°üº¬ÔÚ´ËÀàÖÐµÄÔ¤ÆÚÄÚÈÝ¡£
  * 
  * <pre>
  * &lt;complexType name="AbnormalHistoryRequest"&gt;
@@ -43,17 +44,15 @@ public class AbnormalHistoryRequest {
     protected String id;
     @XmlElement(name = "TypeCodes")
     protected ArrayOfSignalTypeDTO typeCodes;
-    @XmlElement(name = "StartTime", required = true, type = String.class, nillable = true)
-    @XmlJavaTypeAdapter(Adapter1 .class)
+    @XmlElement(name = "StartTime", required = true, nillable = true)
     @XmlSchemaType(name = "dateTime")
-    protected Calendar startTime;
-    @XmlElement(name = "StopTime", required = true, type = String.class, nillable = true)
-    @XmlJavaTypeAdapter(Adapter1 .class)
+    protected XMLGregorianCalendar startTime;
+    @XmlElement(name = "StopTime", required = true, nillable = true)
     @XmlSchemaType(name = "dateTime")
-    protected Calendar stopTime;
+    protected XMLGregorianCalendar stopTime;
 
     /**
-     * ï¿½ï¿½È¡idï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
+     * »ñÈ¡idÊôÐÔµÄÖµ¡£
      * 
      * @return
      *     possible object is
@@ -65,7 +64,7 @@ public class AbnormalHistoryRequest {
     }
 
     /**
-     * ï¿½ï¿½ï¿½ï¿½idï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
+     * ÉèÖÃidÊôÐÔµÄÖµ¡£
      * 
      * @param value
      *     allowed object is
@@ -77,7 +76,7 @@ public class AbnormalHistoryRequest {
     }
 
     /**
-     * ï¿½ï¿½È¡typeCodesï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
+     * »ñÈ¡typeCodesÊôÐÔµÄÖµ¡£
      * 
      * @return
      *     possible object is
@@ -89,7 +88,7 @@ public class AbnormalHistoryRequest {
     }
 
     /**
-     * ï¿½ï¿½ï¿½ï¿½typeCodesï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
+     * ÉèÖÃtypeCodesÊôÐÔµÄÖµ¡£
      * 
      * @param value
      *     allowed object is
@@ -101,50 +100,50 @@ public class AbnormalHistoryRequest {
     }
 
     /**
-     * ï¿½ï¿½È¡startTimeï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
+     * »ñÈ¡startTimeÊôÐÔµÄÖµ¡£
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public Calendar getStartTime() {
+    public XMLGregorianCalendar getStartTime() {
         return startTime;
     }
 
     /**
-     * ï¿½ï¿½ï¿½ï¿½startTimeï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
+     * ÉèÖÃstartTimeÊôÐÔµÄÖµ¡£
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setStartTime(Calendar value) {
+    public void setStartTime(XMLGregorianCalendar value) {
         this.startTime = value;
     }
 
     /**
-     * ï¿½ï¿½È¡stopTimeï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
+     * »ñÈ¡stopTimeÊôÐÔµÄÖµ¡£
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public Calendar getStopTime() {
+    public XMLGregorianCalendar getStopTime() {
         return stopTime;
     }
 
     /**
-     * ï¿½ï¿½ï¿½ï¿½stopTimeï¿½ï¿½ï¿½Ôµï¿½Öµï¿½ï¿½
+     * ÉèÖÃstopTimeÊôÐÔµÄÖµ¡£
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setStopTime(Calendar value) {
+    public void setStopTime(XMLGregorianCalendar value) {
         this.stopTime = value;
     }
 

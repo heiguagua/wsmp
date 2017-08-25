@@ -99,7 +99,10 @@
     <div class='box'>
       <div class='locate-coverage'>
         <label class='module-name'>
-          <img src='images/locate.png' />&nbsp;&nbsp;成都某某站台
+          <img src='images/locate.png' />
+          <span id = "stationName">
+            &nbsp;&nbsp;台站
+          </span>
         </label>
         <div class='pull-right'>
           电磁覆盖率:&nbsp;

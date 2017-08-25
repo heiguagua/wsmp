@@ -108,9 +108,9 @@ public class AlarmManagerViewController {
                 singal.setBeginTime(beginTime);
 				singal.setDes(t.getDescription());
 
-                t.getStatList().getFreqWarningStatDTO().stream().map(m -> {
-                    return m.getStationGUID();
-                }).forEach(z -> {
+                t.getStatList().getFreqWarningStatDTO().stream().map(m ->
+                     m.getStationGUID()
+                ).forEach(z -> {
                     listId.add(z);
                 });
 
