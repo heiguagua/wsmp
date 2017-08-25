@@ -154,7 +154,7 @@ public class SignalViewController {
                 singal.setBeginTime(t.getSaveDate().toString().replaceAll(":", "").replaceAll("T", "").replaceAll("-", ""));
                 singal.setEndTime(t.getInvalidDate().toString().replaceAll(":", "").replaceAll("T", "").replaceAll("-", ""));
                 singal.setContext(t.getSaveDate().toString().replaceAll("T", " "));
-
+				singal.setDes(t.getDes());
                 return singal;
             }).collect(toList());
 
