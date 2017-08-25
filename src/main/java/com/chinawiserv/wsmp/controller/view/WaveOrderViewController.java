@@ -6,6 +6,8 @@ import com.alibaba.fastjson.TypeReference;
 import com.chinawiserv.apps.logger.Logger;
 import com.chinawiserv.wsmp.pojo.MeasureTaskParamDto;
 import com.chinawiserv.wsmp.pojo.RedioStatusCount;
+import com.sefon.ws.service.impl.FreqService;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,25 +23,35 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.annotation.PostConstruct;
+
  
 @Controller
 @RequestMapping("/waveorder")
 public class WaveOrderViewController {
 	
-	@Value("${freqWarningWebService.wsdl}")
-	private String urlFreqWarning;
-
 	@Value("${radioSignalWebService.wsdl}")
 	private String urlRadioSignal;
-	
-	@Value("${sefon.webservice.freqservice}")
-	private String urlFreq;
 	
 	@Value("${importFreqRangeManageService.wsdl}")
 	private String urlImportFreqRange;
 	
 	@Value("${mapservice.wdsl}")
 	private String mapUrl;
+	
+	private RadioSignalWebService serviceRadioSignal;
+	
+	private IImportFreqRangeManageService serviceImportFreqRangeManage;
+	
+	
+	@PostConstruct
+	public void init() throws MalformedURLException {
+	    URL url2 = new URL(urlRadioSignal);
+	    serviceRadioSignal = new RadioSignalWebService(url2);
+		URL url3 = new URL(urlImportFreqRange);
+		serviceImportFreqRangeManage = new ImportFreqRangeManageService(url3).getBasicHttpBindingIImportFreqRangeManageService();
+
+	}
 
     @GetMapping(path = {"/", ""})
 	public String home(Model model, @RequestParam(required=false,name="areaCode") String areaCode) {
@@ -52,16 +64,13 @@ public class WaveOrderViewController {
     }
     
     @PostMapping("/importantMonitor")
-    public String importantMonitor(Model model,@RequestBody Map<String,Object> map) throws MalformedURLException {
+    public String importantMonitor(Model model,@RequestBody Map<String,Object> map) {
     	//根据频段查询重点监测，返回页面和对象
     	Logger.info("map:{}",map);
     	BigDecimal beginFreq = new BigDecimal(map.get("beginFreq").toString());
 		BigDecimal endFreq = new BigDecimal(map.get("endFreq").toString());
 		BigDecimal divisor = new BigDecimal(1000000);
-		URL url = new URL(urlImportFreqRange);
-    	ImportFreqRangeManageService service = new ImportFreqRangeManageService(url);
-		IImportFreqRangeManageService service2 = service.getBasicHttpBindingIImportFreqRangeManageService();
-		String result = service2.findAllFreqRange();
+		String result = serviceImportFreqRangeManage.findAllFreqRange();
 		//System.out.println("=================================result:"+result);
 		final Type type = new TypeReference<List<MeasureTaskParamDto>>() {}.getType();
 		@SuppressWarnings("unchecked")
@@ -86,19 +95,16 @@ public class WaveOrderViewController {
     }
     
     @PostMapping("/importantMonitorCreateOrUpdate")
-    public String importantMonitorCreateOrUpdate(MeasureTaskParamDto dto,Model model) throws MalformedURLException {
+    public String importantMonitorCreateOrUpdate(MeasureTaskParamDto dto,Model model) {
     	//或者直接用模型接受参数MeasureTaskParamDto.java
     	Logger.info("更新或添加-前端传参dto:{}",JSON.toJSONString(dto));
     	if(dto.getID().equals("")) {
     		dto.setID(null);
     	}
     	//System.out.println("==========================================前端传参operation:"+operation);
-    	URL url = new URL(urlImportFreqRange);
-    	ImportFreqRangeManageService service = new ImportFreqRangeManageService(url);
-		IImportFreqRangeManageService service2 = service.getBasicHttpBindingIImportFreqRangeManageService();
     		//更新或添加重点监测，进行更新或添加操作，只管操作成功与否.
     		String json = JSON.toJSONString(dto);
-    		String resultDTOJson = service2.createOrUpdate(json);
+    		String resultDTOJson = serviceImportFreqRangeManage.createOrUpdate(json);
     		final Type type = new TypeReference<MeasureTaskParamDto>() {}.getType();
     		MeasureTaskParamDto resultDTO = (MeasureTaskParamDto) JSON.parseObject(resultDTOJson,type);
     		if(resultDTOJson != null) {
@@ -114,14 +120,10 @@ public class WaveOrderViewController {
     
     
     @PostMapping("/importantMonitorDelete")
-    public String importantMonitorDelete(MeasureTaskParamDto dto,Model model) throws MalformedURLException {
+    public String importantMonitorDelete(MeasureTaskParamDto dto,Model model) {
     	//或者直接用模型接受参数MeasureTaskParamDto.java
     	Logger.info("删除-前端传参dto:{}",JSON.toJSONString(dto));
-    	URL url = new URL(urlImportFreqRange);
-    	ImportFreqRangeManageService service = new ImportFreqRangeManageService(url);
-		IImportFreqRangeManageService service2 = service.getBasicHttpBindingIImportFreqRangeManageService();
-
-		Boolean resultDTOJson = service2.removeById(dto.getID());
+		Boolean resultDTOJson = serviceImportFreqRangeManage.removeById(dto.getID());
 		if(resultDTOJson) {
 			Logger.info("删除成功！");
 			MeasureTaskParamDto modelDTO = new MeasureTaskParamDto();
@@ -140,18 +142,16 @@ public class WaveOrderViewController {
     }
 
 	@PostMapping("/redioType")
-	public String redioType(Model model, @RequestBody Map<String, Object> map) throws MalformedURLException {
+	public String redioType(Model model, @RequestBody Map<String, Object> map) {
 		//根据监测站查询信号类型统计
 //		System.out.println("================================map:"+map);
-		URL url = new URL(urlRadioSignal);
-		RadioSignalWebService service = new RadioSignalWebService(url);
 		RadioSignalClassifiedQueryRequest request = new RadioSignalClassifiedQueryRequest();
 		ArrayOfString value = new ArrayOfString();
 		@SuppressWarnings("unchecked")
 		List<String> monitorsNum = (List<String>) map.get("monitorsNum");
 		value.setString(monitorsNum);
 		request.setStationNumber(value);
-		RadioSignalClassifiedQueryResponse response = service.getRadioSignalWebServiceSoap().queryRadioSignalClassified(request);
+		RadioSignalClassifiedQueryResponse response = serviceRadioSignal.getRadioSignalWebServiceSoap().queryRadioSignalClassified(request);
 		//System.out.println("===============================response:"+JSON.toJSONString(response));
 		
 		RedioStatusCount rsCountTotal = new RedioStatusCount();
@@ -200,18 +200,16 @@ public class WaveOrderViewController {
 		return "waveorder/redio_type_list";
 	}
 	@PostMapping("/redioTypeForSiFon")
-	public String redioTypeForSiFon(Model model, @RequestBody Map<String, Object> map) throws MalformedURLException {
+	public String redioTypeForSiFon(Model model, @RequestBody Map<String, Object> map) {
 		//根据监测站查询信号类型统计
 //		System.out.println("================================map:"+map);
-		URL url = new URL(urlRadioSignal);
-		RadioSignalWebService service = new RadioSignalWebService(url);
 		RadioSignalClassifiedQueryRequest request = new RadioSignalClassifiedQueryRequest();
 		ArrayOfString value = new ArrayOfString();
 		@SuppressWarnings("unchecked")
 		List<String> monitorsNum = (List<String>) map.get("monitorsNum");
 		value.setString(monitorsNum);
 		request.setStationNumber(value);
-		RadioSignalClassifiedQueryResponse response = service.getRadioSignalWebServiceSoap().queryRadioSignalClassified(request);
+		RadioSignalClassifiedQueryResponse response = serviceRadioSignal.getRadioSignalWebServiceSoap().queryRadioSignalClassified(request);
 		//System.out.println("===============================response:"+JSON.toJSONString(response));
 		
 		RedioStatusCount rsCountTotal = new RedioStatusCount();
