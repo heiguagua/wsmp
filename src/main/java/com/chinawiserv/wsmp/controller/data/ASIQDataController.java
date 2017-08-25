@@ -54,7 +54,7 @@ public class ASIQDataController {
 
 			List<Audio> audios = client.queryAudio(id, centerFreq, timeStartLong, timeStopLong);
 
-			Logger.info("查询音频数据正常 操作时间{},入参：基站id :{},中心频率:{},开始时间:{},结束时间{}",LocalDateTime.now().toString(),id,centerFreq,timeStart,timeStop);
+			Logger.info("查询音频数据正常 操作时间{},入参：基站id :{},中心频率:{},开始时间:{},结束时间{} 返回数据个数{}",LocalDateTime.now().toString(),id,centerFreq,timeStart,timeStop,audios.size());
 
 			return audios;
 		} catch (Exception e) {
@@ -81,7 +81,7 @@ public class ASIQDataController {
 			final AudioData aduioData = this.client.queryAudioData(id, rowKey);
 			final byte[] bytes = aduioData.getAudioData();
 
-			Logger.info("查询音频数据成功 操作时间{} 入参为 基站id{},rowKey{}",LocalDateTime.now().toString(),id,rowKey);
+			Logger.info("查询音频数据成功 操作时间{} 入参为 基站id{},rowKey{},bytes数组长度{}",LocalDateTime.now().toString(),id,rowKey,bytes.length);
 			return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment;filename=\"%s\"", "test.wav"))
                     .contentType(MediaType.APPLICATION_OCTET_STREAM)
@@ -147,7 +147,7 @@ public class ASIQDataController {
 			spectrums = client.querySpectrum(id, centerFreq, timeStartLong,
 					timeStopLong);
 
-			Logger.info("音频数据查询正常 入参id：{},中心频率：{}，开始时间：{}，返回值 {}",id,centerFreq,timeStart,spectrums);
+			Logger.info("音频数据查询正常 入参id：{},中心频率：{}，开始时间：{}，返回值个数 {}",id,centerFreq,timeStart,spectrums.size());
 			return this.client.querySpectrum(id, centerFreq, timeStartLong,
                     timeStopLong);
 		} catch (Exception e) {

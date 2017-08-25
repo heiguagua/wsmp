@@ -153,7 +153,8 @@ public class SignalViewController {
                 singal.setCentorFreq(t.getCenterFreq().toString());
                 singal.setBeginTime(t.getSaveDate().toString().replaceAll(":", "").replaceAll("T", "").replaceAll("-", ""));
                 singal.setEndTime(t.getInvalidDate().toString().replaceAll(":", "").replaceAll("T", "").replaceAll("-", ""));
-                singal.setContext(t.getCenterFreq().toString().concat("   ").concat(t.getSaveDate().toString()));
+                singal.setContext(t.getSaveDate().toString().replaceAll("T", " "));
+
                 return singal;
             }).collect(toList());
 
