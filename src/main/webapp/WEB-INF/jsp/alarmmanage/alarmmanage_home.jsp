@@ -73,7 +73,7 @@
     <div class='box2 flex-column'>
       <div class='flex-row radio-type-check align-center flex1'>
         <div class="radio radio-primary flex1 ">
-          <input class ="typeCode"  type="radio" value="0" name="signal-type" id="legal-normal">
+          <input class ="typeCode"  type="radio" value="1" name="signal-type" id="legal-normal">
           <label for="legal-normal"> ${redioType.legalNormalStation} </label>
         </div>
         <div class="radio radio-primary flex1 ">
