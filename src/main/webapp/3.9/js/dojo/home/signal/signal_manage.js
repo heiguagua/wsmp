@@ -318,58 +318,33 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 }
                 params.invalidDate = invalidDate;
             }
-            params= JSON.stringify(params);
+            //params= JSON.stringify(params);
             console.log("添加违规记录参数："+params);
-            if(params.isInvalid ==1){
-                if($("#searchId").val()!=''){
-                    ajax.put("data/signal/AbnormalHistoryByInvaliDate", data, function() {
-                        layer.msg('修改违规记录成功');
-                    });
-                }else{
-                    ajax.post("data/signal/AbnormalHistoryByInvaliDate", params, function() {
-                        layer.msg('添加违规记录成功');
-                    });
-                }
-            }else{
-                if($("#searchId").val()!=''){
-                    ajax.put("data/signal/AbnormalHistory", data, function() {
-                        layer.msg('修改违规记录成功');
-                    });
-                }else{
-                    ajax.post("data/signal/AbnormalHistory", params, function() {
-                        layer.msg('添加违规记录成功');
-                    });
-                    //$.ajax({
-                    //    url : 'data/signal/AbnormalHistory',
-                    //    type : 'post',
-                    //    data : params,//传输数据
-                    //    contentType : 'application/json',//传输数据类型
-                    //    //dataType : 'html',//返回数据类型
-                    //    success : function (result) {
-                    //        layer.msg('添加违规记录成功');
-                    //    }
-                    //});
-                }
-            }
 
-            if($("#searchId").val()!=''){
-                ajax.put("data/signal/AbnormalHistory", data, function() {
-                    layer.msg('修改违规记录成功');
+            var addOpUpdate =$("#searchId").val();
+            console.log("添加还是修改："+addOpUpdate);
+            if(addOpUpdate){
+                if(params.isInvalid ==1){
+                    ajax.put("data/signal/AbnormalHistoryByInvaliDate", params, function() {
+                        layer.msg('修改违规记录成功');
+                    });
+                }else if(params.isInvalid ==0){
+                    ajax.put("data/signal/AbnormalHistory", params, function() {
+                        layer.msg('修改违规记录成功');
+                    });
+                }
+
+            }else if($("#searchId").val()==''){
+                $.ajax({
+                    url : 'data/signal/AbnormalHistory',
+                    type : 'post',
+                    data : params,//传输数据
+                    contentType : 'application/json',//传输数据类型
+                    success : function (result) {
+                        layer.msg('添加违规记录成功');
+                    }
                 });
-            }else{
-                ajax.post("data/signal/AbnormalHistory", params, function() {
-                    layer.msg('添加违规记录成功');
-                });
-                //$.ajax({
-                //    url : 'data/signal/AbnormalHistory',
-                //    type : 'post',
-                //    data : params,//传输数据
-                //    contentType : 'application/json',//传输数据类型
-                //    //dataType : 'html',//返回数据类型
-                //    success : function (result) {
-                //        layer.msg('添加违规记录成功');
-                //    }
-                //});
+
             }
 
             var data = {};
