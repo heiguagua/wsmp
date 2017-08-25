@@ -333,7 +333,7 @@ public class SiganlDataController {
 		return  "sussed";
 	}
 
-	@PutMapping(path = {"/AbnormalHistory"})
+	@PutMapping(path = {"/AbnormalHistory"},params = {"isInvalid=0"})
 	public  @ResponseBody String  updateAbnormalHistory(@RequestBody Map<String,Object> param) throws JsonProcessingException, DatatypeConfigurationException {
 		final String  startTime = (String) param.get("saveDate");
 
@@ -352,7 +352,7 @@ public class SiganlDataController {
 		return  "sussed";
 	}
 
-	@PutMapping(path={"/AbnormalHistoryByInvaliDate"})
+	@PutMapping(path={"/AbnormalHistory"},params = {"isInvalid=1"})
 	public  @ResponseBody  String recoveryAbnormalHistory(@RequestBody Map<String,Object> param) throws JsonProcessingException, DatatypeConfigurationException {
 
 		final String  startTime = (String) param.get("saveDate");
