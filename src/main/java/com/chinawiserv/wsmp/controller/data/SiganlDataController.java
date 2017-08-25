@@ -315,10 +315,10 @@ public class SiganlDataController {
 		return  reslute;
 	}
 
-	@PostMapping( value =  "/AbnormalHistory",headers = {"contentType=application/json"})
+	@PostMapping( value =  "/AbnormalHistory")
 	public  @ResponseBody String  insterAbnormalHistory(@RequestBody Map<String,Object> param) throws JsonProcessingException, DatatypeConfigurationException {
 
-		String  startTime = (String) param.get("startTime");
+		String  startTime = (String) param.get("saveDate");
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 		final long timeStartLong = LocalDateTime.parse(startTime,
 				dateTimeFormatter).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
@@ -334,9 +334,9 @@ public class SiganlDataController {
 		return  "sussed";
 	}
 
-	@PutMapping(path = {"/AbnormalHistory"},params = {"isInvalid=0"},headers = {"contentType=application/json"})
+	@PutMapping(path = {"/AbnormalHistory"},params = {"isInvalid=0"})
 	public  @ResponseBody String  updateAbnormalHistory(@RequestBody Map<String,Object> param) throws JsonProcessingException, DatatypeConfigurationException {
-		final String  startTime = (String) param.get("startTime");
+		final String  startTime = (String) param.get("saveDate");
 
 		final long timeStartLong = LocalDateTime.parse(startTime,
 				formatter).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
@@ -353,10 +353,10 @@ public class SiganlDataController {
 		return  "sussed";
 	}
 
-	@PutMapping(path={"/AbnormalHistory",""},params = {"isInvalid=1"},headers = {"contentType=application/json"})
+	@PutMapping(path={"/AbnormalHistory",""},params = {"isInvalid=1"})
 	public  @ResponseBody  String recoveryAbnormalHistory(@RequestBody Map<String,Object> param) throws JsonProcessingException, DatatypeConfigurationException {
 
-		final String  startTime = (String) param.get("startTime");
+		final String  startTime = (String) param.get("saveDate");
 		final String  endTime = (String) param.get("invalidDate");
 
 		final long timeStartLong = LocalDateTime.parse(startTime,
