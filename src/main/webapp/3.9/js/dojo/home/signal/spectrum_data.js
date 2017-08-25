@@ -13,7 +13,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
         //var url = "assets/json/spectrum-player-list.json";
         ajax.get(url, null, function(result) {
             var data = result;
-            if(data && data.length == 0) {
+            if(!data) {
                 data = null;
             }
             $('#spectrum-table').bootstrapTable({
