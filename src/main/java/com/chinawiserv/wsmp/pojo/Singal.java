@@ -26,7 +26,7 @@ public class Singal {
 
 	private String warnimgId;
 
-	private  String des ="";
+	private  String des =" ";
 
 	public String getDes() {
 		return des;

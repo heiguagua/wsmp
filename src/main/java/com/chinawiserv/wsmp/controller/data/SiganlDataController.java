@@ -311,7 +311,7 @@ public class SiganlDataController {
 			reslute.put("invalidDate",historyDTO.getInvalidDate().toString().replace("T"," "));
 			reslute.put("des",historyDTO.getDes());
 		}
-		
+
 		return  reslute;
 	}
 
