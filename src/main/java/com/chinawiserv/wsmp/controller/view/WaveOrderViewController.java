@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
@@ -154,49 +155,37 @@ public class WaveOrderViewController {
 		RadioSignalClassifiedQueryResponse response = serviceRadioSignal.getRadioSignalWebServiceSoap().queryRadioSignalClassified(request);
 		//System.out.println("===============================response:"+JSON.toJSONString(response));
 		
-		RedioStatusCount rsCountTotal = new RedioStatusCount();
-		AtomicInteger index0 = new AtomicInteger();
-		AtomicInteger index1 = new AtomicInteger();
-		AtomicInteger index2 = new AtomicInteger();
-		AtomicInteger index3 = new AtomicInteger();
-		AtomicInteger index4 = new AtomicInteger();
-		response.getLstOnStation().getSignalStaticsOnStation().stream().forEach(t -> {
-			RedioStatusCount rsCount = new RedioStatusCount();
-			t.getSignalStaticsLst().getSignalStatics().forEach(t1 -> {
-				int type = t1.getSignalType();
-				int count = t1.getCount();
-				switch(type) {
+		RedioStatusCount rsCount = new RedioStatusCount();
+		response.getLstOnStation().getSignalStaticsOnStation().stream()
+			.flatMap(t -> t.getSignalStaticsLst().getSignalStatics().stream())
+			.collect(Collectors.groupingBy(SignalStatics :: getSignalType))
+			.entrySet().stream()
+			.collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue().stream().mapToInt(m -> m.getCount()).reduce(0,(a,b) -> a + b)))
+			.entrySet().stream()
+			.forEach(f -> {
+				Logger.info("type:{}", f.getKey());
+				Logger.info("count:{}", f.getValue());
+				switch(f.getKey()) {
 				case 1:
-					rsCount.setLegalNormalStationNumber(count);
+					rsCount.setLegalNormalStationNumber(f.getValue());
 					break;
 //				case 1:
 //					rsCount.setLegalUnNormalStationNumber(count);
 //					break;
 				case 2:
-					rsCount.setKonwStationNumber(count);
+					rsCount.setKonwStationNumber(f.getValue());
 					break;
 				case 3:
-					rsCount.setUnKonw(count);
+					rsCount.setUnKonw(f.getValue());
 					break;
 				case 4:
-					rsCount.setIllegalSignal(count);
+					rsCount.setIllegalSignal(f.getValue());
 					break;
 				default:
 					;
 				}
 			});
-			index0.getAndAdd(rsCount.getLegalNormalStationNumber());
-			index1.getAndAdd(rsCount.getLegalUnNormalStationNumber());
-			index2.getAndAdd(rsCount.getKonwStationNumber());
-			index3.getAndAdd(rsCount.getUnKonw());
-			index4.getAndAdd(rsCount.getIllegalSignal());
-		});
-		rsCountTotal.setLegalNormalStationNumber(index0.get());
-		rsCountTotal.setLegalUnNormalStationNumber(index1.get());
-		rsCountTotal.setKonwStationNumber(index2.get());
-		rsCountTotal.setUnKonw(index3.get());
-		rsCountTotal.setIllegalSignal(index4.get());
-		model.addAttribute("redio", rsCountTotal);
+		model.addAttribute("redio", rsCount);
 		return "waveorder/redio_type_list";
 	}
 	@PostMapping("/redioTypeForSiFon")
@@ -212,49 +201,37 @@ public class WaveOrderViewController {
 		RadioSignalClassifiedQueryResponse response = serviceRadioSignal.getRadioSignalWebServiceSoap().queryRadioSignalClassified(request);
 		//System.out.println("===============================response:"+JSON.toJSONString(response));
 		
-		RedioStatusCount rsCountTotal = new RedioStatusCount();
-		AtomicInteger index0 = new AtomicInteger();
-		AtomicInteger index1 = new AtomicInteger();
-		AtomicInteger index2 = new AtomicInteger();
-		AtomicInteger index3 = new AtomicInteger();
-		AtomicInteger index4 = new AtomicInteger();
-		response.getLstOnStation().getSignalStaticsOnStation().stream().forEach(t -> {
-			RedioStatusCount rsCount = new RedioStatusCount();
-			t.getSignalStaticsLst().getSignalStatics().forEach(t1 -> {
-				int type = t1.getSignalType();
-				int count = t1.getCount();
-				switch(type) {
+		RedioStatusCount rsCount = new RedioStatusCount();
+		response.getLstOnStation().getSignalStaticsOnStation().stream()
+			.flatMap(t -> t.getSignalStaticsLst().getSignalStatics().stream())
+			.collect(Collectors.groupingBy(SignalStatics :: getSignalType))
+			.entrySet().stream()
+			.collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue().stream().mapToInt(m -> m.getCount()).reduce(0,(a,b) -> a + b)))
+			.entrySet().stream()
+			.forEach(f -> {
+				Logger.info("type:{}", f.getKey());
+				Logger.info("count:{}", f.getValue());
+				switch(f.getKey()) {
 				case 1:
-					rsCount.setLegalNormalStationNumber(count);
+					rsCount.setLegalNormalStationNumber(f.getValue());
 					break;
 //				case 1:
 //					rsCount.setLegalUnNormalStationNumber(count);
 //					break;
 				case 2:
-					rsCount.setKonwStationNumber(count);
+					rsCount.setKonwStationNumber(f.getValue());
 					break;
 				case 3:
-					rsCount.setUnKonw(count);
+					rsCount.setUnKonw(f.getValue());
 					break;
 				case 4:
-					rsCount.setIllegalSignal(count);
+					rsCount.setIllegalSignal(f.getValue());
 					break;
 				default:
 					;
 				}
 			});
-			index0.getAndAdd(rsCount.getLegalNormalStationNumber());
-			index1.getAndAdd(rsCount.getLegalUnNormalStationNumber());
-			index2.getAndAdd(rsCount.getKonwStationNumber());
-			index3.getAndAdd(rsCount.getUnKonw());
-			index4.getAndAdd(rsCount.getIllegalSignal());
-		});
-		rsCountTotal.setLegalNormalStationNumber(index0.get());
-		rsCountTotal.setLegalUnNormalStationNumber(index1.get());
-		rsCountTotal.setKonwStationNumber(index2.get());
-		rsCountTotal.setUnKonw(index3.get());
-		rsCountTotal.setIllegalSignal(index4.get());
-		model.addAttribute("redio", rsCountTotal);
+		model.addAttribute("redio", rsCount);
 		return "waveorder/redio_type_list_to_sifon";
 	}
 
