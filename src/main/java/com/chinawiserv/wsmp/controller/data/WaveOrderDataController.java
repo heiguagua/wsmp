@@ -63,26 +63,23 @@ public class WaveOrderDataController {
 	public Map<String, Object> getRedioStatus(@RequestBody Map<String, Object> param) {
 //		 System.out.println("======================"+param);
 		// 根据用户ID查询自定义频段
-//		URL url1 = new URL(urlFreq);
-//		FreqService service = new FreqService(url1);
-		FrequencyRangeQuerySpec model = new FrequencyRangeQuerySpec();
-		model.setUserId(param.get("userID").toString());
-		List<FrequencyRangeInfo> response = serviceFreq.getFreqServiceHttpSoap12Endpoint().queryFrequencyRange(model);
+		FrequencyRangeQuerySpec request = new FrequencyRangeQuerySpec();
+		request.setUserId(param.get("userID").toString());
+		List<FrequencyRangeInfo> response = serviceFreq.getFreqServiceHttpSoap12Endpoint().queryFrequencyRange(request);
 		// System.out.println("=======================response:"+JSON.toJSONString(response));
 		final List<String> freqNames = Lists.newArrayList();
-		List<FrequencyBand> freqList = Lists.newArrayList();
-		response.stream().forEach(t -> {
+		final List<FrequencyBand> freqList = response.stream().map(t -> {
 			// 名字放入List中
 			freqNames.add(t.getName());
-			// 并设置service2入参:频段
+//			// 并设置service2入参:频段
 			FrequencyBand freq = new FrequencyBand();
 			BigDecimal multiplicand = new BigDecimal(Math.pow(10, 6));
 			BigInteger freqMin = new BigDecimal(t.getBeginFreq()).multiply(multiplicand).toBigInteger();
 			freq.setFreqMin(freqMin);
 			BigInteger freqMax = new BigDecimal(t.getEndFreq()).multiply(multiplicand).toBigInteger();
 			freq.setFreqMax(freqMax);
-			freqList.add(freq);
-		});
+			return freq;
+		}).collect(Collectors.toList());
 		// 根据自定义频段和监测站查询信号类型
 		RadioSignalClassifiedQueryRequest request2 = new RadioSignalClassifiedQueryRequest();
 		//设置自定义频段
@@ -96,23 +93,38 @@ public class WaveOrderDataController {
 		stationArray.setString(stationString );
 		request2.setStationNumber(stationArray);
 		RadioSignalClassifiedQueryResponse response2 = serviceRadioSignal.getRadioSignalWebServiceSoap().queryRadioSignalClassified(request2);
-		// System.out.println("==========================response2"+JSON.toJSONString(response2));
+
+		//设置合法子类型(违规)
+		RadioSignalSubClassifiedQueryRequest request3 = new RadioSignalSubClassifiedQueryRequest();
+		request3.setFreqBandList(array);
+		request3.setStationNumber(stationArray);
+		request3.setType(1);
+		RadioSignalSubClassifiedQueryResponse response3 = serviceRadioSignal.getRadioSignalWebServiceSoap().queryRadioSignalSubClassified(request3);
+		
+//		response3.getLstOnFreqBand().getSignalSubStaticsOnFreqBand().stream().
+		final List<Integer> legalSubTypeCountList = response3.getLstOnFreqBand().getSignalSubStaticsOnFreqBand().stream()
+				.map(m -> m.getCount())
+				.collect(Collectors.toList());
+		
 		List<RedioStatusCount> rsCountRows = Lists.newArrayList();
 		AtomicInteger index = new AtomicInteger();
 		response2.getLstOnFreqBand().getSignalStaticsOnFreqBand().stream().forEach(t -> {
+			Logger.info("index:{}", index.get());
 			RedioStatusCount rsCount = new RedioStatusCount();
-			rsCount.setRedioName(freqNames.get(index.getAndIncrement()));
+			rsCount.setRedioName(freqNames.get(index.get()));
+			//设置合法子类型（违规）
+			rsCount.setLegalUnNormalStationNumber(legalSubTypeCountList.get(index.get()));
 			rsCount.setBeginFreq(t.getBand().getFreqMin());
 			rsCount.setEndFreq(t.getBand().getFreqMax());
-			// System.out.println("第"+index.get()+"次：");
+			System.out.println("name:"+freqNames.get(index.get()));
 			t.getSignalStaticsLst().getSignalStatics().forEach(t1 -> {
 				int type = t1.getSignalType();
 				int count = t1.getCount();
-				// System.out.println("===type:"+type);
-				// System.out.println("===count:"+count);
+				System.out.println("==type:"+type);
+				System.out.println("==count:"+count);
 				switch (type) {
 				case 1:
-					rsCount.setLegalNormalStationNumber(count);
+					rsCount.setLegalNormalStationNumber(count - legalSubTypeCountList.get(index.get()));
 					break;
 				case 2:
 					rsCount.setKonwStationNumber(count);
@@ -126,6 +138,7 @@ public class WaveOrderDataController {
 				default:;
 				}
 			});
+			index.getAndIncrement();
 			rsCountRows.add(rsCount);
 		});
 		Map<String, Object> result = Maps.newLinkedHashMap();
@@ -233,8 +246,6 @@ public class WaveOrderDataController {
 		request.setEndFreq(new BigInteger(param.get("endFreq").toString()));
 		// 返回结果:
 		RadioSignalQueryResponse response = serviceRadioSignal.getRadioSignalWebServiceSoap().queryRadioSignal(request);
-		// System.out.println("==============================================response:"+JSON.toJSONString(response));
-		// System.out.println("==============================================total:"+response.getTotalCount());
 		List<RedioDetail> redioRows = Lists.newArrayList();
 		if((Boolean)(param.get("isSubType"))) {
 			//如果是子类型
@@ -266,12 +277,14 @@ public class WaveOrderDataController {
 			});
 		}else {
 			//如果是大类型
+			AtomicInteger index = new AtomicInteger();
 			response.getRadioSignals().getRadioSignalDTO().stream().forEach(t -> {
 				// System.out.println("====信号频率："+t.getCenterFreq());
 				// 每个大类信号，都要先判断一下是否有子类型信号，如果出来有结果，则减去子类型信号的总数即为大类型的个数。
 				// 判断是否存在任何同一频段下合法信号的子类型信号，如果存在，则不添加到返回集里面
 					if(t.getAbnormalHistory().getRadioSignalAbnormalHistoryDTO().stream().findAny().isPresent()) {
 						Logger.info("存在子类的大类型频段：{}", t.getCenterFreq());
+						System.out.println("index:"+ index.getAndIncrement());
 					}else {
 						//如果不存在子类型，则添加到大类型中
 						RedioDetail redio = new RedioDetail();
@@ -289,6 +302,7 @@ public class WaveOrderDataController {
 						// 设置台站
 						// redio.setStation(t.getRadioStation().getStation().getName());
 						redioRows.add(redio);
+						System.out.println("index:"+ index.getAndIncrement()+"|id:"+t.getID());
 					}
 			});
 		}

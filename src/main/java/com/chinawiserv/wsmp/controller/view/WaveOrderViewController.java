@@ -146,6 +146,7 @@ public class WaveOrderViewController {
 	public String redioType(Model model, @RequestBody Map<String, Object> map) {
 		//根据监测站查询信号类型统计
 //		System.out.println("================================map:"+map);
+		//设置大类型
 		RadioSignalClassifiedQueryRequest request = new RadioSignalClassifiedQueryRequest();
 		ArrayOfString value = new ArrayOfString();
 		@SuppressWarnings("unchecked")
@@ -154,8 +155,15 @@ public class WaveOrderViewController {
 		request.setStationNumber(value);
 		RadioSignalClassifiedQueryResponse response = serviceRadioSignal.getRadioSignalWebServiceSoap().queryRadioSignalClassified(request);
 		//System.out.println("===============================response:"+JSON.toJSONString(response));
-		
 		RedioStatusCount rsCount = new RedioStatusCount();
+		//设置合法子类型(违规)
+		RadioSignalSubClassifiedQueryRequest request2 = new RadioSignalSubClassifiedQueryRequest();
+		request2.setStationNumber(value);
+		request2.setType(1);
+		RadioSignalSubClassifiedQueryResponse response2 = serviceRadioSignal.getRadioSignalWebServiceSoap().queryRadioSignalSubClassified(request2);
+		Integer legalSubTypeCount = response2.getLstOnStation().getSignalSubStaticsOnStation().stream().mapToInt(m -> m.getCount()).reduce(0,(a,b) -> a + b);
+		rsCount.setLegalUnNormalStationNumber(legalSubTypeCount);
+		
 		response.getLstOnStation().getSignalStaticsOnStation().stream()
 			.flatMap(t -> t.getSignalStaticsLst().getSignalStatics().stream())
 			.collect(Collectors.groupingBy(SignalStatics :: getSignalType))
@@ -163,15 +171,10 @@ public class WaveOrderViewController {
 			.collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue().stream().mapToInt(m -> m.getCount()).reduce(0,(a,b) -> a + b)))
 			.entrySet().stream()
 			.forEach(f -> {
-				Logger.info("type:{}", f.getKey());
-				Logger.info("count:{}", f.getValue());
 				switch(f.getKey()) {
 				case 1:
-					rsCount.setLegalNormalStationNumber(f.getValue());
+					rsCount.setLegalNormalStationNumber(f.getValue() - legalSubTypeCount);
 					break;
-//				case 1:
-//					rsCount.setLegalUnNormalStationNumber(count);
-//					break;
 				case 2:
 					rsCount.setKonwStationNumber(f.getValue());
 					break;
@@ -185,6 +188,7 @@ public class WaveOrderViewController {
 					;
 				}
 			});
+		
 		model.addAttribute("redio", rsCount);
 		return "waveorder/redio_type_list";
 	}
@@ -202,6 +206,16 @@ public class WaveOrderViewController {
 		//System.out.println("===============================response:"+JSON.toJSONString(response));
 		
 		RedioStatusCount rsCount = new RedioStatusCount();
+		//设置合法子类型(违规)
+		RadioSignalSubClassifiedQueryRequest request2 = new RadioSignalSubClassifiedQueryRequest();
+		request2.setStationNumber(value);
+		request2.setType(1);
+		RadioSignalSubClassifiedQueryResponse response2 = serviceRadioSignal.getRadioSignalWebServiceSoap()
+				.queryRadioSignalSubClassified(request2);
+		Integer legalSubTypeCount = response2.getLstOnStation().getSignalSubStaticsOnStation().stream().mapToInt(m -> m.getCount()).reduce(0,(a,b) -> a + b);
+		rsCount.setLegalUnNormalStationNumber(legalSubTypeCount);
+		
+		//设置大类型
 		response.getLstOnStation().getSignalStaticsOnStation().stream()
 			.flatMap(t -> t.getSignalStaticsLst().getSignalStatics().stream())
 			.collect(Collectors.groupingBy(SignalStatics :: getSignalType))
@@ -209,15 +223,10 @@ public class WaveOrderViewController {
 			.collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue().stream().mapToInt(m -> m.getCount()).reduce(0,(a,b) -> a + b)))
 			.entrySet().stream()
 			.forEach(f -> {
-				Logger.info("type:{}", f.getKey());
-				Logger.info("count:{}", f.getValue());
 				switch(f.getKey()) {
 				case 1:
-					rsCount.setLegalNormalStationNumber(f.getValue());
+					rsCount.setLegalNormalStationNumber(f.getValue() - legalSubTypeCount);
 					break;
-//				case 1:
-//					rsCount.setLegalUnNormalStationNumber(count);
-//					break;
 				case 2:
 					rsCount.setKonwStationNumber(f.getValue());
 					break;
