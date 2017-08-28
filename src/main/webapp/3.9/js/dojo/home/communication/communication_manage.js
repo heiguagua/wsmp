@@ -56,11 +56,11 @@ define(function() {
 		  });
 		  
 		  $('#table-comms').bootstrapTable({
-		        method: 'get',
-		        contentType: "application/x-www-form-urlencoded",//必须要有！！！！
-		        url:"../assets/json/table-comms.json",//要请求数据的文件路径
+		        method: 'post',
+		        contentType: "application/json",//必须要有！！！！
+		        url:"data/communication/topTable",//要请求数据的文件路径
 		        striped: true, //是否显示行间隔色
-		        dataField: "rows",//bootstrap table 可以前端分页也可以后端分页，这里
+		        dataField: "data",//bootstrap table 可以前端分页也可以后端分页，这里
 		        //我们使用的是后端分页，后端分页时需返回含有total：总记录数,这个键值好像是固定的
 		        //rows： 记录集合 键值可以修改  dataField 自己定义成自己想要的就好
 		        detailView:false,
@@ -71,7 +71,7 @@ define(function() {
 //						params.areaCode = AREACODE;
 //						return params
 //					}, // 请求服务器时所传的参数
-		        sidePagination:'server',//指定服务器端分页
+		        sidePagination:'client',//指定服务器端分页
 		        pageSize:10,//单页记录数
 		        pageList:[5,10,20,30],//分页步进值
 		        clickToSelect: true,//是否启用点击选中行
@@ -79,7 +79,7 @@ define(function() {
 		          return res;
 		        },
 		        columns: [{
-		                field: 'net_type',
+		                field: 'generation',
 		                title: '2G-4G',
 		                sortable:true,
 		                formatter:function(value,row,index) {
@@ -93,30 +93,30 @@ define(function() {
 		                  return '<a>'+value+'</a>';
 		                }
 		            }, {
-		                field: 'channel',
+		                field: 'freqRange',
 		                title: '频段范围',
 		                sortable:true,
 		                formatter:function(value,row,index) {
 		                  return '<a>'+value+'</a>';
 		                }
 		            }, {
-		                field: 'tech_way',
+		                field: 'techName',
 		                title: '技术制式 ',
 		                sortable:true
 		            }, {
-		                field: 'channel_use',
+		                field: 'infoChannel',
 		                title: '频段信道数',
 		                sortable:true
 		            },{
-		                field: 'info_use',
+		                field: 'monitorCoverage',
 		                title: '监测网覆盖率',
 		                sortable:true
 		            },{
-		                field: 'detect_coverage',
+		                field: 'stationCoverage',
 		                title: '台站覆盖率',
 		                sortable:true
 		            },{
-		                field: 'comm_coverage',
+		                field: 'occupancy',
 		                title: '频段占用度',
 		                sortable:true
 		            }]
