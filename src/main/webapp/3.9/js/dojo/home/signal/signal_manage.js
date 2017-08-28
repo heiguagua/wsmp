@@ -294,6 +294,8 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             var params ={};
             var addOpUpdate =$("#searchId").val();//修改还是新增，id
             var freId =$("#signal_list1").find("option:selected").val();//信号搜索时选择的时间id
+            var des_params = $("#des").val();
+            params.des =des_params;
             params.freqguid = (addOpUpdate)?addOpUpdate:freId;
             params.idz = addOpUpdate;
             params.freIdz = $("#signal_list1").find("option:selected").val();
@@ -364,6 +366,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 
             ajax.put("data/signal/one/update", data, function() {
                 layer.msg('成功');
+                $("#signal_list1").find('option:selected').attr("des",des);
                 $("#modalStationAlarm").modal('hide');
             });
 
@@ -395,10 +398,16 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             var kmz = $('#search').val();
             var id = $("#signal_list1").find('option:selected').val();//选中的时间的id
             $("#typeCode").val($(this).val());
+            var text = $("#signal_list1").find('option:selected').attr("des");
+            if(text==undefined){
+                text ='';
+            }
             var data = {};
             data.type = "none";
-            var temp = '<div class="header-search"><input type="text" placeholder="输入中心频率">' +
-                '<span class="search-icon"></span></div>' +
+            var temp =
+                //'<div class="header-search">' +
+                //'<input type="text" placeholder="输入中心频率">' +
+                //'<span class="search-icon"></span></div>' +
                 '<table class="table table-striped" id="table-station-list"></table>' +
                 '<div class="mark-content">' +
                 '<p id="addOrUpdate" searchId>添加违规记录</p>'+
@@ -450,7 +459,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 '	</div>'+
                 '</form>'+
 
-                '<p>备注</p><textarea id = "des" rows="5" placeholder="请输入备注信息" cols="120"></textarea></div>';
+                '<p>备注</p><textarea id = "des" rows="5" placeholder="请输入备注信息" cols="120">'+text+'</textarea></div>';
             $("#stationWrap").html("");
             $("#stationWrap").html(temp);
             //日期插件初始化
@@ -550,6 +559,11 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 responseHandler : function(res) {
                     return res;
                 },
+                //search:true, //搜索参数
+                //searchAlign:'left', //搜索参数
+                //searchOnEnterKey:true, //搜索参数
+                //searchOnEnterKey:true,//设置为 true时，按回车触发搜索方法，否则自动触发搜索方法
+                //searchText:'null',
                 columns : [{
                     field : 'stationName',
                     title : '台站名称'
@@ -565,100 +579,106 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 }]
             });
 
+
             $('#table-station-list').on('click-row.bs.table', function(row, $element, field) {
                 $('#table-station-list tr').removeClass("selected");
                 field.addClass("selected");
             });
 
             $("#modalStationAlarm").modal();
+
 
         });
          //合法违规信号
-        $("#undeclared").click(function() {
-            var value = $('option:selected').val();
-            var kmz = $('#search').val();
-            var data = {};
-            var typeCode = $(this).val();
-            $("#typeCode").val(typeCode);
-            data.type = "none";
-            var temp = '<div class="header-search"><input type="text" placeholder="输入中心频率">' +
-                '<span class="search-icon"></span></div>' +
-                '<table class="table table-striped" id="table-station-list"></table>' +
-                '<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息"></textarea></div>';
-            $("#stationWrap").html("");
-            $("#stationWrap").html(temp);
-            $('#table-station-list').bootstrapTable({
-                method : 'get',
-                contentType : "application/x-www-form-urlencoded", //必须要有！！！！
-                striped : true, //是否显示行间隔色
-                dataField : "rows", //bootstrap table 可以前端分页也可以后端分页，这里
-                //我们使用的是后端分页，后端分页时需返回含有total：总记录数,这个键值好像是固定的
-                //rows： 记录集合 键值可以修改  dataField 自己定义成自己想要的就好
-                detailView : false,
-                pageNumber : 1, //初始化加载第一页，默认第一页
-                pagination : true, //是否分页
-                url : "data/alarm/StationInfo",
-                queryParamsType : 'limit', //查询参数组织方式
-                queryParams : function(params) {
-                    var info = Binding.getUser();
-
-                    info = JSON.parse(info);
-                    console.log(info);
-                    var codes = info.Area.Citys;
-                    var codeList = [];
-
-                    for (var index =0;index<codes.length;index++){
-                        codeList.push(codes[index].Code);
-                    }
-                    codeList.push(info.Area.Code);
-                    var codeStr = JSON.stringify(codeList);
-
-                    console.log(codeStr);
-                    codeStr = codeStr.replace("[","").replace("]","");
-                    params.areaCode = codeStr;
-
-                    return params
-                }, //请求服务器时所传的参数
-                onClickRow : function(row) {
-                    //data.id = row.signalId;
-                    $("#stationId").val(row.id);
-                //								ajax.post("data/alarm/instersingal",data,function(){
-                //
-                //								});
-                },
-                sidePagination : 'server', //指定服务器端分页
-                pageSize : 7, //单页记录数
-                pageList : [5, 10, 20, 30], //分页步进值
-                clickToSelect : true, //是否启用点击选中行
-                responseHandler : function(res) {
-                    return res;
-                },
-                columns : [{
-                    field : 'stationName',
-                    title : '台站名称'
-                }, {
-                    field : 'centerFrequency',
-                    title : '中心频率（kHz）',
-                    formatter : function(value, row, index) {
-                        return '<a>' + value + '</a>';
-                    }
-                }, {
-                    field : 'tapeWidth',
-                    title : '带宽（kHz）'
-                }]
-            });
-
-            $('#table-station-list').on('click-row.bs.table', function(row, $element, field) {
-                $('#table-station-list tr').removeClass("selected");
-                field.addClass("selected");
-            });
-
-            $("#modalStationAlarm").modal();
-        });
+        //$("#undeclared").click(function() {
+        //    var value = $('option:selected').val();
+        //    var kmz = $('#search').val();
+        //    var data = {};
+        //    var typeCode = $(this).val();
+        //    $("#typeCode").val(typeCode);
+        //    data.type = "none";
+        //    var temp = '<div class="header-search"><input type="text" placeholder="输入中心频率">' +
+        //        '<span class="search-icon"></span></div>' +
+        //        '<table class="table table-striped" id="table-station-list"></table>' +
+        //        '<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息"></textarea></div>';
+        //    $("#stationWrap").html("");
+        //    $("#stationWrap").html(temp);
+        //    $('#table-station-list').bootstrapTable({
+        //        method : 'get',
+        //        contentType : "application/x-www-form-urlencoded", //必须要有！！！！
+        //        striped : true, //是否显示行间隔色
+        //        dataField : "rows", //bootstrap table 可以前端分页也可以后端分页，这里
+        //        //我们使用的是后端分页，后端分页时需返回含有total：总记录数,这个键值好像是固定的
+        //        //rows： 记录集合 键值可以修改  dataField 自己定义成自己想要的就好
+        //        detailView : false,
+        //        pageNumber : 1, //初始化加载第一页，默认第一页
+        //        pagination : true, //是否分页
+        //        url : "data/alarm/StationInfo",
+        //        queryParamsType : 'limit', //查询参数组织方式
+        //        queryParams : function(params) {
+        //            var info = Binding.getUser();
+        //
+        //            info = JSON.parse(info);
+        //            console.log(info);
+        //            var codes = info.Area.Citys;
+        //            var codeList = [];
+        //
+        //            for (var index =0;index<codes.length;index++){
+        //                codeList.push(codes[index].Code);
+        //            }
+        //            codeList.push(info.Area.Code);
+        //            var codeStr = JSON.stringify(codeList);
+        //
+        //            console.log(codeStr);
+        //            codeStr = codeStr.replace("[","").replace("]","");
+        //            params.areaCode = codeStr;
+        //
+        //            return params
+        //        }, //请求服务器时所传的参数
+        //        onClickRow : function(row) {
+        //            //data.id = row.signalId;
+        //            $("#stationId").val(row.id);
+        //        //								ajax.post("data/alarm/instersingal",data,function(){
+        //        //
+        //        //								});
+        //        },
+        //        sidePagination : 'server', //指定服务器端分页
+        //        pageSize : 7, //单页记录数
+        //        pageList : [5, 10, 20, 30], //分页步进值
+        //        clickToSelect : true, //是否启用点击选中行
+        //        responseHandler : function(res) {
+        //            return res;
+        //        },
+        //        columns : [{
+        //            field : 'stationName',
+        //            title : '台站名称'
+        //        }, {
+        //            field : 'centerFrequency',
+        //            title : '中心频率（kHz）',
+        //            formatter : function(value, row, index) {
+        //                return '<a>' + value + '</a>';
+        //            }
+        //        }, {
+        //            field : 'tapeWidth',
+        //            title : '带宽（kHz）'
+        //        }]
+        //    });
+        //
+        //    $('#table-station-list').on('click-row.bs.table', function(row, $element, field) {
+        //        $('#table-station-list tr').removeClass("selected");
+        //        field.addClass("selected");
+        //    });
+        //
+        //    $("#modalStationAlarm").modal();
+        //});
 
         //已知信号(已知)
         $("#nonlocal_station").click(function() {
             var value = $('option:selected').val();
+            var text = $("#signal_list1").find('option:selected').attr("des");
+            if(text==undefined){
+                text ='';
+            }
             var kmz = $('#search').val();
             var data = {};
             var typeCode = $(this).val();
@@ -668,7 +688,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 '<span class="search-icon"></span></div>' +
                 '<table class="table table-striped" id="table-station-list"></table>' +
                 '<button type="button" class="btn btn-primary addStation">添加台站</button>'+
-                '<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息"></textarea></div>';
+                '<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息">'+text+'</textarea></div>';
             $("#stationWrap").html("");
             $("#stationWrap").html(temp);
             //合法违规和已知单击触发时，，点击添加台站按钮之后关闭弹出窗口，然后跳转到博创的台站数据分析模块中添加台站（需要博创提供链接）
@@ -758,13 +778,17 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
         //非法信号（非法）
         $("#illegal").click(function() {
             var value = $('option:selected').val();
+            var text = $("#signal_list1").find('option:selected').attr("des");
+            if(text==undefined){
+                text ='';
+            }
             var kmz = $('#search').val();
             var data = {
                 "stationCode" : value,
                 "kmz" : kmz
             };
             $("#typeCode").val($(this).val());
-            var temp = '<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息"></textarea></div>';
+            var temp = '<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息">'+text+'</textarea></div>';
             $("#stationWrap").html("");
             $("#stationWrap").html(temp);
 
@@ -774,13 +798,17 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
         //不明信号（不明）
         $("#unknown").click(function() {
             var value = $('option:selected').val();
+            var text = $("#signal_list1").find('option:selected').attr("des");
+            if(text==undefined){
+                text ='';
+            }
             var kmz = $('#search').val();
             var data = {
                 "stationCode" : value,
                 "kmz" : kmz
             };
             $("#typeCode").val($(this).val());
-            var temp = '<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息"></textarea></div>';
+            var temp = '<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息">'+text+'</textarea></div>';
             $("#stationWrap").html("");
             $("#stationWrap").html(temp);
 
@@ -1139,10 +1167,11 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
         		return;
         	}
             console.log(params.name)
-            var time =params.name+'';
-            var year =time.substring(0,4);
-            var month =time.substring(4,6);
-            var day =time.substring(6);
+            time =params.name;
+            var currenttime =params.name+'';
+            var year =currenttime.substring(0,4);
+            var month =currenttime.substring(4,6);
+            var day =currenttime.substring(6);
             if(month.substring(0,1)=='0'){
                 month = month.substring(1);
             }
