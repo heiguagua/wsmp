@@ -76,7 +76,7 @@
 						<li role="presentation"><a href="#">
 								<div class="checkbox checkbox-primary flex1 ">
 									<input type="checkbox" value="2" name="data-type" id="IQ">
-									<label for="spectrum"> IQ数据 </label>
+									<label for="IQ"> IQ数据 </label>
 								</div>
 						</a></li>
 						<li role="presentation"><a href="#">
@@ -189,7 +189,8 @@
 		<section class='flex-row'>
 			<div class='box'>
 				<div class='locate-coverage'>
-					<label class='module-name'> <img src='images/locate.png' />&nbsp;&nbsp;成都某某站台
+					<label class='module-name'> <img src='images/locate.png' />
+						<span id = "stationName">&nbsp;&nbsp;台站</span>
 					</label>
 					<div class='pull-right'>
 						<input type="text" class="gate-filter" placeholder="请输入门阀" /> <button class="btn btn-submit" id="gate-btn">提交</button>电磁覆盖率:&nbsp; <span class='coverage-number'>90%</span>

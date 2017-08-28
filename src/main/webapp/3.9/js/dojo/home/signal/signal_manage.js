@@ -1152,6 +1152,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
         var name = $('#station-list2').find('option:selected').text();//选中的台站名称
         console.log(name)
         name=name.replace("未查询到数据","");
+        $("#stationName").html(name);
         $("#levelChartTitle").html(name+"——电平峰值");
         $("#monthChartTitle").html(name+"——近3个月占用度（按天统计）");
 
