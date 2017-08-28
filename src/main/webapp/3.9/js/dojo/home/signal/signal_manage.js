@@ -1496,7 +1496,6 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             }
             var type = $("#redio-type").val();
             type = parseInt(type);
-            alert(type);
             switch (type) {
 
             case 0:
