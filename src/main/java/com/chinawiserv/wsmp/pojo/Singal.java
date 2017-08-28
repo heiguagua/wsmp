@@ -12,6 +12,8 @@ public class Singal {
 
 	private String text;
 
+	private String stationNumber;
+
 	private String id;
 
 	private BigInteger integer;
@@ -118,5 +120,13 @@ public class Singal {
 
 	public void setEndTime(String endTime) {
 		this.endTime = endTime;
+	}
+
+    public void setStation(String stationNumber) {
+		this.stationNumber = stationNumber;
+    }
+
+	public String getStationNumber() {
+		return stationNumber;
 	}
 }

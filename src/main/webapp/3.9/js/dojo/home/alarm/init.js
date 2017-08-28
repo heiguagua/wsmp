@@ -157,6 +157,8 @@ define(["home/alarm/alarm_manage", "ajax"],
             ajax.post("data/alarm/getStation", data, function (reslut) {
                 glayer.clear();
 
+                $(".coverage-number").html(reslut.electrCoverage*100+"%");
+
                 var arryOfStation = reslut.stationPiont;
                 var arryOfLevel = reslut.levelPoint;
 
@@ -246,6 +248,17 @@ define(["home/alarm/alarm_manage", "ajax"],
 
             console.log(JSON.stringify(agoLayer.initialExtent));
             var initiaEx = agoLayer.initialExtent;
+
+            var info = Binding.getUser();
+            info = JSON.parse(info);
+
+            var code = info.Area.Code;
+
+            var stations = Binding.getMonitorNodes(code);
+            stations = JSON.parse(stations);
+
+            console.log(stations);
+
             map = new esri.Map("mapDiv", {
                 //center : [ 104.06, 30.67 ],
                 zoom: 7,

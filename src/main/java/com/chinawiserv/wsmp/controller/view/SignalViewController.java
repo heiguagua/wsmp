@@ -124,7 +124,8 @@ public class SignalViewController {
 			redioDetail.setFreqPeakNumFSK(map.get("freqPeakNumFSK"));
 
 			model.addAttribute("redioDetail", redioDetail);
-			Logger.info("方法 {} 操作时间{} 请求成功 入参{}  ", "signal_detail", LocalDateTime.now().toString());
+
+			Logger.info("方法 {} 操作时间{} 请求成功 中心频率{} 开始时间{} 监测站id{} 信号id{} 返回值{} ", "signal_detail", LocalDateTime.now().toString(),centorfreq,beginTime,stationCode,id,JSON.toJSONString(redioDetail));
 		}
 		catch (Exception e) {
 			Logger.error("方法 {} 操作时间{} 请求异常  原因{}", "signal_detail", LocalDateTime.now().toString(), e);
@@ -155,6 +156,7 @@ public class SignalViewController {
                 singal.setEndTime(t.getInvalidDate().toString().replaceAll(":", "").replaceAll("T", "").replaceAll("-", ""));
                 singal.setContext(t.getSaveDate().toString().replaceAll("T", " "));
 				singal.setDes(t.getDes());
+				//singal.setStation(t.getStationDTOs().getRadioSignalStationDTO().stream().findFirst().orElseGet(()->new RadioSignalStationDTO()).getStationNumber());
                 return singal;
             }).collect(toList());
 
