@@ -115,8 +115,8 @@ public class AlarmDataController {
                 LinkedList<Object> xAxis = Lists.newLinkedList();
                 LinkedList<Object> series = Lists.newLinkedList();
 
-                Occ = Occ.entrySet().stream().sorted((c1,c2)-> Integer.parseInt(c1.getKey())>Integer.parseInt(c2.getKey())?1:-1)
-                        .collect(toMap(Map.Entry::getKey,Map.Entry::getValue,throwingMerger(), LinkedHashMap::new));
+                Occ = Occ.entrySet().stream().sorted((c1, c2) -> Integer.parseInt(c1.getKey()) > Integer.parseInt(c2.getKey()) ? 1 : -1)
+                        .collect(toMap(Map.Entry::getKey, Map.Entry::getValue, throwingMerger(), LinkedHashMap::new));
 
                 Occ.forEach((k, v) -> {
                     xAxis.add(k);
@@ -151,8 +151,8 @@ public class AlarmDataController {
 
                 final double pow = Math.pow(10, 6);
 
-                Max = Max.entrySet().stream().sorted(( c1,  c2) -> Integer.parseInt(c1.getKey().toString())>Integer.parseInt(c2.getKey().toString())?  1:-1
-                ).collect(toMap(Map.Entry::getKey,Map.Entry::getValue,throwingMerger(), LinkedHashMap::new));
+                Max = Max.entrySet().stream().sorted((c1, c2) -> Integer.parseInt(c1.getKey().toString()) > Integer.parseInt(c2.getKey().toString()) ? 1 : -1
+                ).collect(toMap(Map.Entry::getKey, Map.Entry::getValue, throwingMerger(), LinkedHashMap::new));
 
                 Max.forEach((k, v) -> {
 
@@ -211,81 +211,82 @@ public class AlarmDataController {
         HashMap<String, Object> occReslute = Maps.newHashMap();
         try {
 
-                String id = "52010126";
-                long frequency = (long) (88.8 * 1000000);
-                //测试或者正式环境使用
-    //            Map<Object, Object> max = hbaseClient.queryMaxLevels(stationCode, centorFreq, upperBound, lowerBound, beginTime);
-    //            Map<String, Object> occ = hbaseClient.queryOccDay(stationCode, beginTime, 90, centorFreq).getOcc();
+            String id = "52010126";
+            long frequency = (long) (88.8 * 1000000);
+            //测试或者正式环境使用
+            //            Map<Object, Object> max = hbaseClient.queryMaxLevels(stationCode, centorFreq, upperBound, lowerBound, beginTime);
+            //            Map<String, Object> occ = hbaseClient.queryOccDay(stationCode, beginTime, 90, centorFreq).getOcc();
 
-                Map<Object, Object> max = hbaseClient.queryMaxLevels(stationCode, centorFreq, upperBound, lowerBound, beginTime);
-                Map<String, Object> occ = hbaseClient.queryOccDay(stationCode, beginTime, 90, frequency).getOcc();
+            Map<Object, Object> max = hbaseClient.queryMaxLevels(stationCode, centorFreq, upperBound, lowerBound, beginTime);
+            Map<String, Object> occ = hbaseClient.queryOccDay(stationCode, beginTime, 90, frequency).getOcc();
 
-                if (occ.size() == 0) {
+            if (occ.size() == 0) {
 
-                    HashMap<String, Object> restlutHashMap = Maps.newHashMap();
+                HashMap<String, Object> restlutHashMap = Maps.newHashMap();
 
-                    String[] xAxis = new String[]{};
-                    double[] series = new double[]{};
+                String[] xAxis = new String[]{};
+                double[] series = new double[]{};
 
-                    restlutHashMap.put("xAxis", xAxis);
-                    restlutHashMap.put("series", series);
-                    reslutMap.put("monthOcc", restlutHashMap);
-                    Logger.info("以三个月计算占用度从hbase中查询正常返回值为空 查询时间为{}，页面入参：监测站id{}，开始时间{},中心频率{}", LocalDateTime.now().toString(), stationCode, beginTime, centorFreq);
-                } else {
+                restlutHashMap.put("xAxis", xAxis);
+                restlutHashMap.put("series", series);
+                reslutMap.put("monthOcc", restlutHashMap);
+                Logger.info("以三个月计算占用度从hbase中查询正常返回值为空 查询时间为{}，页面入参：监测站id{}，开始时间{},中心频率{}", LocalDateTime.now().toString(), stationCode, beginTime, centorFreq);
+            } else {
 
 
-                    LinkedList<Object> xAxis = Lists.newLinkedList();
-                    LinkedList<Object> series = Lists.newLinkedList();
+                LinkedList<Object> xAxis = Lists.newLinkedList();
+                LinkedList<Object> series = Lists.newLinkedList();
 
-                    occ.forEach((k, v) -> {
-                        xAxis.add(k);
-                        series.add(v);
-                    });
+                occ = occ.entrySet().stream().sorted((c1, c2) -> Integer.parseInt(c1.getKey().toString()) > Integer.parseInt(c2.getKey().toString()) ? 1 : -1)
+                        .collect(toMap(Map.Entry::getKey, Map.Entry::getValue, throwingMerger(), LinkedHashMap::new));
 
-                    occ = occ.entrySet().stream().sorted((c1,c2)-> Integer.parseInt(c1.toString())>Integer.parseInt(c2.toString())?1:-1)
-                            .collect(toMap(Map.Entry::getKey,Map.Entry::getValue,throwingMerger(), LinkedHashMap::new));
-                    occReslute.put("series", series);
-                    occReslute.put("xAxis", xAxis);
-                    reslutMap.put("monthOcc", occReslute);
-                    Logger.info("以三个月计算占用度从hbase中查询正常有返回值为{} ， 查询时间为{}，页面入参：监测站id{}，开始时间{},中心频率{}", occ, LocalDateTime.now().toString(), stationCode, beginTime, centorFreq);
-                }
+                occReslute.put("series", series);
+                occReslute.put("xAxis", xAxis);
+                reslutMap.put("monthOcc", occReslute);
 
-                if (max.size() == 0) {
+                occ.forEach((k, v) -> {
+                    xAxis.add(k);
+                    series.add(v);
+                });
+                Logger.info("以三个月计算占用度从hbase中查询正常有返回值为{} ， 查询时间为{}，页面入参：监测站id{}，开始时间{},中心频率{}", occ, LocalDateTime.now().toString(), stationCode, beginTime, centorFreq);
+            }
 
-                    String[] xAxis = new String[]{};
-                    double[] series = new double[]{};
+            if (max.size() == 0) {
 
-                    resoluteHashMap.put("xAxis", xAxis);
-                    resoluteHashMap.put("series", series);
+                String[] xAxis = new String[]{};
+                double[] series = new double[]{};
 
-                    reslutMap.put("max", resoluteHashMap);
-                    Logger.info("以三个月计算占用度从hbase中查询正常返回值为空 查询时间为{}，页面入参：监测站id{}，开始时间{},中心频率{}", LocalDateTime.now().toString(), stationCode, beginTime, centorFreq);
-                    return reslutMap;
-                } else {
+                resoluteHashMap.put("xAxis", xAxis);
+                resoluteHashMap.put("series", series);
 
-                    LinkedList<Double> xAxis = Lists.newLinkedList();
-                    LinkedList<Object> series = Lists.newLinkedList();
-
-                    final double pow = Math.pow(10, 6);
-
-                    max = max.entrySet().stream().sorted(( c1,  c2) -> Integer.parseInt(c1.getKey().toString())>Integer.parseInt(c2.getKey().toString())?  1:-1
-                    ).collect(toMap(Map.Entry::getKey,Map.Entry::getValue,throwingMerger(), LinkedHashMap::new));
-
-                    max.forEach((k, v) -> {
-
-                        final double key = Double.parseDouble(k.toString()) / pow;
-                        xAxis.add(key);
-                        series.add(v);
-                    });
-
-                    resoluteHashMap.put("xAxis", xAxis);
-                    resoluteHashMap.put("series", series);
-
-                    reslutMap.put("max", resoluteHashMap);
-                    Logger.info("以三个月计算峰值从hbase中查询正常有返回值为{} ， 查询时间为{}，页面入参：监测站id{}，开始时间{},中心频率{}", max, LocalDateTime.now().toString(), stationCode, beginTime, centorFreq);
-                }
-
+                reslutMap.put("max", resoluteHashMap);
+                Logger.info("以三个月计算占用度从hbase中查询正常返回值为空 查询时间为{}，页面入参：监测站id{}，开始时间{},中心频率{}", LocalDateTime.now().toString(), stationCode, beginTime, centorFreq);
                 return reslutMap;
+            } else {
+
+                LinkedList<Double> xAxis = Lists.newLinkedList();
+                LinkedList<Object> series = Lists.newLinkedList();
+
+                final double pow = Math.pow(10, 6);
+
+                max = max.entrySet().stream().sorted((c1, c2) -> Integer.parseInt(c1.getKey().toString()) > Integer.parseInt(c2.getKey().toString()) ? 1 : -1
+                ).collect(toMap(Map.Entry::getKey, Map.Entry::getValue, throwingMerger(), LinkedHashMap::new));
+
+                max.forEach((k, v) -> {
+
+                    final double key = Double.parseDouble(k.toString()) / pow;
+                    xAxis.add(key);
+                    series.add(v);
+                });
+
+                resoluteHashMap.put("xAxis", xAxis);
+                resoluteHashMap.put("series", series);
+
+                reslutMap.put("max", resoluteHashMap);
+                Logger.info("以三个月计算峰值从hbase中查询正常有返回值为{} ， 查询时间为{}，页面入参：监测站id{}，开始时间{},中心频率{}", max, LocalDateTime.now().toString(), stationCode, beginTime, centorFreq);
+            }
+
+            return reslutMap;
         } catch (Exception e) {
             Logger.error("以三个月计算峰值和占用度从hbase中查询其中一个或都出现异常 ， 查询时间为{}，页面入参：监测站id{}，开始时间{},中心频率{}， 异常为{}", LocalDateTime.now().toString(), stationCode, beginTime, centorFreq, e);
             String[] xAxis = new String[]{};
@@ -339,10 +340,10 @@ public class AlarmDataController {
         try {
 
             final String beginTime = param.get("beginTime").toString();
-            final long frequency =  Long.valueOf(param.get("frequency").toString());
+            final long frequency = Long.valueOf(param.get("frequency").toString());
 
             List<LevelLocate> relate = hbaseClient.queryLevelLocate(beginTime, frequency);
-            Logger.info("均值查询正常返回个数为 :{}, 操作时间：{},入参：开始时间：{}，中心频率：{}", relate.size(),  LocalDateTime.now().toString(), beginTime, frequency);
+            Logger.info("均值查询正常返回个数为 :{}, 操作时间：{},入参：开始时间：{}，中心频率：{}", relate.size(), LocalDateTime.now().toString(), beginTime, frequency);
             List<String> stationcode = (List<String>) param.get("stationCodes");
 
             mapPoint = relate.stream().filter(t -> stationcode.contains(t.getId())).collect(toList());
@@ -550,7 +551,7 @@ public class AlarmDataController {
 
             Map<String, Object> waringID = (Map<String, Object>) signal.get("warmingId");
             //service.getFreqWarnService().updateStatus((String) waringID.get("id"), 1);
-            service.getFreqWarnService().updateSelected((String) waringID.get("id"),1,null,(String) station.get("des"));
+            service.getFreqWarnService().updateSelected((String) waringID.get("id"), 1, null, (String) station.get("des"));
 
             Logger.info("告警生成信号成功 操作时间{} 入参:{} 返回消息{}", LocalDateTime.now().toString(), JSON.toJSONString(param), JSON.toJSONString(res));
         } catch (JsonProcessingException e) {
@@ -612,7 +613,9 @@ public class AlarmDataController {
     }
 
     private static <T> BinaryOperator<T> throwingMerger() {
-        return (u,v) -> { throw new IllegalStateException(String.format("Duplicate key %s", u)); };
+        return (u, v) -> {
+            throw new IllegalStateException(String.format("Duplicate key %s", u));
+        };
     }
 
 //    @GetMapping("/maxlevel")

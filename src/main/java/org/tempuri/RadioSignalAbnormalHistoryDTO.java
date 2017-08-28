@@ -10,9 +10,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * <p>RadioSignalAbnormalHistoryDTO complex type的 Java 类。
+ * <p>RadioSignalAbnormalHistoryDTO complex type锟斤拷 Java 锟洁。
  * 
- * <p>以下模式片段指定包含在此类中的预期内容。
+ * <p>锟斤拷锟斤拷模式片锟斤拷指锟斤拷锟斤拷锟斤拷锟节达拷锟斤拷锟叫碉拷预锟斤拷锟斤拷锟捷★拷
  * 
  * <pre>
  * &lt;complexType name="RadioSignalAbnormalHistoryDTO"&gt;
@@ -64,7 +64,7 @@ public class RadioSignalAbnormalHistoryDTO {
     protected String des;
 
     /**
-     * 获取id属性的值。
+     * 锟斤拷取id锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -76,7 +76,7 @@ public class RadioSignalAbnormalHistoryDTO {
     }
 
     /**
-     * 设置id属性的值。
+     * 锟斤拷锟斤拷id锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -88,7 +88,7 @@ public class RadioSignalAbnormalHistoryDTO {
     }
 
     /**
-     * 获取freqguid属性的值。
+     * 锟斤拷取freqguid锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -100,7 +100,7 @@ public class RadioSignalAbnormalHistoryDTO {
     }
 
     /**
-     * 设置freqguid属性的值。
+     * 锟斤拷锟斤拷freqguid锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -112,7 +112,7 @@ public class RadioSignalAbnormalHistoryDTO {
     }
 
     /**
-     * 获取isInvalid属性的值。
+     * 锟斤拷取isInvalid锟斤拷锟皆碉拷值锟斤拷
      * 
      */
     public boolean isIsInvalid() {
@@ -120,7 +120,7 @@ public class RadioSignalAbnormalHistoryDTO {
     }
 
     /**
-     * 设置isInvalid属性的值。
+     * 锟斤拷锟斤拷isInvalid锟斤拷锟皆碉拷值锟斤拷
      * 
      */
     public void setIsInvalid(boolean value) {
@@ -128,7 +128,7 @@ public class RadioSignalAbnormalHistoryDTO {
     }
 
     /**
-     * 获取saveDate属性的值。
+     * 锟斤拷取saveDate锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -140,7 +140,7 @@ public class RadioSignalAbnormalHistoryDTO {
     }
 
     /**
-     * 设置saveDate属性的值。
+     * 锟斤拷锟斤拷saveDate锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -152,7 +152,7 @@ public class RadioSignalAbnormalHistoryDTO {
     }
 
     /**
-     * 获取invalidDate属性的值。
+     * 锟斤拷取invalidDate锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -164,7 +164,7 @@ public class RadioSignalAbnormalHistoryDTO {
     }
 
     /**
-     * 设置invalidDate属性的值。
+     * 锟斤拷锟斤拷invalidDate锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is
@@ -176,7 +176,7 @@ public class RadioSignalAbnormalHistoryDTO {
     }
 
     /**
-     * 获取historyType属性的值。
+     * 锟斤拷取historyType锟斤拷锟皆碉拷值锟斤拷
      * 
      */
     public int getHistoryType() {
@@ -184,7 +184,7 @@ public class RadioSignalAbnormalHistoryDTO {
     }
 
     /**
-     * 设置historyType属性的值。
+     * 锟斤拷锟斤拷historyType锟斤拷锟皆碉拷值锟斤拷
      * 
      */
     public void setHistoryType(int value) {
@@ -192,7 +192,7 @@ public class RadioSignalAbnormalHistoryDTO {
     }
 
     /**
-     * 获取des属性的值。
+     * 锟斤拷取des锟斤拷锟皆碉拷值锟斤拷
      * 
      * @return
      *     possible object is
@@ -204,7 +204,7 @@ public class RadioSignalAbnormalHistoryDTO {
     }
 
     /**
-     * 设置des属性的值。
+     * 锟斤拷锟斤拷des锟斤拷锟皆碉拷值锟斤拷
      * 
      * @param value
      *     allowed object is

@@ -329,9 +329,15 @@ public class SiganlDataController {
 
 		param.replace("saveDate",beginCalendar);
 		param.replace("isInvalid",false);
-		param.remove("id");
-		service.radioSignalServiceCall("insertAbnormalHistory",JSON.toJSONString(param),RadioSignalAbnormalHistoryDTO.class);
 
+		Map<String,String> paramString = Maps.newHashMap();
+		String id = (String) param.remove("id");
+
+		paramString.put("id",id);
+		paramString.put("des", (String) param.get("des"));
+
+		service.radioSignalServiceCall("insertAbnormalHistory",JSON.toJSONString(param),RadioSignalAbnormalHistoryDTO.class);
+		service.radioSignalServiceCall("updateRadioSignalForRequest",JSON.toJSONString(paramString),RadioSignalUpdateRequest.class);
 		return  "sussed";
 	}
 
@@ -354,8 +360,14 @@ public class SiganlDataController {
 
 		param.put("id",param.get("idz"));
 		param.put("freqguid",param.get("freIdz"));
-		System.out.println(param);
+
+		Map<String,String> paramString = Maps.newHashMap();
+
+		paramString.put("id" ,(String) param.get("freIdz"));
+		paramString.put("des" ,(String) param.get("des"));
+
 		service.radioSignalServiceCall("updateAbnormalHistory",JSON.toJSONString(param),RadioSignalAbnormalHistoryDTO.class);
+		service.radioSignalServiceCall("updateRadioSignalForRequest",JSON.toJSONString(paramString),RadioSignalUpdateRequest.class);
 		return  "sussed";
 	}
 
@@ -386,7 +398,12 @@ public class SiganlDataController {
 		param.put("id",param.get("freqguid"));
 		param.put("freqguid",param.get("freIdz"));
 
+		Map<String,Object> paramString = Maps.newHashMap();
+		paramString.put("id",param.get("freqguid"));
+		paramString.put("des",param.get("des"));
+
 		service.radioSignalServiceCall("updateAbnormalHistory",JSON.toJSONString(param),RadioSignalAbnormalHistoryDTO.class);
+		service.radioSignalServiceCall("updateRadioSignalForRequest",JSON.toJSONString(paramString),RadioSignalUpdateRequest.class);
 		return "sussed";
 	}
 }

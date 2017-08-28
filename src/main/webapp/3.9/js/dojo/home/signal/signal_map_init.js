@@ -34,8 +34,10 @@ define(["home/signal/signal_manage", "ajax" ],
             var initiaEx = agoLayer.initialExtent;
             map = new esri.Map("mapDiv", {
                 //center : [ 104.06, 30.67 ],
-                zoom: 10,
-                sliderStyle: "small"
+                zoom: 7,
+                sliderStyle: "small",
+                maxZoom:11,
+                minZoom:6
             });
 
             map.addLayer(agoLayer);
