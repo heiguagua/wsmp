@@ -37,10 +37,10 @@ define(["home/alarm/alarm_manage", "ajax"],
                 var typeCode = $('#typeCode').val();
                 var tableIsHasData =$("#table-station-list").find(".no-records-found").length==0;//true表示有数据，false表示无数据
                 //当信号不是非法信号和不明信号时，模态框提交内容必需要选中台站某行
-                if(typeCode !='3'&&typeCode !='3'&& !stationID){
+                if(typeCode !='3'&&typeCode !='4'&& !stationID){
                     if(!tableIsHasData){
                         $("#submitButton").attr('disabled','true');
-                        layer.alert('没有关联的台站，请先添加台站');
+                        layer.alert('没有台站列表信息，请先添加台站');
                         return
                     }else if(tableIsHasData){
                         $("#submitButton").removeAttr('disabled');
@@ -405,8 +405,8 @@ define(["home/alarm/alarm_manage", "ajax"],
 
         function closeModal() {
             //台站列表关闭时，清空台站列表的表格选中的某行id,选中时id 的值是赋给$("#stationId")的
-            $('#modalStationAlarm').on('hide.bs.modal', function () {
-                $("#stationId").val('');//清空input 的值，即 为选中的表某行的id
+            $('#modalStationAlarm').on('hidden.bs.modal', function () {
+                $(".after_modal_colse").val('');//清空input 的值，即 为选中的表某行的id
             });
 
         }
@@ -508,7 +508,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                                 $('#table-station-list tr').removeClass("selected");
                                 field.addClass("selected");
                             });
-
+                            $("#submitButton").removeAttr('disabled');
                             $("#modalStationAlarm").modal();
                         });
                         //合法违规
@@ -619,7 +619,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                                 $('#table-station-list tr').removeClass("selected");
                                 field.addClass("selected");
                             });
-
+                            $("#submitButton").removeAttr('disabled');
                             $("#modalStationAlarm").modal();
 
                         });
@@ -719,7 +719,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                                 $('#table-station-list tr').removeClass("selected");
                                 field.addClass("selected");
                             });
-
+                            $("#submitButton").removeAttr('disabled');
                             $("#modalStationAlarm").modal();
 
                         });
@@ -741,7 +741,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                                 '<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息">'+text+'</textarea></div>';
                             $("#stationWrap").html("");
                             $("#stationWrap").html(temp);
-
+                            $("#submitButton").removeAttr('disabled');
                             $("#modalStationAlarm").modal();
                         });
 
@@ -763,7 +763,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                                 '<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息">'+text+'</textarea></div>';
                             $("#stationWrap").html("");
                             $("#stationWrap").html(temp);
-
+                            $("#submitButton").removeAttr('disabled');
                             $("#modalStationAlarm").modal();
 
                         });
