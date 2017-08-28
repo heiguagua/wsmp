@@ -279,8 +279,8 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 
     function closeModal() {
 
-        $('#table-station-list').on('hide.bs.modal', function() {
-            $(".after_modal_colse").val('');
+        $('#modalStationAlarm').on('hidden.bs.modal', function() {
+            $(".after_modal_colse").val('');//清空input 的值，即 为选中的表某行的id
         });
 
     }
@@ -288,14 +288,39 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
     function submitButton() {
 
         $("#submitButton").click(function() {
+            var data = {};
+            var stationKey = $("#stationKey").val();
+            var typeCode = $("#typeCode").val();
+            //console.log("typeCode:"+typeCode)
+            var des = $("#des").val();
+            var id = $("#signal_list1").find("option:selected").val();
+            typeCode = parseInt(typeCode);
+            var tableIsHasData =$("#table-station-list").find(".no-records-found").length==0;//true表示有数据，false表示无数据
+            //当信号不是非法信号和不明信号时，模态框提交内容必需要选中台站某行
+            if(typeCode ==2&& !stationKey){
+                if(!tableIsHasData){
+                    $("#submitButton").attr('disabled','true');
+                    layer.alert('没有台站列表信息，请先添加台站');
+                    return
+                }else if(tableIsHasData){
+                    $("#submitButton").removeAttr('disabled');
+                }
+                layer.alert('请选择要关联的台站');
+                return
+            }
+            data.id = id ;
+            data.typeCode = typeCode;
+            data.stationKey = stationKey;
+            data.des = des;
+
+            //添加违规记录参数
             //新增违规记录 POST请求,修改put,通过$("#searchId").val()判断
             //不恢复 PUT请求 必须的参数为isInvalid=0
             //恢复 PUT请求 必须的参数为isInvalid=1
             var params ={};
             var addOpUpdate =$("#searchId").val();//修改还是新增，id
             var freId =$("#signal_list1").find("option:selected").val();//信号搜索时选择的时间id
-            var des_params = $("#des").val();
-            params.des =des_params;
+            params.des =des;
             params.freqguid = (addOpUpdate)?addOpUpdate:freId;
             params.idz = addOpUpdate;
             params.freIdz = $("#signal_list1").find("option:selected").val();
@@ -324,49 +349,41 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 }
                 params.invalidDate = invalidDate;
             }
-            //params= JSON.stringify(params);
-            console.log("添加违规记录参数："+params);
-            console.log("添加还是修改："+addOpUpdate);
-            if(addOpUpdate){
-                if(params.isInvalid ==1){
-                    ajax.put("data/signal/AbnormalHistoryByInvaliDate", params, function() {
-                        layer.msg('修改违规记录成功');
-                    });
-                }else if(params.isInvalid ==0){
-                    ajax.put("data/signal/AbnormalHistory", params, function() {
-                        layer.msg('修改违规记录成功');
-                    });
-                }
-
-            }else {
-                params= JSON.stringify(params);
-                $.ajax({
-                    url : 'data/signal/AbnormalHistory',
-                    type : 'post',
-                    data : params,//传输数据
-                    contentType : 'application/json',//传输数据类型
-                    success : function (result) {
-                        layer.msg('添加违规记录成功');
-                    }
-                });
-
-            }
-
-            var data = {};
-            var stationKey = $("#stationKey").val();
-            var typeCode = $("#typeCode").val();
-            var des = $("#des").val();
-            var id = $("#signal_list1").find("option:selected").val();
-
-            typeCode = parseInt(typeCode);
-            data.id = id ;
-            data.typeCode = typeCode;
-            data.stationKey = stationKey;
-            data.des = des;
-
             ajax.put("data/signal/one/update", data, function() {
                 layer.msg('成功');
                 $("#signal_list1").find('option:selected').attr("des",des);
+
+                //合法信号时提交添加违规记录表单
+                if(typeCode==1){
+                    //params= JSON.stringify(params);
+                    //console.log("添加违规记录参数："+params);
+                    //console.log("添加还是修改："+addOpUpdate);
+                    if(addOpUpdate){
+                        if(params.isInvalid ==1){
+                            ajax.put("data/signal/AbnormalHistoryByInvaliDate", params, function() {
+                                layer.msg('修改违规记录成功');
+                            });
+                        }else if(params.isInvalid ==0){
+                            ajax.put("data/signal/AbnormalHistory", params, function() {
+                                layer.msg('修改违规记录成功');
+                            });
+                        }
+
+                    }else {
+                        params= JSON.stringify(params);
+                        $.ajax({
+                            url : 'data/signal/AbnormalHistory',
+                            type : 'post',
+                            data : params,//传输数据
+                            contentType : 'application/json',//传输数据类型
+                            success : function (result) {
+                                layer.msg('添加违规记录成功');
+                            }
+                        });
+
+                    }
+                }
+
                 $("#modalStationAlarm").modal('hide');
             });
 
@@ -398,6 +415,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             var kmz = $('#search').val();
             var id = $("#signal_list1").find('option:selected').val();//选中的时间的id
             $("#typeCode").val($(this).val());
+            //console.log("typeCode:"+$(this).val(),$("#typeCode").val())
             var text = $("#signal_list1").find('option:selected').attr("des");
             if(text==undefined){
                 text ='';
@@ -584,7 +602,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 $('#table-station-list tr').removeClass("selected");
                 field.addClass("selected");
             });
-
+            $("#submitButton").removeAttr('disabled');
             $("#modalStationAlarm").modal();
 
 
@@ -771,7 +789,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 $('#table-station-list tr').removeClass("selected");
                 field.addClass("selected");
             });
-
+            $("#submitButton").removeAttr('disabled');
             $("#modalStationAlarm").modal();
 
         });
@@ -791,7 +809,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             var temp = '<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息">'+text+'</textarea></div>';
             $("#stationWrap").html("");
             $("#stationWrap").html(temp);
-
+            $("#submitButton").removeAttr('disabled');
             $("#modalStationAlarm").modal();
 
         });
@@ -811,7 +829,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             var temp = '<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息">'+text+'</textarea></div>';
             $("#stationWrap").html("");
             $("#stationWrap").html(temp);
-
+            $("#submitButton").removeAttr('disabled');
             $("#modalStationAlarm").modal();
 
         });

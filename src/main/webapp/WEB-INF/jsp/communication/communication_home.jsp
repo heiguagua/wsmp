@@ -129,7 +129,6 @@
           "select2", "moment", "datetimepicker" ], function() {
           require([ "bootstrap_table_cn","datetimepicker_cn"], function() {
             require(["home/communication/communication_manage"],function(communication_manage) {
-            	console.log(communication_manage);
             	communication_manage.init();
             })
           });

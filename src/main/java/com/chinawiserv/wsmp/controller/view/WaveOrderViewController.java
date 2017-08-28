@@ -67,7 +67,7 @@ public class WaveOrderViewController {
     @PostMapping("/importantMonitor")
     public String importantMonitor(Model model,@RequestBody Map<String,Object> map) {
     	//根据频段查询重点监测，返回页面和对象
-    	Logger.info("map:{}",map);
+    	Logger.debug("map:{}",map);
     	BigDecimal beginFreq = new BigDecimal(map.get("beginFreq").toString());
 		BigDecimal endFreq = new BigDecimal(map.get("endFreq").toString());
 		BigDecimal divisor = new BigDecimal(1000000);
@@ -76,12 +76,12 @@ public class WaveOrderViewController {
 		final Type type = new TypeReference<List<MeasureTaskParamDto>>() {}.getType();
 		@SuppressWarnings("unchecked")
 		List<MeasureTaskParamDto> resultList = (List<MeasureTaskParamDto>) JSON.parseObject(result,type);
-		Logger.info("resultList:{}",JSON.toJSONString(resultList));
+		Logger.debug("resultList:{}",JSON.toJSONString(resultList));
 		//过滤传过来的频段
 		Optional<MeasureTaskParamDto> optional = resultList.stream().filter(dto -> Double.valueOf(beginFreq.divide(divisor).toString()) >= dto.getBeginFreq() &&
 				Double.valueOf(endFreq.divide(divisor).toString()) <= dto.getEndFreq()).findFirst();
 		if(optional.isPresent()) {
-			Logger.info("查询结果:{}",JSON.toJSONString(optional.get()));
+			Logger.debug("查询结果:{}",JSON.toJSONString(optional.get()));
 			model.addAttribute("dto",optional.get());
 			return "waveorder/important_monitor";
 		}
@@ -90,7 +90,7 @@ public class WaveOrderViewController {
 		dto.setBeginFreq(Double.valueOf(beginFreq.divide(divisor).toString()));
 		dto.setEndFreq(Double.valueOf(endFreq.divide(divisor).toString()));
 		dto.setFreqRange(true);
-		Logger.info("没有数据传入model:{}",JSON.toJSONString(dto));
+		Logger.debug("没有数据传入model:{}",JSON.toJSONString(dto));
 		model.addAttribute("dto",dto);
 		return "waveorder/important_monitor_insert";
     }
@@ -98,7 +98,7 @@ public class WaveOrderViewController {
     @PostMapping("/importantMonitorCreateOrUpdate")
     public String importantMonitorCreateOrUpdate(MeasureTaskParamDto dto,Model model) {
     	//或者直接用模型接受参数MeasureTaskParamDto.java
-    	Logger.info("更新或添加-前端传参dto:{}",JSON.toJSONString(dto));
+    	Logger.debug("更新或添加-前端传参dto:{}",JSON.toJSONString(dto));
     	if(dto.getID().equals("")) {
     		dto.setID(null);
     	}
@@ -109,12 +109,12 @@ public class WaveOrderViewController {
     		final Type type = new TypeReference<MeasureTaskParamDto>() {}.getType();
     		MeasureTaskParamDto resultDTO = (MeasureTaskParamDto) JSON.parseObject(resultDTOJson,type);
     		if(resultDTOJson != null) {
-    			Logger.info("更新或添加成功！");
-    			Logger.info("更新或添加成功传入model:{}", JSON.toJSONString(resultDTO));
+    			Logger.debug("更新或添加成功！");
+    			Logger.debug("更新或添加成功传入model:{}", JSON.toJSONString(resultDTO));
     			model.addAttribute("dto",resultDTO);
     			return "waveorder/important_monitor";
     		}else{
-    			Logger.info("更新或添加失败！");
+    			Logger.debug("更新或添加失败！");
     			return "false";
     		}
     }
@@ -123,20 +123,20 @@ public class WaveOrderViewController {
     @PostMapping("/importantMonitorDelete")
     public String importantMonitorDelete(MeasureTaskParamDto dto,Model model) {
     	//或者直接用模型接受参数MeasureTaskParamDto.java
-    	Logger.info("删除-前端传参dto:{}",JSON.toJSONString(dto));
+    	Logger.debug("删除-前端传参dto:{}",JSON.toJSONString(dto));
 		Boolean resultDTOJson = serviceImportFreqRangeManage.removeById(dto.getID());
 		if(resultDTOJson) {
-			Logger.info("删除成功！");
+			Logger.debug("删除成功！");
 			MeasureTaskParamDto modelDTO = new MeasureTaskParamDto();
 			modelDTO.setBeginFreq(dto.getBeginFreq());
 			modelDTO.setEndFreq(dto.getEndFreq());
 			modelDTO.setFreqRange(true);
-			Logger.info("删除成功传入model:{}", JSON.toJSONString(modelDTO));
+			Logger.debug("删除成功传入model:{}", JSON.toJSONString(modelDTO));
 			model.addAttribute("dto",modelDTO);
 			return "waveorder/important_monitor_insert";
 			//成功返回空白页面
 		}else {
-			Logger.info("删除失败！");
+			Logger.debug("删除失败！");
 			return "false";
 			//不成功返回失败信息
 		}

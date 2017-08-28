@@ -100,7 +100,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 								MultiTabable : false,
 								ReflushIfExist : true,
 								Url : '#/FrequencySingle/' + freq
-								,
 							};
 							Binding.openUrl(JSON.stringify(urlObj));
 
@@ -116,7 +115,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 								MultiTabable : false,
 								ReflushIfExist : true,
 								Url : '#/FrequencySingle/' + freq
-								,
 							};
 							Binding.openUrl(JSON.stringify(urlObj));
 
@@ -132,7 +130,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 								MultiTabable : false,
 								ReflushIfExist : true,
 								Url : '#/FrequencySingle/' + freq
-								,
 							};
 							Binding.openUrl(JSON.stringify(urlObj));
 						})
@@ -274,12 +271,10 @@ define(	["ajax", "dojo/parser", "esri/map",
 							field : 'band',
 							title : '带宽(kHz)',
 							width : '15%'
-							,
 						}, {
 							field : 'success_rate',
 							title : '监测发射成功率',
 							width : '18%'
-							,
 						}, {
 							field : 'monitorID',
 							title : '监测站',
@@ -558,7 +553,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 					center :[MONITORS[0].Longitude,MONITORS[0].Latitude],
 					maxZoom : 12,
 					minZoom :6,
-					zoom : 12,
+					zoom : 12
 				});
 
 				var agoLayer = new ArcGISTiledMapServiceLayer(url, {
