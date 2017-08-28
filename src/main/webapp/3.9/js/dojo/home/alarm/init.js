@@ -60,6 +60,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                 data.sigal = singal;
                 ajax.post("data/alarm/instersingal", data, function () {
                     layer.msg("成功");
+                    $("#signal_list").find('option:selected').attr("des",des);
                     $("#modalStationAlarm").modal('hide');
                     //warnig_confirm();
                 });
@@ -401,14 +402,18 @@ define(["home/alarm/alarm_manage", "ajax"],
 //						var value = $('option:selected').val();
                         var value = $("#station_list").find('option:selected').text();
                         var text = $("#signal_list").find('option:selected').attr("des");
+                        if(text==undefined){
+                            text ='';
+                        }
                         var kmz = $('#search').val();
                         var data = {};
                         data.type = "none";
                         var typeCode = $(this).val();
                         $("#typeCode").val(typeCode);
 
-                        var temp = '<div class="header-search"><input type="text" placeholder="输入中心频率">' +
-                            '<span class="search-icon"></span></div>' +
+                        var temp =
+                            //'<div class="header-search"><input type="text" placeholder="输入中心频率">' +
+                            //'<span class="search-icon"></span></div>' +
                             '<table class="table table-striped" id="table-station-list"></table>' +
                             '<div class="mark-content"><p>备注</p><textarea id = "des" rows="5" placeholder="请输入备注信息">'+text+'</textarea></div>';
                         $("#stationWrap").html("");
@@ -492,13 +497,17 @@ define(["home/alarm/alarm_manage", "ajax"],
                         var value = $('option:selected').val();
                         var kmz = $('#search').val();
                         var text = $("#signal_list").find('option:selected').attr("des");
+                        if(text==undefined){
+                            text ='';
+                        }
                         var data = {};
                         var typeCode = $(this).val();
                         $("#typeCode").val(typeCode);
 
                         data.type = "none";
-                        var temp = '<div class="header-search"><input type="text" placeholder="输入中心频率">' +
-                            '<span class="search-icon"></span></div>' +
+                        var temp =
+                            //'<div class="header-search"><input type="text" placeholder="输入中心频率">' +
+                            //'<span class="search-icon"></span></div>' +
                             '<table class="table table-striped" id="table-station-list"></table>' +
                             '<div class="mark-content">' +
                             '<button type="button" class="btn btn-primary addStation">添加台站</button>'+
@@ -598,12 +607,16 @@ define(["home/alarm/alarm_manage", "ajax"],
                         var value = $('option:selected').val();
                         var kmz = $('#search').val();
                         var text = $("#signal_list").find('option:selected').attr("des");
+                        if(text==undefined){
+                            text ='';
+                        }
                         var data = {};
                         var typeCode = $(this).val();
                         $("#typeCode").val(typeCode);
                         data.type = "none";
-                        var temp = '<div class="header-search"><input type="text" placeholder="输入中心频率">' +
-                            '<span class="search-icon"></span></div>' +
+                        var temp =
+                            //'<div class="header-search"><input type="text" placeholder="输入中心频率">' +
+                            //'<span class="search-icon"></span></div>' +
                             '<table class="table table-striped" id="table-station-list"></table>' +
                             '<div class="mark-content">' +
                             '<button type="button" class="btn btn-primary addStation">添加台站</button>'+
@@ -690,6 +703,9 @@ define(["home/alarm/alarm_manage", "ajax"],
                         var value = $('option:selected').val();
                         var kmz = $('#search').val();
                         var text = $("#signal_list").find('option:selected').attr("des");
+                        if(text==undefined){
+                            text ='';
+                        }
                         var data = {"stationCode": value, "kmz": kmz};
                         var typeCode = $(this).val();
                         $("#typeCode").val(typeCode);
@@ -703,6 +719,9 @@ define(["home/alarm/alarm_manage", "ajax"],
 
                     $("#unknown").click(function () {
                         var text = $("#signal_list").find('option:selected').attr("des");
+                        if(text==undefined){
+                            text ='';
+                        }
                         var value = $('option:selected').val();
                         var kmz = $('#search').val();
                         var data = {"stationCode": value, "kmz": kmz};
