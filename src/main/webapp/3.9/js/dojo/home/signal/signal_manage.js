@@ -294,6 +294,8 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             var params ={};
             var addOpUpdate =$("#searchId").val();//修改还是新增，id
             var freId =$("#signal_list1").find("option:selected").val();//信号搜索时选择的时间id
+            var des_params = $("#des").val();
+            params.des =des_params;
             params.freqguid = (addOpUpdate)?addOpUpdate:freId;
             params.idz = addOpUpdate;
             params.freIdz = $("#signal_list1").find("option:selected").val();
@@ -480,6 +482,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                         $("#searchId").val(result.id);//通过此value判断是否是修改违规记录还是新增违规记录
                         $('#startTime').val(result.saveDate); //开始时间
                         $('#typeCodes').val(result.historyType);//类型
+                        $("#des").val(result.des);//备注
                         ////结果类型是否恢复正常，是显示结束时间，否不显示
                         //var type= parseInt(result.isInvalid);
                         //switch (type) {
@@ -552,10 +555,10 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 responseHandler : function(res) {
                     return res;
                 },
-                search:true, //搜索参数
-                searchAlign:'left', //搜索参数
-                searchOnEnterKey:true, //搜索参数
-                searchOnEnterKey:true,//设置为 true时，按回车触发搜索方法，否则自动触发搜索方法
+                //search:true, //搜索参数
+                //searchAlign:'left', //搜索参数
+                //searchOnEnterKey:true, //搜索参数
+                //searchOnEnterKey:true,//设置为 true时，按回车触发搜索方法，否则自动触发搜索方法
                 //searchText:'null',
                 columns : [{
                     field : 'stationName',
