@@ -6,6 +6,7 @@
 define([ "ajax", "echarts", "jquery" ], function(ajax,echarts) {
 	function init_charts(data) {
 			//console.log(data);
+        var dayChart;
 		var optionDay = {};
 		if(data.dayOcc &&data.dayOcc.xAxis.length&&data.dayOcc.series.length){
 			optionDay = {
@@ -86,7 +87,11 @@ define([ "ajax", "echarts", "jquery" ], function(ajax,echarts) {
 				]
 			};
 		}
-		var dayChart = echarts.init($('#dayChart')[0]);
+		if (dayChart){
+            dayChart.clear();
+		}
+
+        dayChart = echarts.init($('#dayChart')[0]);
 		dayChart.setOption(optionDay);
 		// dayChart.on('click', function() {
 		// 	$('#modalHour').modal()

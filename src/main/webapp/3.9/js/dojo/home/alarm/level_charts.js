@@ -98,6 +98,11 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
 				};
 				maxlevel_total_length = reslut.max.xAxis.length;
 			}
+
+			if (maxlevelChart){
+				maxlevelChart.clear();
+			}
+
 			maxlevelChart = echarts.init($('.levelChart')[0]);
 			maxlevelChart.setOption(optionMonth);
 
