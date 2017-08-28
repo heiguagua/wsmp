@@ -32,20 +32,6 @@
 	href="3.9/js/dojo/webgis/widgets/themes/darkangel/override.css">
 </head>
 
-<%-- <body id='waveOrder'>
-	<div class='content-wrap'>
-		<!--信号监测-->
-		<section class='flex-row'>
-			<div class='box'>
-			<input style="display: none" id ='mapUrl' value="${mapUrl}" />
-				<input value="${areaCode}" hidden="true" id="areaCode">
-				<div id='redioType'></div>
-				<div id="mapDiv1"padding: 10px; height: 960px></div>
-			</div>
-		</section>
-	</div>
-</body> --%>
-
 <body id='waveOrder_map_to_sifon' class='waveOrder_map_to_sifon'>
 	<div class='content-wrap waveOrder_map_to_sifon_wrap'>
 		<!--信号监测-->
@@ -66,8 +52,8 @@
 		
 	
 		require(
-				[ "home/waveorder/WaveorderMapInit_for_sifon", "jquery", "dojo/domReady!" ],
-				function(init) {
+				[ "jquery", "dojo/domReady!" ],
+				function() {
 
 					require(
 							[ "bootstrap", "bootstrapTable", "select2" ],
@@ -78,9 +64,7 @@
 											require(
 													[ "home/waveorder/waveorder_manage_for_sifon" ],
 													function(wave_order) {
-														var maps = init.init();
-														console.log(maps);
-														wave_order.init(maps);
+														wave_order.init();
 													})
 										})
 							})

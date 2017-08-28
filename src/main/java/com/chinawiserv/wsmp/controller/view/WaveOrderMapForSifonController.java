@@ -20,7 +20,7 @@ public class WaveOrderMapForSifonController {
 	
 	@GetMapping(path = {"/", ""})
 	public String getWaveOrderMap(Model model, @RequestParam Map<String, Object> map) {
-		Logger.info("============================================ {}",map);
+		Logger.debug("============================================ {}",map);
 		String areaCode = map.get("areaCode").toString();
 		model.addAttribute("areaCode",areaCode);
 		model.addAttribute("mapUrl", mapUrl);

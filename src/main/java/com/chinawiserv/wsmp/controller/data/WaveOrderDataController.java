@@ -61,12 +61,10 @@ public class WaveOrderDataController {
 	
 	@PostMapping("/rediostatus")
 	public Map<String, Object> getRedioStatus(@RequestBody Map<String, Object> param) {
-//		 System.out.println("======================"+param);
 		// 根据用户ID查询自定义频段
 		FrequencyRangeQuerySpec request = new FrequencyRangeQuerySpec();
 		request.setUserId(param.get("userID").toString());
 		List<FrequencyRangeInfo> response = serviceFreq.getFreqServiceHttpSoap12Endpoint().queryFrequencyRange(request);
-		// System.out.println("=======================response:"+JSON.toJSONString(response));
 		final List<String> freqNames = Lists.newArrayList();
 		final List<FrequencyBand> freqList = response.stream().map(t -> {
 			// 名字放入List中
@@ -101,7 +99,6 @@ public class WaveOrderDataController {
 		request3.setType(1);
 		RadioSignalSubClassifiedQueryResponse response3 = serviceRadioSignal.getRadioSignalWebServiceSoap().queryRadioSignalSubClassified(request3);
 		
-//		response3.getLstOnFreqBand().getSignalSubStaticsOnFreqBand().stream().
 		final List<Integer> legalSubTypeCountList = response3.getLstOnFreqBand().getSignalSubStaticsOnFreqBand().stream()
 				.map(m -> m.getCount())
 				.collect(Collectors.toList());
@@ -109,19 +106,15 @@ public class WaveOrderDataController {
 		List<RedioStatusCount> rsCountRows = Lists.newArrayList();
 		AtomicInteger index = new AtomicInteger();
 		response2.getLstOnFreqBand().getSignalStaticsOnFreqBand().stream().forEach(t -> {
-			Logger.info("index:{}", index.get());
 			RedioStatusCount rsCount = new RedioStatusCount();
 			rsCount.setRedioName(freqNames.get(index.get()));
 			//设置合法子类型（违规）
 			rsCount.setLegalUnNormalStationNumber(legalSubTypeCountList.get(index.get()));
 			rsCount.setBeginFreq(t.getBand().getFreqMin());
 			rsCount.setEndFreq(t.getBand().getFreqMax());
-			System.out.println("name:"+freqNames.get(index.get()));
 			t.getSignalStaticsLst().getSignalStatics().forEach(t1 -> {
 				int type = t1.getSignalType();
 				int count = t1.getCount();
-				System.out.println("==type:"+type);
-				System.out.println("==count:"+count);
 				switch (type) {
 				case 1:
 					rsCount.setLegalNormalStationNumber(count - legalSubTypeCountList.get(index.get()));
@@ -149,7 +142,6 @@ public class WaveOrderDataController {
 
 	@PostMapping("/alarmundealed")
 	public Map<String, Object> getAlarmUnDealed(@RequestBody Map<String, Object> param) {
-//		 System.out.println("=============================param:"+param);
 		// 根据未确认和监测站查询告警
 		FreqWarningQueryRequest request = new FreqWarningQueryRequest();
 		//未确认
@@ -161,11 +153,9 @@ public class WaveOrderDataController {
 		stationArray.setString(stationString);
 		request.setStationIDs(stationArray);
 		FreqWarningQueryResponse response = serviceFreqWarning.getFreqWarningWebServiceSoap().query(request);
-		// System.out.println("=============================response:"+JSON.toJSONString(response));
 		List<Alarm> alarmRows = Lists.newArrayList();
 		response.getWarningInfos().getFreqWarningDTO().stream().forEach(t -> {
 			Alarm alarm = new Alarm();
-//			Logger.info("===================================:{}", t.getID());
 			BigDecimal certerFreq = new BigDecimal(t.getCenterFreq());
 			BigDecimal divisor = new BigDecimal(1000000);
 			alarm.setRadio(certerFreq.divide(divisor).toString());
@@ -187,7 +177,6 @@ public class WaveOrderDataController {
 
 	@PostMapping("/alarmdealed")
 	public Map<String, Object> getAlarmDealed(@RequestBody Map<String, Object> param) {
-//		 System.out.println("=============================param:"+param);
 		// 根据未确认和监测站查询告警
 		FreqWarningQueryRequest request = new FreqWarningQueryRequest();
 		//确认
@@ -199,7 +188,6 @@ public class WaveOrderDataController {
 		stationArray.setString(stationString);
 		request.setStationIDs(stationArray);
 		FreqWarningQueryResponse response = serviceFreqWarning.getFreqWarningWebServiceSoap().query(request);
-		// System.out.println("=============================response:"+JSON.toJSONString(response));
 		List<Alarm> alarmRows = Lists.newArrayList();
 		response.getWarningInfos().getFreqWarningDTO().stream().forEach(t -> {
 			Alarm alarm = new Alarm();
@@ -225,7 +213,6 @@ public class WaveOrderDataController {
 	@PostMapping("/radioDetail")
 	public Map<String, Object> getRedioDetail(@RequestBody Map<String, Object> param){
 		
-//		 System.out.println("==================param:"+param);
 		RadioSignalQueryRequest request = new RadioSignalQueryRequest();
 		// 设置监测站ID列表
 		ArrayOfString stationArray = new ArrayOfString();
@@ -250,12 +237,11 @@ public class WaveOrderDataController {
 		if((Boolean)(param.get("isSubType"))) {
 			//如果是子类型
 			response.getRadioSignals().getRadioSignalDTO().stream().forEach(t -> {
-				// System.out.println("====信号频率："+t.getCenterFreq());
 				// 判断是否存在任何同一频段下合法信号的子类型信号，如果存在，则添加到返回集里面
 				if (t.getAbnormalHistory().getRadioSignalAbnormalHistoryDTO().stream().findAny().isPresent()) {
-					Logger.info("存在子类的大类型频段：{}", t.getCenterFreq());
+					Logger.debug("存在子类的大类型频段：{}", t.getCenterFreq());
 					t.getAbnormalHistory().getRadioSignalAbnormalHistoryDTO().stream().forEach(t2 -> {
-						Logger.info("子类型:{}", t2.getHistoryType());
+						Logger.debug("子类型:{}", t2.getHistoryType());
 					});
 					RedioDetail redio = new RedioDetail();
 					BigDecimal cFreq = new BigDecimal(t.getCenterFreq());
@@ -265,7 +251,6 @@ public class WaveOrderDataController {
 					// 设置监测站
 					List<String> monitorID = Lists.newArrayList();
 					t.getStationDTOs().getRadioSignalStationDTO().stream().forEach(t1 -> {
-						// System.out.println("=====监测站ID:"+t1.getStationNumber());
 						monitorID.add(t1.getStationNumber());
 					});
 					redio.setMonitorID(monitorID);
@@ -277,14 +262,12 @@ public class WaveOrderDataController {
 			});
 		}else {
 			//如果是大类型
-			AtomicInteger index = new AtomicInteger();
 			response.getRadioSignals().getRadioSignalDTO().stream().forEach(t -> {
 				// System.out.println("====信号频率："+t.getCenterFreq());
 				// 每个大类信号，都要先判断一下是否有子类型信号，如果出来有结果，则减去子类型信号的总数即为大类型的个数。
 				// 判断是否存在任何同一频段下合法信号的子类型信号，如果存在，则不添加到返回集里面
 					if(t.getAbnormalHistory().getRadioSignalAbnormalHistoryDTO().stream().findAny().isPresent()) {
-						Logger.info("存在子类的大类型频段：{}", t.getCenterFreq());
-						System.out.println("index:"+ index.getAndIncrement());
+						Logger.debug("存在子类的大类型频段：{}", t.getCenterFreq());
 					}else {
 						//如果不存在子类型，则添加到大类型中
 						RedioDetail redio = new RedioDetail();
@@ -302,7 +285,6 @@ public class WaveOrderDataController {
 						// 设置台站
 						// redio.setStation(t.getRadioStation().getStation().getName());
 						redioRows.add(redio);
-						System.out.println("index:"+ index.getAndIncrement()+"|id:"+t.getID());
 					}
 			});
 		}
@@ -327,12 +309,10 @@ public class WaveOrderDataController {
 		// 设置监测站，过滤有信号的监测站ID
 		ArrayOfString value1 = new ArrayOfString();
 		final List<?> monitorsID = (List<?>) param.get("monitorsNum");
-		// System.out.println("=========================================monitorsList:"+monitorsID);
 		List<String> string = monitorsID.stream().map(o -> o.toString()).collect(Collectors.toList());
 		value1.setString(string);
 		request.setStationIDs(value1);
 		RadioSignalQueryResponse response = serviceRadioSignal.getRadioSignalWebServiceSoap().queryRadioSignal(request);
-		// System.out.println("====================:"+JSON.toJSONString(response));
 		
 		//重新封装结果集
 		@SuppressWarnings("unchecked")
