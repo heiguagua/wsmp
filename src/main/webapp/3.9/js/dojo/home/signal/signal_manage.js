@@ -397,8 +397,10 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             $("#typeCode").val($(this).val());
             var data = {};
             data.type = "none";
-            var temp = '<div class="header-search"><input type="text" placeholder="输入中心频率">' +
-                '<span class="search-icon"></span></div>' +
+            var temp =
+                //'<div class="header-search">' +
+                //'<input type="text" placeholder="输入中心频率">' +
+                //'<span class="search-icon"></span></div>' +
                 '<table class="table table-striped" id="table-station-list"></table>' +
                 '<div class="mark-content">' +
                 '<p id="addOrUpdate" searchId>添加违规记录</p>'+
@@ -550,6 +552,11 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 responseHandler : function(res) {
                     return res;
                 },
+                search:true, //搜索参数
+                searchAlign:'left', //搜索参数
+                searchOnEnterKey:true, //搜索参数
+                searchOnEnterKey:true,//设置为 true时，按回车触发搜索方法，否则自动触发搜索方法
+                //searchText:'null',
                 columns : [{
                     field : 'stationName',
                     title : '台站名称'
@@ -565,12 +572,14 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 }]
             });
 
+
             $('#table-station-list').on('click-row.bs.table', function(row, $element, field) {
                 $('#table-station-list tr').removeClass("selected");
                 field.addClass("selected");
             });
 
             $("#modalStationAlarm").modal();
+
 
         });
          //合法违规信号
@@ -1139,10 +1148,11 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
         		return;
         	}
             console.log(params.name)
-            var time =params.name+'';
-            var year =time.substring(0,4);
-            var month =time.substring(4,6);
-            var day =time.substring(6);
+            time =params.name;
+            var currenttime =params.name+'';
+            var year =currenttime.substring(0,4);
+            var month =currenttime.substring(4,6);
+            var day =currenttime.substring(6);
             if(month.substring(0,1)=='0'){
                 month = month.substring(1);
             }
