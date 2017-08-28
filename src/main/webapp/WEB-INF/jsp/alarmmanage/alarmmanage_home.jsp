@@ -106,7 +106,7 @@
         </label>
         <div class='pull-right'>
           电磁覆盖率:&nbsp;
-          <span class='coverage-number'>90%</span>
+          <span class='coverage-number'></span>
         </div>
       </div>
       <div id="mapDiv"></div>

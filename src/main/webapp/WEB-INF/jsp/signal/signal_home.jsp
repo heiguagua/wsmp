@@ -193,7 +193,7 @@
 						<span id = "stationName">&nbsp;&nbsp;台站</span>
 					</label>
 					<div class='pull-right'>
-						<input type="text" class="gate-filter" placeholder="请输入门阀" /> <button class="btn btn-submit" id="gate-btn">提交</button>电磁覆盖率:&nbsp; <span class='coverage-number'>90%</span>
+						<input type="text" class="gate-filter" placeholder="请输入门阀" /> <button class="btn btn-submit" id="gate-btn">提交</button>电磁覆盖率:&nbsp; <span class='coverage-number'></span>
 					</div>
 				</div>
 				<div id="mapDiv"style= "padding: 10px"></div>

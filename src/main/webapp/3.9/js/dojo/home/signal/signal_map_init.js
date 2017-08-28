@@ -141,6 +141,8 @@ define(["home/signal/signal_manage", "ajax" ],
                     ajax.post("data/alarm/getStation", data, function(reslut) {
                         glayer.clear();
 
+                        $(".coverage-number").html(reslut.electrCoverage*100+"%");
+
                         var arryOfStation = reslut.stationPiont;
                         var arryOfLevel = reslut.levelPoint;
 

@@ -30,6 +30,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.BinaryOperator;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
@@ -66,6 +67,9 @@ public class AlarmDataController {
 
     @Value("${asio.formatter:yyyyMMddHHmmss}")
     DateTimeFormatter formatter;
+
+    @Value("${kriking.value}")
+    private int intKrikingValue;
 
     @GetMapping(path = "/secondLevelChart")
     public Object secondLevelChart(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
@@ -383,6 +387,12 @@ public class AlarmDataController {
         if (coulm > 0) {
             t = jk2d.jk2d_ret(0.5, 10, 0.5, 10, p);
         }
+
+        double numerator  = Stream.of(t).filter((e)-> e[2]>intKrikingValue).count();
+        int denominator = t.length;
+
+        double electrCoverage = numerator/denominator;
+
         int size = t.length;
         List<Map<String, Object>> kriking = Lists.newLinkedList();
 
@@ -448,6 +458,7 @@ public class AlarmDataController {
         mapPiont.put("stationPiont", stationPiont);
         mapPiont.put("levelPoint", levelPoint);
         mapPiont.put("kriking", kriking);
+        mapPiont.put("electrCoverage", electrCoverage);
 
         // map.put("x", "106.709177096");
         // map.put("y", "26.6299067414");

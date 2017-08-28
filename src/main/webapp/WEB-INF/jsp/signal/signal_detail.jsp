@@ -57,7 +57,7 @@
           <div class='signal-type flex1 flex-column justify-center'>
             <div class='flex1 flex-row align-center mrg-top15'>
               <div class="radio radio-primary flex1 ">
-                <input type="radio" value = '0' name="signal-type" id="legal-normal">
+                <input type="radio" value = '1' name="signal-type" id="legal-normal">
                 <label for="legal-normal"> 合法信号 </label>
               </div>
               <div class="radio radio-primary flex1 ">
