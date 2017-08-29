@@ -42,6 +42,7 @@ public class CommunicationController {
 	
 	@PostConstruct
 	public void init() throws MalformedURLException {
+		//初始化服务
 		URL url1 = new URL(urlQueryTool);
 		QueryToolsService service = new QueryToolsService(url1);
 		queryToolsService = service.getQueryToolsServiceHttpSoap11Endpoint();
@@ -58,7 +59,6 @@ public class CommunicationController {
 			communication.setOperator("电信");
 			communication.setFreqRange(m.getFreqMin().toString() + '-' + m.getFreqMax());
 			communication.setTechName(m.getSt());
-			System.out.println(m.getFreqMax().subtract(m.getFreqMin()).divide(new BigDecimal(m.getChannelBandwidth())));
 			communication.setInfoChannel(Double.valueOf(m.getFreqMax().subtract(m.getFreqMin()).multiply(new BigDecimal("1000")).divide(new BigDecimal(m.getChannelBandwidth())).toString()));
 			communication.setMonitorCoverage(null);
 			communication.setStationCoverage(null);

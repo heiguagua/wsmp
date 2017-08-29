@@ -16,14 +16,6 @@ public class CommunicationViewController {
 	@Autowired
 	StationCountService station;
 	
-	@Value("${sefon.webservice.queryToolservice}")
-	String urlQueryTool;
-	
-	@PostConstruct
-	public void init() {
-		
-	}
-
 	@RequestMapping(path = { "/", ""
 	})
 	public String communication() {
