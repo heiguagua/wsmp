@@ -71,6 +71,8 @@ public class AlarmDataController {
     @Value("${kriking.value}")
     private int intKrikingValue;
 
+    private DecimalFormat    df   = new DecimalFormat("######0.00");
+
     @GetMapping(path = "/secondLevelChart")
     public Object secondLevelChart(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
 
@@ -393,6 +395,8 @@ public class AlarmDataController {
 
         double electrCoverage = numerator/denominator;
 
+        df.format(electrCoverage);
+
         int size = t.length;
         List<Map<String, Object>> kriking = Lists.newLinkedList();
 
@@ -592,7 +596,7 @@ public class AlarmDataController {
 
             Map<String, Object> list = Maps.newLinkedHashMap();
             list.put("string", areaCodeList);
-            requestParam.put("areaCodeList", list);
+           // requestParam.put("areaCodeList", list);
 
             final RStatQuerySignalsResponse2 response = (RStatQuerySignalsResponse2) service.radioStationServiceCall("rStatQuerySignals",
                     mapper.writeValueAsString(requestParam), RStatQuerySignalsRequest.class);

@@ -6,14 +6,13 @@ import com.alibaba.fastjson.TypeReference;
 import com.chinawiserv.apps.logger.Logger;
 import com.chinawiserv.wsmp.pojo.MeasureTaskParamDto;
 import com.chinawiserv.wsmp.pojo.RedioStatusCount;
-import com.sefon.ws.service.impl.FreqService;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.tempuri.*;
 
+import javax.annotation.PostConstruct;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
@@ -21,10 +20,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-
-import javax.annotation.PostConstruct;
 
  
 @Controller
@@ -72,6 +68,8 @@ public class WaveOrderViewController {
 		BigDecimal endFreq = new BigDecimal(map.get("endFreq").toString());
 		BigDecimal divisor = new BigDecimal(1000000);
 		String result = serviceImportFreqRangeManage.findAllFreqRange();
+
+		result =  "null".equals(result) ? "":result;
 		//System.out.println("=================================result:"+result);
 		final Type type = new TypeReference<List<MeasureTaskParamDto>>() {}.getType();
 		@SuppressWarnings("unchecked")
