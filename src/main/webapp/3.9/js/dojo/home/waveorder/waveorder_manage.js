@@ -261,7 +261,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						},
 						columns : [{
 							field : 'centor',
-							title : '频率(kHz)',
+							title : '频率(MHz)',
 							width : '18%',
 							formatter : function(value, row, index) {
 								return '<a class="centerFreqA">' + value
@@ -273,7 +273,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 							width : '15%'
 						}, {
 							field : 'success_rate',
-							title : '监测发射成功率',
+							title : '监测发射功率',
 							width : '18%'
 						}, {
 							field : 'monitorID',
