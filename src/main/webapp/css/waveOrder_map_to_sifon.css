@@ -13,7 +13,8 @@
     font-size: 14px;
     color: #505363;
     margin-bottom: 0;
-    vertical-align: middle; }
+    vertical-align: middle;
+}
 #waveOrder_map_to_sifon .signal-category {
     display: inline-block;
     font-size: 14px;
@@ -92,18 +93,18 @@
     height: 100px;
     padding: 10px;}
 .waveOrder_map_to_sifon {
-    height: 300px;
     padding-left: 0;
     padding-right: 0;
-}
-.waveOrder_map_to_sifon_wrap{
-    margin-top: 15px;
-    height: 300px;
+    height: 100%;
     width: 100%;
     overflow: hidden;
-
+}
+.waveOrder_map_to_sifon_wrap{
+    width: 100%;
+    overflow: hidden;
 }
 .waveOrder_map_to_sifon_box{
     border: none;
 }
+
 
