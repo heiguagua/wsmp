@@ -1,17 +1,27 @@
 define(function() {
 	function cmt_init(){
-		init1();
-		init2();
+		init();
+		
+		//事件绑定
+		//查询点击事件		
+		$(".search-filters").on("click",".btn-search",function(e) {
+			var areaCode = $("#city-list").select2("val");
+			var startTime = $("#startTime").val();
+			var endTime = $("#endTime").val();
+			topTable(areaCode, startTime , endTime);
+		})
 	}
 	
 	
-	 function init1(){
+	 function detetimepicker_init(){
 		$.fn.datetimepicker.defaults = {
 			    language: 'zh-CN',
-			    format: 'yyyy-mm-dd',
+			    format: 'yyyy-mm-dd hh:ii:ss',
 			    autoclose:true,
 			    minView:2
 			  }	
+			  
+		$('.time-picker').datetimepicker({});
 	}
 	 
 	 function initCityListValue(){
@@ -45,17 +55,10 @@ define(function() {
 			$("#option_city").append(city.Name);
 		} 
 	 }
-	
-	 function init2(){
-		initCityListValue();
-		
-		$('.select2-picker').select2();
-
-		  $('.time-picker').datetimepicker({
-
-		  });
-		  
-		  $('#table-comms').bootstrapTable({
+	 
+	 function topTable(areaCode, startTime , endTime) {
+	 	$('#table-comms').bootstrapTable("destroy");
+	 	$('#table-comms').bootstrapTable({
 		        method: 'post',
 		        contentType: "application/json",//必须要有！！！！
 		        url:"data/communication/topTable",//要请求数据的文件路径
@@ -67,10 +70,12 @@ define(function() {
 		        pageNumber: 1, //初始化加载第一页，默认第一页
 		        pagination:true,//是否分页
 		        queryParamsType:'limit',//查询参数组织方式
-//		        queryParams : function(params) {
-//						params.areaCode = AREACODE;
-//						return params
-//					}, // 请求服务器时所传的参数
+		        queryParams : function(params) {
+						params.areaCode = areaCode;
+						params.startTime = startTime;
+						params.endTime = endTime;
+						return params
+					}, // 请求服务器时所传的参数
 		        sidePagination:'client',//指定服务器端分页
 		        pageSize:10,//单页记录数
 		        pageList:[5,10,20,30],//分页步进值
@@ -121,6 +126,14 @@ define(function() {
 		                sortable:true
 		            }]
 		      });
+	 }
+	
+	 function init(){
+		initCityListValue();
+		
+		detetimepicker_init();
+		
+		$('.select2-picker').select2();
 
 		      $('#table-station-compare').bootstrapTable({
 		            method: 'get',

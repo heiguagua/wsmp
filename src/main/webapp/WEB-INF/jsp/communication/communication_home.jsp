@@ -29,15 +29,15 @@
   	</span>
       <div class='time-wrap'>
         开始时间
-        <div class='input-group date time-picker' id='startTime'>
-          <input type='text' class="form-control " />
+        <div class='input-group date time-picker' >
+          <input type='text' class="form-control " id='startTime'/>
           <span class="input-group-addon">
             <span class="glyphicon glyphicon-calendar"></span>
           </span>
         </div>
         结束时间
-        <div class='input-group date time-picker' id='endTime'>
-          <input type='text' class="form-control " />
+        <div class='input-group date time-picker' >
+          <input type='text' class="form-control " id='endTime'/>
           <span class="input-group-addon">
             <span class="glyphicon glyphicon-calendar"></span>
           </span>

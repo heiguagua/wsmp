@@ -156,7 +156,7 @@
 
 	<div class="form-group ">
 		<div class="col-sm-12 mrg-top15 text-right">
-			<button type="button" id="buttonInsert" class="btn btn-default btn-apply">添加</button>
+			<button type="button" id="buttonInsert" class="btn btn-default btn-apply">提交</button>
 		</div>
 	</div>
 

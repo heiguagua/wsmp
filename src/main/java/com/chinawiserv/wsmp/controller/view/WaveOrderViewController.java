@@ -72,14 +72,25 @@ public class WaveOrderViewController {
 		BigDecimal endFreq = new BigDecimal(map.get("endFreq").toString());
 		BigDecimal divisor = new BigDecimal(1000000);
 		String result = serviceImportFreqRangeManage.findAllFreqRange();
-		//System.out.println("=================================result:"+result);
+		if (result == null) {
+			//如果没有查询到数据，设置默认的频段范围，是否频段，nullID
+			MeasureTaskParamDto dto = new MeasureTaskParamDto();
+			dto.setBeginFreq(Double.valueOf(beginFreq.divide(divisor).toString()));
+			dto.setEndFreq(Double.valueOf(endFreq.divide(divisor).toString()));
+			dto.setFreqRange(true);
+			Logger.debug("没有数据传入model:{}",JSON.toJSONString(dto));
+			model.addAttribute("dto",dto);
+			return "waveorder/important_monitor_insert";
+		}
 		final Type type = new TypeReference<List<MeasureTaskParamDto>>() {}.getType();
 		@SuppressWarnings("unchecked")
 		List<MeasureTaskParamDto> resultList = (List<MeasureTaskParamDto>) JSON.parseObject(result,type);
 		Logger.debug("resultList:{}",JSON.toJSONString(resultList));
 		//过滤传过来的频段
 		Optional<MeasureTaskParamDto> optional = resultList.stream().filter(dto -> Double.valueOf(beginFreq.divide(divisor).toString()) >= dto.getBeginFreq() &&
-				Double.valueOf(endFreq.divide(divisor).toString()) <= dto.getEndFreq()).findFirst();
+				Double.valueOf(endFreq.divide(divisor).toString()) <= dto.getEndFreq())
+				.findFirst();
+		
 		if(optional.isPresent()) {
 			Logger.debug("查询结果:{}",JSON.toJSONString(optional.get()));
 			model.addAttribute("dto",optional.get());

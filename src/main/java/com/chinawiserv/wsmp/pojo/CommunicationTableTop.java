@@ -15,16 +15,16 @@ public class CommunicationTableTop {
     private String techName;
     
     //信道数
-    private Double infoChannel;
+    private String infoChannel;
     
     //监测站覆盖率
-    private Double monitorCoverage;
+    private String monitorCoverage;
     
     //台站覆盖率
-    private Double stationCoverage;
+    private String stationCoverage;
     
     //频段占用度
-    private Double occupancy;
+    private String occupancy;
 
 	public String getGeneration() {
 		return generation;
@@ -42,16 +42,19 @@ public class CommunicationTableTop {
 		return techName;
 	}
 
+	public String getInfoChannel() {
+		return infoChannel;
+	}
 
-	public Double getMonitorCoverage() {
+	public String getMonitorCoverage() {
 		return monitorCoverage;
 	}
 
-	public Double getStationCoverage() {
+	public String getStationCoverage() {
 		return stationCoverage;
 	}
 
-	public Double getOccupancy() {
+	public String getOccupancy() {
 		return occupancy;
 	}
 
@@ -71,26 +74,22 @@ public class CommunicationTableTop {
 		this.techName = techName;
 	}
 
+	public void setInfoChannel(String infoChannel) {
+		this.infoChannel = infoChannel;
+	}
 
-	public void setMonitorCoverage(Double monitorCoverage) {
+	public void setMonitorCoverage(String monitorCoverage) {
 		this.monitorCoverage = monitorCoverage;
 	}
 
-	public void setStationCoverage(Double stationCoverage) {
+	public void setStationCoverage(String stationCoverage) {
 		this.stationCoverage = stationCoverage;
 	}
 
-	public void setOccupancy(Double occupancy) {
+	public void setOccupancy(String occupancy) {
 		this.occupancy = occupancy;
 	}
 
-	public Double getInfoChannel() {
-		return infoChannel;
-	}
-
-	public void setInfoChannel(Double infoChannel) {
-		this.infoChannel = infoChannel;
-	}
     
 
 }
