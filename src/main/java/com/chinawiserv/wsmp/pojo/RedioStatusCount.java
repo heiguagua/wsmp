@@ -27,6 +27,9 @@ public class RedioStatusCount {
 
 	// 非法信号
 	private int illegalSignal;
+	
+	//是否有重点监测信息
+	private Boolean importantMonitor;
 
 	public String getRedioName() {
 		return redioName;
@@ -90,6 +93,14 @@ public class RedioStatusCount {
 
 	public void setEndFreq(BigInteger endFreq) {
 		this.endFreq = endFreq;
+	}
+
+	public Boolean isImportantMonitor() {
+		return importantMonitor;
+	}
+
+	public void setImportantMonitor(Boolean importantMonitor) {
+		this.importantMonitor = importantMonitor;
 	}
 
 }

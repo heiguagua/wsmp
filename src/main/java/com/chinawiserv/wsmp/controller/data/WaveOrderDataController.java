@@ -1,7 +1,10 @@
 package com.chinawiserv.wsmp.controller.data;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.chinawiserv.apps.logger.Logger;
 import com.chinawiserv.wsmp.pojo.Alarm;
+import com.chinawiserv.wsmp.pojo.MeasureTaskParamDto;
 import com.chinawiserv.wsmp.pojo.RedioDetail;
 import com.chinawiserv.wsmp.pojo.RedioStatusCount;
 import com.google.common.collect.Lists;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.tempuri.*;
 
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
@@ -42,6 +46,11 @@ public class WaveOrderDataController {
 	@Value("${sefon.webservice.freqservice}")
 	private String urlFreq;
 	
+	@Value("${importFreqRangeManageService.wsdl}")
+	private String urlImportFreqRange;
+	
+	private IImportFreqRangeManageService serviceImportFreqRangeManage;
+	
 	private FreqService serviceFreq;
 	
 	private RadioSignalWebService serviceRadioSignal;
@@ -56,6 +65,8 @@ public class WaveOrderDataController {
 	    serviceRadioSignal = new RadioSignalWebService(url2);
 		URL url3 = new URL(urlFreqWarning);
 		serviceFreqWarning = new FreqWarningWebService(url3);
+		URL url4 = new URL(urlImportFreqRange);
+		serviceImportFreqRangeManage = new ImportFreqRangeManageService(url4).getBasicHttpBindingIImportFreqRangeManageService();
 
 	}
 	
@@ -92,16 +103,22 @@ public class WaveOrderDataController {
 		request2.setStationNumber(stationArray);
 		RadioSignalClassifiedQueryResponse response2 = serviceRadioSignal.getRadioSignalWebServiceSoap().queryRadioSignalClassified(request2);
 
-		//设置合法子类型(违规)
+		//查询合法子类型(违规)
 		RadioSignalSubClassifiedQueryRequest request3 = new RadioSignalSubClassifiedQueryRequest();
 		request3.setFreqBandList(array);
 		request3.setStationNumber(stationArray);
 		request3.setType(1);
 		RadioSignalSubClassifiedQueryResponse response3 = serviceRadioSignal.getRadioSignalWebServiceSoap().queryRadioSignalSubClassified(request3);
-		
 		final List<Integer> legalSubTypeCountList = response3.getLstOnFreqBand().getSignalSubStaticsOnFreqBand().stream()
 				.map(m -> m.getCount())
 				.collect(Collectors.toList());
+		
+		//查询该频段是否有重点监测数据
+//		String important = serviceImportFreqRangeManage.findAllFreqRange();
+//		final Type type = new TypeReference<List<MeasureTaskParamDto>>() {}.getType();
+//		@SuppressWarnings("unchecked")
+//		List<MeasureTaskParamDto> resultList = (List<MeasureTaskParamDto>) JSON.parseObject(important,type);
+//		System.out.println("===result:"+resultList);
 		
 		List<RedioStatusCount> rsCountRows = Lists.newArrayList();
 		AtomicInteger index = new AtomicInteger();
@@ -112,10 +129,16 @@ public class WaveOrderDataController {
 			rsCount.setLegalUnNormalStationNumber(legalSubTypeCountList.get(index.get()));
 			rsCount.setBeginFreq(t.getBand().getFreqMin());
 			rsCount.setEndFreq(t.getBand().getFreqMax());
+//			System.out.println(t.getBand().getFreqMax() + " - " + t.getBand().getFreqMin());
+			//是否有重点监测信息
+//			Boolean imporantMonitor = resultList.stream().filter(f -> f.getBeginFreq().equals(t.getBand().getFreqMin()) && f.getEndFreq().equals(t.getBand().getFreqMax()))
+//				.findAny().isPresent();
+//			System.out.println(imporantMonitor);
+//			rsCount.setImportantMonitor(imporantMonitor);
 			t.getSignalStaticsLst().getSignalStatics().forEach(t1 -> {
-				int type = t1.getSignalType();
+				int signalType = t1.getSignalType();
 				int count = t1.getCount();
-				switch (type) {
+				switch (signalType) {
 				case 1:
 					rsCount.setLegalNormalStationNumber(count - legalSubTypeCountList.get(index.get()));
 					break;
