@@ -379,11 +379,11 @@ public class AlarmDataController {
         int coulm = mapPoint.size();
 
         double[][] p = new double[coulm][3];
-
+        Random random = new Random();
         for (int index = 0; index < coulm; index++) {
             p[index][0] = mapPoint.get(index).getFlon();
             p[index][1] = mapPoint.get(index).getFlat();
-            p[index][2] = mapPoint.get(index).getLevel();
+            p[index][2] = mapPoint.get(index).getLevel()& 0xFF ;
         }
 
         double[][] t = new double[0][0];
@@ -452,7 +452,7 @@ public class AlarmDataController {
             HashMap<String, String> element = Maps.newHashMap();
             element.put("x", station.getFlon() + "");
             element.put("y", station.getFlat() + "");
-            element.put("count", station.getLevel() + "");
+            element.put("count", (station.getLevel()& 0xFF) + "");
             element.put("stationId", station.getId());
             return element;
         }).collect(toList());
@@ -500,8 +500,8 @@ public class AlarmDataController {
 
                 String id = s.getStationID();
                 String stationName = s.getSTATName();
-                String centerFreqStr = s.getFREQEFB() + "";
-                String bandWidth = s.getNETBand() + "";
+                String centerFreqStr = s.getFREQEFB()==null ? "-":s.getFREQEFB().toString();
+                String bandWidth = s.getNETBand()==null ? "-":s.getNETBand().toString();
                 return new Station(id, stationName, centerFreqStr, bandWidth);
 
             }).collect(toList());
