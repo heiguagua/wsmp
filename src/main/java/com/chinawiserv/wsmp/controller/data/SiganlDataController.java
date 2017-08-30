@@ -53,13 +53,13 @@ public class SiganlDataController {
 	}
 
 	@GetMapping("/modulationRatio")
-	public Object getFMRate(@RequestParam String id, @RequestParam String timeStart, @RequestParam String frequency) throws Exception {
+	public Object getFMRateForSf(@RequestParam String id, @RequestParam String timeStart ,@RequestParam String timeStop, @RequestParam String frequency) throws Exception {
 
 		long frequencyLong = Long.parseLong(frequency);
-		Map<String, Object> map = Maps.newHashMap();
-		//Map<String, Object> map = hbaseClient.queryFeaturePara(id, timeStart, frequencyLong);
-		map.put("noise ",4);
-		map.put("normal",7);
+		//Map<String, Object> map = Maps.newHashMap();
+		Map<String, Object> map = hbaseClient.queryModulationMode(id, timeStart,timeStop, frequencyLong);
+//		map.put("noise ",4);
+//		map.put("normal",7);
 		return map;
 	}
 

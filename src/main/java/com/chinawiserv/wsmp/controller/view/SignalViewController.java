@@ -125,10 +125,10 @@ public class SignalViewController {
 
 			model.addAttribute("redioDetail", redioDetail);
 
-			Logger.info("方法 {} 操作时间{} 请求成功 中心频率{} 开始时间{} 监测站id{} 信号id{} 返回值{} ", "signal_detail", LocalDateTime.now().toString(),centorfreq,beginTime,stationCode,id,JSON.toJSONString(redioDetail));
+			Logger.info("方法 特征值查询 操作时间{} 请求成功 中心频率{} 开始时间{} 监测站id{} 信号id{} 返回值{} ", "signal_detail", LocalDateTime.now().toString(),centorfreq,beginTime,stationCode,id,JSON.toJSONString(map));
 		}
 		catch (Exception e) {
-			Logger.error("方法 {} 操作时间{} 请求异常  原因{}", "signal_detail", LocalDateTime.now().toString(), e);
+			Logger.error("方法 特征值查询 操作时间{} 请求异常  原因{}", "signal_detail", LocalDateTime.now().toString(), e);
 		}
 
 		return "signal/signal_detail";
@@ -156,6 +156,7 @@ public class SignalViewController {
                 singal.setEndTime(t.getInvalidDate().toString().replaceAll(":", "").replaceAll("T", "").replaceAll("-", ""));
                 singal.setContext(t.getSaveDate().toString().replaceAll("T", " "));
 				singal.setDes(t.getDes());
+				singal.setStationKey(singal.getStationKey());
 				//singal.setStation(t.getStationDTOs().getRadioSignalStationDTO().stream().findFirst().orElseGet(()->new RadioSignalStationDTO()).getStationNumber());
                 return singal;
             }).collect(toList());

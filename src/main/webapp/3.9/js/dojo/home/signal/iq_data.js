@@ -149,11 +149,11 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                     'y' : 40,
                     'y2' : 40,
                     'x' : 60,
-                    'x2' : '50%'
+                    'x2' : '30%'
                 }, {
                     'y' : 40,
                     'y2' : 40,
-                    'x' : '50%',
+                    'x' : '70%',
                     'x2' : 40
                 }],
                 //				        dataZoom: [{

@@ -35,9 +35,8 @@ define(["home/signal/signal_manage", "ajax" ],
             map = new esri.Map("mapDiv", {
                 //center : [ 104.06, 30.67 ],
                 zoom: 7,
-                sliderStyle: "small",
-                maxZoom:11,
-                minZoom:6
+                sliderStyle: "small"
+                // maxZoom:11
             });
 
             map.addLayer(agoLayer);
@@ -55,7 +54,7 @@ define(["home/signal/signal_manage", "ajax" ],
                 heatLayer = new HeatmapLayer({
                     config: {
                         "useLocalMaximum": false,
-                        "radius": 40,
+                        "radius": 20,
                         "gradient": {
                             0.45: "rgb(000,000,255)",
                             0.55: "rgb(000,255,255)",
@@ -185,10 +184,10 @@ define(["home/signal/signal_manage", "ajax" ],
                         //map.addLayer(glayer);
 
                         dojo.connect(map, "onClick", function(e){
-                            console.log(e.graphic.geometry);
-                            if(e.graphic.geometry.type = 'point'){
+                            console.log(esri.graphic.geometry);
+                            if(esri.graphic.geometry.type = 'point'){
                                 console.log(true);
-                                var id = e.graphic.geometry.stationId;
+                                var id = esri.graphic.geometry.stationId;
                                 var data = {"stationId" : id}
 
 
