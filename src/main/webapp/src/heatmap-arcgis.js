@@ -89,26 +89,39 @@ dojo.addOnLoad(function () {
             };
             // if data
             if (parsedData.data) {
-                // for all x values
-                for (xParsed in parsedData.data) {
-                    // if data[x]
-                    if (parsedData.data.hasOwnProperty(xParsed)) {
-                        // for all y values and count
-                        for (yParsed in parsedData.data[xParsed]) {
-                            if (parsedData.data[xParsed].hasOwnProperty(yParsed)) {
-                                // convert data point into screen geometry
-                                screenGeometry = esri.geometry.toScreenGeometry(this._map.extent, this._map.width, this._map.height, parsedData.data[xParsed][yParsed].dataPoint);
-                                // push to heatmap plugin data array
-                                heatPluginData.data.push({
-                                    x: screenGeometry.x,
-                                    y: screenGeometry.y,
-                                    count: parsedData.data[xParsed][yParsed].count // count value of x,y
-                                });
-                            }
-                        }
-                    }
+                //for all x values
+                // for (xParsed in parsedData.data) {
+                //     // if data[x]
+                //     if (parsedData.data.hasOwnProperty(xParsed)) {
+                //         // for all y values and count
+                //         for (yParsed in parsedData.data[xParsed]) {
+                //             if (parsedData.data[xParsed].hasOwnProperty(yParsed)) {
+                //                 // convert data point into screen geometry
+                //                 screenGeometry = esri.geometry.toScreenGeometry(this._map.extent, this._map.width, this._map.height, parsedData.data[xParsed][yParsed].dataPoint);
+                //                 // push to heatmap plugin data array
+                //                 heatPluginData.data.push({
+                //                     x: screenGeometry.x,
+                //                     y: screenGeometry.y,
+                //                     count: parsedData.data[xParsed][yParsed].count // count value of x,y
+                //                 });
+                //             }
+                //         }
+                //     }
+                // }
+
+                for (var index =0; index<parsedData.data2.length;index++){
+                    // convert data point into screen geometry
+                    screenGeometry = esri.geometry.toScreenGeometry(this._map.extent, this._map.width, this._map.height, parsedData.data2[index].dataPoint);
+                    // push to heatmap plugin data array
+                    heatPluginData.data.push({
+                        x: screenGeometry.x,
+                        y: screenGeometry.y,
+                        count: parsedData.data2[index].count // count value of x,y
+                    });
                 }
             }
+            // console.log("========================================")
+            // console.log(parsedData);
             // store in heatmap plugin which will render it
             this.storeHeatmapData(heatPluginData);
         },
@@ -121,7 +134,8 @@ dojo.addOnLoad(function () {
                 // create parsed data object
                 parsedData = {
                     max: 0,
-                    data: []
+                    data: [],
+                    data2:[]
                 };
                 if (!this.config.useLocalMaximum) {
                     parsedData.max = this.globalMax;
@@ -145,38 +159,63 @@ dojo.addOnLoad(function () {
                         // attributes
                         attributes = features[i].attributes;
                         // if array value is undefined
-                        if (!parsedData.data[dataPoint.x]) {
-                            // create empty array value
-                            parsedData.data[dataPoint.x] = [];
-                        }
+                        // if (!parsedData.data[dataPoint.x]) {
+                        //     // create empty array value
+                        //     parsedData.data[dataPoint.x] = [];
+                        // }
                         // array value array is undefined
-                        if (!parsedData.data[dataPoint.x][dataPoint.y]) {
-                            // create object in array
-                            parsedData.data[dataPoint.x][dataPoint.y] = {};
-                            // if count is defined in datapoint
-                            if (attributes && attributes.hasOwnProperty('count')) {
-                                // create array value with count of count set in datapoint
-                                parsedData.data[dataPoint.x][dataPoint.y].count = attributes.count;
-                            } else {
-                                // create array value with count of 0
-                                parsedData.data[dataPoint.x][dataPoint.y].count = 0;
-                            }
+                        // if (!parsedData.data[dataPoint.x][dataPoint.y]) {
+                        //     // create object in array
+                        //     parsedData.data[dataPoint.x][dataPoint.y] = {};
+                        //     // if count is defined in datapoint
+                        //     if (attributes && attributes.hasOwnProperty('count')) {
+                        //         // create array value with count of count set in datapoint
+                        //         parsedData.data[dataPoint.x][dataPoint.y].count = attributes.count;
+                        //     } else {
+                        //         // create array value with count of 0
+                        //         parsedData.data[dataPoint.x][dataPoint.y].count = 0;
+                        //     }
+                        // }
+
+                        var element = {};
+                        //parsedData.data2[i] = {};
+                        element.x = dataPoint.x;
+                        element.y = dataPoint.y;
+                        element.dataPoint = dataPoint;
+                        parsedData.data2.push(element);
+                        // console.log(attributes)
+                        if (attributes && attributes.hasOwnProperty('count')) {
+                            // create array value with count of count set in datapoint
+                            parsedData.data2[i].count = attributes.count;
+                        } else {
+                            // create array value with count of 0
+                            parsedData.data2[i].count = 0;
                         }
+
                         // add 1 to the count
-                        parsedData.data[dataPoint.x][dataPoint.y].count += 1;
-                        // store dataPoint var
-                        parsedData.data[dataPoint.x][dataPoint.y].dataPoint = dataPoint;
-                        // if count is greater than current max
-                        if (parsedData.max < parsedData.data[dataPoint.x][dataPoint.y].count) {
+                        // parsedData.data[dataPoint.x][dataPoint.y].count += 1;
+                        // // store dataPoint var
+                        // parsedData.data[dataPoint.x][dataPoint.y].dataPoint = dataPoint;
+                        // // if count is greater than current max
+                        // if (parsedData.max < parsedData.data[dataPoint.x][dataPoint.y].count) {
+                        //     // set max to this count
+                        //     parsedData.max = parsedData.data[dataPoint.x][dataPoint.y].count;
+                        //     if (!this.config.useLocalMaximum) {
+                        //         this.globalMax = parsedData.data[dataPoint.x][dataPoint.y].count;
+                        //     }
+                        // }
+                        if (parsedData.max < parsedData.data2[i].count) {
                             // set max to this count
-                            parsedData.max = parsedData.data[dataPoint.x][dataPoint.y].count;
+                            parsedData.max = parsedData.data2[i].count;
                             if (!this.config.useLocalMaximum) {
-                                this.globalMax = parsedData.data[dataPoint.x][dataPoint.y].count;
+                                this.globalMax = parsedData.data2[i].count;
                             }
                         }
 
+
                     }
                 }
+                console.log(parsedData);
                 // convert parsed data into heatmap plugin formatted data
                 this.convertHeatmapData(parsedData);
             }

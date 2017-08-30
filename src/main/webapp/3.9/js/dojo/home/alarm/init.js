@@ -76,6 +76,8 @@ define(["home/alarm/alarm_manage", "ajax"],
                     layer.msg("成功");
                     $("#signal_list").find('option:selected').attr("des",des);
                     $("#modalStationAlarm").modal('hide');
+                    var selectOption = $('#signal_list').find('option:selected')
+                    selectOption.removeAttr("status").attr("status",1);
                     //warnig_confirm();
                 });
             });
@@ -257,7 +259,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                 "Ycoord": 30.67,
                 "Plant": "Mesa Mint"
             };
-
+            console.log(agoLayer);
             var initExtent = new esri.geometry.Extent({type: "extent", xmin: -180, ymin: -90, xmax: 180, ymax: 90});
 
             console.log(JSON.stringify(agoLayer.initialExtent));
@@ -277,8 +279,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                 //center : [ 104.06, 30.67 ],
                 zoom: 7,
                 sliderStyle: "small",
-                maxZoom:11,
-                minZoom:6
+                maxZoom:11
             });
 
             map.addLayer(agoLayer);
@@ -522,7 +523,16 @@ define(["home/alarm/alarm_manage", "ajax"],
                                 field.addClass("selected");
                             });
                             $("#submitButton").removeAttr('disabled');
+                            var status = $('#signal_list').find('option:selected').attr("status");
+                            
+                            if (status == "1"){
+                                $('#submitButton').attr('disabled',"true");
+                            }else {
+                                $('#submitButton').removeAttr("disabled");
+                            }
+
                             $("#modalStationAlarm").modal();
+
                         });
                         //合法违规
                         $("#legal-wrong").click(function () {
@@ -633,6 +643,12 @@ define(["home/alarm/alarm_manage", "ajax"],
                                 field.addClass("selected");
                             });
                             $("#submitButton").removeAttr('disabled');
+                            var status = $('#signal_list').find('option:selected').attr("status");
+                            if (status == "1"){
+                                $('#submitButton').attr('disabled',"true");
+                            }else {
+                                $('#submitButton').removeAttr("disabled");
+                            }
                             $("#modalStationAlarm").modal();
 
                         });
@@ -733,6 +749,13 @@ define(["home/alarm/alarm_manage", "ajax"],
                                 field.addClass("selected");
                             });
                             $("#submitButton").removeAttr('disabled');
+                            var status = $('#signal_list').find('option:selected').attr("status");
+
+                            if (status == "1"){
+                                $('#submitButton').attr('disabled',"true");
+                            }else {
+                                $('#submitButton').removeAttr("disabled");
+                            }
                             $("#modalStationAlarm").modal();
 
                         });
@@ -755,6 +778,11 @@ define(["home/alarm/alarm_manage", "ajax"],
                             $("#stationWrap").html("");
                             $("#stationWrap").html(temp);
                             $("#submitButton").removeAttr('disabled');
+                            if (status == "1"){
+                                $('#submitButton').attr('disabled',"true");
+                            }else {
+                                $('#submitButton').removeAttr("disabled");
+                            }
                             $("#modalStationAlarm").modal();
                         });
 
@@ -777,6 +805,13 @@ define(["home/alarm/alarm_manage", "ajax"],
                             $("#stationWrap").html("");
                             $("#stationWrap").html(temp);
                             $("#submitButton").removeAttr('disabled');
+                            var status = $('#signal_list').find('option:selected').attr("status");
+
+                            if (status == "1"){
+                                $('#submitButton').attr('disabled',"true");
+                            }else {
+                                $('#submitButton').removeAttr("disabled");
+                            }
                             $("#modalStationAlarm").modal();
 
                         });

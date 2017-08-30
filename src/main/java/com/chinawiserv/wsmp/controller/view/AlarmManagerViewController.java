@@ -99,15 +99,14 @@ public class AlarmManagerViewController {
                 singal.setInteger(t.getCenterFreq());
                 singal.setId(t.getID());
 
-                int id = t.getStatus();
-                singal.setStatus(id);
+                int status = t.getStatus();
+                singal.setStatus(status);
 
                 singal.setCentorFreq(t.getCenterFreq().toString());
 
                 String beginTime = t.getSaveDate().toString().replaceAll(":", "").replaceAll("T", "").replaceAll("-", "");
                 singal.setBeginTime(beginTime);
 				singal.setDes(t.getDescription());
-
                 t.getStatList().getFreqWarningStatDTO().stream().map(m ->
                      m.getStationGUID()
                 ).forEach(z -> {

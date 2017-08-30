@@ -354,6 +354,8 @@ public class AlarmDataController {
 
             mapPoint = relate.stream().filter(t -> stationcode.contains(t.getId())).collect(toList());
 
+            Logger.info("地图上显示的点 信息为{}",JSON.toJSONString(mapPoint));
+
             int[] ids = relate.stream().mapToInt(m -> Integer.valueOf(m.getId())).toArray();
 
             double[] flon = relate.stream().mapToDouble(LevelLocate::getFlon).toArray();
@@ -387,7 +389,7 @@ public class AlarmDataController {
         double[][] t = new double[0][0];
 
         if (coulm > 0) {
-            t = jk2d.jk2d_ret(0.5, 10, 0.5, 10, p);
+            t = jk2d.jk2d_ret(0.01,  10, 0.01,  10, p);
         }
 
         double numerator  = Stream.of(t).filter((e)-> e[2]>intKrikingValue).count();
@@ -401,8 +403,6 @@ public class AlarmDataController {
         List<Map<String, Object>> kriking = Lists.newLinkedList();
 
         Map<String, Object> spatialReference = Maps.newHashMap();
-        DecimalFormat xformart = new DecimalFormat("#.00000000");
-        DecimalFormat yformart = new DecimalFormat("#.000000000");
         spatialReference.put("wkid", 4326);
         for (int index = 0; index < size; index++) {
             Map<String, Object> element = Maps.newHashMap();
@@ -413,10 +413,10 @@ public class AlarmDataController {
             double y = t[index][1];
             geometry.put("spatialReference", spatialReference);
             geometry.put("type", "point");
-            geometry.put("x", Double.valueOf(xformart.format(x * 20037508.34 / 180)));
+            geometry.put("x", x * 20037508.34 / 180);
             y = Math.log(Math.tan((90 + y) * Math.PI / 360)) / (Math.PI / 180);
             y = y * 20037508.34 / 180;
-            geometry.put("y", Double.valueOf(yformart.format(y)));
+            geometry.put("y", y);
             count.put("count", (int) val);
             element.put("attributes", count);
             element.put("geometry", geometry);
@@ -452,7 +452,7 @@ public class AlarmDataController {
             HashMap<String, String> element = Maps.newHashMap();
             element.put("x", station.getFlon() + "");
             element.put("y", station.getFlat() + "");
-            element.put("count", Double.longBitsToDouble(station.getLevel()) + "");
+            element.put("count", station.getLevel() + "");
             element.put("stationId", station.getId());
             return element;
         }).collect(toList());
@@ -500,7 +500,7 @@ public class AlarmDataController {
 
                 String id = s.getStationID();
                 String stationName = s.getSTATName();
-                String centerFreqStr = s.getFREQLC() + "";
+                String centerFreqStr = s.getFREQEFB() + "";
                 String bandWidth = s.getNETBand() + "";
                 return new Station(id, stationName, centerFreqStr, bandWidth);
 
@@ -596,7 +596,7 @@ public class AlarmDataController {
 
             Map<String, Object> list = Maps.newLinkedHashMap();
             list.put("string", areaCodeList);
-           // requestParam.put("areaCodeList", list);
+           requestParam.put("areaCodeList", list);
 
             final RStatQuerySignalsResponse2 response = (RStatQuerySignalsResponse2) service.radioStationServiceCall("rStatQuerySignals",
                     mapper.writeValueAsString(requestParam), RStatQuerySignalsRequest.class);

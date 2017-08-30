@@ -6,6 +6,8 @@ import java.math.BigInteger;
 
 public class Singal {
 
+	private  String stationKey;
+
 	private String context;
 
 	private String centorFreq;
@@ -128,5 +130,13 @@ public class Singal {
 
 	public String getStationNumber() {
 		return stationNumber;
+	}
+
+	public String getStationKey() {
+		return stationKey;
+	}
+
+	public void setStationKey(String stationKey) {
+		this.stationKey = stationKey;
 	}
 }
