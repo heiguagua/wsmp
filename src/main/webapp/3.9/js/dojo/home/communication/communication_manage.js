@@ -8,7 +8,9 @@ define(function() {
 			var areaCode = $("#city-list").select2("val");
 			var startTime = $("#startTime").val();
 			var endTime = $("#endTime").val();
-			topTable(areaCode, startTime , endTime);
+			var user = getUser();
+			var userID = user.ID;
+			topTable(areaCode, startTime , endTime , userID);
 		})
 	}
 	
@@ -22,6 +24,12 @@ define(function() {
 			  }	
 			  
 		$('.time-picker').datetimepicker({});
+	}
+	
+	function getUser() {
+		var info = Binding.getUser();
+			info = JSON.parse(info);
+		return info;
 	}
 	 
 	 function initCityListValue(){
@@ -56,7 +64,7 @@ define(function() {
 		} 
 	 }
 	 
-	 function topTable(areaCode, startTime , endTime) {
+	 function topTable(areaCode, startTime , endTime , userID) {
 	 	$('#table-comms').bootstrapTable("destroy");
 	 	$('#table-comms').bootstrapTable({
 		        method: 'post',
@@ -74,6 +82,7 @@ define(function() {
 						params.areaCode = areaCode;
 						params.startTime = startTime;
 						params.endTime = endTime;
+						params.userID = userID;
 						return params
 					}, // 请求服务器时所传的参数
 		        sidePagination:'client',//指定服务器端分页

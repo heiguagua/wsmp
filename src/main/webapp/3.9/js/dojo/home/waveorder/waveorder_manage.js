@@ -340,7 +340,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 				// 执行下拉框
 				$('.select2-picker').select2();
 				// 默认选中第一个
-				var defaultAreaCode = $("#area_select")[0].children[0].value;
+				var defaultAreaCode = $("#area_select").select2('val');
+				console.log(defaultAreaCode);
 				// $('.select2-picker').val(defaultAreaCode); // Change the
 				// value or make some change to the internal state
 				// $('.select2-picker').trigger('change.select2'); //触发事件
@@ -388,15 +389,15 @@ define(	["ajax", "dojo/parser", "esri/map",
 			function getArea(user) {
 				if (user.AreaType == "Province") {
 					// 显示省级选项
-					var province = user.Area;
-					var option = document.createElement("option");
-					option.setAttribute("value", province.Code);
-					option.setAttribute("id", "option");
-					// option.setAttribute("selected","selected");
-					// option.innerHTML =
-					// province_name;//此时就设置innerHTML的话会报错，因为<option>标签还没渲染出来
-					$("#area_select").append(option);
-					$("#option").append(province.Name);
+//					var province = user.Area;
+//					var option = document.createElement("option");
+//					option.setAttribute("value", province.Code);
+//					option.setAttribute("id", "option");
+//					// option.setAttribute("selected","selected");
+//					// option.innerHTML =
+//					// province_name;//此时就设置innerHTML的话会报错，因为<option>标签还没渲染出来
+//					$("#area_select").append(option);
+//					$("#option").append(province.Name);
 					var citys = province.Citys;
 					// 显示市级选项
 					for (var i = 0; i < citys.length; i++) {
@@ -614,7 +615,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 							}, {
 								field : 'lastingTime',
 						        width:'20%',
-								title : '最后出现时间'
+								title : '最后出现时间',
+								sortable : true
 							}, {
 								field : 'stationID',
 						        width:'15%',
@@ -694,7 +696,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 							}, {
 								field : 'lastingTime',
 						        width:'20%',
-								title : '最后出现时间'
+								title : '最后出现时间',
+								sortable : true
 							}, {
 								field : 'stationID',
 								title : '监测站',

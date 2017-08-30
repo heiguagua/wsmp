@@ -25,6 +25,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -77,6 +78,7 @@ public class CommunicationController {
 		request.put("queryStartTime", param.get("startTime"));
 		request.put("queryEndTime", param.get("endTime"));
 		request.put("queryScope", param.get("areaCode"));
+		request.put("userId", param.get("userID"));
     	List<FreqSelfInfo> response = queryToolsService.querySelfFreqInfoByPID("1");
     	long loopStartTime = System.currentTimeMillis();
 		List<CommunicationTableTop> communicationRows = response.parallelStream().map(m -> {
@@ -98,7 +100,8 @@ public class CommunicationController {
 			System.out.println("result:"+result.toJSONString());
 			String stationCoverageRate = result.getJSONObject("data").getJSONArray("result").getJSONObject(0).getString("stationCoverageRate");
 			String freqBandOccupyAngle = result.getJSONObject("data").getJSONArray("result").getJSONObject(0).getString("freqBandOccupyAngle");
-			System.out.println("ss:"+stationCoverageRate);
+			freqBandOccupyAngle = freqBandOccupyAngle == null ? "--" : freqBandOccupyAngle + '%';
+			stationCoverageRate = stationCoverageRate.equals("--") ? "--" : stationCoverageRate + '%';
 			communication.setMonitorCoverage(null);
 			communication.setStationCoverage(stationCoverageRate);
 			communication.setOccupancy(freqBandOccupyAngle);
