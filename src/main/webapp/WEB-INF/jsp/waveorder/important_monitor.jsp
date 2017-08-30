@@ -27,8 +27,8 @@
 			<div class="col-sm-9">
 				<div class="input-group">
 					<input name="cycleStep" value="${dto.getCycleStep()}" type="text"
-						class="form-control " placeholder="单位(分钟)">
-					<span class="input-group-addon unit ">分钟</span>
+						class="form-control " placeholder="单位(秒)">
+					<span class="input-group-addon unit ">秒</span>
 
 				</div>
 			</div>

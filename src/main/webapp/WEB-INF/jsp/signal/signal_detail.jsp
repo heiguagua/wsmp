@@ -7,8 +7,8 @@
         <div class='signal-profile flex-row'>
           <div class='item info flex1 flex-column justify-center'>
             <div class='radio-info flex-row'>
-              <div class='r-i-item flex1 flex-column justify-center'>${redioDetail.band}KHz</div>
-              <div id="redioDetailCentor"class='r-i-item flex1 flex-column justify-center'>${redioDetail.centor}MHz</div>
+              <div class='r-i-item flex1 flex-column justify-center'>${redioDetail.band}MHz</div>
+              <div id="redioDetailCentor"class='r-i-item flex1 flex-column justify-center'>${redioDetail.centor}kHz</div>
             </div>
             <div class='type-info flex-row'>
              <div class='t-i-item flex1 flex-column justify-center'>频率</div>

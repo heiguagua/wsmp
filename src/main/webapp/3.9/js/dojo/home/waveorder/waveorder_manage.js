@@ -20,32 +20,10 @@ define(	["ajax", "dojo/parser", "esri/map",
 				var user = getUser();
 				// 得到区域信息
 				getArea(user);
-				// 执行下拉框
-				$('.select2-picker').select2();
-				// 默认选中第一个
-				var defaultAreaCode = $("#area_select")[0].children[0].value;
-				// $('.select2-picker').val(defaultAreaCode); // Change the
-				// value or make some change to the internal state
-				// $('.select2-picker').trigger('change.select2'); //触发事件
-				select2_change(defaultAreaCode);
-				// 获取请求参数areaCode
-				var areaCode = $("#areaCode").value;
-				// 有areaCode,直接触发选择事件
-				if (areaCode != null) {
-					$('.select2-picker').val(areaCode); // Change the value or
-														// make some change to
-														// the internal state
-					$('.select2-picker').trigger('change.select2'); // 触发事件
-					select2_change(areaCode);
-				}
-
+				// 下拉框初始化
+				selector_init();
 				// 时间选择器初始化
-				$.fn.datetimepicker.defaults = {
-					language : 'zh-CN',
-					format : 'yyyy-mm-dd hh:ii:ss',
-					autoclose : true,
-					minView : 2
-				}
+				datetimepicker_init();
 
 				// 监听下拉框点击事件
 				$(".select2-picker").on("select2:select", function(e) {
@@ -57,7 +35,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 				$("#tabs a").click(function(e) {
 							e.preventDefault();
 							$(this).tab('show');
-
 						});
 
 				// 信号类型切换点击事件
@@ -348,7 +325,39 @@ define(	["ajax", "dojo/parser", "esri/map",
 				});
 				
 			}
-
+			// 时间选择器初始化
+			function datetimepicker_init() {
+			$.fn.datetimepicker.defaults = {
+					language : 'zh-CN',
+					format : 'yyyy-mm-dd hh:ii:ss',
+					autoclose : true,
+					minView : 2
+				}
+			}
+			
+			// 初始化下拉框
+			function selector_init() {
+				// 执行下拉框
+				$('.select2-picker').select2();
+				// 默认选中第一个
+				var defaultAreaCode = $("#area_select").select2('val');
+				console.log(defaultAreaCode);
+				// $('.select2-picker').val(defaultAreaCode); // Change the
+				// value or make some change to the internal state
+				// $('.select2-picker').trigger('change.select2'); //触发事件
+				select2_change(defaultAreaCode);
+				// 获取请求参数areaCode
+				var areaCode = $("#areaCode").value;
+				// 有areaCode,直接触发选择事件
+				if (areaCode != null) {
+					$('.select2-picker').val(areaCode); // Change the value or
+														// make some change to
+														// the internal state
+					$('.select2-picker').trigger('change.select2'); // 触发事件
+					select2_change(areaCode);
+				}
+			}
+			
 			// 区域切换
 			function select2_change(areaCode) {
 
@@ -380,15 +389,15 @@ define(	["ajax", "dojo/parser", "esri/map",
 			function getArea(user) {
 				if (user.AreaType == "Province") {
 					// 显示省级选项
-					var province = user.Area;
-					var option = document.createElement("option");
-					option.setAttribute("value", province.Code);
-					option.setAttribute("id", "option");
-					// option.setAttribute("selected","selected");
-					// option.innerHTML =
-					// province_name;//此时就设置innerHTML的话会报错，因为<option>标签还没渲染出来
-					$("#area_select").append(option);
-					$("#option").append(province.Name);
+//					var province = user.Area;
+//					var option = document.createElement("option");
+//					option.setAttribute("value", province.Code);
+//					option.setAttribute("id", "option");
+//					// option.setAttribute("selected","selected");
+//					// option.innerHTML =
+//					// province_name;//此时就设置innerHTML的话会报错，因为<option>标签还没渲染出来
+//					$("#area_select").append(option);
+//					$("#option").append(province.Name);
 					var citys = province.Citys;
 					// 显示市级选项
 					for (var i = 0; i < citys.length; i++) {
@@ -606,7 +615,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 							}, {
 								field : 'lastingTime',
 						        width:'20%',
-								title : '最后出现时间'
+								title : '最后出现时间',
+								sortable : true
 							}, {
 								field : 'stationID',
 						        width:'15%',
@@ -686,7 +696,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 							}, {
 								field : 'lastingTime',
 						        width:'20%',
-								title : '最后出现时间'
+								title : '最后出现时间',
+								sortable : true
 							}, {
 								field : 'stationID',
 								title : '监测站',

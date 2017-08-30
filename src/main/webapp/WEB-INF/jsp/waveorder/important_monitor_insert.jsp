@@ -27,8 +27,8 @@
 			<div class="col-sm-9">
 				<div class="input-group">
 					<input name="cycleStep" value="${dto.getCycleStep()}" type="text"
-						class="form-control " placeholder="单位(分钟)">
-					<span class="input-group-addon unit ">分钟</span>
+						class="form-control " placeholder="单位(秒)">
+					<span class="input-group-addon unit ">秒</span>
 
 				</div>
 			</div>
@@ -157,7 +157,7 @@
 	
 	<div class="form-group ">
 		<div class="col-sm-12 mrg-top15 text-right">
-			<button type="button" id="buttonInsert" class="btn btn-default btn-apply">添加</button>
+			<button type="button" id="buttonInsert" class="btn btn-default btn-apply">提交</button>
 		</div>
 	</div>
 	
