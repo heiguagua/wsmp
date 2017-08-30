@@ -507,7 +507,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                                     title: '台站名称'
                                 }, {
                                     field: 'centerFrequency',
-                                    title: '中心频率（kHz）',
+                                    title: '中心频率（MHz）',
                                     formatter: function (value, row, index) {
                                         return '<a>' + value + '</a>';
                                     }
@@ -618,7 +618,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                                     title: '台站名称'
                                 }, {
                                     field: 'centerFrequency',
-                                    title: '中心频率（kHz）',
+                                    title: '中心频率（MHz）',
                                     formatter: function (value, row, index) {
                                         return '<a>' + value + '</a>';
                                     }
@@ -718,7 +718,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                                     title: '台站名称'
                                 }, {
                                     field: 'centerFrequency',
-                                    title: '中心频率（kHz）',
+                                    title: '中心频率（MHz）',
                                     formatter: function (value, row, index) {
                                         return '<a>' + value + '</a>';
                                     }
