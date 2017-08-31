@@ -77,12 +77,12 @@ public class WaveOrderDataController {
 		request.setUserId(param.get("userID").toString());
 		List<FrequencyRangeInfo> response = serviceFreq.getFreqServiceHttpSoap12Endpoint().queryFrequencyRange(request);
 		final List<String> freqNames = Lists.newArrayList();
+		BigDecimal multiplicand = new BigDecimal(Math.pow(10, 6));
 		final List<FrequencyBand> freqList = response.stream().map(t -> {
 			// 名字放入List中
 			freqNames.add(t.getName());
 //			// 并设置service2入参:频段
 			FrequencyBand freq = new FrequencyBand();
-			BigDecimal multiplicand = new BigDecimal(Math.pow(10, 6));
 			BigInteger freqMin = new BigDecimal(t.getBeginFreq()).multiply(multiplicand).toBigInteger();
 			freq.setFreqMin(freqMin);
 			BigInteger freqMax = new BigDecimal(t.getEndFreq()).multiply(multiplicand).toBigInteger();

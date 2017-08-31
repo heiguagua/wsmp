@@ -68,15 +68,17 @@ public class WaveOrderViewController {
     public String importantMonitor(Model model,@RequestBody Map<String,Object> map) {
     	//根据频段查询重点监测，返回页面和对象
     	Logger.debug("map:{}",map);
-    	BigDecimal beginFreq = new BigDecimal(map.get("beginFreq").toString());
-		BigDecimal endFreq = new BigDecimal(map.get("endFreq").toString());
+    	BigDecimal beginFreqCalculate = new BigDecimal(map.get("beginFreq").toString());
+		BigDecimal endFreqCalculate = new BigDecimal(map.get("endFreq").toString());
 		BigDecimal divisor = new BigDecimal(1000000);
+		Double beginFreq = Double.valueOf(beginFreqCalculate.divide(divisor).toString());
+		Double endFreq = Double.valueOf(endFreqCalculate.divide(divisor).toString());
 		String result = serviceImportFreqRangeManage.findAllFreqRange();
 		if (result == null) {
 			//如果没有查询到数据，设置默认的频段范围，是否频段，nullID
 			MeasureTaskParamDto dto = new MeasureTaskParamDto();
-			dto.setBeginFreq(Double.valueOf(beginFreq.divide(divisor).toString()));
-			dto.setEndFreq(Double.valueOf(endFreq.divide(divisor).toString()));
+			dto.setBeginFreq(beginFreq);
+			dto.setEndFreq(endFreq);
 			dto.setFreqRange(true);
 			Logger.debug("没有数据传入model:{}",JSON.toJSONString(dto));
 			model.addAttribute("dto",dto);
@@ -87,8 +89,8 @@ public class WaveOrderViewController {
 		List<MeasureTaskParamDto> resultList = (List<MeasureTaskParamDto>) JSON.parseObject(result,type);
 		Logger.debug("resultList:{}",JSON.toJSONString(resultList));
 		//过滤传过来的频段
-		Optional<MeasureTaskParamDto> optional = resultList.stream().filter(dto -> Double.valueOf(beginFreq.divide(divisor).toString()) >= dto.getBeginFreq() &&
-				Double.valueOf(endFreq.divide(divisor).toString()) <= dto.getEndFreq())
+		Optional<MeasureTaskParamDto> optional = resultList.stream().filter(dto -> beginFreq >= dto.getBeginFreq() &&
+				endFreq <= dto.getEndFreq())
 				.findFirst();
 		
 		if(optional.isPresent()) {
@@ -98,8 +100,8 @@ public class WaveOrderViewController {
 		}
 		//如果没有查询到数据，设置默认的频段范围，是否频段，nullID
 		MeasureTaskParamDto dto = new MeasureTaskParamDto();
-		dto.setBeginFreq(Double.valueOf(beginFreq.divide(divisor).toString()));
-		dto.setEndFreq(Double.valueOf(endFreq.divide(divisor).toString()));
+		dto.setBeginFreq(beginFreq);
+		dto.setEndFreq(endFreq);
 		dto.setFreqRange(true);
 		Logger.debug("没有数据传入model:{}",JSON.toJSONString(dto));
 		model.addAttribute("dto",dto);
