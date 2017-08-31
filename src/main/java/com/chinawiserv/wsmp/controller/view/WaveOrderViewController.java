@@ -68,6 +68,7 @@ public class WaveOrderViewController {
     public String importantMonitor(Model model,@RequestBody Map<String,Object> map) {
     	//根据频段查询重点监测，返回页面和对象
     	Logger.debug("map:{}",map);
+    	//BigInteger convert to Double
     	BigDecimal beginFreqCalculate = new BigDecimal(map.get("beginFreq").toString());
 		BigDecimal endFreqCalculate = new BigDecimal(map.get("endFreq").toString());
 		BigDecimal divisor = new BigDecimal(1000000);

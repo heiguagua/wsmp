@@ -95,12 +95,13 @@ public class RedioStatusCount {
 		this.endFreq = endFreq;
 	}
 
-	public Boolean isImportantMonitor() {
+	public Boolean getImportantMonitor() {
 		return importantMonitor;
 	}
 
 	public void setImportantMonitor(Boolean importantMonitor) {
 		this.importantMonitor = importantMonitor;
 	}
+
 
 }

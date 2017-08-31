@@ -57,6 +57,8 @@ public class WaveOrderDataController {
 	
 	private FreqWarningWebService serviceFreqWarning;
 	
+	private final static BigDecimal multiplicand = new BigDecimal(Math.pow(10, 6));
+	
 	@PostConstruct
 	public void init() throws MalformedURLException {
 		URL url1 = new URL(urlFreq);
@@ -77,7 +79,6 @@ public class WaveOrderDataController {
 		request.setUserId(param.get("userID").toString());
 		List<FrequencyRangeInfo> response = serviceFreq.getFreqServiceHttpSoap12Endpoint().queryFrequencyRange(request);
 		final List<String> freqNames = Lists.newArrayList();
-		BigDecimal multiplicand = new BigDecimal(Math.pow(10, 6));
 		final List<FrequencyBand> freqList = response.stream().map(t -> {
 			// 名字放入List中
 			freqNames.add(t.getName());
@@ -114,11 +115,11 @@ public class WaveOrderDataController {
 				.collect(Collectors.toList());
 		
 		//查询该频段是否有重点监测数据
-//		String important = serviceImportFreqRangeManage.findAllFreqRange();
-//		final Type type = new TypeReference<List<MeasureTaskParamDto>>() {}.getType();
-//		@SuppressWarnings("unchecked")
-//		List<MeasureTaskParamDto> resultList = (List<MeasureTaskParamDto>) JSON.parseObject(important,type);
-//		System.out.println("===result:"+resultList);
+		String important = serviceImportFreqRangeManage.findAllFreqRange();
+		final Type type = new TypeReference<List<MeasureTaskParamDto>>() {}.getType();
+		@SuppressWarnings("unchecked")
+		List<MeasureTaskParamDto> resultList = (List<MeasureTaskParamDto>) JSON.parseObject(important,type);
+		System.out.println("===result:"+resultList);
 		
 		List<RedioStatusCount> rsCountRows = Lists.newArrayList();
 		AtomicInteger index = new AtomicInteger();
@@ -129,12 +130,14 @@ public class WaveOrderDataController {
 			rsCount.setLegalUnNormalStationNumber(legalSubTypeCountList.get(index.get()));
 			rsCount.setBeginFreq(t.getBand().getFreqMin());
 			rsCount.setEndFreq(t.getBand().getFreqMax());
-//			System.out.println(t.getBand().getFreqMax() + " - " + t.getBand().getFreqMin());
 			//是否有重点监测信息
-//			Boolean imporantMonitor = resultList.stream().filter(f -> f.getBeginFreq().equals(t.getBand().getFreqMin()) && f.getEndFreq().equals(t.getBand().getFreqMax()))
-//				.findAny().isPresent();
-//			System.out.println(imporantMonitor);
-//			rsCount.setImportantMonitor(imporantMonitor);
+			BigDecimal beginFreqCalculate = new BigDecimal(t.getBand().getFreqMin());
+			BigDecimal endFreqCalculate = new BigDecimal(t.getBand().getFreqMax());
+			Double beginFreq = Double.valueOf(beginFreqCalculate.divide(multiplicand).toString());
+			Double endFreq = Double.valueOf(endFreqCalculate.divide(multiplicand).toString());
+			Boolean importantMonitor = resultList.stream().filter(f -> f.getBeginFreq().equals(beginFreq) && f.getEndFreq().equals(endFreq))
+				.findAny().isPresent();
+			rsCount.setImportantMonitor(importantMonitor);
 			t.getSignalStaticsLst().getSignalStatics().forEach(t1 -> {
 				int signalType = t1.getSignalType();
 				int count = t1.getCount();
@@ -278,7 +281,7 @@ public class WaveOrderDataController {
 					});
 					redio.setMonitorID(monitorID);
 					// 设置台站
-					// redio.setStation(t.getRadioStation().getStation().getName());
+//					redio.setStation(t.getRadioStation().getStation().getName());
 					redioRows.add(redio);
 				}
 				

@@ -81,6 +81,22 @@ define(	["ajax", "dojo/parser", "esri/map",
 							Binding.openUrl(JSON.stringify(urlObj));
 
 						})
+						
+				// 信号详情 查看链接点击事件
+				$("#table-signal-list").on("click", ".signalManageA",
+						function(e) {
+							console.log(e);
+							var freq = e.target.getAttribute("centorfreq");
+							console.log(freq);
+							const urlObj = {
+								ServerName : 'host2',// 跳四方用host1,跳自己这边用host2
+								DisplayName : '信号管理',
+								MultiTabable : false,
+								ReflushIfExist : true,
+								Url : 'radio/app/alarmmanage?id=QZ&cenFreg='+freq
+							};
+							Binding.openUrl(JSON.stringify(urlObj));
+						})
 
 				// 告警未处理频率链接点击事件
 				$("#table-alarm-undeal").on("click", ".centerFreqA",
@@ -127,6 +143,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 							};
 							Binding.openUrl(JSON.stringify(urlObj));
 						})
+						
 
 				// 重点监测更新点击事件
 				$("#important_monitor").on("click", "#buttonUpdate",
@@ -163,7 +180,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 									layer.msg("添加成功！");
 									$("#important_monitor").html(html);
 									$("#modalConfig").find(".time-picker")
-									.datetimepicker({});
+										.datetimepicker({});
+									$('#table-radio').bootstrapTable("refresh",{silent: true});
 								},
 								error : function(html) {
 									console.log(html);
@@ -192,7 +210,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 											layer.msg("删除成功!");
 											$("#important_monitor").html(html);
 											$("#modalConfig").find(".time-picker")
-											.datetimepicker({});
+												.datetimepicker({});
+											$('#table-radio').bootstrapTable("refresh",{silent: true});
 										},
 										error : function(html) {
 											console.log(html);
@@ -201,7 +220,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 									})
 						});
 
-				// 信号统计点击事件
+				// 信号统计点击进入详情页事件
 				$("#modalSignal").on("show.bs.modal", function(e) {
 					var a = $(e.relatedTarget);
 					var beginFreq = a.data('beginfreq');// data()函数里面要取小写
@@ -239,7 +258,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						columns : [{
 							field : 'centor',
 							title : '频率(MHz)',
-							width : '18%',
+							width : '15%',
 							formatter : function(value, row, index) {
 								return '<a class="centerFreqA">' + value
 										+ '</a>';
@@ -255,7 +274,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						}, {
 							field : 'monitorID',
 							title : '监测站',
-							width : '25%',
+							width : '20%',
 							formatter : function(value, row, index) {
 								var monitors = getMonitors(AREACODE);
 								var content = "";
@@ -278,10 +297,15 @@ define(	["ajax", "dojo/parser", "esri/map",
 						}, {
 							field : 'station',
 							title : '发射源',
-							width : '24%',
+							width : '20%',
 							formatter : function(value, row, index) {
-								return '<a data-toggle="modal" data-target="#modalStation">'
-										+ value + '</a>';
+								value = value == null ? "-" : value;
+								return value;
+							}
+						}, {
+							field : "signalManage",
+							formatter : function(value, row, index) {
+								return '<a class="signalManageA" centorFreq='+row.centor+'>查看</a>';							
 							}
 						}],
 						onLoadSuccess : function() {
@@ -876,18 +900,28 @@ define(	["ajax", "dojo/parser", "esri/map",
 												}
 											},
 											{
+												field : 'importantMonitor',
 												title : '重点监测',
 												width : '10%',
 												titleTooltip : '重点监测',
 												formatter : function(value,
 														row, index) {
-													return '<a data-toggle="modal" data-target="#modalConfig" data-beginFreq="'
+															console.log(index + ':' + value);
+													if(value == true) {
+														return '<a data-toggle="modal" data-target="#modalConfig" data-beginFreq="'
 															+ row.beginFreq
 															+ '" data-endFreq="'
 															+ row.endFreq
 															+ '"> <img src="images/Fill 29.png"> </img></a>';
+													}else {
+														return '<a data-toggle="modal" data-target="#modalConfig" data-beginFreq="'
+															+ row.beginFreq
+															+ '" data-endFreq="'
+															+ row.endFreq
+															+ '"> <img src="images/Fill 30.png"> </img></a>';
+													}
 												}
-											} ]
+											}]
 								});
 			}
 
