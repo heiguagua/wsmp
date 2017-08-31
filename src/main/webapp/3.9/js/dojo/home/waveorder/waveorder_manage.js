@@ -348,7 +348,19 @@ define(	["ajax", "dojo/parser", "esri/map",
 					map2.addLayer(glayer2);
 				});
 				
+				//过滤重点监测频段
+				$('#importantMonitor_filter').on('click',function(e) {
+					if(e.target.checked == true) {
+						$('#table-radio').bootstrapTable("filterBy", {
+							importantMonitor : true
+						});
+					}else {
+						$('#table-radio').bootstrapTable("filterBy");
+					}
+				})
+				
 			}
+			
 			// 时间选择器初始化
 			function datetimepicker_init() {
 			$.fn.datetimepicker.defaults = {
@@ -906,7 +918,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 												titleTooltip : '重点监测',
 												formatter : function(value,
 														row, index) {
-															console.log(index + ':' + value);
 													if(value == true) {
 														return '<a data-toggle="modal" data-target="#modalConfig" data-beginFreq="'
 															+ row.beginFreq

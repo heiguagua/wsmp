@@ -58,6 +58,7 @@
 		<section class='flex-row'>
 			<div class='box right10'>
 				<p class='table-title'>频段状态</p>
+				<span class="pull-right">重点监测频段</span><input type="checkbox" id="importantMonitor_filter" class="pull-right">
 				<table class="table table-striped text-center" id='table-radio'>
                 </table>
 			</div>

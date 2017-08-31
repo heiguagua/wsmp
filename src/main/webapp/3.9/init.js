@@ -599,7 +599,7 @@
         moment : "../library/timepicker/moment.min",
         datetimepicker_cn : "../library/timepicker/bootstrap-datetimepicker.zh-CN",
         ajax : "../library/util/ajax",
-        layer:"../library/layer/layer"
+        layer:"../library/layer/layer",
     },
     packages: [{location: "../dojox", name: "dojox"}, {
         location: "../../dgrid",

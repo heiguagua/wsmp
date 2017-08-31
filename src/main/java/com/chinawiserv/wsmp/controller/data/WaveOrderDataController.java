@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -281,7 +282,11 @@ public class WaveOrderDataController {
 					});
 					redio.setMonitorID(monitorID);
 					// 设置台站
-//					redio.setStation(t.getRadioStation().getStation().getName());
+					String stationName = Optional.ofNullable(t.getRadioStation())
+							.map(m -> m.getStation())
+							.map(m -> m.getName())
+							.orElse("-");
+					redio.setStation(stationName);
 					redioRows.add(redio);
 				}
 				
@@ -309,7 +314,11 @@ public class WaveOrderDataController {
 						});
 						redio.setMonitorID(monitorID);
 						// 设置台站
-						// redio.setStation(t.getRadioStation().getStation().getName());
+						String stationName = Optional.ofNullable(t.getRadioStation())
+								.map(m -> m.getStation())
+								.map(m -> m.getName())
+								.orElse("-");
+						redio.setStation(stationName);
 						redioRows.add(redio);
 					}
 			});

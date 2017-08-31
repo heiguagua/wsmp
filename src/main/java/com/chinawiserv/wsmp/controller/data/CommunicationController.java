@@ -80,7 +80,7 @@ public class CommunicationController {
 		request.put("queryScope", param.get("areaCode"));
 		request.put("userId", param.get("userID"));
     	List<FreqSelfInfo> response = queryToolsService.querySelfFreqInfoByPID("1");
-    	long loopStartTime = System.currentTimeMillis();
+//    	long loopStartTime = System.currentTimeMillis();
 		List<CommunicationTableTop> communicationRows = response.parallelStream().map(m -> {
 			
 			System.out.println(JSON.toJSONString(m));
@@ -108,8 +108,8 @@ public class CommunicationController {
 			System.out.println("request end :"+(end-startTime)/1000);
 			return communication;
 		}).collect(Collectors.toList());
-		long loopEndTime = System.currentTimeMillis();
-		System.out.println("loop end : "+(loopEndTime -loopStartTime)/1000);
+//		long loopEndTime = System.currentTimeMillis();
+//		System.out.println("loop end : "+(loopEndTime -loopStartTime)/1000);
 		Map<String, Object> result = Maps.newLinkedHashMap();
 		result.put("total", communicationRows.size());
 		result.put("data", communicationRows);
