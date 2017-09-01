@@ -312,7 +312,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             data.typeCode = typeCode;
             data.stationKey = stationKey;
             data.des = des;
-
+            $("#signal_list1").find("option:selected").attr("stationkey",stationKey);
             //添加违规记录参数
             //新增违规记录 POST请求,修改put,通过$("#searchId").val()判断
             //不恢复 PUT请求 必须的参数为isInvalid=0
@@ -563,6 +563,12 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                     params.centorFreq = centorFreq;
                     return params
                 }, //请求服务器时所传的参数
+                onPostBody:function(){
+                    var stationKey = $('#signal_list').find('option:selected').attr("stationkey");
+                    if(stationKey){
+                        $("#"+stationKey).parent().parent().addClass("selected");
+                    }
+                },
                 onClickRow : function(row) {
                     //data.id = row.signalId;
                     $("#stationKey").val(row.id);
@@ -736,6 +742,12 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 pagination : true, //是否分页
                 url : "data/alarm/StationInfo",
                 queryParamsType : 'limit', //查询参数组织方式
+                onPostBody:function(){
+                    var stationKey = $('#signal_list').find('option:selected').attr("stationkey");
+                    if(stationKey){
+                        $("#"+stationKey).parent().parent().addClass("selected");
+                    }
+                },
                 queryParams : function(params) {
                     var info = Binding.getUser();
 
@@ -1513,25 +1525,22 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             if( $("#redioDetailCentor").html().indexOf('0.0')==0){
                 $("#redioDetailCentor").html('-')
             }
-            var type = $("#redio-type").val();
+            var type = $('#signal_list1').find('option:selected').attr("typecode");
             type = parseInt(type);
-            switch (type) {
 
-            case 0:
-                $("#legal-normal").attr("checked", "checked");
-                break;
+            switch (type) {
             case 1:
-                $("#legal-normal").attr("checked", "checked");
-                break
+                $("#legal-normal").attr("checked", true);
+                break;
             case 2:
-                $("#legal-normal").attr("checked", "checked");
+                $("#nonlocal_station").attr("checked", true);
                 break
             case 3:
-                $("#legal-normal").attr("checked", "checked");
+                $("#illegal").attr("checked", "checked");
                 break
             case 4:
-                $("#legal-normal").attr("checked", "checked");
-                break;
+                $("#unknown").attr("checked", "checked");
+                break
             }
 
 

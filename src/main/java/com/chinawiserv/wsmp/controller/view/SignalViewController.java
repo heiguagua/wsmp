@@ -156,6 +156,7 @@ public class SignalViewController {
                 singal.setEndTime(t.getInvalidDate().toString().replaceAll(":", "").replaceAll("T", "").replaceAll("-", ""));
                 singal.setContext(t.getSaveDate().toString().replaceAll("T", " "));
 				singal.setDes(t.getDes());
+				singal.setType(t.getTypeCode());
 				singal.setStationKey(singal.getStationKey());
 				//singal.setStation(t.getStationDTOs().getRadioSignalStationDTO().stream().findFirst().orElseGet(()->new RadioSignalStationDTO()).getStationNumber());
                 return singal;

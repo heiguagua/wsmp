@@ -98,12 +98,11 @@ public class AlarmManagerViewController {
                 singal.setContext(t.getSaveDate().toString().replaceAll("T", " "));
                 singal.setInteger(t.getCenterFreq());
                 singal.setId(t.getID());
-
+				String stationKey = t.getStationKey();
                 int status = t.getStatus();
                 singal.setStatus(status);
-
+				singal.setStationKey(stationKey);
                 singal.setCentorFreq(t.getCenterFreq().toString());
-
                 String beginTime = t.getSaveDate().toString().replaceAll(":", "").replaceAll("T", "").replaceAll("-", "");
                 singal.setBeginTime(beginTime);
 				singal.setDes(t.getDescription());
