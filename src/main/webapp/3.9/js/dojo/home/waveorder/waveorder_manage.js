@@ -51,6 +51,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 					var a = $(e.relatedTarget);
 					var beginFreq = a.data('beginfreq');
 					var endFreq = a.data('endfreq');
+					console.log(beginFreq + '-' + endFreq);
 					var data = {};
 					data.beginFreq = beginFreq;
 					data.endFreq = endFreq;
