@@ -3,8 +3,8 @@
  */
 //
 
-define(["home/alarm/alarm_manage", "ajax"],
-    function (alarm_manage, ajax) {
+define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri/symbols/PictureMarkerSymbol"],
+    function (alarm_manage, ajax,webMercatorUtils,PictureMarkerSymbol) {
         var testWidget = null;
         dojo.require("esri.map");
         dojo.require("esri.layers.FeatureLayer");
@@ -21,6 +21,7 @@ define(["home/alarm/alarm_manage", "ajax"],
         var mapUtl = $("#mapUrl").val();
         var map = null;
         var k = null;
+        var agoLayer =null;
         //config.defaults.io.corsEnabledServers.push("192.168.13.79:7080");
         function pares() {
             $("#submitButton").click(function () {
@@ -68,6 +69,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                 }
 
                 station.stationKey = stationID;
+                $('#signal_list').find('option:selected').attr("stationkey",stationID);
                 data.station = station;
                 singal.warmingId = {"id": signalId};
                 singal.typeCode = typeCode;
@@ -81,7 +83,6 @@ define(["home/alarm/alarm_manage", "ajax"],
                     //warnig_confirm();
                 });
             });
-
             //parser.parse();
             mapInit()
             // dojo.addOnLoad(());
@@ -181,6 +182,12 @@ define(["home/alarm/alarm_manage", "ajax"],
                 var stationSize = arryOfStation.length;
                 var LevelSize = arryOfLevel.length;
 
+                var monitorSymbol = new PictureMarkerSymbol({
+                    "url" : "images/monitoring-station.svg",
+                    "height" : 26,
+                    "width" : 26
+                });
+
                 for (var index = 0; index < stationSize; index++) {
 
                     var p = new esri.geometry.Point(arryOfStation[index]);
@@ -190,12 +197,13 @@ define(["home/alarm/alarm_manage", "ajax"],
                         new esri.symbols.Font("12pt").setWeight(esri.symbols.Font.WEIGHT_BOLD));
 
                     var graphic = new esri.Graphic(p, textSymbol);
-                    var textsyboml = new esri.Graphic(p, pSymbol);
+                    var textsyboml = new esri.Graphic(p, monitorSymbol);
 
                     glayer.add(textsyboml);
                     glayer.add(graphic);
 
                 }
+
 
 
                 for (var index = 0; index < LevelSize; index++) {
@@ -211,7 +219,8 @@ define(["home/alarm/alarm_manage", "ajax"],
                     glayer.add(circleGrap);
 
                 }
-                getFeatures(reslut);
+                k = reslut.kriking;
+                getFeatures();
                 map.addLayer(glayer);
 
                 dojo.connect(map, "onClick", function (e) {
@@ -252,7 +261,7 @@ define(["home/alarm/alarm_manage", "ajax"],
             var mapUtl = $("#mapUrl").val();
 
             var url = mapUtl;
-            var agoLayer = new esri.layers.ArcGISTiledMapServiceLayer(url, {id: "街道地图"});
+            agoLayer = new esri.layers.ArcGISTiledMapServiceLayer(url, {id: "街道地图"});
             console.log(agoLayer.initialExtent)
             var attr = {
                 "Xcoord": 104.06,
@@ -277,9 +286,9 @@ define(["home/alarm/alarm_manage", "ajax"],
 
             map = new esri.Map("mapDiv", {
                 //center : [ 104.06, 30.67 ],
-                zoom: 7,
-                sliderStyle: "small",
-                maxZoom:11
+                zoom:11,
+                sliderStyle: "small"
+                //maxZoom:11
             });
 
             map.addLayer(agoLayer);
@@ -289,7 +298,6 @@ define(["home/alarm/alarm_manage", "ajax"],
             pSymbol.setSize(12); //设置点的大小为12像素
             pSymbol.setColor(new dojo.Color("#FFFFCC")); //设置点的颜色
             map.addLayer(glayer);
-
             dojo.connect(map, 'onLoad', function (theMap) {
 
                 dojo.connect(dijit.byId('mapDiv'), 'resize', map, map.resize);
@@ -297,7 +305,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                 heatLayer = new HeatmapLayer({
                     config: {
                         "useLocalMaximum": false,
-                        "radius": 40,
+                        "radius":20,
                         "gradient": {
                             0.45: "rgb(000,000,255)",
                             0.55: "rgb(000,255,255)",
@@ -324,13 +332,15 @@ define(["home/alarm/alarm_manage", "ajax"],
         }
 
         function getFeatures(result) {
-            console.log("result ======" +JSON.stringify(result) );
-            console.log("1111");
-            console.log("K =======" + k);
-            if (result.type!='extent'){
-                k = result.kriking;
-            }
-            console.log(JSON.stringify(k));
+            console.log(result);
+            console.log(map);
+            var xmax = map.extent.xmax;
+            var xmin = map.extent.xmin;
+            var ymax = map.extent.ymax;
+            var ymin = map.extent.ymin;
+            var screenRightPiont =  webMercatorUtils.xyToLngLat(xmax,ymax,true);
+            console.log(screenRightPiont);
+            var screenLeftPiont =  webMercatorUtils.xyToLngLat(xmin,ymin);
             heatLayer.setData(k);
         }
 
@@ -451,7 +461,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                                 '<div class="mark-content"><p>备注</p><textarea id = "des" rows="5" placeholder="请输入备注信息">'+text+'</textarea></div>';
                             $("#stationWrap").html("");
                             $("#stationWrap").html(temp);
-                            $('#table-station-list').bootstrapTable({
+                            var table = $('#table-station-list').bootstrapTable({
                                 method: 'get',
                                 contentType: "application/x-www-form-urlencoded", //必须要有！！！！
                                 striped: true, //是否显示行间隔色
@@ -503,6 +513,12 @@ define(["home/alarm/alarm_manage", "ajax"],
                                     console.log(res);
                                     return res;
                                 },
+                                onPostBody:function(){
+                                    var stationKey = $('#signal_list').find('option:selected').attr("stationkey");
+                                   if(stationKey){
+                                       $("#"+stationKey).parent().parent().addClass("selected");
+                                   }
+                                },
                                 columns: [{
                                     field: 'stationName',
                                     title: '台站名称'
@@ -510,13 +526,14 @@ define(["home/alarm/alarm_manage", "ajax"],
                                     field: 'centerFrequency',
                                     title: '中心频率（MHz）',
                                     formatter: function (value, row, index) {
-                                        return '<a>' + value + '</a>';
+                                        return '<a id="'+row.id+'">' + value + '</a>';
                                     }
                                 }, {
                                     field: 'tapeWidth',
                                     title: '带宽（kHz）'
                                 }]
                             });
+
 
                             $('#table-station-list').on('click-row.bs.table', function (row, $element, field) {
                                 $('#table-station-list tr').removeClass("selected");
@@ -586,6 +603,12 @@ define(["home/alarm/alarm_manage", "ajax"],
                                 pageNumber: 1, //初始化加载第一页，默认第一页
                                 pagination: true, //是否分页
                                 queryParamsType: 'limit', //查询参数组织方式
+                                onPostBody:function(){
+                                    var stationKey = $('#signal_list').find('option:selected').attr("stationkey");
+                                    if(stationKey){
+                                        $("#"+stationKey).parent().parent().addClass("selected");
+                                    }
+                                },
                                 queryParams: function (params) {
 
                                     var info = Binding.getUser();
@@ -604,7 +627,8 @@ define(["home/alarm/alarm_manage", "ajax"],
                                     console.log(codeStr);
                                     codeStr = codeStr.replace("[", "").replace("]", "");
                                     params.areaCode = codeStr;
-
+                                    var centorFreq = $("#signal_list").find('option:selected').attr("centorfreq");
+                                    params.centorFreq = centorFreq;
                                     return params;
                                 }, //请求服务器时所传的参数
                                 onClickRow: function (row) {
@@ -625,7 +649,10 @@ define(["home/alarm/alarm_manage", "ajax"],
                                 },
                                 columns: [{
                                     field: 'stationName',
-                                    title: '台站名称'
+                                    title: '台站名称',
+                                    formatter: function (value, row, index) {
+                                        return '<div id ="'+row.id+'">' + value + '</div>';
+                                    }
                                 }, {
                                     field: 'centerFrequency',
                                     title: '中心频率（MHz）',
@@ -642,13 +669,13 @@ define(["home/alarm/alarm_manage", "ajax"],
                                 $('#table-station-list tr').removeClass("selected");
                                 field.addClass("selected");
                             });
-                            $("#submitButton").removeAttr('disabled');
-                            var status = $('#signal_list').find('option:selected').attr("status");
-                            if (status == "1"){
-                                $('#submitButton').attr('disabled',"true");
-                            }else {
-                                $('#submitButton').removeAttr("disabled");
-                            }
+                            // $("#submitButton").removeAttr('disabled');
+                            // var status = $('#signal_list').find('option:selected').attr("status");
+                            // if (status == "1"){
+                            //     $('#submitButton').attr('disabled',"true");
+                            // }else {
+                            //     $('#submitButton').removeAttr("disabled");
+                            // }
                             $("#modalStationAlarm").modal();
 
                         });
@@ -710,9 +737,16 @@ define(["home/alarm/alarm_manage", "ajax"],
                                     info = JSON.parse(info);
                                     var code = info.Area.Code;
                                     params.areaCode = code;
-
+                                    var centorFreq = $("#signal_list").find('option:selected').attr("centorfreq");
+                                    params.centorFreq = centorFreq;
                                     return params;
                                 }, //请求服务器时所传的参数
+                                onPostBody:function(){
+                                    var stationKey = $('#signal_list').find('option:selected').attr("stationkey");
+                                    if(stationKey){
+                                        $("#"+stationKey).parent().parent().addClass("selected");
+                                    }
+                                },
                                 onClickRow: function (row) {
                                     //data.id = row.signalId;
                                     console.log(row);
@@ -736,7 +770,7 @@ define(["home/alarm/alarm_manage", "ajax"],
                                     field: 'centerFrequency',
                                     title: '中心频率（MHz）',
                                     formatter: function (value, row, index) {
-                                        return '<a>' + value + '</a>';
+                                        return '<a id="'+row.id+'">' + value + '</a>';
                                     }
                                 }, {
                                     field: 'tapeWidth',

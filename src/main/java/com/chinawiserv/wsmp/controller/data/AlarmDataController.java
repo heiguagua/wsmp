@@ -14,6 +14,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.sefon.ws.model.xsd.QueryFreqRangeInfo;
 import com.sefon.ws.model.xsd.StationInfoPagedResult;
 import com.sefon.ws.model.xsd.StationQuerySpecInfo;
 import com.sefon.ws.service.impl.StationService;
@@ -27,6 +28,8 @@ import org.tempuri.*;
 import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.BinaryOperator;
@@ -240,22 +243,41 @@ public class AlarmDataController {
             } else {
 
 
-                LinkedList<Object> xAxis = Lists.newLinkedList();
+                LinkedList<Integer> xAxis = Lists.newLinkedList();
                 LinkedList<Object> series = Lists.newLinkedList();
 
-                occ = occ.entrySet().stream().sorted((c1, c2) -> Integer.parseInt(c1.getKey().toString()) > Integer.parseInt(c2.getKey().toString()) ? 1 : -1)
-                        .collect(toMap(Map.Entry::getKey, Map.Entry::getValue, throwingMerger(), LinkedHashMap::new));
 
+                ZonedDateTime temple =  LocalDateTime.now().atZone(ZoneId.systemDefault());
+                LinkedHashMap<String,Object> reslute =Maps.newLinkedHashMap();
                 occReslute.put("series", series);
                 occReslute.put("xAxis", xAxis);
                 reslutMap.put("monthOcc", occReslute);
 
+                for (int i = 0 ; i<90;i++){
+                    String date = temple.toString();
+                    date = date.replaceAll(":", "").replaceAll("T", "").replaceAll("-", "").substring(0,8);
+                    reslute.put(date,0);
+                    temple = temple.plusDays(-1);
+                }
+
+                occ.forEach((k,v)->{
+                    reslute.replace(k,v);
+                });
+
+                occ = reslute;
+
+                occ = occ.entrySet().stream().sorted((c1, c2) -> Integer.parseInt(c1.getKey().toString()) > Integer.parseInt(c2.getKey().toString()) ? 1 : -1)
+                        .collect(toMap(Map.Entry::getKey, Map.Entry::getValue, throwingMerger(), LinkedHashMap::new));
                 occ.forEach((k, v) -> {
-                    xAxis.add(k);
+
+                    Integer i = Integer.parseInt(k);
+                    xAxis.add(i);
                     series.add(v);
                 });
                 Logger.info("以三个月计算占用度从hbase中查询正常有返回值为{} ， 查询时间为{}，页面入参：监测站id{}，开始时间{},中心频率{}", occ, LocalDateTime.now().toString(), stationCode, beginTime, centorFreq);
             }
+
+
 
             if (max.size() == 0) {
 
@@ -389,7 +411,7 @@ public class AlarmDataController {
         double[][] t = new double[0][0];
 
         if (coulm > 0) {
-            t = jk2d.jk2d_ret(0.01,  10, 0.01,  10, p);
+            t = jk2d.jk2d_ret(0.01,  40, 0.03,  40, p);
         }
 
         double numerator  = Stream.of(t).filter((e)-> e[2]>intKrikingValue).count();
@@ -417,7 +439,7 @@ public class AlarmDataController {
             y = Math.log(Math.tan((90 + y) * Math.PI / 360)) / (Math.PI / 180);
             y = y * 20037508.34 / 180;
             geometry.put("y", y);
-            count.put("count", (int) val);
+            count.put("count", random.nextInt(100));
             element.put("attributes", count);
             element.put("geometry", geometry);
             kriking.add(element);
@@ -480,13 +502,23 @@ public class AlarmDataController {
         final String areaCode = (String) param.get("areaCode");
         String[] areaCodes = areaCode.split(",");
         StationQuerySpecInfo info = new StationQuerySpecInfo();
+        List<QueryFreqRangeInfo> rangeInfos =Lists.newLinkedList();
+        QueryFreqRangeInfo rangeInfo = new QueryFreqRangeInfo();
+
+        double centorFreqDouble =  Double.parseDouble((String) param.get("centorFreq"))/1000000;
+        double upFreqDouble = centorFreqDouble + 5 ;
+        double downFreqDouble = centorFreqDouble - 5 ;
+
+        rangeInfo.setBeginFreq(downFreqDouble);
+        rangeInfo.setEndFreq(upFreqDouble);
+        rangeInfos.add(rangeInfo);
 
         int pageNumber = Integer.parseInt(offset.toString());
         int limitNumber = Integer.parseInt(limit.toString());
 
         ArrayList<String> dr = new ArrayList<>(Arrays.asList(areaCodes));
-
-        info.setAreaCodes(dr);
+        info.setFreqRanges(rangeInfos);
+        //info.setAreaCodes(dr);
         //info.setSignalFreq(Double.parseDouble((String) param.get("centorFreq")));
 
         Map<String, Object> hasMap = Maps.newLinkedHashMap();
@@ -589,6 +621,10 @@ public class AlarmDataController {
             String[] areaList = areaCode.split(",");
             List<String> areaCodeList = new ArrayList<>(Arrays.asList(areaList));
 
+            int centorFreqDouble =  Integer.parseInt((String) map.get("centorFreq"));
+
+            int upFreqDouble = centorFreqDouble + 5000000 ;
+            int downFreqDouble = centorFreqDouble - 5000000 ;
 
             Map<String, Object> requestParam = Maps.newLinkedHashMap();
             requestParam.put("index", index);
@@ -596,7 +632,9 @@ public class AlarmDataController {
 
             Map<String, Object> list = Maps.newLinkedHashMap();
             list.put("string", areaCodeList);
-           requestParam.put("areaCodeList", list);
+           //requestParam.put("areaCodeList", list);
+             requestParam.put("beginFreq",downFreqDouble);
+             requestParam.put("endFreq",upFreqDouble);
 
             final RStatQuerySignalsResponse2 response = (RStatQuerySignalsResponse2) service.radioStationServiceCall("rStatQuerySignals",
                     mapper.writeValueAsString(requestParam), RStatQuerySignalsRequest.class);

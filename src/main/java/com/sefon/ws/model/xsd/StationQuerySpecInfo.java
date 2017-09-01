@@ -86,6 +86,11 @@ public class StationQuerySpecInfo {
      * 
      * 
      */
+    public void setFreqRanges(List<QueryFreqRangeInfo> freqRanges) {
+        this.freqRanges = freqRanges;
+    }
+
+
     public List<String> getAreaCodes() {
         if (areaCodes == null) {
             areaCodes = new ArrayList<String>();

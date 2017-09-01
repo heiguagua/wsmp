@@ -32,6 +32,16 @@ public class Singal {
 
 	private  String des =" ";
 
+	private int type;
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
 	public String getDes() {
 		return des;
 	}
