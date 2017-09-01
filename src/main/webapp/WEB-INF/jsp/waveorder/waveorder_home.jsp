@@ -58,7 +58,6 @@
 		<section class='flex-row'>
 			<div class='box right10'>
 				<p class='table-title'>频段状态</p>
-				<span class="pull-right">重点监测频段</span><input type="checkbox" id="importantMonitor_filter" class="pull-right">
 				<table class="table table-striped text-center" id='table-radio'>
                 </table>
 			</div>
@@ -67,6 +66,8 @@
 					<li id='warningEnsure' role="presentation" class="active"><a
 						href="#undeal">实时告警未确认</a></li>
 					<li id='warningUnsure' role="presentation"><a href="#dealed">实时告警已确认</a></li>
+					<li class="pull-right">更新间隔(分钟)<input id="minutes" style="IME-MODE: disabled; WIDTH: 60px; HEIGHT: 25px" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')" maxlength="5" size="14" type="text" /></li>
+					<!-- <li><a class="btn btn-default btn-refresh pull-right"><img src="images/refresh.png">&nbsp;&nbsp;刷新</a></li> -->
 				</ul>
 				<div class="tab-content flex1">
 					<div role="tabpanel" class="tab-pane active" id='undeal'>

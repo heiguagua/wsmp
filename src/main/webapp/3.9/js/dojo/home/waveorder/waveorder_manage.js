@@ -24,6 +24,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 				selector_init();
 				// 时间选择器初始化
 				datetimepicker_init();
+				// 告警定时更新初始化
+				refresh_timer_init(3);
 
 				// 监听下拉框点击事件
 				$(".select2-picker").on("select2:select", function(e) {
@@ -357,8 +359,26 @@ define(	["ajax", "dojo/parser", "esri/map",
 					}else {
 						$('#table-radio').bootstrapTable("filterBy");
 					}
-				})
+				});
 				
+				// 监听更新时间回车按下事件
+				$("#minutes").keyup(function(e) {
+					if(e.keyCode == 13) {
+						layer.msg("设置更新时间成功！时间：" + e.target.value + "分钟");
+						refresh_timer_init(e.target.value);
+					}
+				});
+				
+			}
+			
+			// 告警数据更新定时器初始化
+			function refresh_timer_init(minutes) {
+					clearInterval(interval);
+					var interval = setInterval(task,1000*60*minutes);
+					function task() {
+						$('#table-alarm-undeal').bootstrapTable('refresh',{silent : true});
+						$('#table-alarm-dealed').bootstrapTable('refresh',{silent : true});
+					}			
 			}
 			
 			// 时间选择器初始化
@@ -633,6 +653,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 					pageSize : 16, // 单页记录数
 					pageList : [5, 10, 20, 30], // 分页步进值
 					clickToSelect : true, // 是否启用点击选中行
+//					showRefresh : true,
 					responseHandler : function(res) {
 						return res;
 					},
@@ -682,7 +703,12 @@ define(	["ajax", "dojo/parser", "esri/map",
 							}, {
 								field : 'mark',
 						        width:'10%',
-								title : '备注'
+								title : '备注',
+								formatter : function(value, row, index) {
+									value = value == null ? "-" : value;
+									return '<div class="dpopover" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
+											+ value + '">' + value + '</div>';
+								}
 
 							}],
 					onLoadSuccess : function() {
@@ -714,6 +740,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 					pageSize : 16, // 单页记录数
 					pageList : [5, 10, 20, 30], // 分页步进值
 					clickToSelect : true, // 是否启用点击选中行
+//					showRefresh : true,
 					responseHandler : function(res) {
 						return res;
 					},
@@ -763,7 +790,12 @@ define(	["ajax", "dojo/parser", "esri/map",
 							}, {
 								field : 'mark',
 						        width:'10%',
-								title : '备注'
+								title : '备注',
+								formatter : function(value, row, index) {
+									value = value == null ? "-" : value;
+									return '<div class="dpopover" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
+											+ value + '">' + value + '</div>';
+								}
 							}],
 					onLoadSuccess : function() {
 						$("#table-alarm-undeal").find(".dpopover").popover({
@@ -785,7 +817,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						.bootstrapTable(
 								{
 									method : 'post',
-									contentType : "application/json", // 必须要有！！！！
+									contentType : "application/json", 
 									url : "data/waveorder/rediostatus", // 要请求数据的文件路径
 									striped : true, // 是否显示行间隔色
 									dataField : "data",
@@ -913,7 +945,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 											},
 											{
 												field : 'importantMonitor',
-												title : '重点监测',
+												title : '重点监测'+'<input type="checkbox" id="importantMonitor_filter">',
 												width : '10%',
 												titleTooltip : '重点监测',
 												formatter : function(value,

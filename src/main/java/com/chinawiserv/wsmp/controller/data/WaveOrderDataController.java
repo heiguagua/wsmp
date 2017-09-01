@@ -52,11 +52,11 @@ public class WaveOrderDataController {
 	
 	private IImportFreqRangeManageService serviceImportFreqRangeManage;
 	
-	private FreqService serviceFreq;
+	private static FreqService serviceFreq;
 	
-	private RadioSignalWebService serviceRadioSignal;
+	private static RadioSignalWebService serviceRadioSignal;
 	
-	private FreqWarningWebService serviceFreqWarning;
+	private static FreqWarningWebService serviceFreqWarning;
 	
 	private final static BigDecimal multiplicand = new BigDecimal(Math.pow(10, 6));
 	
