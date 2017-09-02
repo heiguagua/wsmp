@@ -690,13 +690,13 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                                 $('#table-station-list tr').removeClass("selected");
                                 field.addClass("selected");
                             });
-                            // $("#submitButton").removeAttr('disabled');
-                            // var status = $('#signal_list').find('option:selected').attr("status");
-                            // if (status == "1"){
-                            //     $('#submitButton').attr('disabled',"true");
-                            // }else {
-                            //     $('#submitButton').removeAttr("disabled");
-                            // }
+                            $("#submitButton").removeAttr('disabled');
+                            var status = $('#signal_list').find('option:selected').attr("status");
+                            if (status == "1"){
+                                $('#submitButton').attr('disabled',"true");
+                            }else {
+                                $('#submitButton').removeAttr("disabled");
+                            }
                             $("#modalStationAlarm").modal();
 
                         });

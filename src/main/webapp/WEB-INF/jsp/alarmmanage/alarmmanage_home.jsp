@@ -85,7 +85,7 @@
           <label for="legal"> ${redioType.llegalStation} </label>
         </div>
         <div class="radio radio-primary flex1 ">
-          <input class ="typeCode" type="radio" value="3" name="signal-type" id="illegal" checked>
+          <input class ="typeCode" type="radio" value="3" name="signal-type" id="illegal">
           <label for="illegal"> ${redioType.illegalSignal} </label>
         </div>
         <div class="radio radio-primary flex1 ">
