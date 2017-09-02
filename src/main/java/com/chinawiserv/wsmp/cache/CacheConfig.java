@@ -1,19 +1,14 @@
 package com.chinawiserv.wsmp.cache;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Type;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Properties;
-
-import javax.annotation.PostConstruct;
-
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
+import com.chinawiserv.apps.util.logger.Logger;
+import com.chinawiserv.wsmp.pojo.AlarmDealed;
+import com.chinawiserv.wsmp.pojo.AlarmUnDealed;
+import com.chinawiserv.wsmp.pojo.BandStatusTable;
+import com.chinawiserv.wsmp.pojo.RedioType;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,15 +20,15 @@ import org.springframework.core.io.support.EncodedResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.util.ResourceUtils;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
-import com.chinawiserv.apps.util.logger.Logger;
-import com.chinawiserv.wsmp.pojo.AlarmDealed;
-import com.chinawiserv.wsmp.pojo.AlarmUnDealed;
-import com.chinawiserv.wsmp.pojo.BandStatusTable;
-import com.chinawiserv.wsmp.pojo.RedioType;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import javax.annotation.PostConstruct;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Type;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.util.*;
 
 @Configuration
 @SpringBootApplication
@@ -128,6 +123,22 @@ public class CacheConfig {
 			return map.get("geometries");
 		}
 	}
+
+	@Bean(name ="kringGraid")
+	public List<Map<String,Object>> graidData() throws IOException {
+
+		final Resource resource = this.def.getResource(configHome.concat("geoJson/5201.json"));
+		final File file = resource.getFile();
+		final Type type = new TypeReference<LinkedHashMap<String, Object>>() {}.getType();
+
+		try (InputStream is = Files.newInputStream(file.toPath())) {
+
+			final LinkedHashMap<String, Object> map = JSON.parseObject(is, type);
+			List<Map<String,Object>> reslute = (List<Map<String, Object>>) map.get("point");
+			return reslute;
+		}
+	}
+
 
 	@Bean(name = DATA_LIST)
 	public Object stationList() {

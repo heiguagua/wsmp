@@ -22,6 +22,7 @@ import com.sefon.ws.model.xsd.StationQuerySpecInfo;
 import com.sefon.ws.service.impl.StationService;
 import de.onlinehome.geomath.jk3d.Jk2d;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.WebApplicationContext;
@@ -43,6 +44,10 @@ import static java.util.stream.Collectors.toMap;
 @RestControllerAdvice
 @RequestMapping("/data/alarm")
 public class AlarmDataController {
+
+    @Autowired
+    @Qualifier(value = "kringGraid")
+    List<Map<String,Object>> kringGraid;
 
     @Autowired
     private WebServiceSoapFactory service;
@@ -363,6 +368,9 @@ public class AlarmDataController {
 //        long centerFreq = (long) (88.8 * 1000000);
 //        String dateTime = "20170810235959";
         Params params = new Params();
+
+        System.out.println(kringGraid);
+
 //        测试或正式环境使用
 //        Long frequency = Long.parseLong((String) param.get("frequency"));
 //        List<LevelLocate> relate = hbaseClient.queryLevelLocate((String) param.get("beginTime"), frequency );
@@ -406,25 +414,34 @@ public class AlarmDataController {
         double[][] p = new double[coulm][3];
         Random random = new Random();
 
-        List<DataInfo> InPutData = Lists.newLinkedList();
-        List<DataInfo> DataOuts = Lists.newLinkedList();
+        List<DataInfo> inPutData = Lists.newLinkedList();
+        List<DataInfo> dataOuts = Lists.newLinkedList();
+        List<DataInfo> temple = Lists.newLinkedList();
         for (int index = 0; index < coulm; index++) {
             p[index][0] = mapPoint.get(index).getFlon();
             p[index][1] = mapPoint.get(index).getFlat();
             p[index][2] = mapPoint.get(index).getLevel()& 0xFF ;
 
-            InPutData.add(new DataInfo(p[index][0],p[index][1],p[index][2]));
+            inPutData.add(new DataInfo(p[index][0],p[index][1],p[index][2]));
 
+        }
+        for (Map<String,Object> dataOut : kringGraid) {
+            double x = Double.parseDouble(dataOut.get("x").toString());
+            double y = Double.parseDouble(dataOut.get("y").toString());
+            dataOuts.add(new DataInfo(x,y,0));
+            temple.add(new DataInfo(x,y,5));
         }
 
         double[][] t = new double[0][0];
 
         if (coulm > 0) {
             t = jk2d.jk2d_ret(0.01,  40, 0.03,  40, p);
-            kri.InitCal(InPutData, DataOuts);
+            kri.InitCal(inPutData, dataOuts);
             kri.OkrigingCal();
-            DataOuts = kri.CopyResults();
+            dataOuts = kri.CopyResults();
         }
+
+        temple.addAll(dataOuts);
 
         double numerator  = Stream.of(t).filter((e)-> e[2]>intKrikingValue).count();
         int denominator = t.length;
@@ -457,7 +474,7 @@ public class AlarmDataController {
 //            kriking.add(element);
 //        }
 
-        for (DataInfo info :DataOuts) {
+        for (DataInfo info :temple) {
                 Map<String, Object> element = Maps.newHashMap();
                 Map<String, Object> count = Maps.newHashMap();
                 Map<String, Object> geometry = Maps.newLinkedHashMap();
