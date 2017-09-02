@@ -2,8 +2,8 @@
  * Created by wuhaoran on 2017/2/25.
  */
 //
-define(["home/signal/signal_manage", "ajax" ],
-	function(signal_manage,ajax) {
+define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"],
+	function(signal_manage,ajax,PictureMarkerSymbol) {
 
         dojo.require("esri.map");
         dojo.require("esri.layers.FeatureLayer");
@@ -150,6 +150,12 @@ define(["home/signal/signal_manage", "ajax" ],
 
                         getFeatures(reslut);
 
+                        var monitorSymbol = new PictureMarkerSymbol({
+                            "url" : "images/monitoring-station.svg",
+                            "height" : 26,
+                            "width" : 26
+                        });
+
                         for (var index = 0; index < stationSize; index++) {
 
                             var p = new esri.geometry.Point(arryOfStation[index]);
@@ -159,7 +165,7 @@ define(["home/signal/signal_manage", "ajax" ],
                                 new esri.symbols.Font("12pt").setWeight(esri.symbols.Font.WEIGHT_BOLD));
 
                             var graphic = new esri.Graphic(p, textSymbol);
-                            var textsyboml = new esri.Graphic(p, pSymbol);
+                            var textsyboml = new esri.Graphic(p, monitorSymbol);
 
                             glayer.add(textsyboml);
                             glayer.add(graphic);

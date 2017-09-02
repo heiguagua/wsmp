@@ -1,12 +1,12 @@
 
 package org.tempuri;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -33,6 +33,10 @@ import javax.xml.bind.annotation.XmlType;
     "string"
 })
 public class ArrayOfString {
+
+    public void setString(List<String> string) {
+        this.string = string;
+    }
 
     @XmlElement(nillable = true)
     protected List<String> string;
@@ -65,9 +69,5 @@ public class ArrayOfString {
         }
         return this.string;
     }
-
-	public void setString(List<String> string) {
-		this.string = string;
-	}
 
 }

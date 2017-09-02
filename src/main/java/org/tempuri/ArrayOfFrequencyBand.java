@@ -1,12 +1,12 @@
 
 package org.tempuri;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -34,14 +34,14 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class ArrayOfFrequencyBand {
 
+    public void setFrequencyBand(List<FrequencyBand> frequencyBand) {
+        this.frequencyBand = frequencyBand;
+    }
+
     @XmlElement(name = "FrequencyBand", nillable = true)
     protected List<FrequencyBand> frequencyBand;
 
-    public void setFrequencyBand(List<FrequencyBand> frequencyBand) {
-		this.frequencyBand = frequencyBand;
-	}
-
-	/**
+    /**
      * Gets the value of the frequencyBand property.
      * 
      * <p>

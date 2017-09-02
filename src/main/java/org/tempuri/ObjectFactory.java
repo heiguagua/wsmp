@@ -174,6 +174,30 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link QuerySignalFromWarningID }
+     * 
+     */
+    public QuerySignalFromWarningID createQuerySignalFromWarningID() {
+        return new QuerySignalFromWarningID();
+    }
+
+    /**
+     * Create an instance of {@link QuerySignalFromWarningIDResponse }
+     * 
+     */
+    public QuerySignalFromWarningIDResponse createQuerySignalFromWarningIDResponse() {
+        return new QuerySignalFromWarningIDResponse();
+    }
+
+    /**
+     * Create an instance of {@link RadioSignalFromWarningIDQueryResponse }
+     * 
+     */
+    public RadioSignalFromWarningIDQueryResponse createRadioSignalFromWarningIDQueryResponse() {
+        return new RadioSignalFromWarningIDQueryResponse();
+    }
+
+    /**
      * Create an instance of {@link InsertRadioSignal }
      * 
      */

@@ -261,6 +261,27 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
 
             console.log(html);
             $("#station_picker").append(html);
+            var l = $('#signal_list').find('option:selected').val();
+            var param ={};
+            param.id = l;
+            // ajax.get("data/alarm/getAlarmingType",param,function(reslute){
+            //     reslute = parseInt(reslute);
+            //
+            //     switch (reslute) {
+            //         case 1:
+            //             $("#legal-normal").attr("checked", true);
+            //             break;
+            //         case 2:
+            //             $("#nonlocal_station").attr("checked", true);
+            //             break
+            //         case 3:
+            //             $("#illegal").attr("checked", "checked");
+            //             break
+            //         case 4:
+            //             $("#unknown").attr("checked", "checked");
+            //             break
+            //     }
+            // });
             //$("#station_list").select2();
         }
 

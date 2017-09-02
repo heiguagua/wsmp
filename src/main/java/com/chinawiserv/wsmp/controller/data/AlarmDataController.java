@@ -6,6 +6,8 @@ import com.chinawiserv.apps.util.logger.Logger;
 import com.chinawiserv.wsmp.client.WebServiceSoapFactory;
 import com.chinawiserv.wsmp.hbase.HbaseClient;
 import com.chinawiserv.wsmp.hbase.query.OccAndMax;
+import com.chinawiserv.wsmp.kriging.Interpolation;
+import com.chinawiserv.wsmp.kriging.model.DataInfo;
 import com.chinawiserv.wsmp.levellocate.socket.model.Params;
 import com.chinawiserv.wsmp.model.LevelLocate;
 import com.chinawiserv.wsmp.pojo.IntensiveMonitoring;
@@ -54,8 +56,9 @@ public class AlarmDataController {
     @Autowired
     private StationService stationService;
 
-//    @Autowired
-//    private com.chinawiserv.wsmp.levellocate.LevelLocate Locate;
+    private Interpolation kri =new Interpolation();
+    //@Autowired
+   // private com.chinawiserv.wsmp.levellocate.LevelLocate locate;
 
     @Autowired
     private Jk2d jk2d;
@@ -402,16 +405,25 @@ public class AlarmDataController {
 
         double[][] p = new double[coulm][3];
         Random random = new Random();
+
+        List<DataInfo> InPutData = Lists.newLinkedList();
+        List<DataInfo> DataOuts = Lists.newLinkedList();
         for (int index = 0; index < coulm; index++) {
             p[index][0] = mapPoint.get(index).getFlon();
             p[index][1] = mapPoint.get(index).getFlat();
             p[index][2] = mapPoint.get(index).getLevel()& 0xFF ;
+
+            InPutData.add(new DataInfo(p[index][0],p[index][1],p[index][2]));
+
         }
 
         double[][] t = new double[0][0];
 
         if (coulm > 0) {
             t = jk2d.jk2d_ret(0.01,  40, 0.03,  40, p);
+            kri.InitCal(InPutData, DataOuts);
+            kri.OkrigingCal();
+            DataOuts = kri.CopyResults();
         }
 
         double numerator  = Stream.of(t).filter((e)-> e[2]>intKrikingValue).count();
@@ -426,25 +438,45 @@ public class AlarmDataController {
 
         Map<String, Object> spatialReference = Maps.newHashMap();
         spatialReference.put("wkid", 4326);
-        for (int index = 0; index < size; index++) {
-            Map<String, Object> element = Maps.newHashMap();
-            Map<String, Object> count = Maps.newHashMap();
-            Map<String, Object> geometry = Maps.newLinkedHashMap();
-            double val = t[index][2];
-            double x = t[index][0];
-            double y = t[index][1];
-            geometry.put("spatialReference", spatialReference);
-            geometry.put("type", "point");
-            geometry.put("x", x * 20037508.34 / 180);
-            y = Math.log(Math.tan((90 + y) * Math.PI / 360)) / (Math.PI / 180);
-            y = y * 20037508.34 / 180;
-            geometry.put("y", y);
-            count.put("count", random.nextInt(100));
-            element.put("attributes", count);
-            element.put("geometry", geometry);
-            kriking.add(element);
-        }
+//        for (int index = 0; index < size; index++) {
+//            Map<String, Object> element = Maps.newHashMap();
+//            Map<String, Object> count = Maps.newHashMap();
+//            Map<String, Object> geometry = Maps.newLinkedHashMap();
+//            double val = t[index][2];
+//            double x = t[index][0];
+//            double y = t[index][1];
+//            geometry.put("spatialReference", spatialReference);
+//            geometry.put("type", "point");
+//            geometry.put("x", x * 20037508.34 / 180);
+//            y = Math.log(Math.tan((90 + y) * Math.PI / 360)) / (Math.PI / 180);
+//            y = y * 20037508.34 / 180;
+//            geometry.put("y", y);
+//            count.put("count", random.nextInt(100));
+//            element.put("attributes", count);
+//            element.put("geometry", geometry);
+//            kriking.add(element);
+//        }
 
+        for (DataInfo info :DataOuts) {
+                Map<String, Object> element = Maps.newHashMap();
+                Map<String, Object> count = Maps.newHashMap();
+                Map<String, Object> geometry = Maps.newLinkedHashMap();
+                double val = info.getValue();
+                double x = info.getLon();
+                double y = info.getLat();
+                geometry.put("spatialReference", spatialReference);
+                geometry.put("type", "point");
+                geometry.put("x", x * 20037508.34 / 180);
+                y = Math.log(Math.tan((90 + y) * Math.PI / 360)) / (Math.PI / 180);
+                y = y * 20037508.34 / 180;
+                geometry.put("y", y);
+                count.put("count", val);
+                element.put("attributes", count);
+                element.put("geometry", geometry);
+                kriking.add(element);
+            }
+
+        //System.out.println(kriking);
 
         //测试或正式环境使用
         //List<String> stationcode = (List<String>) param.get("stationcode");
@@ -454,13 +486,13 @@ public class AlarmDataController {
             for (LevelLocate levelLocate : mapPoint) {
 
                 params.setWarningId(Integer.valueOf(levelLocate.getId()));// 告警传感器id
-                // Result result = Locate.execute(params);
+                //Result result = locate.execute(params);
                 Map<String, Object> mapLocate = Maps.newHashMap();
 
-//                mapLocate.put("x", result.getOutLon());
-//                mapLocate.put("y", result.getOutLat());
-//                mapLocate.put("radius", result.getRangeR());
-//                mapLocate.put("stationId", result.getSid());
+                //mapLocate.put("x", result.getOutLon());
+                //mapLocate.put("y", result.getOutLat());
+                //mapLocate.put("radius", result.getRangeR());
+                //mapLocate.put("stationId", result.getSid());
 
                 levelPoint.add(mapLocate);
             }
@@ -598,7 +630,7 @@ public class AlarmDataController {
 
             Map<String, Object> waringID = (Map<String, Object>) signal.get("warmingId");
             //service.getFreqWarnService().updateStatus((String) waringID.get("id"), 1);
-            service.getFreqWarnService().updateSelected((String) waringID.get("id"), 1, null, (String) station.get("des"));
+            service.getFreqWarnService().updateSelected((String) waringID.get("id"), 1, null, (String) station.get("des"), (String) station.get("stationKey"));
 
             Logger.info("告警生成信号成功 操作时间{} 入参:{} 返回消息{}", LocalDateTime.now().toString(), JSON.toJSONString(param), JSON.toJSONString(res));
         } catch (JsonProcessingException e) {
@@ -718,4 +750,16 @@ public class AlarmDataController {
 //
 //        return Maps.newHashMap();
 //    }
+//    @RequestMapping(path = {"/getAlarmingType"})
+//    public int getAlarmTypeCode(@RequestParam Map<String,String> request) throws JsonProcessingException {
+//        RadioSignalFromWarningIDQueryResponse response = (RadioSignalFromWarningIDQueryResponse) service.radioSignalServiceCall("querySignalFromWarningID",JSON.toJSONString(request),String.class);
+//        RadioSignalDTO radioSignalDTO = response.getRadioSignalInfo().getRadioSignalDTO().stream().findFirst().orElseGet(()->{
+//            RadioSignalDTO r =   new RadioSignalDTO();
+//            r.setTypeCode(-1);
+//            return  r;
+//        });
+//        radioSignalDTO.getAbnormalHistory().getRadioSignalAbnormalHistoryDTO().stream().findFirst();
+//        return radioSignalDTO.getTypeCode();
+//    }
+
 }

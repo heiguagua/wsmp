@@ -2,7 +2,6 @@
 package com.chinawiserv.wsmp.client;
 
 import com.chinawiserv.wsmp.hbase.HbaseClient;
-import com.chinawiserv.wsmp.levellocate.LevelLocate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -34,11 +33,11 @@ public class HbaseConfig  implements ApplicationEventPublisherAware {
 		return hbaseClient;
 	}
 
-	@Bean
-	public LevelLocate initLevelLocate() {
-		LevelLocate levelLocate = new LevelLocate("192.168.21.104", 8444);
-		return levelLocate;
-	}
+//	@Bean
+//	public LevelLocate initLevelLocate() {
+//		LevelLocate levelLocate = new LevelLocate("192.168.21.104", 8444);
+//		return levelLocate;
+//	}
 
 
 	@Override

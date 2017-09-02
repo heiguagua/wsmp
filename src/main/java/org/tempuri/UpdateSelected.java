@@ -24,6 +24,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="status" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
  *         &lt;element name="lastTimeDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
  *         &lt;element name="des" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="stationKey" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -37,7 +38,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "freqId",
     "status",
     "lastTimeDate",
-    "des"
+    "des",
+    "stationKey"
 })
 @XmlRootElement(name = "UpdateSelected")
 public class UpdateSelected {
@@ -49,6 +51,7 @@ public class UpdateSelected {
     @XmlSchemaType(name = "dateTime")
     protected XMLGregorianCalendar lastTimeDate;
     protected String des;
+    protected String stationKey;
 
     /**
      * 获取freqId属性的值。
@@ -144,6 +147,30 @@ public class UpdateSelected {
      */
     public void setDes(String value) {
         this.des = value;
+    }
+
+    /**
+     * 获取stationKey属性的值。
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getStationKey() {
+        return stationKey;
+    }
+
+    /**
+     * 设置stationKey属性的值。
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setStationKey(String value) {
+        this.stationKey = value;
     }
 
 }

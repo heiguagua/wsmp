@@ -571,6 +571,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 },
                 onClickRow : function(row) {
                     //data.id = row.signalId;
+                    console.log(row);
                     $("#stationKey").val(row.id);
                 //								ajax.post("data/alarm/instersingal",data,function(){
                 //
@@ -1536,10 +1537,10 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 $("#nonlocal_station").attr("checked", true);
                 break
             case 3:
-                $("#illegal").attr("checked", "checked");
+                $("#illegal").attr("checked", true);
                 break
             case 4:
-                $("#unknown").attr("checked", "checked");
+                $("#unknown").attr("checked", true);
                 break
             }
 

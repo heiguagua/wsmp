@@ -224,7 +224,7 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                 map.addLayer(glayer);
 
                 dojo.connect(map, "onClick", function (e) {
-                    console.log(e.graphic.geometry);
+                    console.log(esri.graphic.geometry);
                     if (e.graphic.geometry.type = 'point') {
                         console.log(true);
                         var id = e.graphic.geometry.stationId;
@@ -285,7 +285,7 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
             console.log(stations);
 
             map = new esri.Map("mapDiv", {
-                //center : [ 104.06, 30.67 ],
+                center : [ 104.06, 30.67 ],
                 zoom:11,
                 sliderStyle: "small"
                 //maxZoom:11
@@ -307,10 +307,15 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                         "useLocalMaximum": false,
                         "radius":20,
                         "gradient": {
-                            0.45: "rgb(000,000,255)",
-                            0.55: "rgb(000,255,255)",
-                            0.65: "rgb(000,255,000)",
-                            0.95: "rgb(255,255,000)",
+                            0.1: "rgb(111,000,255)",
+                            0.2: "rgb(112,111,255)",
+                            0.3: "rgb(211,111,255)",
+                            0.4: "rgb(55,111,255)",
+                            0.5: "rgb(000,000,255)",
+                            0.6: "rgb(000,255,255)",
+                            0.7: "rgb(000,255,255)",
+                            0.8: "rgb(000,255,000)",
+                            0.9: "rgb(255,255,000)",
                             1.00: "rgb(255,000,000)"
                         }
                     },
@@ -341,6 +346,7 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
             var screenRightPiont =  webMercatorUtils.xyToLngLat(xmax,ymax,true);
             console.log(screenRightPiont);
             var screenLeftPiont =  webMercatorUtils.xyToLngLat(xmin,ymin);
+            console.log(JSON.stringify(k));
             heatLayer.setData(k);
         }
 
