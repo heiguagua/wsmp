@@ -1151,7 +1151,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                         textStyle : {
                             color : '#505363'
                         },
-                        rotate:-30,
+                        rotate:-40,
                         align: 'left'
                     },
                     data : levelParam.monthOcc.xAxis
@@ -1578,7 +1578,13 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             para.timeStart = beginTime;
             para.frequency = centorfreq;
             ajax.get("data/signal/FmRate", para, function(reslut) {
-                initChart(reslut, data);
+                console.log(reslut)
+                if(!reslut.name.length){
+                    $('#radioChart').html("<h4 style='margin-top:60px;text-align: center;' >未识别调制方式</h4>")
+                }else{
+                    initChart(reslut, data);
+                }
+
             });
 
             $("#singletonFreq").click(function () {

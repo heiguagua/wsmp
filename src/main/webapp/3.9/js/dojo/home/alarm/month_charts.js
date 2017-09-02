@@ -74,7 +74,7 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
 						textStyle : {
 							color : '#505363'
 						},
-						rotate:-30,
+						rotate:-40,
 						align: 'left'
 
 					},
