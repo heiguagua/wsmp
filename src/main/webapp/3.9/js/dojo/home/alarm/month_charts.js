@@ -46,7 +46,7 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
 				grid : {
 					left : '1%',
 					right : '4%',
-					bottom : '2%',
+					bottom : '12%',
 					top : 30,
 					containLabel : true
 				},
@@ -73,7 +73,10 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
 					axisLabel : {
 						textStyle : {
 							color : '#505363'
-						}
+						},
+						rotate:-30,
+						align: 'left'
+
 					},
 					data : reslut.monthOcc.xAxis
 					//

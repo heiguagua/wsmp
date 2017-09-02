@@ -591,16 +591,23 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 //searchText:'null',
                 columns : [{
                     field : 'stationName',
-                    title : '台站名称'
+                    title : '台站名称',
+                    titleTooltip:"台站名称",
+                    sortable : true
                 }, {
                     field : 'centerFrequency',
                     title : '中心频率（MHz）',
+                    titleTooltip:"中心频率（MHz）",
+                    sortable : true,
+                    sortName: "value",
                     formatter : function(value, row, index) {
                         return '<a>' + value + '</a>';
                     }
                 }, {
                     field : 'tapeWidth',
-                    title : '带宽（kHz）'
+                    title : '带宽（kHz）',
+                    titleTooltip:"带宽（kHz）",
+                    sortable : trues
                 }]
             });
 
@@ -785,16 +792,24 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 },
                 columns : [{
                     field : 'stationName',
-                    title : '台站名称'
+                    title : '台站名称',
+                    titleTooltip:"台站名称",
+                    sortable : true
                 }, {
                     field : 'centerFrequency',
                     title : '中心频率（MHz）',
+                    titleTooltip:"中心频率（MHz）",
+                    sortName: "value",
+                    sortable : true,
                     formatter : function(value, row, index) {
                         return '<a>' + value + '</a>';
                     }
                 }, {
                     field : 'tapeWidth',
-                    title : '带宽（kHz）'
+                    title : '带宽（kHz）',
+                    titleTooltip:"带宽（kHz）",
+                    sortName: "value",
+                    sortable : true
                 }]
             });
 
@@ -1113,7 +1128,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 grid : {
                     left : '1%',
                     right : '4%',
-                    bottom : '2%',
+                    bottom : '12%',
                     top : 30,
                     containLabel : true
                 },
@@ -1135,7 +1150,9 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                     axisLabel : {
                         textStyle : {
                             color : '#505363'
-                        }
+                        },
+                        rotate:-30,
+                        align: 'left'
                     },
                     data : levelParam.monthOcc.xAxis
                 },
