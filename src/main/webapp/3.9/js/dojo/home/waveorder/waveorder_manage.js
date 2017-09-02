@@ -261,6 +261,9 @@ define(	["ajax", "dojo/parser", "esri/map",
 						columns : [{
 							field : 'centor',
 							title : '频率(MHz)',
+							titleTooltip:"频率(MHz)",
+							sortable : true,
+							sortName: "value",
 							width : '15%',
 							formatter : function(value, row, index) {
 								return '<a class="centerFreqA">' + value
@@ -269,15 +272,22 @@ define(	["ajax", "dojo/parser", "esri/map",
 						}, {
 							field : 'band',
 							title : '带宽(kHz)',
-							width : '15%'
+							width : '15%',
+							titleTooltip:"带宽(kHz)",
+							sortable : true
 						}, {
 							field : 'success_rate',
 							title : '监测发射功率',
-							width : '18%'
+							width : '18%',
+							titleTooltip:"监测发射功率",
+							sortable : true
 						}, {
 							field : 'monitorID',
 							title : '监测站',
 							width : '20%',
+							titleTooltip:"监测站",
+							sortable : true,
+							sortName: "value",
 							formatter : function(value, row, index) {
 								var monitors = getMonitors(AREACODE);
 								var content = "";
@@ -301,12 +311,19 @@ define(	["ajax", "dojo/parser", "esri/map",
 							field : 'station',
 							title : '发射源',
 							width : '20%',
+							titleTooltip:"发射源",
+							sortable : true,
+							sortName: "value",
 							formatter : function(value, row, index) {
 								value = value == null ? "-" : value;
 								return value;
 							}
 						}, {
 							field : "signalManage",
+							//title : '',
+							//titleTooltip:"",
+							//sortable : true,
+							//sortName: "value",
 							formatter : function(value, row, index) {
 								return '<a class="signalManageA" centorFreq='+row.centor+'>查看</a>';							
 							}
@@ -662,6 +679,9 @@ define(	["ajax", "dojo/parser", "esri/map",
 								field : 'radio',
 						        width:'10%',
 								title : '频率',
+						        sortable : true,
+						        sortName: "value",
+						        titleTooltip:"频率",
 								formatter : function(value, row, index) {
 									return '<a class="centerFreqA">' + value
 											+ '</a>';
@@ -669,16 +689,22 @@ define(	["ajax", "dojo/parser", "esri/map",
 							}, {
 								field : 'firstTime',
 						        width:'20%',
-								title : '首次出现时间'
+								title : '首次出现时间',
+						        titleTooltip:"首次出现时间",
+						        sortable : true
 							}, {
 								field : 'lastingTime',
 						        width:'20%',
 								title : '最后出现时间',
+						        titleTooltip:"最后出现时间",
 								sortable : true
 							}, {
 								field : 'stationID',
 						        width:'15%',
 								title : '监测站',
+						        titleTooltip:"监测站",
+								sortable : true,
+								sortName: "value",
 								formatter : function(value, row, index) {
 									var content = "";
 									for (var i = 0; i < value.length; i++) {
@@ -698,6 +724,9 @@ define(	["ajax", "dojo/parser", "esri/map",
 								field : 'status',
 						        width:'10%',
 								title : '状态',
+						        titleTooltip:"状态",
+								sortable : true,
+								sortName: "value",
 								formatter : function(value, row, index) {
 									return '已确认';
 								}
@@ -705,6 +734,9 @@ define(	["ajax", "dojo/parser", "esri/map",
 								field : 'mark',
 						        width:'10%',
 								title : '备注',
+						        titleTooltip:"备注",
+								sortable : true,
+								sortName: "value",
 								formatter : function(value, row, index) {
 									value = value == null ? "-" : value;
 									return '<div class="dpopover" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
@@ -749,6 +781,9 @@ define(	["ajax", "dojo/parser", "esri/map",
 								field : 'radio',
 								title : '频率',
 						        width:'10%',
+								sortable : true,
+								sortName: "value",
+								titleTooltip:"频率",
 								formatter : function(value, row, index) {
 									return '<a class="centerFreqA">' + value
 											+ '</a>';
@@ -756,16 +791,22 @@ define(	["ajax", "dojo/parser", "esri/map",
 							}, {
 								field : 'firstTime',
 						        width:'20%',
-								title : '首次出现时间'
+								title : '首次出现时间',
+								sortable : true,
+								titleTooltip:"首次出现时间"
 							}, {
 								field : 'lastingTime',
 						        width:'20%',
 								title : '最后出现时间',
-								sortable : true
+								sortable : true,
+								titleTooltip:"最后出现时间"
 							}, {
 								field : 'stationID',
 								title : '监测站',
 						        width:'15%',
+								sortable : true,
+								sortName: "value",
+								titleTooltip:"监测站",
 								formatter : function(value, row, index) {
 									var content = "";
 									for (var i = 0; i < value.length; i++) {
@@ -785,6 +826,9 @@ define(	["ajax", "dojo/parser", "esri/map",
 								field : 'status',
 						        width:'10%',
 								title : '状态',
+								sortable : true,
+								sortName: "value",
+								titleTooltip:"状态",
 								formatter : function(value, row, index) {
 									return '<a class="alarmManageA" centorFreq='+row.radio+'>未确认</a>';
 								}
@@ -792,6 +836,9 @@ define(	["ajax", "dojo/parser", "esri/map",
 								field : 'mark',
 						        width:'10%',
 								title : '备注',
+								sortable : true,
+								sortName: "value",
+								titleTooltip:"备注",
 								formatter : function(value, row, index) {
 									value = value == null ? "-" : value;
 									return '<div class="dpopover" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
@@ -849,9 +896,12 @@ define(	["ajax", "dojo/parser", "esri/map",
 												title : '频段名称',
 												width : '20%',
 												titleTooltip : '频段名称',
+												sortable : true,
+												sortName: "value",
 												formatter : function(value,
 														row, index) {
-													return value;
+													return '<div class="dpopover" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
+														+ value + '">' + value + '</div>';
 												}
 											},
 											{
@@ -859,6 +909,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 												title : '合法正常信号',
 												width : '15%',
 												titleTooltip : '合法正常信号',
+												sortable : true,
+												sortName: "value",
 												formatter : function(value,
 														row, index) {
 													return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
@@ -877,6 +929,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 												title : '合法违规信号',
 												width : '15%',
 												titleTooltip : '合法违规信号',
+												sortable : true,
+												sortName: "value",
 												formatter : function(value,
 														row, index) {
 													return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
@@ -895,6 +949,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 												title : '已知信号',
 												width : '10%',
 												titleTooltip : '已知信号',
+												sortable : true,
+												sortName: "value",
 												formatter : function(value,
 														row, index) {
 													return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
@@ -913,6 +969,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 												title : '不明信号',
 												width : '10%',
 												titleTooltip : '不明信号',
+												sortable : true,
+												sortName: "value",
 												formatter : function(value,
 														row, index) {
 													return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
@@ -931,6 +989,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 												title : '非法信号',
 												width : '10%',
 												titleTooltip : '非法信号',
+												sortable : true,
+												sortName: "value",
 												formatter : function(value,
 														row, index) {
 													return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
@@ -947,8 +1007,10 @@ define(	["ajax", "dojo/parser", "esri/map",
 											{
 												field : 'importantMonitor',
 												title : '重点监测'+'<input type="checkbox" id="importantMonitor_filter">',
-												width : '10%',
+												width : '15%',
 												titleTooltip : '重点监测',
+												sortable : true,
+												sortName: "value",
 												formatter : function(value,
 														row, index) {
 													if(value == true) {
@@ -965,7 +1027,12 @@ define(	["ajax", "dojo/parser", "esri/map",
 															+ '"> <img src="images/Fill 30.png"> </img></a>';
 													}
 												}
-											}]
+											}],
+									onLoadSuccess : function() {
+										$("#table-radio").find(".dpopover").popover({
+											html : true
+										});
+									}
 								});
 			}
 
