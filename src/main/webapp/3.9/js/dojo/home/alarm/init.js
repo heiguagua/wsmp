@@ -285,9 +285,11 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
             console.log(stations);
 
             map = new esri.Map("mapDiv", {
-                //center : [ 104.06, 30.67 ],
-                zoom:11,
-                sliderStyle: "small"
+                center : [ 106.63, 26.57 ],
+                zoom:8,
+                maxZoom:8,
+                sliderStyle: "small",
+                logo:false
                 //maxZoom:11
             });
 
@@ -527,12 +529,18 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                                 }, {
                                     field: 'centerFrequency',
                                     title: '中心频率（MHz）',
+                                    titleTooltip:"中心频率（MHz）",
+                                    sortable : true,
+                                    sortName: "value",
                                     formatter: function (value, row, index) {
                                         return '<a id="'+row.id+'">' + value + '</a>';
                                     }
                                 }, {
                                     field: 'tapeWidth',
-                                    title: '带宽（kHz）'
+                                    title: '带宽（kHz）',
+                                    titleTooltip:"带宽（kHz）",
+                                    sortable : true
+
                                 }]
                             });
 

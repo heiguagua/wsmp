@@ -34,8 +34,11 @@ define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"]
             var initiaEx = agoLayer.initialExtent;
             map = new esri.Map("mapDiv", {
                 //center : [ 104.06, 30.67 ],
-                zoom: 7,
-                sliderStyle: "small"
+                center : [ 106.63, 26.57 ],
+                zoom:8,
+                maxZoom:8,
+                sliderStyle: "small",
+                logo:false
                 // maxZoom:11
             });
 

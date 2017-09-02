@@ -276,6 +276,7 @@ public class AlarmDataController {
 
                 occ = occ.entrySet().stream().sorted((c1, c2) -> Integer.parseInt(c1.getKey().toString()) > Integer.parseInt(c2.getKey().toString()) ? 1 : -1)
                         .collect(toMap(Map.Entry::getKey, Map.Entry::getValue, throwingMerger(), LinkedHashMap::new));
+                System.out.println(occ);
                 occ.forEach((k, v) -> {
 
                     Integer i = Integer.parseInt(k);
@@ -296,7 +297,7 @@ public class AlarmDataController {
                 resoluteHashMap.put("series", series);
 
                 reslutMap.put("max", resoluteHashMap);
-                Logger.info("以三个月计算占用度从hbase中查询正常返回值为空 查询时间为{}，页面入参：监测站id{}，开始时间{},中心频率{}", LocalDateTime.now().toString(), stationCode, beginTime, centorFreq);
+                Logger.info("以三个月计算峰值度从hbase中查询正常返回值为空 查询时间为{}，页面入参：监测站id{}，开始时间{},中心频率{}", LocalDateTime.now().toString(), stationCode, beginTime, centorFreq);
                 return reslutMap;
             } else {
 
@@ -429,7 +430,7 @@ public class AlarmDataController {
             double x = Double.parseDouble(dataOut.get("x").toString());
             double y = Double.parseDouble(dataOut.get("y").toString());
             dataOuts.add(new DataInfo(x,y,0));
-            temple.add(new DataInfo(x,y,5));
+            temple.add(new DataInfo(x,y,4.5));
         }
 
         double[][] t = new double[0][0];
