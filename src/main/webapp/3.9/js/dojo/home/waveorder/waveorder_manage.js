@@ -263,7 +263,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 							title : '频率(MHz)',
 							titleTooltip:"频率(MHz)",
 							sortable : true,
-							sortName: "value",
+							sortName: "centor",
 							width : '15%',
 							formatter : function(value, row, index) {
 								return '<a class="centerFreqA">' + value
@@ -286,8 +286,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 							title : '监测站',
 							width : '20%',
 							titleTooltip:"监测站",
-							sortable : true,
-							sortName: "value",
 							formatter : function(value, row, index) {
 								var monitors = getMonitors(AREACODE);
 								var content = "";
@@ -312,8 +310,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 							title : '发射源',
 							width : '20%',
 							titleTooltip:"发射源",
-							sortable : true,
-							sortName: "value",
 							formatter : function(value, row, index) {
 								value = value == null ? "-" : value;
 								return value;
