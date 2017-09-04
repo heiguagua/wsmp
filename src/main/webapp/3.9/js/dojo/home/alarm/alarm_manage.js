@@ -64,43 +64,114 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
     		//	}
     		//})
 		//});
-		//
+
+        //表单提交前的验证
+        function beforeSubmit(form){
+            if(!document.importantMonitorForm.beginTime.validity.valid){
+                //document.importantMonitorForm.beginTime.setCustomValidity("用户名不能为空");
+                $("#beginTime").focus();
+                return false;
+            }
+            if(!document.importantMonitorForm.endTime.validity.valid){
+                $("#endTime").focus();
+                return false
+            }
+            if(!document.importantMonitorForm.cycleStep.validity.valid){
+                $("#cycleStep").focus();
+                return false
+            }
+            if(!document.importantMonitorForm.duration.validity.valid){
+                $("#duration").focus();
+                return false
+            }
+            if(!document.importantMonitorForm.IQCount.validity.valid){
+                $("#IQCount").focus();
+                return false
+            }
+            if(!document.importantMonitorForm.totalIQCount.validity.valid){
+                $("#totalIQCount").focus();
+                return false
+            }
+            if(!document.importantMonitorForm.specCount.validity.valid){
+                $("#specCount").focus();
+                return false
+            }
+            if(!document.importantMonitorForm.totalSpecCount.validity.valid){
+                $("#totalSpecCount").focus();
+                return false
+            }
+            if(!document.importantMonitorForm.featureCount.validity.valid){
+                $("#featureCount").focus();
+                return false
+            }
+            if(!document.importantMonitorForm.totalFeatureCount.validity.valid){
+                $("#totalFeatureCount").focus();
+                return false
+            }
+            if(!document.importantMonitorForm.ITUCount.validity.valid){
+                $("#ITUCount").focus();
+                return false
+            }
+            if(!document.importantMonitorForm.totalITUCount.validity.valid){
+                $("#totalITUCount").focus();
+                return false
+            }
+            if(!document.importantMonitorForm.audioTimespan.validity.valid){
+                $("#audioTimespan").focus();
+                return false
+            }
+            if(!document.importantMonitorForm.totalAudioTimespan.validity.valid){
+                $("#totalAudioTimespan").focus();
+                return false
+            }
+            return true
+        }
 		//重点监测更新点击事件
 		$("#important_monitor").on("click","#buttonUpdate",function(e) {
-			var str = $("#important-monitor-form").serialize();
-			$.ajax({
-				url : 'alarmmanage/importantMonitorCreateOrUpdate',
-				type : 'post',
-				data : str,
-				dataType : 'html',// 只返回bool值
-				success : function(html) {
-					layer.msg("更新成功！");
-					$("#important_monitor").html(html);
-				},
-				error : function(html) {
-					console.log(html);
-					layer.alert(html.responseText);
-				}
-			})
+            var valid =beforeSubmit(document.importantMonitorForm);
+            if(valid){
+                var str = $("#important-monitor-form").serialize();
+                $.ajax({
+                    url : 'alarmmanage/importantMonitorCreateOrUpdate',
+                    type : 'post',
+                    data : str,
+                    dataType : 'html',// 只返回bool值
+                    success : function(html) {
+                        layer.msg("更新成功！");
+                        $("#important_monitor").html(html);
+                    },
+                    error : function(html) {
+                        console.log(html);
+                        layer.alert(html.responseText);
+                    }
+                })
+            }else{
+                layer.msg('不能为空!')
+            }
 		});
 		
 		//重点监测添加点击事件
 		$("#important_monitor").on("click","#buttonInsert",function(e) {
-			var str = $("#important-monitor-form").serialize();
-			$.ajax({
-				url : 'alarmmanage/importantMonitorCreateOrUpdate',
-				type : 'post',
-				data : str,
-				dataType : 'html',// 只返回bool值
-				success : function(html) {
-						layer.msg("添加成功！");
-						$("#important_monitor").html(html);
-						},
-				error : function(html) {
-					console.log(html);
-					layer.alert(html.responseText);
-				}
-			})
+            var valid =beforeSubmit(document.importantMonitorForm);
+            if(valid){
+                var str = $("#important-monitor-form").serialize();
+                $.ajax({
+                    url : 'alarmmanage/importantMonitorCreateOrUpdate',
+                    type : 'post',
+                    data : str,
+                    dataType : 'html',// 只返回bool值
+                    success : function(html) {
+                            layer.msg("添加成功！");
+                            $("#important_monitor").html(html);
+                            },
+                    error : function(html) {
+                        console.log(html);
+                        layer.alert(html.responseText);
+                    }
+                })
+            }else{
+                layer.msg('不能为空!')
+            }
 		});
 		
 		//重点监测删除点击事件
@@ -110,22 +181,26 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
 //				  console.log(index);
 //				  layer.close(index);
 //				});
-
-			var str = $("#important-monitor-form").serialize();
-			$.ajax({
-				url : 'alarmmanage/importantMonitorDelete',
-				type : 'post',
-				data : str,
-				dataType : 'html',// 只返回bool值
-				success : function(html) {
-					layer.msg("删除成功!");
-					$("#important_monitor").html(html);
-					},
-				error : function(html) {
-					console.log(html);
-					layer.alert(html.responseText);
-				}
-			})
+            var valid =beforeSubmit(document.importantMonitorForm);
+            if(valid){
+                var str = $("#important-monitor-form").serialize();
+                $.ajax({
+                    url : 'alarmmanage/importantMonitorDelete',
+                    type : 'post',
+                    data : str,
+                    dataType : 'html',// 只返回bool值
+                    success : function(html) {
+                        layer.msg("删除成功!");
+                        $("#important_monitor").html(html);
+                        },
+                    error : function(html) {
+                        console.log(html);
+                        layer.alert(html.responseText);
+                    }
+                })
+            }else{
+                layer.msg('不能为空!')
+            }
 		});	
 
         $("station_list").change(function () {
@@ -368,7 +443,7 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
 
                     data.centerFreq = centerFrq;
                     data.stationIDs = stationCodeList;
-
+                    data.status = 0;
                     console.log(data);
                     data = JSON.stringify(data);
                     $("#signal_list").children().remove();

@@ -76,7 +76,8 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                     }
                 }, {
                     field : 'centerFreq',
-                    title : '测量中心频率',
+                    title : '测量中心频率(MHz)',
+                    align:'center',
                     width : '90px'
                 }, {
                     field : 'audioLength',

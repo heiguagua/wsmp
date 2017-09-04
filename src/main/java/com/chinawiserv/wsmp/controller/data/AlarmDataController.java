@@ -418,14 +418,19 @@ public class AlarmDataController {
         List<DataInfo> inPutData = Lists.newLinkedList();
         List<DataInfo> dataOuts = Lists.newLinkedList();
         List<DataInfo> temple = Lists.newLinkedList();
+
         for (int index = 0; index < coulm; index++) {
             p[index][0] = mapPoint.get(index).getFlon();
             p[index][1] = mapPoint.get(index).getFlat();
             p[index][2] = mapPoint.get(index).getLevel()& 0xFF ;
-
             inPutData.add(new DataInfo(p[index][0],p[index][1],p[index][2]));
-
         }
+
+        inPutData.add(new DataInfo(106.779815,27.230648,40));
+        inPutData.add(new DataInfo(106.606183,26.840808,10));
+        inPutData.add(new DataInfo(106.688752,26.335002,37));
+        inPutData.add(new DataInfo(106.220286,26.817141,2));
+
         for (Map<String,Object> dataOut : kringGraid) {
             double x = Double.parseDouble(dataOut.get("x").toString());
             double y = Double.parseDouble(dataOut.get("y").toString());
@@ -444,14 +449,19 @@ public class AlarmDataController {
 
         temple.addAll(dataOuts);
 
+        temple.add(new DataInfo(106.779815,27.230648,10));
+
+        //inPutData.add(new DataInfo(106.779815,27.230648,10));
+
         double numerator  = Stream.of(t).filter((e)-> e[2]>intKrikingValue).count();
         int denominator = t.length;
 
-        double electrCoverage = numerator/denominator;
+        double electrCoverage =  denominator>0?numerator/denominator:0;
 
         df.format(electrCoverage);
 
         int size = t.length;
+
         List<Map<String, Object>> kriking = Lists.newLinkedList();
 
         Map<String, Object> spatialReference = Maps.newHashMap();
@@ -515,6 +525,7 @@ public class AlarmDataController {
                 levelPoint.add(mapLocate);
             }
 
+
         } catch (Exception e) {
             // TODO Auto-generated catch block
             Logger.error("场强定位计算 操作时间{} 入参：{},异常 ：{}", LocalDateTime.now().toString(), param, e);
@@ -528,6 +539,35 @@ public class AlarmDataController {
             element.put("stationId", station.getId());
             return element;
         }).collect(toList());
+
+        HashMap<String,String> tempMap2 = Maps.newHashMap();
+        tempMap2.put("x",106.779815+"");
+        tempMap2.put("y",27.230648+"" );
+        tempMap2.put("count",40+"");
+        tempMap2.put("stationId", "44");
+
+        HashMap<String,String> tempMap1 = Maps.newHashMap();
+        tempMap1.put("x",106.606183+"");
+        tempMap1.put("y",26.840808+"" );
+        tempMap1.put("count",10+"");
+        tempMap1.put("stationId", "44");
+
+        HashMap<String,String> tempMap3 = Maps.newHashMap();
+        tempMap3.put("x",106.688752+"");
+        tempMap3.put("y",26.335002+"" );
+        tempMap3.put("count",37+"");
+        tempMap3.put("stationId", "44");
+
+        HashMap<String,String> tempMap4 = Maps.newHashMap();
+        tempMap4.put("x",106.220286+"");
+        tempMap4.put("y",26.817141+"" );
+        tempMap4.put("count",2+"");
+        tempMap4.put("stationId", "44");
+
+        stationPiont.add(tempMap1);
+        stationPiont.add(tempMap2);
+        stationPiont.add(tempMap3);
+        stationPiont.add(tempMap4);
 
         Map<String, Object> mapPiont = new HashMap<>();
 
