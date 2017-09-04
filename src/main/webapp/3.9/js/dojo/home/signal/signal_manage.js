@@ -313,42 +313,46 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             data.stationKey = stationKey;
             data.des = des;
             $("#signal_list1").find("option:selected").attr("stationkey",stationKey);
-            //添加违规记录参数
-            //新增违规记录 POST请求,修改put,通过$("#searchId").val()判断
-            //不恢复 PUT请求 必须的参数为isInvalid=0
-            //恢复 PUT请求 必须的参数为isInvalid=1
-            var params ={};
-            var addOpUpdate =$("#searchId").val();//修改还是新增，id
-            var freId =$("#signal_list1").find("option:selected").val();//信号搜索时选择的时间id
-            params.des =des;
-            params.freqguid = (addOpUpdate)?addOpUpdate:freId;
-            params.idz = addOpUpdate;
-            params.freIdz = $("#signal_list1").find("option:selected").val();
-            var saveDate =$('#startTime').val();
-            if(saveDate){
-                saveDate = saveDate.split(' ')[0].replace(/-/g,"")+saveDate.split(' ')[1].replace(/:/g,"");
-            }else{
-                layer.alert("开始时间必填！");
-                $('#startTime').focus();
-                return;
-            }
-            params.saveDate =saveDate;
-
-            params.historyType =$('#typeCodes').val();
-            var isInvalid =$('#isNormal').is(":checked")?$('#isNormal').val():$('#noNormal').val();
-            params.isInvalid =parseInt(isInvalid);
-            console.log('isInvalid:'+params.isInvalid);
-            if(params.isInvalid){//恢复正常,结束时间可选；
-                var invalidDate = $('#stopTime').val();
-                if(invalidDate){
-                    invalidDate = invalidDate.split(' ')[0].replace(/-/g,"")+invalidDate.split(' ')[1].replace(/:/g,"");
+            //合法信号时提交添加违规记录表单的参数
+            if(typeCode==1){
+                //添加违规记录参数
+                //新增违规记录 POST请求,修改put,通过$("#searchId").val()判断
+                //不恢复 PUT请求 必须的参数为isInvalid=0
+                //恢复 PUT请求 必须的参数为isInvalid=1
+                var params ={};
+                var addOpUpdate =$("#searchId").val();//修改还是新增，id
+                var freId =$("#signal_list1").find("option:selected").val();//信号搜索时选择的时间id
+                params.des =des;
+                params.freqguid = (addOpUpdate)?addOpUpdate:freId;
+                params.idz = addOpUpdate;
+                params.freIdz = $("#signal_list1").find("option:selected").val();
+                var saveDate =$('#startTime').val();
+                if(saveDate){
+                    saveDate = saveDate.split(' ')[0].replace(/-/g,"")+saveDate.split(' ')[1].replace(/:/g,"");
                 }else{
-                    layer.alert("是否恢复正常选择是时，结束时间必填！");
-                    $('#stopTime').focus();
+                    layer.alert("开始时间必填！");
+                    $('#startTime').focus();
                     return;
                 }
-                params.invalidDate = invalidDate;
+                params.saveDate =saveDate;
+
+                params.historyType =$('#typeCodes').val();
+                var isInvalid =$('#isNormal').is(":checked")?$('#isNormal').val():$('#noNormal').val();
+                params.isInvalid =parseInt(isInvalid);
+                console.log('isInvalid:'+params.isInvalid);
+                if(params.isInvalid){//恢复正常,结束时间可选；
+                    var invalidDate = $('#stopTime').val();
+                    if(invalidDate){
+                        invalidDate = invalidDate.split(' ')[0].replace(/-/g,"")+invalidDate.split(' ')[1].replace(/:/g,"");
+                    }else{
+                        layer.alert("是否恢复正常选择是时，结束时间必填！");
+                        $('#stopTime').focus();
+                        return;
+                    }
+                    params.invalidDate = invalidDate;
+                }
             }
+
             ajax.put("data/signal/one/update", data, function() {
                 layer.msg('成功');
                 $("#signal_list1").find('option:selected').attr("des",des);
@@ -593,13 +597,15 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                     field : 'stationName',
                     title : '台站名称',
                     titleTooltip:"台站名称",
-                    sortable : true
+                    sortable : true,
+                    width : '40%'
                 }, {
                     field : 'centerFrequency',
                     title : '中心频率（MHz）',
                     titleTooltip:"中心频率（MHz）",
                     sortable : true,
-                    sortName: "value",
+                    sortName: "centerFrequency",
+                    width : '30%',
                     formatter : function(value, row, index) {
                         return '<a>' + value + '</a>';
                     }
@@ -607,7 +613,8 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                     field : 'tapeWidth',
                     title : '带宽（kHz）',
                     titleTooltip:"带宽（kHz）",
-                    sortable : trues
+                    sortable : true,
+                    width : '30%'
                 }]
             });
 
