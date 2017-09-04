@@ -263,7 +263,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 							title : '频率(MHz)',
 							titleTooltip:"频率(MHz)",
 							sortable : true,
-							sortName: "value",
+							sortName: "centor",
 							width : '15%',
 							formatter : function(value, row, index) {
 								return '<a class="centerFreqA">' + value
@@ -286,8 +286,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 							title : '监测站',
 							width : '20%',
 							titleTooltip:"监测站",
-							sortable : true,
-							sortName: "value",
 							formatter : function(value, row, index) {
 								var monitors = getMonitors(AREACODE);
 								var content = "";
@@ -312,8 +310,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 							title : '发射源',
 							width : '20%',
 							titleTooltip:"发射源",
-							sortable : true,
-							sortName: "value",
 							formatter : function(value, row, index) {
 								value = value == null ? "-" : value;
 								return value;
@@ -680,7 +676,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						        width:'10%',
 								title : '频率',
 						        sortable : true,
-						        sortName: "value",
+						        sortName: "radio",
 						        titleTooltip:"频率",
 								formatter : function(value, row, index) {
 									return '<a class="centerFreqA">' + value
@@ -703,8 +699,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 						        width:'15%',
 								title : '监测站',
 						        titleTooltip:"监测站",
-								sortable : true,
-								sortName: "value",
 								formatter : function(value, row, index) {
 									var content = "";
 									for (var i = 0; i < value.length; i++) {
@@ -725,8 +719,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 						        width:'10%',
 								title : '状态',
 						        titleTooltip:"状态",
-								sortable : true,
-								sortName: "value",
 								formatter : function(value, row, index) {
 									return '已确认';
 								}
@@ -782,7 +774,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 								title : '频率',
 						        width:'10%',
 								sortable : true,
-								sortName: "value",
+								sortName: "radio",
 								titleTooltip:"频率",
 								formatter : function(value, row, index) {
 									return '<a class="centerFreqA">' + value
@@ -804,8 +796,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 								field : 'stationID',
 								title : '监测站',
 						        width:'15%',
-								sortable : true,
-								sortName: "value",
 								titleTooltip:"监测站",
 								formatter : function(value, row, index) {
 									var content = "";
@@ -826,8 +816,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 								field : 'status',
 						        width:'10%',
 								title : '状态',
-								sortable : true,
-								sortName: "value",
 								titleTooltip:"状态",
 								formatter : function(value, row, index) {
 									return '<a class="alarmManageA" centorFreq='+row.radio+'>未确认</a>';
@@ -889,6 +877,9 @@ define(	["ajax", "dojo/parser", "esri/map",
 									onLoadSuccess : function() {
 										MAP1 = mapInit();
 										addPoint(monitors, 1, "false");// 默认选中1，子类型为false
+										$("#table-radio").find(".dpopover").popover({
+											html : true
+										});
 									},
 									columns : [
 											{
@@ -910,7 +901,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 												width : '15%',
 												titleTooltip : '合法正常信号',
 												sortable : true,
-												sortName: "value",
+												sortName: "legalNormalStationNumber",
 												formatter : function(value,
 														row, index) {
 													return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
@@ -930,7 +921,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 												width : '15%',
 												titleTooltip : '合法违规信号',
 												sortable : true,
-												sortName: "value",
+												sortName: "legalUnNormalStationNumber",
 												formatter : function(value,
 														row, index) {
 													return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
@@ -950,7 +941,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 												width : '10%',
 												titleTooltip : '已知信号',
 												sortable : true,
-												sortName: "value",
+												sortName: "konwStationNumber",
 												formatter : function(value,
 														row, index) {
 													return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
@@ -970,7 +961,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 												width : '10%',
 												titleTooltip : '不明信号',
 												sortable : true,
-												sortName: "value",
+												sortName: "unKonw",
 												formatter : function(value,
 														row, index) {
 													return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
@@ -990,7 +981,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 												width : '10%',
 												titleTooltip : '非法信号',
 												sortable : true,
-												sortName: "value",
+												sortName: "illegalSignal",
 												formatter : function(value,
 														row, index) {
 													return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
@@ -1010,7 +1001,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 												width : '15%',
 												titleTooltip : '重点监测',
 												sortable : true,
-												sortName: "value",
+												sortName: "importantMonitor",
 												formatter : function(value,
 														row, index) {
 													if(value == true) {
@@ -1028,11 +1019,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 													}
 												}
 											}],
-									onLoadSuccess : function() {
-										$("#table-radio").find(".dpopover").popover({
-											html : true
-										});
-									}
 								});
 			}
 
