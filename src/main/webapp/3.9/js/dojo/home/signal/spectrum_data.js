@@ -78,15 +78,20 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                     }
                 }, {
                     field : 'centerFreq',
-                    title : '中心频率',
-                    width : '80px'
+                    title : '中心频率(MHz)',
+                    width : '20%',
+                    align:'center',
+                    titleTooltip:"中心频率(MHz)",
+                    sortable : true,
                 }, {
                     field : 'spectrumSpan',
-                    title : '带宽',
-                    width : '60px'
+                    title : '带宽(KHz)',
+                    align:'center',
+                    width : '15%'
                 }, {
                     field : 'totalLength',
                     width : '120px',
+                    align:'center',
                     title : '频谱个（或点）数'
                 }]
             });

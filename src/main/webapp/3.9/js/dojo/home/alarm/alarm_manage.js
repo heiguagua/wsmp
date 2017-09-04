@@ -368,7 +368,7 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
 
                     data.centerFreq = centerFrq;
                     data.stationIDs = stationCodeList;
-
+                    data.status = 0;
                     console.log(data);
                     data = JSON.stringify(data);
                     $("#signal_list").children().remove();

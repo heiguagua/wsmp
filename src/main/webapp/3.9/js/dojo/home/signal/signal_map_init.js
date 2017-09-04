@@ -35,8 +35,8 @@ define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"]
             map = new esri.Map("mapDiv", {
                 //center : [ 104.06, 30.67 ],
                 center : [ 106.63, 26.57 ],
-                zoom:8,
-                maxZoom:8,
+                zoom:9,
+                maxZoom:9,
                 sliderStyle: "small",
                 logo:false
                 // maxZoom:11
@@ -57,7 +57,7 @@ define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"]
                 heatLayer = new HeatmapLayer({
                     config: {
                         "useLocalMaximum": false,
-                        "radius": 20,
+                        "radius": 40,
                         "gradient": {
                             0.45: "rgb(000,000,255)",
                             0.55: "rgb(000,255,255)",

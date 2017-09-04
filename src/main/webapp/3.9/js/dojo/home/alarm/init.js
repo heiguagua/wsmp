@@ -79,7 +79,8 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                     $("#signal_list").find('option:selected').attr("des",des);
                     $("#modalStationAlarm").modal('hide');
                     var selectOption = $('#signal_list').find('option:selected')
-                    selectOption.removeAttr("status").attr("status",1);
+                    selectOption.removeAttr("status");
+                    selectOption.attr("status",1);
                     //warnig_confirm();
                 });
             });
@@ -100,7 +101,7 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                 heatLayer = new HeatmapLayer({
                     config: {
                         "useLocalMaximum": true,
-                        "radius": 40,
+                        "radius": 100,
                         "gradient": {
                             0.45: "rgb(000,000,255)",
                             0.55: "rgb(000,255,255)",
@@ -262,13 +263,15 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
 
             var url = mapUtl;
             agoLayer = new esri.layers.ArcGISTiledMapServiceLayer(url, {id: "街道地图"});
-            console.log(agoLayer.initialExtent)
             var attr = {
                 "Xcoord": 104.06,
                 "Ycoord": 30.67,
                 "Plant": "Mesa Mint"
             };
-            console.log(agoLayer);
+            if(agoLayer){
+                agoLayer.copyrightText = '';
+                console.log(agoLayer);
+            }
             var initExtent = new esri.geometry.Extent({type: "extent", xmin: -180, ymin: -90, xmax: 180, ymax: 90});
 
             console.log(JSON.stringify(agoLayer.initialExtent));
@@ -286,8 +289,8 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
 
             map = new esri.Map("mapDiv", {
                 center : [ 106.63, 26.57 ],
-                // zoom:8,
-                // maxZoom:8,
+                zoom:9,
+                maxZoom:9,
                 sliderStyle: "small",
                 logo:false
                 //maxZoom:11
@@ -307,7 +310,7 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                 heatLayer = new HeatmapLayer({
                     config: {
                         "useLocalMaximum": false,
-                        "radius":20,
+                        "radius":40,
                         "gradient": {
                             0.45: "rgb(000,000,255)",
                             0.55: "rgb(000,255,255)",
@@ -867,6 +870,9 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                                 '<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息">'+text+'</textarea></div>';
                             $("#stationWrap").html("");
                             $("#stationWrap").html(temp);
+                            $("#submitButton").removeAttr('disabled');
+                            var status = $('#signal_list').find('option:selected').attr("status");
+
                             $("#submitButton").removeAttr('disabled');
                             var status = $('#signal_list').find('option:selected').attr("status");
 

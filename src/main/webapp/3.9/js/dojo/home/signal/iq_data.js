@@ -76,11 +76,13 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                     }
                 }, {
                     field : 'centerFreq',
-                    title : '中心频率',
-                    width : '80px'
+                    title : '中心频率(MHz)',
+                    align:'center',
+                    width : '15%'
                 }, {
                     field : 'nmber',
                     title : 'I或Q数据个数',
+                    align:'center',
                     width : '90px'
                 }]
             });
