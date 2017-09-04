@@ -122,28 +122,35 @@ define(function() {
 								field : 'freqRange',
 								title : '频段范围',
 								sortable : true,
+								sortName: "freqRange",
 								formatter : function(value, row, index) {
 									return '<a>' + value + '</a>';
 								}
 							}, {
 								field : 'techName',
 								title : '技术制式 ',
+								sortName: "techName",
 								sortable : true
+								
 							}, {
 								field : 'infoChannel',
 								title : '频段信道数',
+								sortName: "infoChannel",
 								sortable : true
 							}, {
 								field : 'monitorCoverage',
 								title : '监测网覆盖率',
+								sortName: "monitorCoverage",
 								sortable : true
 							}, {
 								field : 'stationCoverage',
 								title : '台站覆盖率',
+								sortName: "stationCoverage",
 								sortable : true
 							}, {
 								field : 'occupancy',
 								title : '频段占用度',
+								sortName: "occupancy",
 								sortable : true
 							}]
 				});

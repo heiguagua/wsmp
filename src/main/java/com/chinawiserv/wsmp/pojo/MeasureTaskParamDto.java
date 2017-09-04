@@ -1,5 +1,7 @@
 package com.chinawiserv.wsmp.pojo;
 
+import java.util.Optional;
+
 public class MeasureTaskParamDto {
 	
 	private String ID;
@@ -106,10 +108,10 @@ public class MeasureTaskParamDto {
 		this.duration = duration;
 	}
 	public void setBeginTime(String beginTime) {
-		this.beginTime = beginTime.replace('T',' ');
+		this.beginTime = Optional.ofNullable(beginTime).map(m -> m.replace('T',' ')).orElse("-");
 	}
 	public void setEndTime(String endTime) {
-		this.endTime = endTime.replace('T',' ');
+		this.endTime = Optional.ofNullable(endTime).map(m -> m.replace('T',' ')).orElse("-");
 	}
 	public void setCycleStep(Integer cycleStep) {
 		this.cycleStep = cycleStep;

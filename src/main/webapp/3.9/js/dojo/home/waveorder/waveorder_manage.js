@@ -316,10 +316,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 							}
 						}, {
 							field : "signalManage",
-							//title : '',
-							//titleTooltip:"",
-							//sortable : true,
-							//sortName: "value",
 							formatter : function(value, row, index) {
 								return '<a class="signalManageA" centorFreq='+row.centor+'>查看</a>';							
 							}
@@ -459,7 +455,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 			function getArea(user) {
 				if (user.AreaType == "Province") {
 					// 显示省级选项
-//					var province = user.Area;
+					var province = user.Area;
 //					var option = document.createElement("option");
 //					option.setAttribute("value", province.Code);
 //					option.setAttribute("id", "option");
@@ -875,11 +871,11 @@ define(	["ajax", "dojo/parser", "esri/map",
 									},
 									// 必须要在此bootstraptable渲染成功之后才能渲染地图,不然地图会有错误
 									onLoadSuccess : function() {
-										MAP1 = mapInit();
-										addPoint(monitors, 1, "false");// 默认选中1，子类型为false
 										$("#table-radio").find(".dpopover").popover({
 											html : true
 										});
+										MAP1 = mapInit();
+										addPoint(monitors, 1, "false");// 默认选中1，子类型为false
 									},
 									columns : [
 											{
@@ -1018,7 +1014,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 															+ '"> <img src="images/Fill 30.png"> </img></a>';
 													}
 												}
-											}],
+											}]
 								});
 			}
 
