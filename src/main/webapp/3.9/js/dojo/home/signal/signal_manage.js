@@ -158,24 +158,27 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             var warningID = $("#signal_list1").find('option:selected').attr("warningid");
             var centorFreq = $("#signal_list1").find('option:selected').attr("centorfreq");
             console.log(warningID);
-            var data = {};
-            data.warningID = warningID;
-            data.centorFreq = centorFreq;
-            var str = JSON.stringify(data);
-            $.ajax({
-                url : 'signal/importantMonitor',
-                type : 'post',
-                data : str,//传输数据
-                contentType : 'application/json',//传输数据类型
-                dataType : 'html',//返回数据类型
-                success : function (html) {
-                    $("#important_monitor").html(html);
-                    $("#modalConfig").modal('show');
-                    $("#modalConfig").find(".time-picker").datetimepicker({
+            if(warningID &&centorFreq){
+                var data = {};
+                data.warningID = warningID;
+                data.centorFreq = centorFreq;
+                var str = JSON.stringify(data);
+                $.ajax({
+                    url : 'signal/importantMonitor',
+                    type : 'post',
+                    data : str,//传输数据
+                    contentType : 'application/json',//传输数据类型
+                    dataType : 'html',//返回数据类型
+                    success : function (html) {
+                        $("#important_monitor").html(html);
+                        $("#modalConfig").modal('show');
+                        $("#modalConfig").find(".time-picker").datetimepicker({
 
-                    });
-                }
-            })
+                        });
+                    }
+                })
+            }
+
         });
         // 重点监测配置点击事件
         //$("#modalConfig").on("shown.bs.modal",function(e){
@@ -203,8 +206,10 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 		
 		//重点监测更新点击事件
 		$("#important_monitor").on("click","#buttonUpdate",function(e) {
-			var str = $("#important-monitor-form").serialize();
-			$.ajax({
+            var valid =beforeSubmit(document.importantMonitorForm);
+            if(valid){
+                var str = $("#important-monitor-form").serialize();
+                $.ajax({
 				url : 'signal/importantMonitorCreateOrUpdate',
 				type : 'post',
 				data : str,
@@ -219,26 +224,102 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 					layer.alert(html.responseText);
 				}
 			})
+            }else{
+                layer.msg('不能为空!')
+            }
 		});
+        //表单提交前的验证
+        function beforeSubmit(form){
+            if(!document.importantMonitorForm.beginTime.validity.valid){
+                //document.importantMonitorForm.beginTime.setCustomValidity("用户名不能为空");
+                $("#beginTime").focus();
+                return false;
+            }
+            if(!document.importantMonitorForm.endTime.validity.valid){
+                $("#endTime").focus();
+                return false
+            }
+            if(!document.importantMonitorForm.cycleStep.validity.valid){
+                $("#cycleStep").focus();
+                return false
+            }
+            if(!document.importantMonitorForm.duration.validity.valid){
+                $("#duration").focus();
+                return false
+            }
+            if(!document.importantMonitorForm.IQCount.validity.valid){
+                $("#IQCount").focus();
+                return false
+            }
+            if(!document.importantMonitorForm.totalIQCount.validity.valid){
+                $("#totalIQCount").focus();
+                return false
+            }
+            if(!document.importantMonitorForm.specCount.validity.valid){
+                $("#specCount").focus();
+                return false
+            }
+            if(!document.importantMonitorForm.totalSpecCount.validity.valid){
+                $("#totalSpecCount").focus();
+                return false
+            }
+            if(!document.importantMonitorForm.featureCount.validity.valid){
+                $("#featureCount").focus();
+                return false
+            }
+            if(!document.importantMonitorForm.totalFeatureCount.validity.valid){
+                $("#totalFeatureCount").focus();
+                return false
+            }
+            if(!document.importantMonitorForm.ITUCount.validity.valid){
+                $("#ITUCount").focus();
+                return false
+            }
+            if(!document.importantMonitorForm.totalITUCount.validity.valid){
+                $("#totalITUCount").focus();
+                return false
+            }
+            if(!document.importantMonitorForm.audioTimespan.validity.valid){
+                $("#audioTimespan").focus();
+                return false
+        }
+            if(!document.importantMonitorForm.totalAudioTimespan.validity.valid){
+                $("#totalAudioTimespan").focus();
+                return false
+            }
+            return true
+        }
 		
 		//重点监测添加点击事件
 		$("#important_monitor").on("click","#buttonInsert",function(e) {
-			var str = $("#important-monitor-form").serialize();
-			$.ajax({
-				url : 'signal/importantMonitorCreateOrUpdate',
-				type : 'post',
-				data : str,
-				dataType : 'html',// 只返回bool值
-				success : function(html) {
-						layer.msg("添加成功！");
-						$("#important_monitor").html(html);
+            //console.log(document.importantMonitorForm)
+
+            var valid =beforeSubmit(document.importantMonitorForm);
+            if(valid){
+                var str = $("#important-monitor-form").serialize();
+                //console.log(str)
+
+                $.ajax({
+                    url : 'signal/importantMonitorCreateOrUpdate',
+                    type : 'post',
+                    data : str,
+                    dataType : 'html',// 只返回bool值
+                    success : function(html) {
+                        layer.msg("添加成功！");
+                        $("#important_monitor").html(html);
                         $("#modalConfig").modal("hide");
-						},
-				error : function(html) {
-					console.log(html);
-					layer.alert(html.responseText);
-				}
-			})
+                    },
+                    error : function(html) {
+                        console.log(html);
+                        layer.alert(html.responseText);
+                    }
+                })
+
+            }else{
+                layer.msg('不能为空!')
+            }
+
+
 		});
 		
 		//重点监测删除点击事件
@@ -248,9 +329,10 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 //				  console.log(index);
 //				  layer.close(index);
 //				});
-
-			var str = $("#important-monitor-form").serialize();
-			$.ajax({
+            var valid =beforeSubmit(document.importantMonitorForm);
+            if(valid){
+                var str = $("#important-monitor-form").serialize();
+                $.ajax({
 				url : 'signal/importantMonitorDelete',
 				type : 'post',
 				data : str,
@@ -265,6 +347,9 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 					layer.alert(html.responseText);
 				}
 			})
+            }else{
+                layer.msg('不能为空!')
+            }
 		});
         var singal = $("#FormQZ").val();
         if (singal){
@@ -1587,7 +1672,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             ajax.get("data/signal/FmRate", para, function(reslut) {
                 console.log(reslut)
                 if(!reslut.name.length){
-                    $('#radioChart').html("<h4 style='margin-top:60px;text-align: center;' >未识别调制方式</h4>")
+                    $('#radioChart').html("<h4 style='margin-top:120px;font-weight: 500;font-size:14px ;text-align: center;' >未识别调制方式</h4>")
                 }else{
                     initChart(reslut, data);
                 }
