@@ -1587,7 +1587,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             ajax.get("data/signal/FmRate", para, function(reslut) {
                 console.log(reslut)
                 if(!reslut.name.length){
-                    $('#radioChart').html("<h4 style='margin-top:60px;text-align: center;' >未识别调制方式</h4>")
+                    $('#radioChart').html("<h4 style='margin-top:120px;font-weight: 500;font-size:14px ;text-align: center;' >未识别调制方式</h4>")
                 }else{
                     initChart(reslut, data);
                 }
