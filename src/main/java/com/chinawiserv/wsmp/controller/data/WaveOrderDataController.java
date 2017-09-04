@@ -180,22 +180,23 @@ public class WaveOrderDataController {
 		stationArray.setString(stationString);
 		request.setStationIDs(stationArray);
 		FreqWarningQueryResponse response = serviceFreqWarning.getFreqWarningWebServiceSoap().query(request);
-		List<Alarm> alarmRows = Lists.newArrayList();
-		response.getWarningInfos().getFreqWarningDTO().stream().forEach(t -> {
-			Alarm alarm = new Alarm();
-			BigDecimal certerFreq = new BigDecimal(t.getCenterFreq());
-			BigDecimal divisor = new BigDecimal(1000000);
-			alarm.setRadio(certerFreq.divide(divisor).toString());
-			alarm.setFirstTime(t.getSaveDate().toString().replace('T',' '));
-			alarm.setLastingTime(t.getLastTimeDate().toString().replace('T',' '));
-			alarm.setMark(t.getDescription());
-			List<String> stationID = Lists.newArrayList();
-			t.getStatList().getFreqWarningStatDTO().stream().forEach(t1 -> {
-				stationID.add(t1.getStationGUID());
-			});
-			alarm.setStationID(stationID);
-			alarmRows.add(alarm);
-		});
+		List<Alarm> alarmRows = response.getWarningInfos().getFreqWarningDTO().stream()
+			.sorted((a,b) -> b.getLastTimeDate().toString().compareTo(a.getLastTimeDate().toString()))
+			.map(m -> {
+				Alarm alarm = new Alarm();
+				BigDecimal certerFreq = new BigDecimal(m.getCenterFreq());
+				BigDecimal divisor = new BigDecimal(1000000);
+				alarm.setRadio(certerFreq.divide(divisor).toString());
+				alarm.setFirstTime(m.getSaveDate().toString().replace('T',' '));
+				alarm.setLastingTime(m.getLastTimeDate().toString().replace('T',' '));
+				alarm.setMark(m.getDescription());
+				List<String> stationID = Lists.newArrayList();
+				m.getStatList().getFreqWarningStatDTO().stream().forEach(t1 -> {
+					stationID.add(t1.getStationGUID());
+				});
+				alarm.setStationID(stationID);
+				return alarm;
+			}).collect(Collectors.toList());
 		Map<String, Object> result = Maps.newLinkedHashMap();
 		result.put("total", alarmRows.size());
 		result.put("data", alarmRows);
@@ -215,22 +216,23 @@ public class WaveOrderDataController {
 		stationArray.setString(stationString);
 		request.setStationIDs(stationArray);
 		FreqWarningQueryResponse response = serviceFreqWarning.getFreqWarningWebServiceSoap().query(request);
-		List<Alarm> alarmRows = Lists.newArrayList();
-		response.getWarningInfos().getFreqWarningDTO().stream().forEach(t -> {
-			Alarm alarm = new Alarm();
-			BigDecimal certerFreq = new BigDecimal(t.getCenterFreq());
-			BigDecimal divisor = new BigDecimal(1000000);
-			alarm.setRadio(certerFreq.divide(divisor).toString());
-			alarm.setFirstTime(t.getSaveDate().toString().replace('T',' '));
-			alarm.setLastingTime(t.getLastTimeDate().toString().replace('T',' '));
-			alarm.setMark(t.getDescription());
-			List<String> stationID = Lists.newArrayList();
-			t.getStatList().getFreqWarningStatDTO().stream().forEach(t1 -> {
-				stationID.add(t1.getStationGUID());
-			});
-			alarm.setStationID(stationID);
-			alarmRows.add(alarm);
-		});
+		List<Alarm> alarmRows = response.getWarningInfos().getFreqWarningDTO().stream()
+				.sorted((a,b) -> b.getLastTimeDate().toString().compareTo(a.getLastTimeDate().toString()))
+				.map(m -> {
+					Alarm alarm = new Alarm();
+					BigDecimal certerFreq = new BigDecimal(m.getCenterFreq());
+					BigDecimal divisor = new BigDecimal(1000000);
+					alarm.setRadio(certerFreq.divide(divisor).toString());
+					alarm.setFirstTime(m.getSaveDate().toString().replace('T',' '));
+					alarm.setLastingTime(m.getLastTimeDate().toString().replace('T',' '));
+					alarm.setMark(m.getDescription());
+					List<String> stationID = Lists.newArrayList();
+					m.getStatList().getFreqWarningStatDTO().stream().forEach(t1 -> {
+						stationID.add(t1.getStationGUID());
+					});
+					alarm.setStationID(stationID);
+					return alarm;
+				}).collect(Collectors.toList());
 		Map<String, Object> result = Maps.newLinkedHashMap();
 		result.put("total", alarmRows.size());
 		result.put("data", alarmRows);

@@ -723,8 +723,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 						        width:'10%',
 								title : '备注',
 						        titleTooltip:"备注",
-								sortable : true,
-								sortName: "value",
 								formatter : function(value, row, index) {
 									value = value == null ? "-" : value;
 									return '<div class="dpopover" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
@@ -820,8 +818,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 								field : 'mark',
 						        width:'10%',
 								title : '备注',
-								sortable : true,
-								sortName: "value",
 								titleTooltip:"备注",
 								formatter : function(value, row, index) {
 									value = value == null ? "-" : value;
