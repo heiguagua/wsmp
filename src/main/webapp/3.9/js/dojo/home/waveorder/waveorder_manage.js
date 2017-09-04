@@ -84,7 +84,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 							Binding.openUrl(JSON.stringify(urlObj));
 
 						})
-						
+
 				// 信号详情 查看链接点击事件
 				$("#table-signal-list").on("click", ".signalManageA",
 						function(e) {
@@ -96,7 +96,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 								DisplayName : '信号管理',
 								MultiTabable : false,
 								ReflushIfExist : true,
-								Url : 'radio/app/alarmmanage?id=QZ&cenFreg='+freq
+								Url : 'radio/app/alarmmanage?id=QZ&cenFreg='
+										+ freq
 							};
 							Binding.openUrl(JSON.stringify(urlObj));
 						})
@@ -129,7 +130,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 							};
 							Binding.openUrl(JSON.stringify(urlObj));
 						})
-						
 
 				// 告警未处理状态链接点击事件
 				$("#table-alarm-undeal").on("click", ".alarmManageA",
@@ -142,55 +142,70 @@ define(	["ajax", "dojo/parser", "esri/map",
 								DisplayName : '告警管理',
 								MultiTabable : false,
 								ReflushIfExist : true,
-								Url : 'radio/app/alarmmanage?id=QZ&cenFreg='+freq
+								Url : 'radio/app/alarmmanage?id=QZ&cenFreg='
+										+ freq
 							};
 							Binding.openUrl(JSON.stringify(urlObj));
 						})
-						
 
 				// 重点监测更新点击事件
 				$("#important_monitor").on("click", "#buttonUpdate",
 						function(e) {
-							var str = $("#important-monitor-form").serialize();
-							$.ajax({
-								url : 'waveorder/importantMonitorCreateOrUpdate',
-								type : 'post',
-								data : str,
-								dataType : 'html',// 只返回bool值
-								success : function(html) {
-									layer.msg("更新成功！");
-									$("#important_monitor").html(html);
-									$("#modalConfig").find(".time-picker")
-									.datetimepicker({});
-								},
-								error : function(html) {
-									console.log(html);
-									layer.alert(html.responseText);
-								}
-							})
+							var valid = beforeSubmit(document.importantMonitorForm);
+							if (valid) {
+								var str = $("#important-monitor-form")
+										.serialize();
+								$.ajax({
+									url : 'waveorder/importantMonitorCreateOrUpdate',
+									type : 'post',
+									data : str,
+									dataType : 'html',// 只返回bool值
+									success : function(html) {
+										layer.msg("更新成功！");
+										$("#important_monitor").html(html);
+										$("#modalConfig").find(".time-picker")
+												.datetimepicker({});
+									},
+									error : function(html) {
+										console.log(html);
+										layer.alert(html.responseText);
+									}
+								})
+							} else {
+								layer.msg('不能为空!')
+							}
 						});
 
 				// 重点监测添加点击事件
 				$("#important_monitor").on("click", "#buttonInsert",
 						function(e) {
-							var str = $("#important-monitor-form").serialize();
-							$.ajax({
-								url : 'waveorder/importantMonitorCreateOrUpdate',
-								type : 'post',
-								data : str,
-								dataType : 'html',// 只返回bool值
-								success : function(html) {
-									layer.msg("添加成功！");
-									$("#important_monitor").html(html);
-									$("#modalConfig").find(".time-picker")
-										.datetimepicker({});
-									$('#table-radio').bootstrapTable("refresh",{silent: true});
-								},
-								error : function(html) {
-									console.log(html);
-									layer.alert(html.responseText);
-								}
-							})
+							var valid = beforeSubmit(document.importantMonitorForm);
+							if (valid) {
+								var str = $("#important-monitor-form")
+										.serialize();
+								$.ajax({
+									url : 'waveorder/importantMonitorCreateOrUpdate',
+									type : 'post',
+									data : str,
+									dataType : 'html',// 只返回bool值
+									success : function(html) {
+										layer.msg("添加成功！");
+										$("#important_monitor").html(html);
+										$("#modalConfig").find(".time-picker")
+												.datetimepicker({});
+										$('#table-radio').bootstrapTable(
+												"refresh", {
+													silent : true
+												});
+									},
+									error : function(html) {
+										console.log(html);
+										layer.alert(html.responseText);
+									}
+								})
+							} else {
+								layer.msg('不能为空!')
+							}
 						});
 
 				// 重点监测删除点击事件
@@ -202,25 +217,36 @@ define(	["ajax", "dojo/parser", "esri/map",
 							// console.log(index);
 							// layer.close(index);
 							// });
-
-							var str = $("#important-monitor-form").serialize();
-							$.ajax({
-										url : 'waveorder/importantMonitorDelete',
-										type : 'post',
-										data : str,
-										dataType : 'html',// 只返回bool值
-										success : function(html) {
-											layer.msg("删除成功!");
-											$("#important_monitor").html(html);
-											$("#modalConfig").find(".time-picker")
-												.datetimepicker({});
-											$('#table-radio').bootstrapTable("refresh",{silent: true});
-										},
-										error : function(html) {
-											console.log(html);
-											layer.alert(html.responseText);
-										}
-									})
+							var valid = beforeSubmit(document.importantMonitorForm);
+							if (valid) {
+								var str = $("#important-monitor-form")
+										.serialize();
+								$.ajax({
+											url : 'waveorder/importantMonitorDelete',
+											type : 'post',
+											data : str,
+											dataType : 'html',// 只返回bool值
+											success : function(html) {
+												layer.msg("删除成功!");
+												$("#important_monitor")
+														.html(html);
+												$("#modalConfig")
+														.find(".time-picker")
+														.datetimepicker({});
+												$('#table-radio')
+														.bootstrapTable(
+																"refresh", {
+																	silent : true
+																});
+											},
+											error : function(html) {
+												console.log(html);
+												layer.alert(html.responseText);
+											}
+										})
+							} else {
+								layer.msg('不能为空!')
+							}
 						});
 
 				// 信号统计点击进入详情页事件
@@ -235,7 +261,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 					$('#table-signal-list').bootstrapTable({
 						method : 'post',
 						cache : false,
-						contentType : "application/json", 
+						contentType : "application/json",
 						url : "data/waveorder/radioDetail",
 						striped : true, // 是否显示行间隔色
 						dataField : "data",
@@ -261,9 +287,9 @@ define(	["ajax", "dojo/parser", "esri/map",
 						columns : [{
 							field : 'centor',
 							title : '频率(MHz)',
-							titleTooltip:"频率(MHz)",
+							titleTooltip : "频率(MHz)",
 							sortable : true,
-							sortName: "centor",
+							sortName : "centor",
 							width : '15%',
 							formatter : function(value, row, index) {
 								return '<a class="centerFreqA">' + value
@@ -273,19 +299,19 @@ define(	["ajax", "dojo/parser", "esri/map",
 							field : 'band',
 							title : '带宽(kHz)',
 							width : '15%',
-							titleTooltip:"带宽(kHz)",
+							titleTooltip : "带宽(kHz)",
 							sortable : true
 						}, {
 							field : 'success_rate',
 							title : '监测发射功率',
 							width : '18%',
-							titleTooltip:"监测发射功率",
+							titleTooltip : "监测发射功率",
 							sortable : true
 						}, {
 							field : 'monitorID',
 							title : '监测站',
 							width : '20%',
-							titleTooltip:"监测站",
+							titleTooltip : "监测站",
 							formatter : function(value, row, index) {
 								var monitors = getMonitors(AREACODE);
 								var content = "";
@@ -309,7 +335,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 							field : 'station',
 							title : '发射源',
 							width : '20%',
-							titleTooltip:"发射源",
+							titleTooltip : "发射源",
 							formatter : function(value, row, index) {
 								value = value == null ? "-" : value;
 								return value;
@@ -317,7 +343,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 						}, {
 							field : "signalManage",
 							formatter : function(value, row, index) {
-								return '<a class="signalManageA" centorFreq='+row.centor+'>查看</a>';							
+								return '<a class="signalManageA" centorFreq='
+										+ row.centor + '>查看</a>';
 							}
 						}],
 						onLoadSuccess : function() {
@@ -330,77 +357,145 @@ define(	["ajax", "dojo/parser", "esri/map",
 
 				//地图刷新按钮点击事件
 				$("#redioType").on("click", ".btn", function(e) {
-					// 重置地图
-					// 并不是resize或者reposition
-					// 应是重置center和zoom
-					// 根据监测站数组的平均位置，得到中心定位
-					//暂时取第一个监测站的位置
-					var center = new Point({
-						"x" : MONITORS[0].Longitude,
-						"y" : MONITORS[0].Latitude
-					});
-					MAP1.setZoom(12);
-					MAP1.centerAt(center);
-				});
+							// 重置地图
+							// 并不是resize或者reposition
+							// 应是重置center和zoom
+							// 根据监测站数组的平均位置，得到中心定位
+							//暂时取第一个监测站的位置
+							var center = new Point({
+										"x" : MONITORS[0].Longitude,
+										"y" : MONITORS[0].Latitude
+									});
+							MAP1.setZoom(12);
+							MAP1.centerAt(center);
+						});
 
 				// 初始化电磁环境评估地图事件
 				$('#modalEvaluate').on('shown.bs.modal', function(e) {
 
-					var mapUrl = $("#mapUrl").val();
-					var url = mapUrl;
-					var map2 = new Map("mapDiv2", {
-						// center :[104.06,30.67],
-						zoom : 10
-					});
-					var agoLayer2 = new ArcGISTiledMapServiceLayer(url, {
-						id : "街道地图1"
-					});
-					var glayer2 = new GraphicsLayer();
-					map2.addLayer(agoLayer2);
-					map2.addLayer(glayer2);
-				});
-				
-				//过滤重点监测频段
-				$('#importantMonitor_filter').on('click',function(e) {
-					if(e.target.checked == true) {
-						$('#table-radio').bootstrapTable("filterBy", {
-							importantMonitor : true
+							var mapUrl = $("#mapUrl").val();
+							var url = mapUrl;
+							var map2 = new Map("mapDiv2", {
+										// center :[104.06,30.67],
+										zoom : 10
+									});
+							var agoLayer2 = new ArcGISTiledMapServiceLayer(url,
+									{
+										id : "街道地图1"
+									});
+							var glayer2 = new GraphicsLayer();
+							map2.addLayer(agoLayer2);
+							map2.addLayer(glayer2);
 						});
-					}else {
-						$('#table-radio').bootstrapTable("filterBy");
-					}
-				});
-				
+
+				//过滤重点监测频段
+				$('#importantMonitor_filter').on('click', function(e) {
+							if (e.target.checked == true) {
+								$('#table-radio').bootstrapTable("filterBy", {
+											importantMonitor : true
+										});
+							} else {
+								$('#table-radio').bootstrapTable("filterBy");
+							}
+						});
+
 				// 监听更新时间回车按下事件
 				$("#minutes").keyup(function(e) {
-					if(e.keyCode == 13) {
-						layer.msg("设置更新时间成功！时间：" + e.target.value + "分钟");
-						refresh_timer_init(e.target.value);
-					}
-				});
-				
+							if (e.keyCode == 13) {
+								layer.msg("设置更新时间成功！时间：" + e.target.value
+										+ "分钟");
+								refresh_timer_init(e.target.value);
+							}
+						});
+
 			}
-			
+
+			// 表单提交前的验证
+			function beforeSubmit(form) {
+				if (!document.importantMonitorForm.beginTime.validity.valid) {
+					// document.importantMonitorForm.beginTime.setCustomValidity("用户名不能为空");
+					$("#beginTime").focus();
+					return false;
+				}
+				if (!document.importantMonitorForm.endTime.validity.valid) {
+					$("#endTime").focus();
+					return false
+				}
+				if (!document.importantMonitorForm.cycleStep.validity.valid) {
+					$("#cycleStep").focus();
+					return false
+				}
+				if (!document.importantMonitorForm.duration.validity.valid) {
+					$("#duration").focus();
+					return false
+				}
+				if (!document.importantMonitorForm.IQCount.validity.valid) {
+					$("#IQCount").focus();
+					return false
+				}
+				if (!document.importantMonitorForm.totalIQCount.validity.valid) {
+					$("#totalIQCount").focus();
+					return false
+				}
+				if (!document.importantMonitorForm.specCount.validity.valid) {
+					$("#specCount").focus();
+					return false
+				}
+				if (!document.importantMonitorForm.totalSpecCount.validity.valid) {
+					$("#totalSpecCount").focus();
+					return false
+				}
+				if (!document.importantMonitorForm.featureCount.validity.valid) {
+					$("#featureCount").focus();
+					return false
+				}
+				if (!document.importantMonitorForm.totalFeatureCount.validity.valid) {
+					$("#totalFeatureCount").focus();
+					return false
+				}
+				if (!document.importantMonitorForm.ITUCount.validity.valid) {
+					$("#ITUCount").focus();
+					return false
+				}
+				if (!document.importantMonitorForm.totalITUCount.validity.valid) {
+					$("#totalITUCount").focus();
+					return false
+				}
+				if (!document.importantMonitorForm.audioTimespan.validity.valid) {
+					$("#audioTimespan").focus();
+					return false
+				}
+				if (!document.importantMonitorForm.totalAudioTimespan.validity.valid) {
+					$("#totalAudioTimespan").focus();
+					return false
+				}
+				return true
+			}
+
 			// 告警数据更新定时器初始化
 			function refresh_timer_init(minutes) {
-					clearInterval(interval);
-					var interval = setInterval(task,1000*60*minutes);
-					function task() {
-						$('#table-alarm-undeal').bootstrapTable('refresh',{silent : true});
-						$('#table-alarm-dealed').bootstrapTable('refresh',{silent : true});
-					}			
+				clearInterval(interval);
+				var interval = setInterval(task, 1000 * 60 * minutes);
+				function task() {
+					$('#table-alarm-undeal').bootstrapTable('refresh', {
+								silent : true
+							});
+					$('#table-alarm-dealed').bootstrapTable('refresh', {
+								silent : true
+							});
+				}
 			}
-			
+
 			// 时间选择器初始化
 			function datetimepicker_init() {
-			$.fn.datetimepicker.defaults = {
+				$.fn.datetimepicker.defaults = {
 					language : 'zh-CN',
 					format : 'yyyy-mm-dd hh:ii:ss',
 					autoclose : true,
 					minView : 2
 				}
 			}
-			
+
 			// 初始化下拉框
 			function selector_init() {
 				// 执行下拉框
@@ -417,13 +512,13 @@ define(	["ajax", "dojo/parser", "esri/map",
 				// 有areaCode,直接触发选择事件
 				if (areaCode != null) {
 					$('.select2-picker').val(areaCode); // Change the value or
-														// make some change to
-														// the internal state
+					// make some change to
+					// the internal state
 					$('.select2-picker').trigger('change.select2'); // 触发事件
 					select2_change(areaCode);
 				}
 			}
-			
+
 			// 区域切换
 			function select2_change(areaCode) {
 
@@ -456,14 +551,14 @@ define(	["ajax", "dojo/parser", "esri/map",
 				if (user.AreaType == "Province") {
 					// 显示省级选项
 					var province = user.Area;
-//					var option = document.createElement("option");
-//					option.setAttribute("value", province.Code);
-//					option.setAttribute("id", "option");
-//					// option.setAttribute("selected","selected");
-//					// option.innerHTML =
-//					// province_name;//此时就设置innerHTML的话会报错，因为<option>标签还没渲染出来
-//					$("#area_select").append(option);
-//					$("#option").append(province.Name);
+					//					var option = document.createElement("option");
+					//					option.setAttribute("value", province.Code);
+					//					option.setAttribute("id", "option");
+					//					// option.setAttribute("selected","selected");
+					//					// option.innerHTML =
+					//					// province_name;//此时就设置innerHTML的话会报错，因为<option>标签还没渲染出来
+					//					$("#area_select").append(option);
+					//					$("#option").append(province.Name);
 					var citys = province.Citys;
 					// 显示市级选项
 					for (var i = 0; i < citys.length; i++) {
@@ -537,87 +632,83 @@ define(	["ajax", "dojo/parser", "esri/map",
 						});
 				// 计数点symbol
 				var url_countBackgroundSymbol = null;
-				if(isSubType == "true") {
+				if (isSubType == "true") {
 					switch (signalType) {
-					case 1:
-						url_countBackgroundSymbol = "images/undeclared.svg";
-						break;
-					default:
-						break;
+						case 1 :
+							url_countBackgroundSymbol = "images/undeclared.svg";
+							break;
+						default :
+							break;
 					}
-				}else {
+				} else {
 					switch (signalType) {
-					case 1:
-						url_countBackgroundSymbol = "images/legal.svg";
-						break;
-					case 2:
-						url_countBackgroundSymbol = "images/known.svg";
-						break;
-					case 3:
-						url_countBackgroundSymbol = "images/unknown.svg";
-						break;
-					case 4:
-						url_countBackgroundSymbol = "images/illegal.svg";
-						break;
-					default:
-						break;
+						case 1 :
+							url_countBackgroundSymbol = "images/legal.svg";
+							break;
+						case 2 :
+							url_countBackgroundSymbol = "images/known.svg";
+							break;
+						case 3 :
+							url_countBackgroundSymbol = "images/unknown.svg";
+							break;
+						case 4 :
+							url_countBackgroundSymbol = "images/illegal.svg";
+							break;
+						default :
+							break;
 					}
 				}
 				var countBackgroundSymbol = new PictureMarkerSymbol({
-					"url" : url_countBackgroundSymbol,
-					"height" : 18,
-					"width" : 34
-				});
-				ajax.post("data/waveorder/monitorsPoint", data,function(result) {
-									console.log(result);
-									for (var i = 0; i < result.length; i++) {
-										var monitorPoint = new Point(result[i]);
-										var countPoint = monitorPoint.offset(
-												0.009, 0.006);// 计数点位于右上角
-										var countSymbol = new TextSymbol(String(monitorPoint.count))
-												.setColor(
-														new esri.Color([ 0xff,
-																0xff, 0xff ]))
-												.setAlign(Font.ALIGN_START)
-												.setFont(
-														new Font()
-																.setSize("12pt")
-																.setFamily(
-																		" .PingFangSC-Medium"));
+							"url" : url_countBackgroundSymbol,
+							"height" : 18,
+							"width" : 34
+						});
+				ajax.post("data/waveorder/monitorsPoint", data,
+						function(result) {
+							console.log(result);
+							for (var i = 0; i < result.length; i++) {
+								var monitorPoint = new Point(result[i]);
+								var countPoint = monitorPoint.offset(0.009,
+										0.006);// 计数点位于右上角
+								var countSymbol = new TextSymbol(String(monitorPoint.count))
+										.setColor(new esri.Color([0xff, 0xff,
+														0xff]))
+										.setAlign(Font.ALIGN_START)
+										.setFont(new Font()
+														.setSize("12pt")
+														.setFamily(" .PingFangSC-Medium"));
 
-										var countGraphic = new esri.Graphic(
-												countPoint.offset(0, -0.0015),
-												countSymbol);// 计数图
-										var countBackgroundGraphic = new esri.Graphic(
-												countPoint,
-												countBackgroundSymbol);// 计数底图
-										var monitorGraphic = new esri.Graphic(
-												monitorPoint, monitorSymbol);// 监测站图
-										var monitorGraphic_zoom = new esri.Graphic(
-												monitorPoint, monitorSymbol);// 监测站图,一个图片对象只能赋予一个图层，所以这里必须要新复制一个对象
-										glayer_max.add(monitorGraphic);
-										glayer_max.add(countBackgroundGraphic);
-										glayer_max.add(countGraphic);
-										glayer_zoom.add(monitorGraphic_zoom);
-									}
+								var countGraphic = new esri.Graphic(countPoint
+												.offset(0, -0.0015),
+										countSymbol);// 计数图
+								var countBackgroundGraphic = new esri.Graphic(
+										countPoint, countBackgroundSymbol);// 计数底图
+								var monitorGraphic = new esri.Graphic(
+										monitorPoint, monitorSymbol);// 监测站图
+								var monitorGraphic_zoom = new esri.Graphic(
+										monitorPoint, monitorSymbol);// 监测站图,一个图片对象只能赋予一个图层，所以这里必须要新复制一个对象
+								glayer_max.add(monitorGraphic);
+								glayer_max.add(countBackgroundGraphic);
+								glayer_max.add(countGraphic);
+								glayer_zoom.add(monitorGraphic_zoom);
+							}
 						});
 				map.addLayer(glayer_max);
 				map.addLayer(glayer_zoom);
 				//缩放监听事件
-				map.on("zoom-end",function(zoom){
-					console.log(zoom);
-					//以最大层级为标准，缩小就减小图标大小,并且只减小监测站图标
-					if(zoom.level < map.getMaxZoom()) {
-						//先清除图片或者清除图片层或者隐藏图片层
-						glayer_max.hide();
-						glayer_zoom.show();
-					}else {
-						glayer_zoom.hide();
-						glayer_max.show();
-					}
-				});	
+				map.on("zoom-end", function(zoom) {
+							console.log(zoom);
+							//以最大层级为标准，缩小就减小图标大小,并且只减小监测站图标
+							if (zoom.level < map.getMaxZoom()) {
+								//先清除图片或者清除图片层或者隐藏图片层
+								glayer_max.hide();
+								glayer_zoom.show();
+							} else {
+								glayer_zoom.hide();
+								glayer_max.show();
+							}
+						});
 			}
-			
 
 			//下方地图初始化
 			function mapInit() {
@@ -625,15 +716,16 @@ define(	["ajax", "dojo/parser", "esri/map",
 				var mapUrl = $("#mapUrl").val();
 				var url = mapUrl;
 				var map = new Map("mapDiv1", {
-					center :[MONITORS[0].Longitude,MONITORS[0].Latitude],
-					maxZoom : 12,
-					minZoom :6,
-					zoom : 12
-				});
+							center : [MONITORS[0].Longitude,
+									MONITORS[0].Latitude],
+							maxZoom : 12,
+							minZoom : 6,
+							zoom : 12
+						});
 
 				var agoLayer = new ArcGISTiledMapServiceLayer(url, {
-					id : "街道地图"
-				});
+							id : "街道地图"
+						});
 				var glayer_max = new GraphicsLayer();
 				var glayer_zoom = new GraphicsLayer();
 				map.addLayer(agoLayer);
@@ -663,38 +755,38 @@ define(	["ajax", "dojo/parser", "esri/map",
 					pageSize : 16, // 单页记录数
 					pageList : [5, 10, 20, 30], // 分页步进值
 					clickToSelect : true, // 是否启用点击选中行
-//					showRefresh : true,
+					//					showRefresh : true,
 					responseHandler : function(res) {
 						return res;
 					},
 					columns : [{
 								field : 'radio',
-						        width:'15%',
+								width : '15%',
 								title : '频率(MHz)',
-						        sortable : true,
-						        sortName: "radio",
-						        titleTooltip:"频率(MHz)",
+								sortable : true,
+								sortName : "radio",
+								titleTooltip : "频率(MHz)",
 								formatter : function(value, row, index) {
 									return '<a class="centerFreqA">' + value
 											+ '</a>';
 								}
 							}, {
 								field : 'firstTime',
-						        width:'20%',
+								width : '20%',
 								title : '首次出现时间',
-						        titleTooltip:"首次出现时间",
-						        sortable : true
+								titleTooltip : "首次出现时间",
+								sortable : true
 							}, {
 								field : 'lastingTime',
-						        width:'20%',
+								width : '20%',
 								title : '最后出现时间',
-						        titleTooltip:"最后出现时间",
+								titleTooltip : "最后出现时间",
 								sortable : true
 							}, {
 								field : 'stationID',
-						        width:'15%',
+								width : '15%',
 								title : '监测站',
-						        titleTooltip:"监测站",
+								titleTooltip : "监测站",
 								formatter : function(value, row, index) {
 									var content = "";
 									for (var i = 0; i < value.length; i++) {
@@ -712,17 +804,17 @@ define(	["ajax", "dojo/parser", "esri/map",
 								}
 							}, {
 								field : 'status',
-						        width:'10%',
+								width : '10%',
 								title : '状态',
-						        titleTooltip:"状态",
+								titleTooltip : "状态",
 								formatter : function(value, row, index) {
 									return '已确认';
 								}
 							}, {
 								field : 'mark',
-						        width:'10%',
+								width : '10%',
 								title : '备注',
-						        titleTooltip:"备注",
+								titleTooltip : "备注",
 								formatter : function(value, row, index) {
 									value = value == null ? "-" : value;
 									return '<div class="dpopover" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
@@ -759,38 +851,38 @@ define(	["ajax", "dojo/parser", "esri/map",
 					pageSize : 16, // 单页记录数
 					pageList : [5, 10, 20, 30], // 分页步进值
 					clickToSelect : true, // 是否启用点击选中行
-//					showRefresh : true,
+					//					showRefresh : true,
 					responseHandler : function(res) {
 						return res;
 					},
 					columns : [{
 								field : 'radio',
 								title : '频率(MHz)',
-						        width:'15%',
+								width : '15%',
 								sortable : true,
-								sortName: "radio",
-								titleTooltip:"频率(MHz)",
+								sortName : "radio",
+								titleTooltip : "频率(MHz)",
 								formatter : function(value, row, index) {
 									return '<a class="centerFreqA">' + value
 											+ '</a>';
 								}
 							}, {
 								field : 'firstTime',
-						        width:'20%',
+								width : '20%',
 								title : '首次出现时间',
 								sortable : true,
-								titleTooltip:"首次出现时间"
+								titleTooltip : "首次出现时间"
 							}, {
 								field : 'lastingTime',
-						        width:'20%',
+								width : '20%',
 								title : '最后出现时间',
 								sortable : true,
-								titleTooltip:"最后出现时间"
+								titleTooltip : "最后出现时间"
 							}, {
 								field : 'stationID',
 								title : '监测站',
-						        width:'15%',
-								titleTooltip:"监测站",
+								width : '15%',
+								titleTooltip : "监测站",
 								formatter : function(value, row, index) {
 									var content = "";
 									for (var i = 0; i < value.length; i++) {
@@ -808,17 +900,18 @@ define(	["ajax", "dojo/parser", "esri/map",
 								}
 							}, {
 								field : 'status',
-						        width:'10%',
+								width : '10%',
 								title : '状态',
-								titleTooltip:"状态",
+								titleTooltip : "状态",
 								formatter : function(value, row, index) {
-									return '<a class="alarmManageA" centorFreq='+row.radio+'>未确认</a>';
+									return '<a class="alarmManageA" centorFreq='
+											+ row.radio + '>未确认</a>';
 								}
 							}, {
 								field : 'mark',
-						        width:'10%',
+								width : '10%',
 								title : '备注',
-								titleTooltip:"备注",
+								titleTooltip : "备注",
 								formatter : function(value, row, index) {
 									value = value == null ? "-" : value;
 									return '<div class="dpopover" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
@@ -841,177 +934,147 @@ define(	["ajax", "dojo/parser", "esri/map",
 				for (var i = 0; i < monitors.length; i++) {
 					monitorsID[i] = monitors[i].Num;
 				}
-					$('#table-radio')
-						.bootstrapTable(
-								{
-									method : 'post',
-									contentType : "application/json", 
-									url : "data/waveorder/rediostatus", // 要请求数据的文件路径
-									striped : true, // 是否显示行间隔色
-									dataField : "data",
-									detailView : false,
-									sidePagination : 'client',
-									pageNumber : 1, // 初始化加载第一页，默认第一页
-									pagination : true, // 是否分页
-									queryParamsType : 'limit', // 查询参数组织方式
-									queryParams : function(params) {
-										params.monitorsID = monitorsID;
-										params.userID = userID;
-										return params
-									},
-									pageSize : 9, // 单页记录数
-									pageList : [ 5, 10, 20, 30 ], // 分页步进值
-									clickToSelect : true, // 是否启用点击选中行
-									responseHandler : function(res) {
-										return res;
-									},
-									// 必须要在此bootstraptable渲染成功之后才能渲染地图,不然地图会有错误
-									onLoadSuccess : function() {
-										$("#table-radio").find(".dpopover").popover({
-											html : true
-										});
-										MAP1 = mapInit();
-										addPoint(monitors, 1, "false");// 默认选中1，子类型为false
-									},
-									columns : [
-											{
-												field : 'redioName',
-												title : '频段名称',
-												width : '20%',
-												titleTooltip : '频段名称',
-												sortable : true,
-												sortName: "value",
-												formatter : function(value,
-														row, index) {
-													return '<div class="dpopover" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
-														+ value + '">' + value + '</div>';
-												}
-											},
-											{
-												field : 'legalNormalStationNumber',
-												title : '合法正常信号',
-												width : '15%',
-												titleTooltip : '合法正常信号',
-												sortable : true,
-												sortName: "legalNormalStationNumber",
-												formatter : function(value,
-														row, index) {
-													return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
-															+ monitorsID
-															+ '" data-radioType="1" data-isSubType="false" data-beginFreq="'
-															+ row.beginFreq
-															+ '" data-endFreq="'
-															+ row.endFreq
-															+ '">'
-															+ value
-															+ '</a>';
-												}
-											},
-											{
-												field : 'legalUnNormalStationNumber',
-												title : '合法违规信号',
-												width : '15%',
-												titleTooltip : '合法违规信号',
-												sortable : true,
-												sortName: "legalUnNormalStationNumber",
-												formatter : function(value,
-														row, index) {
-													return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
-															+ monitorsID
-															+ '" data-radioType="1" data-isSubType="true" data-beginFreq="'
-															+ row.beginFreq
-															+ '" data-endFreq="'
-															+ row.endFreq
-															+ '">'
-															+ value
-															+ '</a>';
-												}
-											},
-											{
-												field : 'konwStationNumber',
-												title : '已知信号',
-												width : '10%',
-												titleTooltip : '已知信号',
-												sortable : true,
-												sortName: "konwStationNumber",
-												formatter : function(value,
-														row, index) {
-													return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
-															+ monitorsID
-															+ '" data-radioType="2" data-isSubType="false" data-beginFreq="'
-															+ row.beginFreq
-															+ '" data-endFreq="'
-															+ row.endFreq
-															+ '">'
-															+ value
-															+ '</a>';
-												}
-											},
-											{
-												field : 'unKonw',
-												title : '不明信号',
-												width : '10%',
-												titleTooltip : '不明信号',
-												sortable : true,
-												sortName: "unKonw",
-												formatter : function(value,
-														row, index) {
-													return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
-															+ monitorsID
-															+ '" data-radioType="3" data-isSubType="false" data-beginFreq="'
-															+ row.beginFreq
-															+ '" data-endFreq="'
-															+ row.endFreq
-															+ '">'
-															+ value
-															+ '</a>';
-												}
-											},
-											{
-												field : 'illegalSignal',
-												title : '非法信号',
-												width : '10%',
-												titleTooltip : '非法信号',
-												sortable : true,
-												sortName: "illegalSignal",
-												formatter : function(value,
-														row, index) {
-													return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
-															+ monitorsID
-															+ '" data-radioType="4" data-isSubType="false" data-beginFreq="'
-															+ row.beginFreq
-															+ '" data-endFreq="'
-															+ row.endFreq
-															+ '">'
-															+ value
-															+ '</a>';
-												}
-											},
-											{
-												field : 'importantMonitor',
-												title : '重点监测'+'<input type="checkbox" id="importantMonitor_filter">',
-												width : '15%',
-												titleTooltip : '重点监测',
-												sortable : true,
-												sortName: "importantMonitor",
-												formatter : function(value,
-														row, index) {
-													if(value == true) {
-														return '<a data-toggle="modal" data-target="#modalConfig" data-beginFreq="'
-															+ row.beginFreq
-															+ '" data-endFreq="'
-															+ row.endFreq
-															+ '"> <img src="images/Fill 29.png"> </img></a>';
-													}else {
-														return '<a data-toggle="modal" data-target="#modalConfig" data-beginFreq="'
-															+ row.beginFreq
-															+ '" data-endFreq="'
-															+ row.endFreq
-															+ '"> <img src="images/Fill 30.png"> </img></a>';
-													}
-												}
-											}]
+				$('#table-radio').bootstrapTable({
+					method : 'post',
+					contentType : "application/json",
+					url : "data/waveorder/rediostatus", // 要请求数据的文件路径
+					striped : true, // 是否显示行间隔色
+					dataField : "data",
+					detailView : false,
+					sidePagination : 'client',
+					pageNumber : 1, // 初始化加载第一页，默认第一页
+					pagination : true, // 是否分页
+					queryParamsType : 'limit', // 查询参数组织方式
+					queryParams : function(params) {
+						params.monitorsID = monitorsID;
+						params.userID = userID;
+						return params
+					},
+					pageSize : 9, // 单页记录数
+					pageList : [5, 10, 20, 30], // 分页步进值
+					clickToSelect : true, // 是否启用点击选中行
+					responseHandler : function(res) {
+						return res;
+					},
+					// 必须要在此bootstraptable渲染成功之后才能渲染地图,不然地图会有错误
+					onLoadSuccess : function() {
+						$("#table-radio").find(".dpopover").popover({
+									html : true
 								});
+						MAP1 = mapInit();
+						addPoint(monitors, 1, "false");// 默认选中1，子类型为false
+					},
+					columns : [{
+						field : 'redioName',
+						title : '频段名称',
+						width : '20%',
+						titleTooltip : '频段名称',
+						sortable : true,
+						sortName : "value",
+						formatter : function(value, row, index) {
+							return '<div class="dpopover" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
+									+ value + '">' + value + '</div>';
+						}
+					}, {
+						field : 'legalNormalStationNumber',
+						title : '合法正常信号',
+						width : '15%',
+						titleTooltip : '合法正常信号',
+						sortable : true,
+						sortName : "legalNormalStationNumber",
+						formatter : function(value, row, index) {
+							return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
+									+ monitorsID
+									+ '" data-radioType="1" data-isSubType="false" data-beginFreq="'
+									+ row.beginFreq
+									+ '" data-endFreq="'
+									+ row.endFreq + '">' + value + '</a>';
+						}
+					}, {
+						field : 'legalUnNormalStationNumber',
+						title : '合法违规信号',
+						width : '15%',
+						titleTooltip : '合法违规信号',
+						sortable : true,
+						sortName : "legalUnNormalStationNumber",
+						formatter : function(value, row, index) {
+							return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
+									+ monitorsID
+									+ '" data-radioType="1" data-isSubType="true" data-beginFreq="'
+									+ row.beginFreq
+									+ '" data-endFreq="'
+									+ row.endFreq + '">' + value + '</a>';
+						}
+					}, {
+						field : 'konwStationNumber',
+						title : '已知信号',
+						width : '10%',
+						titleTooltip : '已知信号',
+						sortable : true,
+						sortName : "konwStationNumber",
+						formatter : function(value, row, index) {
+							return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
+									+ monitorsID
+									+ '" data-radioType="2" data-isSubType="false" data-beginFreq="'
+									+ row.beginFreq
+									+ '" data-endFreq="'
+									+ row.endFreq + '">' + value + '</a>';
+						}
+					}, {
+						field : 'unKonw',
+						title : '不明信号',
+						width : '10%',
+						titleTooltip : '不明信号',
+						sortable : true,
+						sortName : "unKonw",
+						formatter : function(value, row, index) {
+							return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
+									+ monitorsID
+									+ '" data-radioType="3" data-isSubType="false" data-beginFreq="'
+									+ row.beginFreq
+									+ '" data-endFreq="'
+									+ row.endFreq + '">' + value + '</a>';
+						}
+					}, {
+						field : 'illegalSignal',
+						title : '非法信号',
+						width : '10%',
+						titleTooltip : '非法信号',
+						sortable : true,
+						sortName : "illegalSignal",
+						formatter : function(value, row, index) {
+							return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
+									+ monitorsID
+									+ '" data-radioType="4" data-isSubType="false" data-beginFreq="'
+									+ row.beginFreq
+									+ '" data-endFreq="'
+									+ row.endFreq + '">' + value + '</a>';
+						}
+					}, {
+						field : 'importantMonitor',
+						title : '重点监测'
+								+ '<input type="checkbox" id="importantMonitor_filter">',
+						width : '15%',
+						titleTooltip : '重点监测',
+						sortable : true,
+						sortName : "importantMonitor",
+						formatter : function(value, row, index) {
+							if (value == true) {
+								return '<a data-toggle="modal" data-target="#modalConfig" data-beginFreq="'
+										+ row.beginFreq
+										+ '" data-endFreq="'
+										+ row.endFreq
+										+ '"> <img src="images/Fill 29.png"> </img></a>';
+							} else {
+								return '<a data-toggle="modal" data-target="#modalConfig" data-beginFreq="'
+										+ row.beginFreq
+										+ '" data-endFreq="'
+										+ row.endFreq
+										+ '"> <img src="images/Fill 30.png"> </img></a>';
+							}
+						}
+					}]
+				});
 			}
 
 			return {
