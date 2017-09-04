@@ -436,13 +436,16 @@ public class AlarmDataController {
         double[][] t = new double[0][0];
 
         if (coulm > 0) {
-            t = jk2d.jk2d_ret(0.01,  40, 0.03,  40, p);
+            //t = jk2d.jk2d_ret(0.01,  40, 0.03,  40, p);
             kri.InitCal(inPutData, dataOuts);
             kri.OkrigingCal();
             dataOuts = kri.CopyResults();
         }
 
         temple.addAll(dataOuts);
+
+        temple.add(new DataInfo(106.779815,27.230648,10));
+        //inPutData.add(new DataInfo(106.779815,27.230648,10));
 
         double numerator  = Stream.of(t).filter((e)-> e[2]>intKrikingValue).count();
         int denominator = t.length;
@@ -515,6 +518,7 @@ public class AlarmDataController {
                 levelPoint.add(mapLocate);
             }
 
+
         } catch (Exception e) {
             // TODO Auto-generated catch block
             Logger.error("场强定位计算 操作时间{} 入参：{},异常 ：{}", LocalDateTime.now().toString(), param, e);
@@ -528,6 +532,13 @@ public class AlarmDataController {
             element.put("stationId", station.getId());
             return element;
         }).collect(toList());
+
+        HashMap<String,String> tempMap = Maps.newHashMap();
+        tempMap.put("x",106.779815+"");
+        tempMap.put("y",27.230648+"" );
+        tempMap.put("count",11+"");
+        tempMap.put("stationId", "44");
+        stationPiont.add(tempMap);
 
         Map<String, Object> mapPiont = new HashMap<>();
 

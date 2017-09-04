@@ -286,8 +286,8 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
 
             map = new esri.Map("mapDiv", {
                 center : [ 106.63, 26.57 ],
-                zoom:8,
-                maxZoom:8,
+                // zoom:8,
+                // maxZoom:8,
                 sliderStyle: "small",
                 logo:false
                 //maxZoom:11
