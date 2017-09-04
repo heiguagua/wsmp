@@ -59,7 +59,24 @@
 
 	<!--content-->
 	<div class='content-wrap'>
-		<span id="signal_detail"></span>
+		<%--<span id="signal_detail">--%>
+			<section class='flex-row'>
+				<div id="signal_detail" class='box right10'>
+				</div>
+				<div class='box2 flex-column'>
+					<div class='locate-coverage'>
+						<label class='module-name'> <img src='images/locate.png' />
+							<span id = "stationName">&nbsp;&nbsp;台站</span>
+						</label>
+						<div class='pull-right'>
+							<input type="text" class="gate-filter" placeholder="请输入门阀" /> <button class="btn btn-submit" id="gate-btn">提交</button>电磁覆盖率:&nbsp; <span class='coverage-number'></span>
+						</div>
+					</div>
+					<div id="mapDiv"style= "padding: 10px"></div>
+					<div id="heatLayer"></div>
+				</div>
+			</section>
+		<%--</span>--%>
 		<section class='flex-row'>
 			<div class='box'>
 				<div class='data-play'>
@@ -186,20 +203,20 @@
 			</div>
 		</section>
 
-		<section class='flex-row'>
-			<div class='box'>
-				<div class='locate-coverage'>
-					<label class='module-name'> <img src='images/locate.png' />
-						<span id = "stationName">&nbsp;&nbsp;台站</span>
-					</label>
-					<div class='pull-right'>
-						<input type="text" class="gate-filter" placeholder="请输入门阀" /> <button class="btn btn-submit" id="gate-btn">提交</button>电磁覆盖率:&nbsp; <span class='coverage-number'></span>
-					</div>
-				</div>
-				<div id="mapDiv"style= "padding: 10px"></div>
-				<div id="heatLayer"></div>
-			</div>
-		</section>
+		<%--<section class='flex-row'>--%>
+			<%--<div class='box'>--%>
+				<%--<div class='locate-coverage'>--%>
+					<%--<label class='module-name'> <img src='images/locate.png' />--%>
+						<%--<span id = "stationName">&nbsp;&nbsp;台站</span>--%>
+					<%--</label>--%>
+					<%--<div class='pull-right'>--%>
+						<%--<input type="text" class="gate-filter" placeholder="请输入门阀" /> <button class="btn btn-submit" id="gate-btn">提交</button>电磁覆盖率:&nbsp; <span class='coverage-number'></span>--%>
+					<%--</div>--%>
+				<%--</div>--%>
+				<%--<div id="mapDiv"style= "padding: 10px"></div>--%>
+				<%--<div id="heatLayer"></div>--%>
+			<%--</div>--%>
+		<%--</section>--%>
 		<section class='flex-row'>
 			<div class='box'>
 				<div class='month-data flex-column'>
