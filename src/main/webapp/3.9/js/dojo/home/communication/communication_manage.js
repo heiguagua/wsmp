@@ -10,6 +10,7 @@ define(function() {
 					var endTime = $("#endTime").val();
 					var user = getUser();
 					var userID = user.ID;
+					console.log(userID);
 					var monitors = getMonitors(areaCode);
 					var monitorsID = new Array();
 					for (var i = 0; i < monitors.length; i++) {

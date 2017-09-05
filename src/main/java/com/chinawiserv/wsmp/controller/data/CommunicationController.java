@@ -97,20 +97,22 @@ public class CommunicationController {
 		request.put("userId", param.get("userID"));
     	List<FreqSelfInfo> response = queryToolsService.querySelfFreqInfoByPID("1");
 //    	long loopStartTime = System.currentTimeMillis();
-		List<CommunicationTableTop> communicationRows = response.parallelStream().map(m -> {
+		List<CommunicationTableTop> communicationRows = response.stream().map(m -> {
 			CommunicationTableTop communication = new CommunicationTableTop();
 			communication.setGeneration(m.getServiceName());
-			communication.setOperator("电信");
-			communication.setFreqRange(m.getFreqMin().toString() + '-' + m.getFreqMax());
+			communication.setOperator(m.getFreqDesc());
+			communication.setFreqRange(m.getFreqMin().toString() + '-' + m.getFreqMax().toString());
 			communication.setTechName(techCodingTable.get(m.getSt()));
 			communication.setInfoChannel(m.getFreqMax().subtract(m.getFreqMin()).multiply(new BigDecimal("1000")).divide(new BigDecimal(m.getChannelBandwidth())).toString());
 			//查询并设置频段占用度和台站覆盖率
 			request.put("freqMin", m.getFreqMin());
 			request.put("freqMax", m.getFreqMax());
+			System.out.println("request:" + JSON.toJSONString(request));
 			HttpEntity<String> entity = new HttpEntity<String>(JSON.toJSONString(request), headers);
 			JSONObject result = restTemplate.postForObject(urlFreqBandList, entity, JSONObject.class);
-//			System.out.println("result:"+result.toJSONString());
+			System.out.println("result:"+result.toJSONString());
 			String stationCoverageRate = result.getJSONObject("data").getJSONArray("result").getJSONObject(0).getString("stationCoverageRate");
+			System.out.println(stationCoverageRate);
 			String freqBandOccupyAngle = result.getJSONObject("data").getJSONArray("result").getJSONObject(0).getString("freqBandOccupyAngle");
 			freqBandOccupyAngle = freqBandOccupyAngle == null ? "0.0%" : freqBandOccupyAngle + '%';
 			stationCoverageRate = stationCoverageRate.equals("--") ? "0.0%" : stationCoverageRate + '%';
@@ -126,7 +128,6 @@ public class CommunicationController {
 			RadioSignalQueryResponse response2 = radioSignalService.getRadioSignalWebServiceSoap().queryRadioSignal(request2 );
 			Map<String, List<RadioSignalStationDTO>> map = response2.getRadioSignals().getRadioSignalDTO().stream().flatMap(m2 -> m2.getStationDTOs().getRadioSignalStationDTO().stream())
 				.collect(Collectors.groupingBy(RadioSignalStationDTO :: getStationNumber));
-			System.out.println(JSON.toJSONString(map));
 			Double monitorCoverage = (double) (map.entrySet().size() / monitorsID.size() * 100);
 			communication.setMonitorCoverage(monitorCoverage.toString() + "%");
 			return communication;
