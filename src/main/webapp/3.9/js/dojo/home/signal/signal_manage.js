@@ -1054,15 +1054,17 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 
         data.stationIDs = stationCodeList;
 
-        $("#signal_list1 .select2-picker").html('');
+        //$("#signal_list1 .select2-picker").html('');
 
 
         console.log(data);
 
         $("#signal_list1 .select2-picker").html('');
+        $("#signal_detail").html('');
         data = JSON.stringify(data);
         $("#signal_list1 .select2-picker").load("signal/singallist",{param:data}, function() {
-            if($(".select2-picker").find("option").length==0){//没有相关的日期选项时
+            console.log()
+            if($("#signal_list1 .select2-picker").val()==null||$(".select2-picker").find("option").length==0||$(".select2-picker").find("option").val()=='未查询到数据'){//没有相关的日期选项时
 
                 $("#signal_list1 .select2-picker").html('<option class = "redio" disabled>未查询到数据</option>');
                 $("#station-list2").html('<option style="width: 300px;" class="station">未查询到数据</option>')
@@ -1635,7 +1637,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 
         $('.select2-picker').select2();
     }
-
+    //左侧 内容渲染
     function getSinalDetail(data) {
 
         $("#signal_detail").load("signal/sigaldetail", data, function() {

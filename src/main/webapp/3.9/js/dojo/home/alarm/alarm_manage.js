@@ -451,7 +451,7 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                     data = JSON.stringify(data);
                     $("#signal_list").children().remove();
                     $("#signal_list").load("alarmmanage/singal",{param : data} , function () {
-                        if($(".select2-picker").find("option").length==0){//没有相关的日期选项时
+                        if($("#signal_list1 .select2-picker").val()==null||$(".select2-picker").find("option").length==0||$(".select2-picker").find("option").val()=='未查询到数据'){//没有相关的日期选项时
                             $("#signal_list .select2-picker").html('<option class = "redio" disabled>未查询到数据</option>');
                             $("#station_picker").html('<option style="width: 300px;" class="station">未查询到数据</option>')
                             $('.select2-picker').select2();
