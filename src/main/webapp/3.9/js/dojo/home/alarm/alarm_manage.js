@@ -139,6 +139,7 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                     success : function(html) {
                         layer.msg("更新成功！");
                         $("#important_monitor").html(html);
+                        $("#modalConfig").modal("hide");
                     },
                     error : function(html) {
                         console.log(html);
@@ -163,7 +164,8 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                     success : function(html) {
                             layer.msg("添加成功！");
                             $("#important_monitor").html(html);
-                            },
+                            $("#modalConfig").modal("hide");
+                    },
                     error : function(html) {
                         console.log(html);
                         layer.alert(html.responseText);
@@ -192,6 +194,7 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                     success : function(html) {
                         layer.msg("删除成功!");
                         $("#important_monitor").html(html);
+                        $("#modalConfig").modal("hide");
                         },
                     error : function(html) {
                         console.log(html);

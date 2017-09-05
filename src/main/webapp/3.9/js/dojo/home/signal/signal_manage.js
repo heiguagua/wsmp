@@ -180,7 +180,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             }
 
         });
-        // 重点监测配置点击事件
+        //重点监测配置点击事件
         //$("#modalConfig").on("shown.bs.modal",function(e){
         //	var warningID = $("#signal_list1").find('option:selected').attr("warningid");
         //	var centorFreq = $("#signal_list1").find('option:selected').attr("centorfreq");
@@ -198,12 +198,12 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
     		//	success : function (html) {
     		//		$("#important_monitor").html(html);
     		//		$("#modalConfig").find(".time-picker").datetimepicker({
-    		//
+        //
     		//		});
     		//	}
     		//})
         //});
-		
+        //
 		//重点监测更新点击事件
 		$("#important_monitor").on("click","#buttonUpdate",function(e) {
             var valid =beforeSubmit(document.importantMonitorForm);
@@ -221,7 +221,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 				},
 				error : function(html) {
 					console.log(html);
-					layer.alert(html.responseText);
+                    layer.alert(html.responseText);
 				}
 			})
             }else{
@@ -293,7 +293,6 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 		//重点监测添加点击事件
 		$("#important_monitor").on("click","#buttonInsert",function(e) {
             //console.log(document.importantMonitorForm)
-
             var valid =beforeSubmit(document.importantMonitorForm);
             if(valid){
                 var str = $("#important-monitor-form").serialize();
@@ -333,20 +332,20 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             if(valid){
                 var str = $("#important-monitor-form").serialize();
                 $.ajax({
-				url : 'signal/importantMonitorDelete',
-				type : 'post',
-				data : str,
-				dataType : 'html',// 只返回bool值
-				success : function(html) {
-					layer.msg("删除成功!");
-					$("#important_monitor").html(html);
-                    $("#modalConfig").modal("hide");
-					},
-				error : function(html) {
-					console.log(html);
-					layer.alert(html.responseText);
-				}
-			})
+                    url : 'signal/importantMonitorDelete',
+                    type : 'post',
+                    data : str,
+                    dataType : 'html',// 只返回bool值
+                    success : function(html) {
+                        layer.msg("删除成功!");
+                        $("#important_monitor").html(html);
+                        $("#modalConfig").modal("hide");
+                    },
+                    error : function(html) {
+                        console.log(html);
+                        layer.alert(html.responseText);
+                    }
+			    })
             }else{
                 layer.msg('不能为空!')
             }

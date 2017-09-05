@@ -165,6 +165,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 										$("#important_monitor").html(html);
 										$("#modalConfig").find(".time-picker")
 												.datetimepicker({});
+										$("#modalConfig").modal('hide');
 									},
 									error : function(html) {
 										console.log(html);
@@ -197,6 +198,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 												"refresh", {
 													silent : true
 												});
+										$("#modalConfig").modal('hide');
+
 									},
 									error : function(html) {
 										console.log(html);
@@ -238,6 +241,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 																"refresh", {
 																	silent : true
 																});
+												$("#modalConfig").modal('hide');
 											},
 											error : function(html) {
 												console.log(html);

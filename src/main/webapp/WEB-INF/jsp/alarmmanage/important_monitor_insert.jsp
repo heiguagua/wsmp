@@ -5,8 +5,8 @@
 	<div class="form-box-wrap">
 		<div class="form-group col-sm-6">
 			<label for="" class="col-xs-3 control-label">开始时间</label>
-			<div class=' input-group date time-picker' id='startTime' style="padding-left:15px">
-				<input title="不能为空" required name="beginTime" type='text' class="form-control " value="${dto.getBeginTime()}" />
+			<div class=' input-group date time-picker'  style="padding-left:15px">
+				<input id='startTime' title="不能为空" required name="beginTime" type='text' class="form-control " value="${dto.getBeginTime()}" />
 		          <span class="input-group-addon">
 		            <span class="glyphicon glyphicon-calendar"></span>
 		          </span>
@@ -14,8 +14,8 @@
 		</div>
 		<div class="form-group col-sm-6">
 			<label for="" class="col-xs-3 control-label">结束时间</label>
-			<div class='input-group date time-picker' id='endTime' style="padding-left:15px">
-				<input title="不能为空" required name="endTime" type='text' class="form-control " value="${dto.getEndTime()}"/>
+			<div class='input-group date time-picker'  style="padding-left:15px">
+				<input id='endTime' title="不能为空" required name="endTime" type='text' class="form-control " value="${dto.getEndTime()}"/>
 		          <span class="input-group-addon">
 		            <span class="glyphicon glyphicon-calendar"></span>
 		          </span>
@@ -155,8 +155,8 @@
 
 	<div class="form-group ">
 		<div class="col-sm-12 mrg-top15 text-right">
-			<input type="submit"  value="提交" id="buttonInsert" class="btn btn-default btn-apply"/>
-			<%--<button type="button" id="buttonInsert" class="btn btn-default btn-apply">提交</button>--%>
+			<%--<input type="submit"  value="提交" id="buttonInsert" class="btn btn-default btn-apply"/>--%>
+			<button type="button" id="buttonInsert" class="btn btn-default btn-apply">提交</button>
 		</div>
 	</div>
 

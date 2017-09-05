@@ -81,16 +81,16 @@
           <div class='features'>
             <h4 class='title'>信号特征</h4>
             <ul class='features-list'>
-              <li><div class='item-name'>谱密度最大值</div>
-                <div class='item-value'>${redioDetail.rMax}</div></li>
-              <li><div class='item-name'>频谱周期性</div>
-                <div class='item-value'>${redioDetail.specT}</div></li>
-              <li><div class='item-name'>码速率</div>
-                <div class='item-value'>${redioDetail.symRate}</div></li>
-              <li><div class='item-name'>功率谱平稳度指数</div>
-                <div class='item-value'>${redioDetail.flatDegree}</div></li>
-              <li><div class='item-name'>频率峰值个数(识别FSK和PSK)</div>
-                <div class='item-value'>${redioDetail.freqPeakNumFSK}</div></li>
+              <li><div class='item-name' title="谱密度最大值">谱密度最大值</div>
+                <div class='item-value'title="${redioDetail.rMax}">${redioDetail.rMax}</div></li>
+              <li><div class='item-name' title="频谱周期性">频谱周期性</div>
+                <div class='item-value' title="${redioDetail.specT}">${redioDetail.specT}</div></li>
+              <li><div class='item-name'title="码速率">码速率</div>
+                <div class='item-value' title="${redioDetail.symRate}">${redioDetail.symRate}</div></li>
+              <li><div class='item-name' title="功率谱平稳度指数">功率谱平稳度指数</div>
+                <div class='item-value' title="${redioDetail.flatDegree}">${redioDetail.flatDegree}</div></li>
+              <li><div class='item-name' title="频率峰值个数(识别FSK和PSK)">频率峰值个数(识别FSK和PSK)</div>
+                <div class='item-value' title="${redioDetail.freqPeakNumFSK}">${redioDetail.freqPeakNumFSK}</div></li>
             </ul>
           </div>
         </div>
