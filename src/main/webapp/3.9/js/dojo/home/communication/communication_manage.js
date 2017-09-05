@@ -1,8 +1,17 @@
-define(function() {
+define(["ajax"], function (ajax) {
 	function cmt_init() {
 		init();
-
 		//事件绑定
+		//结束时间变化
+		$("#endTime").change(function(e){
+			var timestamp1 = Date.parse(new Date($("#startTime").val()));//开始时间的时间戳
+			var timestamp2 = Date.parse(new Date($("#endTime").val()))
+			console.log(timestamp1-timestamp2);
+			if(timestamp1>timestamp2){//如果开始时间大于结束时间
+				layer.msg('结束时间不能大于开始时间');
+				$("#endTime").val('');
+			}
+		});
 		//查询点击事件		
 		$(".search-filters").on("click", ".btn-search", function(e) {
 					var areaCode = $("#city-list").select2("val");
