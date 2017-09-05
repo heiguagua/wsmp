@@ -98,7 +98,6 @@ public class CommunicationController {
     	List<FreqSelfInfo> response = queryToolsService.querySelfFreqInfoByPID("1");
 //    	long loopStartTime = System.currentTimeMillis();
 		List<CommunicationTableTop> communicationRows = response.parallelStream().map(m -> {
-			
 			CommunicationTableTop communication = new CommunicationTableTop();
 			communication.setGeneration(m.getServiceName());
 			communication.setOperator("电信");
@@ -125,10 +124,8 @@ public class CommunicationController {
 			value.setString(monitorsID);
 			request2.setStationIDs(value );
 			RadioSignalQueryResponse response2 = radioSignalService.getRadioSignalWebServiceSoap().queryRadioSignal(request2 );
-			Map<String, Integer> map = response2.getRadioSignals().getRadioSignalDTO().stream().flatMap(m2 -> m2.getStationDTOs().getRadioSignalStationDTO().stream())
-				.collect(Collectors.groupingBy(RadioSignalStationDTO :: getStationNumber))
-				.entrySet().stream()
-				.collect(Collectors.toMap(e -> e.getKey() , e -> e.getValue().size()));
+			Map<String, List<RadioSignalStationDTO>> map = response2.getRadioSignals().getRadioSignalDTO().stream().flatMap(m2 -> m2.getStationDTOs().getRadioSignalStationDTO().stream())
+				.collect(Collectors.groupingBy(RadioSignalStationDTO :: getStationNumber));
 			System.out.println(JSON.toJSONString(map));
 			Double monitorCoverage = (double) (map.entrySet().size() / monitorsID.size() * 100);
 			communication.setMonitorCoverage(monitorCoverage.toString() + "%");
