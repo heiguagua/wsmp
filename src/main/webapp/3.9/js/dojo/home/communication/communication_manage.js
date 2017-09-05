@@ -44,6 +44,13 @@ define(function() {
 		return monitors;
 	}
 	
+	// 频段排序
+	function freqRangeSorter(a , b) {
+		a = a.replace('-','');
+		b = b.replace('-','');
+		return a - b ;
+	}
+	
 	function initCityListValue() {
 
 		var info = Binding.getUser();
@@ -124,6 +131,7 @@ define(function() {
 								title : '频段范围',
 								sortable : true,
 								sortName: "freqRange",
+								sorter : freqRangeSorter,
 								formatter : function(value, row, index) {
 									return '<a>' + value + '</a>';
 								}
@@ -147,12 +155,18 @@ define(function() {
 								field : 'stationCoverage',
 								title : '台站覆盖率',
 								sortName: "stationCoverage",
-								sortable : true
+								sortable : true,
+								formatter : function(value, row, index) {
+									return value + '%';
+								}
 							}, {
 								field : 'occupancy',
 								title : '频段占用度',
 								sortName: "occupancy",
-								sortable : true
+								sortable : true,
+								formatter : function(value, row, index) {
+									return value + '%';
+								}
 							}]
 				});
 	}
