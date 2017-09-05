@@ -63,7 +63,7 @@
 			<section class='flex-row'>
 				<div id="signal_detail" class='box right10'>
 				</div>
-				<div class='box2 flex-column'>
+				<div class='box3 flex-column'>
 					<div class='locate-coverage'>
 						<label class='module-name'> <img src='images/locate.png' />
 							<span id = "stationName">&nbsp;&nbsp;台站</span>
