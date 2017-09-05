@@ -570,6 +570,16 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             $("#stationWrap").html(temp);
             //日期插件初始化
             $("#stationWrap").find(".time-picker").datetimepicker({});
+            //结束日期变化
+            $("#stopTime").change(function(e){
+                var timestamp1 = Date.parse(new Date($("#startTime").val()));//开始时间的时间戳
+                var timestamp2 = Date.parse(new Date($("#stopTime").val()))
+                console.log(timestamp1-timestamp2);
+                if(timestamp1>timestamp2){//如果开始时间大于结束时间
+                    layer.alert('结束时间不能大于开始时间');
+                    $("#stopTime").val('');
+                }
+            });
             //是否恢复正常：默认为否，选择为是的时候弹出结束时间，否的时候不弹出结束时间
             $("#isNormal").click(function(){
                 $("#isNormal").attr("checked", "checked");
@@ -1044,15 +1054,17 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 
         data.stationIDs = stationCodeList;
 
-        $("#signal_list1 .select2-picker").html('');
+        //$("#signal_list1 .select2-picker").html('');
 
 
         console.log(data);
 
         $("#signal_list1 .select2-picker").html('');
+        $("#signal_detail").html('');
         data = JSON.stringify(data);
         $("#signal_list1 .select2-picker").load("signal/singallist",{param:data}, function() {
-            if($(".select2-picker").find("option").length==0){//没有相关的日期选项时
+            console.log()
+            if($("#signal_list1 .select2-picker").val()==null||$(".select2-picker").find("option").length==0||$(".select2-picker").find("option").val()=='未查询到数据'){//没有相关的日期选项时
 
                 $("#signal_list1 .select2-picker").html('<option class = "redio" disabled>未查询到数据</option>');
                 $("#station-list2").html('<option style="width: 300px;" class="station">未查询到数据</option>')
@@ -1477,13 +1489,13 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                             position : 'outside',
                             formatter : '{b} {d}%',
                             textStyle : {
-                                fontSize : '16'
+                                fontSize : '12'
                             }
                         },
                         emphasis : {
                             show : true,
                             textStyle : {
-                                fontSize : '16',
+                                fontSize : '12',
                                 fontWeight : 'bold'
                             }
                         }
@@ -1625,7 +1637,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 
         $('.select2-picker').select2();
     }
-
+    //左侧 内容渲染
     function getSinalDetail(data) {
 
         $("#signal_detail").load("signal/sigaldetail", data, function() {
