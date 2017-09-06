@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import java.math.BigDecimal;
+import java.util.Optional;
 
 
 /**
@@ -165,7 +166,7 @@ public class FreqSelfInfo {
      *     
      */
     public String getFreqDesc() {
-        return freqDesc;
+        return Optional.ofNullable(freqDesc).orElse("-");
     }
 
     /**
@@ -177,7 +178,7 @@ public class FreqSelfInfo {
      *     
      */
     public void setFreqDesc(String value) {
-        this.freqDesc = value;
+    	this.freqDesc = Optional.ofNullable(value).orElse("-");
     }
 
     /**

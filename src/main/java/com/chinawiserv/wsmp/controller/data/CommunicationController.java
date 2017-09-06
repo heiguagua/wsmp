@@ -56,6 +56,9 @@ public class CommunicationController {
     @Value("${sefon.httpservice.getFreqBandList}")
     private String urlFreqBandList;
     
+    @Value("${sefon.httpservice.getFreqBandListByOption}")
+    private String urlFreqBandListByOption;
+    
     @Value("${radioSignalWebService.wsdl}")
     private String urlRadioSignal;
     
@@ -83,6 +86,7 @@ public class CommunicationController {
 		//初始化restTemplate
 		restTemplate = new RestTemplate();
 	}
+	
     @PostMapping("/topTable")
     public Map<String, Object> getTopTable(@RequestBody Map<String,Object> param) {
     	System.out.println("===param:"+param);
@@ -96,13 +100,12 @@ public class CommunicationController {
 		request.put("queryScope", param.get("areaCode"));
 		request.put("userId", param.get("userID"));
     	List<FreqSelfInfo> response = queryToolsService.querySelfFreqInfoByPID("1");
-//    	long loopStartTime = System.currentTimeMillis();
+    	long loopStartTime = System.currentTimeMillis();
 		List<CommunicationTableTop> communicationRows = response.parallelStream().map(m -> {
-			
 			CommunicationTableTop communication = new CommunicationTableTop();
 			communication.setGeneration(m.getServiceName());
-			communication.setOperator("电信");
-			communication.setFreqRange(m.getFreqMin().toString() + '-' + m.getFreqMax());
+			communication.setOperator(m.getFreqDesc());
+			communication.setFreqRange(m.getFreqMin().toString() + '-' + m.getFreqMax().toString());
 			communication.setTechName(techCodingTable.get(m.getSt()));
 			communication.setInfoChannel(m.getFreqMax().subtract(m.getFreqMin()).multiply(new BigDecimal("1000")).divide(new BigDecimal(m.getChannelBandwidth())).toString());
 			//查询并设置频段占用度和台站覆盖率
@@ -110,11 +113,10 @@ public class CommunicationController {
 			request.put("freqMax", m.getFreqMax());
 			HttpEntity<String> entity = new HttpEntity<String>(JSON.toJSONString(request), headers);
 			JSONObject result = restTemplate.postForObject(urlFreqBandList, entity, JSONObject.class);
-//			System.out.println("result:"+result.toJSONString());
 			String stationCoverageRate = result.getJSONObject("data").getJSONArray("result").getJSONObject(0).getString("stationCoverageRate");
 			String freqBandOccupyAngle = result.getJSONObject("data").getJSONArray("result").getJSONObject(0).getString("freqBandOccupyAngle");
-			freqBandOccupyAngle = freqBandOccupyAngle == null ? "0.0%" : freqBandOccupyAngle + '%';
-			stationCoverageRate = stationCoverageRate.equals("--") ? "0.0%" : stationCoverageRate + '%';
+			freqBandOccupyAngle = freqBandOccupyAngle == null ? "0" : freqBandOccupyAngle;
+			stationCoverageRate = stationCoverageRate.equals("--") ? "0" : stationCoverageRate;
 			communication.setStationCoverage(stationCoverageRate);
 			communication.setOccupancy(freqBandOccupyAngle);
 			//查询并设置监测站
@@ -125,22 +127,60 @@ public class CommunicationController {
 			value.setString(monitorsID);
 			request2.setStationIDs(value );
 			RadioSignalQueryResponse response2 = radioSignalService.getRadioSignalWebServiceSoap().queryRadioSignal(request2 );
-			Map<String, Integer> map = response2.getRadioSignals().getRadioSignalDTO().stream().flatMap(m2 -> m2.getStationDTOs().getRadioSignalStationDTO().stream())
-				.collect(Collectors.groupingBy(RadioSignalStationDTO :: getStationNumber))
-				.entrySet().stream()
-				.collect(Collectors.toMap(e -> e.getKey() , e -> e.getValue().size()));
-			System.out.println(JSON.toJSONString(map));
+			Map<String, List<RadioSignalStationDTO>> map = response2.getRadioSignals().getRadioSignalDTO().stream().flatMap(m2 -> m2.getStationDTOs().getRadioSignalStationDTO().stream())
+				.collect(Collectors.groupingBy(RadioSignalStationDTO :: getStationNumber));
 			Double monitorCoverage = (double) (map.entrySet().size() / monitorsID.size() * 100);
 			communication.setMonitorCoverage(monitorCoverage.toString() + "%");
 			return communication;
 		}).collect(Collectors.toList());
-//		long loopEndTime = System.currentTimeMillis();
-//		System.out.println("loop end : "+(loopEndTime -loopStartTime)/1000);
+		long loopEndTime = System.currentTimeMillis();
+		System.out.println("loop end : "+(loopEndTime -loopStartTime)/1000);
 		Map<String, Object> result = Maps.newLinkedHashMap();
 		result.put("total", communicationRows.size());
 		result.put("data", communicationRows);
 		return result;
     }
+    
+//    @PostMapping("/topTable1")
+//    public Map<String, Object> getTopTable1(@RequestBody Map<String,Object> param) {
+//    	System.out.println("===param:"+param);
+//    	//得到频段并设置一部分返回值
+//    	List<FreqSelfInfo> response = queryToolsService.querySelfFreqInfoByPID("1");
+//    	List<Map<String,BigDecimal>> freqBandList = Lists.newArrayList();
+//    	List<CommunicationTableTop> communicationRows = response.stream().map(m -> {
+//    		CommunicationTableTop communication = new CommunicationTableTop();
+//			communication.setGeneration(m.getServiceName());
+//			communication.setOperator(m.getFreqDesc());
+//			communication.setFreqRange(m.getFreqMin().toString() + '-' + m.getFreqMax().toString());
+//			communication.setTechName(techCodingTable.get(m.getSt()));
+//			communication.setInfoChannel(m.getFreqMax().subtract(m.getFreqMin()).multiply(new BigDecimal("1000")).divide(new BigDecimal(m.getChannelBandwidth())).toString());
+//			Map<String,BigDecimal> freqBand = Maps.newHashMap();
+//			freqBand.put("freqMin", m.getFreqMin());
+//			freqBand.put("freqMax", m.getFreqMax());
+//			freqBandList.add(freqBand);
+//			return communication;
+//    	}).collect(Collectors.toList());
+//    	
+//    	//根据频段查询台站覆盖率和频段覆盖率
+//    	@SuppressWarnings("unchecked")
+//    	List<String> monitorsID = (List<String>) param.get("monitorsID");
+//    	HttpHeaders headers = new HttpHeaders();
+//    	headers.setContentType(MediaType.APPLICATION_JSON);
+//    	Map<String, Object> request = Maps.newHashMap();
+//    	request.put("queryStartTime", param.get("startTime"));
+//    	request.put("queryEndTime", param.get("endTime"));
+//    	request.put("queryScope", param.get("areaCode"));
+//    	request.put("userId", param.get("userID"));
+//		request.put("condition", freqBandList);
+//    	System.out.println("request:" + JSON.toJSONString(request));
+//		HttpEntity<String> entity = new HttpEntity<String>(JSON.toJSONString(request), headers);
+//		long loopStartTime = System.currentTimeMillis();
+//		JSONObject result = restTemplate.postForObject(urlFreqBandListByOption, entity, JSONObject.class);
+//		long loopEndTime = System.currentTimeMillis();
+//		System.out.println("loop end : "+(loopEndTime -loopStartTime)/1000);
+//		System.out.println(result);
+//    	return null;
+//    }
 
     @RequestMapping("/bottomTable")
     public Object bottomtable() {

@@ -1,8 +1,17 @@
-define(function() {
+define(["ajax"], function (ajax) {
 	function cmt_init() {
 		init();
-
 		//事件绑定
+		//结束时间变化
+		$("#endTime").change(function(e){
+			var timestamp1 = Date.parse(new Date($("#startTime").val()));//开始时间的时间戳
+			var timestamp2 = Date.parse(new Date($("#endTime").val()))
+			console.log(timestamp1-timestamp2);
+			if(timestamp1>timestamp2){//如果开始时间大于结束时间
+				layer.msg('结束时间不能大于开始时间');
+				$("#endTime").val('');
+			}
+		});
 		//查询点击事件		
 		$(".search-filters").on("click", ".btn-search", function(e) {
 					var areaCode = $("#city-list").select2("val");
@@ -10,6 +19,7 @@ define(function() {
 					var endTime = $("#endTime").val();
 					var user = getUser();
 					var userID = user.ID;
+					console.log(userID);
 					var monitors = getMonitors(areaCode);
 					var monitorsID = new Array();
 					for (var i = 0; i < monitors.length; i++) {
@@ -41,6 +51,13 @@ define(function() {
 		var monitorsStr = Binding.getMonitorNodes(Number(areaCode));
 		var monitors = JSON.parse(monitorsStr);
 		return monitors;
+	}
+	
+	// 频段排序
+	function freqRangeSorter(a , b) {
+		a = a.replace('-','');
+		b = b.replace('-','');
+		return a - b ;
 	}
 	
 	function initCityListValue() {
@@ -123,6 +140,7 @@ define(function() {
 								title : '频段范围',
 								sortable : true,
 								sortName: "freqRange",
+								sorter : freqRangeSorter,
 								formatter : function(value, row, index) {
 									return '<a>' + value + '</a>';
 								}
@@ -146,12 +164,18 @@ define(function() {
 								field : 'stationCoverage',
 								title : '台站覆盖率',
 								sortName: "stationCoverage",
-								sortable : true
+								sortable : true,
+								formatter : function(value, row, index) {
+									return value + '%';
+								}
 							}, {
 								field : 'occupancy',
 								title : '频段占用度',
 								sortName: "occupancy",
-								sortable : true
+								sortable : true,
+								formatter : function(value, row, index) {
+									return value + '%';
+								}
 							}]
 				});
 	}

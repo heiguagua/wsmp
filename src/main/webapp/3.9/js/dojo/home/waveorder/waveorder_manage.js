@@ -165,6 +165,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 										$("#important_monitor").html(html);
 										$("#modalConfig").find(".time-picker")
 												.datetimepicker({});
+										$("#modalConfig").modal('hide');
 									},
 									error : function(html) {
 										console.log(html);
@@ -197,6 +198,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 												"refresh", {
 													silent : true
 												});
+										$("#modalConfig").modal('hide');
+
 									},
 									error : function(html) {
 										console.log(html);
@@ -238,6 +241,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 																"refresh", {
 																	silent : true
 																});
+												$("#modalConfig").modal('hide');
 											},
 											error : function(html) {
 												console.log(html);
@@ -1064,7 +1068,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 										+ row.beginFreq
 										+ '" data-endFreq="'
 										+ row.endFreq
-										+ '"> <img src="images/Fill 29.png"> </img></a>';
+										+ '"> <img src="images/Group 15.png"> </img></a>';
 							} else {
 								return '<a data-toggle="modal" data-target="#modalConfig" data-beginFreq="'
 										+ row.beginFreq

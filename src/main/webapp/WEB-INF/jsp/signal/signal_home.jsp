@@ -29,14 +29,15 @@
   <div class='header-bar'>
     <span class='module-name'>信号管理</span>
     <div class='header-search'>
-      <input id='search' type='text' placeholder="请输入信号频率" />
-      <span class='search-icon'></span>
+		<input id='search' type='text' placeholder="请输入信号频率" />
+		<span class='search-icon'></span>
+		<span class="input-group-addon search-icon-uint">MHz</span>
       <div class='search-result-wrap'>
-				<ul id="search-result">
+		<ul id="search-result">
 
-				</ul>
-			</div>
-    </div>
+		</ul>
+	  </div>
+      </div>
     <span id = "signal_list1" >
        <select class='station-list select2-picker'>
       </select>
@@ -51,9 +52,10 @@
       <a class='btn btn-default btn-config'>
         <img src='images/export.png' />&nbsp;&nbsp;导出报表
       </a>
-      <a class='btn btn-default btn-config' id="clickModalConfig" >
+      <a class='btn btn-default btn-config' id="clickModalConfig"  >
         <img src='images/config.png' />&nbsp;&nbsp;配置
       </a>
+		   <%--data-toggle="modal" data-target="#modalConfig"--%>
     </div>
   </div>
 
@@ -63,7 +65,7 @@
 			<section class='flex-row'>
 				<div id="signal_detail" class='box right10'>
 				</div>
-				<div class='box2 flex-column'>
+				<div class='box3 flex-column'>
 					<div class='locate-coverage'>
 						<label class='module-name'> <img src='images/locate.png' />
 							<span id = "stationName">&nbsp;&nbsp;台站</span>

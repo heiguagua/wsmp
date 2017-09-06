@@ -15,6 +15,7 @@
 <link href='css/common.css' rel='stylesheet' />
 <link href='css/communication.css' rel='stylesheet' />
 <link rel="stylesheet" href="3.9/js/dojo/webgis/widgets/themes/darkangel/override.css">
+  <link href='3.9/js/dojo/library/layer/layer.css' rel='stylesheet' />
 </head>
 
 <body id='communication'>
@@ -122,18 +123,16 @@
   <script src="3.9/init.js"></script> 
    <script type="text/javascript">
     var test = 1;
-    require([ "home/init", "jquery",
-      "dojo/domReady!" ],
+    require(["jquery", "dojo/domReady!","layer" ],
       function() {
-        require([ "bootstrap", "bootstrapTable",
-          "select2", "moment", "datetimepicker" ], function() {
+        require([ "bootstrap", "bootstrapTable", "select2", "moment", "datetimepicker" ], function() {
           require([ "bootstrap_table_cn","datetimepicker_cn"], function() {
             require(["home/communication/communication_manage"],function(communication_manage) {
             	communication_manage.init();
-            })
           });
         });
       });
+      })
   </script> 
 
 </body>

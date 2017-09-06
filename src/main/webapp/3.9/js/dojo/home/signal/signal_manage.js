@@ -180,7 +180,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             }
 
         });
-        // 重点监测配置点击事件
+        //重点监测配置点击事件
         //$("#modalConfig").on("shown.bs.modal",function(e){
         //	var warningID = $("#signal_list1").find('option:selected').attr("warningid");
         //	var centorFreq = $("#signal_list1").find('option:selected').attr("centorfreq");
@@ -198,12 +198,12 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
     		//	success : function (html) {
     		//		$("#important_monitor").html(html);
     		//		$("#modalConfig").find(".time-picker").datetimepicker({
-    		//
+        //
     		//		});
     		//	}
     		//})
         //});
-		
+        //
 		//重点监测更新点击事件
 		$("#important_monitor").on("click","#buttonUpdate",function(e) {
             var valid =beforeSubmit(document.importantMonitorForm);
@@ -221,7 +221,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 				},
 				error : function(html) {
 					console.log(html);
-					layer.alert(html.responseText);
+                    layer.alert(html.responseText);
 				}
 			})
             }else{
@@ -293,7 +293,6 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 		//重点监测添加点击事件
 		$("#important_monitor").on("click","#buttonInsert",function(e) {
             //console.log(document.importantMonitorForm)
-
             var valid =beforeSubmit(document.importantMonitorForm);
             if(valid){
                 var str = $("#important-monitor-form").serialize();
@@ -333,20 +332,20 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             if(valid){
                 var str = $("#important-monitor-form").serialize();
                 $.ajax({
-				url : 'signal/importantMonitorDelete',
-				type : 'post',
-				data : str,
-				dataType : 'html',// 只返回bool值
-				success : function(html) {
-					layer.msg("删除成功!");
-					$("#important_monitor").html(html);
-                    $("#modalConfig").modal("hide");
-					},
-				error : function(html) {
-					console.log(html);
-					layer.alert(html.responseText);
-				}
-			})
+                    url : 'signal/importantMonitorDelete',
+                    type : 'post',
+                    data : str,
+                    dataType : 'html',// 只返回bool值
+                    success : function(html) {
+                        layer.msg("删除成功!");
+                        $("#important_monitor").html(html);
+                        $("#modalConfig").modal("hide");
+                    },
+                    error : function(html) {
+                        console.log(html);
+                        layer.alert(html.responseText);
+                    }
+			    })
             }else{
                 layer.msg('不能为空!')
             }
@@ -571,6 +570,16 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             $("#stationWrap").html(temp);
             //日期插件初始化
             $("#stationWrap").find(".time-picker").datetimepicker({});
+            //结束日期变化
+            $("#stopTime").change(function(e){
+                var timestamp1 = Date.parse(new Date($("#startTime").val()));//开始时间的时间戳
+                var timestamp2 = Date.parse(new Date($("#stopTime").val()))
+                console.log(timestamp1-timestamp2);
+                if(timestamp1>timestamp2){//如果开始时间大于结束时间
+                    layer.alert('结束时间不能大于开始时间');
+                    $("#stopTime").val('');
+                }
+            });
             //是否恢复正常：默认为否，选择为是的时候弹出结束时间，否的时候不弹出结束时间
             $("#isNormal").click(function(){
                 $("#isNormal").attr("checked", "checked");
@@ -1011,10 +1020,10 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
     function getFreqList(){
     	// 清除图表
     	destroy_chart_table();
-    	var val = $("#search").val().replace("MHz","");
+    	var val = $("#search").val();
         var data = {};
         if (val && !isNaN(val) && val!='0') {
-            $("#search").val(val+'MHz');
+            $("#search").val(val);
             val = parseFloat(val) * 1000000;
         }else{
             layer.alert("操作失误，请输入大于0的数字！");
@@ -1046,15 +1055,17 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 
         data.stationIDs = stationCodeList;
 
-        $("#signal_list1 .select2-picker").html('');
+        //$("#signal_list1 .select2-picker").html('');
 
 
         console.log(data);
 
         $("#signal_list1 .select2-picker").html('');
+        $("#signal_detail").html('');
         data = JSON.stringify(data);
         $("#signal_list1 .select2-picker").load("signal/singallist",{param:data}, function() {
-            if($(".select2-picker").find("option").length==0){//没有相关的日期选项时
+            console.log()
+            if($("#signal_list1 .select2-picker").val()==null||$(".select2-picker").find("option").length==0||$(".select2-picker").find("option").val()=='未查询到数据'){//没有相关的日期选项时
 
                 $("#signal_list1 .select2-picker").html('<option class = "redio" disabled>未查询到数据</option>');
                 $("#station-list2").html('<option style="width: 300px;" class="station">未查询到数据</option>')
@@ -1479,13 +1490,13 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                             position : 'outside',
                             formatter : '{b} {d}%',
                             textStyle : {
-                                fontSize : '16'
+                                fontSize : '12'
                             }
                         },
                         emphasis : {
                             show : true,
                             textStyle : {
-                                fontSize : '16',
+                                fontSize : '12',
                                 fontWeight : 'bold'
                             }
                         }
@@ -1627,7 +1638,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 
         $('.select2-picker').select2();
     }
-
+    //左侧 内容渲染
     function getSinalDetail(data) {
 
         $("#signal_detail").load("signal/sigaldetail", data, function() {
