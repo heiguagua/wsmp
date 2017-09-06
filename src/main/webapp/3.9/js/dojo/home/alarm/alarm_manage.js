@@ -408,10 +408,10 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
             //数字0-9(keycode:48-57)，小键盘数字0-9（keycode:96-106,小数点keycode:110 190，enter键13或108,backspace键8）
             if((e.keyCode>=48&&e.keyCode<=57 )|| (e.keyCode>=96&&e.keyCode<=106)||e.keyCode==110||e.keyCode==190||e.keyCode==13||e.keyCode==108||e.keyCode==8||e.keyCode==16||e.keyCode==229||(e.keyCode>=37&&e.keyCode<=40)){
                 if (e.keyCode == 13) {
-                    var centerFrq = $(this).val().replace("MHz","");
+                    var centerFrq = $(this).val();
                     var data = {};
                     if (centerFrq &&!isNaN(centerFrq) && centerFrq!='0') {
-                        $(this).val(centerFrq+'MHz');
+                        $(this).val(centerFrq);
                         centerFrq = (parseFloat(centerFrq)) * 1000000;
                     }else {
                         layer.alert("操作失误，请输入大于0的数字！");
@@ -451,7 +451,7 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                     data = JSON.stringify(data);
                     $("#signal_list").children().remove();
                     $("#signal_list").load("alarmmanage/singal",{param : data} , function () {
-                        if($("#signal_list1 .select2-picker").val()==null||$(".select2-picker").find("option").length==0||$(".select2-picker").find("option").val()=='未查询到数据'){//没有相关的日期选项时
+                        if($("#signal_list .select2-picker").val()==null||$(".select2-picker").find("option").length==0||$(".select2-picker").find("option").val()=='未查询到数据'){//没有相关的日期选项时
                             $("#signal_list .select2-picker").html('<option class = "redio" disabled>未查询到数据</option>');
                             $("#station_picker").html('<option style="width: 300px;" class="station">未查询到数据</option>')
                             $('.select2-picker').select2();
@@ -480,11 +480,11 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
 
         $(".search-icon").click(function () {
 
-            var centerFrq = $("#search").val().replace("MHz","");
+            var centerFrq = $("#search").val();
             console.log(centerFrq);
             var data = {};
             if (centerFrq &&!isNaN(centerFrq)&&centerFrq!='0') {
-                $("#search").val(centerFrq+'MHz');
+                $("#search").val(centerFrq);
                 centerFrq = (parseFloat(centerFrq)) * 1000000;
             }
             else{

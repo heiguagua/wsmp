@@ -29,14 +29,15 @@
   <div class='header-bar'>
     <span class='module-name'>信号管理</span>
     <div class='header-search'>
-      <input id='search' type='text' placeholder="请输入信号频率" />
-      <span class='search-icon'></span>
+		<input id='search' type='text' placeholder="请输入信号频率" />
+		<span class='search-icon'></span>
+		<span class="input-group-addon search-icon-uint">MHz</span>
       <div class='search-result-wrap'>
-				<ul id="search-result">
+		<ul id="search-result">
 
-				</ul>
-			</div>
-    </div>
+		</ul>
+	  </div>
+      </div>
     <span id = "signal_list1" >
        <select class='station-list select2-picker'>
       </select>

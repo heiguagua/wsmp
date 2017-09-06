@@ -1019,10 +1019,10 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
     function getFreqList(){
     	// 清除图表
     	destroy_chart_table();
-    	var val = $("#search").val().replace("MHz","");
+    	var val = $("#search").val();
         var data = {};
         if (val && !isNaN(val) && val!='0') {
-            $("#search").val(val+'MHz');
+            $("#search").val(val);
             val = parseFloat(val) * 1000000;
         }else{
             layer.alert("操作失误，请输入大于0的数字！");

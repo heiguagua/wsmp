@@ -29,6 +29,7 @@
   <div class='header-search'>
     <input type='text' id="search" placeholder="请输入信号频率"/>
     <span class='search-icon'></span>
+    <span class="input-group-addon search-icon-uint">MHz</span>
   </div>
   <span id="signal_list">
       <select id = "singal_picker" class='station-list select2-picker'>
