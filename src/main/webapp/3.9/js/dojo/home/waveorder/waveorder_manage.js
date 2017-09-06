@@ -96,7 +96,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 								DisplayName : '信号管理',
 								MultiTabable : false,
 								ReflushIfExist : true,
-								Url : 'radio/app/alarmmanage?id=QZ&cenFreg='
+								Url : 'radio/app/signal?id=sefon&cenFreg='
 										+ freq
 							};
 							Binding.openUrl(JSON.stringify(urlObj));

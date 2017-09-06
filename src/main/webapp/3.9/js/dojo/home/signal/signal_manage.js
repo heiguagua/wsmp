@@ -351,9 +351,18 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             }
 		});
         var singal = $("#FormQZ").val();
+        var FromSingal = $("#FromSingal").val();
         if (singal){
             var search = $("#search");
             search.val(singal);
+            var e = jQuery.Event("keydown");//模拟一个键盘事件
+            e.keyCode = 13;//keyCode=13是回车
+            $("#search").trigger(e);//模拟页码框按下回车
+        }
+        
+        if (FromSingal){
+            var search = $("#search");
+            search.val(FromSingal);
             var e = jQuery.Event("keydown");//模拟一个键盘事件
             e.keyCode = 13;//keyCode=13是回车
             $("#search").trigger(e);//模拟页码框按下回车

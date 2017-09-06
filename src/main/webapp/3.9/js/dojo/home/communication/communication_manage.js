@@ -1,18 +1,19 @@
-define(["ajax"], function (ajax) {
+define(["ajax"], function(ajax) {
 	function cmt_init() {
 		init();
-		//事件绑定
-		//结束时间变化
-		$("#endTime").change(function(e){
-			var timestamp1 = Date.parse(new Date($("#startTime").val()));//开始时间的时间戳
-			var timestamp2 = Date.parse(new Date($("#endTime").val()))
-			console.log(timestamp1-timestamp2);
-			if(timestamp1>timestamp2){//如果开始时间大于结束时间
-				layer.msg('结束时间不能大于开始时间');
-				$("#endTime").val('');
-			}
-		});
-		//查询点击事件		
+		// 事件绑定
+		// 结束时间变化
+		$("#endTime").change(function(e) {
+					var timestamp1 = Date
+							.parse(new Date($("#startTime").val()));// 开始时间的时间戳
+					var timestamp2 = Date.parse(new Date($("#endTime").val()))
+					console.log(timestamp1 - timestamp2);
+					if (timestamp1 > timestamp2) {// 如果开始时间大于结束时间
+						layer.msg('结束时间不能大于开始时间');
+						$("#endTime").val('');
+					}
+				});
+		// 查询点击事件
 		$(".search-filters").on("click", ".btn-search", function(e) {
 					var areaCode = $("#city-list").select2("val");
 					var startTime = $("#startTime").val();
@@ -26,40 +27,43 @@ define(["ajax"], function (ajax) {
 						monitorsID[i] = monitors[i].Num;
 					}
 					topTable(areaCode, startTime, endTime, userID, monitorsID);
-				})
+				});
 	}
 
+	//时间选择器初始化
 	function detetimepicker_init() {
 		$.fn.datetimepicker.defaults = {
 			language : 'zh-CN',
 			format : 'yyyy-mm-dd hh:ii:ss',
 			autoclose : true,
 			minView : 2
-		}
+		};
 
 		$('.time-picker').datetimepicker({});
 	}
 
+	// 得到用户信息
 	function getUser() {
 		var info = Binding.getUser();
 		info = JSON.parse(info);
 		return info;
 	}
-	
+
 	// 根据区域码得到监测站信息
 	function getMonitors(areaCode) {
 		var monitorsStr = Binding.getMonitorNodes(Number(areaCode));
 		var monitors = JSON.parse(monitorsStr);
 		return monitors;
 	}
-	
+
 	// 频段排序
-	function freqRangeSorter(a , b) {
-		a = a.replace('-','');
-		b = b.replace('-','');
-		return a - b ;
+	function freqRangeSorter(a, b) {
+		a = a.replace('-', '');
+		b = b.replace('-', '');
+		return a - b;
 	}
 	
+	//初始化城市列表
 	function initCityListValue() {
 
 		var info = Binding.getUser();
@@ -92,20 +96,21 @@ define(["ajax"], function (ajax) {
 		}
 	}
 
-	function topTable(areaCode, startTime, endTime, userID ,monitorsID) {
+	// 上方表格
+	function topTable(areaCode, startTime, endTime, userID, monitorsID) {
 		$('#table-comms').bootstrapTable("destroy");
 		$('#table-comms').bootstrapTable({
 					method : 'post',
-					contentType : "application/json",//必须要有！！！！
-					url : "data/communication/topTable",//要请求数据的文件路径
-					striped : true, //是否显示行间隔色
-					dataField : "data",//bootstrap table 可以前端分页也可以后端分页，这里
-					//我们使用的是后端分页，后端分页时需返回含有total：总记录数,这个键值好像是固定的
-					//rows： 记录集合 键值可以修改  dataField 自己定义成自己想要的就好
+					contentType : "application/json",// 必须要有！！！！
+					url : "data/communication/topTable",// 要请求数据的文件路径
+					striped : true, // 是否显示行间隔色
+					dataField : "data",// bootstrap table 可以前端分页也可以后端分页，这里
+					// 我们使用的是后端分页，后端分页时需返回含有total：总记录数,这个键值好像是固定的
+					// rows： 记录集合 键值可以修改 dataField 自己定义成自己想要的就好
 					detailView : false,
-					pageNumber : 1, //初始化加载第一页，默认第一页
-					pagination : true,//是否分页
-					queryParamsType : 'limit',//查询参数组织方式
+					pageNumber : 1, // 初始化加载第一页，默认第一页
+					pagination : true,// 是否分页
+					queryParamsType : 'limit',// 查询参数组织方式
 					queryParams : function(params) {
 						params.areaCode = areaCode;
 						params.startTime = startTime;
@@ -114,10 +119,10 @@ define(["ajax"], function (ajax) {
 						params.monitorsID = monitorsID;
 						return params
 					}, // 请求服务器时所传的参数
-					sidePagination : 'client',//指定服务器端分页
-					pageSize : 10,//单页记录数
-					pageList : [5, 10, 20, 30],//分页步进值
-					clickToSelect : true,//是否启用点击选中行
+					sidePagination : 'client',// 指定服务器端分页
+					pageSize : 10,// 单页记录数
+					pageList : [5, 10, 20, 30],// 分页步进值
+					clickToSelect : true,// 是否启用点击选中行
 					responseHandler : function(res) {
 						return res;
 					},
@@ -139,7 +144,7 @@ define(["ajax"], function (ajax) {
 								field : 'freqRange',
 								title : '频段范围',
 								sortable : true,
-								sortName: "freqRange",
+								sortName : "freqRange",
 								sorter : freqRangeSorter,
 								formatter : function(value, row, index) {
 									return '<a>' + value + '</a>';
@@ -147,23 +152,23 @@ define(["ajax"], function (ajax) {
 							}, {
 								field : 'techName',
 								title : '技术制式 ',
-								sortName: "techName",
+								sortName : "techName",
 								sortable : true
-								
+
 							}, {
 								field : 'infoChannel',
 								title : '频段信道数',
-								sortName: "infoChannel",
+								sortName : "infoChannel",
 								sortable : true
 							}, {
 								field : 'monitorCoverage',
 								title : '监测网覆盖率',
-								sortName: "monitorCoverage",
+								sortName : "monitorCoverage",
 								sortable : true
 							}, {
 								field : 'stationCoverage',
 								title : '台站覆盖率',
-								sortName: "stationCoverage",
+								sortName : "stationCoverage",
 								sortable : true,
 								formatter : function(value, row, index) {
 									return value + '%';
@@ -171,7 +176,7 @@ define(["ajax"], function (ajax) {
 							}, {
 								field : 'occupancy',
 								title : '频段占用度',
-								sortName: "occupancy",
+								sortName : "occupancy",
 								sortable : true,
 								formatter : function(value, row, index) {
 									return value + '%';
@@ -189,19 +194,19 @@ define(["ajax"], function (ajax) {
 
 		$('#table-station-compare').bootstrapTable({
 			method : 'get',
-			contentType : "application/x-www-form-urlencoded",//必须要有！！！！
-			url : "../assets/json/table-station-compare.json",//要请求数据的文件路径
-			striped : true, //是否显示行间隔色
-			dataField : "rows",//bootstrap table 可以前端分页也可以后端分页，这里
+			contentType : "application/x-www-form-urlencoded",// 必须要有！！！！
+			url : "../assets/json/table-station-compare.json",// 要请求数据的文件路径
+			striped : true, // 是否显示行间隔色
+			dataField : "rows",// bootstrap table 可以前端分页也可以后端分页，这里
 			detailView : false,
-			pageNumber : 1, //初始化加载第一页，默认第一页
-			pagination : true,//是否分页
-			queryParamsType : 'limit',//查询参数组织方式
+			pageNumber : 1, // 初始化加载第一页，默认第一页
+			pagination : true,// 是否分页
+			queryParamsType : 'limit',// 查询参数组织方式
 			// queryParams:queryParams,//请求服务器时所传的参数
-			sidePagination : 'server',//指定服务器端分页
-			pageSize : 10,//单页记录数
-			pageList : [5, 10, 20, 30],//分页步进值
-			clickToSelect : true,//是否启用点击选中行
+			sidePagination : 'server',// 指定服务器端分页
+			pageSize : 10,// 单页记录数
+			pageList : [5, 10, 20, 30],// 分页步进值
+			clickToSelect : true,// 是否启用点击选中行
 			responseHandler : function(res) {
 				return res;
 			},
