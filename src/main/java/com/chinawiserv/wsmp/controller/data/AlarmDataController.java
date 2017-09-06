@@ -82,7 +82,7 @@ public class AlarmDataController {
     @Value("${kriking.value}")
     private int intKrikingValue;
 
-    private DecimalFormat    df   = new DecimalFormat("######0.00");
+    private DecimalFormat df   = new DecimalFormat("#.00");
 
     @GetMapping(path = "/secondLevelChart")
     public Object secondLevelChart(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
@@ -428,7 +428,7 @@ public class AlarmDataController {
         int coulm = mapPoint.size();
 
         double[][] p = new double[coulm][3];
-        Random random = new Random();
+//        Random random = new Random();
 
         List<DataInfo> inPutData = Lists.newLinkedList();
         List<DataInfo> dataOuts = Lists.newLinkedList();
@@ -517,11 +517,9 @@ public class AlarmDataController {
         double numerator  = Stream.of(t).filter((e)-> e[2]>intKrikingValue).count();
         int denominator = t.length;
 
-        double electrCoverage =  denominator>0?numerator/denominator:0;
+        String electrCoverage =  df.format(denominator>0?numerator/denominator:0);
 
-        df.format(electrCoverage);
-
-        int size = t.length;
+        //int size = t.length;
 
         List<Map<String, Object>> kriking2 = Lists.newLinkedList();
         List<Map<String, Object>> kriking = Lists.newLinkedList();
@@ -602,7 +600,7 @@ public class AlarmDataController {
         HashMap<String,String> tempMap2 = Maps.newHashMap();
         tempMap2.put("x",106.779815+"");
         tempMap2.put("y",27.230648+"" );
-        tempMap2.put("count",40+"");
+        tempMap2.put("count",20+"");
         tempMap2.put("stationId", "44");
 
         HashMap<String,String> tempMap1 = Maps.newHashMap();
@@ -614,7 +612,7 @@ public class AlarmDataController {
         HashMap<String,String> tempMap3 = Maps.newHashMap();
         tempMap3.put("x",106.688752+"");
         tempMap3.put("y",26.335002+"" );
-        tempMap3.put("count",37+"");
+        tempMap3.put("count",25+"");
         tempMap3.put("stationId", "44");
 
         HashMap<String,String> tempMap4 = Maps.newHashMap();

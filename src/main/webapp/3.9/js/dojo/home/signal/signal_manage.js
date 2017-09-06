@@ -351,9 +351,18 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             }
 		});
         var singal = $("#FormQZ").val();
+        var FromSingal = $("#FromSingal").val();
         if (singal){
             var search = $("#search");
             search.val(singal);
+            var e = jQuery.Event("keydown");//模拟一个键盘事件
+            e.keyCode = 13;//keyCode=13是回车
+            $("#search").trigger(e);//模拟页码框按下回车
+        }
+        
+        if (FromSingal){
+            var search = $("#search");
+            search.val(FromSingal);
             var e = jQuery.Event("keydown");//模拟一个键盘事件
             e.keyCode = 13;//keyCode=13是回车
             $("#search").trigger(e);//模拟页码框按下回车
@@ -1020,10 +1029,10 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
     function getFreqList(){
     	// 清除图表
     	destroy_chart_table();
-    	var val = $("#search").val();
+    	var val = $("#search").val().replace("MHz","");
         var data = {};
         if (val && !isNaN(val) && val!='0') {
-            $("#search").val(val);
+            $("#search").val(val+'MHz');
             val = parseFloat(val) * 1000000;
         }else{
             layer.alert("操作失误，请输入大于0的数字！");

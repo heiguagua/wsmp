@@ -64,7 +64,7 @@
 
     <section>
       <div class='box'>
-        <p class='table-title'>基站数对比</p>
+        <p class='table-title'>基站数与去年对比</p>
         <table class="table table-striped text-center" id='table-station-compare'>
         </table>
       </div>
