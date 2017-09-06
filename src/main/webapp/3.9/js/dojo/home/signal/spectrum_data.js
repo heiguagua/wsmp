@@ -57,42 +57,49 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                 }, {
                     field : 'id',
                     title : '传感器编号',
-                    width : '80px'
+                    width : '10%',
+                    titleTooltip:"传感器编号"
                 }, {
                     field : 'taskId',
                     title : '任务唯一编号',
-                    width : '20%'
+                    width : '25%',
+                    titleTooltip:"任务唯一编号"
                 }, {
                     field : 'timeStart',
                     title : '任务开始时间',
-                    width : '140px',
+                    titleTooltip:"任务开始时间",
+                    width : '15%',
                     formatter : function(value) {
                         return new Date(value).format('yyyy-MM-dd hh:mm:ss');
                     }
                 }, {
                     field : 'timeStop',
                     title : '任务结束时间',
-                    width : '140px',
+                    width : '15%',
+                    //align:'center',
+                    titleTooltip:"任务结束时间",
                     formatter : function(value) {
                         return new Date(value).format('yyyy-MM-dd hh:mm:ss');
                     }
                 }, {
                     field : 'centerFreq',
                     title : '中心频率(MHz)',
-                    width : '20%',
+                    width : '10%',
                     align:'center',
-                    titleTooltip:"中心频率(MHz)",
-                    sortable : true,
+                    titleTooltip:"中心频率(MHz)"
+
                 }, {
                     field : 'spectrumSpan',
                     title : '带宽(KHz)',
                     align:'center',
-                    width : '15%'
+                    width : '10%',
+                    titleTooltip:"带宽(KHz)"
                 }, {
                     field : 'totalLength',
-                    width : '120px',
+                    width : '15%',
                     align:'center',
-                    title : '频谱个（或点）数'
+                    title : '频谱个(或点)数',
+                    titleTooltip:"频谱个(或点)数"
                 }]
             });
         })
@@ -122,7 +129,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                     autoPlay : true,
                     symbol : 'none',
                     playInterval : 3000,
-                    loop:true,
+                    loop:true
                 },
                 title : {
                     'text' : '',
