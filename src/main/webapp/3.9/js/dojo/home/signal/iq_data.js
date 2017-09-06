@@ -55,22 +55,26 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                 }, {
                     field : 'id',
                     title : '传感器编号',
-                    width : '80px'
+                    width : '10%',
+                    titleTooltip:"传感器编号"
                 }, {
                     field : 'taskId',
                     title : '任务唯一编号',
                     width : '20%',
+                    titleTooltip:"任务唯一编号"
                 }, {
                     field : 'timeStart',
                     title : '任务开始时间',
-                    width : '140px',
+                    width : '15%',
+                    titleTooltip:"任务开始时间",
                     formatter : function(value) {
                         return new Date(value).format('yyyy-MM-dd hh:mm:ss');
                     }
                 }, {
                     field : 'timeStop',
                     title : '任务结束时间',
-                    width : '140px',
+                    width : '15%',
+                    titleTooltip:"任务结束时间",
                     formatter : function(value) {
                         return new Date(value).format('yyyy-MM-dd hh:mm:ss');
                     }
@@ -78,12 +82,14 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                     field : 'centerFreq',
                     title : '中心频率(MHz)',
                     align:'center',
-                    width : '15%'
+                    width : '10%',
+                    titleTooltip:"中心频率(MHz)"
                 }, {
                     field : 'nmber',
                     title : 'I或Q数据个数',
+                    width : '10%',
                     align:'center',
-                    width : '90px'
+                    titleTooltip:"I或Q数据个数"
                 }]
             });
         })
