@@ -14,6 +14,7 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
         dojo.require("esri.geometry.Circle");
         dojo.require("esri.symbols.SimpleFillSymbol");
         dojo.require("dojo/on");
+        //dojo.require("esri.Color");
 
         var heatLayer;
         var pSymbol = null;
@@ -216,7 +217,7 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                         radius: arryOfLevel[index].radius
                     });
 
-                    var symbol = new esri.symbols.SimpleFillSymbol().setColor(null).outline.setColor("red");
+                    var symbol = new esri.symbols.SimpleFillSymbol().setColor(new esri.Color([0,0,0])).outline.setColor("red");
                     var circleGrap = new esri.Graphic(circle, symbol);
                     glayer.add(circleGrap);
 
@@ -319,8 +320,8 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
             map = new esri.Map("mapDiv", {
                // extent: initExtent,
                 center : center,
-                // zoom:9,
-                // maxZoom:9,
+                zoom:9,
+                maxZoom:9,
                 sliderStyle: "small",
                 logo:false
                 //maxZoom:11
@@ -340,7 +341,7 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                 heatLayer = new HeatmapLayer({
                     config: {
                         "useLocalMaximum": false,
-                        "radius":40,
+                        "radius":35,
                         "gradient": {
                             0.45: "rgb(000,000,255)",
                             0.55: "rgb(000,255,255)",
@@ -378,8 +379,8 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
             console.log(screenRightPiont);
             var screenLeftPiont =  webMercatorUtils.xyToLngLat(xmin,ymin);
             console.log("=============================================");
-            console.log(JSON.stringify(k2));
-            heatLayer.setData(k2);
+            console.log(JSON.stringify(k));
+            heatLayer.setData(k);
         }
 
         // var point = [

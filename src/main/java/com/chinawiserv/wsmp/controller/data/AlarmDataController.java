@@ -420,7 +420,7 @@ public class AlarmDataController {
 //                mapLocate.put("radius",  result.getOangeR().get(index));
 //                levelPoint.add(mapLocate);
 //            }
-            Logger.info("场强定位计算正常 操作时间{} 返回值为{}", LocalDateTime.now().toString(), JSON.toJSONString(levelPoint));
+           // Logger.info("场强定位计算正常 操作时间{} 返回值为{}", LocalDateTime.now().toString(), JSON.toJSONString(result));
         } catch (NumberFormatException e) {
             Logger.error("场强查询异常 ,操作时间：{},入参：开始时间：{}，中心频率：{} 异常 ：{}", LocalDateTime.now(), param.get("beginTime"), param.get("frequency"), e);
         }
@@ -471,9 +471,9 @@ public class AlarmDataController {
 //        p[2][2] = 17;
 
 
-        inPutData.add(new DataInfo(106.779815,27.230648,40));
+        inPutData.add(new DataInfo(106.779815,27.230648,20));
         inPutData.add(new DataInfo(106.606183,26.840808,10));
-        inPutData.add(new DataInfo(106.688752,26.335002,37));
+        inPutData.add(new DataInfo(106.688752,26.335002,25));
         inPutData.add(new DataInfo(106.220286,26.817141,2));
 
         double[][] t1 = new double[kringGraid.size()][3];
@@ -486,7 +486,7 @@ public class AlarmDataController {
             t1[beginIndex][2] = 4.5;
             beginIndex++;
             dataOuts.add(new DataInfo(x,y,0));
-            temple.add(new DataInfo(x,y,4.5));
+            temple.add(new DataInfo(x,y,5));
         }
 
         double[][] t2 = new double[0][0];
@@ -528,24 +528,24 @@ public class AlarmDataController {
 
         Map<String, Object> spatialReference = Maps.newHashMap();
         spatialReference.put("wkid", 4326);
-        for (int index = 0; index < size; index++) {
-            Map<String, Object> element = Maps.newHashMap();
-            Map<String, Object> count = Maps.newHashMap();
-            Map<String, Object> geometry = Maps.newLinkedHashMap();
-            double val = t[index][2];
-            double x = t[index][0];
-            double y = t[index][1];
-            geometry.put("spatialReference", spatialReference);
-            geometry.put("type", "point");
-            geometry.put("x", x * 20037508.34 / 180);
-            y = Math.log(Math.tan((90 + y) * Math.PI / 360)) / (Math.PI / 180);
-            y = y * 20037508.34 / 180;
-            geometry.put("y", y);
-            count.put("count", val);
-            element.put("attributes", count);
-            element.put("geometry", geometry);
-            kriking2.add(element);
-        }
+//        for (int index = 0; index < size; index++) {
+//            Map<String, Object> element = Maps.newHashMap();
+//            Map<String, Object> count = Maps.newHashMap();
+//            Map<String, Object> geometry = Maps.newLinkedHashMap();
+//            double val = t[index][2];
+//            double x = t[index][0];
+//            double y = t[index][1];
+//            geometry.put("spatialReference", spatialReference);
+//            geometry.put("type", "point");
+//            geometry.put("x", x * 20037508.34 / 180);
+//            y = Math.log(Math.tan((90 + y) * Math.PI / 360)) / (Math.PI / 180);
+//            y = y * 20037508.34 / 180;
+//            geometry.put("y", y);
+//            count.put("count", val);
+//            element.put("attributes", count);
+//            element.put("geometry", geometry);
+//            kriking2.add(element);
+//        }
 
 //        for (int index = 0; index < size; index++) {
 //            Map<String, Object> element = Maps.newHashMap();
@@ -565,24 +565,24 @@ public class AlarmDataController {
 //        }
 
 
-//        for (DataInfo info :temple) {
-//                Map<String, Object> element = Maps.newHashMap();
-//                Map<String, Object> count = Maps.newHashMap();
-//                Map<String, Object> geometry = Maps.newLinkedHashMap();
-//                double val = info.getValue();
-//                double x = info.getLon();
-//                double y = info.getLat();
-//                geometry.put("spatialReference", spatialReference);
-//                geometry.put("type", "point");
-//                geometry.put("x", x * 20037508.34 / 180);
-//                y = Math.log(Math.tan((90 + y) * Math.PI / 360)) / (Math.PI / 180);
-//                y = y * 20037508.34 / 180;
-//                geometry.put("y", y);
-//                count.put("count", val);
-//                element.put("attributes", count);
-//                element.put("geometry", geometry);
-//                kriking.add(element);
-//            }
+        for (DataInfo info :temple) {
+                Map<String, Object> element = Maps.newHashMap();
+                Map<String, Object> count = Maps.newHashMap();
+                Map<String, Object> geometry = Maps.newLinkedHashMap();
+                double val = info.getValue();
+                double x = info.getLon();
+                double y = info.getLat();
+                geometry.put("spatialReference", spatialReference);
+                geometry.put("type", "point");
+                geometry.put("x", x * 20037508.34 / 180);
+                y = Math.log(Math.tan((90 + y) * Math.PI / 360)) / (Math.PI / 180);
+                y = y * 20037508.34 / 180;
+                geometry.put("y", y);
+                count.put("count", val);
+                element.put("attributes", count);
+                element.put("geometry", geometry);
+                kriking.add(element);
+            }
 
         //System.out.println(kriking);
 
@@ -600,33 +600,33 @@ public class AlarmDataController {
         }).collect(toList());
 
         HashMap<String,String> tempMap2 = Maps.newHashMap();
-//        tempMap2.put("x",106.779815+"");
-//        tempMap2.put("y",27.230648+"" );
-//        tempMap2.put("count",40+"");
-//        tempMap2.put("stationId", "44");
-//
-//        HashMap<String,String> tempMap1 = Maps.newHashMap();
-//        tempMap1.put("x",106.606183+"");
-//        tempMap1.put("y",26.840808+"" );
-//        tempMap1.put("count",10+"");
-//        tempMap1.put("stationId", "44");
-//
-//        HashMap<String,String> tempMap3 = Maps.newHashMap();
-//        tempMap3.put("x",106.688752+"");
-//        tempMap3.put("y",26.335002+"" );
-//        tempMap3.put("count",37+"");
-//        tempMap3.put("stationId", "44");
-//
-//        HashMap<String,String> tempMap4 = Maps.newHashMap();
-//        tempMap4.put("x",106.220286+"");
-//        tempMap4.put("y",26.817141+"" );
-//        tempMap4.put("count",2+"");
-//        tempMap4.put("stationId", "44");
-//
-//        stationPiont.add(tempMap1);
-//        stationPiont.add(tempMap2);
-//        stationPiont.add(tempMap3);
-//        stationPiont.add(tempMap4);
+        tempMap2.put("x",106.779815+"");
+        tempMap2.put("y",27.230648+"" );
+        tempMap2.put("count",40+"");
+        tempMap2.put("stationId", "44");
+
+        HashMap<String,String> tempMap1 = Maps.newHashMap();
+        tempMap1.put("x",106.606183+"");
+        tempMap1.put("y",26.840808+"" );
+        tempMap1.put("count",10+"");
+        tempMap1.put("stationId", "44");
+
+        HashMap<String,String> tempMap3 = Maps.newHashMap();
+        tempMap3.put("x",106.688752+"");
+        tempMap3.put("y",26.335002+"" );
+        tempMap3.put("count",37+"");
+        tempMap3.put("stationId", "44");
+
+        HashMap<String,String> tempMap4 = Maps.newHashMap();
+        tempMap4.put("x",106.220286+"");
+        tempMap4.put("y",26.817141+"" );
+        tempMap4.put("count",2+"");
+        tempMap4.put("stationId", "44");
+
+        stationPiont.add(tempMap1);
+        stationPiont.add(tempMap2);
+        stationPiont.add(tempMap3);
+        stationPiont.add(tempMap4);
 
         Map<String, Object> mapPiont = new HashMap<>();
 
