@@ -32,9 +32,29 @@ define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"]
             var agoLayer = new esri.layers.ArcGISTiledMapServiceLayer(url, {id: "街道地图"});
             console.log(agoLayer.initialExtent)
             var initiaEx = agoLayer.initialExtent;
+            var info = Binding.getUser();
+            info = JSON.parse(info);
+
+            var code = info.Area.Code;
+
+            var info = Binding.getUser();
+            info = JSON.parse(info);
+            var code = info.Area.Code;
+            var stationObj = Binding.getMonitorNodes(code);
+            stationObj = JSON.parse(stationObj);
+
+            var center = [];
+
+            if (stationObj[0]){
+                var x =  stationObj[0].Longitude;
+                var y = stationObj[0].Latitude;
+                center.push(x);
+                center.push(y);
+            }
+
             map = new esri.Map("mapDiv", {
                 //center : [ 104.06, 30.67 ],
-                center : [ 106.63, 26.57 ],
+                center : center,
                 zoom:9,
                 maxZoom:9,
                 sliderStyle: "small",

@@ -653,7 +653,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                     return params
                 }, //请求服务器时所传的参数
                 onPostBody:function(){
-                    var stationKey = $('#signal_list').find('option:selected').attr("stationkey");
+                    var stationKey = $('#signal_list1').find('option:selected').attr("stationkey");
                     if(stationKey){
                         $("#"+stationKey).parent().parent().addClass("selected");
                     }
@@ -843,7 +843,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 url : "data/alarm/StationInfo",
                 queryParamsType : 'limit', //查询参数组织方式
                 onPostBody:function(){
-                    var stationKey = $('#signal_list').find('option:selected').attr("stationkey");
+                    var stationKey = $('#signal_list1').find('option:selected').attr("stationkey");
                     if(stationKey){
                         $("#"+stationKey).parent().parent().addClass("selected");
                     }
@@ -855,7 +855,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                     console.log(info);
                     var codes = info.Area.Citys;
                     var codeList = [];
-
+                    var centorFreq = $('#signal_list1').find('option:selected').attr("centorFreq");
                     for (var index =0;index<codes.length;index++){
                         codeList.push(codes[index].Code);
                     }
@@ -865,6 +865,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                     console.log(codeStr);
                     codeStr = codeStr.replace("[","").replace("]","");
                     params.areaCode = codeStr;
+                    params.centorFreq = centorFreq;
 
                     return params
                 }, //请求服务器时所传的参数

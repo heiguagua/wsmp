@@ -144,12 +144,11 @@ public class ASIQDataController {
 			final long timeStopLong = LocalDateTime.parse(timeStart,
                     this.formatter).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 
-			spectrums = client.querySpectrum(id, centerFreq, timeStartLong,
+			spectrums = this.client.querySpectrum(id, centerFreq, timeStartLong,
 					timeStopLong);
 
 			Logger.info("音频数据查询正常 入参id：{},中心频率：{}，开始时间：{}，返回值个数 {}",id,centerFreq,timeStart,spectrums.size());
-			return this.client.querySpectrum(id, centerFreq, timeStartLong,
-                    timeStopLong);
+			return spectrums;
 		} catch (Exception e) {
 
 			Logger.error("音频数据查询异常 入参id：{},中心频率：{}，开始时间：{}，异常 {}",id,centerFreq,timeStart,e);

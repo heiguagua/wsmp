@@ -21,6 +21,7 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
         var mapUtl = $("#mapUrl").val();
         var map = null;
         var k = null;
+        var k2 =null
         var agoLayer =null;
         //config.defaults.io.corsEnabledServers.push("192.168.13.79:7080");
         function pares() {
@@ -100,7 +101,7 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                 // create heat layer
                 heatLayer = new HeatmapLayer({
                     config: {
-                        "useLocalMaximum": true,
+                        "useLocalMaximum": false,
                         "radius": 100,
                         "gradient": {
                             0.45: "rgb(000,000,255)",
@@ -221,6 +222,22 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
 
                 }
                 k = reslut.kriking;
+                k2 = reslut.kriking2;
+
+                // for (var i = 0;i<k.length;i++){
+                //     var p = new esri.geometry.Point(k[i].geometry.x,k[i].geometry.y);
+                //
+                //     var textSymbol = new esri.symbols.TextSymbol(k[i].attributes.count).setColor(
+                //         new esri.Color([0xFF, 0, 0])).setAlign(esri.symbols.Font.ALIGN_START).setFont(
+                //         new esri.symbols.Font("12pt").setWeight(esri.symbols.Font.WEIGHT_BOLD));
+                //
+                //     var graphic = new esri.Graphic(p, textSymbol);
+                //     glayer.add(graphic);
+                //
+                //  console.log(k[i].geometry.x);
+                //  console.log(k[i].geometry.y)
+                // }
+
                 getFeatures();
                 map.addLayer(glayer);
 
@@ -272,7 +289,9 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                 agoLayer.copyrightText = '';
                 console.log(agoLayer);
             }
-            var initExtent = new esri.geometry.Extent({type: "extent", xmin: -180, ymin: -90, xmax: 180, ymax: 90});
+            var initExtent = new esri.geometry.Extent({type: "extent", xmin:
+                12259021.6831997, ymin: 2807789.22457995, xmax:
+                11554578.0305236, ymax: 3477989.08858431});
 
             console.log(JSON.stringify(agoLayer.initialExtent));
             var initiaEx = agoLayer.initialExtent;
@@ -282,15 +301,26 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
 
             var code = info.Area.Code;
 
-            var stations = Binding.getMonitorNodes(code);
-            stations = JSON.parse(stations);
+            var info = Binding.getUser();
+            info = JSON.parse(info);
+            var code = info.Area.Code;
+            var stationObj = Binding.getMonitorNodes(code);
+            stationObj = JSON.parse(stationObj);
 
-            console.log(stations);
+            var center = [];
+
+            if (stationObj[0]){
+                var x =  stationObj[0].Longitude;
+                var y = stationObj[0].Latitude;
+                center.push(x);
+                center.push(y);
+            }
 
             map = new esri.Map("mapDiv", {
-                center : [ 106.63, 26.57 ],
-                zoom:9,
-                maxZoom:9,
+               // extent: initExtent,
+                center : center,
+                // zoom:9,
+                // maxZoom:9,
                 sliderStyle: "small",
                 logo:false
                 //maxZoom:11
@@ -339,6 +369,7 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
         function getFeatures(result) {
             console.log(result);
             console.log(map);
+            // heatLayer.clear();
             var xmax = map.extent.xmax;
             var xmin = map.extent.xmin;
             var ymax = map.extent.ymax;
@@ -347,8 +378,8 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
             console.log(screenRightPiont);
             var screenLeftPiont =  webMercatorUtils.xyToLngLat(xmin,ymin);
             console.log("=============================================");
-            console.log(JSON.stringify(k));
-            heatLayer.setData(k);
+            console.log(JSON.stringify(k2));
+            heatLayer.setData(k2);
         }
 
         // var point = [

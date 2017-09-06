@@ -8,7 +8,6 @@ import com.chinawiserv.wsmp.hbase.HbaseClient;
 import com.chinawiserv.wsmp.hbase.query.OccAndMax;
 import com.chinawiserv.wsmp.kriging.Interpolation;
 import com.chinawiserv.wsmp.kriging.model.DataInfo;
-import com.chinawiserv.wsmp.levellocate.socket.model.Params;
 import com.chinawiserv.wsmp.model.LevelLocate;
 import com.chinawiserv.wsmp.pojo.IntensiveMonitoring;
 import com.chinawiserv.wsmp.pojo.Station;
@@ -24,6 +23,7 @@ import de.onlinehome.geomath.jk3d.Jk2d;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.WebApplicationContext;
 import org.tempuri.*;
@@ -115,6 +115,13 @@ public class AlarmDataController {
             //OccAndMax reslutResponce = hbaseClient.queryOccHour(stationCode, beginTime, centorFreq);
             Map<String, Object> Max = reslutResponce.getMax();
             Map<String, Object> Occ = reslutResponce.getOcc();
+
+            Map<String,Object> temple = Maps.newLinkedHashMap();
+
+            for (int beginHour = 0; beginHour<24;beginHour++){
+                temple.put(""+beginHour,0);
+            }
+
             if (Occ.size() == 0) {
 
                 HashMap<String, Object> resoluteHashMap = Maps.newHashMap();
@@ -131,6 +138,12 @@ public class AlarmDataController {
 
                 LinkedList<Object> xAxis = Lists.newLinkedList();
                 LinkedList<Object> series = Lists.newLinkedList();
+
+                for (Map.Entry<String, Object> entry : temple.entrySet()) {
+                    if(StringUtils.isEmpty(Occ.get(entry.getKey()))){
+                        Occ.put(entry.getKey(),"0");
+                    }
+                }
 
                 Occ = Occ.entrySet().stream().sorted((c1, c2) -> Integer.parseInt(c1.getKey()) > Integer.parseInt(c2.getKey()) ? 1 : -1)
                         .collect(toMap(Map.Entry::getKey, Map.Entry::getValue, throwingMerger(), LinkedHashMap::new));
@@ -368,10 +381,6 @@ public class AlarmDataController {
 
 //        long centerFreq = (long) (88.8 * 1000000);
 //        String dateTime = "20170810235959";
-        Params params = new Params();
-
-        System.out.println(kringGraid);
-
 //        测试或正式环境使用
 //        Long frequency = Long.parseLong((String) param.get("frequency"));
 //        List<LevelLocate> relate = hbaseClient.queryLevelLocate((String) param.get("beginTime"), frequency );
@@ -395,17 +404,23 @@ public class AlarmDataController {
             double[] flon = relate.stream().mapToDouble(LevelLocate::getFlon).toArray();
             double[] flat = relate.stream().mapToDouble(LevelLocate::getFlat).toArray();
             double[] level = relate.stream().mapToDouble(LevelLocate::getLevel).toArray();
+            int[] waringsensorid = relate.stream().mapToInt((LevelLocate t) ->Integer.parseInt(t.getId())
+            ).toArray();
             //至少要八个点才能计算出来
 
-            params.setSid("" + System.currentTimeMillis());// sid能够表该次计算的唯一标识
-            params.setStype((byte) 3);// 固定3，标识计算类型为场强计算
-            params.setDistanceTh(10d);// 距离门限，单位km，值是界面传递进来的
-            params.setNum(relate.size());// 传感器数
-            params.setIds(ids);// 所有传感器
-            params.setLon(flon);// 每个传感器的经度
-            params.setLat(flat);// 每个传感器的纬度
-            params.setLevel(level);// 每个传感器的均值
-
+//            LevelResult result = LevelCompute.levelCompute(ids,flon,flat,level, ids.length,10, waringsensorid);
+//            int size = result.getOangeR().size();
+//
+//            for (int index = 0;index < size;index++){
+//
+//                Map<String, Object> mapLocate = Maps.newHashMap();
+//
+//                mapLocate.put("x", result.getOutLon().get(index));
+//                mapLocate.put("y", result.getOutLat().get(index));
+//                mapLocate.put("radius",  result.getOangeR().get(index));
+//                levelPoint.add(mapLocate);
+//            }
+            Logger.info("场强定位计算正常 操作时间{} 返回值为{}", LocalDateTime.now().toString(), JSON.toJSONString(levelPoint));
         } catch (NumberFormatException e) {
             Logger.error("场强查询异常 ,操作时间：{},入参：开始时间：{}，中心频率：{} 异常 ：{}", LocalDateTime.now(), param.get("beginTime"), param.get("frequency"), e);
         }
@@ -419,33 +434,79 @@ public class AlarmDataController {
         List<DataInfo> dataOuts = Lists.newLinkedList();
         List<DataInfo> temple = Lists.newLinkedList();
 
+        double xMin = -1, xMax = -1, yMin = -1,yMax = -1;
+
         for (int index = 0; index < coulm; index++) {
             p[index][0] = mapPoint.get(index).getFlon();
             p[index][1] = mapPoint.get(index).getFlat();
-            p[index][2] = mapPoint.get(index).getLevel()& 0xFF ;
+            p[index][2] = (mapPoint.get(index).getLevel()& 0xFF);
             inPutData.add(new DataInfo(p[index][0],p[index][1],p[index][2]));
+
+            if(xMin == -1) {
+
+                xMin = p[index][0];
+                yMin = p[index][1];
+
+            }else{
+
+                xMax = p[index][0];
+                yMax = p[index][1];
+
+                if(xMin > xMax){
+                    double b = xMin;
+                    xMin = xMax;
+                    xMax = b;
+                }
+
+                if(yMin > yMax){
+                    double b = yMin;
+                    yMin = yMax;
+                    yMax = b;
+                }
+            }
+
         }
+//        p[2][0] = xMin + (xMax - xMin) / 2 ;
+//        p[2][1] = yMin + (yMax - yMin) / 2 ;
+//        p[2][2] = 17;
+
 
         inPutData.add(new DataInfo(106.779815,27.230648,40));
         inPutData.add(new DataInfo(106.606183,26.840808,10));
         inPutData.add(new DataInfo(106.688752,26.335002,37));
         inPutData.add(new DataInfo(106.220286,26.817141,2));
 
+        double[][] t1 = new double[kringGraid.size()][3];
+        int beginIndex = 0;
         for (Map<String,Object> dataOut : kringGraid) {
             double x = Double.parseDouble(dataOut.get("x").toString());
             double y = Double.parseDouble(dataOut.get("y").toString());
+            t1[beginIndex][0] =  x;
+            t1[beginIndex][1] =  y;
+            t1[beginIndex][2] = 4.5;
+            beginIndex++;
             dataOuts.add(new DataInfo(x,y,0));
             temple.add(new DataInfo(x,y,4.5));
         }
 
-        double[][] t = new double[0][0];
-
+        double[][] t2 = new double[0][0];
         if (coulm > 0) {
-            t = jk2d.jk2d_ret(0.01,  40, 0.03,  40, p);
+            t2 = jk2d.jk2d_ret(0.1,  10, 0.1,  5, p);
             kri.InitCal(inPutData, dataOuts);
             kri.OkrigingCal();
             dataOuts = kri.CopyResults();
         }
+
+        double[][] t = new double[t2.length + t1.length ][3];
+//        double[][] t = t2;
+        for(int i = 0,j = t2.length; i < j; i ++){
+            t[i] = t2[i];
+        }
+        int in = 0;
+        for(int i = t2.length,j = t.length; i < j; i ++){
+            t[i] = t1[in++];
+        }
+
 
         temple.addAll(dataOuts);
 
@@ -462,10 +523,30 @@ public class AlarmDataController {
 
         int size = t.length;
 
+        List<Map<String, Object>> kriking2 = Lists.newLinkedList();
         List<Map<String, Object>> kriking = Lists.newLinkedList();
 
         Map<String, Object> spatialReference = Maps.newHashMap();
         spatialReference.put("wkid", 4326);
+        for (int index = 0; index < size; index++) {
+            Map<String, Object> element = Maps.newHashMap();
+            Map<String, Object> count = Maps.newHashMap();
+            Map<String, Object> geometry = Maps.newLinkedHashMap();
+            double val = t[index][2];
+            double x = t[index][0];
+            double y = t[index][1];
+            geometry.put("spatialReference", spatialReference);
+            geometry.put("type", "point");
+            geometry.put("x", x * 20037508.34 / 180);
+            y = Math.log(Math.tan((90 + y) * Math.PI / 360)) / (Math.PI / 180);
+            y = y * 20037508.34 / 180;
+            geometry.put("y", y);
+            count.put("count", val);
+            element.put("attributes", count);
+            element.put("geometry", geometry);
+            kriking2.add(element);
+        }
+
 //        for (int index = 0; index < size; index++) {
 //            Map<String, Object> element = Maps.newHashMap();
 //            Map<String, Object> count = Maps.newHashMap();
@@ -475,62 +556,40 @@ public class AlarmDataController {
 //            double y = t[index][1];
 //            geometry.put("spatialReference", spatialReference);
 //            geometry.put("type", "point");
-//            geometry.put("x", x * 20037508.34 / 180);
-//            y = Math.log(Math.tan((90 + y) * Math.PI / 360)) / (Math.PI / 180);
-//            y = y * 20037508.34 / 180;
+//            geometry.put("x", x );
 //            geometry.put("y", y);
-//            count.put("count", random.nextInt(100));
+//            count.put("count", val);
 //            element.put("attributes", count);
 //            element.put("geometry", geometry);
 //            kriking.add(element);
 //        }
 
-        for (DataInfo info :temple) {
-                Map<String, Object> element = Maps.newHashMap();
-                Map<String, Object> count = Maps.newHashMap();
-                Map<String, Object> geometry = Maps.newLinkedHashMap();
-                double val = info.getValue();
-                double x = info.getLon();
-                double y = info.getLat();
-                geometry.put("spatialReference", spatialReference);
-                geometry.put("type", "point");
-                geometry.put("x", x * 20037508.34 / 180);
-                y = Math.log(Math.tan((90 + y) * Math.PI / 360)) / (Math.PI / 180);
-                y = y * 20037508.34 / 180;
-                geometry.put("y", y);
-                count.put("count", val);
-                element.put("attributes", count);
-                element.put("geometry", geometry);
-                kriking.add(element);
-            }
+
+//        for (DataInfo info :temple) {
+//                Map<String, Object> element = Maps.newHashMap();
+//                Map<String, Object> count = Maps.newHashMap();
+//                Map<String, Object> geometry = Maps.newLinkedHashMap();
+//                double val = info.getValue();
+//                double x = info.getLon();
+//                double y = info.getLat();
+//                geometry.put("spatialReference", spatialReference);
+//                geometry.put("type", "point");
+//                geometry.put("x", x * 20037508.34 / 180);
+//                y = Math.log(Math.tan((90 + y) * Math.PI / 360)) / (Math.PI / 180);
+//                y = y * 20037508.34 / 180;
+//                geometry.put("y", y);
+//                count.put("count", val);
+//                element.put("attributes", count);
+//                element.put("geometry", geometry);
+//                kriking.add(element);
+//            }
 
         //System.out.println(kriking);
 
         //测试或正式环境使用
         //List<String> stationcode = (List<String>) param.get("stationcode");
 
-        try {
 
-            for (LevelLocate levelLocate : mapPoint) {
-
-                params.setWarningId(Integer.valueOf(levelLocate.getId()));// 告警传感器id
-                //Result result = locate.execute(params);
-                Map<String, Object> mapLocate = Maps.newHashMap();
-
-                //mapLocate.put("x", result.getOutLon());
-                //mapLocate.put("y", result.getOutLat());
-                //mapLocate.put("radius", result.getRangeR());
-                //mapLocate.put("stationId", result.getSid());
-
-                levelPoint.add(mapLocate);
-            }
-
-
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            Logger.error("场强定位计算 操作时间{} 入参：{},异常 ：{}", LocalDateTime.now().toString(), param, e);
-        }
-        Logger.info("场强定位计算正常 操作时间{} 返回值为{}", LocalDateTime.now().toString(), JSON.toJSONString(levelPoint));
         List<Map<String, String>> stationPiont = mapPoint.stream().map(station -> {
             HashMap<String, String> element = Maps.newHashMap();
             element.put("x", station.getFlon() + "");
@@ -541,39 +600,40 @@ public class AlarmDataController {
         }).collect(toList());
 
         HashMap<String,String> tempMap2 = Maps.newHashMap();
-        tempMap2.put("x",106.779815+"");
-        tempMap2.put("y",27.230648+"" );
-        tempMap2.put("count",40+"");
-        tempMap2.put("stationId", "44");
-
-        HashMap<String,String> tempMap1 = Maps.newHashMap();
-        tempMap1.put("x",106.606183+"");
-        tempMap1.put("y",26.840808+"" );
-        tempMap1.put("count",10+"");
-        tempMap1.put("stationId", "44");
-
-        HashMap<String,String> tempMap3 = Maps.newHashMap();
-        tempMap3.put("x",106.688752+"");
-        tempMap3.put("y",26.335002+"" );
-        tempMap3.put("count",37+"");
-        tempMap3.put("stationId", "44");
-
-        HashMap<String,String> tempMap4 = Maps.newHashMap();
-        tempMap4.put("x",106.220286+"");
-        tempMap4.put("y",26.817141+"" );
-        tempMap4.put("count",2+"");
-        tempMap4.put("stationId", "44");
-
-        stationPiont.add(tempMap1);
-        stationPiont.add(tempMap2);
-        stationPiont.add(tempMap3);
-        stationPiont.add(tempMap4);
+//        tempMap2.put("x",106.779815+"");
+//        tempMap2.put("y",27.230648+"" );
+//        tempMap2.put("count",40+"");
+//        tempMap2.put("stationId", "44");
+//
+//        HashMap<String,String> tempMap1 = Maps.newHashMap();
+//        tempMap1.put("x",106.606183+"");
+//        tempMap1.put("y",26.840808+"" );
+//        tempMap1.put("count",10+"");
+//        tempMap1.put("stationId", "44");
+//
+//        HashMap<String,String> tempMap3 = Maps.newHashMap();
+//        tempMap3.put("x",106.688752+"");
+//        tempMap3.put("y",26.335002+"" );
+//        tempMap3.put("count",37+"");
+//        tempMap3.put("stationId", "44");
+//
+//        HashMap<String,String> tempMap4 = Maps.newHashMap();
+//        tempMap4.put("x",106.220286+"");
+//        tempMap4.put("y",26.817141+"" );
+//        tempMap4.put("count",2+"");
+//        tempMap4.put("stationId", "44");
+//
+//        stationPiont.add(tempMap1);
+//        stationPiont.add(tempMap2);
+//        stationPiont.add(tempMap3);
+//        stationPiont.add(tempMap4);
 
         Map<String, Object> mapPiont = new HashMap<>();
 
         mapPiont.put("stationPiont", stationPiont);
         mapPiont.put("levelPoint", levelPoint);
         mapPiont.put("kriking", kriking);
+        mapPiont.put("kriking2", kriking2);
         mapPiont.put("electrCoverage", electrCoverage);
 
         // map.put("x", "106.709177096");
@@ -721,7 +781,7 @@ public class AlarmDataController {
             requestParam.put("count", limit);
 
             Map<String, Object> list = Maps.newLinkedHashMap();
-            list.put("string", areaCodeList);
+//            list.put("string", areaCodeList);
            //requestParam.put("areaCodeList", list);
              requestParam.put("beginFreq",downFreqDouble);
              requestParam.put("endFreq",upFreqDouble);
