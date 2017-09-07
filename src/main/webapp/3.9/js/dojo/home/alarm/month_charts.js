@@ -123,11 +123,14 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
 
 		if(monthChart){
 			monthChart.clear();
-			monthChart.resize();
 		}
 		monthChart = echarts.init($('#month')[0]);
 		monthChart.setOption(optionMonth);
-
+		window.onresize = function(){
+			monthChart.clear();
+			monthChart.setOption(optionMonth);
+			monthChart.resize();
+		}
 		monthChart.on('click', function(params) {
 			console.log(params.name)
 			var time =params.name+'';
@@ -153,11 +156,7 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
 
 		})
 
-		window.onresize = function(){
-			monthChart.clear();
-			monthChart.resize();
-			monthChart.setOption(optionMonth);
-		}
+
 
 		load_month_mouse_event();
 
