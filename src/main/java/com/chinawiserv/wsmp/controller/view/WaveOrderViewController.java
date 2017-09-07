@@ -109,6 +109,7 @@ public class WaveOrderViewController {
 		return "waveorder/important_monitor_insert";
     }
     
+    @ResponseBody
     @PostMapping("/importantMonitorCreateOrUpdate")
     public String importantMonitorCreateOrUpdate(MeasureTaskParamDto dto,Model model) {
     	//或者直接用模型接受参数MeasureTaskParamDto.java
@@ -122,10 +123,10 @@ public class WaveOrderViewController {
     		String resultDTOJson = serviceImportFreqRangeManage.createOrUpdate(json);
     		if(resultDTOJson != null) {
     			Logger.info("更新或添加成功！");
+    			return null;
     		}else {
     			return "false";
     		}
-    		return null;
 //    		final Type type = new TypeReference<MeasureTaskParamDto>() {}.getType();
 //    		MeasureTaskParamDto resultDTO = (MeasureTaskParamDto) JSON.parseObject(resultDTOJson,type);
 //    		if(resultDTOJson != null) {
@@ -139,7 +140,7 @@ public class WaveOrderViewController {
 //    		}
     }
     
-    
+    @ResponseBody
     @PostMapping("/importantMonitorDelete")
     public String importantMonitorDelete(MeasureTaskParamDto dto,Model model) {
     	//或者直接用模型接受参数MeasureTaskParamDto.java
@@ -147,7 +148,7 @@ public class WaveOrderViewController {
 		Boolean resultDTOJson = serviceImportFreqRangeManage.removeById(dto.getID());
 		if(resultDTOJson) {
 			Logger.info("删除成功！");
-			return "true";
+			return null;
 		}else {
 			return "false";
 		}

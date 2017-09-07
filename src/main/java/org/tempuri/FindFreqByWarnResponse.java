@@ -1,9 +1,10 @@
 
 package org.tempuri;
 
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -34,18 +35,18 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "FindFreqByWarnResponse")
 public class FindFreqByWarnResponse {
 
-    @XmlElement(name = "FindFreqByWarnResult", nillable = true)
-    protected String findFreqByWarnResult;
+    @XmlElementRef(name = "FindFreqByWarnResult", namespace = "http://tempuri.org/", type = JAXBElement.class, required = false)
+    protected JAXBElement<String> findFreqByWarnResult;
 
     /**
      * 获取findFreqByWarnResult属性的值。
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link JAXBElement }{@code <}{@link String }{@code >}
      *     
      */
-    public String getFindFreqByWarnResult() {
+    public JAXBElement<String> getFindFreqByWarnResult() {
         return findFreqByWarnResult;
     }
 
@@ -54,10 +55,10 @@ public class FindFreqByWarnResponse {
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link JAXBElement }{@code <}{@link String }{@code >}
      *     
      */
-    public void setFindFreqByWarnResult(String value) {
+    public void setFindFreqByWarnResult(JAXBElement<String> value) {
         this.findFreqByWarnResult = value;
     }
 

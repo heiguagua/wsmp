@@ -1,7 +1,11 @@
 
 package org.tempuri;
 
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.annotation.XmlElementDecl;
 import javax.xml.bind.annotation.XmlRegistry;
+import javax.xml.namespace.QName;
+import com.microsoft.schemas._2003._10.serialization.arrays.ArrayOfguid;
 
 
 /**
@@ -21,6 +25,17 @@ import javax.xml.bind.annotation.XmlRegistry;
 @XmlRegistry
 public class ObjectFactory {
 
+    private final static QName _QueryImportantMonitorFreqRangeResponseQueryImportantMonitorFreqRangeResult_QNAME = new QName("http://tempuri.org/", "QueryImportantMonitorFreqRangeResult");
+    private final static QName _UpdateImportantMonitorFreqRangeJsonStr_QNAME = new QName("http://tempuri.org/", "jsonStr");
+    private final static QName _UpdateImportantMonitorFreqRangeResponseUpdateImportantMonitorFreqRangeResult_QNAME = new QName("http://tempuri.org/", "UpdateImportantMonitorFreqRangeResult");
+    private final static QName _FindAllFreqResponseFindAllFreqResult_QNAME = new QName("http://tempuri.org/", "FindAllFreqResult");
+    private final static QName _FindAllFreqRangeResponseFindAllFreqRangeResult_QNAME = new QName("http://tempuri.org/", "FindAllFreqRangeResult");
+    private final static QName _FindByFreqWarnId_QNAME = new QName("http://tempuri.org/", "warnId");
+    private final static QName _FindByFreqResponseFindByFreqResult_QNAME = new QName("http://tempuri.org/", "FindByFreqResult");
+    private final static QName _FindFreqByWarnResponseFindFreqByWarnResult_QNAME = new QName("http://tempuri.org/", "FindFreqByWarnResult");
+    private final static QName _CreateOrUpdateJsonTaskParam_QNAME = new QName("http://tempuri.org/", "jsonTaskParam");
+    private final static QName _CreateOrUpdateResponseCreateOrUpdateResult_QNAME = new QName("http://tempuri.org/", "CreateOrUpdateResult");
+    private final static QName _RemoveAllTaskIds_QNAME = new QName("http://tempuri.org/", "ids");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: org.tempuri
@@ -30,515 +45,280 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link HelloWorld }
+     * Create an instance of {@link QueryImportantMonitorFreqRange }
      * 
      */
-    public HelloWorld createHelloWorld() {
-        return new HelloWorld();
+    public QueryImportantMonitorFreqRange createQueryImportantMonitorFreqRange() {
+        return new QueryImportantMonitorFreqRange();
     }
 
     /**
-     * Create an instance of {@link HelloWorldResponse }
+     * Create an instance of {@link QueryImportantMonitorFreqRangeResponse }
      * 
      */
-    public HelloWorldResponse createHelloWorldResponse() {
-        return new HelloWorldResponse();
+    public QueryImportantMonitorFreqRangeResponse createQueryImportantMonitorFreqRangeResponse() {
+        return new QueryImportantMonitorFreqRangeResponse();
     }
 
     /**
-     * Create an instance of {@link QueryRadioSignal }
+     * Create an instance of {@link UpdateImportantMonitorFreqRange }
      * 
      */
-    public QueryRadioSignal createQueryRadioSignal() {
-        return new QueryRadioSignal();
+    public UpdateImportantMonitorFreqRange createUpdateImportantMonitorFreqRange() {
+        return new UpdateImportantMonitorFreqRange();
     }
 
     /**
-     * Create an instance of {@link RadioSignalQueryRequest }
+     * Create an instance of {@link UpdateImportantMonitorFreqRangeResponse }
      * 
      */
-    public RadioSignalQueryRequest createRadioSignalQueryRequest() {
-        return new RadioSignalQueryRequest();
+    public UpdateImportantMonitorFreqRangeResponse createUpdateImportantMonitorFreqRangeResponse() {
+        return new UpdateImportantMonitorFreqRangeResponse();
     }
 
     /**
-     * Create an instance of {@link QueryRadioSignalResponse }
+     * Create an instance of {@link AddImportantMonitorFreq }
      * 
      */
-    public QueryRadioSignalResponse createQueryRadioSignalResponse() {
-        return new QueryRadioSignalResponse();
+    public AddImportantMonitorFreq createAddImportantMonitorFreq() {
+        return new AddImportantMonitorFreq();
     }
 
     /**
-     * Create an instance of {@link RadioSignalQueryResponse }
+     * Create an instance of {@link AddImportantMonitorFreqResponse }
      * 
      */
-    public RadioSignalQueryResponse createRadioSignalQueryResponse() {
-        return new RadioSignalQueryResponse();
+    public AddImportantMonitorFreqResponse createAddImportantMonitorFreqResponse() {
+        return new AddImportantMonitorFreqResponse();
     }
 
     /**
-     * Create an instance of {@link QueryRadioSignalClassified }
+     * Create an instance of {@link FindAllFreq }
      * 
      */
-    public QueryRadioSignalClassified createQueryRadioSignalClassified() {
-        return new QueryRadioSignalClassified();
+    public FindAllFreq createFindAllFreq() {
+        return new FindAllFreq();
     }
 
     /**
-     * Create an instance of {@link RadioSignalClassifiedQueryRequest }
+     * Create an instance of {@link FindAllFreqResponse }
      * 
      */
-    public RadioSignalClassifiedQueryRequest createRadioSignalClassifiedQueryRequest() {
-        return new RadioSignalClassifiedQueryRequest();
+    public FindAllFreqResponse createFindAllFreqResponse() {
+        return new FindAllFreqResponse();
     }
 
     /**
-     * Create an instance of {@link QueryRadioSignalClassifiedResponse }
+     * Create an instance of {@link FindAllFreqRange }
      * 
      */
-    public QueryRadioSignalClassifiedResponse createQueryRadioSignalClassifiedResponse() {
-        return new QueryRadioSignalClassifiedResponse();
+    public FindAllFreqRange createFindAllFreqRange() {
+        return new FindAllFreqRange();
     }
 
     /**
-     * Create an instance of {@link RadioSignalClassifiedQueryResponse }
+     * Create an instance of {@link FindAllFreqRangeResponse }
      * 
      */
-    public RadioSignalClassifiedQueryResponse createRadioSignalClassifiedQueryResponse() {
-        return new RadioSignalClassifiedQueryResponse();
+    public FindAllFreqRangeResponse createFindAllFreqRangeResponse() {
+        return new FindAllFreqRangeResponse();
     }
 
     /**
-     * Create an instance of {@link QueryRadioSignalSubClassified }
+     * Create an instance of {@link FindByFreq }
      * 
      */
-    public QueryRadioSignalSubClassified createQueryRadioSignalSubClassified() {
-        return new QueryRadioSignalSubClassified();
+    public FindByFreq createFindByFreq() {
+        return new FindByFreq();
     }
 
     /**
-     * Create an instance of {@link RadioSignalSubClassifiedQueryRequest }
+     * Create an instance of {@link FindByFreqResponse }
      * 
      */
-    public RadioSignalSubClassifiedQueryRequest createRadioSignalSubClassifiedQueryRequest() {
-        return new RadioSignalSubClassifiedQueryRequest();
+    public FindByFreqResponse createFindByFreqResponse() {
+        return new FindByFreqResponse();
     }
 
     /**
-     * Create an instance of {@link QueryRadioSignalSubClassifiedResponse }
+     * Create an instance of {@link FindFreqByWarn }
      * 
      */
-    public QueryRadioSignalSubClassifiedResponse createQueryRadioSignalSubClassifiedResponse() {
-        return new QueryRadioSignalSubClassifiedResponse();
+    public FindFreqByWarn createFindFreqByWarn() {
+        return new FindFreqByWarn();
     }
 
     /**
-     * Create an instance of {@link RadioSignalSubClassifiedQueryResponse }
+     * Create an instance of {@link FindFreqByWarnResponse }
      * 
      */
-    public RadioSignalSubClassifiedQueryResponse createRadioSignalSubClassifiedQueryResponse() {
-        return new RadioSignalSubClassifiedQueryResponse();
+    public FindFreqByWarnResponse createFindFreqByWarnResponse() {
+        return new FindFreqByWarnResponse();
     }
 
     /**
-     * Create an instance of {@link QueryAbnormalHistory }
+     * Create an instance of {@link CreateOrUpdate }
      * 
      */
-    public QueryAbnormalHistory createQueryAbnormalHistory() {
-        return new QueryAbnormalHistory();
+    public CreateOrUpdate createCreateOrUpdate() {
+        return new CreateOrUpdate();
     }
 
     /**
-     * Create an instance of {@link AbnormalHistoryRequest }
+     * Create an instance of {@link CreateOrUpdateResponse }
      * 
      */
-    public AbnormalHistoryRequest createAbnormalHistoryRequest() {
-        return new AbnormalHistoryRequest();
+    public CreateOrUpdateResponse createCreateOrUpdateResponse() {
+        return new CreateOrUpdateResponse();
     }
 
     /**
-     * Create an instance of {@link QueryAbnormalHistoryResponse }
+     * Create an instance of {@link RemoveAllTask }
      * 
      */
-    public QueryAbnormalHistoryResponse createQueryAbnormalHistoryResponse() {
-        return new QueryAbnormalHistoryResponse();
+    public RemoveAllTask createRemoveAllTask() {
+        return new RemoveAllTask();
     }
 
     /**
-     * Create an instance of {@link AbnormalHistoryQueryResponse }
+     * Create an instance of {@link RemoveAllTaskResponse }
      * 
      */
-    public AbnormalHistoryQueryResponse createAbnormalHistoryQueryResponse() {
-        return new AbnormalHistoryQueryResponse();
+    public RemoveAllTaskResponse createRemoveAllTaskResponse() {
+        return new RemoveAllTaskResponse();
     }
 
     /**
-     * Create an instance of {@link QuerySignalFromWarningID }
+     * Create an instance of {@link RemoveById }
      * 
      */
-    public QuerySignalFromWarningID createQuerySignalFromWarningID() {
-        return new QuerySignalFromWarningID();
+    public RemoveById createRemoveById() {
+        return new RemoveById();
     }
 
     /**
-     * Create an instance of {@link QuerySignalFromWarningIDResponse }
+     * Create an instance of {@link RemoveByIdResponse }
      * 
      */
-    public QuerySignalFromWarningIDResponse createQuerySignalFromWarningIDResponse() {
-        return new QuerySignalFromWarningIDResponse();
+    public RemoveByIdResponse createRemoveByIdResponse() {
+        return new RemoveByIdResponse();
     }
 
     /**
-     * Create an instance of {@link RadioSignalFromWarningIDQueryResponse }
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
      * 
      */
-    public RadioSignalFromWarningIDQueryResponse createRadioSignalFromWarningIDQueryResponse() {
-        return new RadioSignalFromWarningIDQueryResponse();
+    @XmlElementDecl(namespace = "http://tempuri.org/", name = "QueryImportantMonitorFreqRangeResult", scope = QueryImportantMonitorFreqRangeResponse.class)
+    public JAXBElement<String> createQueryImportantMonitorFreqRangeResponseQueryImportantMonitorFreqRangeResult(String value) {
+        return new JAXBElement<String>(_QueryImportantMonitorFreqRangeResponseQueryImportantMonitorFreqRangeResult_QNAME, String.class, QueryImportantMonitorFreqRangeResponse.class, value);
     }
 
     /**
-     * Create an instance of {@link InsertRadioSignal }
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
      * 
      */
-    public InsertRadioSignal createInsertRadioSignal() {
-        return new InsertRadioSignal();
+    @XmlElementDecl(namespace = "http://tempuri.org/", name = "jsonStr", scope = UpdateImportantMonitorFreqRange.class)
+    public JAXBElement<String> createUpdateImportantMonitorFreqRangeJsonStr(String value) {
+        return new JAXBElement<String>(_UpdateImportantMonitorFreqRangeJsonStr_QNAME, String.class, UpdateImportantMonitorFreqRange.class, value);
     }
 
     /**
-     * Create an instance of {@link RadioSignalDTO }
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
      * 
      */
-    public RadioSignalDTO createRadioSignalDTO() {
-        return new RadioSignalDTO();
+    @XmlElementDecl(namespace = "http://tempuri.org/", name = "UpdateImportantMonitorFreqRangeResult", scope = UpdateImportantMonitorFreqRangeResponse.class)
+    public JAXBElement<String> createUpdateImportantMonitorFreqRangeResponseUpdateImportantMonitorFreqRangeResult(String value) {
+        return new JAXBElement<String>(_UpdateImportantMonitorFreqRangeResponseUpdateImportantMonitorFreqRangeResult_QNAME, String.class, UpdateImportantMonitorFreqRangeResponse.class, value);
     }
 
     /**
-     * Create an instance of {@link InsertRadioSignalResponse }
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
      * 
      */
-    public InsertRadioSignalResponse createInsertRadioSignalResponse() {
-        return new InsertRadioSignalResponse();
+    @XmlElementDecl(namespace = "http://tempuri.org/", name = "jsonStr", scope = AddImportantMonitorFreq.class)
+    public JAXBElement<String> createAddImportantMonitorFreqJsonStr(String value) {
+        return new JAXBElement<String>(_UpdateImportantMonitorFreqRangeJsonStr_QNAME, String.class, AddImportantMonitorFreq.class, value);
     }
 
     /**
-     * Create an instance of {@link RadioSignalOperationReponse }
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
      * 
      */
-    public RadioSignalOperationReponse createRadioSignalOperationReponse() {
-        return new RadioSignalOperationReponse();
+    @XmlElementDecl(namespace = "http://tempuri.org/", name = "FindAllFreqResult", scope = FindAllFreqResponse.class)
+    public JAXBElement<String> createFindAllFreqResponseFindAllFreqResult(String value) {
+        return new JAXBElement<String>(_FindAllFreqResponseFindAllFreqResult_QNAME, String.class, FindAllFreqResponse.class, value);
     }
 
     /**
-     * Create an instance of {@link InsertAbnormalHistory }
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
      * 
      */
-    public InsertAbnormalHistory createInsertAbnormalHistory() {
-        return new InsertAbnormalHistory();
+    @XmlElementDecl(namespace = "http://tempuri.org/", name = "FindAllFreqRangeResult", scope = FindAllFreqRangeResponse.class)
+    public JAXBElement<String> createFindAllFreqRangeResponseFindAllFreqRangeResult(String value) {
+        return new JAXBElement<String>(_FindAllFreqRangeResponseFindAllFreqRangeResult_QNAME, String.class, FindAllFreqRangeResponse.class, value);
     }
 
     /**
-     * Create an instance of {@link RadioSignalAbnormalHistoryDTO }
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
      * 
      */
-    public RadioSignalAbnormalHistoryDTO createRadioSignalAbnormalHistoryDTO() {
-        return new RadioSignalAbnormalHistoryDTO();
+    @XmlElementDecl(namespace = "http://tempuri.org/", name = "warnId", scope = FindByFreq.class)
+    public JAXBElement<String> createFindByFreqWarnId(String value) {
+        return new JAXBElement<String>(_FindByFreqWarnId_QNAME, String.class, FindByFreq.class, value);
     }
 
     /**
-     * Create an instance of {@link InsertAbnormalHistoryResponse }
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
      * 
      */
-    public InsertAbnormalHistoryResponse createInsertAbnormalHistoryResponse() {
-        return new InsertAbnormalHistoryResponse();
+    @XmlElementDecl(namespace = "http://tempuri.org/", name = "FindByFreqResult", scope = FindByFreqResponse.class)
+    public JAXBElement<String> createFindByFreqResponseFindByFreqResult(String value) {
+        return new JAXBElement<String>(_FindByFreqResponseFindByFreqResult_QNAME, String.class, FindByFreqResponse.class, value);
     }
 
     /**
-     * Create an instance of {@link UpdateRadioSignal }
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
      * 
      */
-    public UpdateRadioSignal createUpdateRadioSignal() {
-        return new UpdateRadioSignal();
+    @XmlElementDecl(namespace = "http://tempuri.org/", name = "warnId", scope = FindFreqByWarn.class)
+    public JAXBElement<String> createFindFreqByWarnWarnId(String value) {
+        return new JAXBElement<String>(_FindByFreqWarnId_QNAME, String.class, FindFreqByWarn.class, value);
     }
 
     /**
-     * Create an instance of {@link UpdateRadioSignalResponse }
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
      * 
      */
-    public UpdateRadioSignalResponse createUpdateRadioSignalResponse() {
-        return new UpdateRadioSignalResponse();
+    @XmlElementDecl(namespace = "http://tempuri.org/", name = "FindFreqByWarnResult", scope = FindFreqByWarnResponse.class)
+    public JAXBElement<String> createFindFreqByWarnResponseFindFreqByWarnResult(String value) {
+        return new JAXBElement<String>(_FindFreqByWarnResponseFindFreqByWarnResult_QNAME, String.class, FindFreqByWarnResponse.class, value);
     }
 
     /**
-     * Create an instance of {@link UpdateRadioSignalForRequest }
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
      * 
      */
-    public UpdateRadioSignalForRequest createUpdateRadioSignalForRequest() {
-        return new UpdateRadioSignalForRequest();
+    @XmlElementDecl(namespace = "http://tempuri.org/", name = "jsonTaskParam", scope = CreateOrUpdate.class)
+    public JAXBElement<String> createCreateOrUpdateJsonTaskParam(String value) {
+        return new JAXBElement<String>(_CreateOrUpdateJsonTaskParam_QNAME, String.class, CreateOrUpdate.class, value);
     }
 
     /**
-     * Create an instance of {@link RadioSignalUpdateRequest }
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
      * 
      */
-    public RadioSignalUpdateRequest createRadioSignalUpdateRequest() {
-        return new RadioSignalUpdateRequest();
+    @XmlElementDecl(namespace = "http://tempuri.org/", name = "CreateOrUpdateResult", scope = CreateOrUpdateResponse.class)
+    public JAXBElement<String> createCreateOrUpdateResponseCreateOrUpdateResult(String value) {
+        return new JAXBElement<String>(_CreateOrUpdateResponseCreateOrUpdateResult_QNAME, String.class, CreateOrUpdateResponse.class, value);
     }
 
     /**
-     * Create an instance of {@link UpdateRadioSignalForRequestResponse }
+     * Create an instance of {@link JAXBElement }{@code <}{@link ArrayOfguid }{@code >}}
      * 
      */
-    public UpdateRadioSignalForRequestResponse createUpdateRadioSignalForRequestResponse() {
-        return new UpdateRadioSignalForRequestResponse();
-    }
-
-    /**
-     * Create an instance of {@link UpdateAbnormalHistory }
-     * 
-     */
-    public UpdateAbnormalHistory createUpdateAbnormalHistory() {
-        return new UpdateAbnormalHistory();
-    }
-
-    /**
-     * Create an instance of {@link UpdateAbnormalHistoryResponse }
-     * 
-     */
-    public UpdateAbnormalHistoryResponse createUpdateAbnormalHistoryResponse() {
-        return new UpdateAbnormalHistoryResponse();
-    }
-
-    /**
-     * Create an instance of {@link RemoveRadioSignal }
-     * 
-     */
-    public RemoveRadioSignal createRemoveRadioSignal() {
-        return new RemoveRadioSignal();
-    }
-
-    /**
-     * Create an instance of {@link ArrayOfString }
-     * 
-     */
-    public ArrayOfString createArrayOfString() {
-        return new ArrayOfString();
-    }
-
-    /**
-     * Create an instance of {@link RemoveRadioSignalResponse }
-     * 
-     */
-    public RemoveRadioSignalResponse createRemoveRadioSignalResponse() {
-        return new RemoveRadioSignalResponse();
-    }
-
-    /**
-     * Create an instance of {@link RemoveAbnormalHistory }
-     * 
-     */
-    public RemoveAbnormalHistory createRemoveAbnormalHistory() {
-        return new RemoveAbnormalHistory();
-    }
-
-    /**
-     * Create an instance of {@link RemoveAbnormalHistoryResponse }
-     * 
-     */
-    public RemoveAbnormalHistoryResponse createRemoveAbnormalHistoryResponse() {
-        return new RemoveAbnormalHistoryResponse();
-    }
-
-    /**
-     * Create an instance of {@link ArrayOfSignalTypeDTO }
-     * 
-     */
-    public ArrayOfSignalTypeDTO createArrayOfSignalTypeDTO() {
-        return new ArrayOfSignalTypeDTO();
-    }
-
-    /**
-     * Create an instance of {@link SignalTypeDTO }
-     * 
-     */
-    public SignalTypeDTO createSignalTypeDTO() {
-        return new SignalTypeDTO();
-    }
-
-    /**
-     * Create an instance of {@link ArrayOfInt }
-     * 
-     */
-    public ArrayOfInt createArrayOfInt() {
-        return new ArrayOfInt();
-    }
-
-    /**
-     * Create an instance of {@link ArrayOfRadioSignalDTO }
-     * 
-     */
-    public ArrayOfRadioSignalDTO createArrayOfRadioSignalDTO() {
-        return new ArrayOfRadioSignalDTO();
-    }
-
-    /**
-     * Create an instance of {@link ArrayOfRadioSignalAppendDTO }
-     * 
-     */
-    public ArrayOfRadioSignalAppendDTO createArrayOfRadioSignalAppendDTO() {
-        return new ArrayOfRadioSignalAppendDTO();
-    }
-
-    /**
-     * Create an instance of {@link RadioSignalAppendDTO }
-     * 
-     */
-    public RadioSignalAppendDTO createRadioSignalAppendDTO() {
-        return new RadioSignalAppendDTO();
-    }
-
-    /**
-     * Create an instance of {@link ArrayOfRadioSignalStationDTO }
-     * 
-     */
-    public ArrayOfRadioSignalStationDTO createArrayOfRadioSignalStationDTO() {
-        return new ArrayOfRadioSignalStationDTO();
-    }
-
-    /**
-     * Create an instance of {@link RadioSignalStationDTO }
-     * 
-     */
-    public RadioSignalStationDTO createRadioSignalStationDTO() {
-        return new RadioSignalStationDTO();
-    }
-
-    /**
-     * Create an instance of {@link RadioStationSignalDTO }
-     * 
-     */
-    public RadioStationSignalDTO createRadioStationSignalDTO() {
-        return new RadioStationSignalDTO();
-    }
-
-    /**
-     * Create an instance of {@link RadioStationDTO }
-     * 
-     */
-    public RadioStationDTO createRadioStationDTO() {
-        return new RadioStationDTO();
-    }
-
-    /**
-     * Create an instance of {@link RadioFreqDTO }
-     * 
-     */
-    public RadioFreqDTO createRadioFreqDTO() {
-        return new RadioFreqDTO();
-    }
-
-    /**
-     * Create an instance of {@link ArrayOfRadioSignalAbnormalHistoryDTO }
-     * 
-     */
-    public ArrayOfRadioSignalAbnormalHistoryDTO createArrayOfRadioSignalAbnormalHistoryDTO() {
-        return new ArrayOfRadioSignalAbnormalHistoryDTO();
-    }
-
-    /**
-     * Create an instance of {@link ArrayOfFrequencyBand }
-     * 
-     */
-    public ArrayOfFrequencyBand createArrayOfFrequencyBand() {
-        return new ArrayOfFrequencyBand();
-    }
-
-    /**
-     * Create an instance of {@link FrequencyBand }
-     * 
-     */
-    public FrequencyBand createFrequencyBand() {
-        return new FrequencyBand();
-    }
-
-    /**
-     * Create an instance of {@link ArrayOfSignalStaticsOnFreqBand }
-     * 
-     */
-    public ArrayOfSignalStaticsOnFreqBand createArrayOfSignalStaticsOnFreqBand() {
-        return new ArrayOfSignalStaticsOnFreqBand();
-    }
-
-    /**
-     * Create an instance of {@link SignalStaticsOnFreqBand }
-     * 
-     */
-    public SignalStaticsOnFreqBand createSignalStaticsOnFreqBand() {
-        return new SignalStaticsOnFreqBand();
-    }
-
-    /**
-     * Create an instance of {@link ArrayOfSignalStatics }
-     * 
-     */
-    public ArrayOfSignalStatics createArrayOfSignalStatics() {
-        return new ArrayOfSignalStatics();
-    }
-
-    /**
-     * Create an instance of {@link SignalStatics }
-     * 
-     */
-    public SignalStatics createSignalStatics() {
-        return new SignalStatics();
-    }
-
-    /**
-     * Create an instance of {@link ArrayOfSignalStaticsOnStation }
-     * 
-     */
-    public ArrayOfSignalStaticsOnStation createArrayOfSignalStaticsOnStation() {
-        return new ArrayOfSignalStaticsOnStation();
-    }
-
-    /**
-     * Create an instance of {@link SignalStaticsOnStation }
-     * 
-     */
-    public SignalStaticsOnStation createSignalStaticsOnStation() {
-        return new SignalStaticsOnStation();
-    }
-
-    /**
-     * Create an instance of {@link ArrayOfSignalSubStaticsOnFreqBand }
-     * 
-     */
-    public ArrayOfSignalSubStaticsOnFreqBand createArrayOfSignalSubStaticsOnFreqBand() {
-        return new ArrayOfSignalSubStaticsOnFreqBand();
-    }
-
-    /**
-     * Create an instance of {@link SignalSubStaticsOnFreqBand }
-     * 
-     */
-    public SignalSubStaticsOnFreqBand createSignalSubStaticsOnFreqBand() {
-        return new SignalSubStaticsOnFreqBand();
-    }
-
-    /**
-     * Create an instance of {@link ArrayOfSignalSubStaticsOnStation }
-     * 
-     */
-    public ArrayOfSignalSubStaticsOnStation createArrayOfSignalSubStaticsOnStation() {
-        return new ArrayOfSignalSubStaticsOnStation();
-    }
-
-    /**
-     * Create an instance of {@link SignalSubStaticsOnStation }
-     * 
-     */
-    public SignalSubStaticsOnStation createSignalSubStaticsOnStation() {
-        return new SignalSubStaticsOnStation();
+    @XmlElementDecl(namespace = "http://tempuri.org/", name = "ids", scope = RemoveAllTask.class)
+    public JAXBElement<ArrayOfguid> createRemoveAllTaskIds(ArrayOfguid value) {
+        return new JAXBElement<ArrayOfguid>(_RemoveAllTaskIds_QNAME, ArrayOfguid.class, RemoveAllTask.class, value);
     }
 
 }

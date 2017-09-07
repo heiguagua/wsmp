@@ -216,7 +216,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 				dataType : 'html',// 只返回bool值
 				success : function(html) {
 					layer.msg("更新成功！");
-					$("#important_monitor").html(html);
+//					$("#important_monitor").html(html);
                     $("#modalConfig").modal("hide");
 				},
 				error : function(html) {
@@ -305,7 +305,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                     dataType : 'html',// 只返回bool值
                     success : function(html) {
                         layer.msg("添加成功！");
-                        $("#important_monitor").html(html);
+//                        $("#important_monitor").html(html);
                         $("#modalConfig").modal("hide");
                     },
                     error : function(html) {
@@ -338,7 +338,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                     dataType : 'html',// 只返回bool值
                     success : function(html) {
                         layer.msg("删除成功!");
-                        $("#important_monitor").html(html);
+//                        $("#important_monitor").html(html);
                         $("#modalConfig").modal("hide");
                     },
                     error : function(html) {

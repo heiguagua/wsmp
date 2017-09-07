@@ -1,9 +1,10 @@
 
 package org.tempuri;
 
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -34,18 +35,18 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "CreateOrUpdate")
 public class CreateOrUpdate {
 
-    @XmlElement(nillable = true)
-    protected String jsonTaskParam;
+    @XmlElementRef(name = "jsonTaskParam", namespace = "http://tempuri.org/", type = JAXBElement.class, required = false)
+    protected JAXBElement<String> jsonTaskParam;
 
     /**
      * 获取jsonTaskParam属性的值。
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link JAXBElement }{@code <}{@link String }{@code >}
      *     
      */
-    public String getJsonTaskParam() {
+    public JAXBElement<String> getJsonTaskParam() {
         return jsonTaskParam;
     }
 
@@ -54,10 +55,10 @@ public class CreateOrUpdate {
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link JAXBElement }{@code <}{@link String }{@code >}
      *     
      */
-    public void setJsonTaskParam(String value) {
+    public void setJsonTaskParam(JAXBElement<String> value) {
         this.jsonTaskParam = value;
     }
 

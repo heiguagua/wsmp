@@ -1,9 +1,10 @@
 
 package org.tempuri;
 
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -34,18 +35,18 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "UpdateImportantMonitorFreqRangeResponse")
 public class UpdateImportantMonitorFreqRangeResponse {
 
-    @XmlElement(name = "UpdateImportantMonitorFreqRangeResult", nillable = true)
-    protected String updateImportantMonitorFreqRangeResult;
+    @XmlElementRef(name = "UpdateImportantMonitorFreqRangeResult", namespace = "http://tempuri.org/", type = JAXBElement.class, required = false)
+    protected JAXBElement<String> updateImportantMonitorFreqRangeResult;
 
     /**
      * 获取updateImportantMonitorFreqRangeResult属性的值。
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link JAXBElement }{@code <}{@link String }{@code >}
      *     
      */
-    public String getUpdateImportantMonitorFreqRangeResult() {
+    public JAXBElement<String> getUpdateImportantMonitorFreqRangeResult() {
         return updateImportantMonitorFreqRangeResult;
     }
 
@@ -54,10 +55,10 @@ public class UpdateImportantMonitorFreqRangeResponse {
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link JAXBElement }{@code <}{@link String }{@code >}
      *     
      */
-    public void setUpdateImportantMonitorFreqRangeResult(String value) {
+    public void setUpdateImportantMonitorFreqRangeResult(JAXBElement<String> value) {
         this.updateImportantMonitorFreqRangeResult = value;
     }
 

@@ -164,8 +164,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 										layer.msg("更新成功！");
 										/*$("#important_monitor").html(html);
 										$("#modalConfig").find(".time-picker")
-												.datetimepicker({});
-										$("#modalConfig").modal('hide');*/
+												.datetimepicker({});*/
+										$("#modalConfig").modal('hide');
 									},
 									error : function(html) {
 										console.log(html);
@@ -193,8 +193,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 										layer.msg("添加成功！");
 										/*$("#important_monitor").html(html);
 										$("#modalConfig").find(".time-picker")
-												.datetimepicker({});
-										$("#modalConfig").modal('hide');*/
+												.datetimepicker({});*/
+										$("#modalConfig").modal('hide');
 										$('#table-radio').bootstrapTable(
 												"refresh", {
 													silent : true
@@ -228,22 +228,22 @@ define(	["ajax", "dojo/parser", "esri/map",
 											url : 'waveorder/importantMonitorDelete',
 											type : 'post',
 											data : str,
-											dataType : 'text',// 只返回bool值
-											success : function(text) {
+											dataType : 'html',// 只返回bool值
+											success : function(html) {
 												layer.msg("删除成功!");
 												/*$("#important_monitor")
 														.html(html);
 												$("#modalConfig")
 														.find(".time-picker")
-														.datetimepicker({});
-												$("#modalConfig").modal('hide');*/
+														.datetimepicker({});*/
+												$("#modalConfig").modal('hide');
 												$('#table-radio')
 														.bootstrapTable(
 																"refresh", {
 																	silent : true
 																});
 											},
-											error : function(text) {
+											error : function(html) {
 												console.log(html);
 												layer.alert(html.responseText);
 											}
