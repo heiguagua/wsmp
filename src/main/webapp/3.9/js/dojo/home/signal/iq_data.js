@@ -127,13 +127,15 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                 },
                 tooltip : {
                     'trigger' : 'axis',
-                    formatter:function(param){
-                      iq_start_index_temp = param[0].dataIndex;
-                      iq_end_index = param[0].dataIndex;
-                      if(param && param[0] && param[0].name && param[0].value) {
-                        return param[0].name + " : " + param[0].value;
-                      }
-                    }
+                    backgroundColor:'rgb(183,183,183)'
+                    //    formatter:function(param){
+                    //  iq_start_index_temp = param[0].dataIndex;
+                    //  iq_end_index = param[0].dataIndex;
+                    //  if(param && param[0] && param[0].name && param[0].value) {
+                    //      console.log(param[0].name + " :" + param[0].value)
+                    //    return param[0].name + " :" + param[0].value;
+                    //  }
+                    //}
                 },
                 legend : {
                     show : true,
@@ -227,7 +229,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
 
                     'splitLine' : {
                         show : false
-                    },
+                    }
                 }, {
                     'gridIndex' : 1,
                     'type' : 'value',
