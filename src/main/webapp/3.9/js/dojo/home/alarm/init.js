@@ -30,6 +30,10 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                 var stationID = $("#stationId").val();//选中的表某行的id
 
                 var des = $("#des").val();
+                if(des &&des.length>255){
+                    layer.alert('备注信息不能超过255个字符');
+                    return
+                }
                 var centerFrq = $('#search').val();
                 if (!isNaN(centerFrq)) {
                     centerFrq = (parseInt(centerFrq)) * 1000000;
@@ -38,19 +42,19 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                 var signalId = $('#signal_list').find('option:selected').val();
                 var warningFreqID = $('#signal_list').find('option:selected').val();
                 var typeCode = $('#typeCode').val();
-                var tableIsHasData =$("#table-station-list").find(".no-records-found").length==0;//true表示有数据，false表示无数据
-                //当信号不是非法信号和不明信号时，模态框提交内容必需要选中台站某行
-                if(typeCode !='3'&&typeCode !='4'&& !stationID){
-                    if(!tableIsHasData){
-                        $("#submitButton").attr('disabled','true');
-                        layer.alert('没有台站列表信息，请先添加台站');
-                        return
-                    }else if(tableIsHasData){
-                        $("#submitButton").removeAttr('disabled');
-                    }
-                    layer.alert('请选择要关联的台站');
-                    return
-                }
+                //var tableIsHasData =$("#table-station-list").find(".no-records-found").length==0;//true表示有数据，false表示无数据
+                ////当信号不是非法信号和不明信号时，模态框提交内容必需要选中台站某行
+                //if(typeCode !='3'&&typeCode !='4'&& !stationID){
+                //    if(!tableIsHasData){
+                //        $("#submitButton").attr('disabled','true');
+                //        layer.alert('没有台站列表信息，请先添加台站');
+                //        return
+                //    }else if(tableIsHasData){
+                //        $("#submitButton").removeAttr('disabled');
+                //    }
+                //    layer.alert('请选择要关联的台站');
+                //    return
+                //}
                 var data = {};
                 var station = {};
                 var singal = {}
@@ -590,11 +594,11 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                             $("#submitButton").removeAttr('disabled');
                             var status = $('#signal_list').find('option:selected').attr("status");
                             
-                            if (status == "1"){
-                                $('#submitButton').attr('disabled',"true");
-                            }else {
-                                $('#submitButton').removeAttr("disabled");
-                            }
+                            //if (status == "1"){
+                            //    $('#submitButton').attr('disabled',"true");
+                            //}else {
+                            //    $('#submitButton').removeAttr("disabled");
+                            //}
 
                             $("#modalStationAlarm").modal();
 
@@ -727,11 +731,11 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                             });
                             $("#submitButton").removeAttr('disabled');
                             var status = $('#signal_list').find('option:selected').attr("status");
-                            if (status == "1"){
-                                $('#submitButton').attr('disabled',"true");
-                            }else {
-                                $('#submitButton').removeAttr("disabled");
-                            }
+                            //if (status == "1"){
+                            //    $('#submitButton').attr('disabled',"true");
+                            //}else {
+                            //    $('#submitButton').removeAttr("disabled");
+                            //}
                             $("#modalStationAlarm").modal();
 
                         });
@@ -849,11 +853,11 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                             $("#submitButton").removeAttr('disabled');
                             var status = $('#signal_list').find('option:selected').attr("status");
 
-                            if (status == "1"){
-                                $('#submitButton').attr('disabled',"true");
-                            }else {
-                                $('#submitButton').removeAttr("disabled");
-                            }
+                            //if (status == "1"){
+                            //    $('#submitButton').attr('disabled',"true");
+                            //}else {
+                            //    $('#submitButton').removeAttr("disabled");
+                            //}
                             $("#modalStationAlarm").modal();
 
                         });
@@ -876,11 +880,11 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                             $("#stationWrap").html("");
                             $("#stationWrap").html(temp);
                             $("#submitButton").removeAttr('disabled');
-                            if (status == "1"){
-                                $('#submitButton').attr('disabled',"true");
-                            }else {
-                                $('#submitButton').removeAttr("disabled");
-                            }
+                            //if (status == "1"){
+                            //    $('#submitButton').attr('disabled',"true");
+                            //}else {
+                            //    $('#submitButton').removeAttr("disabled");
+                            //}
                             $("#modalStationAlarm").modal();
                         });
 
@@ -908,11 +912,11 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                             $("#submitButton").removeAttr('disabled');
                             var status = $('#signal_list').find('option:selected').attr("status");
 
-                            if (status == "1"){
-                                $('#submitButton').attr('disabled',"true");
-                            }else {
-                                $('#submitButton').removeAttr("disabled");
-                            }
+                            //if (status == "1"){
+                            //    $('#submitButton').attr('disabled',"true");
+                            //}else {
+                            //    $('#submitButton').removeAttr("disabled");
+                            //}
                             $("#modalStationAlarm").modal();
 
                         });
