@@ -422,72 +422,73 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             $("#signal_list1").find("option:selected").attr("stationkey",stationKey);
             //合法信号时提交添加违规记录表单的参数
             if(typeCode==1){
-                //添加违规记录参数
-                //新增违规记录 POST请求,修改put,通过$("#searchId").val()判断
-                //不恢复 PUT请求 必须的参数为isInvalid=0
-                //恢复 PUT请求 必须的参数为isInvalid=1
-                var params ={};
-                var addOpUpdate =$("#searchId").val();//修改还是新增，id
-                var freId =$("#signal_list1").find("option:selected").val();//信号搜索时选择的时间id
-                params.des =des;
-                params.freqguid = (addOpUpdate)?addOpUpdate:freId;
-                params.idz = addOpUpdate;
-                params.freIdz = $("#signal_list1").find("option:selected").val();
-                var saveDate =$('#startTime').val();
-                if(saveDate){
-                    saveDate = saveDate.split(' ')[0].replace(/-/g,"")+saveDate.split(' ')[1].replace(/:/g,"");
-                }else{
-                    layer.alert("开始时间必填！");
-                    $('#startTime').focus();
-                    return;
-                }
-                params.saveDate =saveDate;
-
-                params.historyType =$('#typeCodes').val();
-                var isInvalid =$('#isNormal').is(":checked")?$('#isNormal').val():$('#noNormal').val();
-                params.isInvalid =parseInt(isInvalid);
-                console.log('isInvalid:'+params.isInvalid);
-                if(params.isInvalid){//恢复正常,结束时间可选；
-                    var invalidDate = $('#stopTime').val();
-                    if(invalidDate){
-                        invalidDate = invalidDate.split(' ')[0].replace(/-/g,"")+invalidDate.split(' ')[1].replace(/:/g,"");
+                //添加违规记录checkbox选中显示表单并可以提交，否则隐藏不提交
+                if($("#addOrUpdate").is(':checked')){
+                    //添加违规记录参数
+                    //新增违规记录 POST请求,修改put,通过$("#searchId").val()判断
+                    //不恢复 PUT请求 必须的参数为isInvalid=0
+                    //恢复 PUT请求 必须的参数为isInvalid=1
+                    var params ={};
+                    var addOpUpdate =$("#searchId").val();//修改还是新增，id
+                    var freId =$("#signal_list1").find("option:selected").val();//信号搜索时选择的时间id
+                    params.des =des;
+                    params.freqguid = (addOpUpdate)?addOpUpdate:freId;
+                    params.idz = addOpUpdate;
+                    params.freIdz = $("#signal_list1").find("option:selected").val();
+                    var saveDate =$('#startTime').val();
+                    if(saveDate){
+                        saveDate = saveDate.split(' ')[0].replace(/-/g,"")+saveDate.split(' ')[1].replace(/:/g,"");
                     }else{
-                        layer.alert("是否恢复正常选择是时，结束时间必填！");
-                        $('#stopTime').focus();
+                        layer.alert("开始时间必填！");
+                        //$('#startTime').focus();
                         return;
                     }
-                    params.invalidDate = invalidDate;
-                }
-            }
-            //合法信号时提交添加违规记录表单
-            if(typeCode==1){
-                //params= JSON.stringify(params);
-                //console.log("添加违规记录参数："+params);
-                //console.log("添加还是修改："+addOpUpdate);
-                if(addOpUpdate){
-                    if(params.isInvalid ==1){
-                        ajax.put("data/signal/AbnormalHistoryByInvaliDate", params, function() {
-                            layer.msg('修改违规记录成功');
-                        });
-                    }else if(params.isInvalid ==0){
-                        ajax.put("data/signal/AbnormalHistory", params, function() {
-                            layer.msg('修改违规记录成功');
-                        });
-                    }
+                    params.saveDate =saveDate;
 
-                }else {
-                    params= JSON.stringify(params);
-                    $.ajax({
-                        url : 'data/signal/AbnormalHistory',
-                        type : 'post',
-                        data : params,//传输数据
-                        contentType : 'application/json',//传输数据类型
-                        success : function (result) {
-                            layer.msg('添加违规记录成功');
+                    params.historyType =$('#typeCodes').val();
+                    var isInvalid =$('#isNormal').is(":checked")?$('#isNormal').val():$('#noNormal').val();
+                    params.isInvalid =parseInt(isInvalid);
+                    console.log('isInvalid:'+params.isInvalid);
+                    if(params.isInvalid){//恢复正常,结束时间可选；
+                        var invalidDate = $('#stopTime').val();
+                        if(invalidDate){
+                            invalidDate = invalidDate.split(' ')[0].replace(/-/g,"")+invalidDate.split(' ')[1].replace(/:/g,"");
+                        }else{
+                            layer.alert("是否恢复正常选择是时，结束时间必填！");
+                            $('#stopTime').focus();
+                            return;
                         }
-                    });
+                        params.invalidDate = invalidDate;
+                    }
+                    //params= JSON.stringify(params);
+                    //console.log("添加违规记录参数："+params);
+                    //console.log("添加还是修改："+addOpUpdate);
+                    if(addOpUpdate){
+                        if(params.isInvalid ==1){
+                            ajax.put("data/signal/AbnormalHistoryByInvaliDate", params, function() {
+                                layer.msg('修改违规记录成功');
+                            });
+                        }else if(params.isInvalid ==0){
+                            ajax.put("data/signal/AbnormalHistory", params, function() {
+                                layer.msg('修改违规记录成功');
+                            });
+                        }
 
+                    }else {
+                        params= JSON.stringify(params);
+                        $.ajax({
+                            url : 'data/signal/AbnormalHistory',
+                            type : 'post',
+                            data : params,//传输数据
+                            contentType : 'application/json',//传输数据类型
+                            success : function (result) {
+                                layer.msg('添加违规记录成功');
+                            }
+                        });
+
+                    }
                 }
+
             }
             ajax.put("data/signal/one/update", data, function() {
                 layer.msg('成功');
@@ -538,9 +539,13 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 //'<span class="search-icon"></span></div>' +
                 '<table class="table table-striped" id="table-station-list"></table>' +
                 '<div class="mark-content">' +
-                '<p id="addOrUpdate" searchId>添加违规记录</p>'+
+                //'<p id="addOrUpdate">添加违规记录</p>'+
+                '<div class="checkbox checkbox-primary flex1 ">'+
+                '  <input type="checkbox" name="addOrUpdate" id="addOrUpdate" >'+
+                '  <label for="addOrUpdate" id="addOrUpdateName"> 添加违规记录 </label>'+
+                '</div>'+
                 '<input id="searchId"  value="" style="display: none"/>'+
-                '<form id="important-monitor-form" class="form-horizontal ">'+
+                '<form id="important-monitor-form" class="form-horizontal " style="display:none">'+
                 '	<div class="form-box-wrap">'+
                 '		 <div class="form-group col-sm-6">'+
                 '			<label for="" class="col-xs-3 control-label">开始时间</label>'+
@@ -592,6 +597,14 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             $("#stationWrap").html(temp);
             //日期插件初始化
             $("#stationWrap").find(".time-picker").datetimepicker({});
+            //添加违规记录checkbox选中显示表单，否则隐藏
+            $("#addOrUpdate").change(function(e){
+               if($("#addOrUpdate").is(':checked')){
+                 $("#important-monitor-form").attr("style","display:block;")
+               }else{
+                   $("#important-monitor-form").attr("style","display:none;")
+               }
+            });
             //结束日期变化
             $("#stopTime").change(function(e){
                 var timestamp1 = Date.parse(new Date($("#startTime").val()));//开始时间的时间戳
@@ -621,7 +634,8 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 ajax.get("data/signal/AbnormalHistory", data, function (result) {
                     console.log(result);
                     if(result.id!=''){
-                        $("#addOrUpdate").html('修改违规记录');
+                        $("#addOrUpdateName").html('修改违规记录');
+                        $("#important-monitor-form").attr("style","display:block;")
                         $("#searchId").val(result.id);//通过此value判断是否是修改违规记录还是新增违规记录
                         $('#startTime').val(result.saveDate); //开始时间
                         $('#typeCodes').val(result.historyType);//类型

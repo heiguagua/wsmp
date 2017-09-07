@@ -159,7 +159,7 @@ public class SignalViewController {
                 singal.setContext(t.getSaveDate().toString().replaceAll("T", " "));
 				singal.setDes(t.getDes());
 				singal.setType(t.getTypeCode());
-				singal.setStationKey(singal.getStationKey());
+				singal.setStationKey(t.getStationKey());
 				//singal.setStation(t.getStationDTOs().getRadioSignalStationDTO().stream().findFirst().orElseGet(()->new RadioSignalStationDTO()).getStationNumber());
                 return singal;
             }).collect(toList());

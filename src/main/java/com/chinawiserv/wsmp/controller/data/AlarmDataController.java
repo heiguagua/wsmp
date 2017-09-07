@@ -6,6 +6,8 @@ import com.chinawiserv.apps.util.logger.Logger;
 import com.chinawiserv.wsmp.client.WebServiceSoapFactory;
 import com.chinawiserv.wsmp.hbase.HbaseClient;
 import com.chinawiserv.wsmp.hbase.query.OccAndMax;
+import com.chinawiserv.wsmp.javatoc.LevelCompute;
+import com.chinawiserv.wsmp.javatoc.model.LevelResult;
 import com.chinawiserv.wsmp.kriging.Interpolation;
 import com.chinawiserv.wsmp.kriging.model.DataInfo;
 import com.chinawiserv.wsmp.model.LevelLocate;
@@ -363,7 +365,6 @@ public class AlarmDataController {
 
     @PostMapping(path = "/warringconfirm")
     public void warning_confirm(@RequestBody String param) throws JsonProcessingException {
-
         FreqWarningOperationResponse res = null;
         try {
             res = (FreqWarningOperationResponse) service.freqWarnServiceCall("update", param, FreqWarningDTO.class);
@@ -408,19 +409,19 @@ public class AlarmDataController {
             ).toArray();
             //至少要八个点才能计算出来
 
-//            LevelResult result = LevelCompute.levelCompute(ids,flon,flat,level, ids.length,10, waringsensorid);
-//            int size = result.getOangeR().size();
-//
-//            for (int index = 0;index < size;index++){
-//
-//                Map<String, Object> mapLocate = Maps.newHashMap();
-//
-//                mapLocate.put("x", result.getOutLon().get(index));
-//                mapLocate.put("y", result.getOutLat().get(index));
-//                mapLocate.put("radius",  result.getOangeR().get(index));
-//                levelPoint.add(mapLocate);
-//            }
-           // Logger.info("场强定位计算正常 操作时间{} 返回值为{}", LocalDateTime.now().toString(), JSON.toJSONString(result));
+            LevelResult result = LevelCompute.levelCompute(ids,flon,flat,level, ids.length,10, waringsensorid);
+            int size = result.getOangeR().size();
+
+            for (int index = 0;index < size;index++){
+
+                Map<String, Object> mapLocate = Maps.newHashMap();
+
+                mapLocate.put("x", result.getOutLon().get(index));
+                mapLocate.put("y", result.getOutLat().get(index));
+                mapLocate.put("radius",  result.getOangeR().get(index));
+                levelPoint.add(mapLocate);
+            }
+            Logger.info("场强定位计算正常 操作时间{} 返回值为{}", LocalDateTime.now().toString(), JSON.toJSONString(result));
         } catch (NumberFormatException e) {
             Logger.error("场强查询异常 ,操作时间：{},入参：开始时间：{}，中心频率：{} 异常 ：{}", LocalDateTime.now(), param.get("beginTime"), param.get("frequency"), e);
         }
@@ -778,7 +779,6 @@ public class AlarmDataController {
             requestParam.put("index", index);
             requestParam.put("count", limit);
 
-            Map<String, Object> list = Maps.newLinkedHashMap();
 //            list.put("string", areaCodeList);
            //requestParam.put("areaCodeList", list);
              requestParam.put("beginFreq",downFreqDouble);
@@ -787,8 +787,7 @@ public class AlarmDataController {
             final RStatQuerySignalsResponse2 response = (RStatQuerySignalsResponse2) service.radioStationServiceCall("rStatQuerySignals",
                     mapper.writeValueAsString(requestParam), RStatQuerySignalsRequest.class);
 
-            List<Station> reslutDtos;
-            reslutDtos = response.getRStatSignalList().getRadioStationSignalDTO().stream().map((RadioStationSignalDTO t) -> {
+            List<Station>  reslutDtos = response.getRStatSignalList().getRadioStationSignalDTO().stream().map((RadioStationSignalDTO t) -> {
 
                 final RadioStationDTO radioStationDTO = t.getStation();
 

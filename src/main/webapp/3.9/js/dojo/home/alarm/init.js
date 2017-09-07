@@ -648,7 +648,7 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                                 //data:reslut,
                                 striped: true, //是否显示行间隔色
                                 dataField: "rows", //bootstrap table 可以前端分页也可以后端分页，这里
-                                url: "data/alarm/StationInfo",
+                                url: "data/alarm/stationsf",
                                 //我们使用的是后端分页，后端分页时需返回含有total：总记录数,这个键值好像是固定的
                                 //rows： 记录集合 键值可以修改  dataField 自己定义成自己想要的就好
                                 detailView: false,
