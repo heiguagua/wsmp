@@ -34,6 +34,13 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                 dataType : 'html',//返回数据类型
                 success : function (html) {
                     $("#important_monitor").html(html);
+                     // 如果查询到的是频段重点监测,则屏蔽删除按钮
+                    var isfreqRange = $("#important_monitor").find("#freqRange").val();
+                        if(isfreqRange == "true") {
+                        	$("#important_monitor").find("#buttonDelete").hide();
+                        }else {
+                        	$("#important_monitor").find("#buttonDelete").show();
+                        }
                     $("#modalConfig").modal('show');
                     $("#modalConfig").find(".time-picker").datetimepicker({
 
@@ -138,7 +145,6 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                     dataType : 'html',// 只返回bool值
                     success : function(html) {
                         layer.msg("更新成功！");
-                        $("#important_monitor").html(html);
                         $("#modalConfig").modal("hide");
                     },
                     error : function(html) {
@@ -163,7 +169,6 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                     dataType : 'html',// 只返回bool值
                     success : function(html) {
                             layer.msg("添加成功！");
-                            $("#important_monitor").html(html);
                             $("#modalConfig").modal("hide");
                     },
                     error : function(html) {
@@ -193,7 +198,6 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                     dataType : 'html',// 只返回bool值
                     success : function(html) {
                         layer.msg("删除成功!");
-                        $("#important_monitor").html(html);
                         $("#modalConfig").modal("hide");
                         },
                     error : function(html) {

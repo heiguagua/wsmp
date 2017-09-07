@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.tempuri.FreqWarningQueryRequest;
 import org.tempuri.FreqWarningQueryResponse;
@@ -33,6 +34,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
 import static java.util.stream.Collectors.toList;
 
 @Controller
@@ -48,17 +51,16 @@ public class AlarmManagerViewController {
 	@Value("${mapservice.wdsl}")
 	private String mapUrl;
 	
-	@Value("${freqWarningWebService.wsdl}")
-	private String urlFreqWarning;
-
-	@Value("${radioSignalWebService.wsdl}")
-	private String urlRadioSignal;
-	
-	@Value("${sefon.webservice.freqservice}")
-	private String urlFreq;
-	
 	@Value("${importFreqRangeManageService.wsdl}")
 	private String urlImportFreqRange;
+	
+	private IImportFreqRangeManageService serviceImportFreqRangeManage;
+	@PostConstruct
+	public void init() throws MalformedURLException {
+		URL url3 = new URL(urlImportFreqRange);
+		serviceImportFreqRangeManage = new ImportFreqRangeManageService(url3).getBasicHttpBindingIImportFreqRangeManageService();
+
+	}
 
 	@GetMapping(path = "/dayCharts")
 	public String dayCharts(@RequestParam Map<String, Object> params) {
@@ -156,91 +158,83 @@ public class AlarmManagerViewController {
 		return modelAndView;
 	}
 	
-	 @PostMapping("/importantMonitor")
-	    public String importantMonitor(Model model,@RequestBody Map<String,Object> map) throws MalformedURLException {
-	    	//根据频段查询重点监测，返回页面和对象
-	    	System.out.println("=================================map:"+map);
-//	    	BigDecimal beginFreq = new BigDecimal(map.get("beginFreq").toString());
-			BigDecimal centorFreq = new BigDecimal(map.get("centorFreq").toString());
-			BigDecimal divisor = new BigDecimal(1000000);
-			URL url = new URL(urlImportFreqRange);
-	    	ImportFreqRangeManageService service = new ImportFreqRangeManageService(url);
-			IImportFreqRangeManageService service2 = service.getBasicHttpBindingIImportFreqRangeManageService();
-			String result = service2.findFreqByWarn(map.get("warningID").toString());
-			System.out.println("=================================result:"+result);
-			final Type type = new TypeReference<MeasureTaskParamDto>() {}.getType();
-			@SuppressWarnings("unchecked")
-			MeasureTaskParamDto resultDTO = (MeasureTaskParamDto) JSON.parseObject(result,type);
-			System.out.println("====================================resultDTO:"+JSON.toJSONString(resultDTO));
-			//查询到重点监测
-			if(resultDTO != null) {
+	@PostMapping("/importantMonitor")
+	public String importantMonitor(Model model, @RequestBody Map<String, Object> map) {
+		// 根据频段查询重点监测，返回页面和对象
+		Logger.info("=================================map:" + map);
+		BigDecimal centorFreq = new BigDecimal(map.get("centorFreq").toString());
+		BigDecimal divisor = new BigDecimal(1000000);
+		Double centorFre = Double.valueOf(centorFreq.divide(divisor).toString());
+		String result = serviceImportFreqRangeManage.findByFreq(map.get("warningID").toString(), centorFre);
+		Logger.info("=================================result:" + result);
+		final Type type = new TypeReference<MeasureTaskParamDto>() {
+		}.getType();
+		MeasureTaskParamDto resultDTO = (MeasureTaskParamDto) JSON.parseObject(result, type);
+		Logger.info("====================================resultDTO:" + JSON.toJSONString(resultDTO));
+		// 查询到重点监测
+		if (resultDTO != null) {
+			// 判断是频点重点监测还是频段重点监测
+			if (resultDTO.isFreqRange()) {
+				// 如果是频段
+				// 传入告警ID和中心频率
+				resultDTO.setWarnID(map.get("warningID").toString());
+				resultDTO.setBeginFreq(Double.valueOf(centorFreq.divide(divisor).toString()));
+				resultDTO.setEndFreq(Double.valueOf(centorFreq.divide(divisor).toString()));
 				model.addAttribute("dto", resultDTO);
-				return "waveorder/important_monitor";
-			}else {
-				//如果没有查询到数据，设置默认的频段范围，是否频段，nullID
-				MeasureTaskParamDto dto = new MeasureTaskParamDto();
-				dto.setBeginFreq(Double.valueOf(centorFreq.divide(divisor).toString()));
-				dto.setEndFreq(Double.valueOf(centorFreq.divide(divisor).toString()));
-				dto.setFreqRange(false);
-				dto.setWarnID(map.get("warningID").toString());
-				System.out.println("===================================================没有数据传入model:"+JSON.toJSONString(dto));
-				model.addAttribute("dto",dto);
-				return "waveorder/important_monitor_insert";
+			} else {
+				// 如果是频点
+				model.addAttribute("dto", resultDTO);
 			}
-			
-	    }
-	    
-	    @PostMapping("/importantMonitorCreateOrUpdate")
-	    public String importantMonitorCreateOrUpdate(MeasureTaskParamDto dto,Model model) throws MalformedURLException {
-	    	//或者直接用模型接受参数MeasureTaskParamDto.java
-	    	System.out.println("===================更新或添加=======================前端传参dto:"+JSON.toJSONString(dto));
-	    	if(dto.getID().equals("")) {
-	    		dto.setID(null);
-	    	}
-	    	//System.out.println("==========================================前端传参operation:"+operation);
-	    	URL url = new URL(urlImportFreqRange);
-	    	ImportFreqRangeManageService service = new ImportFreqRangeManageService(url);
-			IImportFreqRangeManageService service2 = service.getBasicHttpBindingIImportFreqRangeManageService();
-	    		//更新或添加重点监测，进行更新或添加操作，只管操作成功与否.
-	    		String json = JSON.toJSONString(dto);
-	    		String resultDTOJson = service2.createOrUpdate(json);
-	    		final Type type = new TypeReference<MeasureTaskParamDto>() {}.getType();
-	    		MeasureTaskParamDto resultDTO = (MeasureTaskParamDto) JSON.parseObject(resultDTOJson,type);
-	    		if(resultDTOJson != null) {
-	    			System.out.println("====================================更新或添加成功");
-	    			System.out.println("====================================更新或添加model:"+JSON.toJSONString(resultDTO));
-	    			model.addAttribute("dto",resultDTO);
-	    			return "waveorder/important_monitor";
-	    		}else{
-	    			System.out.println("====================================更新或添加失败");
-	    			return "false";
-	    		}
-	    }
-	    
-	    
-	    @PostMapping("/importantMonitorDelete")
-	    public String importantMonitorDelete(MeasureTaskParamDto dto,Model model) throws MalformedURLException {
-	    	//或者直接用模型接受参数MeasureTaskParamDto.java
-	    	System.out.println("==================删除========================前端传参dto:"+JSON.toJSONString(dto));
-	    	URL url = new URL(urlImportFreqRange);
-	    	ImportFreqRangeManageService service = new ImportFreqRangeManageService(url);
-			IImportFreqRangeManageService service2 = service.getBasicHttpBindingIImportFreqRangeManageService();
+			return "waveorder/important_monitor";
+		} else {
+			// 如果没有查询到数据，设置默认的频段范围，是否频段，nullID
+			MeasureTaskParamDto dto = new MeasureTaskParamDto();
+			dto.setBeginFreq(Double.valueOf(centorFreq.divide(divisor).toString()));
+			dto.setEndFreq(Double.valueOf(centorFreq.divide(divisor).toString()));
+			dto.setFreqRange(false);
+			dto.setWarnID(map.get("warningID").toString());
+			Logger.info(
+					"===================================================没有数据传入model:" + JSON.toJSONString(dto));
+			model.addAttribute("dto", dto);
+			return "waveorder/important_monitor_insert";
+		}
 
-			Boolean resultDTOJson = service2.removeById(dto.getID());
-			if(resultDTOJson) {
-				System.out.println("==========================================删除成功!");
-				MeasureTaskParamDto modelDTO = new MeasureTaskParamDto();
-				modelDTO.setBeginFreq(dto.getBeginFreq());
-				modelDTO.setEndFreq(dto.getEndFreq());
-				modelDTO.setFreqRange(true);
-				System.out.println("==========================================删除成功传入model:"+JSON.toJSONString(modelDTO));
-				model.addAttribute("dto",modelDTO);
-				return "waveorder/important_monitor_insert";
-				//成功返回空白页面
-			}else {
-				System.out.println("==========================================删除失败!");
-				return "false";
-				//不成功返回失败信息
-			}
-	    }
+	}
+
+	@ResponseBody
+	@PostMapping("/importantMonitorCreateOrUpdate")
+	public String importantMonitorCreateOrUpdate(MeasureTaskParamDto dto, Model model){
+		// 或者直接用模型接受参数MeasureTaskParamDto.java
+		Logger.info("===================更新或添加=======================前端传参dto:" + JSON.toJSONString(dto));
+		if (dto.getID().equals("")) {
+			dto.setID(null);
+		}
+		// 更新信号管理中的频段的重点监测(相当于添加频点的重点监测)
+		if (dto.isFreqRange()) {
+			// 如果为频段重点监测,
+			dto.setID(null);
+			dto.setFreqRange(false);
+		}
+		// 更新或添加重点监测，进行更新或添加操作，只管操作成功与否.
+		String json = JSON.toJSONString(dto);
+		String resultDTOJson = serviceImportFreqRangeManage.createOrUpdate(json);
+		if (resultDTOJson != null) {
+			return null;
+		} else {
+			return "false";
+		}
+	}
+
+	@ResponseBody
+	@PostMapping("/importantMonitorDelete")
+	public String importantMonitorDelete(MeasureTaskParamDto dto, Model model){
+		// 或者直接用模型接受参数MeasureTaskParamDto.java
+		Logger.info("==================删除========================前端传参dto:" + JSON.toJSONString(dto));
+		Boolean resultDTOJson = serviceImportFreqRangeManage.removeById(dto.getID());
+		if (resultDTOJson) {
+			return null;
+		} else {
+			return "false";
+		}
+	}
 }

@@ -171,6 +171,13 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                     dataType : 'html',//返回数据类型
                     success : function (html) {
                         $("#important_monitor").html(html);
+                        // 如果查询到的是频段重点监测,则屏蔽删除按钮
+                        var isfreqRange = $("#important_monitor").find("#freqRange").val();
+                        if(isfreqRange == "true") {
+                        	$("#important_monitor").find("#buttonDelete").hide();
+                        }else {
+                        	$("#important_monitor").find("#buttonDelete").show();
+                        }
                         $("#modalConfig").modal('show');
                         $("#modalConfig").find(".time-picker").datetimepicker({
 

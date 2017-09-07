@@ -127,17 +127,6 @@ public class WaveOrderViewController {
     		}else {
     			return "false";
     		}
-//    		final Type type = new TypeReference<MeasureTaskParamDto>() {}.getType();
-//    		MeasureTaskParamDto resultDTO = (MeasureTaskParamDto) JSON.parseObject(resultDTOJson,type);
-//    		if(resultDTOJson != null) {
-//    			Logger.info("更新或添加成功！");
-//    			Logger.info("更新或添加成功传入model:{}", JSON.toJSONString(resultDTO));
-//    			model.addAttribute("dto",resultDTO);
-//    			return "waveorder/important_monitor";
-//    		}else{
-//    			Logger.info("更新或添加失败！");
-//    			return "false";
-//    		}
     }
     
     @ResponseBody
@@ -152,22 +141,6 @@ public class WaveOrderViewController {
 		}else {
 			return "false";
 		}
-		
-//		if(resultDTOJson) {
-//			Logger.info("删除成功！");
-//			MeasureTaskParamDto modelDTO = new MeasureTaskParamDto();
-//			modelDTO.setBeginFreq(dto.getBeginFreq());
-//			modelDTO.setEndFreq(dto.getEndFreq());
-//			modelDTO.setFreqRange(true);
-//			Logger.info("删除成功传入model:{}", JSON.toJSONString(modelDTO));
-//			model.addAttribute("dto",modelDTO);
-//			return "waveorder/important_monitor_insert";
-//			//成功返回空白页面
-//		}else {
-//			Logger.info("删除失败！");
-//			return "false";
-//			//不成功返回失败信息
-//		}
     }
 
 	@PostMapping("/redioType")
