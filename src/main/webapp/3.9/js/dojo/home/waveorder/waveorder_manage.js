@@ -162,10 +162,10 @@ define(	["ajax", "dojo/parser", "esri/map",
 									dataType : 'html',// 只返回bool值
 									success : function(html) {
 										layer.msg("更新成功！");
-										$("#important_monitor").html(html);
+										/*$("#important_monitor").html(html);
 										$("#modalConfig").find(".time-picker")
 												.datetimepicker({});
-										$("#modalConfig").modal('hide');
+										$("#modalConfig").modal('hide');*/
 									},
 									error : function(html) {
 										console.log(html);
@@ -191,14 +191,14 @@ define(	["ajax", "dojo/parser", "esri/map",
 									dataType : 'html',// 只返回bool值
 									success : function(html) {
 										layer.msg("添加成功！");
-										$("#important_monitor").html(html);
+										/*$("#important_monitor").html(html);
 										$("#modalConfig").find(".time-picker")
 												.datetimepicker({});
+										$("#modalConfig").modal('hide');*/
 										$('#table-radio').bootstrapTable(
 												"refresh", {
 													silent : true
 												});
-										$("#modalConfig").modal('hide');
 
 									},
 									error : function(html) {
@@ -228,22 +228,22 @@ define(	["ajax", "dojo/parser", "esri/map",
 											url : 'waveorder/importantMonitorDelete',
 											type : 'post',
 											data : str,
-											dataType : 'html',// 只返回bool值
-											success : function(html) {
+											dataType : 'text',// 只返回bool值
+											success : function(text) {
 												layer.msg("删除成功!");
-												$("#important_monitor")
+												/*$("#important_monitor")
 														.html(html);
 												$("#modalConfig")
 														.find(".time-picker")
 														.datetimepicker({});
+												$("#modalConfig").modal('hide');*/
 												$('#table-radio')
 														.bootstrapTable(
 																"refresh", {
 																	silent : true
 																});
-												$("#modalConfig").modal('hide');
 											},
-											error : function(html) {
+											error : function(text) {
 												console.log(html);
 												layer.alert(html.responseText);
 											}

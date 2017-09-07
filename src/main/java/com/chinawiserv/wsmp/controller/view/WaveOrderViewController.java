@@ -81,21 +81,21 @@ public class WaveOrderViewController {
 			dto.setBeginFreq(beginFreq);
 			dto.setEndFreq(endFreq);
 			dto.setFreqRange(true);
-			Logger.debug("没有数据传入model:{}",JSON.toJSONString(dto));
+			Logger.info("没有数据传入model:{}",JSON.toJSONString(dto));
 			model.addAttribute("dto",dto);
 			return "waveorder/important_monitor_insert";
 		}
 		final Type type = new TypeReference<List<MeasureTaskParamDto>>() {}.getType();
 		@SuppressWarnings("unchecked")
 		List<MeasureTaskParamDto> resultList = (List<MeasureTaskParamDto>) JSON.parseObject(result,type);
-		Logger.debug("resultList:{}",JSON.toJSONString(resultList));
+		Logger.info("resultList:{}",JSON.toJSONString(resultList));
 		//过滤传过来的频段
 		Optional<MeasureTaskParamDto> optional = resultList.stream().filter(dto -> beginFreq >= dto.getBeginFreq() &&
 				endFreq <= dto.getEndFreq())
 				.findFirst();
 		
 		if(optional.isPresent()) {
-			Logger.debug("查询结果:{}",JSON.toJSONString(optional.get()));
+			Logger.info("查询结果:{}",JSON.toJSONString(optional.get()));
 			model.addAttribute("dto",optional.get());
 			return "waveorder/important_monitor";
 		}
@@ -104,7 +104,7 @@ public class WaveOrderViewController {
 		dto.setBeginFreq(beginFreq);
 		dto.setEndFreq(endFreq);
 		dto.setFreqRange(true);
-		Logger.debug("没有数据传入model:{}",JSON.toJSONString(dto));
+		Logger.info("没有数据传入model:{}",JSON.toJSONString(dto));
 		model.addAttribute("dto",dto);
 		return "waveorder/important_monitor_insert";
     }
@@ -120,17 +120,23 @@ public class WaveOrderViewController {
     		//更新或添加重点监测，进行更新或添加操作，只管操作成功与否.
     		String json = JSON.toJSONString(dto);
     		String resultDTOJson = serviceImportFreqRangeManage.createOrUpdate(json);
-    		final Type type = new TypeReference<MeasureTaskParamDto>() {}.getType();
-    		MeasureTaskParamDto resultDTO = (MeasureTaskParamDto) JSON.parseObject(resultDTOJson,type);
     		if(resultDTOJson != null) {
-    			Logger.debug("更新或添加成功！");
-    			Logger.debug("更新或添加成功传入model:{}", JSON.toJSONString(resultDTO));
-    			model.addAttribute("dto",resultDTO);
-    			return "waveorder/important_monitor";
-    		}else{
-    			Logger.debug("更新或添加失败！");
+    			Logger.info("更新或添加成功！");
+    		}else {
     			return "false";
     		}
+    		return null;
+//    		final Type type = new TypeReference<MeasureTaskParamDto>() {}.getType();
+//    		MeasureTaskParamDto resultDTO = (MeasureTaskParamDto) JSON.parseObject(resultDTOJson,type);
+//    		if(resultDTOJson != null) {
+//    			Logger.info("更新或添加成功！");
+//    			Logger.info("更新或添加成功传入model:{}", JSON.toJSONString(resultDTO));
+//    			model.addAttribute("dto",resultDTO);
+//    			return "waveorder/important_monitor";
+//    		}else{
+//    			Logger.info("更新或添加失败！");
+//    			return "false";
+//    		}
     }
     
     
@@ -140,20 +146,27 @@ public class WaveOrderViewController {
     	Logger.info("删除-前端传参dto:{}",JSON.toJSONString(dto));
 		Boolean resultDTOJson = serviceImportFreqRangeManage.removeById(dto.getID());
 		if(resultDTOJson) {
-			Logger.debug("删除成功！");
-			MeasureTaskParamDto modelDTO = new MeasureTaskParamDto();
-			modelDTO.setBeginFreq(dto.getBeginFreq());
-			modelDTO.setEndFreq(dto.getEndFreq());
-			modelDTO.setFreqRange(true);
-			Logger.debug("删除成功传入model:{}", JSON.toJSONString(modelDTO));
-			model.addAttribute("dto",modelDTO);
-			return "waveorder/important_monitor_insert";
-			//成功返回空白页面
+			Logger.info("删除成功！");
+			return "true";
 		}else {
-			Logger.debug("删除失败！");
 			return "false";
-			//不成功返回失败信息
 		}
+		
+//		if(resultDTOJson) {
+//			Logger.info("删除成功！");
+//			MeasureTaskParamDto modelDTO = new MeasureTaskParamDto();
+//			modelDTO.setBeginFreq(dto.getBeginFreq());
+//			modelDTO.setEndFreq(dto.getEndFreq());
+//			modelDTO.setFreqRange(true);
+//			Logger.info("删除成功传入model:{}", JSON.toJSONString(modelDTO));
+//			model.addAttribute("dto",modelDTO);
+//			return "waveorder/important_monitor_insert";
+//			//成功返回空白页面
+//		}else {
+//			Logger.info("删除失败！");
+//			return "false";
+//			//不成功返回失败信息
+//		}
     }
 
 	@PostMapping("/redioType")
