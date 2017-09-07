@@ -206,10 +206,10 @@ public class WaveOrderViewController {
 					rsCount.setKonwStationNumber(f.getValue());
 					break;
 				case 3:
-					rsCount.setUnKonw(f.getValue());
+					rsCount.setIllegalSignal(f.getValue());
 					break;
 				case 4:
-					rsCount.setIllegalSignal(f.getValue());
+					rsCount.setUnKonw(f.getValue());
 					break;
 				default:
 					;
@@ -258,10 +258,10 @@ public class WaveOrderViewController {
 					rsCount.setKonwStationNumber(f.getValue());
 					break;
 				case 3:
-					rsCount.setUnKonw(f.getValue());
+					rsCount.setIllegalSignal(f.getValue());
 					break;
 				case 4:
-					rsCount.setIllegalSignal(f.getValue());
+					rsCount.setUnKonw(f.getValue());
 					break;
 				default:
 					;

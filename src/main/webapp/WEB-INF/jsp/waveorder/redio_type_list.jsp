@@ -24,15 +24,15 @@
             </li>
             <li class='item'>
               <div class="radio radio-primary  ">
-                <input type="radio" name="signal-type" id="unknown" value="3" isSubType="false">
-                <label for="unknown"> 不明信号</label>
-              </div> <span class='signal-sign unknown'></span> <span class='number unknown-number'>${redio.unKonw}</span>
+                <input type="radio" name="signal-type" id="illegal" value="3" isSubType="false">
+                <label for="illegal"> 非法信号</label>
+              </div> <span class='signal-sign illegal'></span> <span class='number illegal-number'>${redio.illegalSignal}</span>
             </li>
             <li class='item'>
               <div class="radio radio-primary  ">
-                <input type="radio" name="signal-type" id="illegal" value="4" isSubType="false">
-                <label for="illegal"> 非法信号</label>
-              </div> <span class='signal-sign illegal'></span> <span class='number illegal-number'>${redio.illegalSignal}</span>
+                <input type="radio" name="signal-type" id="unknown" value="4" isSubType="false">
+                <label for="unknown"> 不明信号</label>
+              </div> <span class='signal-sign unknown'></span> <span class='number unknown-number'>${redio.unKonw}</span>
             </li>
           </ul>
           <a class='btn btn-default btn-refresh pull-right'>

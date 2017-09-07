@@ -653,10 +653,10 @@ define(	["ajax", "dojo/parser", "esri/map",
 							url_countBackgroundSymbol = "images/known.svg";
 							break;
 						case 3 :
-							url_countBackgroundSymbol = "images/unknown.svg";
+							url_countBackgroundSymbol = "images/illegal.svg";
 							break;
 						case 4 :
-							url_countBackgroundSymbol = "images/illegal.svg";
+							url_countBackgroundSymbol = "images/unknown.svg";
 							break;
 						default :
 							break;
@@ -1025,12 +1025,12 @@ define(	["ajax", "dojo/parser", "esri/map",
 									+ row.endFreq + '">' + value + '</a>';
 						}
 					}, {
-						field : 'unKonw',
-						title : '不明信号',
+						field : 'illegalSignal',
+						title : '非法信号',
 						width : '10%',
-						titleTooltip : '不明信号',
+						titleTooltip : '非法信号',
 						sortable : true,
-						sortName : "unKonw",
+						sortName : "illegalSignal",
 						formatter : function(value, row, index) {
 							return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
 									+ monitorsID
@@ -1040,12 +1040,12 @@ define(	["ajax", "dojo/parser", "esri/map",
 									+ row.endFreq + '">' + value + '</a>';
 						}
 					}, {
-						field : 'illegalSignal',
-						title : '非法信号',
+						field : 'unKonw',
+						title : '不明信号',
 						width : '10%',
-						titleTooltip : '非法信号',
+						titleTooltip : '不明信号',
 						sortable : true,
-						sortName : "illegalSignal",
+						sortName : "unKonw",
 						formatter : function(value, row, index) {
 							return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
 									+ monitorsID

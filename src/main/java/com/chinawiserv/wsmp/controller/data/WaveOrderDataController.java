@@ -149,10 +149,10 @@ public class WaveOrderDataController {
 					rsCount.setKonwStationNumber(count);
 					break;
 				case 3:
-					rsCount.setUnKonw(count);
+					rsCount.setIllegalSignal(count);
 					break;
 				case 4:
-					rsCount.setIllegalSignal(count);
+					rsCount.setUnKonw(count);
 					break;
 				default:;
 				}
