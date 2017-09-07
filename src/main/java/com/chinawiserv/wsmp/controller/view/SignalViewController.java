@@ -193,13 +193,12 @@ public class SignalViewController {
 			String result = service2.findFreqByWarn(map.get("warningID").toString());
 			System.out.println("=================================result:"+result);
 			final Type type = new TypeReference<MeasureTaskParamDto>() {}.getType();
-			@SuppressWarnings("unchecked")
 			MeasureTaskParamDto resultDTO = (MeasureTaskParamDto) JSON.parseObject(result,type);
 			System.out.println("====================================resultDTO:"+JSON.toJSONString(resultDTO));
 			//查询到重点监测
 			if(resultDTO != null) {
 				model.addAttribute("dto", resultDTO);
-				return "signal/important_monitor";
+				return "waveorder/important_monitor";
 			}else {
 				//如果没有查询到数据，设置默认的频段范围，是否频段，nullID
 				MeasureTaskParamDto dto = new MeasureTaskParamDto();
@@ -209,7 +208,7 @@ public class SignalViewController {
 				dto.setWarnID(map.get("warningID").toString());
 				System.out.println("===================================================没有数据传入model:"+JSON.toJSONString(dto));
 				model.addAttribute("dto",dto);
-				return "signal/important_monitor_insert";
+				return "waveorder/important_monitor_insert";
 			}
 			
 	    }
@@ -234,7 +233,7 @@ public class SignalViewController {
 	    			System.out.println("====================================更新或添加成功");
 	    			System.out.println("====================================更新或添加model:"+JSON.toJSONString(resultDTO));
 	    			model.addAttribute("dto",resultDTO);
-	    			return "signal/important_monitor";
+	    			return "waveorder/important_monitor";
 	    		}else{
 	    			System.out.println("====================================更新或添加失败");
 	    			return "false";
@@ -259,7 +258,7 @@ public class SignalViewController {
 				modelDTO.setFreqRange(true);
 				System.out.println("==========================================删除成功传入model:"+JSON.toJSONString(modelDTO));
 				model.addAttribute("dto",modelDTO);
-				return "signal/important_monitor_insert";
+				return "waveorder/important_monitor_insert";
 				//成功返回空白页面
 			}else {
 				System.out.println("==========================================删除失败!");

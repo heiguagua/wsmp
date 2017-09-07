@@ -161,6 +161,7 @@
 	</div>
 	
 	<input name="ID" value="${dto.getID()}" hidden="true"> 
+	<input name="warnID" value="${dto.getWarnID()}" hidden="true">
 	<input name="freqRange" value="${dto.isFreqRange()}" hidden="true">
 	<input name="beginFreq" value="${dto.getBeginFreq()}" hidden="true">
 	<input name="endFreq" value="${dto.getEndFreq()}" hidden="true">

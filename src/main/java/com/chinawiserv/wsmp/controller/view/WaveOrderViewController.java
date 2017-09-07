@@ -67,7 +67,7 @@ public class WaveOrderViewController {
     @PostMapping("/importantMonitor")
     public String importantMonitor(Model model,@RequestBody Map<String,Object> map) {
     	//根据频段查询重点监测，返回页面和对象
-    	Logger.debug("map:{}",map);
+    	Logger.info("map:{}",map);
     	//BigInteger convert to Double
     	BigDecimal beginFreqCalculate = new BigDecimal(map.get("beginFreq").toString());
 		BigDecimal endFreqCalculate = new BigDecimal(map.get("endFreq").toString());
@@ -112,7 +112,7 @@ public class WaveOrderViewController {
     @PostMapping("/importantMonitorCreateOrUpdate")
     public String importantMonitorCreateOrUpdate(MeasureTaskParamDto dto,Model model) {
     	//或者直接用模型接受参数MeasureTaskParamDto.java
-    	Logger.debug("更新或添加-前端传参dto:{}",JSON.toJSONString(dto));
+    	Logger.info("更新或添加-前端传参dto:{}",JSON.toJSONString(dto));
     	if(dto.getID().equals("")) {
     		dto.setID(null);
     	}
@@ -137,7 +137,7 @@ public class WaveOrderViewController {
     @PostMapping("/importantMonitorDelete")
     public String importantMonitorDelete(MeasureTaskParamDto dto,Model model) {
     	//或者直接用模型接受参数MeasureTaskParamDto.java
-    	Logger.debug("删除-前端传参dto:{}",JSON.toJSONString(dto));
+    	Logger.info("删除-前端传参dto:{}",JSON.toJSONString(dto));
 		Boolean resultDTOJson = serviceImportFreqRangeManage.removeById(dto.getID());
 		if(resultDTOJson) {
 			Logger.debug("删除成功！");

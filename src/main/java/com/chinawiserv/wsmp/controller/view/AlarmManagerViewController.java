@@ -175,7 +175,7 @@ public class AlarmManagerViewController {
 			//查询到重点监测
 			if(resultDTO != null) {
 				model.addAttribute("dto", resultDTO);
-				return "alarmmanage/important_monitor";
+				return "waveorder/important_monitor";
 			}else {
 				//如果没有查询到数据，设置默认的频段范围，是否频段，nullID
 				MeasureTaskParamDto dto = new MeasureTaskParamDto();
@@ -185,7 +185,7 @@ public class AlarmManagerViewController {
 				dto.setWarnID(map.get("warningID").toString());
 				System.out.println("===================================================没有数据传入model:"+JSON.toJSONString(dto));
 				model.addAttribute("dto",dto);
-				return "alarmmanage/important_monitor_insert";
+				return "waveorder/important_monitor_insert";
 			}
 			
 	    }
@@ -210,7 +210,7 @@ public class AlarmManagerViewController {
 	    			System.out.println("====================================更新或添加成功");
 	    			System.out.println("====================================更新或添加model:"+JSON.toJSONString(resultDTO));
 	    			model.addAttribute("dto",resultDTO);
-	    			return "alarmmanage/important_monitor";
+	    			return "waveorder/important_monitor";
 	    		}else{
 	    			System.out.println("====================================更新或添加失败");
 	    			return "false";
@@ -235,7 +235,7 @@ public class AlarmManagerViewController {
 				modelDTO.setFreqRange(true);
 				System.out.println("==========================================删除成功传入model:"+JSON.toJSONString(modelDTO));
 				model.addAttribute("dto",modelDTO);
-				return "alarmmanage/important_monitor_insert";
+				return "waveorder/important_monitor_insert";
 				//成功返回空白页面
 			}else {
 				System.out.println("==========================================删除失败!");
