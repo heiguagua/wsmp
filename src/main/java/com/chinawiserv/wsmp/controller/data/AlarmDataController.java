@@ -779,7 +779,6 @@ public class AlarmDataController {
             requestParam.put("index", index);
             requestParam.put("count", limit);
 
-            Map<String, Object> list = Maps.newLinkedHashMap();
 //            list.put("string", areaCodeList);
            //requestParam.put("areaCodeList", list);
              requestParam.put("beginFreq",downFreqDouble);
@@ -788,8 +787,7 @@ public class AlarmDataController {
             final RStatQuerySignalsResponse2 response = (RStatQuerySignalsResponse2) service.radioStationServiceCall("rStatQuerySignals",
                     mapper.writeValueAsString(requestParam), RStatQuerySignalsRequest.class);
 
-            List<Station> reslutDtos;
-            reslutDtos = response.getRStatSignalList().getRadioStationSignalDTO().stream().map((RadioStationSignalDTO t) -> {
+            List<Station>  reslutDtos = response.getRStatSignalList().getRadioStationSignalDTO().stream().map((RadioStationSignalDTO t) -> {
 
                 final RadioStationDTO radioStationDTO = t.getStation();
 
