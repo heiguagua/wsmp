@@ -388,8 +388,10 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             var des = $("#des").val();
             var id = $("#signal_list1").find("option:selected").val();
             typeCode = parseInt(typeCode);
+            //console.log($("#table-station-list").find(".no-records-found").length==0)
             var tableIsHasData =$("#table-station-list").find(".no-records-found").length==0;//true表示有数据，false表示无数据
             //当信号不是非法信号和不明信号时，模态框提交内容必需要选中台站某行
+            console.log("是否选中台站某行：true是没有选中"+!stationKey)
             if(typeCode ==2&& !stationKey){
                 if(!tableIsHasData){
                     $("#submitButton").attr('disabled','true');
@@ -397,9 +399,10 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                     return
                 }else if(tableIsHasData){
                     $("#submitButton").removeAttr('disabled');
+                    layer.alert('请选择要关联的台站');
+                    return
                 }
-                layer.alert('请选择要关联的台站');
-                return
+
             }
             data.id = id ;
             data.typeCode = typeCode;
@@ -1029,10 +1032,10 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
     function getFreqList(){
     	// 清除图表
     	destroy_chart_table();
-    	var val = $("#search").val().replace("MHz","");
+    	var val = $("#search").val();
         var data = {};
         if (val && !isNaN(val) && val!='0') {
-            $("#search").val(val+'MHz');
+            $("#search").val(val);
             val = parseFloat(val) * 1000000;
         }else{
             layer.alert("操作失误，请输入大于0的数字！");
