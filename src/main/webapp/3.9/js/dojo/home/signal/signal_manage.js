@@ -663,6 +663,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 
                 });
             }
+            $('#table-station-list').bootstrapTable("destroy");
             $('#table-station-list').bootstrapTable({
                 method : 'get',
                 contentType : "application/x-www-form-urlencoded", //必须要有！！！！
@@ -673,6 +674,8 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 detailView : false,
                 pageNumber : 1, //初始化加载第一页，默认第一页
                 pagination : true, //是否分页
+                sortable: true,
+                sortName: "centerFrequency",
                 url : "data/alarm/stationsf",
                 queryParamsType : 'limit', //查询参数组织方式
                 queryParams : function(params) {
@@ -734,7 +737,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                     title : '中心频率（MHz）',
                     titleTooltip:"中心频率（MHz）",
                     sortable : true,
-                    sortName: "centerFrequency",
+                    sortName: "value",
                     width : '30%',
                     formatter : function(value, row, index) {
                         return '<a>' + value + '</a>';

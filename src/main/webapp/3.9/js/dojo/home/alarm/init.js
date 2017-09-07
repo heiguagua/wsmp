@@ -515,6 +515,8 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                                 detailView: false,
                                 pageNumber: 1, //初始化加载第一页，默认第一页
                                 pagination: true, //是否分页
+                                sortable: true,
+                                sortName: "centerFrequency",
                                 queryParamsType: 'limit', //查询参数组织方式
                                 queryParams: function (params) {
 
@@ -552,7 +554,6 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                                 pageSize: 10, //单页记录数
                                 pageList: [10, 25, 50, 100], //分页步进值
                                 clickToSelect: true, //是否启用点击选中行
-                                sortable : true,
                                 responseHandler: function (res) {
                                     console.log(res);
                                     return res;
@@ -565,13 +566,13 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                                 },
                                 columns: [{
                                     field: 'stationName',
-                                    title: '台站名称56',
+                                    title: '1台站名称',
                                     titleTooltip:"台站名称",
                                     sortable : true
                                 }, {
                                     field: 'centerFrequency',
-                                    title: '中心频率（MHz）',
-                                    titleTooltip:"中心频率（MHz）",
+                                    title: '中心频率(MHz)',
+                                    titleTooltip:"中心频率(MHz)",
                                     sortable : true,
                                     sortName: "value",
                                     formatter: function (value, row, index) {
@@ -579,8 +580,8 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                                     }
                                 }, {
                                     field: 'tapeWidth',
-                                    title: '带宽（kHz）',
-                                    titleTooltip:"带宽（kHz）",
+                                    title: '带宽(kHz)',
+                                    titleTooltip:"带宽(kHz)",
                                     sortable : true
 
                                 }]
@@ -710,8 +711,8 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                                     }
                                 }, {
                                     field: 'centerFrequency',
-                                    title: '中心频率（MHz）',
-                                    titleTooltip:"中心频率（MHz）",
+                                    title: '中心频率(MHz)',
+                                    titleTooltip:"中心频率(MHz)",
                                     sortable : true,
                                     sortName: "value",
                                     formatter: function (value, row, index) {
@@ -719,8 +720,8 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                                     }
                                 }, {
                                     field: 'tapeWidth',
-                                    title: '带宽（kHz）',
-                                    titleTooltip:"带宽（kHz）",
+                                    title: '带宽(kHz)',
+                                    titleTooltip:"带宽(kHz)",
                                     sortable : true
                                 }]
                             });
@@ -831,8 +832,8 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
 
                                 }, {
                                     field: 'centerFrequency',
-                                    title: '中心频率（MHz）',
-                                    titleTooltip:"中心频率（MHz）",
+                                    title: '中心频率(MHz)',
+                                    titleTooltip:"中心频率(MHz)",
                                     sortable : true,
                                     sortName: "value",
                                     formatter: function (value, row, index) {
@@ -840,8 +841,8 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                                     }
                                 }, {
                                     field: 'tapeWidth',
-                                    title: '带宽（kHz）',
-                                    titleTooltip:"带宽（kHz）",
+                                    title: '带宽(kHz)',
+                                    titleTooltip:"带宽(kHz)",
                                     sortable : true
                                 }]
                             });
