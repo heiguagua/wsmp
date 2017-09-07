@@ -1,9 +1,10 @@
 
 package org.tempuri;
 
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -34,18 +35,18 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "FindAllFreqResponse")
 public class FindAllFreqResponse {
 
-    @XmlElement(name = "FindAllFreqResult", nillable = true)
-    protected String findAllFreqResult;
+    @XmlElementRef(name = "FindAllFreqResult", namespace = "http://tempuri.org/", type = JAXBElement.class, required = false)
+    protected JAXBElement<String> findAllFreqResult;
 
     /**
      * 获取findAllFreqResult属性的值。
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link JAXBElement }{@code <}{@link String }{@code >}
      *     
      */
-    public String getFindAllFreqResult() {
+    public JAXBElement<String> getFindAllFreqResult() {
         return findAllFreqResult;
     }
 
@@ -54,10 +55,10 @@ public class FindAllFreqResponse {
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link JAXBElement }{@code <}{@link String }{@code >}
      *     
      */
-    public void setFindAllFreqResult(String value) {
+    public void setFindAllFreqResult(JAXBElement<String> value) {
         this.findAllFreqResult = value;
     }
 

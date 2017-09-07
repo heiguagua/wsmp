@@ -46,11 +46,11 @@
       </div>
       <a class='btn btn-search'>确定</a>
     </div>
-    <div class='config pull-right'>
+    <!-- <div class='config pull-right'>
       <a class='btn btn-default btn-config' data-toggle="modal" data-target="#comConfigModal">
         <img src='images/config.png' />&nbsp;&nbsp;配置
       </a>
-    </div>
+    </div> -->
   </div>
 
   <!--content-->

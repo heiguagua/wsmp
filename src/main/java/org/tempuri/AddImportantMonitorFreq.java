@@ -1,9 +1,10 @@
 
 package org.tempuri;
 
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -34,18 +35,18 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "AddImportantMonitorFreq")
 public class AddImportantMonitorFreq {
 
-    @XmlElement(nillable = true)
-    protected String jsonStr;
+    @XmlElementRef(name = "jsonStr", namespace = "http://tempuri.org/", type = JAXBElement.class, required = false)
+    protected JAXBElement<String> jsonStr;
 
     /**
      * 获取jsonStr属性的值。
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link JAXBElement }{@code <}{@link String }{@code >}
      *     
      */
-    public String getJsonStr() {
+    public JAXBElement<String> getJsonStr() {
         return jsonStr;
     }
 
@@ -54,10 +55,10 @@ public class AddImportantMonitorFreq {
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link JAXBElement }{@code <}{@link String }{@code >}
      *     
      */
-    public void setJsonStr(String value) {
+    public void setJsonStr(JAXBElement<String> value) {
         this.jsonStr = value;
     }
 

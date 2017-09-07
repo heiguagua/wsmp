@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.tempuri.*;
 
@@ -187,19 +188,30 @@ public class SignalViewController {
 //	    	BigDecimal beginFreq = new BigDecimal(map.get("beginFreq").toString());
 			BigDecimal centorFreq = new BigDecimal(map.get("centorFreq").toString());
 			BigDecimal divisor = new BigDecimal(1000000);
+			Double centorFre = Double.valueOf(centorFreq.divide(divisor).toString());
 			URL url = new URL(urlImportFreqRange);
 	    	ImportFreqRangeManageService service = new ImportFreqRangeManageService(url);
 			IImportFreqRangeManageService service2 = service.getBasicHttpBindingIImportFreqRangeManageService();
-			String result = service2.findFreqByWarn(map.get("warningID").toString());
+			String result = service2.findByFreq(map.get("warningID").toString(), centorFre);
 			System.out.println("=================================result:"+result);
 			final Type type = new TypeReference<MeasureTaskParamDto>() {}.getType();
-			@SuppressWarnings("unchecked")
 			MeasureTaskParamDto resultDTO = (MeasureTaskParamDto) JSON.parseObject(result,type);
 			System.out.println("====================================resultDTO:"+JSON.toJSONString(resultDTO));
 			//查询到重点监测
 			if(resultDTO != null) {
-				model.addAttribute("dto", resultDTO);
-				return "signal/important_monitor";
+				//判断是频点重点监测还是频段重点监测
+				if(resultDTO.isFreqRange()) {
+					//如果是频段
+					//传入告警ID和中心频率
+					resultDTO.setWarnID(map.get("warningID").toString());
+					resultDTO.setBeginFreq(Double.valueOf(centorFreq.divide(divisor).toString()));
+					resultDTO.setEndFreq(Double.valueOf(centorFreq.divide(divisor).toString()));
+					model.addAttribute("dto", resultDTO);
+				}else {
+					//如果是频点
+					model.addAttribute("dto", resultDTO);
+				}
+				return "waveorder/important_monitor";
 			}else {
 				//如果没有查询到数据，设置默认的频段范围，是否频段，nullID
 				MeasureTaskParamDto dto = new MeasureTaskParamDto();
@@ -209,11 +221,12 @@ public class SignalViewController {
 				dto.setWarnID(map.get("warningID").toString());
 				System.out.println("===================================================没有数据传入model:"+JSON.toJSONString(dto));
 				model.addAttribute("dto",dto);
-				return "signal/important_monitor_insert";
+				return "waveorder/important_monitor_insert";
 			}
 			
 	    }
 	    
+	 	
 	    @PostMapping("/importantMonitorCreateOrUpdate")
 	    public String importantMonitorCreateOrUpdate(MeasureTaskParamDto dto,Model model) throws MalformedURLException {
 	    	//或者直接用模型接受参数MeasureTaskParamDto.java
@@ -221,7 +234,12 @@ public class SignalViewController {
 	    	if(dto.getID().equals("")) {
 	    		dto.setID(null);
 	    	}
-	    	//System.out.println("==========================================前端传参operation:"+operation);
+	    	//更新信号管理中的频段的重点监测(相当于添加频点的重点监测)
+	    	if(dto.isFreqRange()) {
+	    		//如果为频段重点监测,
+	    		dto.setID(null);
+	    		dto.setFreqRange(false);
+	    	}
 	    	URL url = new URL(urlImportFreqRange);
 	    	ImportFreqRangeManageService service = new ImportFreqRangeManageService(url);
 			IImportFreqRangeManageService service2 = service.getBasicHttpBindingIImportFreqRangeManageService();
@@ -234,7 +252,7 @@ public class SignalViewController {
 	    			System.out.println("====================================更新或添加成功");
 	    			System.out.println("====================================更新或添加model:"+JSON.toJSONString(resultDTO));
 	    			model.addAttribute("dto",resultDTO);
-	    			return "signal/important_monitor";
+	    			return "waveorder/important_monitor";
 	    		}else{
 	    			System.out.println("====================================更新或添加失败");
 	    			return "false";
@@ -259,7 +277,7 @@ public class SignalViewController {
 				modelDTO.setFreqRange(true);
 				System.out.println("==========================================删除成功传入model:"+JSON.toJSONString(modelDTO));
 				model.addAttribute("dto",modelDTO);
-				return "signal/important_monitor_insert";
+				return "waveorder/important_monitor_insert";
 				//成功返回空白页面
 			}else {
 				System.out.println("==========================================删除失败!");

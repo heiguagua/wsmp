@@ -107,10 +107,11 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
 			maxlevelChart.setOption(optionMonth);
 
 			window.onresize = function(){
-				monthChart.clear();
-				monthChart.setOption(optionMonth);
+				maxlevelChart.clear();
+				maxlevelChart.setOption(optionMonth);
+				maxlevelChart.resize();
 			}
-			
+
 			load_level_mouse_event();
 
 

@@ -1,9 +1,10 @@
 
 package org.tempuri;
 
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -34,18 +35,18 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "FindFreqByWarn")
 public class FindFreqByWarn {
 
-    @XmlElement(nillable = true)
-    protected String warnId;
+    @XmlElementRef(name = "warnId", namespace = "http://tempuri.org/", type = JAXBElement.class, required = false)
+    protected JAXBElement<String> warnId;
 
     /**
      * 获取warnId属性的值。
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link JAXBElement }{@code <}{@link String }{@code >}
      *     
      */
-    public String getWarnId() {
+    public JAXBElement<String> getWarnId() {
         return warnId;
     }
 
@@ -54,10 +55,10 @@ public class FindFreqByWarn {
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link JAXBElement }{@code <}{@link String }{@code >}
      *     
      */
-    public void setWarnId(String value) {
+    public void setWarnId(JAXBElement<String> value) {
         this.warnId = value;
     }
 

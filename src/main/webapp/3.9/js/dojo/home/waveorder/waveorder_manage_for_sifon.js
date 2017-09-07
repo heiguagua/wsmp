@@ -116,10 +116,10 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 						url_countBackgroundSymbol = "images/known.svg";
 						break;
 					case 3:
-						url_countBackgroundSymbol = "images/unknown.svg";
+						url_countBackgroundSymbol = "images/illegal.svg";
 						break;
 					case 4:
-						url_countBackgroundSymbol = "images/illegal.svg";
+						url_countBackgroundSymbol = "images/unknown.svg";
 						break;
 					default:
 						break;

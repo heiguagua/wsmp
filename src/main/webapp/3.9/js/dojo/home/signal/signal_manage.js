@@ -216,7 +216,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 				dataType : 'html',// 只返回bool值
 				success : function(html) {
 					layer.msg("更新成功！");
-					$("#important_monitor").html(html);
+//					$("#important_monitor").html(html);
                     $("#modalConfig").modal("hide");
 				},
 				error : function(html) {
@@ -305,7 +305,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                     dataType : 'html',// 只返回bool值
                     success : function(html) {
                         layer.msg("添加成功！");
-                        $("#important_monitor").html(html);
+//                        $("#important_monitor").html(html);
                         $("#modalConfig").modal("hide");
                     },
                     error : function(html) {
@@ -338,7 +338,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                     dataType : 'html',// 只返回bool值
                     success : function(html) {
                         layer.msg("删除成功!");
-                        $("#important_monitor").html(html);
+//                        $("#important_monitor").html(html);
                         $("#modalConfig").modal("hide");
                     },
                     error : function(html) {
@@ -386,21 +386,28 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             var typeCode = $("#typeCode").val();
             //console.log("typeCode:"+typeCode)
             var des = $("#des").val();
-            var id = $("#signal_list1").find("option:selected").val();
-            typeCode = parseInt(typeCode);
-            var tableIsHasData =$("#table-station-list").find(".no-records-found").length==0;//true表示有数据，false表示无数据
-            //当信号不是非法信号和不明信号时，模态框提交内容必需要选中台站某行
-            if(typeCode ==2&& !stationKey){
-                if(!tableIsHasData){
-                    $("#submitButton").attr('disabled','true');
-                    layer.alert('没有台站列表信息，请先添加台站');
-                    return
-                }else if(tableIsHasData){
-                    $("#submitButton").removeAttr('disabled');
-                }
-                layer.alert('请选择要关联的台站');
+            //console.log("备注信息:"+des.length)
+            if(des &&des.length>255){
+                layer.alert('备注信息不能超过255个字符');
                 return
             }
+            var id = $("#signal_list1").find("option:selected").val();
+            typeCode = parseInt(typeCode);
+            //console.log($("#table-station-list").find(".no-records-found").length==0)
+            //var tableIsHasData =$("#table-station-list").find(".no-records-found").length==0;//true表示有数据，false表示无数据
+            //当信号不是非法信号和不明信号时，模态框提交内容必需要选中台站某行
+            //if(typeCode ==2&& !stationKey){
+            //    if(!tableIsHasData){
+            //        $("#submitButton").attr('disabled','true');
+            //        layer.alert('没有台站列表信息，请先添加台站');
+            //        return
+            //    }else if(tableIsHasData){
+            //        $("#submitButton").removeAttr('disabled');
+            //        layer.alert('请选择要关联的台站');
+            //        return
+            //    }
+            //
+            //}
             data.id = id ;
             data.typeCode = typeCode;
             data.stationKey = stationKey;
@@ -445,43 +452,42 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                     params.invalidDate = invalidDate;
                 }
             }
+            //合法信号时提交添加违规记录表单
+            if(typeCode==1){
+                //params= JSON.stringify(params);
+                //console.log("添加违规记录参数："+params);
+                //console.log("添加还是修改："+addOpUpdate);
+                if(addOpUpdate){
+                    if(params.isInvalid ==1){
+                        ajax.put("data/signal/AbnormalHistoryByInvaliDate", params, function() {
+                            layer.msg('修改违规记录成功');
+                        });
+                    }else if(params.isInvalid ==0){
+                        ajax.put("data/signal/AbnormalHistory", params, function() {
+                            layer.msg('修改违规记录成功');
+                        });
+                    }
 
+                }else {
+                    params= JSON.stringify(params);
+                    $.ajax({
+                        url : 'data/signal/AbnormalHistory',
+                        type : 'post',
+                        data : params,//传输数据
+                        contentType : 'application/json',//传输数据类型
+                        success : function (result) {
+                            layer.msg('添加违规记录成功');
+                        }
+                    });
+
+                }
+            }
             ajax.put("data/signal/one/update", data, function() {
                 layer.msg('成功');
                 $("#signal_list1").find('option:selected').attr("des",des);
-
-                //合法信号时提交添加违规记录表单
-                if(typeCode==1){
-                    //params= JSON.stringify(params);
-                    //console.log("添加违规记录参数："+params);
-                    //console.log("添加还是修改："+addOpUpdate);
-                    if(addOpUpdate){
-                        if(params.isInvalid ==1){
-                            ajax.put("data/signal/AbnormalHistoryByInvaliDate", params, function() {
-                                layer.msg('修改违规记录成功');
-                            });
-                        }else if(params.isInvalid ==0){
-                            ajax.put("data/signal/AbnormalHistory", params, function() {
-                                layer.msg('修改违规记录成功');
-                            });
-                        }
-
-                    }else {
-                        params= JSON.stringify(params);
-                        $.ajax({
-                            url : 'data/signal/AbnormalHistory',
-                            type : 'post',
-                            data : params,//传输数据
-                            contentType : 'application/json',//传输数据类型
-                            success : function (result) {
-                                layer.msg('添加违规记录成功');
-                            }
-                        });
-
-                    }
-                }
-
                 $("#modalStationAlarm").modal('hide');
+            },function(result) {
+                layer.msg(result);
             });
 
         });
@@ -826,8 +832,9 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             var typeCode = $(this).val();
             $("#typeCode").val(typeCode);
             data.type = "none";
-            var temp = '<div class="header-search"><input type="text" placeholder="输入中心频率">' +
-                '<span class="search-icon"></span></div>' +
+            var temp =
+                //'<div class="header-search"><input type="text" placeholder="输入中心频率">' +
+                //'<span class="search-icon"></span></div>' +
                 '<table class="table table-striped" id="table-station-list"></table>' +
                 '<button type="button" class="btn btn-primary addStation">添加台站</button>'+
                 '<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息">'+text+'</textarea></div>';
@@ -1029,10 +1036,10 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
     function getFreqList(){
     	// 清除图表
     	destroy_chart_table();
-    	var val = $("#search").val().replace("MHz","");
+    	var val = $("#search").val();
         var data = {};
         if (val && !isNaN(val) && val!='0') {
-            $("#search").val(val+'MHz');
+            $("#search").val(val);
             val = parseFloat(val) * 1000000;
         }else{
             layer.alert("操作失误，请输入大于0的数字！");
@@ -1692,7 +1699,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             para.frequency = centorfreq;
             ajax.get("data/signal/FmRate", para, function(reslut) {
                 console.log(reslut)
-                if(!reslut.name.length){
+                if($.isEmptyObject(reslut)||!reslut.name.length){
                     $('#radioChart').html("<h4 style='margin-top:120px;font-weight: 500;font-size:14px ;text-align: center;' >未识别调制方式</h4>")
                 }else{
                     initChart(reslut, data);

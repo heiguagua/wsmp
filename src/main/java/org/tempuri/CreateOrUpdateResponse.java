@@ -1,9 +1,10 @@
 
 package org.tempuri;
 
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -34,18 +35,18 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "CreateOrUpdateResponse")
 public class CreateOrUpdateResponse {
 
-    @XmlElement(name = "CreateOrUpdateResult", nillable = true)
-    protected String createOrUpdateResult;
+    @XmlElementRef(name = "CreateOrUpdateResult", namespace = "http://tempuri.org/", type = JAXBElement.class, required = false)
+    protected JAXBElement<String> createOrUpdateResult;
 
     /**
      * 获取createOrUpdateResult属性的值。
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link JAXBElement }{@code <}{@link String }{@code >}
      *     
      */
-    public String getCreateOrUpdateResult() {
+    public JAXBElement<String> getCreateOrUpdateResult() {
         return createOrUpdateResult;
     }
 
@@ -54,10 +55,10 @@ public class CreateOrUpdateResponse {
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link JAXBElement }{@code <}{@link String }{@code >}
      *     
      */
-    public void setCreateOrUpdateResult(String value) {
+    public void setCreateOrUpdateResult(JAXBElement<String> value) {
         this.createOrUpdateResult = value;
     }
 
