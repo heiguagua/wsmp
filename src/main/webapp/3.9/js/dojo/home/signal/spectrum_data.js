@@ -82,7 +82,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                         return new Date(value).format('yyyy-MM-dd hh:mm:ss');
                     }
                 }, {
-                    field : 'centerFreq',
+                    field : 'centerfreq',
                     title : '中心频率(MHz)',
                     width : '10%',
                     align:'center',
@@ -309,6 +309,11 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
         }
         spectrumChart = echarts.init($('#spectrumChart')[0]);
         spectrumChart.setOption(option);
+        window.onresize = function(){
+            //spectrumChart.clear();
+            //spectrumChart.setOption(option);
+            spectrumChart.resize();
+        }
         console.log(option);
         spectrumChart.on('timelinechanged', function (p1) {
         	console.log(p1);

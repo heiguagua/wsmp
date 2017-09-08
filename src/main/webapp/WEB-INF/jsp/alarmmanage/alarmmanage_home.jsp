@@ -128,7 +128,7 @@
     <div class='box'>
       <div class='month-data flex-column'>
         <h4 id="monthTitle" class="text-center">近3个月占用度（按天统计）</h4>
-        <div id="month" class='title flex1 flex-column' style="height: 100%"></div>
+        <div id="month1" class='title flex1 flex-column' style="height: 100%"></div>
       </div>
     </div>
   </section>

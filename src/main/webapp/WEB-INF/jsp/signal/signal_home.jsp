@@ -233,7 +233,7 @@
 			<div class='box'>
 				<div class='month-data flex-column'>
 					<h4 id='monthChartTitle' class='title'>近3个月占用度（按天统计）</h4>
-					<div class='flex1' id='monthChart'></div>
+					<div class='flex1' id='monthChart1'></div>
 				</div>
 			</div>
 		</section>

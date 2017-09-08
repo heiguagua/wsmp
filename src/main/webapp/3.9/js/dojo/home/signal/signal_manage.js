@@ -1299,6 +1299,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                         align: 'left'
                     },
                     data : levelParam.monthOcc.xAxis
+                    //data:[12,23,45,67]
                 },
                 yAxis : {
                     type : 'value',
@@ -1331,6 +1332,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                         showSymbol : false,
                         symbolSize : 6,
                         data : levelParam.monthOcc.series
+                        //data:[56,89,56,67]
                     }
 
                 ]
@@ -1338,8 +1340,15 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             month_total_length = levelParam.monthOcc.xAxis.length;
         }
 
-        monthChart = echarts.init($('#monthChart')[0]);
+        monthChart = echarts.init($('#monthChart1')[0]);
         monthChart.setOption(optionMonth);
+        window.onresize = function() {
+            monthChart.clear();
+            monthChart.setOption(optionMonth);
+        }
+        window.onresize = function(){
+            monthChart.resize();
+        }
         //渲染图表title，添加监测站名称
         var name = $('#station-list2').find('option:selected').text();//选中的台站名称
         console.log(name)
@@ -1350,10 +1359,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 
         load_month_mouse_event();
 
-        window.onresize = function() {
-            monthChart.clear();
-            monthChart.setOption(optionMonth);
-        }
+
         monthChart.on('click', function(params) {
         	if(drag_flag){
         		drag_flag = false;
@@ -1379,6 +1385,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
         });
 
     }
+
     
     function load_month_mouse_event(){
     	document.oncontextmenu=new Function("event.returnValue=false;");
@@ -1493,9 +1500,9 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
     	      }
     	}
     	
-    	$("#monthChart").on("mousedown",mousedown);
+    	$("#monthChart1").on("mousedown",mousedown);
         $(document).on("mouseup",mouseup);
-        $("#monthChart").on("mousemove",mousemove);
+        $("#monthChart1").on("mousemove",mousemove);
     }
     
     $('#modalDay').on("shown.bs.modal",function(){
@@ -1568,6 +1575,9 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
         window.onresize = function() {
             myChart.clear();
             myChart.setOption(option);
+        }
+        window.onresize = function(){
+            myChart.resize();
         }
         // draw month data chart
 

@@ -274,7 +274,7 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
 
 
 //		// draw month data chart
-//		$("#month").load("alarmmanage/monthCharts", function() {
+//		$("#month1").load("alarmmanage/monthCharts", function() {
 //			month_charts.init();
 //		})
 //
