@@ -22,13 +22,11 @@ import com.sefon.ws.model.xsd.StationInfo;
 import com.sefon.ws.model.xsd.StationInfoPagedResult;
 import com.sefon.ws.model.xsd.StationQuerySpecInfo;
 import com.sefon.ws.service.impl.StationService;
-import de.onlinehome.geomath.jk3d.Jk3d;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.WebApplicationContext;
 import org.tempuri.*;
 
 import java.math.BigInteger;
@@ -55,8 +53,6 @@ public class AlarmDataController {
     @Autowired
     private WebServiceSoapFactory service;
 
-    @Autowired
-    private WebApplicationContext applicationContext;
 
     @Autowired
     private HbaseClient hbaseClient;
@@ -68,8 +64,8 @@ public class AlarmDataController {
     //@Autowired
     // private com.chinawiserv.wsmp.levellocate.LevelLocate locate;
 
-    @Autowired
-    private Jk3d jk3d;
+//    @Autowired
+//    private Jk3d jk3d;
 
     @Value("${upperBound.value:5000000}")
     long upperBound;
@@ -104,9 +100,6 @@ public class AlarmDataController {
         // DateTimeFormatter.ofPattern("HHmmss");
         // String last = timeformatter.format(time);
         // beginTime = first + last;
-
-        String id = "52010126";
-        long frequency = (long) (88.8 * 1000000);
 
         try {
 
@@ -184,7 +177,7 @@ public class AlarmDataController {
 
                 final double pow = Math.pow(10, 6);
 
-                Max = Max.entrySet().stream().sorted((c1, c2) -> Integer.parseInt(c1.getKey().toString()) > Integer.parseInt(c2.getKey().toString()) ? 1 : -1
+                Max = Max.entrySet().stream().sorted((c1, c2) -> Integer.parseInt(c1.getKey()) > Integer.parseInt(c2.getKey()) ? 1 : -1
                 ).collect(toMap(Map.Entry::getKey, Map.Entry::getValue, throwingMerger(), LinkedHashMap::new));
 
                 Max.forEach((k, v) -> {
@@ -244,7 +237,6 @@ public class AlarmDataController {
         HashMap<String, Object> occReslute = Maps.newHashMap();
         try {
 
-            String id = "52010126";
             long frequency = (long) (88.8 * 1000000);
             //测试或者正式环境使用
             //            Map<Object, Object> max = hbaseClient.queryMaxLevels(stationCode, centorFreq, upperBound, lowerBound, beginTime);
@@ -290,7 +282,7 @@ public class AlarmDataController {
 
                 occ = reslute;
 
-                occ = occ.entrySet().stream().sorted((c1, c2) -> Integer.parseInt(c1.getKey().toString()) > Integer.parseInt(c2.getKey().toString()) ? 1 : -1)
+                occ = occ.entrySet().stream().sorted((c1, c2) -> Integer.parseInt(c1.getKey()) > Integer.parseInt(c2.getKey()) ? 1 : -1)
                         .collect(toMap(Map.Entry::getKey, Map.Entry::getValue, throwingMerger(), LinkedHashMap::new));
                 System.out.println(occ);
                 occ.forEach((k, v) -> {
@@ -666,8 +658,8 @@ public class AlarmDataController {
         String order = (String) param.get("order");
         final Object offset = param.get("offset");
         final Object limit = param.get("limit");
-        final String areaCode = (String) param.get("areaCode");
-        String[] areaCodes = areaCode.split(",");
+//        final String areaCode = (String) param.get("areaCode");
+//        String[] areaCodes = areaCode.split(",");
         StationQuerySpecInfo info = new StationQuerySpecInfo();
         List<QueryFreqRangeInfo> rangeInfos = Lists.newLinkedList();
         QueryFreqRangeInfo rangeInfo = new QueryFreqRangeInfo();
@@ -683,7 +675,7 @@ public class AlarmDataController {
         int pageNumber = Integer.parseInt(offset.toString());
         int limitNumber = Integer.parseInt(limit.toString());
 
-        ArrayList<String> dr = new ArrayList<>(Arrays.asList(areaCodes));
+//        ArrayList<String> dr = new ArrayList<>(Arrays.asList(areaCodes));
         info.setFreqRanges(rangeInfos);
         //info.setAreaCodes(dr);
         //info.setSignalFreq(Double.parseDouble((String) param.get("centorFreq")));
@@ -830,9 +822,9 @@ public class AlarmDataController {
             String order = (String) map.get("order");
             String index = (String) map.get("offset");
             String limit = (String) map.get("limit");
-            String areaCode = (String) map.get("areaCode");
-            String[] areaList = areaCode.split(",");
-            List<String> areaCodeList = new ArrayList<>(Arrays.asList(areaList));
+//            String areaCode = (String) map.get("areaCode");
+//            String[] areaList = areaCode.split(",");
+//            List<String> areaCodeList = new ArrayList<>(Arrays.asList(areaList));
 
             int centorFreqDouble = Integer.parseInt((String) map.get("centorFreq"));
 

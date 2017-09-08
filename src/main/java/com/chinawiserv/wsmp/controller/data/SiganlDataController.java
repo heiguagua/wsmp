@@ -81,7 +81,7 @@ public class SiganlDataController {
 				HashMap<String, Object> mapReslut = Maps.newHashMap();
 //				double d = (double) ((Integer) m.getValue() / sum);
 				mapReslut.put("name", m.getKey());
-				mapReslut.put("value", (Integer) m.getValue());
+				mapReslut.put("value",  m.getValue());
 				lists.add(m.getKey());
 				return mapReslut;
 			}).collect(toList());
@@ -293,14 +293,12 @@ public class SiganlDataController {
 	@GetMapping("/AbnormalHistory")
 	public  Object getAbnormalHistory(@RequestParam Map<Object,Object> param) throws JsonProcessingException {
 
-		System.out.println(param);
 		String paramStr = JSON.toJSONString(param);
-		System.out.println(paramStr);
 		Map<Object,Object> reslute = Maps.newHashMap();
 
 		AbnormalHistoryQueryResponse response = (AbnormalHistoryQueryResponse) service.radioSignalServiceCall("queryAbnormalHistory",paramStr,AbnormalHistoryRequest.class);
 		List<RadioSignalAbnormalHistoryDTO> dto = response.getHistorys().getRadioSignalAbnormalHistoryDTO();
-		RadioSignalAbnormalHistoryDTO historyDTO = dto.stream().filter((t)->t.isIsInvalid()==false).findFirst().orElseGet(()-> new RadioSignalAbnormalHistoryDTO());
+		RadioSignalAbnormalHistoryDTO historyDTO = dto.stream().filter((t)-> !t.isIsInvalid()).findFirst().orElseGet(()-> new RadioSignalAbnormalHistoryDTO());
 
 		String id = historyDTO.getID();
 		if (StringUtils.isEmpty(id)){
