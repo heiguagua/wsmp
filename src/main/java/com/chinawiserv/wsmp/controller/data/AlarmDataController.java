@@ -882,7 +882,7 @@ public class AlarmDataController {
                 }).collect(toList());
 
             } else if ("tapeWidth".equals(sortName) && "desc".equals(order)) {
-                reslutDtos = response.getRStatSignalList().getRadioStationSignalDTO().stream().sorted((c1, c2) -> c1.getFreq().getCenterFreq().intValue() < c2.getFreq().getCenterFreq().intValue() ? 1 : -1).map((RadioStationSignalDTO t) -> {
+                reslutDtos = response.getRStatSignalList().getRadioStationSignalDTO().stream().sorted((c1, c2) -> c1.getFreq().getBandWidth().intValue() < c2.getFreq().getBandWidth().intValue() ? 1 : -1).map((RadioStationSignalDTO t) -> {
 
                     final RadioStationDTO radioStationDTO = t.getStation();
 
@@ -897,7 +897,7 @@ public class AlarmDataController {
                 }).collect(toList());
 
             } else if ("tapeWidth".equals(sortName) && "asc".equals(order)) {
-                reslutDtos = response.getRStatSignalList().getRadioStationSignalDTO().stream().sorted((c1, c2) -> c1.getFreq().getCenterFreq().intValue() > c2.getFreq().getCenterFreq().intValue() ? 1 : -1).map((RadioStationSignalDTO t) -> {
+                reslutDtos = response.getRStatSignalList().getRadioStationSignalDTO().stream().sorted((c1, c2) -> c1.getFreq().getBandWidth().intValue() > c2.getFreq().getBandWidth().intValue() ? 1 : -1).map((RadioStationSignalDTO t) -> {
 
                     final RadioStationDTO radioStationDTO = t.getStation();
 
