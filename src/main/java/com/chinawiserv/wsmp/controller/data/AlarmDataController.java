@@ -400,12 +400,12 @@ public class AlarmDataController {
 
             Logger.info("地图上显示的点 信息为{}", JSON.toJSONString(mapPoint));
 
-            int[] ids = relate.stream().mapToInt(m -> Integer.valueOf(m.getId())).toArray();
+            int[] ids = mapPoint.stream().mapToInt(m -> Integer.valueOf(m.getId())).toArray();
 
             double[] flon = relate.stream().mapToDouble(LevelLocate::getFlon).toArray();
-            double[] flat = relate.stream().mapToDouble(LevelLocate::getFlat).toArray();
-            double[] level = relate.stream().mapToDouble(LevelLocate::getLevel).toArray();
-            int[] waringsensorid = relate.stream().mapToInt((LevelLocate t) -> Integer.parseInt(t.getId())
+            double[] flat = mapPoint.stream().mapToDouble(LevelLocate::getFlat).toArray();
+            double[] level = mapPoint.stream().mapToDouble(LevelLocate::getLevel).toArray();
+            int[] waringsensorid = mapPoint.stream().mapToInt((LevelLocate t) -> Integer.parseInt(t.getId())
             ).toArray();
             //至少要八个点才能计算出来
 
@@ -423,7 +423,7 @@ public class AlarmDataController {
 //            }
 //            Logger.info("场强定位计算正常 操作时间{} 返回值为{}", LocalDateTime.now().toString(), JSON.toJSONString(result));
         } catch (NumberFormatException e) {
-            Logger.error("场强查询异常 ,操作时间：{},入参：开始时间：{}，中心频率：{} 异常 ：{}", LocalDateTime.now(), param.get("beginTime"), param.get("frequency"), e);
+            Logger.error("场强定位计算 ,操作时间：{},入参：开始时间：{}，中心频率：{} 异常 ：{}", LocalDateTime.now(), param.get("beginTime"), param.get("frequency"), e);
         }
 
         int coulm = mapPoint.size();
