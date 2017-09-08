@@ -290,6 +290,7 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                 "Ycoord": 30.67,
                 "Plant": "Mesa Mint"
             };
+
             if(agoLayer){
                 agoLayer.copyrightText = '';
                 console.log(agoLayer);

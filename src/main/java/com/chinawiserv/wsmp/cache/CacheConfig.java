@@ -127,7 +127,7 @@ public class CacheConfig {
 	@Bean(name ="kringGraid")
 	public List<Map<String,Object>> graidData() throws IOException {
 
-		final Resource resource = this.def.getResource(configHome.concat("geoJson/5201.json"));
+		final Resource resource = this.def.getResource(configHome.concat("geoJson/5101.json"));
 		final File file = resource.getFile();
 		final Type type = new TypeReference<LinkedHashMap<String, Object>>() {}.getType();
 

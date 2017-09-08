@@ -3,11 +3,11 @@ package com.chinawiserv.wsmp.controller.data;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.chinawiserv.apps.util.logger.Logger;
+import com.chinawiserv.wsmp.IDW.IDWMain;
+import com.chinawiserv.wsmp.IDW.IDWPoint;
 import com.chinawiserv.wsmp.client.WebServiceSoapFactory;
 import com.chinawiserv.wsmp.hbase.HbaseClient;
 import com.chinawiserv.wsmp.hbase.query.OccAndMax;
-import com.chinawiserv.wsmp.javatoc.LevelCompute;
-import com.chinawiserv.wsmp.javatoc.model.LevelResult;
 import com.chinawiserv.wsmp.kriging.Interpolation;
 import com.chinawiserv.wsmp.kriging.model.DataInfo;
 import com.chinawiserv.wsmp.model.LevelLocate;
@@ -18,10 +18,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.sefon.ws.model.xsd.QueryFreqRangeInfo;
+import com.sefon.ws.model.xsd.StationInfo;
 import com.sefon.ws.model.xsd.StationInfoPagedResult;
 import com.sefon.ws.model.xsd.StationQuerySpecInfo;
 import com.sefon.ws.service.impl.StationService;
-import de.onlinehome.geomath.jk3d.Jk2d;
+import de.onlinehome.geomath.jk3d.Jk3d;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,7 +50,7 @@ public class AlarmDataController {
 
     @Autowired
     @Qualifier(value = "kringGraid")
-    List<Map<String,Object>> kringGraid;
+    List<Map<String, Object>> kringGraid;
 
     @Autowired
     private WebServiceSoapFactory service;
@@ -63,12 +64,12 @@ public class AlarmDataController {
     @Autowired
     private StationService stationService;
 
-    private Interpolation kri =new Interpolation();
+    private Interpolation kri = new Interpolation();
     //@Autowired
-   // private com.chinawiserv.wsmp.levellocate.LevelLocate locate;
+    // private com.chinawiserv.wsmp.levellocate.LevelLocate locate;
 
     @Autowired
-    private Jk2d jk2d;
+    private Jk3d jk3d;
 
     @Value("${upperBound.value:5000000}")
     long upperBound;
@@ -84,7 +85,7 @@ public class AlarmDataController {
     @Value("${kriking.value}")
     private int intKrikingValue;
 
-    private DecimalFormat df   = new DecimalFormat("#.00");
+    private DecimalFormat df = new DecimalFormat("#.00");
 
     @GetMapping(path = "/secondLevelChart")
     public Object secondLevelChart(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
@@ -118,10 +119,10 @@ public class AlarmDataController {
             Map<String, Object> Max = reslutResponce.getMax();
             Map<String, Object> Occ = reslutResponce.getOcc();
 
-            Map<String,Object> temple = Maps.newLinkedHashMap();
+            Map<String, Object> temple = Maps.newLinkedHashMap();
 
-            for (int beginHour = 0; beginHour<24;beginHour++){
-                temple.put(""+beginHour,0);
+            for (int beginHour = 0; beginHour < 24; beginHour++) {
+                temple.put("" + beginHour, 0);
             }
 
             if (Occ.size() == 0) {
@@ -142,8 +143,8 @@ public class AlarmDataController {
                 LinkedList<Object> series = Lists.newLinkedList();
 
                 for (Map.Entry<String, Object> entry : temple.entrySet()) {
-                    if(StringUtils.isEmpty(Occ.get(entry.getKey()))){
-                        Occ.put(entry.getKey(),"0");
+                    if (StringUtils.isEmpty(Occ.get(entry.getKey()))) {
+                        Occ.put(entry.getKey(), -100);
                     }
                 }
 
@@ -270,21 +271,21 @@ public class AlarmDataController {
                 LinkedList<Object> series = Lists.newLinkedList();
 
 
-                ZonedDateTime temple =  LocalDateTime.now().atZone(ZoneId.systemDefault());
-                LinkedHashMap<String,Object> reslute =Maps.newLinkedHashMap();
+                ZonedDateTime temple = LocalDateTime.now().atZone(ZoneId.systemDefault());
+                LinkedHashMap<String, Object> reslute = Maps.newLinkedHashMap();
                 occReslute.put("series", series);
                 occReslute.put("xAxis", xAxis);
                 reslutMap.put("monthOcc", occReslute);
 
-                for (int i = 0 ; i<90;i++){
+                for (int i = 0; i < 90; i++) {
                     String date = temple.toString();
-                    date = date.replaceAll(":", "").replaceAll("T", "").replaceAll("-", "").substring(0,8);
-                    reslute.put(date,0);
+                    date = date.replaceAll(":", "").replaceAll("T", "").replaceAll("-", "").substring(0, 8);
+                    reslute.put(date, -100);
                     temple = temple.plusDays(-1);
                 }
 
-                occ.forEach((k,v)->{
-                    reslute.replace(k,v);
+                occ.forEach((k, v) -> {
+                    reslute.replace(k, v);
                 });
 
                 occ = reslute;
@@ -300,7 +301,6 @@ public class AlarmDataController {
                 });
                 Logger.info("以三个月计算占用度从hbase中查询正常有返回值为{} ， 查询时间为{}，页面入参：监测站id{}，开始时间{},中心频率{}", occ, LocalDateTime.now().toString(), stationCode, beginTime, centorFreq);
             }
-
 
 
             if (max.size() == 0) {
@@ -398,30 +398,30 @@ public class AlarmDataController {
 
             mapPoint = relate.stream().filter(t -> stationcode.contains(t.getId())).collect(toList());
 
-            Logger.info("地图上显示的点 信息为{}",JSON.toJSONString(mapPoint));
+            Logger.info("地图上显示的点 信息为{}", JSON.toJSONString(mapPoint));
 
             int[] ids = relate.stream().mapToInt(m -> Integer.valueOf(m.getId())).toArray();
 
             double[] flon = relate.stream().mapToDouble(LevelLocate::getFlon).toArray();
             double[] flat = relate.stream().mapToDouble(LevelLocate::getFlat).toArray();
             double[] level = relate.stream().mapToDouble(LevelLocate::getLevel).toArray();
-            int[] waringsensorid = relate.stream().mapToInt((LevelLocate t) ->Integer.parseInt(t.getId())
+            int[] waringsensorid = relate.stream().mapToInt((LevelLocate t) -> Integer.parseInt(t.getId())
             ).toArray();
             //至少要八个点才能计算出来
 
-            LevelResult result = LevelCompute.levelCompute(ids,flon,flat,level, ids.length,10, waringsensorid);
-            int size = result.getOangeR().size();
-
-            for (int index = 0;index < size;index++){
-
-                Map<String, Object> mapLocate = Maps.newHashMap();
-
-                mapLocate.put("x", result.getOutLon().get(index));
-                mapLocate.put("y", result.getOutLat().get(index));
-                mapLocate.put("radius",  result.getOangeR().get(index));
-                levelPoint.add(mapLocate);
-            }
-            Logger.info("场强定位计算正常 操作时间{} 返回值为{}", LocalDateTime.now().toString(), JSON.toJSONString(result));
+//            LevelResult result = LevelCompute.levelCompute(ids,flon,flat,level, ids.length,10, waringsensorid);
+//            int size = result.getOangeR().size();
+//
+//            for (int index = 0;index < size;index++){
+//
+//                Map<String, Object> mapLocate = Maps.newHashMap();
+//
+//                mapLocate.put("x", result.getOutLon().get(index));
+//                mapLocate.put("y", result.getOutLat().get(index));
+//                mapLocate.put("radius",  result.getOangeR().get(index));
+//                levelPoint.add(mapLocate);
+//            }
+//            Logger.info("场强定位计算正常 操作时间{} 返回值为{}", LocalDateTime.now().toString(), JSON.toJSONString(result));
         } catch (NumberFormatException e) {
             Logger.error("场强查询异常 ,操作时间：{},入参：开始时间：{}，中心频率：{} 异常 ：{}", LocalDateTime.now(), param.get("beginTime"), param.get("frequency"), e);
         }
@@ -435,31 +435,31 @@ public class AlarmDataController {
         List<DataInfo> dataOuts = Lists.newLinkedList();
         List<DataInfo> temple = Lists.newLinkedList();
 
-        double xMin = -1, xMax = -1, yMin = -1,yMax = -1;
-
+        double xMin = -1, xMax = -1, yMin = -1, yMax = -1;
+        List<IDWPoint> inData = Lists.newLinkedList();
         for (int index = 0; index < coulm; index++) {
             p[index][0] = mapPoint.get(index).getFlon();
             p[index][1] = mapPoint.get(index).getFlat();
-            p[index][2] = (mapPoint.get(index).getLevel()& 0xFF);
-            inPutData.add(new DataInfo(p[index][0],p[index][1],p[index][2]));
-
-            if(xMin == -1) {
+            p[index][2] = (mapPoint.get(index).getLevel() & 0xFF);
+            //inPutData.add(new DataInfo(p[index][0],p[index][1],p[index][2]));
+            inData.add(new IDWPoint(p[index][0], p[index][1], p[index][2]));
+            if (xMin == -1) {
 
                 xMin = p[index][0];
                 yMin = p[index][1];
 
-            }else{
+            } else {
 
                 xMax = p[index][0];
                 yMax = p[index][1];
 
-                if(xMin > xMax){
+                if (xMin > xMax) {
                     double b = xMin;
                     xMin = xMax;
                     xMax = b;
                 }
 
-                if(yMin > yMax){
+                if (yMin > yMax) {
                     double b = yMin;
                     yMin = yMax;
                     yMax = b;
@@ -472,61 +472,72 @@ public class AlarmDataController {
 //        p[2][2] = 17;
 
 
-        inPutData.add(new DataInfo(106.779815,27.230648,20));
-        inPutData.add(new DataInfo(106.606183,26.840808,10));
-        inPutData.add(new DataInfo(106.688752,26.335002,25));
-        inPutData.add(new DataInfo(106.220286,26.817141,2));
+//        inPutData.add(new DataInfo(106.779815,27.230648,20));
+//        inPutData.add(new DataInfo(106.606183,26.840808,10));
+//        inPutData.add(new DataInfo(106.688752,26.335002,25));
+//        inPutData.add(new DataInfo(106.220286,26.817141,2));
 
+        List<IDWPoint> outData = Lists.newLinkedList();
         double[][] t1 = new double[kringGraid.size()][3];
         int beginIndex = 0;
-        for (Map<String,Object> dataOut : kringGraid) {
+        IDWMain idw = new IDWMain();
+        for (Map<String, Object> dataOut : kringGraid) {
             double x = Double.parseDouble(dataOut.get("x").toString());
             double y = Double.parseDouble(dataOut.get("y").toString());
-            t1[beginIndex][0] =  x;
-            t1[beginIndex][1] =  y;
-            t1[beginIndex][2] = 4.5;
+            t1[beginIndex][0] = x;
+            t1[beginIndex][1] = y;
+
+            outData.add(new IDWPoint(x, y));
+
+            //t1[beginIndex][2] = 4.5;
             beginIndex++;
-            dataOuts.add(new DataInfo(x,y,0));
-            temple.add(new DataInfo(x,y,5));
+//            dataOuts.add(new DataInfo(x,y,0));
+//            temple.add(new DataInfo(x,y,5));
         }
 
+
+        System.out.println(outData);
         double[][] t2 = new double[0][0];
         if (coulm > 0) {
-            t2 = jk2d.jk2d_ret(0.1,  10, 0.1,  5, p);
-            kri.InitCal(inPutData, dataOuts);
-            kri.OkrigingCal();
-            dataOuts = kri.CopyResults();
+
+            Arrays.stream(p).forEach(e -> System.out.println(Arrays.toString(e)));
+//            t2 = jk3d.typeOk(p,t1);
+//            kri.InitCal(inPutData, dataOuts);
+//            kri.OkrigingCal();
+//            dataOuts = kri.CopyResults();
+
+            idw.getRes(inData, outData);
         }
 
-        double[][] t = new double[t2.length + t1.length ][3];
+        double[][] t = new double[t2.length + t1.length][3];
 //        double[][] t = t2;
-        for(int i = 0,j = t2.length; i < j; i ++){
+        for (int i = 0, j = t2.length; i < j; i++) {
             t[i] = t2[i];
         }
         int in = 0;
-        for(int i = t2.length,j = t.length; i < j; i ++){
+        for (int i = t2.length, j = t.length; i < j; i++) {
             t[i] = t1[in++];
         }
 
-
         temple.addAll(dataOuts);
 
-        temple.add(new DataInfo(106.779815,27.230648,10));
+        temple.add(new DataInfo(106.779815, 27.230648, 10));
 
         //inPutData.add(new DataInfo(106.779815,27.230648,10));
 
-        double numerator  = Stream.of(t).filter((e)-> e[2]>intKrikingValue).count();
+        double numerator = Stream.of(t).filter((e) -> e[2] > intKrikingValue).count();
         int denominator = t.length;
 
-        String electrCoverage =  df.format(denominator>0?numerator/denominator:0);
+        String electrCoverage = df.format(denominator > 0 ? numerator / denominator : 0);
 
-        //int size = t.length;
+        int size = t2.length;
 
         List<Map<String, Object>> kriking2 = Lists.newLinkedList();
         List<Map<String, Object>> kriking = Lists.newLinkedList();
 
         Map<String, Object> spatialReference = Maps.newHashMap();
         spatialReference.put("wkid", 4326);
+//        Random random = new Random();
 //        for (int index = 0; index < size; index++) {
 //            Map<String, Object> element = Maps.newHashMap();
 //            Map<String, Object> count = Maps.newHashMap();
@@ -536,14 +547,20 @@ public class AlarmDataController {
 //            double y = t[index][1];
 //            geometry.put("spatialReference", spatialReference);
 //            geometry.put("type", "point");
+//            //geometry.put("x", x);
 //            geometry.put("x", x * 20037508.34 / 180);
 //            y = Math.log(Math.tan((90 + y) * Math.PI / 360)) / (Math.PI / 180);
 //            y = y * 20037508.34 / 180;
 //            geometry.put("y", y);
-//            count.put("count", val);
+//
+//            if (val>0){
+//                val =  random.nextInt(200);
+//            }
+//
+//            count.put("count",val );
 //            element.put("attributes", count);
 //            element.put("geometry", geometry);
-//            kriking2.add(element);
+//            kriking.add(element);
 //        }
 
 //        for (int index = 0; index < size; index++) {
@@ -564,24 +581,24 @@ public class AlarmDataController {
 //        }
 
 
-        for (DataInfo info :temple) {
-                Map<String, Object> element = Maps.newHashMap();
-                Map<String, Object> count = Maps.newHashMap();
-                Map<String, Object> geometry = Maps.newLinkedHashMap();
-                double val = info.getValue();
-                double x = info.getLon();
-                double y = info.getLat();
-                geometry.put("spatialReference", spatialReference);
-                geometry.put("type", "point");
-                geometry.put("x", x * 20037508.34 / 180);
-                y = Math.log(Math.tan((90 + y) * Math.PI / 360)) / (Math.PI / 180);
-                y = y * 20037508.34 / 180;
-                geometry.put("y", y);
-                count.put("count", val);
-                element.put("attributes", count);
-                element.put("geometry", geometry);
-                kriking.add(element);
-            }
+        for (IDWPoint info : outData) {
+            Map<String, Object> element = Maps.newHashMap();
+            Map<String, Object> count = Maps.newHashMap();
+            Map<String, Object> geometry = Maps.newLinkedHashMap();
+            double val = info.getZ();
+            double x = info.getX();
+            double y = info.getY();
+            geometry.put("spatialReference", spatialReference);
+            geometry.put("type", "point");
+            geometry.put("x", x * 20037508.34 / 180);
+            y = Math.log(Math.tan((90 + y) * Math.PI / 360)) / (Math.PI / 180);
+            y = y * 20037508.34 / 180;
+            geometry.put("y", y);
+            count.put("count", val);
+            element.put("attributes", count);
+            element.put("geometry", geometry);
+            kriking.add(element);
+        }
 
         //System.out.println(kriking);
 
@@ -593,39 +610,39 @@ public class AlarmDataController {
             HashMap<String, String> element = Maps.newHashMap();
             element.put("x", station.getFlon() + "");
             element.put("y", station.getFlat() + "");
-            element.put("count", (station.getLevel()& 0xFF) + "");
+            element.put("count", (station.getLevel() & 0xFF) + "");
             element.put("stationId", station.getId());
             return element;
         }).collect(toList());
 
-        HashMap<String,String> tempMap2 = Maps.newHashMap();
-        tempMap2.put("x",106.779815+"");
-        tempMap2.put("y",27.230648+"" );
-        tempMap2.put("count",20+"");
-        tempMap2.put("stationId", "44");
-
-        HashMap<String,String> tempMap1 = Maps.newHashMap();
-        tempMap1.put("x",106.606183+"");
-        tempMap1.put("y",26.840808+"" );
-        tempMap1.put("count",10+"");
-        tempMap1.put("stationId", "44");
-
-        HashMap<String,String> tempMap3 = Maps.newHashMap();
-        tempMap3.put("x",106.688752+"");
-        tempMap3.put("y",26.335002+"" );
-        tempMap3.put("count",25+"");
-        tempMap3.put("stationId", "44");
-
-        HashMap<String,String> tempMap4 = Maps.newHashMap();
-        tempMap4.put("x",106.220286+"");
-        tempMap4.put("y",26.817141+"" );
-        tempMap4.put("count",2+"");
-        tempMap4.put("stationId", "44");
-
-        stationPiont.add(tempMap1);
-        stationPiont.add(tempMap2);
-        stationPiont.add(tempMap3);
-        stationPiont.add(tempMap4);
+//        HashMap<String,String> tempMap2 = Maps.newHashMap();
+//        tempMap2.put("x",106.779815+"");
+//        tempMap2.put("y",27.230648+"" );
+//        tempMap2.put("count",20+"");
+//        tempMap2.put("stationId", "44");
+//
+//        HashMap<String,String> tempMap1 = Maps.newHashMap();
+//        tempMap1.put("x",106.606183+"");
+//        tempMap1.put("y",26.840808+"" );
+//        tempMap1.put("count",10+"");
+//        tempMap1.put("stationId", "44");
+//
+//        HashMap<String,String> tempMap3 = Maps.newHashMap();
+//        tempMap3.put("x",106.688752+"");
+//        tempMap3.put("y",26.335002+"" );
+//        tempMap3.put("count",25+"");
+//        tempMap3.put("stationId", "44");
+//
+//        HashMap<String,String> tempMap4 = Maps.newHashMap();
+//        tempMap4.put("x",106.220286+"");
+//        tempMap4.put("y",26.817141+"" );
+//        tempMap4.put("count",2+"");
+//        tempMap4.put("stationId", "44");
+//
+//        stationPiont.add(tempMap1);
+//        stationPiont.add(tempMap2);
+//        stationPiont.add(tempMap3);
+//        stationPiont.add(tempMap4);
 
         Map<String, Object> mapPiont = new HashMap<>();
 
@@ -645,18 +662,19 @@ public class AlarmDataController {
 
     @GetMapping(path = "/stationsf")
     public Object getStationBySF(@RequestParam Map<String, Object> param) {
-
+        String sortName = (String) param.get("sort");
+        String order = (String) param.get("order");
         final Object offset = param.get("offset");
         final Object limit = param.get("limit");
         final String areaCode = (String) param.get("areaCode");
         String[] areaCodes = areaCode.split(",");
         StationQuerySpecInfo info = new StationQuerySpecInfo();
-        List<QueryFreqRangeInfo> rangeInfos =Lists.newLinkedList();
+        List<QueryFreqRangeInfo> rangeInfos = Lists.newLinkedList();
         QueryFreqRangeInfo rangeInfo = new QueryFreqRangeInfo();
 
-        double centorFreqDouble =  Double.parseDouble((String) param.get("centorFreq"))/1000000;
-        double upFreqDouble = centorFreqDouble + 5 ;
-        double downFreqDouble = centorFreqDouble - 5 ;
+        double centorFreqDouble = Double.parseDouble((String) param.get("centorFreq")) / 1000000;
+        double upFreqDouble = centorFreqDouble + 5;
+        double downFreqDouble = centorFreqDouble - 5;
 
         rangeInfo.setBeginFreq(downFreqDouble);
         rangeInfo.setEndFreq(upFreqDouble);
@@ -676,19 +694,63 @@ public class AlarmDataController {
             StationInfoPagedResult reslut = stationService.getStationServiceHttpSoap11Endpoint().queryStationWithPagination(info, pageNumber, limitNumber);
 
             int totlal = reslut.getPageInfo().getTotalPages();
+            List<Station> stations = Collections.emptyList();
+            if (sortName == null) {
+                stations = reslut.getStations().stream().map(s -> {
+                    String id = s.getStationID();
+                    String stationName = s.getSTATName();
+                    String centerFreqStr = s.getFREQEFB() == null ? "-" : s.getFREQEFB().toString();
+                    String bandWidth = s.getNETBand() == null ? "-" : s.getNETBand().toString();
+                    return new Station(id, stationName, centerFreqStr, bandWidth);
 
-            List<Station> stations = reslut.getStations().stream().map(s -> {
+                }).collect(toList());
+            } else if ("centerFrequency".equals(sortName) && "desc".equals(order)) {
+                stations = reslut.getStations().stream().sorted((StationInfo c1, StationInfo c2) -> c1.getFREQEFB() < c2.getFREQEFB() ? 1 : -1).map(s -> {
 
-                String id = s.getStationID();
-                String stationName = s.getSTATName();
-                String centerFreqStr = s.getFREQEFB()==null ? "-":s.getFREQEFB().toString();
-                String bandWidth = s.getNETBand()==null ? "-":s.getNETBand().toString();
-                return new Station(id, stationName, centerFreqStr, bandWidth);
+                    String id = s.getStationID();
+                    String stationName = s.getSTATName();
+                    String centerFreqStr = s.getFREQEFB() == null ? "-" : s.getFREQEFB().toString();
+                    String bandWidth = s.getNETBand() == null ? "-" : s.getNETBand().toString();
+                    return new Station(id, stationName, centerFreqStr, bandWidth);
 
-            }).collect(toList());
+                }).collect(toList());
+            } else if ("centerFrequency".equals(sortName) && "asc".equals(order)) {
+                stations = reslut.getStations().stream().sorted((StationInfo c1, StationInfo c2) -> c1.getFREQEFB() > c2.getFREQEFB() ? 1 : -1).map(s -> {
+
+                    String id = s.getStationID();
+                    String stationName = s.getSTATName();
+                    String centerFreqStr = s.getFREQEFB() == null ? "-" : s.getFREQEFB().toString();
+                    String bandWidth = s.getNETBand() == null ? "-" : s.getNETBand().toString();
+                    return new Station(id, stationName, centerFreqStr, bandWidth);
+
+                }).collect(toList());
+
+
+            } else if ("tapeWidth".equals(sortName) && "asc".equals(order)) {
+                stations = reslut.getStations().stream().sorted((StationInfo c1, StationInfo c2) -> c1.getNETBand() > c2.getNETBand() ? 1 : -1).map(s -> {
+
+                    String id = s.getStationID();
+                    String stationName = s.getSTATName();
+                    String centerFreqStr = s.getFREQEFB() == null ? "-" : s.getFREQEFB().toString();
+                    String bandWidth = s.getNETBand() == null ? "-" : s.getNETBand().toString();
+                    return new Station(id, stationName, centerFreqStr, bandWidth);
+
+                }).collect(toList());
+            } else if ("tapeWidth".equals(sortName) && "desc".equals(order)) {
+                stations = reslut.getStations().stream().sorted((StationInfo c1, StationInfo c2) -> c1.getNETBand() < c2.getNETBand() ? 1 : -1).map(s -> {
+
+                    String id = s.getStationID();
+                    String stationName = s.getSTATName();
+                    String centerFreqStr = s.getFREQEFB() == null ? "-" : s.getFREQEFB().toString();
+                    String bandWidth = s.getNETBand() == null ? "-" : s.getNETBand().toString();
+                    return new Station(id, stationName, centerFreqStr, bandWidth);
+
+                }).collect(toList());
+            }
 
             hasMap.put("total", totlal);
             hasMap.put("rows", stations);
+
             Logger.info("四方台站webservice  StationService调用正常，操作时间{} ,入参 ：查询条件{} 当前个数{} 限制个数{}", LocalDateTime.now().toString(), info, pageNumber, limitNumber);
         } catch (Exception e) {
             Logger.error("四方台站webservice  StationService调用异常，操作时间{} ,入参 ：查询条件{} 当前个数{} 限制个数{} 异常详情 : {}", LocalDateTime.now().toString(), info, pageNumber, limitNumber, e);
@@ -764,42 +826,93 @@ public class AlarmDataController {
 
         Map<String, Object> reslut = null;
         try {
+            String sortName = (String) map.get("sort");
+            String order = (String) map.get("order");
             String index = (String) map.get("offset");
             String limit = (String) map.get("limit");
             String areaCode = (String) map.get("areaCode");
             String[] areaList = areaCode.split(",");
             List<String> areaCodeList = new ArrayList<>(Arrays.asList(areaList));
 
-            int centorFreqDouble =  Integer.parseInt((String) map.get("centorFreq"));
+            int centorFreqDouble = Integer.parseInt((String) map.get("centorFreq"));
 
-            int upFreqDouble = centorFreqDouble + 5000000 ;
-            int downFreqDouble = centorFreqDouble - 5000000 ;
+            int upFreqDouble = centorFreqDouble + 5000000;
+            int downFreqDouble = centorFreqDouble - 5000000;
 
             Map<String, Object> requestParam = Maps.newLinkedHashMap();
             requestParam.put("index", index);
             requestParam.put("count", limit);
-
+            List<Station> reslutDtos = Collections.emptyList();
 //            list.put("string", areaCodeList);
-           //requestParam.put("areaCodeList", list);
-             requestParam.put("beginFreq",downFreqDouble);
-             requestParam.put("endFreq",upFreqDouble);
+            //requestParam.put("areaCodeList", list);
+            requestParam.put("beginFreq", downFreqDouble);
+            requestParam.put("endFreq", upFreqDouble);
 
             final RStatQuerySignalsResponse2 response = (RStatQuerySignalsResponse2) service.radioStationServiceCall("rStatQuerySignals",
                     mapper.writeValueAsString(requestParam), RStatQuerySignalsRequest.class);
 
-            List<Station>  reslutDtos = response.getRStatSignalList().getRadioStationSignalDTO().stream().map((RadioStationSignalDTO t) -> {
+            if ("centerFrequency".equals(sortName) && "desc".equals(order)) {
+                reslutDtos = response.getRStatSignalList().getRadioStationSignalDTO().stream().sorted((c1, c2) -> c1.getFreq().getCenterFreq().intValue() < c2.getFreq().getCenterFreq().intValue() ? 1 : -1).map((RadioStationSignalDTO t) -> {
 
-                final RadioStationDTO radioStationDTO = t.getStation();
+                    final RadioStationDTO radioStationDTO = t.getStation();
 
-                final RadioFreqDTO radioFreqDTO = t.getFreq();
+                    final RadioFreqDTO radioFreqDTO = t.getFreq();
 
-                int centerFre = radioFreqDTO.getCenterFreq().intValue() / 1000000;
-                int tapeWidth = radioFreqDTO.getBandWidth().intValue() / 1000000;
-                final String centerFreString = centerFre + "";
-                final String tapeWidthString = tapeWidth + "";
+                    int centerFre = radioFreqDTO.getCenterFreq().intValue() / 1000000;
+                    int tapeWidth = radioFreqDTO.getBandWidth().intValue() / 1000000;
+                    final String centerFreString = centerFre + "";
+                    final String tapeWidthString = tapeWidth + "";
 
-                return new Station(radioStationDTO.getID(), radioStationDTO.getName(), centerFreString, tapeWidthString);
-            }).collect(toList());
+                    return new Station(radioStationDTO.getID(), radioStationDTO.getName(), centerFreString, tapeWidthString);
+                }).collect(toList());
+
+            } else if ("centerFrequency".equals(sortName) && "asc".equals(order)) {
+                reslutDtos = response.getRStatSignalList().getRadioStationSignalDTO().stream().sorted((c1, c2) -> c1.getFreq().getCenterFreq().intValue() > c2.getFreq().getCenterFreq().intValue() ? 1 : -1).map((RadioStationSignalDTO t) -> {
+
+                    final RadioStationDTO radioStationDTO = t.getStation();
+
+                    final RadioFreqDTO radioFreqDTO = t.getFreq();
+
+                    int centerFre = radioFreqDTO.getCenterFreq().intValue() / 1000000;
+                    int tapeWidth = radioFreqDTO.getBandWidth().intValue() / 1000000;
+                    final String centerFreString = centerFre + "";
+                    final String tapeWidthString = tapeWidth + "";
+
+                    return new Station(radioStationDTO.getID(), radioStationDTO.getName(), centerFreString, tapeWidthString);
+                }).collect(toList());
+
+            } else if ("tapeWidth".equals(sortName) && "desc".equals(order)) {
+                reslutDtos = response.getRStatSignalList().getRadioStationSignalDTO().stream().sorted((c1, c2) -> c1.getFreq().getCenterFreq().intValue() < c2.getFreq().getCenterFreq().intValue() ? 1 : -1).map((RadioStationSignalDTO t) -> {
+
+                    final RadioStationDTO radioStationDTO = t.getStation();
+
+                    final RadioFreqDTO radioFreqDTO = t.getFreq();
+
+                    int centerFre = radioFreqDTO.getCenterFreq().intValue() / 1000000;
+                    int tapeWidth = radioFreqDTO.getBandWidth().intValue() / 1000000;
+                    final String centerFreString = centerFre + "";
+                    final String tapeWidthString = tapeWidth + "";
+
+                    return new Station(radioStationDTO.getID(), radioStationDTO.getName(), centerFreString, tapeWidthString);
+                }).collect(toList());
+
+            } else if ("tapeWidth".equals(sortName) && "asc".equals(order)) {
+                reslutDtos = response.getRStatSignalList().getRadioStationSignalDTO().stream().sorted((c1, c2) -> c1.getFreq().getCenterFreq().intValue() > c2.getFreq().getCenterFreq().intValue() ? 1 : -1).map((RadioStationSignalDTO t) -> {
+
+                    final RadioStationDTO radioStationDTO = t.getStation();
+
+                    final RadioFreqDTO radioFreqDTO = t.getFreq();
+
+                    int centerFre = radioFreqDTO.getCenterFreq().intValue() / 1000000;
+                    int tapeWidth = radioFreqDTO.getBandWidth().intValue() / 1000000;
+                    final String centerFreString = centerFre + "";
+                    final String tapeWidthString = tapeWidth + "";
+
+                    return new Station(radioStationDTO.getID(), radioStationDTO.getName(), centerFreString, tapeWidthString);
+                }).collect(toList());
+
+            }
+
 
             reslut = Maps.newHashMap();
 

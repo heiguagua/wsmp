@@ -12,6 +12,7 @@ define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"]
         dojo.require("esri.symbols.Font");
         dojo.require("esri.geometry.Circle");
         dojo.require("esri.symbols.SimpleFillSymbol");
+
         var heatLayer;
 		var testWidget = null;
         var pSymbol = null;
@@ -30,7 +31,9 @@ define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"]
 
             var url = mapUrl;
             var agoLayer = new esri.layers.ArcGISTiledMapServiceLayer(url, {id: "街道地图"});
-            console.log(agoLayer.initialExtent)
+            console.log("++++++++++++++++++++++++++++++++++++++++++++++++")
+            console.log(JSON.stringify(agoLayer));
+            console.log(agoLayer);
             var initiaEx = agoLayer.initialExtent;
             var info = Binding.getUser();
             info = JSON.parse(info);
@@ -55,8 +58,8 @@ define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"]
             map = new esri.Map("mapDiv", {
                 //center : [ 104.06, 30.67 ],
                 center : center,
-                zoom:9,
-                maxZoom:9,
+				zoom:9,
+                // maxZoom:9,
                 sliderStyle: "small",
                 logo:false
                 // maxZoom:11
@@ -77,7 +80,7 @@ define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"]
                 heatLayer = new HeatmapLayer({
                     config: {
                         "useLocalMaximum": false,
-                        "radius": 40,
+                        "radius": 21,
                         "gradient": {
                             0.45: "rgb(000,000,255)",
                             0.55: "rgb(000,255,255)",
@@ -213,14 +216,14 @@ define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"]
                         //map.addLayer(glayer);
 
                         dojo.connect(map, "onClick", function(e){
-                            console.log(esri.graphic.geometry);
-                            if(esri.graphic.geometry.type = 'point'){
-                                console.log(true);
-                                var id = esri.graphic.geometry.stationId;
-                                var data = {"stationId" : id}
-
-
-                            }
+                            // console.log(esri.graphic.geometry);
+                            //     if(esri.graphic.geometry.type = 'point'){
+                            //         console.log(true);
+                            //         var id = esri.graphic.geometry.stationId;
+                            //         var data = {"stationId" : id}
+                            //
+                            //
+                            // }
                         });
 
 

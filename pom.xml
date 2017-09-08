@@ -188,11 +188,10 @@
 			<!--<scope>system</scope>-->
 			<!--<systemPath>${JAVA_HOME}/lib/tools.jar</systemPath>-->
 		<!--</dependency>-->
-
 		<dependency>
 			<groupId>com.chinawiserv.apps.krying</groupId>
 			<artifactId>jk3d</artifactId>
-			<version>1.0.0.RELEASE</version>
+			<version>1.0.2.RELEASE</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.springframework.boot</groupId>
@@ -200,7 +199,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
 	</dependencies>
 
 	<!--<repositories> <repository> <id>central_pengz</id> <name>central_pengz</name> 
