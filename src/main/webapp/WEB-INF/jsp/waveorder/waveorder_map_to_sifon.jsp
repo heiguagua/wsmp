@@ -40,7 +40,7 @@
 				<input style="display: none" id ='mapUrl' value="${mapUrl}" />
 				<input value="${areaCode}" hidden="true" id="areaCode">
 				<div id='redioType'></div>
-				<div id="mapDiv1"padding: 10px; height: 960px></div>
+				<div id="mapDiv1"></div>
 			</div>
 		</section>
 	</div>

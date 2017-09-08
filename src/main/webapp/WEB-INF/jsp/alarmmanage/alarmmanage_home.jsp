@@ -8,6 +8,8 @@
   <meta name="description" content="" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <link href='3.9/js/dojo/library/bootstrap/css/bootstrap.min.css' rel='stylesheet' />
+  <link href="3.9/js/dojo/library/bootstrap-table/bootstrap-table.min.css"
+        rel="stylesheet">
   <link href='3.9/js/dojo/library/font-awesome/css/font-awesome.min.css' rel='stylesheet' />
   <link href='3.9/js/dojo/library/bootstrap/css/awesome-bootstrap-checkbox.css' rel='stylesheet' />
   <link href='3.9/js/dojo/library/select2/select2.min.css' rel='stylesheet' />
@@ -126,7 +128,7 @@
     <div class='box'>
       <div class='month-data flex-column'>
         <h4 id="monthTitle" class="text-center">近3个月占用度（按天统计）</h4>
-        <div id="month" class='title flex1 flex-column' style="height: 100%"></div>
+        <div id="month1" class='title flex1 flex-column' style="height: 100%"></div>
       </div>
     </div>
   </section>

@@ -103,9 +103,10 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
             maxlevelChart.clear();
             maxlevelChart.setOption(optionMonth);
         }
-        window.onresize = function(){
+
+        window.addEventListener("resize",function(){
             maxlevelChart.resize();
-        }
+        });
     }
     
     // 电平峰值鼠标区域选择放大缩小事件

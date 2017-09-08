@@ -8,6 +8,8 @@
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 <link href='3.9/js/dojo/library/bootstrap/css/bootstrap.min.css' rel='stylesheet' />
+	<link href="3.9/js/dojo/library/bootstrap-table/bootstrap-table.min.css"
+		  rel="stylesheet">
 <link href='3.9/js/dojo/library/font-awesome/css/font-awesome.min.css' rel='stylesheet' />
 <link href='3.9/js/dojo/library/bootstrap/css/awesome-bootstrap-checkbox.css' rel='stylesheet' />
 <link href='3.9/js/dojo/library/select2/select2.min.css' rel='stylesheet' />
@@ -71,7 +73,7 @@
 							<span id = "stationName">&nbsp;&nbsp;台站</span>
 						</label>
 						<div class='pull-right'>
-							<input type="text" class="gate-filter" placeholder="请输入门阀" /> <button class="btn btn-submit" id="gate-btn">提交</button>电磁覆盖率:&nbsp; <span class='coverage-number'></span>
+							<input type="text" class="gate-filter" placeholder="请输入门限" /> <button class="btn btn-submit" id="gate-btn">提交</button>电磁覆盖率:&nbsp; <span class='coverage-number'></span>
 						</div>
 					</div>
 					<div id="mapDiv"style= "padding: 10px"></div>
@@ -231,7 +233,7 @@
 			<div class='box'>
 				<div class='month-data flex-column'>
 					<h4 id='monthChartTitle' class='title'>近3个月占用度（按天统计）</h4>
-					<div class='flex1' id='monthChart'></div>
+					<div class='flex1' id='monthChart1'></div>
 				</div>
 			</div>
 		</section>
