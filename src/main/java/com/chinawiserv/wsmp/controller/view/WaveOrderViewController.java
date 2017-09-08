@@ -6,7 +6,6 @@ import com.alibaba.fastjson.TypeReference;
 import com.chinawiserv.apps.logger.Logger;
 import com.chinawiserv.wsmp.pojo.MeasureTaskParamDto;
 import com.chinawiserv.wsmp.pojo.RedioStatusCount;
-import com.sefon.ws.service.impl.FreqService;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -21,7 +20,6 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;

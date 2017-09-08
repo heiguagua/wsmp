@@ -93,9 +93,9 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 				// 顶层图标大小
 				// 监测站symbol
 				var monitorSymbol = new PictureMarkerSymbol({
-							"url" : "images/monitoring-station.svg",
-							"height" : 26,
-							"width" : 26
+							"url" : "images/monitor-station-union.png",
+							"height" : 24,
+							"width" : 24
 						});
 				// 计数点symbol
 				var url_countBackgroundSymbol = null;

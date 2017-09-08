@@ -28,7 +28,7 @@
     vertical-align: middle;
     width: 15px;
     height: 15px;
-    border-radius: 50%;
+    /* border-radius: 50%; */
     margin-left: 10px;
     margin-right: 5px; }
 #waveOrder_map_to_sifon .signal-category .signal-sign.legal {
