@@ -355,6 +355,11 @@ define(	["ajax", "dojo/parser", "esri/map",
 							$("#table-signal-list").find(".dpopover").popover({
 										html : true
 									});
+						},
+						onAll:function(){
+							$("#table-signal-list").find(".dpopover").popover({
+								html : true
+							});
 						}
 					});
 				});
@@ -926,7 +931,12 @@ define(	["ajax", "dojo/parser", "esri/map",
 						$("#table-alarm-undeal").find(".dpopover").popover({
 									html : true
 								});
-					}
+					},
+					onAll:function(){
+						$("#table-alarm-undeal").find(".dpopover").popover({
+							html : true
+						});
+					},
 				};
 
 				$('#table-alarm-undeal').bootstrapTable(option)
@@ -967,6 +977,11 @@ define(	["ajax", "dojo/parser", "esri/map",
 								});
 						MAP1 = mapInit();
 						addPoint(monitors, 1, "false");// 默认选中1，子类型为false
+					},
+					onAll:function(){
+						$("#table-radio").find(".dpopover").popover({
+							html : true
+						});
 					},
 					columns : [{
 						field : 'redioName',
