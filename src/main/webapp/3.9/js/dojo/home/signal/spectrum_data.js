@@ -141,7 +141,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                       start_index_temp = param[0].dataIndex;
                       end_index = param[0].dataIndex;
                       if(param && param[0] && param[0].name && param[0].value) {
-                        return param[0].name + " : " + param[0].value;
+                        return param[0].name + " MHz: " + param[0].value+"dBμV";
                       }
                       
                     }
@@ -169,8 +169,8 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                 }],
                 xAxis : [{
                     'type' : 'category',
-                    //'splitNumber':5,
-                    'interval' : 20,
+                    'splitNumber':10,
+                    'interval' : 10,
                     'onZero' : false,
                     'axisTick' : {
                         show : false

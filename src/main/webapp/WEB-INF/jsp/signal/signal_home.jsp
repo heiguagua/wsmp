@@ -81,7 +81,27 @@
 				</div>
 			</section>
 		<%--</span>--%>
-		<section class='flex-row'>
+			数据回放:<ul class="nav nav-pills ">
+				<li role="presentation"><a href="#">
+					<div class="checkbox checkbox-primary flex1 ">
+						<input type="checkbox" value="1" name="data-type" id="frequency">
+						<label for="frequency"> 频谱 </label>
+					</div>
+				</a></li>
+				<li role="presentation"><a href="#">
+					<div class="checkbox checkbox-primary flex1 ">
+						<input type="checkbox" value="2" name="data-type" id="IQ">
+						<label for="IQ"> IQ数据 </label>
+					</div>
+				</a></li>
+				<li role="presentation"><a href="#">
+					<div class="checkbox checkbox-primary flex1 ">
+						<input type="checkbox" value="3" name="data-type" id="audio">
+						<label for="audio"> 音频 </label>
+					</div>
+				</a></li>
+			</ul>
+		<section class='flex-row'  style="display: none" id="frequency-wrap">
 			<div class='box'>
 				<div class='data-play'>
 					<label class='module-name'>数据回放<span class="data-type">频谱</span></label>
@@ -93,22 +113,28 @@
 						</table>
 						<div class="text-center confirm-wrap"><a class="btn btn-confirm" id="spectrum-confirm">确定</a><a class="btn btn-cancel">取消</a></div>
 					</div>
-					<ul class="nav nav-pills pull-right">
-						<li role="presentation"><a href="#">
-								<div class="checkbox checkbox-primary flex1 ">
-									<input type="checkbox" value="2" name="data-type" id="IQ">
-									<label for="IQ"> IQ数据 </label>
-								</div>
-						</a></li>
-						<li role="presentation"><a href="#">
-								<div class="checkbox checkbox-primary flex1 ">
-									<input type="checkbox" value="3" name="data-type" id="audio">
-									<label for="audio"> 音频 </label>
-								</div>
-						</a></li>
-					</ul>
+					<%--<ul class="nav nav-pills pull-right">--%>
+						<%--<li role="presentation"><a href="#">--%>
+							<%--<div class="checkbox checkbox-primary flex1 ">--%>
+								<%--<input type="checkbox" value="1" name="data-type" id="frequency">--%>
+								<%--<label for="frequency"> 频谱 </label>--%>
+							<%--</div>--%>
+						<%--</a></li>--%>
+						<%--<li role="presentation"><a href="#">--%>
+								<%--<div class="checkbox checkbox-primary flex1 ">--%>
+									<%--<input type="checkbox" value="2" name="data-type" id="IQ">--%>
+									<%--<label for="IQ"> IQ数据 </label>--%>
+								<%--</div>--%>
+						<%--</a></li>--%>
+						<%--<li role="presentation"><a href="#">--%>
+								<%--<div class="checkbox checkbox-primary flex1 ">--%>
+									<%--<input type="checkbox" value="3" name="data-type" id="audio">--%>
+									<%--<label for="audio"> 音频 </label>--%>
+								<%--</div>--%>
+						<%--</a></li>--%>
+					<%--</ul>--%>
 				</div>
-				<div class="data-play-chart">
+				<div class="data-play-chart" >
 					<div id="spectrumChart" style="width: 100%; height: 300px"></div>
 				</div>
       </div>
