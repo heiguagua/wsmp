@@ -309,11 +309,9 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
         }
         spectrumChart = echarts.init($('#spectrumChart')[0]);
         spectrumChart.setOption(option);
-        window.onresize = function(){
-            //spectrumChart.clear();
-            //spectrumChart.setOption(option);
+        window.addEventListener("resize",function(){
             spectrumChart.resize();
-        }
+        });
         console.log(option);
         spectrumChart.on('timelinechanged', function (p1) {
         	console.log(p1);

@@ -1238,9 +1238,9 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
     var month_total_length = 0;     // x轴数据总数
     var drag_flag = false;             // 月占用度是否拖拽
     function initMonthchart(levelParam) {
-        var optionMonth = {};
+        var optionMonth1 = {};
         if(levelParam.monthOcc &&levelParam.monthOcc.xAxis.length&&levelParam.monthOcc.series.length){
-            optionMonth = {
+            optionMonth1 = {
                 color : ['rgb(55,165,255)'],
                 tooltip : {
                     'trigger' : 'axis',
@@ -1341,14 +1341,15 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
         }
 
         monthChart = echarts.init($('#monthChart1')[0]);
-        monthChart.setOption(optionMonth);
+        monthChart.setOption(optionMonth1);
         window.onresize = function() {
             monthChart.clear();
-            monthChart.setOption(optionMonth);
+            monthChart.setOption(optionMonth1);
         }
-        window.onresize = function(){
+
+        window.addEventListener("resize",function(){
             monthChart.resize();
-        }
+        });
         //渲染图表title，添加监测站名称
         var name = $('#station-list2').find('option:selected').text();//选中的台站名称
         console.log(name)
@@ -1576,9 +1577,12 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
             myChart.clear();
             myChart.setOption(option);
         }
-        window.onresize = function(){
+
+        window.addEventListener("resize",function(){
             myChart.resize();
-        }
+        });
+
+
         // draw month data chart
 
     }

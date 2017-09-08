@@ -130,9 +130,9 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
 			monthChart.clear();
 			monthChart.setOption(optionMonth);
 		}
-		window.onresize = function(){
+		window.addEventListener("resize",function(){
 			monthChart.resize();
-		}
+		});
 		monthChart.on('click', function(params) {
 			console.log(params.name)
 			var time =params.name+'';

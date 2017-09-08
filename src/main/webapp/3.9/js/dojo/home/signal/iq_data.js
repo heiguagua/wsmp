@@ -328,11 +328,9 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
         }
         iqChart = echarts.init($('#IQChart')[0]);
         iqChart.setOption(option);
-        window.onresize = function(){
-            //iqChart.clear();
-            //iqChart.setOption(option);
+        window.addEventListener("resize",function(){
             iqChart.resize();
-        }
+        });
         iqChart.on('timelinechanged', function (p1) {
             var current_index = p1.currentIndex-1;
             option.options[current_index].xAxis.data = iq_play_list[current_index].freqData;
