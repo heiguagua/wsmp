@@ -113,6 +113,16 @@
   line-height: 18px;
   border: 1px solid #DAE5F0;
 }
+#waveOrder .btn-refresh-table {
+   background: #37a5ff;
+  color: #FFF;;
+  padding: 4px;
+  border-radius: 4px;
+  font-size: 12px;
+  border: 1px solid #DAE5F0;
+  height: 25px;
+}
+
 
 #waveOrder .btn-evaluate {
   background: #FFF;
@@ -213,4 +223,9 @@
   color: #37A5FF;
   font-size: 26px;
   padding: 0 12px;
+}
+.minutes {
+  border: 1px solid #DAE5F0;
+  border-radius: 4px;
+  padding-left: 10px;
 }

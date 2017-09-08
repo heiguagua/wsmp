@@ -66,8 +66,10 @@
 					<li id='warningEnsure' role="presentation" class="active"><a
 						href="#undeal">实时告警未确认</a></li>
 					<li id='warningUnsure' role="presentation"><a href="#dealed">实时告警已确认</a></li>
-					<li class="pull-right">更新间隔(分钟)<input id="minutes" style="IME-MODE: disabled; WIDTH: 60px; HEIGHT: 25px" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')" maxlength="5" size="14" type="text" /></li>
-					<!-- <li><a class="btn btn-default btn-refresh pull-right"><img src="images/refresh.png">&nbsp;&nbsp;刷新</a></li> -->
+					<li class="pull-right">更新间隔(分钟)<input id="minutes" class="minutes" style="IME-MODE: disabled; WIDTH: 60px; HEIGHT: 25px" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')" maxlength="5" size="14" type="text" />
+						<button id="minutesButton"class="btn btn-info btn-refresh-table pull-right">
+						<%--<img src="images/refresh.png">&nbsp;&nbsp;--%>
+						刷新</button></li>
 				</ul>
 				<div class="tab-content flex1">
 					<div role="tabpanel" class="tab-pane active" id='undeal'>

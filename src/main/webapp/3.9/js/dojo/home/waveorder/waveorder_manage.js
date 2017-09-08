@@ -416,6 +416,15 @@ define(	["ajax", "dojo/parser", "esri/map",
 								refresh_timer_init(e.target.value);
 							}
 						});
+				$("#minutesButton").click(function(){
+					var value = $("#minutes").val();
+					if(value){
+						layer.msg("设置更新时间成功！时间：" +value
+						+ "分钟");
+						refresh_timer_init(value);
+					}
+
+				})
 
 			}
 
