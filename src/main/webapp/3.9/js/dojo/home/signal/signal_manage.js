@@ -93,6 +93,14 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
         //    wavesurfer.destroy();
         //})
 
+        //选择频谱
+        $("#frequency").on("click", function() {
+            if ($(this).is(":checked")) {
+                $("#frequency-wrap").slideDown();
+            } else {
+                $("#frequency-wrap").slideUp();
+            }
+        })
         // 选择IQ数据
         $("#IQ").on("click", function() {
             if ($(this).is(":checked")) {
