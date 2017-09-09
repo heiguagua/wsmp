@@ -567,9 +567,9 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                                 },
                                 columns: [{
                                     field: 'stationName',
-                                    title: '1台站名称',
-                                    titleTooltip:"台站名称",
-                                    sortable : true
+                                    title: '台站名称',
+                                    titleTooltip:"台站名称"
+                                   // sortable : true
                                 }, {
                                     field: 'centerFrequency',
                                     title: '中心频率(MHz)',
@@ -705,7 +705,7 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                                     field: 'stationName',
                                     title: '台站名称',
                                     titleTooltip:"台站名称",
-                                    sortable : true,
+                                    //sortable : true,
                                     sortName: "value",
                                     formatter: function (value, row, index) {
                                         return '<div id ="'+row.id+'">' + value + '</div>';
@@ -828,8 +828,8 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                                 columns: [{
                                     field: 'stationName',
                                     title: '台站名称',
-                                    titleTooltip:"台站名称",
-                                    sortable : true
+                                    titleTooltip:"台站名称"
+                                   // sortable : true
 
                                 }, {
                                     field: 'centerFrequency',

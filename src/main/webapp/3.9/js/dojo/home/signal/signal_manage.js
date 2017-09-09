@@ -165,6 +165,10 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
         $("#clickModalConfig").click(function(){
             var warningID = $("#signal_list1").find('option:selected').attr("warningid");
             var centorFreq = $("#signal_list1").find('option:selected').attr("centorfreq");
+            if(centorFreq==null||centorFreq.length ==0){
+                layer.alert("请输入频率");
+                return;
+            }
             console.log(warningID);
             if(warningID &&centorFreq){
                 var data = {};
@@ -738,7 +742,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                     field : 'stationName',
                     title : '台站名称',
                     titleTooltip:"台站名称",
-                    sortable : true,
+                    //sortable : true,
                     width : '40%'
                 }, {
                     field : 'centerFrequency',
@@ -748,7 +752,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                     sortName: "value",
                     width : '30%',
                     formatter : function(value, row, index) {
-                        return '<a>' + value + '</a>';
+                        return '<a id="'+row.id+'">' + value + '</a>';
                     }
                 }, {
                     field : 'tapeWidth',
@@ -943,8 +947,8 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 columns : [{
                     field : 'stationName',
                     title : '台站名称',
-                    titleTooltip:"台站名称",
-                    sortable : true
+                    titleTooltip:"台站名称"
+                    //sortable : true
                 }, {
                     field : 'centerFrequency',
                     title : '中心频率（MHz）',
@@ -952,7 +956,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                     sortName: "value",
                     sortable : true,
                     formatter : function(value, row, index) {
-                        return '<a>' + value + '</a>';
+                        return '<a id="'+row.id+'">' + value + '</a>';
                     }
                 }, {
                     field : 'tapeWidth',
