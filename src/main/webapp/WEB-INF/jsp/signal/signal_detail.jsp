@@ -9,9 +9,8 @@
             <%--<div class='t-i-item flex1 flex-column justify-center'>频率</div>--%>
               <div class='t-i-item justify-center'>带宽</div>
           <%--<div class='r-i-item flex1 flex-column justify-center'>${redioDetail.band}MHz</div>--%>
-          <div id="redioDetailCentor"class='r-i-item  flex-column justify-center'>${redioDetail.centor}kHz</div>
+          <div id="redioDetailCentor"class='r-i-item  flex-column justify-center'>${redioDetail.band}kHz</div>
         </div>
-
         <div class='detect-way flex-row flex1'>
           <%--<div id = "warning_confirm" class='way-key flex1 checked'>--%>
           <%--<div class='way-sign'>--%>
