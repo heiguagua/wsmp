@@ -58,8 +58,8 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 	}
 	//下方地图初始化
 			function mapInit() {
-				var mapUrl = $("#mapUrl").val();
-//				var mapUrl = Binding.getMapUrl();
+//				var mapUrl = $("#mapUrl").val();
+				var mapUrl = Binding.getMapUrl();
 				var map = new Map("mapDiv1", {
 					logo : false,
 					center :[MONITORS[0].Longitude,MONITORS[0].Latitude],

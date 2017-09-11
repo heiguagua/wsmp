@@ -728,7 +728,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 			//下方地图初始化
 			function mapInit() {
 
-				var mapUrl = $("#mapUrl").val();
+//				var mapUrl = $("#mapUrl").val();
+				var mapUrl = Binding.getMapUrl();
 				var url = mapUrl;
 				var map = new Map("mapDiv1", {
 							logo : false,
