@@ -6,8 +6,13 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 	var MAP1 = mapInit();
 	
 	function wo_init() {
-		addPoint(MONITORS, 1,"false");// 默认选中1
 		redioType(MONITORS);
+		
+		MAP1.on("load",function() {
+			addPoint(MONITORS, 1,"false");// 默认选中合法正常类型
+		})
+		
+		// 地图点的展示
 
 	// 信号类型切换点击事件
 	$("#redioType").on("click", "input", function(e) {
@@ -53,35 +58,29 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 	}
 	//下方地图初始化
 			function mapInit() {
-
 				var mapUrl = $("#mapUrl").val();
-				var url = mapUrl;
+//				var mapUrl = Binding.getMapUrl();
 				var map = new Map("mapDiv1", {
 					center :[MONITORS[0].Longitude,MONITORS[0].Latitude],
-					maxZoom : 12,
+					maxZoom : 16,
 					minZoom :6,
-					zoom : 12
+					zoom : 8
 				});
 
-				var agoLayer = new ArcGISTiledMapServiceLayer(url, {
+				var agoLayer = new ArcGISTiledMapServiceLayer(mapUrl, {
 					id : "街道地图"
 				});
-				var glayer_max = new GraphicsLayer();
-				var glayer_zoom = new GraphicsLayer();
+				var glayer = new GraphicsLayer();
 				map.addLayer(agoLayer);
-				map.addLayer(glayer_max);
-				map.addLayer(glayer_zoom);
+				map.addLayer(glayer);
 				return map;
 			}
 			
 	// 根据监测站列表，信号类型绘出监测站点
 			function addPoint(monitors, signalType, isSubType) {
 				var map = MAP1;
-				console.log(map);
-				var glayer_max = map.getLayer('graphicsLayer0');
-				var glayer_zoom = map.getLayer('graphicsLayer1');
-				glayer_max.clear();
-				glayer_zoom.clear();
+				var glayer = map.getLayer('graphicsLayer0');
+				glayer.clear();
 				var data = {};
 				data.monitorsNum = [];
 				data.signalType = signalType;
@@ -128,15 +127,16 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 				var countBackgroundSymbol = new PictureMarkerSymbol({
 					"url" : url_countBackgroundSymbol,
 					"height" : 18,
-					"width" : 34
+					"width" : 34,
+					"xoffset" : 17,
+					"yoffset" : 15
 				});
 				ajax.post("data/waveorder/monitorsPoint", data,function(result) {
 									console.log(result);
 									for (var i = 0; i < result.length; i++) {
 										var monitorPoint = new Point(result[i]);
-										var countPoint = monitorPoint.offset(
-												0.009, 0.006);// 计数点位于右上角
 										var countSymbol = new TextSymbol(String(monitorPoint.count))
+												.setOffset(22,15)
 												.setColor(
 														new esri.Color([ 0xff,
 																0xff, 0xff ]))
@@ -148,36 +148,31 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 																		" .PingFangSC-Medium"));
 
 										var countGraphic = new esri.Graphic(
-												countPoint.offset(0, -0.0015),
-												countSymbol);// 计数图
+												monitorPoint,countSymbol);// 计数图
 										var countBackgroundGraphic = new esri.Graphic(
-												countPoint,
+												monitorPoint,
 												countBackgroundSymbol);// 计数底图
 										var monitorGraphic = new esri.Graphic(
 												monitorPoint, monitorSymbol);// 监测站图
-										var monitorGraphic_zoom = new esri.Graphic(
-												monitorPoint, monitorSymbol);// 监测站图,一个图片对象只能赋予一个图层，所以这里必须要新复制一个对象
-										glayer_max.add(monitorGraphic);
-										glayer_max.add(countBackgroundGraphic);
-										glayer_max.add(countGraphic);
-										glayer_zoom.add(monitorGraphic_zoom);
+										glayer.add(monitorGraphic);
+										glayer.add(countBackgroundGraphic);
+										glayer.add(countGraphic);
 									}
 						});
-				map.addLayer(glayer_max);
-				map.addLayer(glayer_zoom);
+				map.addLayer(glayer);
 				//缩放监听事件
-				map.on("zoom-end",function(zoom){
-					console.log(zoom);
-					//以最大层级为标准，缩小就减小图标大小,并且只减小监测站图标
-					if(zoom.level < map.getMaxZoom()) {
-						//先清除图片或者清除图片层或者隐藏图片层
-						glayer_max.hide();
-						glayer_zoom.show();
-					}else {
-						glayer_zoom.hide();
-						glayer_max.show();
-					}
-				});	
+//				map.on("zoom-end",function(zoom){
+//					console.log(zoom);
+//					//以最大层级为标准，缩小就减小图标大小,并且只减小监测站图标
+//					if(zoom.level < map.getMaxZoom()) {
+//						//先清除图片或者清除图片层或者隐藏图片层
+//						glayer_max.hide();
+//						glayer_zoom.show();
+//					}else {
+//						glayer_zoom.hide();
+//						glayer_max.show();
+//					}
+//				});	
 			}
 
 	return {
