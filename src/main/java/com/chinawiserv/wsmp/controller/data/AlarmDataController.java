@@ -415,7 +415,9 @@ public class AlarmDataController {
                 mapLocate.put("radius",  result.getOangeR().get(index));
                 levelPoint.add(mapLocate);
             }
-            Logger.info("场强定位计算正常 操作时间{} 返回值为{}", LocalDateTime.now().toString(), JSON.toJSONString(result));
+
+
+            //Logger.info("场强定位计算正常 操作时间{} 返回值为{}", LocalDateTime.now().toString(), JSON.toJSONString(result));
         } catch (NumberFormatException e) {
             Logger.error("场强定位计算 ,操作时间：{},入参：开始时间：{}，中心频率：{} 异常 ：{}", LocalDateTime.now(), param.get("beginTime"), param.get("frequency"), e);
         }
@@ -434,7 +436,11 @@ public class AlarmDataController {
         for (int index = 0; index < coulm; index++) {
             p[index][0] = mapPoint.get(index).getFlon();
             p[index][1] = mapPoint.get(index).getFlat();
-            p[index][2] = (mapPoint.get(index).getLevel() & 0xFF);
+            p[index][2] = (mapPoint.get(index).getLevel());
+            if (p[index][2]<0){
+                p[index][2]  = p[index][2] + 40;
+            }
+
             //inPutData.add(new DataInfo(p[index][0],p[index][1],p[index][2]));
             inData.add(new IDWPoint(p[index][0], p[index][1], p[index][2]));
             if (xMin == -1) {
@@ -602,7 +608,7 @@ public class AlarmDataController {
             HashMap<String, String> element = Maps.newHashMap();
             element.put("x", station.getFlon() + "");
             element.put("y", station.getFlat() + "");
-            element.put("count", (station.getLevel() & 0xFF) + "");
+            element.put("count", (station.getLevel()) + "");
             element.put("stationId", station.getId());
             return element;
         }).collect(toList());

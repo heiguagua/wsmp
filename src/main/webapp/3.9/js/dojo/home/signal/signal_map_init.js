@@ -170,14 +170,13 @@ define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"]
 
                         var arryOfStation = reslut.stationPiont;
                         var arryOfLevel = reslut.levelPoint;
-
                         var stationSize = arryOfStation.length;
                         var LevelSize = arryOfLevel.length;
 
                         getFeatures(reslut);
 
                         var monitorSymbol = new PictureMarkerSymbol({
-                            "url" : "images/monitoring-station.svg",
+                            "url" : "images/monitor-station-union.png",
                             "height" : 26,
                             "width" : 26
                         });
@@ -204,10 +203,10 @@ define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"]
                             var p = new esri.geometry.Point(arryOfLevel[index]);
                             var circle = new esri.geometry.Circle(p,{
                                 geodesic: true,
-                                radius: arryOfLevel[index].radius
+                                radius: arryOfLevel[index].radius*1000
                             });
 
-                            var symbol = new esri.symbols.SimpleFillSymbol().setColor(null).outline.setColor("red");
+                            var symbol = new esri.symbols.SimpleFillSymbol().setColor(new esri.Color([0,0,0])).outline.setColor("black");
                             var circleGrap = new esri.Graphic(circle, symbol);
                             glayer.add(circleGrap);
 
