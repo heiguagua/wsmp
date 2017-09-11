@@ -9,7 +9,8 @@ import java.util.List;
 public class IDWMain {
 	 /*局部变量*/
 	private double beta=1;   //beta值，一般设为1或2
-	  
+
+
 	
 	/**
 	 * @param in 输入的坐标点 含有值
