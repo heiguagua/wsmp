@@ -58,9 +58,10 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 	}
 	//下方地图初始化
 			function mapInit() {
-				var mapUrl = $("#mapUrl").val();
-//				var mapUrl = Binding.getMapUrl();
+//				var mapUrl = $("#mapUrl").val();
+				var mapUrl = Binding.getMapUrl();
 				var map = new Map("mapDiv1", {
+					logo : false,
 					center :[MONITORS[0].Longitude,MONITORS[0].Latitude],
 					maxZoom : 16,
 					minZoom :6,
@@ -68,7 +69,8 @@ define([ "ajax", "dojo/parser", "esri/map", "esri/layers/ArcGISTiledMapServiceLa
 				});
 
 				var agoLayer = new ArcGISTiledMapServiceLayer(mapUrl, {
-					id : "街道地图"
+					id : "街道地图",
+					showAttribution : false
 				});
 				var glayer = new GraphicsLayer();
 				map.addLayer(agoLayer);

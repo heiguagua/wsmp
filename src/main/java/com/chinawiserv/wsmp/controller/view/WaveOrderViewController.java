@@ -38,15 +38,16 @@ public class WaveOrderViewController {
 	@Value("${mapservice.wdsl}")
 	private String mapUrl;
 	
-	private RadioSignalWebService serviceRadioSignal;
+	private static RadioSignalWebServiceSoap serviceRadioSignalSoap;
 	
-	private IImportFreqRangeManageService serviceImportFreqRangeManage;
+	private static IImportFreqRangeManageService serviceImportFreqRangeManage;
 	
 	
 	@PostConstruct
 	public void init() throws MalformedURLException {
 	    URL url2 = new URL(urlRadioSignal);
-	    serviceRadioSignal = new RadioSignalWebService(url2);
+	    RadioSignalWebService serviceRadioSignal = new RadioSignalWebService(url2);
+	    serviceRadioSignalSoap = serviceRadioSignal.getRadioSignalWebServiceSoap();
 		URL url3 = new URL(urlImportFreqRange);
 		serviceImportFreqRangeManage = new ImportFreqRangeManageService(url3).getBasicHttpBindingIImportFreqRangeManageService();
 
@@ -152,14 +153,14 @@ public class WaveOrderViewController {
 		List<String> monitorsNum = (List<String>) map.get("monitorsNum");
 		value.setString(monitorsNum);
 		request.setStationNumber(value);
-		RadioSignalClassifiedQueryResponse response = serviceRadioSignal.getRadioSignalWebServiceSoap().queryRadioSignalClassified(request);
+		RadioSignalClassifiedQueryResponse response = serviceRadioSignalSoap.queryRadioSignalClassified(request);
 		//System.out.println("===============================response:"+JSON.toJSONString(response));
 		RedioStatusCount rsCount = new RedioStatusCount();
 		//设置合法子类型(违规)
 		RadioSignalSubClassifiedQueryRequest request2 = new RadioSignalSubClassifiedQueryRequest();
 		request2.setStationNumber(value);
 		request2.setType(1);
-		RadioSignalSubClassifiedQueryResponse response2 = serviceRadioSignal.getRadioSignalWebServiceSoap().queryRadioSignalSubClassified(request2);
+		RadioSignalSubClassifiedQueryResponse response2 = serviceRadioSignalSoap.queryRadioSignalSubClassified(request2);
 		Integer legalSubTypeCount = response2.getLstOnStation().getSignalSubStaticsOnStation().stream().mapToInt(m -> m.getCount()).reduce(0,(a,b) -> a + b);
 		rsCount.setLegalUnNormalStationNumber(legalSubTypeCount);
 		
@@ -201,7 +202,7 @@ public class WaveOrderViewController {
 		List<String> monitorsNum = (List<String>) map.get("monitorsNum");
 		value.setString(monitorsNum);
 		request.setStationNumber(value);
-		RadioSignalClassifiedQueryResponse response = serviceRadioSignal.getRadioSignalWebServiceSoap().queryRadioSignalClassified(request);
+		RadioSignalClassifiedQueryResponse response = serviceRadioSignalSoap.queryRadioSignalClassified(request);
 		//System.out.println("===============================response:"+JSON.toJSONString(response));
 		
 		RedioStatusCount rsCount = new RedioStatusCount();
@@ -209,8 +210,7 @@ public class WaveOrderViewController {
 		RadioSignalSubClassifiedQueryRequest request2 = new RadioSignalSubClassifiedQueryRequest();
 		request2.setStationNumber(value);
 		request2.setType(1);
-		RadioSignalSubClassifiedQueryResponse response2 = serviceRadioSignal.getRadioSignalWebServiceSoap()
-				.queryRadioSignalSubClassified(request2);
+		RadioSignalSubClassifiedQueryResponse response2 = serviceRadioSignalSoap.queryRadioSignalSubClassified(request2);
 		Integer legalSubTypeCount = response2.getLstOnStation().getSignalSubStaticsOnStation().stream().mapToInt(m -> m.getCount()).reduce(0,(a,b) -> a + b);
 		rsCount.setLegalUnNormalStationNumber(legalSubTypeCount);
 		

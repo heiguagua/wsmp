@@ -27,6 +27,7 @@ import org.tempuri.RadioSignalQueryRequest;
 import org.tempuri.RadioSignalQueryResponse;
 import org.tempuri.RadioSignalStationDTO;
 import org.tempuri.RadioSignalWebService;
+import org.tempuri.RadioSignalWebServiceSoap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,9 +63,9 @@ public class CommunicationController {
     @Value("${radioSignalWebService.wsdl}")
     private String urlRadioSignal;
     
-    private QueryToolsServicePortType queryToolsService;
+    private static QueryToolsServicePortType queryToolsService;
     
-    private RadioSignalWebService radioSignalService;
+    private static RadioSignalWebServiceSoap radioSignalServiceSoap;
     
     private Map<String,String> techCodingTable;
 	
@@ -76,7 +77,8 @@ public class CommunicationController {
 		QueryToolsService service = new QueryToolsService(url1);
 		queryToolsService = service.getQueryToolsServiceHttpSoap11Endpoint();
 		URL url2 = new URL(urlRadioSignal);
-		radioSignalService = new RadioSignalWebService(url2 );
+		RadioSignalWebService radioSignalService = new RadioSignalWebService(url2 );
+		radioSignalServiceSoap = radioSignalService.getRadioSignalWebServiceSoap();
 		//技术制式编码表
 		techCodingTable = Maps.newHashMap();
 		techCodingTable.put("LY0101", "GSM/GPRS系统");
@@ -126,7 +128,7 @@ public class CommunicationController {
 			ArrayOfString value = new ArrayOfString();
 			value.setString(monitorsID);
 			request2.setStationIDs(value );
-			RadioSignalQueryResponse response2 = radioSignalService.getRadioSignalWebServiceSoap().queryRadioSignal(request2 );
+			RadioSignalQueryResponse response2 = radioSignalServiceSoap.queryRadioSignal(request2 );
 			Map<String, List<RadioSignalStationDTO>> map = response2.getRadioSignals().getRadioSignalDTO().stream().flatMap(m2 -> m2.getStationDTOs().getRadioSignalStationDTO().stream())
 				.collect(Collectors.groupingBy(RadioSignalStationDTO :: getStationNumber));
 			Double monitorCoverage = (double) (map.entrySet().size() / monitorsID.size() * 100);

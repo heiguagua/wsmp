@@ -12,6 +12,8 @@ import com.google.common.collect.Maps;
 import com.sefon.ws.model.freq.xsd.FrequencyRangeInfo;
 import com.sefon.ws.model.freq.xsd.FrequencyRangeQuerySpec;
 import com.sefon.ws.service.impl.FreqService;
+import com.sefon.ws.service.impl.FreqServicePortType;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -50,26 +52,36 @@ public class WaveOrderDataController {
 	@Value("${importFreqRangeManageService.wsdl}")
 	private String urlImportFreqRange;
 	
-	private IImportFreqRangeManageService serviceImportFreqRangeManage;
+	private static IImportFreqRangeManageService serviceImportFreqRangeManage;
 	
-	private static FreqService serviceFreq;
+	private static FreqWarningWebServiceSoap serviceFreqWarningSoap;
 	
-	private static RadioSignalWebService serviceRadioSignal;
+	private static FreqServicePortType serviceFreqPortType;
 	
-	private static FreqWarningWebService serviceFreqWarning;
+	private static RadioSignalWebServiceSoap serviceRadioSignalSoap;
 	
 	private final static BigDecimal multiplicand = new BigDecimal(Math.pow(10, 6));
 	
 	@PostConstruct
 	public void init() throws MalformedURLException {
 		URL url1 = new URL(urlFreq);
-	    serviceFreq = new FreqService(url1);
+	    FreqService serviceFreq = new FreqService(url1);
+	    Logger.info("初始化FreqService================================");
+	    serviceFreqPortType = serviceFreq.getFreqServiceHttpSoap12Endpoint();
+	    
 	    URL url2 = new URL(urlRadioSignal);
-	    serviceRadioSignal = new RadioSignalWebService(url2);
+	    RadioSignalWebService serviceRadioSignal = new RadioSignalWebService(url2);
+	    Logger.info("初始化RadioSignalWebService======================");
+	    serviceRadioSignalSoap = serviceRadioSignal.getRadioSignalWebServiceSoap();
+	    
 		URL url3 = new URL(urlFreqWarning);
-		serviceFreqWarning = new FreqWarningWebService(url3);
+		FreqWarningWebService serviceFreqWarning = new FreqWarningWebService(url3);
+		Logger.info("初始化FreqWarningWebService======================");
+		serviceFreqWarningSoap = serviceFreqWarning.getFreqWarningWebServiceSoap();
+		
 		URL url4 = new URL(urlImportFreqRange);
 		serviceImportFreqRangeManage = new ImportFreqRangeManageService(url4).getBasicHttpBindingIImportFreqRangeManageService();
+		Logger.info("初始化serviceImportFreqRangeManage======================");
 
 	}
 	
@@ -78,7 +90,7 @@ public class WaveOrderDataController {
 		// 根据用户ID查询自定义频段
 		FrequencyRangeQuerySpec request = new FrequencyRangeQuerySpec();
 		request.setUserId(param.get("userID").toString());
-		List<FrequencyRangeInfo> response = serviceFreq.getFreqServiceHttpSoap12Endpoint().queryFrequencyRange(request);
+		List<FrequencyRangeInfo> response = serviceFreqPortType.queryFrequencyRange(request);
 		final List<String> freqNames = Lists.newArrayList();
 		final List<FrequencyBand> freqList = response.stream().map(t -> {
 			// 名字放入List中
@@ -103,14 +115,14 @@ public class WaveOrderDataController {
 		List<String> stationString = (List<String>) param.get("monitorsID");
 		stationArray.setString(stationString );
 		request2.setStationNumber(stationArray);
-		RadioSignalClassifiedQueryResponse response2 = serviceRadioSignal.getRadioSignalWebServiceSoap().queryRadioSignalClassified(request2);
+		RadioSignalClassifiedQueryResponse response2 = serviceRadioSignalSoap.queryRadioSignalClassified(request2);
 
 		//查询合法子类型(违规)
 		RadioSignalSubClassifiedQueryRequest request3 = new RadioSignalSubClassifiedQueryRequest();
 		request3.setFreqBandList(array);
 		request3.setStationNumber(stationArray);
 		request3.setType(1);
-		RadioSignalSubClassifiedQueryResponse response3 = serviceRadioSignal.getRadioSignalWebServiceSoap().queryRadioSignalSubClassified(request3);
+		RadioSignalSubClassifiedQueryResponse response3 = serviceRadioSignalSoap.queryRadioSignalSubClassified(request3);
 		final List<Integer> legalSubTypeCountList = response3.getLstOnFreqBand().getSignalSubStaticsOnFreqBand().stream()
 				.map(m -> m.getCount())
 				.collect(Collectors.toList());
@@ -178,7 +190,7 @@ public class WaveOrderDataController {
 		List<String> stationString = (List<String>) param.get("monitorsID");
 		stationArray.setString(stationString);
 		request.setStationIDs(stationArray);
-		FreqWarningQueryResponse response = serviceFreqWarning.getFreqWarningWebServiceSoap().query(request);
+		FreqWarningQueryResponse response = serviceFreqWarningSoap.query(request);
 		List<Alarm> alarmRows = response.getWarningInfos().getFreqWarningDTO().stream()
 			.sorted((a,b) -> b.getLastTimeDate().toString().compareTo(a.getLastTimeDate().toString()))
 			.map(m -> {
@@ -214,7 +226,7 @@ public class WaveOrderDataController {
 		List<String> stationString = (List<String>) param.get("monitorsID");
 		stationArray.setString(stationString);
 		request.setStationIDs(stationArray);
-		FreqWarningQueryResponse response = serviceFreqWarning.getFreqWarningWebServiceSoap().query(request);
+		FreqWarningQueryResponse response = serviceFreqWarningSoap.query(request);
 		List<Alarm> alarmRows = response.getWarningInfos().getFreqWarningDTO().stream()
 				.sorted((a,b) -> b.getLastTimeDate().toString().compareTo(a.getLastTimeDate().toString()))
 				.map(m -> {
@@ -260,7 +272,7 @@ public class WaveOrderDataController {
 		request.setBeginFreq(new BigInteger(param.get("beginFreq").toString()));
 		request.setEndFreq(new BigInteger(param.get("endFreq").toString()));
 		// 返回结果:
-		RadioSignalQueryResponse response = serviceRadioSignal.getRadioSignalWebServiceSoap().queryRadioSignal(request);
+		RadioSignalQueryResponse response = serviceRadioSignalSoap.queryRadioSignal(request);
 		List<RedioDetail> redioRows = Lists.newArrayList();
 		if((Boolean)(param.get("isSubType"))) {
 			//如果是子类型
@@ -348,7 +360,7 @@ public class WaveOrderDataController {
 		List<String> string = monitorsID.stream().map(o -> o.toString()).collect(Collectors.toList());
 		value1.setString(string);
 		request.setStationIDs(value1);
-		RadioSignalQueryResponse response = serviceRadioSignal.getRadioSignalWebServiceSoap().queryRadioSignal(request);
+		RadioSignalQueryResponse response = serviceRadioSignalSoap.queryRadioSignal(request);
 		
 		//重新封装结果集
 		@SuppressWarnings("unchecked")
