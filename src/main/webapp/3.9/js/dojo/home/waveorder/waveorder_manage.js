@@ -418,6 +418,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 								refresh_timer_init(e.target.value);
 							}
 						});
+						
+				// 监听更新按钮点击事件
 				$("#minutesButton").click(function(){
 					var value = $("#minutes").val();
 					if(value){

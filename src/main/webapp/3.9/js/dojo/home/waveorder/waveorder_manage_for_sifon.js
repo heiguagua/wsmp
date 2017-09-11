@@ -8,7 +8,7 @@ define([ "ajax", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer", "dojo/req
 		redioType(MONITORS);
 		
 		MAP1.on("load",function() {
-			addPoint(MONITORS, 1,"false");// 默认选中合法正常类型
+				addPoint(MONITORS, 1,"false");// 默认选中合法正常类型
 		})
 		
 		// 地图点的展示
@@ -159,8 +159,8 @@ define([ "ajax", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer", "dojo/req
 										glayer.add(countBackgroundGraphic);
 										glayer.add(countGraphic);
 									}
-						});
 				map.addLayer(glayer);
+						});
 				//缩放监听事件
 //				map.on("zoom-end",function(zoom){
 //					console.log(zoom);
