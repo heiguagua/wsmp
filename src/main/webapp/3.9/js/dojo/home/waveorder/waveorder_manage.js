@@ -731,6 +731,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 				var mapUrl = $("#mapUrl").val();
 				var url = mapUrl;
 				var map = new Map("mapDiv1", {
+							logo : false,
 							center : [MONITORS[0].Longitude,
 									MONITORS[0].Latitude],
 							maxZoom : 16,
