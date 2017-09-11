@@ -85,7 +85,7 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
 					type : 'value',
 					name:'百分比(%)',
 					max : 100,
-					min : 0,
+					min : -10,
 					splitNumber : 10,
 					axisLine : {
 						lineStyle : {

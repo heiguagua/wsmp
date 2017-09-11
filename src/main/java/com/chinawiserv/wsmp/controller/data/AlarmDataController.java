@@ -174,17 +174,25 @@ public class AlarmDataController {
                 Logger.info("以天计算峰值从hbase中查询正常返回值为空 查询时间为{}，页面入参：监测站id{}，开始时间{},中心频率{}", LocalDateTime.now().toString(), stationCode, beginTime, centorFreq);
             } else {
 
+                for (int beginHour = 0; beginHour < 24; beginHour++) {
+                    temple.put("" + beginHour, 0);
+                }
+
                 LinkedList<Object> xAxis = Lists.newLinkedList();
                 LinkedList<Object> series = Lists.newLinkedList();
 
-                final double pow = Math.pow(10, 6);
+                for (Map.Entry<String, Object> entry : temple.entrySet()) {
+                    if (StringUtils.isEmpty(Max.get(entry.getKey()))) {
+                        Max.put(entry.getKey(), -100);
+                    }
+                }
 
                 Max = Max.entrySet().stream().sorted((c1, c2) -> Integer.parseInt(c1.getKey()) > Integer.parseInt(c2.getKey()) ? 1 : -1
                 ).collect(toMap(Map.Entry::getKey, Map.Entry::getValue, throwingMerger(), LinkedHashMap::new));
 
                 Max.forEach((k, v) -> {
 
-                    final double key = Double.parseDouble(k) / pow;
+                    final double key = Integer.parseInt(k);
 
                     xAxis.add(key);
                     series.add(v);
