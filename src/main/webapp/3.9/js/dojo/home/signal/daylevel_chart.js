@@ -62,7 +62,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                     type : 'value',
                     name:'电平(dBμV)',
                     max : 120,
-                    min : -40,
+                    min : -10,
                     splitNumber : 10,
                     axisLine : {
                         lineStyle : {

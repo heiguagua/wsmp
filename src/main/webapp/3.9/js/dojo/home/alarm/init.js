@@ -190,7 +190,7 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                 var LevelSize = arryOfLevel.length;
 
                 var monitorSymbol = new PictureMarkerSymbol({
-                    "url" : "images/monitoring-station.svg",
+                    "url" : "images/monitor-station-union.png",
                     "height" : 26,
                     "width" : 26
                 });
@@ -597,11 +597,11 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                             $("#submitButton").removeAttr('disabled');
                             var status = $('#signal_list').find('option:selected').attr("status");
                             
-                            //if (status == "1"){
-                            //    $('#submitButton').attr('disabled',"true");
-                            //}else {
-                            //    $('#submitButton').removeAttr("disabled");
-                            //}
+                            if (status == "1"){
+                               $('#submitButton').attr('disabled',"true");
+                            }else {
+                               $('#submitButton').removeAttr("disabled");
+                            }
 
                             $("#modalStationAlarm").modal();
 
@@ -734,11 +734,11 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                             });
                             $("#submitButton").removeAttr('disabled');
                             var status = $('#signal_list').find('option:selected').attr("status");
-                            //if (status == "1"){
-                            //    $('#submitButton').attr('disabled',"true");
-                            //}else {
-                            //    $('#submitButton').removeAttr("disabled");
-                            //}
+                            if (status == "1"){
+                               $('#submitButton').attr('disabled',"true");
+                            }else {
+                               $('#submitButton').removeAttr("disabled");
+                            }
                             $("#modalStationAlarm").modal();
 
                         });
@@ -856,11 +856,11 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                             $("#submitButton").removeAttr('disabled');
                             var status = $('#signal_list').find('option:selected').attr("status");
 
-                            //if (status == "1"){
-                            //    $('#submitButton').attr('disabled',"true");
-                            //}else {
-                            //    $('#submitButton').removeAttr("disabled");
-                            //}
+                            if (status == "1"){
+                               $('#submitButton').attr('disabled',"true");
+                            }else {
+                               $('#submitButton').removeAttr("disabled");
+                            }
                             $("#modalStationAlarm").modal();
 
                         });
@@ -883,11 +883,11 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                             $("#stationWrap").html("");
                             $("#stationWrap").html(temp);
                             $("#submitButton").removeAttr('disabled');
-                            //if (status == "1"){
-                            //    $('#submitButton').attr('disabled',"true");
-                            //}else {
-                            //    $('#submitButton').removeAttr("disabled");
-                            //}
+                            if (status == "1"){
+                               $('#submitButton').attr('disabled',"true");
+                            }else {
+                               $('#submitButton').removeAttr("disabled");
+                            }
                             $("#modalStationAlarm").modal();
                         });
 
@@ -915,11 +915,11 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                             $("#submitButton").removeAttr('disabled');
                             var status = $('#signal_list').find('option:selected').attr("status");
 
-                            //if (status == "1"){
-                            //    $('#submitButton').attr('disabled',"true");
-                            //}else {
-                            //    $('#submitButton').removeAttr("disabled");
-                            //}
+                            if (status == "1"){
+                               $('#submitButton').attr('disabled',"true");
+                            }else {
+                               $('#submitButton').removeAttr("disabled");
+                            }
                             $("#modalStationAlarm").modal();
 
                         });

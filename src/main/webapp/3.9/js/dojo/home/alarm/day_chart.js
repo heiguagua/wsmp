@@ -55,6 +55,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax,echarts) {
 					type : 'value',
 					name:'百分比(%)',
 					max : 100,
+					min:-10,
 					splitNumber : 10,
 					axisLine : {
 						lineStyle : {
