@@ -15,14 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.tempuri.*;
 
+import javax.annotation.PostConstruct;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
@@ -31,8 +28,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.PostConstruct;
 
 import static java.util.stream.Collectors.toList;
 
@@ -116,8 +111,8 @@ public class SignalViewController {
 
 			long bandWidth = radio.getBandWidth();
 
-			redioDetail.setBand(center / 1000000);
-			redioDetail.setCentor(bandWidth / 1000000);
+			redioDetail.setBand(bandWidth / 1000);
+			redioDetail.setCentor(center / 1000000);
 			redioDetail.setType(radio.getTypeCode() + "");
 			redioDetail.setrMax(map.get("rmax"));
 			redioDetail.setSpecT(map.get("specT"));
