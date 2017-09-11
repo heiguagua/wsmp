@@ -375,19 +375,20 @@ define(	["ajax", "dojo/parser", "esri/map",
 										"x" : MONITORS[0].Longitude,
 										"y" : MONITORS[0].Latitude
 									});
-							MAP1.setZoom(12);
+							MAP1.setZoom(8);
 							MAP1.centerAt(center);
 						});
 
 				// 初始化电磁环境评估地图事件
 				$('#modalEvaluate').on('shown.bs.modal', function(e) {
 
-							var mapUrl = Binding.getMapUrl();;
+							var mapUrl = Binding.getMapUrl();
 							var url = mapUrl;
 							var map2 = new Map("mapDiv2", {
-										// center :[104.06,30.67],
-										zoom : 10
-									});
+									center :[MONITORS[0].Longitude,MONITORS[0].Latitude],
+									zoom : 8,
+									logo : false
+								});
 							var agoLayer2 = new ArcGISTiledMapServiceLayer(url,
 									{
 										id : "街道地图1",

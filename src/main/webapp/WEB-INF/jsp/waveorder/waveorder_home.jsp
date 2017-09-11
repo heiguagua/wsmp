@@ -69,7 +69,7 @@
 					<li class="pull-right">更新间隔(分钟)<input id="minutes" class="minutes" style="IME-MODE: disabled; WIDTH: 60px; HEIGHT: 25px" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')" maxlength="5" size="14" type="text" />
 						<button id="minutesButton"class="btn btn-info btn-refresh-table pull-right">
 						<%--<img src="images/refresh.png">&nbsp;&nbsp;--%>
-						刷新</button></li>
+						确认</button></li>
 				</ul>
 				<div class="tab-content flex1">
 					<div role="tabpanel" class="tab-pane active" id='undeal'>
