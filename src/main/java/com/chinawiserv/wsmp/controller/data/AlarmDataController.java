@@ -413,7 +413,6 @@ public class AlarmDataController {
 
             LevelResult result = LevelCompute.levelCompute(ids,flon,flat,level, ids.length,10, waringsensorid);
             int size = result.getOangeR().size();
-
             for (int index = 0;index < size;index++){
 
                 Map<String, Object> mapLocate = Maps.newHashMap();
@@ -423,9 +422,12 @@ public class AlarmDataController {
                 mapLocate.put("radius",  result.getOangeR().get(index));
                 levelPoint.add(mapLocate);
             }
+
+
+
             Logger.info("场强定位计算正常 操作时间{} 入参值为 id :{},flon:{},flat:{},level:{},waringsensorid:{}", LocalDateTime.now().toString(),
                     JSON.toJSONString(ids),JSON.toJSONString(flon),JSON.toJSONString(flat),JSON.toJSONString(level),JSON.toJSONString(waringsensorid));
-            Logger.info("场强定位计算正常 操作时间{} 返回值为{}", LocalDateTime.now().toString(), JSON.toJSONString(result));
+            Logger.info("场强定位计算正常 操作时间{} 返回值为{}", LocalDateTime.now().toString(), JSON.toJSONString(levelPoint));
         } catch (NumberFormatException e) {
             Logger.error("场强定位计算 ,操作时间：{},入参：开始时间：{}，中心频率：{} 异常 ：{}", LocalDateTime.now(), param.get("beginTime"), param.get("frequency"), e);
         }
@@ -502,7 +504,7 @@ public class AlarmDataController {
         double[][] t2 = new double[0][0];
         if (coulm > 0) {
 
-            Arrays.stream(p).forEach(e -> System.out.println(Arrays.toString(e)));
+//            Arrays.stream(p).forEach(e -> System.out.println(Arrays.toString(e)));
 //            t2 = jk3d.typeOk(p,t1);
 //            kri.InitCal(inPutData, dataOuts);
 //            kri.OkrigingCal();
