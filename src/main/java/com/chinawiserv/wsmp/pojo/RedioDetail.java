@@ -6,7 +6,7 @@ public class RedioDetail {
 
 	private String name;
 
-	private float centor;
+	private double centor;
 
 	private double band;
 
@@ -34,11 +34,11 @@ public class RedioDetail {
 		this.name = name;
 	}
 
-	public float getCentor() {
+	public double getCentor() {
 		return centor;
 	}
 
-	public void setCentor(float centor) {
+	public void setCentor(double centor) {
 		this.centor = centor;
 	}
 
