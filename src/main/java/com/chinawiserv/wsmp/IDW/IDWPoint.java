@@ -1,7 +1,7 @@
 package com.chinawiserv.wsmp.IDW;
 
 public class IDWPoint {
-	
+
 	private double x;
 	private double y;
 	private double mercatorX;

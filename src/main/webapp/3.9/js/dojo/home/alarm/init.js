@@ -281,10 +281,10 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
         //"http://127.0.0.1:8080/data/PBS/rest/services/MyPBSService1/MapServer"
         function mapInit() {
 
-            var mapUtl = $("#mapUrl").val();
+            var mapUtl = Binding.getMapUrl();
 
             var url = mapUtl;
-            agoLayer = new esri.layers.ArcGISTiledMapServiceLayer(url, {id: "街道地图"});
+            agoLayer = new esri.layers.ArcGISTiledMapServiceLayer(url, {id: "街道地图",showAttribution:false});
             var attr = {
                 "Xcoord": 104.06,
                 "Ycoord": 30.67,
@@ -292,8 +292,8 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
             };
 
             if(agoLayer){
-                agoLayer.copyrightText = '';
-                console.log(agoLayer);
+                agoLayer.copyright = '';
+                agoLayer.attr("copyright", "");
             }
             var initExtent = new esri.geometry.Extent({type: "extent", xmin:
                 12259021.6831997, ymin: 2807789.22457995, xmax:
@@ -331,8 +331,9 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                 logo:false
                 //maxZoom:11
             });
-
+            console.log(map);
             map.addLayer(agoLayer);
+            map.attr("copyright", '');
             glayer = new esri.layers.GraphicsLayer();
             pSymbol = new esri.symbols.SimpleMarkerSymbol();
             pSymbol.style = esri.symbols.SimpleMarkerSymbol.STYLE_CIRCLE; //设置点的类型为圆形

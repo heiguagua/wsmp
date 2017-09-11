@@ -30,7 +30,7 @@ define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"]
 		function mapInit() {
 
             var url = mapUrl;
-            var agoLayer = new esri.layers.ArcGISTiledMapServiceLayer(url, {id: "街道地图"});
+            var agoLayer = new esri.layers.ArcGISTiledMapServiceLayer(url, {id: "街道地图",showAttribution:false});
             console.log("++++++++++++++++++++++++++++++++++++++++++++++++")
             console.log(JSON.stringify(agoLayer));
             console.log(agoLayer);

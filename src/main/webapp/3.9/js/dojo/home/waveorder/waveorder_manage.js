@@ -382,7 +382,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 				// 初始化电磁环境评估地图事件
 				$('#modalEvaluate').on('shown.bs.modal', function(e) {
 
-							var mapUrl = $("#mapUrl").val();
+							var mapUrl = Binding.getMapUrl();;
 							var url = mapUrl;
 							var map2 = new Map("mapDiv2", {
 										// center :[104.06,30.67],
@@ -390,7 +390,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 									});
 							var agoLayer2 = new ArcGISTiledMapServiceLayer(url,
 									{
-										id : "街道地图1"
+										id : "街道地图1",
+                                        showAttribution:false
 									});
 							var glayer2 = new GraphicsLayer();
 							map2.addLayer(agoLayer2);

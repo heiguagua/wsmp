@@ -286,7 +286,6 @@ public class AlarmDataController {
 
                 occ = occ.entrySet().stream().sorted((c1, c2) -> Integer.parseInt(c1.getKey()) > Integer.parseInt(c2.getKey()) ? 1 : -1)
                         .collect(toMap(Map.Entry::getKey, Map.Entry::getValue, throwingMerger(), LinkedHashMap::new));
-                System.out.println(occ);
                 occ.forEach((k, v) -> {
 
                     Integer i = Integer.parseInt(k);
@@ -402,12 +401,6 @@ public class AlarmDataController {
             int[] waringsensorid = mapPoint.stream().mapToInt((LevelLocate t) -> Integer.parseInt(t.getId())
             ).toArray();
 
-            System.out.println(ids.length);
-            System.out.println(flon.length);
-            System.out.println(flat.length);
-            System.out.println(level.length);
-            System.out.println(waringsensorid.length);
-
             //至少要八个点才能计算出来
 
             LevelResult result = LevelCompute.levelCompute(ids,flon,flat,level, ids.length,10, waringsensorid);
@@ -496,8 +489,6 @@ public class AlarmDataController {
 //            temple.add(new DataInfo(x,y,5));
         }
 
-
-        System.out.println(outData);
         double[][] t2 = new double[0][0];
         if (coulm > 0) {
 
