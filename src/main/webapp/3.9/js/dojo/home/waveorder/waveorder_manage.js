@@ -738,7 +738,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 						});
 
 				var agoLayer = new ArcGISTiledMapServiceLayer(url, {
-							id : "街道地图"
+							id : "街道地图",
+                    		showAttribution:false
 						});
 				var glayer = new GraphicsLayer();
 				map.addLayer(agoLayer);
