@@ -8,8 +8,6 @@ import com.chinawiserv.wsmp.IDW.IDWPoint;
 import com.chinawiserv.wsmp.client.WebServiceSoapFactory;
 import com.chinawiserv.wsmp.hbase.HbaseClient;
 import com.chinawiserv.wsmp.hbase.query.OccAndMax;
-import com.chinawiserv.wsmp.javatoc.LevelCompute;
-import com.chinawiserv.wsmp.javatoc.model.LevelResult;
 import com.chinawiserv.wsmp.kriging.Interpolation;
 import com.chinawiserv.wsmp.kriging.model.DataInfo;
 import com.chinawiserv.wsmp.model.LevelLocate;
@@ -411,17 +409,17 @@ public class AlarmDataController {
 
             //至少要八个点才能计算出来
 
-            LevelResult result = LevelCompute.levelCompute(ids,flon,flat,level, ids.length,10, waringsensorid);
-            int size = result.getOangeR().size();
-            for (int index = 0;index < size;index++){
-
-                Map<String, Object> mapLocate = Maps.newHashMap();
-
-                mapLocate.put("x", result.getOutLon().get(index));
-                mapLocate.put("y", result.getOutLat().get(index));
-                mapLocate.put("radius",  result.getOangeR().get(index));
-                levelPoint.add(mapLocate);
-            }
+//            LevelResult result = LevelCompute.levelCompute(ids,flon,flat,level, ids.length,10, waringsensorid);
+//            int size = result.getOangeR().size();
+//            for (int index = 0;index < size;index++){
+//
+//                Map<String, Object> mapLocate = Maps.newHashMap();
+//
+//                mapLocate.put("x", result.getOutLon().get(index));
+//                mapLocate.put("y", result.getOutLat().get(index));
+//                mapLocate.put("radius",  result.getOangeR().get(index));
+//                levelPoint.add(mapLocate);
+//            }
 
 
 
@@ -502,16 +500,7 @@ public class AlarmDataController {
         }
 
         double[][] t2 = new double[0][0];
-        if (coulm > 0) {
 
-//            Arrays.stream(p).forEach(e -> System.out.println(Arrays.toString(e)));
-//            t2 = jk3d.typeOk(p,t1);
-//            kri.InitCal(inPutData, dataOuts);
-//            kri.OkrigingCal();
-//            dataOuts = kri.CopyResults();
-
-            idw.getRes(inData, outData);
-        }
 
         double[][] t = new double[t2.length + t1.length][3];
 //        double[][] t = t2;
@@ -583,26 +572,36 @@ public class AlarmDataController {
 //            element.put("geometry", geometry);
 //            kriking.add(element);
 //        }
+        if (coulm > 0) {
 
+//            Arrays.stream(p).forEach(e -> System.out.println(Arrays.toString(e)));
+//            t2 = jk3d.typeOk(p,t1);
+//            kri.InitCal(inPutData, dataOuts);
+//            kri.OkrigingCal();
+//            dataOuts = kri.CopyResults();
 
-        for (IDWPoint info : outData) {
-            Map<String, Object> element = Maps.newHashMap();
-            Map<String, Object> count = Maps.newHashMap();
-            Map<String, Object> geometry = Maps.newLinkedHashMap();
-            double val = info.getZ();
-            double x = info.getX();
-            double y = info.getY();
-            geometry.put("spatialReference", spatialReference);
-            geometry.put("type", "point");
-            geometry.put("x", x * 20037508.34 / 180);
-            y = Math.log(Math.tan((90 + y) * Math.PI / 360)) / (Math.PI / 180);
-            y = y * 20037508.34 / 180;
-            geometry.put("y", y);
-            count.put("count", val);
-            element.put("attributes", count);
-            element.put("geometry", geometry);
-            kriking.add(element);
+            idw.getRes(inData, outData);
+            for (IDWPoint info : outData) {
+                Map<String, Object> element = Maps.newHashMap();
+                Map<String, Object> count = Maps.newHashMap();
+                Map<String, Object> geometry = Maps.newLinkedHashMap();
+                double val = info.getZ();
+                double x = info.getX();
+                double y = info.getY();
+                geometry.put("spatialReference", spatialReference);
+                geometry.put("type", "point");
+                geometry.put("x", x * 20037508.34 / 180);
+                y = Math.log(Math.tan((90 + y) * Math.PI / 360)) / (Math.PI / 180);
+                y = y * 20037508.34 / 180;
+                geometry.put("y", y);
+                count.put("count", val);
+                element.put("attributes", count);
+                element.put("geometry", geometry);
+                kriking.add(element);
+            }
         }
+
+
 
         //System.out.println(kriking);
 
