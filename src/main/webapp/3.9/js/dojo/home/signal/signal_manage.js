@@ -1442,6 +1442,15 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                   return;
               }
               else{
+              	if((month_end_index-start_index) < 18 && (month_end_index-start_index)>0){ // 控制最小缩放到18条数据
+                      if(start_index>(month_total_length-18)){
+                        start_index = month_total_length-18;
+                        month_end_index = month_total_length;
+                      }
+                      else{
+                    	  month_end_index = start_index+18;
+                      }
+                    }
                   var start_percent = (start_index/month_total_length)*100;
                   var end_percent = (month_end_index/month_total_length)*100;
                   if(start_percent == end_percent) {
