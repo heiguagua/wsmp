@@ -80,7 +80,7 @@ define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"]
                 heatLayer = new HeatmapLayer({
                     config: {
                         "useLocalMaximum": false,
-                        "radius": 13,
+                        "radius": 12,
                         "gradient": {
                             0.10: "rgb(135,206,250)",
                             0.20: "rgb(173,216,230)",
