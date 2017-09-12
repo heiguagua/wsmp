@@ -572,8 +572,10 @@ define(	["ajax", "dojo/parser", "esri/map",
 				table_radio_init(monitors, userID);
 				table_alarm_undealed(monitorsID, monitors);
 				table_alarm_dealed(monitorsID, monitors);
-
 				redioType(monitors);
+				if (MAP1 != null) {
+					addPoint(monitors, 1, "false");
+				}
 			}
 
 			// 取得用户信息
