@@ -346,6 +346,16 @@ aside ol#playlist li span.remove:hover {
 div#visualizer {
     text-align: center;
     background:#353535;
+    position: relative;
+        min-height: 128px;
+}
+#visualizer .progress{
+  position: absolute;
+    width: 100%;
+    top: 40%;
+}
+#audio-wrap .controls{
+  display: none;
 }
 div#visualizer #canvas {
     /* margin-top: 4%; */
