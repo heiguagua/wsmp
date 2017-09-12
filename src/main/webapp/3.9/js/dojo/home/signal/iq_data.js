@@ -102,8 +102,12 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
     var iq_start_index_temp = 0;
     var iq_end_index = 0;        // mouseup时的x轴index
     var iq_total_length = 0;     // x轴数据总数
+    var current_index = 1; // 当前播放数据的序号
+    var has_changed = false; // 标志timeline是否开始播放
     function iq_player() {
-
+    	current_index = 1; // 重置当前播放数据序号
+        var total_data = iq_play_list.length;
+        
         var timeline_length = [];
         for (var i = 0; i < iq_play_list.length; i++) {
             timeline_length.push(i + 1);
@@ -131,11 +135,12 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                     formatter:function(param){
                         iq_start_index_temp = param[0].dataIndex;
                         iq_end_index = param[0].dataIndex;
-                        if(param && param[0] && param[0].seriesName && param[0].value) {
-                            console.log(param[0].seriesName + " :" + param[0].value)
-                          return param[0].seriesName + " :" + param[0].value +"<br />"+param[1].seriesName + " :" + param[1].value;
+                        var formatter_str = '';
+                        for(var i=0; i<param.length; i++) {
+                        	formatter_str += param[i].seriesName + " :" + param[i].value +"<br />"
                         }
-                       }
+                        return formatter_str;
+                    }
                 },
                 legend : {
                     show : true,
@@ -326,14 +331,24 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
             iq_total_length = iq_play_list[i].nmber;
             option.options.push(single_ser);
         }
+        $(".iq-play-control .current-index").html(current_index);
+        $(".iq-play-control .total-length").html(iq_play_list.length);
         iqChart = echarts.init($('#IQChart')[0]);
         iqChart.setOption(option);
         window.addEventListener("resize",function(){
             iqChart.resize();
         });
         iqChart.on('timelinechanged', function (p1) {
-            var current_index = p1.currentIndex-1;
-            option.options[current_index].xAxis.data = iq_play_list[current_index].freqData;
+        	current_index = p1.currentIndex;
+            
+            has_changed = true;
+            if(current_index == total_data) {// 为了解决timelinechanged事件currentIndex第一次的值实际为第二条数据
+              $(".iq-play-control .current-index").html(1);
+            }
+            else{
+              $(".iq-play-control .current-index").html(current_index+1); 
+            }
+            option.options[current_index-1].xAxis.data = iq_play_list[current_index-1].freqData;
             iq_total_length = iq_play_list[current_index].nmber;
             iqChart.setOption(option); 
         });
@@ -341,6 +356,9 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
         // 加载图标鼠标区域选择事件
         
         load_iq_mouse_event();
+        
+        // 加载播放控制事件
+        load_play_control(total_data);
     }
 
     function load_iq_mouse_event(){
@@ -469,6 +487,70 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
         $("#IQChart").on("mousemove",mousemove);
     }
     
+ // 加载播放控制事件
+    function load_play_control(total_data){
+      var playState = true;
+      // 播放暂停控制
+      $(".iq-play-control .play").on("click",function(){
+        var $play_state = $(this);
+        playState = !playState;
+        if(!playState){
+          $play_state.html("<i class='fa fa-pause'></i>");
+        }
+        else{
+          $play_state.html("<i class='fa fa-play'></i>");
+        }
+        iqChart.dispatchAction({
+                        type: 'timelinePlayChange',
+                        playState: playState
+        })
+      })
+
+      // 播放上一条
+      $(".iq-play-control .backward").on("click",function(){
+        if(current_index == total_data) {
+          return;
+        }
+        if(current_index-1 == 0){
+          current_index = total_data;
+        }
+        else{
+          current_index = current_index-1;
+        }
+        
+        $(".iq-play-control .play").html("<i class='fa fa-play'></i>");
+        iqChart.dispatchAction({
+                        type: 'timelineChange',
+                        currentIndex: current_index
+        })
+      })
+
+      // 播放下一条
+      $(".iq-play-control .forward").on("click",function(){
+
+        if(current_index == total_data-1) {
+          return;
+        }
+        if(current_index == total_data){
+          current_index = 1;
+        }
+        else{
+          if(has_changed) {
+            current_index = current_index+1;
+          }
+          else{
+            current_index = 1;
+          }
+          
+        }
+        
+        $(".iq-play-control .play").html("<i class='fa fa-play'></i>");
+        iqChart.dispatchAction({
+                        type: 'timelineChange',
+                        currentIndex: current_index
+        })
+      })
+    }
     function destroy(){
     	if(iqChart){
     		iqChart.clear();
