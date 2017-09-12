@@ -127,15 +127,15 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                 },
                 tooltip : {
                     'trigger' : 'axis',
-                    backgroundColor:'rgb(183,183,183)'
-                    //    formatter:function(param){
-                    //  iq_start_index_temp = param[0].dataIndex;
-                    //  iq_end_index = param[0].dataIndex;
-                    //  if(param && param[0] && param[0].name && param[0].value) {
-                    //      console.log(param[0].name + " :" + param[0].value)
-                    //    return param[0].name + " :" + param[0].value;
-                    //  }
-                    //}
+                    backgroundColor:'rgb(183,183,183)',
+                    formatter:function(param){
+                        iq_start_index_temp = param[0].dataIndex;
+                        iq_end_index = param[0].dataIndex;
+                        if(param && param[0] && param[0].seriesName && param[0].value) {
+                            console.log(param[0].seriesName + " :" + param[0].value)
+                          return param[0].seriesName + " :" + param[0].value +"<br />"+param[1].seriesName + " :" + param[1].value;
+                        }
+                       }
                 },
                 legend : {
                     show : true,
@@ -385,6 +385,15 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                   return;
               }
               else{
+            	  if((iq_end_index-start_index) < 18 && (iq_end_index-start_index)>0){ // 控制最小缩放到18条数据
+                      if(start_index>(iq_total_length-18)){
+                        start_index = iq_total_length-18;
+                        iq_end_index = iq_total_length;
+                      }
+                      else{
+                    	  iq_end_index = start_index+18;
+                      }
+                    }
                   var start_percent = (start_index/iq_total_length)*100;
                   var end_percent = (iq_end_index/iq_total_length)*100;
                   if(start_percent == end_percent) {
@@ -450,7 +459,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
     	          
     	      }
     	      else{
-    	    	  $(".cover-rect").remove();
+    	    	  $(".iq-cover-rect").remove();
     	          return;
     	      }
     	}
