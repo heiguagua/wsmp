@@ -394,7 +394,9 @@ define(	["ajax", "dojo/parser", "esri/map",
 										id : "街道地图1",
                                         showAttribution:false
 									});
-							var glayer2 = new GraphicsLayer();
+							var glayer2 = new GraphicsLayer({
+								id : "glayer2"
+							});
 							map2.addLayer(agoLayer2);
 							map2.addLayer(glayer2);
 						});
@@ -632,7 +634,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 			// 根据监测站列表，信号类型绘出监测站点
 			function addPoint(monitors, signalType, isSubType) {
 				var map = MAP1;
-				var glayer = map.getLayer('graphicsLayer0');
+				var glayer = map.getLayer('glayer');
 				glayer.clear();
 				var data = {};
 				data.monitorsNum = [];
@@ -743,10 +745,11 @@ define(	["ajax", "dojo/parser", "esri/map",
 						});
 
 				var agoLayer = new ArcGISTiledMapServiceLayer(url, {
-							id : "街道地图",
                     		showAttribution:false
 						});
-				var glayer = new GraphicsLayer();
+				var glayer = new GraphicsLayer({
+					id : "glayer"
+				});
 				map.addLayer(agoLayer);
 				map.addLayer(glayer);
 				return map;
