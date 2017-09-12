@@ -441,7 +441,7 @@ public class AlarmDataController {
         for (int index = 0; index < coulm; index++) {
             p[index][0] = mapPoint.get(index).getFlon();
             p[index][1] = mapPoint.get(index).getFlat();
-            p[index][2] = (mapPoint.get(index).getLevel() + 40);
+            p[index][2] = (mapPoint.get(index).getLevel()+40);
             //inPutData.add(new DataInfo(p[index][0],p[index][1],p[index][2]));
             inData.add(new IDWPoint(p[index][0], p[index][1], p[index][2]));
             if (xMin == -1) {
