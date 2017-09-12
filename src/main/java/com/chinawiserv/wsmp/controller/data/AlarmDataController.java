@@ -29,7 +29,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.tempuri.*;
 
-import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -37,7 +36,6 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.BinaryOperator;
-import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
@@ -422,9 +420,8 @@ public class AlarmDataController {
 //            }
 
 
-
             Logger.info("场强定位计算正常 操作时间{} 入参值为 id :{},flon:{},flat:{},level:{},waringsensorid:{}", LocalDateTime.now().toString(),
-                    JSON.toJSONString(ids),JSON.toJSONString(flon),JSON.toJSONString(flat),JSON.toJSONString(level),JSON.toJSONString(waringsensorid));
+                    JSON.toJSONString(ids), JSON.toJSONString(flon), JSON.toJSONString(flat), JSON.toJSONString(level), JSON.toJSONString(waringsensorid));
             Logger.info("场强定位计算正常 操作时间{} 返回值为{}", LocalDateTime.now().toString(), JSON.toJSONString(levelPoint));
         } catch (NumberFormatException e) {
             Logger.error("场强定位计算 ,操作时间：{},入参：开始时间：{}，中心频率：{} 异常 ：{}", LocalDateTime.now(), param.get("beginTime"), param.get("frequency"), e);
@@ -444,7 +441,7 @@ public class AlarmDataController {
         for (int index = 0; index < coulm; index++) {
             p[index][0] = mapPoint.get(index).getFlon();
             p[index][1] = mapPoint.get(index).getFlat();
-            p[index][2] = (mapPoint.get(index).getLevel()+40);
+            p[index][2] = (mapPoint.get(index).getLevel() + 40);
             //inPutData.add(new DataInfo(p[index][0],p[index][1],p[index][2]));
             inData.add(new IDWPoint(p[index][0], p[index][1], p[index][2]));
             if (xMin == -1) {
@@ -518,12 +515,6 @@ public class AlarmDataController {
 
         //inPutData.add(new DataInfo(106.779815,27.230648,10));
 
-        double numerator = Stream.of(t).filter((e) -> e[2] > intKrikingValue).count();
-        int denominator = t.length;
-
-        String electrCoverage = df.format(denominator > 0 ? numerator / denominator : 0);
-
-        int size = t2.length;
 
         List<Map<String, Object>> kriking2 = Lists.newLinkedList();
         List<Map<String, Object>> kriking = Lists.newLinkedList();
@@ -572,6 +563,9 @@ public class AlarmDataController {
 //            element.put("geometry", geometry);
 //            kriking.add(element);
 //        }
+
+        String electrCoverage = "0";
+
         if (coulm > 0) {
 
 //            Arrays.stream(p).forEach(e -> System.out.println(Arrays.toString(e)));
@@ -581,6 +575,9 @@ public class AlarmDataController {
 //            dataOuts = kri.CopyResults();
 
             idw.getRes(inData, outData);
+            double numerator = outData.stream().filter((e) -> e.getZ() > intKrikingValue).count();
+            int denominator = kringGraid.size()+coulm;
+            electrCoverage = df.format(denominator > 0 ? numerator / denominator : 0);
             for (IDWPoint info : outData) {
                 Map<String, Object> element = Maps.newHashMap();
                 Map<String, Object> count = Maps.newHashMap();
@@ -600,7 +597,6 @@ public class AlarmDataController {
                 kriking.add(element);
             }
         }
-
 
 
         //System.out.println(kriking);
@@ -766,59 +762,59 @@ public class AlarmDataController {
     @PostMapping("/instersingal")
     public String insterSingal(@RequestBody Map<String, Map<String, Object>> param) throws JsonProcessingException {
 
-        final RadioSignalOperationReponse res;
-        try {
-            final Map<String, Object> signal = param.get("sigal");
-
-            final Map<String, Object> station = param.get("station");
-            final FreqWarningQueryResponse response = (FreqWarningQueryResponse) service.freqWarnServiceCall("query",
-                    mapper.writeValueAsString(signal.get("warmingId")), FreqWarningQueryRequest.class);
-
-            final FreqWarningDTO t = response.getWarningInfos().getFreqWarningDTO().size() > 0 ? response.getWarningInfos().getFreqWarningDTO().get(0)
-                    : new FreqWarningDTO();
-
-            final BigInteger bandWidth = t.getBandWidth();
-            final BigInteger centerFreq = t.getCenterFreq();
-
-            List<Map<String, String>> ids = response.getWarningInfos().getFreqWarningDTO().get(0).getStatList().getFreqWarningStatDTO().stream().map(m -> {
-                HashMap<String, String> map = Maps.newHashMap();
-                map.put("stationNumber", m.getStationGUID());
-                return map;
-            }).collect(toList());
-
-            station.put("centerFreq", centerFreq);
-            station.put("bandWidth", bandWidth);
-
-            String stationId = (String) signal.get("stationId");
-
-            String typeCode = (String) signal.get("typeCode");
-
-            String areaCode = stationId.substring(0, 4);
-
-            station.put("stationKey", station.get("stationKey"));
-
-            station.put("typeCode", typeCode);
-
-            station.put("areaCode", areaCode);
-
-            Map<String, Object> radioSignalAbnormalHistoryDTO = Maps.newHashMap();
-
-            radioSignalAbnormalHistoryDTO.put("radioSignalStationDTO", ids);
-
-            station.put("stationDTOs", radioSignalAbnormalHistoryDTO);
-
-            res = (RadioSignalOperationReponse) service.radioSignalServiceCall("insertRadioSignal",
-                    mapper.writeValueAsString(station), RadioSignalDTO.class);
-
-            Map<String, Object> waringID = (Map<String, Object>) signal.get("warmingId");
-            //service.getFreqWarnService().updateStatus((String) waringID.get("id"), 1);
-            service.getFreqWarnService().updateSelected((String) waringID.get("id"), 1, null, (String) station.get("des"), (String) station.get("stationKey"));
-
-            Logger.info("告警生成信号成功 操作时间{} 入参:{} 返回消息{}", LocalDateTime.now().toString(), JSON.toJSONString(param), JSON.toJSONString(res));
-        } catch (JsonProcessingException e) {
-
-            Logger.error("告警生成信号异常 操作时间{} 入参:{} 返回消息{}", LocalDateTime.now().toString(), JSON.toJSONString(param), e);
-        }
+//        final RadioSignalOperationReponse res;
+//        try {
+//            final Map<String, Object> signal = param.get("sigal");
+//
+//            final Map<String, Object> station = param.get("station");
+//            final FreqWarningQueryResponse response = (FreqWarningQueryResponse) service.freqWarnServiceCall("query",
+//                    mapper.writeValueAsString(signal.get("warmingId")), FreqWarningQueryRequest.class);
+//
+//            final FreqWarningDTO t = response.getWarningInfos().getFreqWarningDTO().size() > 0 ? response.getWarningInfos().getFreqWarningDTO().get(0)
+//                    : new FreqWarningDTO();
+//
+//            final BigInteger bandWidth = t.getBandWidth();
+//            final BigInteger centerFreq = t.getCenterFreq();
+//
+//            List<Map<String, String>> ids = response.getWarningInfos().getFreqWarningDTO().get(0).getStatList().getFreqWarningStatDTO().stream().map(m -> {
+//                HashMap<String, String> map = Maps.newHashMap();
+//                map.put("stationNumber", m.getStationGUID());
+//                return map;
+//            }).collect(toList());
+//
+//            station.put("centerFreq", centerFreq);
+//            station.put("bandWidth", bandWidth);
+//
+//            String stationId = (String) signal.get("stationId");
+//
+//            String typeCode = (String) signal.get("typeCode");
+//
+//            String areaCode = stationId.substring(0, 4);
+//
+//            station.put("stationKey", station.get("stationKey"));
+//
+//            station.put("typeCode", typeCode);
+//
+//            station.put("areaCode", areaCode);
+//
+//            Map<String, Object> radioSignalAbnormalHistoryDTO = Maps.newHashMap();
+//
+//            radioSignalAbnormalHistoryDTO.put("radioSignalStationDTO", ids);
+//
+//            station.put("stationDTOs", radioSignalAbnormalHistoryDTO);
+//
+//            res = (RadioSignalOperationReponse) service.radioSignalServiceCall("insertRadioSignal",
+//                    mapper.writeValueAsString(station), RadioSignalDTO.class);
+//
+//            Map<String, Object> waringID = (Map<String, Object>) signal.get("warmingId");
+//            //service.getFreqWarnService().updateStatus((String) waringID.get("id"), 1);
+//            service.getFreqWarnService().updateSelected((String) waringID.get("id"), 1, null, (String) station.get("des"), (String) station.get("stationKey"));
+//
+//            Logger.info("告警生成信号成功 操作时间{} 入参:{} 返回消息{}", LocalDateTime.now().toString(), JSON.toJSONString(param), JSON.toJSONString(res));
+//        } catch (JsonProcessingException e) {
+//
+//            Logger.error("告警生成信号异常 操作时间{} 入参:{} 返回消息{}", LocalDateTime.now().toString(), JSON.toJSONString(param), e);
+//        }
 
         return null;
     }
