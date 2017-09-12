@@ -399,6 +399,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 							});
 							map2.addLayer(agoLayer2);
 							map2.addLayer(glayer2);
+							getAreaBoundary(glayer2);
 						});
 
 				//过滤重点监测频段
@@ -433,7 +434,21 @@ define(	["ajax", "dojo/parser", "esri/map",
 				})
 
 			}
-
+			
+			// 得到区域的边界
+			function getAreaBoundary(glayer) {
+				ajax.get("cache/data/mapdata",null,function(result){
+                    var sfs = new esri.symbol.SimpleFillSymbol(
+									esri.symbol.SimpleFillSymbol.STYLE_SOLID,
+									new esri.symbol.SimpleLineSymbol(
+											esri.symbol.SimpleLineSymbol.STYLE_DASHDOT,
+											new dojo.Color([255, 0, 0]), 2),
+									new dojo.Color([255, 0, 0, 0.1]));
+                    var polygon =new esri.geometry.Polygon(result);
+                    var Citygraphic = new esri.Graphic(polygon, sfs);
+                    glayer.add(Citygraphic);
+                });
+			}
 			// 表单提交前的验证
 			function beforeSubmit(form) {
 				if (!document.importantMonitorForm.beginTime.validity.valid) {
@@ -636,6 +651,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 				var map = MAP1;
 				var glayer = map.getLayer('glayer');
 				glayer.clear();
+				getAreaBoundary(glayer);
 				var data = {};
 				data.monitorsNum = [];
 				data.signalType = signalType;

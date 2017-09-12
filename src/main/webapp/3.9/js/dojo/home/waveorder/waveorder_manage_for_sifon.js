@@ -70,6 +70,22 @@ define(	["ajax", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer",
 						})
 
 			}
+			
+			// 得到区域的边界
+			function getAreaBoundary(glayer) {
+				ajax.get("cache/data/mapdata",null,function(result){
+                    var sfs = new esri.symbol.SimpleFillSymbol(
+									esri.symbol.SimpleFillSymbol.STYLE_SOLID,
+									new esri.symbol.SimpleLineSymbol(
+											esri.symbol.SimpleLineSymbol.STYLE_DASHDOT,
+											new dojo.Color([255, 0, 0]), 2),
+									new dojo.Color([255, 0, 0, 0.1]));
+                    var polygon =new esri.geometry.Polygon(result);
+                    var Citygraphic = new esri.Graphic(polygon, sfs);
+                    glayer.add(Citygraphic);
+                });
+			}
+			
 			// 下方地图初始化
 			function mapInit() {
 				// var mapUrl = $("#mapUrl").val();
@@ -99,6 +115,7 @@ define(	["ajax", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer",
 				var map = MAP1;
 				var glayer = map.getLayer('glayer');
 				glayer.clear();
+				getAreaBoundary(glayer);
 				var data = {};
 				data.monitorsNum = [];
 				data.signalType = signalType;

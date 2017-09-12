@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.List;
@@ -23,7 +24,8 @@ public class CacheDataController {
     List<Object> regions;
 
     @RequestMapping(path ={"/mapdata"},method = RequestMethod.GET)
-    public  Object getData(){
+    public  Object getData(@RequestParam(required=false,name="areaCode") String areaCode){
+    	
         return  regions;
     }
 
