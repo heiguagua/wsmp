@@ -24,11 +24,11 @@ define(	["ajax", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer",
 							addPoint(MONITORS, typeCode, isSubType);
 						});
 
-				// 告警未处理频率链接点击事件
+				// 电波秩序链接点击事件
 				$("#redioType").on("click", "#waveorder_manage",
 						function(e) {
 							const urlObj = {
-								ServerName : 'host2',// 跳四方用host1,跳自己这边用host2
+								ServerName : 'host2',
 								DisplayName : '电波秩序',
 								MultiTabable : false,
 								ReflushIfExist : true,
@@ -70,12 +70,27 @@ define(	["ajax", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer",
 						})
 
 			}
+			
+			// 得到区域的边界
+			function getAreaBoundary(glayer) {
+				ajax.get("cache/data/mapdata",null,function(result){
+                    var sfs = new esri.symbol.SimpleFillSymbol(
+									esri.symbol.SimpleFillSymbol.STYLE_SOLID,
+									new esri.symbol.SimpleLineSymbol(
+											esri.symbol.SimpleLineSymbol.STYLE_DASHDOT,
+											new dojo.Color([255, 0, 0]), 2),
+									new dojo.Color([255, 0, 0, 0.1]));
+                    var polygon =new esri.geometry.Polygon(result);
+                    var Citygraphic = new esri.Graphic(polygon, sfs);
+                    glayer.add(Citygraphic);
+                });
+			}
+			
 			// 下方地图初始化
 			function mapInit() {
 				// var mapUrl = $("#mapUrl").val();
 				var mapUrl = Binding.getMapUrl();
 				var map = new Map("mapDiv1", {
-							isScrollWheelZoom : false,
 							fadeOnZoom : false,
 							logo : false,
 							center : [MONITORS[0].Longitude,
@@ -100,6 +115,7 @@ define(	["ajax", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer",
 				var map = MAP1;
 				var glayer = map.getLayer('glayer');
 				glayer.clear();
+				getAreaBoundary(glayer);
 				var data = {};
 				data.monitorsNum = [];
 				data.signalType = signalType;
