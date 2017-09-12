@@ -24,11 +24,11 @@ define(	["ajax", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer",
 							addPoint(MONITORS, typeCode, isSubType);
 						});
 
-				// 告警未处理频率链接点击事件
+				// 电波秩序链接点击事件
 				$("#redioType").on("click", "#waveorder_manage",
 						function(e) {
 							const urlObj = {
-								ServerName : 'host2',// 跳四方用host1,跳自己这边用host2
+								ServerName : 'host2',
 								DisplayName : '电波秩序',
 								MultiTabable : false,
 								ReflushIfExist : true,
@@ -75,7 +75,6 @@ define(	["ajax", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer",
 				// var mapUrl = $("#mapUrl").val();
 				var mapUrl = Binding.getMapUrl();
 				var map = new Map("mapDiv1", {
-							isScrollWheelZoom : false,
 							fadeOnZoom : false,
 							logo : false,
 							center : [MONITORS[0].Longitude,
