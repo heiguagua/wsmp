@@ -162,6 +162,15 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
 	                  return;
 	              }
 	              else{
+	            	  if((maxlevel_end_index-start_index) < 18 && (maxlevel_end_index-start_index)>0){ // 控制最小缩放到18条数据
+	                        if(start_index>(maxlevel_total_length-18)){
+	                          start_index = maxlevel_total_length-18;
+	                          maxlevel_end_index = maxlevel_total_length;
+	                        }
+	                        else{
+	                        	maxlevel_end_index = start_index+18;
+	                        }
+	                      }
 	                  var start_percent = (start_index/maxlevel_total_length)*100;
 	                  var end_percent = (maxlevel_end_index/maxlevel_total_length)*100;
 	                  if(start_percent == end_percent) {
