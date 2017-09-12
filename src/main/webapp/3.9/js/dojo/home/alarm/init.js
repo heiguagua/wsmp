@@ -349,10 +349,15 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                         "useLocalMaximum": false,
                         "radius":35,
                         "gradient": {
-                            0.45: "rgb(000,000,255)",
-                            0.55: "rgb(000,255,255)",
-                            0.65: "rgb(000,255,000)",
-                            0.95: "rgb(255,255,000)",
+                            0.10: "rgb(135,206,250)",
+                            0.20: "rgb(173,216,230)",
+                            0.30: "rgb(176,196,222)",
+                            0.40: "rgb(32,178,170)",
+                            0.50: "rgb(144,238,144)",
+                            0.60: "rgb(173,255,47)",
+                            0.70: "rgb(255,255,0)",
+                            0.80: "rgb(255,165,0)",
+                            0.90: "rgb(255,69,0)",
                             1.00: "rgb(255,000,000)"
                         }
                     },
@@ -364,8 +369,7 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                 map.addLayer(heatLayer);
                 ajax.get("cache/data/mapdata",null,function(reslut){
                     var sfs = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID,
-                        new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_DASHDOT,
-                            new dojo.Color([255, 0, 0]), 2), new dojo.Color([255, 0, 0, 0.25])
+                       null, new esri.Color([135,206,250,0.25])
                     );
                     var polygon =new esri.geometry.Polygon(reslut);
                     var Citygraphic = new esri.Graphic(polygon, sfs);
@@ -895,6 +899,7 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                             $("#stationWrap").html("");
                             $("#stationWrap").html(temp);
                             $("#submitButton").removeAttr('disabled');
+                            var status = $('#signal_list').find('option:selected').attr("status");
                             if (status == "1"){
                                $('#submitButton').attr('disabled',"true");
                             }else {

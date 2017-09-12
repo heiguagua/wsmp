@@ -80,12 +80,17 @@ define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"]
                 heatLayer = new HeatmapLayer({
                     config: {
                         "useLocalMaximum": false,
-                        "radius": 21,
+                        "radius": 13,
                         "gradient": {
-                            0.45: "rgb(000,000,255)",
-                            0.55: "rgb(000,255,255)",
-                            0.65: "rgb(000,255,000)",
-                            0.95: "rgb(255,255,000)",
+                            0.10: "rgb(135,206,250)",
+                            0.20: "rgb(173,216,230)",
+                            0.30: "rgb(176,196,222)",
+                            0.40: "rgb(32,178,170)",
+                            0.50: "rgb(144,238,144)",
+                            0.60: "rgb(173,255,47)",
+                            0.70: "rgb(255,255,0)",
+                            0.80: "rgb(255,165,0)",
+                            0.90: "rgb(255,69,0)",
                             1.00: "rgb(255,000,000)"
                         }
                     },
@@ -98,7 +103,15 @@ define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"]
                 map.addLayer(heatLayer);
                 console.log("=======================")
                 // resize map
+                ajax.get("cache/data/mapdata",null,function(reslut){
+                    var sfs = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID,
+                        null, new esri.Color([135,206,250,0.05])
+                    );
+                    var polygon =new esri.geometry.Polygon(reslut);
+                    var Citygraphic = new esri.Graphic(polygon, sfs);
+                    glayer.add(Citygraphic);
 
+                });
 
                 map.resize();
             });
@@ -118,6 +131,17 @@ define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"]
             }
             console.log(JSON.stringify(k));
             heatLayer.setData(k);
+
+            ajax.get("cache/data/mapdata",null,function(reslut){
+                var sfs = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID,
+                    null, new esri.Color([135,206,250,0.05])
+                );
+                var polygon =new esri.geometry.Polygon(reslut);
+                var Citygraphic = new esri.Graphic(polygon, sfs);
+                glayer.add(Citygraphic);
+
+            });
+
         }
 
         function lonlat2mercator(lonlat) {
