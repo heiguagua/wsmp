@@ -440,9 +440,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 				ajax.get("cache/data/mapdata",null,function(result){
                     var sfs = new esri.symbol.SimpleFillSymbol(
 									esri.symbol.SimpleFillSymbol.STYLE_SOLID,
-									new esri.symbol.SimpleLineSymbol(
-											esri.symbol.SimpleLineSymbol.STYLE_DASHDOT,
-											new dojo.Color([255, 0, 0]), 2),
+									null,
 									new dojo.Color([255, 0, 0, 0.1]));
                     var polygon =new esri.geometry.Polygon(result);
                     var Citygraphic = new esri.Graphic(polygon, sfs);
