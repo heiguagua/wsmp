@@ -25,6 +25,7 @@ import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +49,10 @@ public class SignalViewController {
 	
 	@Value("${importFreqRangeManageService.wsdl}")
 	private String urlImportFreqRange;
-	
+
+	@Value("${asio.formatter:yyyyMMddHHmmss}")
+	DateTimeFormatter formatter;
+
 	private IImportFreqRangeManageService serviceImportFreqRangeManage;
 	@PostConstruct
 	public void init() throws MalformedURLException {
@@ -78,14 +82,10 @@ public class SignalViewController {
 	@PostMapping(path = "/sigaldetail")
 	public String signal_detail(Model model, @RequestParam String centorfreq, @RequestParam String beginTime, @RequestParam String endTime,
 			@RequestParam String areaCode, @RequestParam String stationCode, @RequestParam String id) {
-
-		String Id = "52010126";
-		long frequency = 0L;
-		String timeStart = "20170812125344";
-
 		try {
 			// long frequency = Long.parseLong(centorfreq);
-			Map<String, Object> map = hbaseClient.queryFeaturePara(stationCode, beginTime, Long.parseLong(centorfreq));
+			System.out.println( LocalDateTime.now().format(formatter));
+			Map<String, Object> map = hbaseClient.queryFeaturePara(stationCode, LocalDateTime.now().format(formatter), Long.parseLong(centorfreq));
 
 			Map<String, Object> requestPara = Maps.newLinkedHashMap();
 

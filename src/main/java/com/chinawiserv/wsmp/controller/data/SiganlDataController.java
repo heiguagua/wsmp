@@ -57,7 +57,7 @@ public class SiganlDataController {
 
 		long frequencyLong = Long.parseLong(frequency);
 		//Map<String, Object> map = Maps.newHashMap();
-		Map<String, Object> map = hbaseClient.queryModulationMode(id, timeStart,timeStop, frequencyLong);
+		Map<String, Object> map = hbaseClient.queryModulationMode(id, timeStart, LocalDateTime.now().format(formatter), frequencyLong);
 //		map.put("noise ",4);
 //		map.put("normal",7);
 		return map;
@@ -73,7 +73,7 @@ public class SiganlDataController {
 		//Map<String, Object> map = hbaseClient.queryModulationMode(id, timeStart, timeStop, Long.parseLong(frequency));
 
 		try {
-			Map<String, Object>  map = hbaseClient.queryModulationMode(id, timeStart, timeStop, Long.parseLong(frequency));
+			Map<String, Object>  map = hbaseClient.queryModulationMode(id, timeStart,  LocalDateTime.now().format(formatter), Long.parseLong(frequency));
 			List<String> lists = Lists.newLinkedList();
 //			int sum =  map.values().stream().mapToInt(m->Integer.parseInt(m.toString())).reduce(0,(a, b) ->  a +  b);
 

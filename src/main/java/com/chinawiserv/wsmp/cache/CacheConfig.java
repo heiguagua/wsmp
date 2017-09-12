@@ -111,16 +111,20 @@ public class CacheConfig {
 	}
 
 	@Bean(name = MAP_DATA)
-	public Object mapData() throws IOException {
+	public List<Object> mapData() throws IOException {
 
-		final Resource resource = this.def.getResource(configHome.concat("geoJson/Tianjin_Great.json"));
+		final Resource resource = this.def.getResource(configHome.concat("boundary/5100.json"));
 		final File file = resource.getFile();
 		final Type type = new TypeReference<LinkedHashMap<String, Object>>() {}.getType();
 
 		try (InputStream is = Files.newInputStream(file.toPath())) {
 
 			final LinkedHashMap<String, Object> map = JSON.parseObject(is, type);
-			return map.get("geometries");
+
+			Map<String,Object> boundary = (Map<String, Object>) map.get("5101");
+			List<Object> regions = (List<Object>) boundary.get("boundary");
+
+			return regions;
 		}
 	}
 

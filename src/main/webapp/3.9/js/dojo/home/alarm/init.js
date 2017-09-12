@@ -362,6 +362,18 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                 });
                 // add heat layer to map
                 map.addLayer(heatLayer);
+                ajax.get("cache/data/mapdata",null,function(reslut){
+                    var sfs = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID,
+                        new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_DASHDOT,
+                            new dojo.Color([255, 0, 0]), 2), new dojo.Color([255, 0, 0, 0.25])
+                    );
+                    var polygon =new esri.geometry.Polygon(reslut);
+                    var Citygraphic = new esri.Graphic(polygon, sfs);
+                    glayer.add(Citygraphic);
+
+                });
+
+
                 // resize map
                 dojo.connect(map, "onExtentChange", getFeatures);
                 map.resize();
