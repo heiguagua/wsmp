@@ -129,7 +129,27 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
         var setCurrentSong = function(index) {
             currentTrack = index;
             wavesurfer.load("data/asiq/audio/" + links[currentTrack].dataUrl);
+            $(".audio-play-control .current-index").html(currentTrack+1);
         };
+        
+        // 播放控制
+        $(".audio-play-control .current-index").html(1);
+        $(".audio-play-control .total-length").html(audio_play_list.length);
+
+        $(".audio-play-control .play").on("click",function(){
+            wavesurfer.playPause();
+        })
+
+        $(".audio-play-control .backward").on("click",function(){
+            if(currentTrack <= 0) {
+                return;
+            }
+            setCurrentSong((currentTrack - 1) % links.length);
+        })
+
+        $(".audio-play-control .forward").on("click",function(){
+            setCurrentSong((currentTrack + 1) % links.length);
+        })
 
         var progressDiv = $('#progress-bar');
         var progressBar = $('.progress-bar');

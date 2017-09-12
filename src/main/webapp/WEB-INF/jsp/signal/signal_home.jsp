@@ -242,6 +242,12 @@
                 </div>
 					</div>
 				</div>
+				<div class="play-control audio-play-control">
+              <a class="btn-play play"><i class="fa fa-play"></i></a>
+              <a class="btn-play backward"><i class="fa fa-step-backward"></i></a>
+              <a class="btn-play forward"><i class="fa fa-step-forward"></i></a>
+              <span class="current-index">0</span>/<span class="total-length">0</span>
+            </div>
 			</div>
 		</section>
 
