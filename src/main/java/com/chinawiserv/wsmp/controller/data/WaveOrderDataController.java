@@ -286,8 +286,8 @@ public class WaveOrderDataController {
 					RedioDetail redio = new RedioDetail();
 					BigDecimal cFreq = new BigDecimal(t.getCenterFreq());
 					BigDecimal divisor = new BigDecimal(1000000);
-					redio.setCentor(Float.valueOf((cFreq.divide(divisor).toString())));
-					redio.setBand(t.getBandWidth());
+					redio.setCentor(Double.valueOf((cFreq.divide(divisor).toString())));
+					redio.setBand(t.getBandWidth()/1000);
 					// 设置监测站
 					List<String> monitorID = Lists.newArrayList();
 					t.getStationDTOs().getRadioSignalStationDTO().stream().forEach(t1 -> {
@@ -317,8 +317,8 @@ public class WaveOrderDataController {
 						RedioDetail redio = new RedioDetail();
 						BigDecimal cFreq = new BigDecimal(t.getCenterFreq());
 						BigDecimal divisor = new BigDecimal(1000000);
-						redio.setCentor(Float.valueOf((cFreq.divide(divisor).toString())));
-						redio.setBand(t.getBandWidth());
+						redio.setCentor(Double.valueOf((cFreq.divide(divisor).toString())));
+						redio.setBand(t.getBandWidth()/1000);
 						// 设置监测站
 						List<String> monitorID = Lists.newArrayList();
 						t.getStationDTOs().getRadioSignalStationDTO().stream().forEach(t1 -> {

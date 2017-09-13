@@ -29,7 +29,7 @@ define(	["ajax", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer",
 						function(e) {
 							const urlObj = {
 								ServerName : 'host2',
-								DisplayName : '电波秩序',
+								DisplayName : '电波秩序总览',
 								MultiTabable : false,
 								ReflushIfExist : true,
 								Url : 'radio/app/waveorder?areaCode=' + AREACODE
