@@ -44,7 +44,7 @@ define([], function() {
 		}
 		console.log(monitorsID);
 		var beginFreq = 20 * 1000000;
-		var endFreq = 3000 * 1000000;
+		var endFreq = 3600 * 1000000;
 		// 信号统计点击进入详情页事件
 		$('#table-signal-list').bootstrapTable("destroy");
 		$('#table-signal-list').bootstrapTable({
