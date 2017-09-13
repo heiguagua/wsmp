@@ -259,7 +259,10 @@ define(	["ajax", "dojo/parser", "esri/map",
 					var beginFreq = a.data('beginfreq');// data()函数里面要取小写
 					var endFreq = a.data('endfreq');
 					var radioType = a.data('radiotype');
-					var monitorsID = a.data('monitorsid');
+					var monitorsID = new Array();
+					for (var i = 0; i < MONITORS.length; i++) {
+						monitorsID[i] = MONITORS[i].Num;
+					}
 					var isSubType = a.data('issubtype');
 					$('#table-signal-list').bootstrapTable("destroy");
 					$('#table-signal-list').bootstrapTable({
@@ -1030,9 +1033,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						sortable : true,
 						sortName : "legalNormalStationNumber",
 						formatter : function(value, row, index) {
-							return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
-									+ monitorsID
-									+ '" data-radioType="1" data-isSubType="false" data-beginFreq="'
+							return '<a data-toggle="modal" data-target="#modalSignal" data-radioType="1" data-isSubType="false" data-beginFreq="'
 									+ row.beginFreq
 									+ '" data-endFreq="'
 									+ row.endFreq + '">' + value + '</a>';
@@ -1045,9 +1046,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						sortable : true,
 						sortName : "legalUnNormalStationNumber",
 						formatter : function(value, row, index) {
-							return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
-									+ monitorsID
-									+ '" data-radioType="1" data-isSubType="true" data-beginFreq="'
+							return '<a data-toggle="modal" data-target="#modalSignal" data-radioType="1" data-isSubType="true" data-beginFreq="'
 									+ row.beginFreq
 									+ '" data-endFreq="'
 									+ row.endFreq + '">' + value + '</a>';
@@ -1060,9 +1059,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						sortable : true,
 						sortName : "konwStationNumber",
 						formatter : function(value, row, index) {
-							return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
-									+ monitorsID
-									+ '" data-radioType="2" data-isSubType="false" data-beginFreq="'
+							return '<a data-toggle="modal" data-target="#modalSignal" data-radioType="2" data-isSubType="false" data-beginFreq="'
 									+ row.beginFreq
 									+ '" data-endFreq="'
 									+ row.endFreq + '">' + value + '</a>';
@@ -1075,9 +1072,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						sortable : true,
 						sortName : "illegalSignal",
 						formatter : function(value, row, index) {
-							return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
-									+ monitorsID
-									+ '" data-radioType="3" data-isSubType="false" data-beginFreq="'
+							return '<a data-toggle="modal" data-target="#modalSignal" data-radioType="3" data-isSubType="false" data-beginFreq="'
 									+ row.beginFreq
 									+ '" data-endFreq="'
 									+ row.endFreq + '">' + value + '</a>';
@@ -1090,9 +1085,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						sortable : true,
 						sortName : "unKonw",
 						formatter : function(value, row, index) {
-							return '<a data-toggle="modal" data-target="#modalSignal" data-monitorsID="'
-									+ monitorsID
-									+ '" data-radioType="4" data-isSubType="false" data-beginFreq="'
+							return '<a data-toggle="modal" data-target="#modalSignal" data-radioType="4" data-isSubType="false" data-beginFreq="'
 									+ row.beginFreq
 									+ '" data-endFreq="'
 									+ row.endFreq + '">' + value + '</a>';

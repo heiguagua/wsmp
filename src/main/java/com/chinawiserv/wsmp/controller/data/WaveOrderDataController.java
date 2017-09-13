@@ -256,9 +256,9 @@ public class WaveOrderDataController {
 		RadioSignalQueryRequest request = new RadioSignalQueryRequest();
 		// 设置监测站ID列表
 		ArrayOfString stationArray = new ArrayOfString();
-		String stations = (String) param.get("monitorsID");
-		String[] stationString = stations.split(",");
-		stationArray.setString(Arrays.asList(stationString));
+		@SuppressWarnings("unchecked")
+		List<String> stationIDList = (List<String>) param.get("monitorsID");
+		stationArray.setString(stationIDList );
 		request.setStationIDs(stationArray);
 		// 入参:信号类型
 		ArrayOfSignalTypeDTO signaTypeArray = new ArrayOfSignalTypeDTO();

@@ -242,6 +242,8 @@ public class WaveOrderViewController {
 		model.addAttribute("redio", rsCount);
 		return "waveorder/redio_type_list_to_sifon";
 	}
+	
+	
 
 }
 
