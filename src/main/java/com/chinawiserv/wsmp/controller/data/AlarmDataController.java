@@ -8,8 +8,9 @@ import com.chinawiserv.wsmp.IDW.IDWPoint;
 import com.chinawiserv.wsmp.client.WebServiceSoapFactory;
 import com.chinawiserv.wsmp.hbase.HbaseClient;
 import com.chinawiserv.wsmp.hbase.query.OccAndMax;
+import com.chinawiserv.wsmp.javatoc.LevelCompute;
+import com.chinawiserv.wsmp.javatoc.model.LevelResult;
 import com.chinawiserv.wsmp.kriging.Interpolation;
-import com.chinawiserv.wsmp.kriging.model.DataInfo;
 import com.chinawiserv.wsmp.model.LevelLocate;
 import com.chinawiserv.wsmp.pojo.IntensiveMonitoring;
 import com.chinawiserv.wsmp.pojo.Station;
@@ -29,6 +30,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.tempuri.*;
 
+import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -373,24 +375,23 @@ public class AlarmDataController {
         Logger.info("确认告警接口调用正常，返回信息{}", JSON.toJSONString(res));
     }
 
+    //        测试或正式环境使用
     @PostMapping(path = "/getStation")
     public @ResponseBody
     Map<String, Object> getStationPiont(@RequestBody Map<String, Object> param) {
 
 //        long centerFreq = (long) (88.8 * 1000000);
 //        String dateTime = "20170810235959";
-//        测试或正式环境使用
 //        Long frequency = Long.parseLong((String) param.get("frequency"));
 //        List<LevelLocate> relate = hbaseClient.queryLevelLocate((String) param.get("beginTime"), frequency );
         List<LevelLocate> mapPoint = Collections.emptyList();
         List<Map<String, Object>> levelPoint = Lists.newLinkedList();
         try {
 
-            final String beginTime = param.get("beginTime").toString();
             final long frequency = Long.valueOf(param.get("frequency").toString());
 
-            List<LevelLocate> relate = hbaseClient.queryLevelLocate(beginTime, frequency);
-            Logger.info("均值查询正常返回个数为 :{}, 操作时间：{},入参：开始时间：{}，中心频率：{}", relate.size(), LocalDateTime.now().toString(), beginTime, frequency);
+            List<LevelLocate> relate = hbaseClient.queryLevelLocate(LocalDateTime.now().format(formatter), frequency);
+            Logger.info("均值查询正常返回个数为 :{}, 操作时间：{},入参：开始时间：{}，中心频率：{}", relate.size(), LocalDateTime.now().toString(), LocalDateTime.now().format(formatter), frequency);
             List<String> stationcode = (List<String>) param.get("stationCodes");
 
             mapPoint = relate.stream().filter(t -> stationcode.contains(t.getId())).collect(toList());
@@ -405,19 +406,19 @@ public class AlarmDataController {
             int[] waringsensorid = mapPoint.stream().mapToInt((LevelLocate t) -> Integer.parseInt(t.getId())
             ).toArray();
 
-            //至少要八个点才能计算出来
+            //少要八个点才能计算出来
 
-//            LevelResult result = LevelCompute.levelCompute(ids,flon,flat,level, ids.length,10, waringsensorid);
-//            int size = result.getOangeR().size();
-//            for (int index = 0;index < size;index++){
-//
-//                Map<String, Object> mapLocate = Maps.newHashMap();
-//
-//                mapLocate.put("x", result.getOutLon().get(index));
-//                mapLocate.put("y", result.getOutLat().get(index));
-//                mapLocate.put("radius",  result.getOangeR().get(index));
-//                levelPoint.add(mapLocate);
-//            }
+            LevelResult result = LevelCompute.levelCompute(ids,flon,flat,level, ids.length,10, waringsensorid);
+            int size = result.getOangeR().size();
+            for (int index = 0;index < size;index++){
+
+                Map<String, Object> mapLocate = Maps.newHashMap();
+
+                mapLocate.put("x", result.getOutLon().get(index));
+                mapLocate.put("y", result.getOutLat().get(index));
+                mapLocate.put("radius",  result.getOangeR().get(index));
+                levelPoint.add(mapLocate);
+            }
 
 
             Logger.info("场强定位计算正常 操作时间{} 入参值为 id :{},flon:{},flat:{},level:{},waringsensorid:{}", LocalDateTime.now().toString(),
@@ -431,16 +432,17 @@ public class AlarmDataController {
 
         double[][] p = new double[coulm][3];
 //        Random random = new Random();
-
-        List<DataInfo> inPutData = Lists.newLinkedList();
-        List<DataInfo> dataOuts = Lists.newLinkedList();
-        List<DataInfo> temple = Lists.newLinkedList();
+       // List<DataInfo> dataOuts = Lists.newLinkedList();
+        //List<DataInfo> temple = Lists.newLinkedList();
 
         double xMin = -1, xMax = -1, yMin = -1, yMax = -1;
         List<IDWPoint> inData = Lists.newLinkedList();
         for (int index = 0; index < coulm; index++) {
             p[index][0] = mapPoint.get(index).getFlon();
-            p[index][1] = mapPoint.get(index).getFlat();
+//            double y = mapPoint.get(index).getFlat();
+//            y = Math.log(Math.tan((90 + y) * Math.PI / 360)) / (Math.PI / 180);
+//            y = y * 20037508.34 / 180;
+            p[index][1] =mapPoint.get(index).getFlat();
             p[index][2] = (mapPoint.get(index).getLevel()+40);
             //inPutData.add(new DataInfo(p[index][0],p[index][1],p[index][2]));
             inData.add(new IDWPoint(p[index][0], p[index][1], p[index][2]));
@@ -509,9 +511,9 @@ public class AlarmDataController {
             t[i] = t1[in++];
         }
 
-        temple.addAll(dataOuts);
-
-        temple.add(new DataInfo(106.779815, 27.230648, 10));
+//        temple.addAll(dataOuts);
+//
+//        temple.add(new DataInfo(106.779815, 27.230648, 10));
 
         //inPutData.add(new DataInfo(106.779815,27.230648,10));
 
@@ -588,6 +590,7 @@ public class AlarmDataController {
                 geometry.put("spatialReference", spatialReference);
                 geometry.put("type", "point");
                 geometry.put("x", x * 20037508.34 / 180);
+                //geometry.put("x", x );
                 y = Math.log(Math.tan((90 + y) * Math.PI / 360)) / (Math.PI / 180);
                 y = y * 20037508.34 / 180;
                 geometry.put("y", y);
@@ -762,59 +765,59 @@ public class AlarmDataController {
     @PostMapping("/instersingal")
     public String insterSingal(@RequestBody Map<String, Map<String, Object>> param) throws JsonProcessingException {
 
-//        final RadioSignalOperationReponse res;
-//        try {
-//            final Map<String, Object> signal = param.get("sigal");
-//
-//            final Map<String, Object> station = param.get("station");
-//            final FreqWarningQueryResponse response = (FreqWarningQueryResponse) service.freqWarnServiceCall("query",
-//                    mapper.writeValueAsString(signal.get("warmingId")), FreqWarningQueryRequest.class);
-//
-//            final FreqWarningDTO t = response.getWarningInfos().getFreqWarningDTO().size() > 0 ? response.getWarningInfos().getFreqWarningDTO().get(0)
-//                    : new FreqWarningDTO();
-//
-//            final BigInteger bandWidth = t.getBandWidth();
-//            final BigInteger centerFreq = t.getCenterFreq();
-//
-//            List<Map<String, String>> ids = response.getWarningInfos().getFreqWarningDTO().get(0).getStatList().getFreqWarningStatDTO().stream().map(m -> {
-//                HashMap<String, String> map = Maps.newHashMap();
-//                map.put("stationNumber", m.getStationGUID());
-//                return map;
-//            }).collect(toList());
-//
-//            station.put("centerFreq", centerFreq);
-//            station.put("bandWidth", bandWidth);
-//
-//            String stationId = (String) signal.get("stationId");
-//
-//            String typeCode = (String) signal.get("typeCode");
-//
-//            String areaCode = stationId.substring(0, 4);
-//
-//            station.put("stationKey", station.get("stationKey"));
-//
-//            station.put("typeCode", typeCode);
-//
-//            station.put("areaCode", areaCode);
-//
-//            Map<String, Object> radioSignalAbnormalHistoryDTO = Maps.newHashMap();
-//
-//            radioSignalAbnormalHistoryDTO.put("radioSignalStationDTO", ids);
-//
-//            station.put("stationDTOs", radioSignalAbnormalHistoryDTO);
-//
-//            res = (RadioSignalOperationReponse) service.radioSignalServiceCall("insertRadioSignal",
-//                    mapper.writeValueAsString(station), RadioSignalDTO.class);
-//
-//            Map<String, Object> waringID = (Map<String, Object>) signal.get("warmingId");
-//            //service.getFreqWarnService().updateStatus((String) waringID.get("id"), 1);
-//            service.getFreqWarnService().updateSelected((String) waringID.get("id"), 1, null, (String) station.get("des"), (String) station.get("stationKey"));
-//
-//            Logger.info("告警生成信号成功 操作时间{} 入参:{} 返回消息{}", LocalDateTime.now().toString(), JSON.toJSONString(param), JSON.toJSONString(res));
-//        } catch (JsonProcessingException e) {
-//
-//            Logger.error("告警生成信号异常 操作时间{} 入参:{} 返回消息{}", LocalDateTime.now().toString(), JSON.toJSONString(param), e);
-//        }
+        final RadioSignalOperationReponse res;
+        try {
+            final Map<String, Object> signal = param.get("sigal");
+
+            final Map<String, Object> station = param.get("station");
+            final FreqWarningQueryResponse response = (FreqWarningQueryResponse) service.freqWarnServiceCall("query",
+                    mapper.writeValueAsString(signal.get("warmingId")), FreqWarningQueryRequest.class);
+
+            final FreqWarningDTO t = response.getWarningInfos().getFreqWarningDTO().size() > 0 ? response.getWarningInfos().getFreqWarningDTO().get(0)
+                    : new FreqWarningDTO();
+
+            final BigInteger bandWidth = t.getBandWidth();
+            final BigInteger centerFreq = t.getCenterFreq();
+
+            List<Map<String, String>> ids = response.getWarningInfos().getFreqWarningDTO().get(0).getStatList().getFreqWarningStatDTO().stream().map(m -> {
+                HashMap<String, String> map = Maps.newHashMap();
+                map.put("stationNumber", m.getStationGUID());
+                return map;
+            }).collect(toList());
+
+            station.put("centerFreq", centerFreq);
+            station.put("bandWidth", bandWidth);
+
+            String stationId = (String) signal.get("stationId");
+
+            String typeCode = (String) signal.get("typeCode");
+
+            String areaCode = stationId.substring(0, 4);
+
+            station.put("stationKey", station.get("stationKey"));
+
+            station.put("typeCode", typeCode);
+
+            station.put("areaCode", areaCode);
+
+            Map<String, Object> radioSignalAbnormalHistoryDTO = Maps.newHashMap();
+
+            radioSignalAbnormalHistoryDTO.put("radioSignalStationDTO", ids);
+
+            station.put("stationDTOs", radioSignalAbnormalHistoryDTO);
+
+            res = (RadioSignalOperationReponse) service.radioSignalServiceCall("insertRadioSignal",
+                    mapper.writeValueAsString(station), RadioSignalDTO.class);
+
+            Map<String, Object> waringID = (Map<String, Object>) signal.get("warmingId");
+            //service.getFreqWarnService().updateStatus((String) waringID.get("id"), 1);
+            service.getFreqWarnService().updateSelected((String) waringID.get("id"), 1, null, (String) station.get("des"), (String) station.get("stationKey"));
+
+            Logger.info("告警生成信号成功 操作时间{} 入参:{} 返回消息{}", LocalDateTime.now().toString(), JSON.toJSONString(param), JSON.toJSONString(res));
+        } catch (JsonProcessingException e) {
+
+            Logger.error("告警生成信号异常 操作时间{} 入参:{} 返回消息{}", LocalDateTime.now().toString(), JSON.toJSONString(param), e);
+        }
 
         return null;
     }

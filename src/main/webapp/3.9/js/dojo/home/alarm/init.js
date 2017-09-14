@@ -347,7 +347,7 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                 heatLayer = new HeatmapLayer({
                     config: {
                         "useLocalMaximum": false,
-                        "radius":35,
+                        "radius": 12,
                         "gradient": {
                             0.10: "rgb(135,206,250)",
                             0.20: "rgb(173,216,230)",
@@ -391,8 +391,16 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
 
         function getFeatures(result) {
             console.log(result);
-            console.log(map);
+            console.log(map.getLevel());
             // heatLayer.clear();
+
+            if (map.getLevel()==8){
+                heatLayer.config
+            }
+
+            console.log(heatLayer.config);
+
+
             var xmax = map.extent.xmax;
             var xmin = map.extent.xmin;
             var ymax = map.extent.ymax;
@@ -401,7 +409,8 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
             console.log(screenRightPiont);
             var screenLeftPiont =  webMercatorUtils.xyToLngLat(xmin,ymin);
             console.log("=============================================");
-            console.log(JSON.stringify(k));
+            console.log(JSON.stringify(k));;
+            heatLayer.refresh();
             heatLayer.setData(k);
         }
 
