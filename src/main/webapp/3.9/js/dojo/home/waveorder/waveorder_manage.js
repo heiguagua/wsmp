@@ -448,7 +448,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 			// 表单提交前的验证
 			function beforeSubmit(form) {
 				if(document.importantMonitorForm.audioTimespan.value > document.importantMonitorForm.duration.value) {
-					//layer.msg("声音采集时间不能大于执行时间!" , function() {});
 					$("#audioTimespan").focus();
 					$("#audioTimespan").val("");
 					layer.tips('声音采集时间 不能大于 执行时长 !', '#audioTimespan', {
@@ -458,7 +457,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 					return false;
 				}
 				if(document.importantMonitorForm.beginTime.value > document.importantMonitorForm.endTime.value) {
-					//layer.msg("声音采集时间不能大于执行时间!" , function() {});
 					$("#endTime").focus();
 					$("#endTime").val("");
 					layer.tips('结束时间 不能小于 开始时间 !', '#endTime', {
@@ -467,6 +465,16 @@ define(	["ajax", "dojo/parser", "esri/map",
 							});
 					return false;
 				}
+				
+//				if(document.importantMonitorForm.beginTime.value > document.importantMonitorForm.endTime.value) {
+//					$("#endTime").focus();
+//					$("#endTime").val("");
+//					layer.tips('结束时间 不能小于 开始时间 !', '#endTime', {
+//								tips : [1, '#FF5722'],
+//								time : 4000
+//							});
+//					return false;
+//				}
 				
 				if(document.importantMonitorForm.IQCount.value > document.importantMonitorForm.totalIQCount.value) {
 					$("#totalIQCount").focus();

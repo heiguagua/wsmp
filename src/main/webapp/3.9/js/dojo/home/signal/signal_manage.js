@@ -244,70 +244,137 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 				}
 			})
             }else{
-                layer.msg('不能为空!')
+                //layer.msg('不能为空!')
             }
 		});
-        //表单提交前的验证
-        function beforeSubmit(form){
-            if(!document.importantMonitorForm.beginTime.validity.valid){
-                //document.importantMonitorForm.beginTime.setCustomValidity("用户名不能为空");
-                $("#beginTime").focus();
-                return false;
-            }
-            if(!document.importantMonitorForm.endTime.validity.valid){
-                $("#endTime").focus();
-                return false
-            }
-            if(!document.importantMonitorForm.cycleStep.validity.valid){
-                $("#cycleStep").focus();
-                return false
-            }
-            if(!document.importantMonitorForm.duration.validity.valid){
-                $("#duration").focus();
-                return false
-            }
-            if(!document.importantMonitorForm.IQCount.validity.valid){
-                $("#IQCount").focus();
-                return false
-            }
-            if(!document.importantMonitorForm.totalIQCount.validity.valid){
-                $("#totalIQCount").focus();
-                return false
-            }
-            if(!document.importantMonitorForm.specCount.validity.valid){
-                $("#specCount").focus();
-                return false
-            }
-            if(!document.importantMonitorForm.totalSpecCount.validity.valid){
-                $("#totalSpecCount").focus();
-                return false
-            }
-            if(!document.importantMonitorForm.featureCount.validity.valid){
-                $("#featureCount").focus();
-                return false
-            }
-            if(!document.importantMonitorForm.totalFeatureCount.validity.valid){
-                $("#totalFeatureCount").focus();
-                return false
-            }
-            if(!document.importantMonitorForm.ITUCount.validity.valid){
-                $("#ITUCount").focus();
-                return false
-            }
-            if(!document.importantMonitorForm.totalITUCount.validity.valid){
-                $("#totalITUCount").focus();
-                return false
-            }
-            if(!document.importantMonitorForm.audioTimespan.validity.valid){
-                $("#audioTimespan").focus();
-                return false
-        }
-            if(!document.importantMonitorForm.totalAudioTimespan.validity.valid){
-                $("#totalAudioTimespan").focus();
-                return false
-            }
-            return true
-        }
+        // 表单提交前的验证
+			function beforeSubmit(form) {
+				if(document.importantMonitorForm.audioTimespan.value > document.importantMonitorForm.duration.value) {
+					//layer.msg("声音采集时间不能大于执行时间!" , function() {});
+					$("#audioTimespan").focus();
+					$("#audioTimespan").val("");
+					layer.tips('声音采集时间 不能大于 执行时长 !', '#audioTimespan', {
+								tips : [1, '#FF5722'],
+								time : 4000
+							});
+					return false;
+				}
+				if(document.importantMonitorForm.beginTime.value > document.importantMonitorForm.endTime.value) {
+					//layer.msg("声音采集时间不能大于执行时间!" , function() {});
+					$("#endTime").focus();
+					$("#endTime").val("");
+					layer.tips('结束时间 不能小于 开始时间 !', '#endTime', {
+								tips : [1, '#FF5722'],
+								time : 4000
+							});
+					return false;
+				}
+				
+				if(document.importantMonitorForm.IQCount.value > document.importantMonitorForm.totalIQCount.value) {
+					$("#totalIQCount").focus();
+					$("#totalIQCount").val("");
+					layer.tips('采集总数 不能小于 单次采集次数 !', '#totalIQCount', {
+								tips : [1, '#FF5722'],
+								time : 4000
+							});
+					return false;
+				}
+				if(document.importantMonitorForm.specCount.value > document.importantMonitorForm.totalSpecCount.value) {
+					$("#totalSpecCount").focus();
+					$("#totalSpecCount").val("");
+					layer.tips('采集总数 不能小于 单次采集次数 !', '#totalSpecCount', {
+								tips : [1, '#FF5722'],
+								time : 4000
+							});
+					return false;
+				}
+				if(document.importantMonitorForm.featureCount.value > document.importantMonitorForm.totalFeatureCount.value) {
+					$("#totalFeatureCount").focus();
+					$("#totalFeatureCount").val("");
+					layer.tips('采集总数 不能小于 单次采集次数 !', '#totalFeatureCount', {
+								tips : [1, '#FF5722'],
+								time : 4000
+							});
+					return false;
+				}
+				if(document.importantMonitorForm.ITUCount.value > document.importantMonitorForm.totalITUCount.value) {
+					$("#totalITUCount").focus();
+					$("#totalITUCount").val("");
+					layer.tips('采集总数 不能小于 单次采集次数 !', '#totalITUCount', {
+								tips : [1, '#FF5722'],
+								time : 4000
+							});
+					return false;
+				}
+				if(document.importantMonitorForm.audioTimespan.value > document.importantMonitorForm.totalAudioTimespan.value) {
+					$("#totalAudioTimespan").focus();
+					$("#totalAudioTimespan").val("");
+					layer.tips('采集总数 不能小于 单次采集次数 !', '#totalAudioTimespan', {
+								tips : [1, '#FF5722'],
+								time : 4000
+							});
+					return false;
+				}
+				
+				if (!document.importantMonitorForm.beginTime.validity.valid) {
+					// document.importantMonitorForm.beginTime.setCustomValidity("用户名不能为空");
+					$("#beginTime").focus();
+					return false;
+				}
+				if (!document.importantMonitorForm.endTime.validity.valid) {
+					$("#endTime").focus();
+					return false
+				}
+				if (!document.importantMonitorForm.cycleStep.validity.valid) {
+					$("#cycleStep").focus();
+					return false
+				}
+				if (!document.importantMonitorForm.duration.validity.valid) {
+					$("#duration").focus();
+					return false
+				}
+				if (!document.importantMonitorForm.IQCount.validity.valid) {
+					$("#IQCount").focus();
+					return false
+				}
+				if (!document.importantMonitorForm.totalIQCount.validity.valid) {
+					$("#totalIQCount").focus();
+					return false
+				}
+				if (!document.importantMonitorForm.specCount.validity.valid) {
+					$("#specCount").focus();
+					return false
+				}
+				if (!document.importantMonitorForm.totalSpecCount.validity.valid) {
+					$("#totalSpecCount").focus();
+					return false
+				}
+				if (!document.importantMonitorForm.featureCount.validity.valid) {
+					$("#featureCount").focus();
+					return false
+				}
+				if (!document.importantMonitorForm.totalFeatureCount.validity.valid) {
+					$("#totalFeatureCount").focus();
+					return false
+				}
+				if (!document.importantMonitorForm.ITUCount.validity.valid) {
+					$("#ITUCount").focus();
+					return false
+				}
+				if (!document.importantMonitorForm.totalITUCount.validity.valid) {
+					$("#totalITUCount").focus();
+					return false
+				}
+				if (!document.importantMonitorForm.audioTimespan.validity.valid) {
+					$("#audioTimespan").focus();
+					return false
+				}
+				if (!document.importantMonitorForm.totalAudioTimespan.validity.valid) {
+					$("#totalAudioTimespan").focus();
+					return false
+				}
+				return true
+			}
 		
 		//重点监测添加点击事件
 		$("#important_monitor").on("click","#buttonInsert",function(e) {
@@ -334,7 +401,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 })
 
             }else{
-                layer.msg('不能为空!')
+                //layer.msg('不能为空!')
             }
 
 
@@ -347,8 +414,6 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 //				  console.log(index);
 //				  layer.close(index);
 //				});
-            var valid =beforeSubmit(document.importantMonitorForm);
-            if(valid){
                 var str = $("#important-monitor-form").serialize();
                 $.ajax({
                     url : 'signal/importantMonitorDelete',
@@ -365,9 +430,6 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                         layer.alert(html.responseText);
                     }
 			    })
-            }else{
-                layer.msg('不能为空!')
-            }
 		});
         var singal = $("#FormQZ").val();
         var FromSingal = $("#FromSingal").val();
