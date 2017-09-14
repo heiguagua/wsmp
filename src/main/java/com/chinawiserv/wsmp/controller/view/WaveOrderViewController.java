@@ -110,7 +110,7 @@ public class WaveOrderViewController {
     
     @ResponseBody
     @PostMapping("/importantMonitorCreateOrUpdate")
-    public String importantMonitorCreateOrUpdate(MeasureTaskParamDto dto,Model model) {
+    public String importantMonitorCreateOrUpdate(MeasureTaskParamDto dto) {
     	//或者直接用模型接受参数MeasureTaskParamDto.java
     	Logger.info("更新或添加-前端传参dto:{}",JSON.toJSONString(dto));
     	if(dto.getID().equals("")) {
@@ -130,7 +130,7 @@ public class WaveOrderViewController {
     
     @ResponseBody
     @PostMapping("/importantMonitorDelete")
-    public String importantMonitorDelete(MeasureTaskParamDto dto,Model model) {
+    public String importantMonitorDelete(MeasureTaskParamDto dto) {
     	//或者直接用模型接受参数MeasureTaskParamDto.java
     	Logger.info("删除-前端传参dto:{}",JSON.toJSONString(dto));
 		Boolean resultDTOJson = serviceImportFreqRangeManage.removeById(dto.getID());
