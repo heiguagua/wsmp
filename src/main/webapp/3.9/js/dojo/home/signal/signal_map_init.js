@@ -100,8 +100,10 @@ define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"]
                 });
                 console.log("=======================")
                 // add heat layer to map
+
                 map.addLayer(heatLayer);
                 console.log("=======================")
+                dojo.connect(map, "onExtentChange", getFeatures);
                 // resize map
                 ajax.get("cache/data/mapdata",null,function(reslut){
                     var sfs = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID,
@@ -124,12 +126,59 @@ define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"]
 
         function getFeatures(result) {
             console.log("result ======" +JSON.stringify(result) );
-            console.log("1111");
+            if (map.getLevel()==9){
+                // heatLayer = new HeatmapLayer({
+                //     config: {
+                //         "useLocalMaximum": false,
+                //         "radius": 12,
+                //         "gradient": {
+                //             0.10: "rgb(135,206,250)",
+                //             0.20: "rgb(173,216,230)",
+                //             0.30: "rgb(176,196,222)",
+                //             0.40: "rgb(32,178,170)",
+                //             0.50: "rgb(144,238,144)",
+                //             0.60: "rgb(173,255,47)",
+                //             0.70: "rgb(255,255,0)",
+                //             0.80: "rgb(255,165,0)",
+                //             0.90: "rgb(255,69,0)",
+                //             1.00: "rgb(255,000,000)"
+                //         }
+                //     },
+                //     "map": map,
+                //     "domNodeId": "heatLayer",
+                //     "opacity": 0.85
+                // });
+			}else if (map.getLevel()==8){
+                // heatLayer = new HeatmapLayer({
+                //     config: {
+                //         "useLocalMaximum": false,
+                //         "radius": 6,
+                //         "gradient": {
+                //             0.10: "rgb(135,206,250)",
+                //             0.20: "rgb(173,216,230)",
+                //             0.30: "rgb(176,196,222)",
+                //             0.40: "rgb(32,178,170)",
+                //             0.50: "rgb(144,238,144)",
+                //             0.60: "rgb(173,255,47)",
+                //             0.70: "rgb(255,255,0)",
+                //             0.80: "rgb(255,165,0)",
+                //             0.90: "rgb(255,69,0)",
+                //             1.00: "rgb(255,000,000)"
+                //         }
+                //     },
+                //     "map": map,
+                //     "domNodeId": "heatLayer",
+                //     "opacity": 0.85
+                // });
+			}
+
             console.log("K =======" + k);
             if (result.type!='extent'){
                 k = result.kriking;
             }
             console.log(JSON.stringify(k));
+            heatLayer.refresh();
+			heatLayer.clearData();
             heatLayer.setData(k);
 
             ajax.get("cache/data/mapdata",null,function(reslut){

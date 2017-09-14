@@ -137,6 +137,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
         $(".audio-play-control .total-length").html(audio_play_list.length);
 
         $(".audio-play-control .play").on("click",function(){
+        	$(".audio-play-control .play i").toggleClass("fa-pause");
             wavesurfer.playPause();
         })
 

@@ -105,8 +105,10 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
     var current_index = 1; // 当前播放数据的序号
     var has_changed = false; // 标志timeline是否开始播放
     function iq_player() {
+    	if (iqChart) {
+            iqChart.clear();
+          }
     	current_index = 1; // 重置当前播放数据序号
-        var total_data = iq_play_list.length;
         
         var timeline_length = [];
         for (var i = 0; i < iq_play_list.length; i++) {
@@ -342,7 +344,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
         	current_index = p1.currentIndex;
             
             has_changed = true;
-            if(current_index == total_data) {// 为了解决timelinechanged事件currentIndex第一次的值实际为第二条数据
+            if(current_index >= iq_play_list.length) {// 为了解决timelinechanged事件currentIndex第一次的值实际为第二条数据
               $(".iq-play-control .current-index").html(1);
             }
             else{
@@ -358,7 +360,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
         load_iq_mouse_event();
         
         // 加载播放控制事件
-        load_play_control(total_data);
+        load_play_control();
     }
 
     function load_iq_mouse_event(){
@@ -488,7 +490,8 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
     }
     
  // 加载播放控制事件
-    function load_play_control(total_data){
+    function load_play_control(){
+    	$(".iq-play-control .play").html("<i class='fa fa-play'></i>");
       var playState = true;
       // 播放暂停控制
       $(".iq-play-control .play").on("click",function(){
@@ -508,11 +511,11 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
 
       // 播放上一条
       $(".iq-play-control .backward").on("click",function(){
-        if(current_index == total_data) {
+        if(current_index == iq_play_list.length) {
           return;
         }
         if(current_index-1 == 0){
-          current_index = total_data;
+          current_index = iq_play_list.length;
         }
         else{
           current_index = current_index-1;
@@ -528,10 +531,10 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
       // 播放下一条
       $(".iq-play-control .forward").on("click",function(){
 
-        if(current_index == total_data-1) {
+        if(current_index == iq_play_list.length-1) {
           return;
         }
-        if(current_index == total_data){
+        if(current_index == iq_play_list.length){
           current_index = 1;
         }
         else{

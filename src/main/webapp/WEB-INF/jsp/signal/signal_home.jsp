@@ -135,6 +135,7 @@
 					<%--</ul>--%>
 				</div>
 				<div class="data-play-chart" >
+					<div class="check-types"></div>
 					<div id="spectrumChart" style="width: 100%; height: 300px"></div>
 				</div>
 				<div class="play-control spectrum-play-control">
