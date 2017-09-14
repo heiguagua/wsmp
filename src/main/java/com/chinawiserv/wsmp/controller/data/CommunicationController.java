@@ -33,6 +33,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -68,6 +74,8 @@ public class CommunicationController {
     private static RadioSignalWebServiceSoap radioSignalServiceSoap;
     
     private static Map<String,String> techCodingTable;
+    
+    private static ExecutorService eService;
 	
     private RestTemplate restTemplate;
 	@PostConstruct
@@ -87,123 +95,146 @@ public class CommunicationController {
 		techCodingTable.put("LY0104", "TD-SCDMA系统");
 		//初始化restTemplate
 		restTemplate = new RestTemplate();
+		//初始化线程池
+		eService = Executors.newCachedThreadPool();
 	}
 	
+//    @PostMapping("/topTable")
+//    public Map<String, Object> getTopTable(@RequestBody Map<String,Object> param) {
+//    	System.out.println("===param:"+param);
+//    	@SuppressWarnings("unchecked")
+//		List<String> monitorsID = (List<String>) param.get("monitorsID");
+//    	HttpHeaders headers = new HttpHeaders();
+//		headers.setContentType(MediaType.APPLICATION_JSON);
+//		Map<String, Object> request = Maps.newHashMap();
+//		request.put("queryStartTime", param.get("startTime"));
+//		request.put("queryEndTime", param.get("endTime"));
+//		request.put("queryScope", param.get("areaCode"));
+//		request.put("userId", param.get("userID"));
+//    	List<FreqSelfInfo> response = queryToolsService.querySelfFreqInfoByPID("1");
+//    	long loopStartTime = System.currentTimeMillis();
+//		List<CommunicationTableTop> communicationRows = response.parallelStream().map(m -> {
+//			long taskBegin = System.currentTimeMillis();
+//			CommunicationTableTop communication = new CommunicationTableTop();
+//			communication.setGeneration(m.getServiceName());
+//			communication.setOperator(m.getFreqDesc());
+//			communication.setFreqRange(m.getFreqMin().toString() + '-' + m.getFreqMax().toString());
+//			communication.setTechName(techCodingTable.get(m.getSt()));
+//			communication.setInfoChannel(m.getFreqMax().subtract(m.getFreqMin()).multiply(new BigDecimal("1000")).divide(new BigDecimal(m.getChannelBandwidth())).toString());
+//			//查询并设置频段占用度和台站覆盖率
+//			request.put("freqMin", m.getFreqMin());
+//			request.put("freqMax", m.getFreqMax());
+//			HttpEntity<String> entity = new HttpEntity<String>(JSON.toJSONString(request), headers);
+//			JSONObject result = restTemplate.postForObject(urlFreqBandList, entity, JSONObject.class);
+//			String stationCoverageRate = result.getJSONObject("data").getJSONArray("result").getJSONObject(0).getString("stationCoverageRate");
+//			String freqBandOccupyAngle = result.getJSONObject("data").getJSONArray("result").getJSONObject(0).getString("freqBandOccupyAngle");
+//			freqBandOccupyAngle = freqBandOccupyAngle == null ? "0" : freqBandOccupyAngle;
+//			stationCoverageRate = stationCoverageRate.equals("--") || stationCoverageRate == null || stationCoverageRate.equals("无") ? "0" : stationCoverageRate;
+//			communication.setStationCoverage(stationCoverageRate);
+//			communication.setOccupancy(freqBandOccupyAngle);
+//			//查询并设置监测站
+//			RadioSignalQueryRequest request2 = new RadioSignalQueryRequest();
+//			request2.setBeginFreq(m.getFreqMin().multiply(new BigDecimal("1000000")).toBigInteger());
+//			request2.setEndFreq(m.getFreqMax().multiply(new BigDecimal("1000000")).toBigInteger());
+//			ArrayOfString value = new ArrayOfString();
+//			value.setString(monitorsID);
+//			request2.setStationIDs(value );
+//			RadioSignalQueryResponse response2 = radioSignalServiceSoap.queryRadioSignal(request2 );
+//			Map<String, List<RadioSignalStationDTO>> map = response2.getRadioSignals().getRadioSignalDTO().stream().flatMap(m2 -> m2.getStationDTOs().getRadioSignalStationDTO().stream())
+//				.collect(Collectors.groupingBy(RadioSignalStationDTO :: getStationNumber));
+//			Double monitorCoverage = (double) (map.entrySet().size() / monitorsID.size() * 100);
+//			communication.setMonitorCoverage(monitorCoverage.toString() + "%");
+//			long taskEnd = System.currentTimeMillis();
+//			System.out.println("task end : " + (taskEnd - taskBegin));
+//			return communication;
+//		}).collect(Collectors.toList());
+//		long loopEndTime = System.currentTimeMillis();
+//		System.out.println("loop end : "+(loopEndTime -loopStartTime)/1000);
+//		Map<String, Object> result = Maps.newLinkedHashMap();
+//		result.put("total", communicationRows.size());
+//		result.put("data", communicationRows);
+//		return result;
+//    }
+    
+    
     @PostMapping("/topTable")
     public Map<String, Object> getTopTable(@RequestBody Map<String,Object> param) {
     	System.out.println("===param:"+param);
     	@SuppressWarnings("unchecked")
-		List<String> monitorsID = (List<String>) param.get("monitorsID");
+    	List<String> monitorsID = (List<String>) param.get("monitorsID");
     	HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		Map<String, Object> request = Maps.newHashMap();
-		request.put("queryStartTime", param.get("startTime"));
-		request.put("queryEndTime", param.get("endTime"));
-		request.put("queryScope", param.get("areaCode"));
-		request.put("userId", param.get("userID"));
+    	headers.setContentType(MediaType.APPLICATION_JSON);
+    	Map<String, Object> request = Maps.newConcurrentMap();
+    	request.put("queryStartTime", param.get("startTime"));
+    	request.put("queryEndTime", param.get("endTime"));
+    	request.put("queryScope", param.get("areaCode"));
+    	request.put("userId", param.get("userID"));
     	List<FreqSelfInfo> response = queryToolsService.querySelfFreqInfoByPID("1");
+    	List<CommunicationTableTop> communicationRows = Lists.newArrayList();
+    	
+    	List<Future<CommunicationTableTop>> futureList = Lists.newArrayList();
+    	
     	long loopStartTime = System.currentTimeMillis();
-		List<CommunicationTableTop> communicationRows = response.stream().map(m -> {
-			long taskBegin = System.currentTimeMillis();
-			CommunicationTableTop communication = new CommunicationTableTop();
-			communication.setGeneration(m.getServiceName());
-			communication.setOperator(m.getFreqDesc());
-			communication.setFreqRange(m.getFreqMin().toString() + '-' + m.getFreqMax().toString());
-			communication.setTechName(techCodingTable.get(m.getSt()));
-			communication.setInfoChannel(m.getFreqMax().subtract(m.getFreqMin()).multiply(new BigDecimal("1000")).divide(new BigDecimal(m.getChannelBandwidth())).toString());
-			//查询并设置频段占用度和台站覆盖率
-			request.put("freqMin", m.getFreqMin());
-			request.put("freqMax", m.getFreqMax());
-			HttpEntity<String> entity = new HttpEntity<String>(JSON.toJSONString(request), headers);
-			JSONObject result = restTemplate.postForObject(urlFreqBandList, entity, JSONObject.class);
-			String stationCoverageRate = result.getJSONObject("data").getJSONArray("result").getJSONObject(0).getString("stationCoverageRate");
-			String freqBandOccupyAngle = result.getJSONObject("data").getJSONArray("result").getJSONObject(0).getString("freqBandOccupyAngle");
-			freqBandOccupyAngle = freqBandOccupyAngle == null ? "0" : freqBandOccupyAngle;
-			stationCoverageRate = stationCoverageRate.equals("--") || stationCoverageRate == null || stationCoverageRate.equals("无") ? "0" : stationCoverageRate;
-			communication.setStationCoverage(stationCoverageRate);
-			communication.setOccupancy(freqBandOccupyAngle);
-			//查询并设置监测站
-			RadioSignalQueryRequest request2 = new RadioSignalQueryRequest();
-			request2.setBeginFreq(m.getFreqMin().multiply(new BigDecimal("1000000")).toBigInteger());
-			request2.setEndFreq(m.getFreqMax().multiply(new BigDecimal("1000000")).toBigInteger());
-			ArrayOfString value = new ArrayOfString();
-			value.setString(monitorsID);
-			request2.setStationIDs(value );
-			RadioSignalQueryResponse response2 = radioSignalServiceSoap.queryRadioSignal(request2 );
-			Map<String, List<RadioSignalStationDTO>> map = response2.getRadioSignals().getRadioSignalDTO().stream().flatMap(m2 -> m2.getStationDTOs().getRadioSignalStationDTO().stream())
-				.collect(Collectors.groupingBy(RadioSignalStationDTO :: getStationNumber));
-			Double monitorCoverage = (double) (map.entrySet().size() / monitorsID.size() * 100);
-			communication.setMonitorCoverage(monitorCoverage.toString() + "%");
-			long taskEnd = System.currentTimeMillis();
-			System.out.println("task end : " + (taskEnd - taskBegin));
-			return communication;
-		}).collect(Collectors.toList());
-		long loopEndTime = System.currentTimeMillis();
-		System.out.println("loop end : "+(loopEndTime -loopStartTime)/1000);
-		Map<String, Object> result = Maps.newLinkedHashMap();
-		result.put("total", communicationRows.size());
-		result.put("data", communicationRows);
-		return result;
+    	response.forEach(m -> {
+    		Callable<CommunicationTableTop> task = new Callable<CommunicationTableTop>() {
+				public CommunicationTableTop call() throws Exception {
+					long taskBegin = System.currentTimeMillis();
+					Logger.info("任务{}开始", Thread.currentThread().getId());
+		    		CommunicationTableTop communication = new CommunicationTableTop();
+		    		communication.setGeneration(m.getServiceName());
+		    		communication.setOperator(m.getFreqDesc());
+		    		communication.setFreqRange(m.getFreqMin().toString() + '-' + m.getFreqMax().toString());
+		    		communication.setTechName(techCodingTable.get(m.getSt()));
+		    		communication.setInfoChannel(m.getFreqMax().subtract(m.getFreqMin()).multiply(new BigDecimal("1000")).divide(new BigDecimal(m.getChannelBandwidth())).toString());
+		    		//查询并设置频段占用度和台站覆盖率
+		    		request.put("freqMin", m.getFreqMin());
+		    		request.put("freqMax", m.getFreqMax());
+		    		HttpEntity<String> entity = new HttpEntity<String>(JSON.toJSONString(request), headers);
+		    		JSONObject result = restTemplate.postForObject(urlFreqBandList, entity, JSONObject.class);
+		    		String stationCoverageRate = result.getJSONObject("data").getJSONArray("result").getJSONObject(0).getString("stationCoverageRate");
+		    		String freqBandOccupyAngle = result.getJSONObject("data").getJSONArray("result").getJSONObject(0).getString("freqBandOccupyAngle");
+		    		freqBandOccupyAngle = freqBandOccupyAngle == null ? "0" : freqBandOccupyAngle;
+		    		stationCoverageRate = stationCoverageRate.equals("--") || stationCoverageRate == null || stationCoverageRate.equals("无") ? "0" : stationCoverageRate;
+		    		communication.setStationCoverage(stationCoverageRate);
+		    		communication.setOccupancy(freqBandOccupyAngle);
+		    		//查询并设置监测站
+		    		RadioSignalQueryRequest request2 = new RadioSignalQueryRequest();
+		    		request2.setBeginFreq(m.getFreqMin().multiply(new BigDecimal("1000000")).toBigInteger());
+		    		request2.setEndFreq(m.getFreqMax().multiply(new BigDecimal("1000000")).toBigInteger());
+		    		ArrayOfString value = new ArrayOfString();
+		    		value.setString(monitorsID);
+		    		request2.setStationIDs(value );
+		    		RadioSignalQueryResponse response2 = radioSignalServiceSoap.queryRadioSignal(request2 );
+		    		Map<String, List<RadioSignalStationDTO>> map = response2.getRadioSignals().getRadioSignalDTO().stream().flatMap(m2 -> m2.getStationDTOs().getRadioSignalStationDTO().stream())
+		    				.collect(Collectors.groupingBy(RadioSignalStationDTO :: getStationNumber));
+		    		Double monitorCoverage = (double) (map.entrySet().size() / monitorsID.size() * 100);
+		    		communication.setMonitorCoverage(monitorCoverage.toString() + "%");
+		    		long taskEnd = System.currentTimeMillis();
+		    		Logger.info("任务{}结束,执行时间：{}",Thread.currentThread().getId(), (taskEnd - taskBegin));
+					return communication;
+				}
+			};
+			Future<CommunicationTableTop> future = eService.submit(task);
+			futureList.add(future);
+    	});
+    	futureList.forEach(t -> {
+    		try {
+				communicationRows.add(t.get());
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	});
+    	long loopEndTime = System.currentTimeMillis();
+    	System.out.println("loop end : "+(loopEndTime -loopStartTime));
+    	Map<String, Object> result = Maps.newLinkedHashMap();
+    	result.put("total", communicationRows.size());
+    	result.put("data", communicationRows);
+    	return result;
     }
-    
-    
-//    @PostMapping("/topTable2")
-//    public Map<String, Object> getTopTable2(@RequestBody Map<String,Object> param) {
-//    	System.out.println("===param:"+param);
-//    	@SuppressWarnings("unchecked")
-//    	List<String> monitorsID = (List<String>) param.get("monitorsID");
-//    	HttpHeaders headers = new HttpHeaders();
-//    	headers.setContentType(MediaType.APPLICATION_JSON);
-//    	Map<String, Object> request = Maps.newHashMap();
-//    	request.put("queryStartTime", param.get("startTime"));
-//    	request.put("queryEndTime", param.get("endTime"));
-//    	request.put("queryScope", param.get("areaCode"));
-//    	request.put("userId", param.get("userID"));
-//    	List<FreqSelfInfo> response = queryToolsService.querySelfFreqInfoByPID("1");
-//    	List<CommunicationTableTop> communicationRows = Lists.newArrayList();
-//    	long loopStartTime = System.currentTimeMillis();
-//    	response.forEach(m -> {
-//    		long taskBegin = System.currentTimeMillis();
-//    		CommunicationTableTop communication = new CommunicationTableTop();
-//    		communication.setGeneration(m.getServiceName());
-//    		communication.setOperator(m.getFreqDesc());
-//    		communication.setFreqRange(m.getFreqMin().toString() + '-' + m.getFreqMax().toString());
-//    		communication.setTechName(techCodingTable.get(m.getSt()));
-//    		communication.setInfoChannel(m.getFreqMax().subtract(m.getFreqMin()).multiply(new BigDecimal("1000")).divide(new BigDecimal(m.getChannelBandwidth())).toString());
-//    		//查询并设置频段占用度和台站覆盖率
-//    		request.put("freqMin", m.getFreqMin());
-//    		request.put("freqMax", m.getFreqMax());
-//    		HttpEntity<String> entity = new HttpEntity<String>(JSON.toJSONString(request), headers);
-//    		JSONObject result = restTemplate.postForObject(urlFreqBandList, entity, JSONObject.class);
-//    		String stationCoverageRate = result.getJSONObject("data").getJSONArray("result").getJSONObject(0).getString("stationCoverageRate");
-//    		String freqBandOccupyAngle = result.getJSONObject("data").getJSONArray("result").getJSONObject(0).getString("freqBandOccupyAngle");
-//    		freqBandOccupyAngle = freqBandOccupyAngle == null ? "0" : freqBandOccupyAngle;
-//    		stationCoverageRate = stationCoverageRate.equals("--") || stationCoverageRate == null || stationCoverageRate.equals("无") ? "0" : stationCoverageRate;
-//    		communication.setStationCoverage(stationCoverageRate);
-//    		communication.setOccupancy(freqBandOccupyAngle);
-//    		//查询并设置监测站
-//    		RadioSignalQueryRequest request2 = new RadioSignalQueryRequest();
-//    		request2.setBeginFreq(m.getFreqMin().multiply(new BigDecimal("1000000")).toBigInteger());
-//    		request2.setEndFreq(m.getFreqMax().multiply(new BigDecimal("1000000")).toBigInteger());
-//    		ArrayOfString value = new ArrayOfString();
-//    		value.setString(monitorsID);
-//    		request2.setStationIDs(value );
-//    		RadioSignalQueryResponse response2 = radioSignalServiceSoap.queryRadioSignal(request2 );
-//    		Map<String, List<RadioSignalStationDTO>> map = response2.getRadioSignals().getRadioSignalDTO().stream().flatMap(m2 -> m2.getStationDTOs().getRadioSignalStationDTO().stream())
-//    				.collect(Collectors.groupingBy(RadioSignalStationDTO :: getStationNumber));
-//    		Double monitorCoverage = (double) (map.entrySet().size() / monitorsID.size() * 100);
-//    		communication.setMonitorCoverage(monitorCoverage.toString() + "%");
-//    		long taskEnd = System.currentTimeMillis();
-//    		communicationRows.add(communication);
-//    		System.out.println("task end : " + (taskEnd - taskBegin));
-//    	});
-//    	long loopEndTime = System.currentTimeMillis();
-//    	System.out.println("loop end : "+(loopEndTime -loopStartTime)/1000);
-//    	Map<String, Object> result = Maps.newLinkedHashMap();
-//    	result.put("total", communicationRows.size());
-//    	result.put("data", communicationRows);
-//    	return result;
-//    }
     
 //    @PostMapping("/topTable1")
 //    public Map<String, Object> getTopTable1(@RequestBody Map<String,Object> param) {
