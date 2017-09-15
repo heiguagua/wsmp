@@ -48,6 +48,9 @@ define(	["ajax", "dojo/parser", "esri/map",
 
 				// 重点监测点击事件
 				$("#modalConfig").on("show.bs.modal", function(e) {
+					if(typeof e.relatedTarget == "undefined") {
+						return null;
+					}
 					var a = $(e.relatedTarget);
 					var beginFreq = a.data('beginfreq');
 					var endFreq = a.data('endfreq');
@@ -598,11 +601,14 @@ define(	["ajax", "dojo/parser", "esri/map",
 
 			// 时间选择器初始化
 			function datetimepicker_init() {
+				var startDate = new Date();
 				$.fn.datetimepicker.defaults = {
 					language : 'zh-CN',
 					format : 'yyyy-mm-dd hh:ii:ss',
 					autoclose : true,
-					minView : 2
+					minView : 2,
+					startDate : startDate
+					
 				}
 			}
 
