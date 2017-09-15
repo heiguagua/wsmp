@@ -8,8 +8,6 @@ import com.chinawiserv.wsmp.IDW.IDWPoint;
 import com.chinawiserv.wsmp.client.WebServiceSoapFactory;
 import com.chinawiserv.wsmp.hbase.HbaseClient;
 import com.chinawiserv.wsmp.hbase.query.OccAndMax;
-import com.chinawiserv.wsmp.javatoc.LevelCompute;
-import com.chinawiserv.wsmp.javatoc.model.LevelResult;
 import com.chinawiserv.wsmp.kriging.Interpolation;
 import com.chinawiserv.wsmp.model.LevelLocate;
 import com.chinawiserv.wsmp.pojo.IntensiveMonitoring;
@@ -146,7 +144,13 @@ public class AlarmDataController {
 
                 Occ.forEach((k, v) -> {
                     xAxis.add(k);
-                    series.add(v);
+                    Double value = Double.parseDouble(v.toString());
+
+                    if (value==-100){
+                        series.add(null);
+                    }else{
+                        series.add(v);
+                    }
                 });
 
                 HashMap<String, Object> restlutdayOccHashMap = Maps.newHashMap();
@@ -189,11 +193,14 @@ public class AlarmDataController {
                 ).collect(toMap(Map.Entry::getKey, Map.Entry::getValue, throwingMerger(), LinkedHashMap::new));
 
                 Max.forEach((k, v) -> {
-
                     final double key = Integer.parseInt(k);
-
+                    double value = Double.parseDouble(v.toString());
+                    if (value==-100){
+                        series.add(null);
+                    }else{
+                        series.add(v);
+                    }
                     xAxis.add(key);
-                    series.add(v);
                 });
 
                 HashMap<String, Object> restlutHashMap = Maps.newHashMap();
@@ -294,9 +301,15 @@ public class AlarmDataController {
                         .collect(toMap(Map.Entry::getKey, Map.Entry::getValue, throwingMerger(), LinkedHashMap::new));
                 occ.forEach((k, v) -> {
 
-                    Integer i = Integer.parseInt(k);
+                    int i = Integer.parseInt(k);
+                    double value = Double.parseDouble(v.toString());
                     xAxis.add(i);
-                    series.add(v);
+
+                    if (value==-100){
+                        series.add(null);
+                    }else{
+                        series.add(v);
+                    }
                 });
                 Logger.info("以三个月计算占用度从hbase中查询正常有返回值为{} ， 查询时间为{}，页面入参：监测站id{}，开始时间{},中心频率{}", occ, LocalDateTime.now().toString(), stationCode, beginTime, centorFreq);
             }
@@ -322,7 +335,6 @@ public class AlarmDataController {
 
                 max = max.entrySet().stream().sorted((c1, c2) -> Integer.parseInt(c1.getKey().toString()) > Integer.parseInt(c2.getKey().toString()) ? 1 : -1
                 ).collect(toMap(Map.Entry::getKey, Map.Entry::getValue, throwingMerger(), LinkedHashMap::new));
-
                 max.forEach((k, v) -> {
 
                     final double key = Double.parseDouble(k.toString()) / pow;
@@ -408,17 +420,17 @@ public class AlarmDataController {
 
             //少要八个点才能计算出来
 
-            LevelResult result = LevelCompute.levelCompute(ids,flon,flat,level, ids.length,10, waringsensorid);
-            int size = result.getOangeR().size();
-            for (int index = 0;index < size;index++){
-
-                Map<String, Object> mapLocate = Maps.newHashMap();
-
-                mapLocate.put("x", result.getOutLon().get(index));
-                mapLocate.put("y", result.getOutLat().get(index));
-                mapLocate.put("radius",  result.getOangeR().get(index));
-                levelPoint.add(mapLocate);
-            }
+//            LevelResult result = LevelCompute.levelCompute(ids,flon,flat,level, ids.length,10, waringsensorid);
+//            int size = result.getOangeR().size();
+//            for (int index = 0;index < size;index++){
+//
+//                Map<String, Object> mapLocate = Maps.newHashMap();
+//
+//                mapLocate.put("x", result.getOutLon().get(index));
+//                mapLocate.put("y", result.getOutLat().get(index));
+//                mapLocate.put("radius",  result.getOangeR().get(index));
+//                levelPoint.add(mapLocate);
+//            }
 
 
             Logger.info("场强定位计算正常 操作时间{} 入参值为 id :{},flon:{},flat:{},level:{},waringsensorid:{}", LocalDateTime.now().toString(),

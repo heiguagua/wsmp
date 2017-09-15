@@ -1317,7 +1317,6 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                     type : 'value',
                     name:'百分比(%)',
                     max : 100,
-                    min : -10,
                     splitNumber : 10,
                     axisLine : {
                         lineStyle : {

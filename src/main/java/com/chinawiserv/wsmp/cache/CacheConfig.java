@@ -39,7 +39,7 @@ public class CacheConfig {
 	public final static String USR_DATA = "userData";
 
 	public final static String DATA_LIST = "dataList";
-	
+
 	@Value("${config.home:classpath:}")
 	private String configHome;
 
@@ -115,20 +115,21 @@ public class CacheConfig {
 
 		final Resource resource = this.def.getResource(configHome.concat("boundary/5100.json"));
 		final File file = resource.getFile();
-		final Type type = new TypeReference<LinkedHashMap<String, Object>>() {}.getType();
+		final Type type = new TypeReference<LinkedHashMap<String, Object>>() {
+		}.getType();
 
 		try (InputStream is = Files.newInputStream(file.toPath())) {
 
 			final LinkedHashMap<String, Object> map = JSON.parseObject(is, type);
 
-			Map<String,Object> boundary = (Map<String, Object>) map.get("5101");
+			Map<String, Object> boundary = (Map<String, Object>) map.get("5101");
 			List<Object> regions = (List<Object>) boundary.get("boundary");
 
 			return regions;
 		}
 	}
 
-	@Bean(name ="kringGraid")
+	@Bean(name = "kringGraid")
 	public List<Map<String, Object>> graidData() throws IOException {
 
 		final Resource resource = this.def.getResource(configHome.concat("geoJson/5101.json"));
@@ -142,24 +143,25 @@ public class CacheConfig {
 			return reslute;
 		}
 //		double start = System.currentTimeMillis();
-//		final Resource resource = this.def.getResource(configHome.concat("boundary/5100.json"));
-//		final File file = resource.getFile();
+//		Path path = Paths.get("G:/ideaSpace/wsmp/src/main/resources/boundary/5100.json");
+//		final File file = path.toFile();
 //		final Type type = new TypeReference<ConcurrentMap<String, Object>>() {
 //		}.getType();
 //		List<List<BigDecimal>> regions;
 //		try (InputStream is = Files.newInputStream(file.toPath())) {
 //
-//			final ConcurrentMap<String, Object> map = JSON.parseObject(is, type);
+//			final Map<String, Object> map = JSON.parseObject(is, type);
 //			Map<String, Object> boundary = (Map<String, Object>) map.get("5101");
 //			regions = (List<List<BigDecimal>>) boundary.get("boundary");
 //
 //
 //		}
-//		List<BigDecimal> xmax = regions.stream().max((t1,t2)->t1.get(0).doubleValue()>t2.get(0).doubleValue()?1:-1).get();
-//		List<BigDecimal> xmin = regions.stream().min((t1,t2)->t1.get(0).doubleValue()>t2.get(0).doubleValue()?1:-1).get();
-//		List<BigDecimal> ymax = regions.stream().max((t1,t2)->t1.get(1).doubleValue()>t2.get(1).doubleValue()?1:-1).get();
-//		List<BigDecimal> ymin = regions.stream().min((t1,t2)->t1.get(1).doubleValue()>t2.get(1).doubleValue()?1:-1).get();
-//		double ylimit  = ymin.get(0).doubleValue();
+//
+//		List<BigDecimal> xmax = regions.stream().max((t1, t2) -> t1.get(0).doubleValue() > t2.get(0).doubleValue() ? 1 : -1).get();
+//		List<BigDecimal> xmin = regions.stream().min((t1, t2) -> t1.get(0).doubleValue() > t2.get(0).doubleValue() ? 1 : -1).get();
+//		List<BigDecimal> ymax = regions.stream().max((t1, t2) -> t1.get(1).doubleValue() > t2.get(1).doubleValue() ? 1 : -1).get();
+//		List<BigDecimal> ymin = regions.stream().min((t1, t2) -> t1.get(1).doubleValue() > t2.get(1).doubleValue() ? 1 : -1).get();
+//		double xlimit = xmax.get(0).doubleValue();
 //		System.out.println("xmax   " + xmax.get(0).doubleValue());
 //		System.out.println("xmin   " + xmin.get(0).doubleValue());
 //		System.out.println("ymax   " + ymax.get(1).doubleValue());
@@ -183,47 +185,52 @@ public class CacheConfig {
 //
 //		}
 //
-//		int yMuner = 10000;
+//		int yMuner = 100;
 //		double xStart = xmin.get(0).doubleValue();
-//		double xEnd = xmax.get(0).doubleValue();
 //		double ymaxSart = ymax.get(1).doubleValue();
 //		double yminSart = ymin.get(1).doubleValue();
 //		double[][] point = transArry;
 //		double[][] poly = transArry;
-//		double yStep = (xEnd - xStart)/yMuner;
+//		double yStep = (ymaxSart - yminSart) / yMuner;
 //		double[][] stratPoint = new double[yMuner][2];
 //		double currentY = ymaxSart;
 //		for (int i = 0; i < yMuner; i++) {
 //			stratPoint[i][0] = xStart;
 //			stratPoint[i][1] = currentY;
-//			xStart+=yStep;
+//			currentY -= yStep;
 //		}
 //
-//
-//		ConcurrentLinkedDeque<Map<String,Object>> deque = new ConcurrentLinkedDeque<>();
-//		Stream.of(stratPoint).parallel().forEach((t)->{
+//		double xStep = yStep;
+//		// LinkedBlockingDeque<Map<String,Double>> deque = new LinkedBlockingDeque<>();
+//		LinkedList<Map<String, Object>> deque = new LinkedList<>();
+//		Stream.of(stratPoint).forEach((t) -> {
 //			double x = t[0];
 //			double y = t[1];
-//			while ((y=y-yStep)<ylimit){
-//				if (isInSide(x,y,poly)){
-//					Map<String,Object> map = Maps.newHashMap();
-//					map.put("x",x);
-//					map.put("y",y);
-//					deque.add(map);
-//				}else{
+//			while (true) {
+//				//  System.out.println("x  :"+x +"   "+"y  :"+y);
+//				x = x + xStep;
+//
+//				if (x > xlimit) {
 //					break;
+//				}
+//
+//				if (isInSide(x, y, poly)) {
+//					Map<String, Object> map = Maps.newHashMap();
+//					map.put("x", x);
+//					map.put("y", y);
+//					deque.add(map);
 //				}
 //			}
 //		});
 //		double end = System.currentTimeMillis();
-//		System.out.println("耗时 : " +(end-start)/1000);
-//		try {
-//			Thread.sleep(1000);
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
-//		return  deque;
+//		System.out.println("耗时 : " + (end - start) / 1000 + "   " + "个数 :" + deque.size());
+//		// System.out.println(deque);
+//		return deque;
+
+//        System.out.println(JSON.toJSONString(deque));
+
 	}
+
 
 	public static Boolean isInSide(double pointX, double pointY, double[][] poly) {
 		double px = pointX, py = pointY;
@@ -244,6 +251,7 @@ public class CacheConfig {
 			if ((sy < py && ty >= py) || (sy >= py && ty < py)) {
 				// 线段上与射线 Y 坐标相同的点的 X 坐标
 				double x = sx + (py - sy) * (tx - sx) / (ty - sy);
+
 				// 点在多边形的边上
 				if (x == px) {
 					return true;
@@ -257,7 +265,7 @@ public class CacheConfig {
 		}
 
 		// 射线穿过多边形边界的次数为奇数时点在多边形内
-		return flag ? true : false;
+		return flag;
 	}
 
 
