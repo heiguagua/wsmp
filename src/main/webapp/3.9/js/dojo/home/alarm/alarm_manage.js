@@ -214,15 +214,16 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                     url : 'alarmmanage/importantMonitorCreateOrUpdate',
                     type : 'post',
                     data : str,
-                    dataType : 'html',// 只返回bool值
-                    success : function(html) {
+                    dataType : 'text',// 只返回bool值
+                    success : function() {
                         layer.msg("更新成功！");
                         $("#modalConfig").modal("hide");
                     },
-                    error : function(html) {
-                        console.log(html);
-                        layer.alert(html.responseText);
-                    }
+                    error : function(text) {
+										str = text.responseText;
+										jsonObject = JSON.parse(str);
+										layer.alert(jsonObject.message);
+									}
                 })
             }else{
                 //layer.msg('不能为空!')
@@ -238,15 +239,16 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                     url : 'alarmmanage/importantMonitorCreateOrUpdate',
                     type : 'post',
                     data : str,
-                    dataType : 'html',// 只返回bool值
-                    success : function(html) {
+                    dataType : 'text',// 只返回bool值
+                    success : function() {
                             layer.msg("添加成功！");
                             $("#modalConfig").modal("hide");
                     },
-                    error : function(html) {
-                        console.log(html);
-                        layer.alert(html.responseText);
-                    }
+                   error : function(text) {
+										str = text.responseText;
+										jsonObject = JSON.parse(str);
+										layer.alert(jsonObject.message);
+									}
                 })
             }else{
                 //layer.msg('不能为空!')
@@ -265,15 +267,16 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                     url : 'alarmmanage/importantMonitorDelete',
                     type : 'post',
                     data : str,
-                    dataType : 'html',// 只返回bool值
-                    success : function(html) {
+                    dataType : 'text',// 只返回bool值
+                    success : function() {
                         layer.msg("删除成功!");
                         $("#modalConfig").modal("hide");
                         },
-                    error : function(html) {
-                        console.log(html);
-                        layer.alert(html.responseText);
-                    }
+                    error : function(text) {
+											str = text.responseText;
+											jsonObject = JSON.parse(str);
+											layer.alert(jsonObject.message);
+										}
                 })
 		});	
 
