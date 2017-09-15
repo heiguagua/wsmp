@@ -325,6 +325,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 							title : '监测站',
 							width : '20%',
 							titleTooltip : "监测站",
+							sortable : true,
+							sortName : "monitorID",
 							formatter : function(value, row, index) {
 								var monitors = getMonitors(AREACODE);
 								var content = "";
@@ -912,6 +914,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 								width : '15%',
 								title : '监测站',
 								titleTooltip : "监测站",
+								sortable : true,
+								sortName : "stationID",
 								formatter : function(value, row, index) {
 									var content = "";
 									for (var i = 0; i < value.length; i++) {
@@ -1007,6 +1011,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 								field : 'stationID',
 								title : '监测站',
 								width : '15%',
+								sortable : true,
+								sortName : "stationID",
 								titleTooltip : "监测站",
 								formatter : function(value, row, index) {
 									var content = "";
@@ -1065,6 +1071,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 					monitorsID[i] = monitors[i].Num;
 				}
 				$('#table-radio').bootstrapTable({
+					//height : 580,
 					method : 'post',
 					contentType : "application/json",
 					url : "data/waveorder/rediostatus", // 要请求数据的文件路径
@@ -1105,7 +1112,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						width : '20%',
 						titleTooltip : '频段名称',
 						sortable : true,
-						sortName : "value",
+						sortName : "redioName",
 						formatter : function(value, row, index) {
 							return '<div class="dpopover" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
 									+ value + '">' + value + '</div>';
