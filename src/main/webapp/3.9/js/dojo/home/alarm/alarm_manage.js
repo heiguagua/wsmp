@@ -11,12 +11,20 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
         signal_list
         
         //时间选择器初始化
-        $.fn.datetimepicker.defaults = {
-				language: 'zh-CN',
-				format: 'yyyy-mm-dd hh:ii:ss',
-				autoclose:true,
-				minView:2
-		}
+				$.fn.datetimepicker.defaults = {
+					language : 'zh-CN',
+					format : 'yyyy-mm-dd hh:ii:ss',
+					autoclose : true,
+					minView : 2
+				}
+				
+		// 时间选择器点击事件
+				$("#modalConfig").on("click", ".time-picker", function(e) {
+					$(e.currentTarget).datetimepicker("show");
+					$(e.currentTarget).datetimepicker("setStartDate",
+							new Date());
+				})
+				
         //点击配置按钮，如果有信号管理输入频率能查到值时，弹出重点监测配置，否则不弹出
         $("#clickModalConfig").click(function(){
             var warningID = $("#signal_list").find('option:selected').attr("value");
@@ -42,9 +50,6 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                         	$("#important_monitor").find("#buttonDelete").show();
                         }
                     $("#modalConfig").modal('show');
-                    $("#modalConfig").find(".time-picker").datetimepicker({
-
-                    });
                 }
             })
         });

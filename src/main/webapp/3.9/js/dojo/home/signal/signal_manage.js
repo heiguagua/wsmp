@@ -15,12 +15,19 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
         init_select2();
 
         //时间选择器初始化
-        $.fn.datetimepicker.defaults = {
-				language: 'zh-CN',
-				format: 'yyyy-mm-dd hh:ii:ss',
-				autoclose:true,
-				minView:2
-		}
+				$.fn.datetimepicker.defaults = {
+					language : 'zh-CN',
+					format : 'yyyy-mm-dd hh:ii:ss',
+					autoclose : true,
+					minView : 2
+				}
+					
+				// 时间选择器点击事件
+				$("#modalConfig").on("click", ".time-picker", function(e) {
+					$(e.currentTarget).datetimepicker("show");
+					$(e.currentTarget).datetimepicker("setStartDate",
+							new Date());
+				})
 		
         // 信号列表change事件
         $("#signal_list1 .select2-picker").change(function() {
@@ -191,9 +198,6 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                         	$("#important_monitor").find("#buttonDelete").show();
                         }
                         $("#modalConfig").modal('show');
-                        $("#modalConfig").find(".time-picker").datetimepicker({
-
-                        });
                     }
                 })
             }

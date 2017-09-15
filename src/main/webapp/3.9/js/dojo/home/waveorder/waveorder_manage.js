@@ -46,6 +46,13 @@ define(	["ajax", "dojo/parser", "esri/map",
 							addPoint(MONITORS, typeCode, isSubType);
 						});
 
+						
+				// 时间选择器点击事件
+				$("#modalConfig").on("click",".time-picker",function (e) {
+					$(e.currentTarget).datetimepicker("show");
+					$(e.currentTarget).datetimepicker("setStartDate", new Date());
+				})
+						
 				// 重点监测点击事件
 				$("#modalConfig").on("show.bs.modal", function(e) {
 					if(typeof e.relatedTarget == "undefined") {
@@ -67,8 +74,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 								dataType : 'html',// 返回数据类型
 								success : function(html) {
 									$("#important_monitor").html(html);
-									$("#modalConfig").find(".time-picker")
-											.datetimepicker({});
 								}
 							})
 				});
@@ -442,7 +447,7 @@ define(	["ajax", "dojo/parser", "esri/map",
                     var sfs = new esri.symbol.SimpleFillSymbol(
 									esri.symbol.SimpleFillSymbol.STYLE_SOLID,
 									null,
-									new dojo.Color([255, 0, 0, 0.1]));
+									new dojo.Color([135, 206, 250, 0.3]));
                     var polygon =new esri.geometry.Polygon(result);
                     var Citygraphic = new esri.Graphic(polygon, sfs);
                     glayer.add(Citygraphic);
@@ -459,6 +464,19 @@ define(	["ajax", "dojo/parser", "esri/map",
 							});
 					return false;
 				}
+				
+//				var date = new Date();
+//				if(date > document.importantMonitorForm.endTime.value) {
+//					alert("!");
+//					$("#endTime").focus();
+//					$("#endTime").val("");
+//					layer.tips('结束时间 不能小于 当前系统时间 !', '#endTime', {
+//								tips : [1, '#FF5722'],
+//								time : 4000
+//							});
+//					return false;
+//				}
+				
 				if(document.importantMonitorForm.beginTime.value > document.importantMonitorForm.endTime.value) {
 					$("#endTime").focus();
 					$("#endTime").val("");
@@ -468,16 +486,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 							});
 					return false;
 				}
-				
-//				if(document.importantMonitorForm.beginTime.value > document.importantMonitorForm.endTime.value) {
-//					$("#endTime").focus();
-//					$("#endTime").val("");
-//					layer.tips('结束时间 不能小于 开始时间 !', '#endTime', {
-//								tips : [1, '#FF5722'],
-//								time : 4000
-//							});
-//					return false;
-//				}
 				
 				if(document.importantMonitorForm.IQCount.value > document.importantMonitorForm.totalIQCount.value) {
 					$("#totalIQCount").focus();
@@ -601,13 +609,11 @@ define(	["ajax", "dojo/parser", "esri/map",
 
 			// 时间选择器初始化
 			function datetimepicker_init() {
-				var startDate = new Date();
 				$.fn.datetimepicker.defaults = {
 					language : 'zh-CN',
 					format : 'yyyy-mm-dd hh:ii:ss',
 					autoclose : true,
-					minView : 2,
-					startDate : startDate
+					minView : 2
 					
 				}
 			}
