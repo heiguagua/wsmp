@@ -796,7 +796,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 //								});
                 },
                 sidePagination : 'server', //指定服务器端分页
-                pageSize : 7, //单页记录数
+                pageSize : 10, //单页记录数
                 pageList : [5, 10, 20, 30], //分页步进值
                 clickToSelect : true, //是否启用点击选中行
                 responseHandler : function(res) {
@@ -1007,7 +1007,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                 //								});
                 },
                 sidePagination : 'server', //指定服务器端分页
-                pageSize : 7, //单页记录数
+                pageSize : 10, //单页记录数
                 pageList : [5, 10, 20, 30], //分页步进值
                 clickToSelect : true, //是否启用点击选中行
                 responseHandler : function(res) {
