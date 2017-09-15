@@ -26,8 +26,8 @@
 			<div class="col-sm-9">
 				<div class="input-group">
 					<input title="不能为空" required id="cycleStep" name="cycleStep" value="${dto.getCycleStep()}" type="text"
-						   class="form-control " placeholder="单位(秒)">
-					<span class="input-group-addon unit ">秒</span>
+						   class="form-control " placeholder="单位(分钟)">
+					<span class="input-group-addon unit ">分钟</span>
 
 				</div>
 			</div>
@@ -125,7 +125,7 @@
 		<div class="form-group col-sm-6">
 			<div class="col-xs-6 padding_0_8">
 				<div class="input-group">
-					<input title="不能为空" id="totalITUCount "required name="totalITUCount" value="${dto.getTotalITUCount()}"
+					<input title="不能为空" id="totalITUCount"required name="totalITUCount" value="${dto.getTotalITUCount()}"
 						   type="text" class="form-control " placeholder="单位(帧)">
 					<span class="input-group-addon unit">帧</span>
 				</div>

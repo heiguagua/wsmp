@@ -36,8 +36,8 @@
 	<input id="signalType" hidden="true" value="${signalType}">
 	<input id="isSubType" hidden="true" value="${isSubType}">
 	<input id="areaCode" hidden="true" value="${areaCode}">
-					<table class="table table-striped" id='table-signal-list'>
-					</table>
+	<table class="table table-striped" id='table-signal-list'>
+	</table>
 </body>
 
 

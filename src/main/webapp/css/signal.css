@@ -1,14 +1,14 @@
 ::-webkit-input-placeholder {
-	font-size: 12px;
-	color: #8A9EB2;
+  font-size: 12px;
+  color: #8A9EB2;
 }
 ::-moz-placeholder {
-	font-size: 12px;
-	color: #8A9EB2;
+  font-size: 12px;
+  color: #8A9EB2;
 }
 :-moz-placeholder {
-	font-size: 12px;
-	color: #8A9EB2;
+  font-size: 12px;
+  color: #8A9EB2;
 }
 #signal .header-search {
   margin-left: 20px;
@@ -207,7 +207,7 @@
     font-size: 16px;
     color: #505363; }
     #signal .data-type{
-    	    background: #37A5FF;
+          background: #37A5FF;
     border-radius: 3px;
     color: #FFF;
     font-size: 14px;
@@ -281,31 +281,31 @@
 #signal .select2-container {
   min-width: 160px; }
   .search-result-wrap{
-	position:relative;
+  position:relative;
 }
 #search-result{
-	position:absolute;
-	width:100%;
-	display:none;
-	padding: 0;
+  position:absolute;
+  width:100%;
+  display:none;
+  padding: 0;
     background: #FFF;
     box-shadow: 0 10px 20px 0 rgba(0,0,0,0.16);
     border-radius: 4px;
 }
 
 #search-result>li{
-	padding:4px 10px;
-	cursor:pointer;
+  padding:4px 10px;
+  cursor:pointer;
 }
 #search-result>li:hover,#search-result>li.active{
-	background:#e5e5e5;
+  background:#e5e5e5;
 }
 #IQChart{
-	min-height:200px;
+  min-height:200px;
 }
 .data-choose-list{
-	display:none;
-	position: absolute;
+  display:none;
+  position: absolute;
     right: 0;
     width: 90%;
     background: #FFF;
@@ -313,42 +313,42 @@
     box-shadow: 0 0 12px #cecece;
 }
 .ico-close{
-	display: inline-block;
+  display: inline-block;
     padding: 2px 12px;
     font-size: 20px;
     cursor: pointer;
 }
 .ico-close.close-box{
-	float:right;
-	margin-left: 10px;
+  float:right;
+  margin-left: 10px;
     position: relative;
     top: -16px;
     right:-16px;
     text-decoration: none;
 }
 .ico-close:hover{
-	background:#eee;
+  background:#eee;
 }
 
 td.bs-checkbox{
-	position:relative;
+  position:relative;
 }
 .data-choose-list .pagination{
-	margin: 0;
+  margin: 0;
 }
 .data-choose-list .fixed-table-body{
-	padding:0 10px 0 15px;
+  padding:0 10px 0 15px;
 }
 .data-choose-list .fixed-table-pagination{
-	border-top:0;
+  border-top:0;
 }
 .data-choose-list .confirm-wrap{
-	border-top: 1px solid #EEE;
+  border-top: 1px solid #EEE;
     margin-top: 10px;
     padding: 10px;
 }
 .data-choose-list .btn-confirm{
-	padding: 4px 28px;
+  padding: 4px 28px;
     border-radius: 4px;
     background: #37a5ff;
     color: #FFF;
@@ -365,21 +365,21 @@ td.bs-checkbox{
     box-shadow:none;
 }
 .data-choose-list .btn-confirm:hover,.data-choose-list .btn-confirm:active{
-	color:#FFF !important;
+  color:#FFF !important;
 }
 .data-choose-list .btn-cancel:hover,.data-choose-list .btn-cancel:active{
-	color:#333 !important;
+  color:#333 !important;
 }
 .gate-filter{
-	display: inline-block;
+  display: inline-block;
     vertical-align: bottom;
-	padding: 2px 20px 2px 4px;
+  padding: 2px 20px 2px 4px;
     border: 1px solid #DAE5F0;
     border-radius: 4px;
     width: 130px;
 }
 .btn-submit{
-	padding: 4px 18px;
+  padding: 4px 18px;
     border-radius: 4px;
     background: #37a5ff;
     color: #FFF;
@@ -387,11 +387,11 @@ td.bs-checkbox{
     margin-right: 10px;
 }
 .fixed-table-loading{
-	display:none;
+  display:none;
 }
 .cover-rect,.iq-cover-rect{
-	width:0;
-	height:0;
+  width:0;
+  height:0;
     top: 0;
     left: 0;
     position: absolute;
@@ -406,11 +406,11 @@ td.bs-checkbox{
     overflow: auto;
 }
  .empty-msg{
-	padding: 20px 0 0 0;
+  padding: 20px 0 0 0;
     text-align: center;
 }
 .mark-content textarea{
-	width:100%;
+  width:100%;
 }
 #stationWrap .table tr.selected {
     background: antiquewhite;
@@ -419,7 +419,7 @@ td.bs-checkbox{
     position: relative;
 }
 #stationWrap .table tr.selected td:last-child:after{
-	    content: '';
+      content: '';
     width: 24px;
     height: 24px;
     background: url(../images/tick.png) no-repeat center transparent;
@@ -451,4 +451,43 @@ td.bs-checkbox{
 .play-control .btn-play{
   padding:0 4px;
   margin-right:5px;
+}
+.check-types{
+  display: block;
+  width:100%;
+      padding-top: 10px;
+    padding-left: 46px;
+  background:#353535;
+  opacity: 0;
+}
+.check-types .value-type{
+  display:inline-block;
+  margin:4px 10px;
+  color:#FFF;
+}
+.value-type label{
+  color:#FFF;
+}
+.type-sign{
+  display: inline-block;
+  margin-right:2px;
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  border:1px solid #FFF;
+}
+.value-type .checkbox label::before{
+  border-radius:0;
+}
+.timing-sign{
+  background: #00ff00;
+}
+.min-sign{
+  background: #0000ff;
+}
+.max-sign{
+  background: #ff0000;
+}
+.avg-sign{
+  background: #ffa500;
 }
