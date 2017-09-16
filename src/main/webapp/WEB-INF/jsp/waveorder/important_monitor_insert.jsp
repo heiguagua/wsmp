@@ -13,7 +13,7 @@
 			</div>
 		</div>
 		<div class="form-group col-sm-6">
-			<label for="" class="col-xs-3 control-label">结束时间</label>
+			<label for="" class="col-xs-3 control-label">截止时间</label>
 			<div class='input-group date time-picker'  style="padding-left:15px">
 				<input id='endTime' title="不能为空" required name="endTime" type='text' class="form-control " value="${dto.getEndTime()}"/>
 		          <span class="input-group-addon">

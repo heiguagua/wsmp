@@ -167,17 +167,18 @@ define(	["ajax", "dojo/parser", "esri/map",
 									url : 'waveorder/importantMonitorCreateOrUpdate',
 									type : 'post',
 									data : str,
-									dataType : 'html',// 只返回bool值
-									success : function(html) {
+									dataType : 'text',// 只返回bool值
+									success : function() {
 										layer.msg("更新成功！");
 										/*$("#important_monitor").html(html);
 										$("#modalConfig").find(".time-picker")
 												.datetimepicker({});*/
 										$("#modalConfig").modal('hide');
 									},
-									error : function(html) {
-										console.log(html);
-										layer.alert(html.responseText);
+									error : function(text) {
+										str = text.responseText;
+										jsonObject = JSON.parse(str);
+										layer.alert(jsonObject.message);
 									}
 								})
 							} else {
@@ -196,8 +197,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 									url : 'waveorder/importantMonitorCreateOrUpdate',
 									type : 'post',
 									data : str,
-									dataType : 'html',// 只返回bool值
-									success : function(html) {
+									dataType : 'text',// 只返回bool值
+									success : function() {
 										layer.msg("添加成功！");
 										/*$("#important_monitor").html(html);
 										$("#modalConfig").find(".time-picker")
@@ -209,9 +210,10 @@ define(	["ajax", "dojo/parser", "esri/map",
 												});
 
 									},
-									error : function(html) {
-										console.log(html);
-										layer.alert(html.responseText);
+									error : function(text) {
+										str = text.responseText;
+										jsonObject = JSON.parse(str);
+										layer.alert(jsonObject.message);
 									}
 								})
 							} else {
@@ -235,7 +237,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 											type : 'post',
 											data : str,
 											dataType : 'html',// 只返回bool值
-											success : function(html) {
+											success : function() {
 												layer.msg("删除成功!");
 												/*$("#important_monitor")
 														.html(html);
@@ -249,10 +251,11 @@ define(	["ajax", "dojo/parser", "esri/map",
 																	silent : true
 																});
 											},
-											error : function(html) {
-												console.log(html);
-												layer.alert(html.responseText);
-											}
+											error : function(text) {
+											str = text.responseText;
+											jsonObject = JSON.parse(str);
+											layer.alert(jsonObject.message);
+										}
 										})
 						});
 
@@ -322,6 +325,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 							title : '监测站',
 							width : '20%',
 							titleTooltip : "监测站",
+							sortable : true,
+							sortName : "monitorID",
 							formatter : function(value, row, index) {
 								var monitors = getMonitors(AREACODE);
 								var content = "";
@@ -909,6 +914,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 								width : '15%',
 								title : '监测站',
 								titleTooltip : "监测站",
+								sortable : true,
+								sortName : "stationID",
 								formatter : function(value, row, index) {
 									var content = "";
 									for (var i = 0; i < value.length; i++) {
@@ -1004,6 +1011,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 								field : 'stationID',
 								title : '监测站',
 								width : '15%',
+								sortable : true,
+								sortName : "stationID",
 								titleTooltip : "监测站",
 								formatter : function(value, row, index) {
 									var content = "";
@@ -1062,6 +1071,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 					monitorsID[i] = monitors[i].Num;
 				}
 				$('#table-radio').bootstrapTable({
+					//height : 580,
 					method : 'post',
 					contentType : "application/json",
 					url : "data/waveorder/rediostatus", // 要请求数据的文件路径
@@ -1102,7 +1112,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						width : '20%',
 						titleTooltip : '频段名称',
 						sortable : true,
-						sortName : "value",
+						sortName : "redioName",
 						formatter : function(value, row, index) {
 							return '<div class="dpopover" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
 									+ value + '">' + value + '</div>';
