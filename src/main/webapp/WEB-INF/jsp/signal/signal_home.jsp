@@ -69,8 +69,9 @@
 				</div>
 				<div class='box3 flex-column'>
 					<div class='locate-coverage'>
-						<label class='module-name'> <img src='images/locate.png' />
-							<span id = "stationName">&nbsp;&nbsp;台站</span>
+						<label class='module-name'>
+							<%--<img src='images/locate.png' />--%>
+							<span id = "stationName">&nbsp;&nbsp;</span>
 						</label>
 						<div class='pull-right'>
 							<input type="text" class="gate-filter" placeholder="请输入门限" /> <button class="btn btn-submit" id="gate-btn">提交</button>电磁覆盖率:&nbsp; <span class='coverage-number'></span>

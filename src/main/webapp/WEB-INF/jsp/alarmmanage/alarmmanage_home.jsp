@@ -102,9 +102,9 @@
     <div class='box'>
       <div class='locate-coverage'>
         <label class='module-name'>
-          <img src='images/locate.png' />
+          <%--<img src='images/locate.png' />--%>
           <span id = "stationName">
-            &nbsp;&nbsp;台站
+            &nbsp;&nbsp;
           </span>
         </label>
         <div class='pull-right'>
