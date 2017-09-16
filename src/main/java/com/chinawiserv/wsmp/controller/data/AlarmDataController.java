@@ -257,8 +257,8 @@ public class AlarmDataController {
             //            Map<Object, Object> max = hbaseClient.queryMaxLevels(stationCode, centorFreq, upperBound, lowerBound, beginTime);
             //            Map<String, Object> occ = hbaseClient.queryOccDay(stationCode, beginTime, 90, centorFreq).getOcc();
 
-            Map<Object, Object> max = hbaseClient.queryMaxLevels(stationCode, centorFreq, upperBound, lowerBound, beginTime);
-            Map<String, Object> occ = hbaseClient.queryOccDay(stationCode, beginTime, 90, frequency).getOcc();
+            Map<Object, Object> max = hbaseClient.queryMaxLevels(stationCode, centorFreq, upperBound, lowerBound, LocalDateTime.now().format(formatter));
+            Map<String, Object> occ = hbaseClient.queryOccDay(stationCode, LocalDateTime.now().format(formatter), 90, frequency).getOcc();
 
             if (occ.size() == 0) {
 
