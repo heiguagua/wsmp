@@ -83,7 +83,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						function(e) {
 							var freq = e.target.text;
 							const urlObj = {
-								ServerName : 'host1',// 跳四方用host1,跳自己这边用host2
+								ServerName : 'host1',
 								DisplayName : '单频率',
 								MultiTabable : false,
 								ReflushIfExist : true,
@@ -100,7 +100,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 							var freq = e.target.getAttribute("centorfreq");
 							console.log(freq);
 							const urlObj = {
-								ServerName : 'host2',// 跳四方用host1,跳自己这边用host2
+								ServerName : 'host2',
 								DisplayName : '信号管理',
 								MultiTabable : false,
 								ReflushIfExist : true,
@@ -115,7 +115,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						function(e) {
 							var freq = e.target.text;
 							const urlObj = {
-								ServerName : 'host1',// 跳四方用host1,跳自己这边用host2
+								ServerName : 'host1',
 								DisplayName : '单频率',
 								MultiTabable : false,
 								ReflushIfExist : true,
@@ -130,7 +130,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						function(e) {
 							var freq = e.target.text;
 							const urlObj = {
-								ServerName : 'host1',// 跳四方用host1,跳自己这边用host2
+								ServerName : 'host1',
 								DisplayName : '单频率',
 								MultiTabable : false,
 								ReflushIfExist : true,
@@ -144,14 +144,15 @@ define(	["ajax", "dojo/parser", "esri/map",
 						function(e) {
 							console.log(e);
 							var freq = e.target.getAttribute("centorfreq");
+							var freqid = e.target.getAttribute("freqid");
 							console.log(freq);
+							console.log(freqid);
 							const urlObj = {
-								ServerName : 'host2',// 跳四方用host1,跳自己这边用host2
+								ServerName : 'host2',
 								DisplayName : '告警管理',
 								MultiTabable : false,
 								ReflushIfExist : true,
-								Url : 'radio/app/alarmmanage?id=QZ&cenFreg='
-										+ freq
+								Url : 'radio/app/alarmmanage?id=QZ&cenFreg='+ freq + '&id=' + freqid
 							};
 							Binding.openUrl(JSON.stringify(urlObj));
 						})
@@ -662,6 +663,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 				table_radio_init(monitors, userID);
 				table_alarm_undealed(monitorsID, monitors);
 				table_alarm_dealed(monitorsID, monitors);
+				//MAP1 = mapInit();
 				redioType(monitors);
 				if (MAP1 != null) {
 					addPoint(monitors, 1, "false");
@@ -1035,8 +1037,13 @@ define(	["ajax", "dojo/parser", "esri/map",
 								title : '状态',
 								titleTooltip : "状态",
 								formatter : function(value, row, index) {
-									return '<a class="alarmManageA" centorFreq='
-											+ row.radio + '>未确认</a>';
+									return "<a  freqId="+ row.id +" class='alarmManageA' centorFreq= " + row.radio + ">未确认</a> ";
+								}
+							}, {
+								field : 'id',
+								visible : false,
+								formatter : function(value, row, index) {
+									return value;
 								}
 							}, {
 								field : 'mark',
@@ -1071,7 +1078,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 					monitorsID[i] = monitors[i].Num;
 				}
 				$('#table-radio').bootstrapTable({
-					//height : 580,
+					height : 580,
 					method : 'post',
 					contentType : "application/json",
 					url : "data/waveorder/rediostatus", // 要请求数据的文件路径

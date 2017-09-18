@@ -161,6 +161,7 @@ public class WaveOrderViewController {
 		request2.setStationNumber(value);
 		request2.setType(1);
 		RadioSignalSubClassifiedQueryResponse response2 = serviceRadioSignalSoap.queryRadioSignalSubClassified(request2);
+		
 		Integer legalSubTypeCount = response2.getLstOnStation().getSignalSubStaticsOnStation().stream().mapToInt(m -> m.getCount()).reduce(0,(a,b) -> a + b);
 		rsCount.setLegalUnNormalStationNumber(legalSubTypeCount);
 		

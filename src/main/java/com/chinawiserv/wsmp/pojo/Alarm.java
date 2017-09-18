@@ -3,7 +3,8 @@ package com.chinawiserv.wsmp.pojo;
 import java.util.List;
 
 public class Alarm {
-
+	private String id;
+	
 	private String radio;
 
 	private String firstTime;
@@ -97,6 +98,14 @@ public class Alarm {
 
 	public void setStationID(List<String> stationID) {
 		this.stationID = stationID;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 }

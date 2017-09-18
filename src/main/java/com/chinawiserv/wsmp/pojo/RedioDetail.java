@@ -4,6 +4,8 @@ import java.util.List;
 
 public class RedioDetail {
 
+	private String id;
+	
 	private String name;
 
 	private double centor;
@@ -112,5 +114,13 @@ public class RedioDetail {
 
 	public void setStation(String station) {
 		this.station = station;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 }

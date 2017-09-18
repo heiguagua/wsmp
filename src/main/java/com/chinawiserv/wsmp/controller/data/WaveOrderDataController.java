@@ -200,6 +200,7 @@ public class WaveOrderDataController {
 				alarm.setFirstTime(m.getSaveDate().toString().replace('T',' '));
 				alarm.setLastingTime(m.getLastTimeDate().toString().replace('T',' '));
 				alarm.setMark(m.getDescription());
+				alarm.setId(m.getID());
 				List<String> stationID = Lists.newArrayList();
 				m.getStatList().getFreqWarningStatDTO().stream().forEach(t1 -> {
 					stationID.add(t1.getStationGUID());
