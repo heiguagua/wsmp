@@ -16,10 +16,12 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                     formatter:function(param){
                         maxlevel_start_index_temp = param[0].dataIndex;
                         maxlevel_end_index = param[0].dataIndex
-                        if(!param[0].value){
-                            return ;
+                        if(param[0].value!=null){
+                            return param[0].name+"点的"+ "的电平峰值 " + param[0].value+"dBμV";
+                        }else{
+                            return "没有数据";
                         }
-                        return param[0].name+"点的"+ "的电平峰值 " + param[0].value+"dBμV";
+
                     }
                 },
                 dataZoom : [{

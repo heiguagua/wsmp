@@ -1338,6 +1338,11 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                         if(day.substring(0,1)=='0'){
                             day = day.substring(1);
                         }
+
+                        if(param[0].value==null){
+                            return "没有数据";
+                        }
+
                         return year+'年'+month+'月'+day+'日' + "占用度" + param[0].value.toFixed(2)+"%";
 
                     }
@@ -1699,8 +1704,10 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                         trigger : 'axis',
                         formatter:function(param){
                             //console.log(param)
-                            if(param && param[0] && param[0].name && param[0].value) {
+                            if(param && param[0] && param[0].name && param[0].value!=null) {
                                 return param[0].name+"点占用度" + param[0].value.toFixed(2)+"%";
+                            }else{
+                                return "没有数据"
                             }
 
                         }
