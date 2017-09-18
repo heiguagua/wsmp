@@ -7,8 +7,9 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
         //var url = "assets/json/iq-player-list.json";
         ajax.get(url, null, function(result) {
             var data = result;
-            if(!data) {
+            if(!data || data.length == 0) {
                 data = null;
+                return;
             }
             $('#IQ-table').bootstrapTable({
                 method : 'get',
