@@ -77,7 +77,7 @@ define(	["ajax", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer",
                     var sfs = new esri.symbol.SimpleFillSymbol(
 									esri.symbol.SimpleFillSymbol.STYLE_SOLID,
 									null,
-									new dojo.Color([255, 0, 0, 0.1]));
+									new dojo.Color([135, 206, 250, 0.3]));
                     var polygon =new esri.geometry.Polygon(result);
                     var Citygraphic = new esri.Graphic(polygon, sfs);
                     glayer.add(Citygraphic);

@@ -1,8 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
- <div class='signal-wrap'>
-          <label class='signal-detect'><image src='images/sifon_1.png' />&nbsp;<a id="waveorder_manage">电波秩序</a></label>
+
+ <div class='signal-wrap' style="height: 42px;padding-top: 8px;">
+          <label class='signal-detect'><image src='images/sifon_1.png' style="margin-right: 5px;/>&nbsp;"<a id="waveorder_manage" style="color: #068AE7;">电波秩序</a></label>
           <ul class='signal-category'>
             <li class='item'>
               <div class="radio radio-primary  ">

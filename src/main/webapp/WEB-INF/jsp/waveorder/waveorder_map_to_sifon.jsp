@@ -33,7 +33,7 @@
 </head>
 
 <body id='waveOrder_map_to_sifon' class='waveOrder_map_to_sifon'>
-	<div class='content-wrap waveOrder_map_to_sifon_wrap'>
+	<div class='content-wrap waveOrder_map_to_sifon_wrap' style="padding: 0;">
 		<!--信号监测-->
 		<section class='flex-row'>
 			<div class='box waveOrder_map_to_sifon_box'>

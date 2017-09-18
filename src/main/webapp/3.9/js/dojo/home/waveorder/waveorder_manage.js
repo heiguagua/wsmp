@@ -967,6 +967,11 @@ define(	["ajax", "dojo/parser", "esri/map",
 						$("#table-alarm-dealed").find(".dpopover").popover({
 									html : true
 								});
+					},
+					onAll:function(){
+						$("#table-alarm-dealed").find(".dpopover").popover({
+							html : true
+						});
 					}
 				});
 			}
@@ -1088,6 +1093,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 				for (var i = 0; i < monitors.length; i++) {
 					monitorsID[i] = monitors[i].Num;
 				}
+				$('#table-radio').bootstrapTable("destroy");
 				$('#table-radio').bootstrapTable({
 					//height : 625,
 					method : 'post',
