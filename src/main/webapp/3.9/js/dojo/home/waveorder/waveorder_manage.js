@@ -152,7 +152,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 								DisplayName : '告警管理',
 								MultiTabable : false,
 								ReflushIfExist : true,
-								Url : 'radio/app/alarmmanage?id=QZ&cenFreg='+ freq + '&id=' + freqid
+								Url : 'radio/app/alarmmanage?id=QZ&cenFreg='+ freq + '&warningId=' + freqid
 							};
 							Binding.openUrl(JSON.stringify(urlObj));
 						})
