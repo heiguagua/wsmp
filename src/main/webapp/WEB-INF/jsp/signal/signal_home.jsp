@@ -23,7 +23,7 @@
 <link href='3.9/js/dojo/library/timepicker/css/bootstrap-datetimepicker.min.css' rel='stylesheet' />
 <link href='3.9/js/dojo/library/layer/layer.css' rel='stylesheet' />
 <script src="3.9/js/dojo/library/wavesuffer/wavesuffer.js"></script>
-
+<script src="3.9/js/dojo/library/lodash/lodash.js"></script>
 </head>
 
 <body id='signal'>
