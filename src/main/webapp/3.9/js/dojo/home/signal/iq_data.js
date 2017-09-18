@@ -491,13 +491,13 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
     
  // 加载播放控制事件
     function load_play_control(){
-    	$(".iq-play-control .play").html("<i class='fa fa-play'></i>");
+    	$(".iq-play-control .play").html("<i class='fa fa-pause'></i>");
       var playState = true;
       // 播放暂停控制
       $(".iq-play-control .play").on("click",function(){
         var $play_state = $(this);
         playState = !playState;
-        if(!playState){
+        if(playState){
           $play_state.html("<i class='fa fa-pause'></i>");
         }
         else{
@@ -521,7 +521,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
           current_index = current_index-1;
         }
         
-        $(".iq-play-control .play").html("<i class='fa fa-play'></i>");
+        $(".iq-play-control .play").html("<i class='fa fa-pause'></i>");
         iqChart.dispatchAction({
                         type: 'timelineChange',
                         currentIndex: current_index
@@ -547,7 +547,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
           
         }
         
-        $(".iq-play-control .play").html("<i class='fa fa-play'></i>");
+        $(".iq-play-control .play").html("<i class='fa fa-pause'></i>");
         iqChart.dispatchAction({
                         type: 'timelineChange',
                         currentIndex: current_index

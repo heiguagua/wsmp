@@ -135,20 +135,26 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
         // 播放控制
         $(".audio-play-control .current-index").html(1);
         $(".audio-play-control .total-length").html(audio_play_list.length);
+        $(".audio-play-control .play i").removeClass("fa-play").addClass("fa-pause");
 
-        $(".audio-play-control .play").on("click",function(){
-        	$(".audio-play-control .play i").toggleClass("fa-pause");
+        $(".audio-play-control .play").unbind("click").bind("click",function(){
+        	if($(".audio-play-control .play i").hasClass("fa-pause")) {
+                $(".audio-play-control .play i").removeClass("fa-pause").addClass("fa-play");
+            }
+            else{
+                $(".audio-play-control .play i").removeClass("fa-play").addClass("fa-pause");
+            }
             wavesurfer.playPause();
         })
 
-        $(".audio-play-control .backward").on("click",function(){
+        $(".audio-play-control .backward").unbind("click").bind("click",function(){
             if(currentTrack <= 0) {
                 return;
             }
             setCurrentSong((currentTrack - 1) % links.length);
         })
 
-        $(".audio-play-control .forward").on("click",function(){
+        $(".audio-play-control .forward").unbind("click").bind("click",function(){
             setCurrentSong((currentTrack + 1) % links.length);
         })
 
