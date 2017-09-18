@@ -31,6 +31,10 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 		
         // 信号列表change事件
         $("#signal_list1 .select2-picker").change(function() {
+            var FromSingal = $("#FromSingal").val();
+            if(FromSingal!=null&&FromSingal.length!=0){
+                return;
+            }
             destroy_chart_table();
             var selected_val = $(this).val();
             getStations(selected_val);
@@ -1185,13 +1189,18 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
         $("#signal_detail").html('');
         data = JSON.stringify(data);
         $("#signal_list1 .select2-picker").load("signal/singallist",{param:data}, function() {
-            console.log()
             if($("#signal_list1 .select2-picker").val()==null||$(".select2-picker").find("option").length==0||$(".select2-picker").find("option").val()=='未查询到数据'){//没有相关的日期选项时
 
                 $("#signal_list1 .select2-picker").html('<option class = "redio" disabled>未查询到数据</option>');
                 $("#station-list2").html('<option style="width: 300px;" class="station">未查询到数据</option>')
                 return;
             }
+
+            if($("#singalID").val()!=null&&$("#singalID").val().length!=0){
+                $("#signal_list1").find("select").val($("#singalID").val()).trigger('change');
+                $("#singalID").val("");
+            }
+
             var s_val = $('#signal_list1').find('option:selected').val();
             if (s_val) {
                 getStations(s_val);

@@ -287,10 +287,15 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
         });
 
         $("#signal_list").change(function (e) {
+            if($("#FormQZ").val()!=null&&$("#FormQZ").val().length !=0){
+                return;
+            }else{
+                stationselectinit();
+                changeView();
+                mapinit.stationChange();
+                alert(1);
+            }
 
-            stationselectinit();
-            changeView();
-            mapinit.stationChange();
         });
 
 
@@ -528,9 +533,14 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                         if($("#signal_list .select2-picker").val()==null||$(".select2-picker").find("option").length==0||$(".select2-picker").find("option").val()=='未查询到数据'){//没有相关的日期选项时
                             $("#signal_list .select2-picker").html('<option class = "redio" disabled>未查询到数据</option>');
                             $("#station_picker").html('<option style="width: 300px;" class="station">未查询到数据</option>')
-                            $('.select2-picker').select2();
                             return;
                         }
+
+                        if($("#waringId").val()!=null&&$("#waringId").val().length!=0){
+                            $("#signal_list").find("select").val($("#waringId").val()).trigger('change');
+                            $("#waringId").val("");
+                        }
+
                         stationselectinit();
                         $('.select2-picker').select2();
 

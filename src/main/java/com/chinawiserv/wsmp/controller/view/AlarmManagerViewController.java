@@ -12,18 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.tempuri.FreqWarningQueryRequest;
 import org.tempuri.FreqWarningQueryResponse;
 import org.tempuri.IImportFreqRangeManageService;
 import org.tempuri.ImportFreqRangeManageService;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
@@ -33,8 +29,6 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.PostConstruct;
 
 import static java.util.stream.Collectors.toList;
 
@@ -141,11 +135,12 @@ public class AlarmManagerViewController {
 
 	@RequestMapping(path = { "/", ""
 	},params = {"id=QZ"})
-	public String homeForQz(Model model,@RequestParam String cenFreg) {
+	public String homeForQz(Model model,@RequestParam String cenFreg,@RequestParam String warningId) {
 
 		model.addAttribute("mapUrl",mapUrl);
 		model.addAttribute("FromQz",cenFreg);
 		model.addAttribute("redioType",redioType);
+		model.addAttribute("waringId",warningId);
 		return "alarmmanage/alarmmanage_home";
 	}
 

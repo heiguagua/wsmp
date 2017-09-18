@@ -143,6 +143,7 @@ public class CacheConfig {
 			return reslute;
 		}
 //		double start = System.currentTimeMillis();
+//		final Resource resource = this.def.getResource(configHome.concat("geoJson/5101.json"));
 //		Path path = Paths.get("G:/ideaSpace/wsmp/src/main/resources/boundary/5100.json");
 //		final File file = path.toFile();
 //		final Type type = new TypeReference<ConcurrentMap<String, Object>>() {
