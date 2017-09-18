@@ -98,6 +98,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						function(e) {
 							console.log(e);
 							var freq = e.target.getAttribute("centorfreq");
+							var signalId = e.target.getAttribute("signalid");
 							console.log(freq);
 							const urlObj = {
 								ServerName : 'host2',
@@ -105,7 +106,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 								MultiTabable : false,
 								ReflushIfExist : true,
 								Url : 'radio/app/signal?id=sefon&cenFreg='
-										+ freq
+										+ freq + '&signalId=' + signalId
 							};
 							Binding.openUrl(JSON.stringify(urlObj));
 						})
@@ -357,9 +358,16 @@ define(	["ajax", "dojo/parser", "esri/map",
 								return value;
 							}
 						}, {
+							field : 'id',
+							visible : false,
+							formatter : function(value, row, index) {
+								return value;
+							}
+						}, {
 							field : "signalManage",
 							formatter : function(value, row, index) {
-								return '<a class="signalManageA" centorFreq='
+								return '<a signalId=' + row.id
+										+ ' class="signalManageA" centorFreq='
 										+ row.centor + '>查看</a>';
 							}
 						}],

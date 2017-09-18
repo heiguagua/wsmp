@@ -288,6 +288,7 @@ public class WaveOrderDataController {
 					BigDecimal divisor = new BigDecimal(1000000);
 					redio.setCentor(Double.valueOf((cFreq.divide(divisor).toString())));
 					redio.setBand(t.getBandWidth()/1000);
+					redio.setId(t.getID());
 					// 设置监测站
 					List<String> monitorID = Lists.newArrayList();
 					t.getStationDTOs().getRadioSignalStationDTO().stream().forEach(t1 -> {
@@ -319,6 +320,7 @@ public class WaveOrderDataController {
 						BigDecimal divisor = new BigDecimal(1000000);
 						redio.setCentor(Double.valueOf((cFreq.divide(divisor).toString())));
 						redio.setBand(t.getBandWidth()/1000);
+						redio.setId(t.getID());
 						// 设置监测站
 						List<String> monitorID = Lists.newArrayList();
 						t.getStationDTOs().getRadioSignalStationDTO().stream().forEach(t1 -> {
