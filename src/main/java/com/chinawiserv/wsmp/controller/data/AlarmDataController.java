@@ -314,7 +314,6 @@ public class AlarmDataController {
                 Logger.info("以三个月计算占用度从hbase中查询正常有返回值为{} ， 查询时间为{}，页面入参：监测站id{}，开始时间{},中心频率{}", occ, LocalDateTime.now().toString(), stationCode, beginTime, centorFreq);
             }
 
-
             if (max.size() == 0) {
 
                 String[] xAxis = new String[]{};

@@ -29,6 +29,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -114,11 +115,11 @@ public class SignalViewController {
 			redioDetail.setBand(bandWidth / 1000);
 			redioDetail.setCentor(center / 1000000);
 			redioDetail.setType(radio.getTypeCode() + "");
-			redioDetail.setrMax(map.get("rmax"));
-			redioDetail.setSpecT(map.get("specT"));
-			redioDetail.setSymRate(map.get("symRate"));
-			redioDetail.setFlatDegree(map.get("flatDegree"));
-			redioDetail.setFreqPeakNumFSK(map.get("freqPeakNumFSK"));
+			redioDetail.setrMax(Optional.ofNullable(map.get("rmax")).orElse("-"));
+			redioDetail.setSpecT(Optional.ofNullable(map.get("specT")).orElse("-"));
+			redioDetail.setSymRate(Optional.ofNullable(map.get("symRate")).orElse("-"));
+			redioDetail.setFlatDegree(Optional.ofNullable(map.get("flatDegree")).orElse("-"));
+			redioDetail.setFreqPeakNumFSK(Optional.ofNullable(map.get("freqPeakNumFSK")).orElse("-"));
 
 			model.addAttribute("redioDetail", redioDetail);
 
