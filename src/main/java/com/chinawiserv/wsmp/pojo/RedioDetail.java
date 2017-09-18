@@ -12,15 +12,15 @@ public class RedioDetail {
 
 	private String type;
 
-	private Object rMax;
+	private Object rMax = "-";
 
-	private Object specT;
+	private Object specT = "-";
 
-	private Object symRate;
+	private Object symRate = "-";
 
-	private Object flatDegree;
+	private Object flatDegree = "-";
 
-	private Object freqPeakNumFSK;
+	private Object freqPeakNumFSK = "-";
 	
 	private List<String> monitorID;
 	
