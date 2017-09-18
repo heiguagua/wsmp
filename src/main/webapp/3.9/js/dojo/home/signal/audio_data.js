@@ -194,6 +194,9 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
     }
     function destroy(){
         $('#audio-table').bootstrapTable('destroy');
+        if (wavesurfer) {
+            wavesurfer.destroy();
+        }
     }
     function autoClickInit(){
         $("#audio").on("click", function() {
