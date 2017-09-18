@@ -56,12 +56,12 @@
 	<div class='content-wrap'>
 		<!--频段状态-->
 		<section class='flex-row'>
-			<div class='box right10'>
+			<div class='box right10' style="min-height: 680px;max-height: 680px;">
 				<p class='table-title'>频段状态</p>
 				<table class="table table-striped text-center" id='table-radio'>
                 </table>
 			</div>
-			<div class='box box-tabs flex-column'>
+			<div class='box box-tabs flex-column' style="min-height: 680px;max-height: 680px;">
 				<ul class="nav nav-tabs" id="tabs">
 					<li id='warningEnsure' role="presentation" class="active"><a
 						href="#undeal">实时告警未确认</a></li>

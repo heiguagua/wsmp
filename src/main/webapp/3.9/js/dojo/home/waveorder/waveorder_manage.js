@@ -100,6 +100,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 							var freq = e.target.getAttribute("centorfreq");
 							var signalId = e.target.getAttribute("signalid");
 							console.log(freq);
+							console.log(signalId);
 							const urlObj = {
 								ServerName : 'host2',
 								DisplayName : '信号管理',
@@ -875,6 +876,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 			function table_alarm_dealed(monitorsID, monitors) {
 				$('#table-alarm-dealed').bootstrapTable("destroy");
 				$('#table-alarm-dealed').bootstrapTable({
+					//height : 630,
 					method : 'post',
 					contentType : "application/json", // 必须要有！！！！
 					url : "data/waveorder/alarmdealed", // 要请求数据的文件路径
@@ -973,6 +975,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 			function table_alarm_undealed(monitorsID, monitors) {
 				$('#table-alarm-undeal').bootstrapTable("destroy");
 				var option = {
+					//height : 630,
 					method : 'post',
 					contentType : "application/json", // 必须要有！！！！
 					url : "data/waveorder/alarmundealed", // 要请求数据的文件路径
@@ -1086,7 +1089,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 					monitorsID[i] = monitors[i].Num;
 				}
 				$('#table-radio').bootstrapTable({
-					height : 580,
+					//height : 625,
 					method : 'post',
 					contentType : "application/json",
 					url : "data/waveorder/rediostatus", // 要请求数据的文件路径
