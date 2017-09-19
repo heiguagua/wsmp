@@ -34,6 +34,7 @@ define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"]
             if (heatLayer){
                 heatLayer.setData([]);
             }
+            $(".coverage-number").html("");
         }
 
 		//"http://127.0.0.1:8080/data/PBS/rest/services/MyPBSService1/MapServer"

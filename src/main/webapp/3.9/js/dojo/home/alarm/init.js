@@ -154,6 +154,7 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
             if (heatLayer){
                 heatLayer.setData([]);
             }
+            $(".coverage-number").html("");
         }
 
         function station_change() {
