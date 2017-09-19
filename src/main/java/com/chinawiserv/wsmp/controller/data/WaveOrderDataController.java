@@ -146,7 +146,7 @@ public class WaveOrderDataController {
 			BigDecimal endFreqCalculate = new BigDecimal(t.getBand().getFreqMax());
 			Double beginFreq = Double.valueOf(beginFreqCalculate.divide(multiplicand).toString());
 			Double endFreq = Double.valueOf(endFreqCalculate.divide(multiplicand).toString());
-			Boolean importantMonitor = resultList.stream().filter(f -> f.getBeginFreq().equals(beginFreq) && f.getEndFreq().equals(endFreq))
+			Boolean importantMonitor = resultList.stream().filter(f -> f.getBeginFreq() <= beginFreq && endFreq <= f.getEndFreq())
 				.findAny().isPresent();
 			rsCount.setImportantMonitor(importantMonitor);
 			t.getSignalStaticsLst().getSignalStatics().forEach(t1 -> {
