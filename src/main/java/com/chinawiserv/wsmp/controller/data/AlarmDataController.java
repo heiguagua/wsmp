@@ -132,7 +132,7 @@ public class AlarmDataController {
             } else {
 
                 LinkedList<Object> xAxis = Lists.newLinkedList();
-                LinkedList<Object> series = Lists.newLinkedList();
+                LinkedList<Double> series = Lists.newLinkedList();
 
                 for (Map.Entry<String, Object> entry : temple.entrySet()) {
                     if (StringUtils.isEmpty(Occ.get(entry.getKey()))) {
@@ -150,14 +150,27 @@ public class AlarmDataController {
                     if (value==-100){
                         series.add(null);
                     }else{
-                        series.add(v);
+                        series.add(value);
                     }
                 });
 
                 HashMap<String, Object> restlutdayOccHashMap = Maps.newHashMap();
+                List<Double> zeroSeriesList  = Lists.newLinkedList();
+                List<Double> noneZeroSeriesList  = Lists.newLinkedList();
+                series.forEach((t)->{
+                    if (t==null||t.doubleValue()==0){
+                        zeroSeriesList.add(t);
+                        noneZeroSeriesList.add(null);
+                    }else{
+                        zeroSeriesList.add(null);
+                        noneZeroSeriesList.add(t);
+                    }
+                });
+
+                restlutdayOccHashMap.put("zeroSeries", zeroSeriesList);
+                restlutdayOccHashMap.put("noneZeroSeries", noneZeroSeriesList);
 
                 restlutdayOccHashMap.put("xAxis", xAxis);
-                restlutdayOccHashMap.put("series", series);
 
                 reslutMap.put("dayOcc", restlutdayOccHashMap);
                 Logger.info("以天计算占用度从hbase中查询正常有返回值为{} ， 查询时间为{}，页面入参：监测站id{}，开始时间{},中心频率{}", Occ, LocalDateTime.now().toString(), stationCode, beginTime, centorFreq);

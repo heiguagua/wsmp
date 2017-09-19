@@ -1329,7 +1329,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
     var drag_flag = false;             // 月占用度是否拖拽
     function initMonthchart(levelParam) {
         var optionMonth1 = {};
-        if(levelParam.monthOcc &&levelParam.monthOcc.xAxis.length&&levelParam.monthOcc.series.length){
+        if(levelParam.monthOcc &&levelParam.monthOcc.xAxis.length&&levelParam.monthOcc.noneZeroSeries!=null){
             optionMonth1 = {
                 color : ['rgb(55,165,255)'],
                 tooltip : {
@@ -1348,11 +1348,15 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                             day = day.substring(1);
                         }
 
-                        if(param[0].value==null){
+                        if(param[0].value=!null){
+                            return year+'年'+month+'月'+day+'日' + "占用度" + param[0].value.toFixed(2)+"%";
+                        }else if(param[1].value=!null){
+                            return year+'年'+month+'月'+day+'日' + "占用度" + param[1].value.toFixed(2)+"%";
+                        }else{
                             return "没有数据";
                         }
 
-                        return year+'年'+month+'月'+day+'日' + "占用度" + param[0].value.toFixed(2)+"%";
+
 
                     }
                 },
@@ -1421,15 +1425,31 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                     }
                 },
                 series : [
+
                     {
                         name : '',
                         type : 'line',
-                        showSymbol : false,
+                        showSymbol : true,
                         symbolSize : 6,
-                        data : levelParam.monthOcc.series
-                        //data:[56,89,56,67]
+                        data : levelParam.monthOcc.zeroSeries,
+                        //data : [ null,null, 0, null,null, null,null, null,null, null ]
+                        // reslut.series
+                        //[ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, ]
+                    },
+                    {
+                        name : '',
+                        type : 'line',
+                        showSymbol : true,
+                        symbolSize : 6,
+                        data : levelParam.monthOcc.noneZeroSeries,
+                        lineStyle :{
+                            normal :{
+                                type :"dashed"
+                            }
+                        }
+                        // reslut.series
+                        //[ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, ]
                     }
-
                 ]
             };
             month_total_length = levelParam.monthOcc.xAxis.length;
@@ -1706,7 +1726,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
         ajax.get("data/alarm/secondLevelChart", secondLevel, function(reslut) {
         	console.log(reslut);
             var optionDay ={};
-            if(reslut.dayOcc &&reslut.dayOcc.xAxis.length&&reslut.dayOcc.series.length){
+            if(reslut.dayOcc &&reslut.dayOcc.xAxis.length&&reslut.dayOcc.noneZeroSeries.length){
                  optionDay = {
                     color : ['rgb(55,165,255)'],
                     tooltip : {
@@ -1715,7 +1735,10 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                             //console.log(param)
                             if(param && param[0] && param[0].name && param[0].value!=null) {
                                 return param[0].name+"点占用度" + param[0].value.toFixed(2)+"%";
-                            }else{
+                            }else if(param && param[1] && param[1].name && param[1].value!=null){
+                                return param[1].name+"点占用度" + param[1].value.toFixed(2)+"%";
+                            }
+                            else{
                                 return "没有数据"
                             }
 
@@ -1776,13 +1799,39 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                         }
                     },
                     series : [
+                        // {
+                        //     name : '',
+                        //     type : 'line',
+                        //     showSymbol : false,
+                        //     symbolSize : 6,
+                        //     data : reslut.dayOcc.series
+                        // }
+
                         {
                             name : '',
                             type : 'line',
-                            showSymbol : false,
+                            showSymbol : true,
                             symbolSize : 6,
-                            data : reslut.dayOcc.series
+                            data : reslut.dayOcc.zeroSeries,
+                            //data : [ null,null, 0, null,null, null,null, null,null, null ]
+                            // reslut.series
+                            //[ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, ]
+                        },
+                        {
+                            name : '',
+                            type : 'line',
+                            showSymbol : true,
+                            symbolSize : 6,
+                            data : reslut.dayOcc.noneZeroSeries,
+                            lineStyle :{
+                                normal :{
+                                    type :"dashed"
+                                }
+                            }
+                            // reslut.series
+                            //[ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, ]
                         }
+
                     ]
                 };
             }
