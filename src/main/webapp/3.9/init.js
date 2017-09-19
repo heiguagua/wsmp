@@ -599,7 +599,7 @@
         moment : "../library/timepicker/moment.min",
         datetimepicker_cn : "../library/timepicker/bootstrap-datetimepicker.zh-CN",
         ajax : "../library/util/ajax",
-        layer:"../library/layer/layer",
+        layer:"../library/layer/layer"
     },
     packages: [{location: "../dojox", name: "dojox"}, {
         location: "../../dgrid",
@@ -4080,7 +4080,7 @@ require({
                     b && b.stack && (e += "\n    ----------------------------------------\n    rejected" + b.stack.split("\n").slice(1).join("\n").replace(/^\s+/, " "));
                     f && f.stack && (e += "\n    ----------------------------------------\n" +
                         f.stack);
-                    console.error(a, e)
+                    //console.error(a, e)
                 }
 
                 function m(a, b, f, e) {
