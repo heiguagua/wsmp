@@ -315,7 +315,7 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
 							});
 					return false;
 				}
-				if(document.importantMonitorForm.audioTimespan.value > document.importantMonitorForm.totalAudioTimespan.value) {
+				if(document.importantMonitorForm.audioTimespan.value > document.importantMonitorForm.totalAudioTimespan.value && document.importantMonitorForm.totalAudioTimespan.value != -1) {
 					$("#totalAudioTimespan").focus();
 					$("#totalAudioTimespan").val("");
 					layer.tips('采集总数 不能小于 单次采集次数 !', '#totalAudioTimespan', {

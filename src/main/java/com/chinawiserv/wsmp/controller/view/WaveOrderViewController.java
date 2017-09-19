@@ -89,7 +89,7 @@ public class WaveOrderViewController {
 		List<MeasureTaskParamDto> resultList = (List<MeasureTaskParamDto>) JSON.parseObject(result,type);
 		Logger.info("resultList:{}",JSON.toJSONString(resultList));
 		//过滤传过来的频段
-		Optional<MeasureTaskParamDto> optional = resultList.stream().filter(dto -> beginFreq >= dto.getBeginFreq() &&
+		Optional<MeasureTaskParamDto> optional = resultList.stream().filter(dto -> dto.getBeginFreq() <= beginFreq &&
 				endFreq <= dto.getEndFreq())
 				.findFirst();
 		
