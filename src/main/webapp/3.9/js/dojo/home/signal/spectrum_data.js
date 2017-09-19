@@ -13,8 +13,9 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
         //var url = "assets/json/spectrum-player-list.json";
         ajax.get(url, null, function(result) {
             var data = result;
-            if(!data) {
+            if(!data || data.length == 0) {
                 data = null;
+                return;
             }
             $('#spectrum-table').bootstrapTable({
                 //method : 'get',

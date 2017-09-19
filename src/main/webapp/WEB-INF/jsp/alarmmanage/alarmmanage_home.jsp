@@ -34,7 +34,7 @@
     <span class="input-group-addon search-icon-uint">MHz</span>
   </div>
   <span id="signal_list">
-      <select id = "singal_picker" class='station-list select2-picker'>
+      <select id = "singal_picker" class='singalPicker station-list select2-picker'>
       </select>
     </span>
 
@@ -226,6 +226,7 @@
 <input id="stationId" class ="after_modal_colse" style="display: none;"  value="" >
 <input id="typeCode" class ="after_modal_colse" style="display: none;"  value="" >
 <input id="FormQZ"  style="display: none;"  value="${FromQz}" >
+<input id="waringId"  style="display: none;"  value="${waringId}" >
 <input style="display: none" id ='mapUrl' value="${mapUrl}" />
 <script>
     var wsmp_host = "/radio/app"

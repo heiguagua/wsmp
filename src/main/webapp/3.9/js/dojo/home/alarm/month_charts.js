@@ -9,18 +9,17 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
     var drag_flag = false;             // 月占用度是否拖拽
 	function charts_init(reslut,name) {
 		var optionMonth ={};
-
-		if(reslut.monthOcc &&(reslut.monthOcc.xAxis.length >0)&&(reslut.monthOcc.series.length>0)){
+		console.log(reslut)
+		if(reslut.monthOcc &&(reslut.monthOcc.xAxis.length >0)&&(reslut.monthOcc.noneZeroSeries.length>0)){
 			optionMonth ={
 				color : [ 'rgb(55,165,255)' ],
 				tooltip : {
 					'trigger' : 'axis',
 					formatter:function(param){
-						maxlevel_start_index_temp = param[0].dataIndex;
-						maxlevel_end_index = param[0].dataIndex;
-
-						if(param && param[0] && param[0].name && param[0].value!=null) {
-							var time =param[0].name+'';
+						maxlevel_start_index_temp = param[1].dataIndex;
+						maxlevel_end_index = param[1].dataIndex;
+						if(param && param[1] && param[1].name && param[1].value!=null) {
+							var time =param[1].name+'';
 							var year =time.substring(0,4);
 							var month =time.substring(4,6);
 							var day =time.substring(6);
@@ -31,8 +30,23 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
 								day = day.substring(1);
 							}
 
-							return year+'年'+month+'月'+day+'日' + "占用度" + param[0].value.toFixed(2)+"%";
-						}else{
+							return year+'年'+month+'月'+day+'日' + "占用度" + param[1].value.toFixed(2)+"%";
+						}else if(param && param[0] && param[0].name && param[0].value!=null){
+                                var time =param[0].name+'';
+                                var year =time.substring(0,4);
+                                var month =time.substring(4,6);
+                                var day =time.substring(6);
+                                if(month.substring(0,1)=='0'){
+                                    month = month.substring(1);
+                                }
+                                if(day.substring(0,1)=='0'){
+                                    day = day.substring(1);
+                                }
+
+                                return year+'年'+month+'月'+day+'日' + "占用度" + param[0].value.toFixed(2)+"%";
+
+						}
+						else{
                             return "没有数据";
 						}
 
@@ -88,6 +102,7 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
 					type : 'value',
 					name:'百分比(%)',
 					max : 100,
+					min: -100,
 					splitNumber : 10,
 					axisLine : {
 						lineStyle : {
@@ -112,12 +127,27 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
 					{
 						name : '',
 						type : 'line',
-						showSymbol : false,
+						showSymbol : true,
 						symbolSize : 6,
-						data : reslut.monthOcc.series
+						data : reslut.monthOcc.zeroSeries,
+						//data : [ null,null, 0, null,null, null,null, null,null, null ]
 						// reslut.series
 						//[ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, ]
-					}
+					},
+                    {
+                        name : '',
+                        type : 'line',
+                        showSymbol : true,
+                        symbolSize : 6,
+                        data : reslut.monthOcc.noneZeroSeries,
+                        lineStyle :{
+                            normal :{
+                                type :"dashed"
+							}
+						}
+                        // reslut.series
+                        //[ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, ]
+                    }
 				]
 			};
 			maxlevel_total_length = reslut.monthOcc.xAxis.length;

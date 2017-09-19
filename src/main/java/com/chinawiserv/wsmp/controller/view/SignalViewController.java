@@ -72,10 +72,11 @@ public class SignalViewController {
 
 	@RequestMapping(path = { "/", ""
 	},params = {"id=sefon"})
-	public String homeForSefan(Model model,@RequestParam String cenFreg) {
+	public String homeForSefan(Model model,@RequestParam String cenFreg,@RequestParam String signalId) {
 
 		model.addAttribute("mapUrl",mapUrl);
 		model.addAttribute("FromSingal",cenFreg);
+		model.addAttribute("singalId",signalId);
 		return "signal/signal_home";
 	}
 

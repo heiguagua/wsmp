@@ -258,7 +258,7 @@ define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"]
 
                             var p = new esri.geometry.Point(arryOfStation[index]);
 
-                            var textSymbol = new esri.symbols.TextSymbol(arryOfStation[index].count).setColor(
+                            var textSymbol = new esri.symbols.TextSymbol(arryOfStation[index].count).setOffset(19,8).setColor(
                                 new esri.Color([ 0xFF, 0, 0 ])).setAlign(esri.symbols.Font.ALIGN_START).setFont(
                                 new esri.symbols.Font("12pt").setWeight(esri.symbols.Font.WEIGHT_BOLD));
 

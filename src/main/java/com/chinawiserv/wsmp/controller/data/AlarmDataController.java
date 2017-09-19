@@ -32,6 +32,7 @@ import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -131,7 +132,7 @@ public class AlarmDataController {
             } else {
 
                 LinkedList<Object> xAxis = Lists.newLinkedList();
-                LinkedList<Object> series = Lists.newLinkedList();
+                LinkedList<Double> series = Lists.newLinkedList();
 
                 for (Map.Entry<String, Object> entry : temple.entrySet()) {
                     if (StringUtils.isEmpty(Occ.get(entry.getKey()))) {
@@ -149,14 +150,27 @@ public class AlarmDataController {
                     if (value==-100){
                         series.add(null);
                     }else{
-                        series.add(v);
+                        series.add(value);
                     }
                 });
 
                 HashMap<String, Object> restlutdayOccHashMap = Maps.newHashMap();
+                List<Double> zeroSeriesList  = Lists.newLinkedList();
+                List<Double> noneZeroSeriesList  = Lists.newLinkedList();
+                series.forEach((t)->{
+                    if (t==null||t.doubleValue()==0){
+                        zeroSeriesList.add(t);
+                        noneZeroSeriesList.add(null);
+                    }else{
+                        zeroSeriesList.add(null);
+                        noneZeroSeriesList.add(t);
+                    }
+                });
+
+                restlutdayOccHashMap.put("zeroSeries", zeroSeriesList);
+                restlutdayOccHashMap.put("noneZeroSeries", noneZeroSeriesList);
 
                 restlutdayOccHashMap.put("xAxis", xAxis);
-                restlutdayOccHashMap.put("series", series);
 
                 reslutMap.put("dayOcc", restlutdayOccHashMap);
                 Logger.info("以天计算占用度从hbase中查询正常有返回值为{} ， 查询时间为{}，页面入参：监测站id{}，开始时间{},中心频率{}", Occ, LocalDateTime.now().toString(), stationCode, beginTime, centorFreq);
@@ -275,14 +289,12 @@ public class AlarmDataController {
 
 
                 LinkedList<Integer> xAxis = Lists.newLinkedList();
-                LinkedList<Object> series = Lists.newLinkedList();
+                LinkedList<Double> series = Lists.newLinkedList();
 
 
                 ZonedDateTime temple = LocalDateTime.now().atZone(ZoneId.systemDefault());
                 LinkedHashMap<String, Object> reslute = Maps.newLinkedHashMap();
-                occReslute.put("series", series);
                 occReslute.put("xAxis", xAxis);
-                reslutMap.put("monthOcc", occReslute);
 
                 for (int i = 0; i < 90; i++) {
                     String date = temple.toString();
@@ -296,7 +308,9 @@ public class AlarmDataController {
                 });
 
                 occ = reslute;
-
+                occ.replace("20170621",0);
+                occ.replace("20170622",0);
+                occ.replace("20170623",0);
                 occ = occ.entrySet().stream().sorted((c1, c2) -> Integer.parseInt(c1.getKey()) > Integer.parseInt(c2.getKey()) ? 1 : -1)
                         .collect(toMap(Map.Entry::getKey, Map.Entry::getValue, throwingMerger(), LinkedHashMap::new));
                 occ.forEach((k, v) -> {
@@ -308,9 +322,23 @@ public class AlarmDataController {
                     if (value==-100){
                         series.add(null);
                     }else{
-                        series.add(v);
+                        series.add(value);
                     }
                 });
+                List<Double> zeroSeriesList  = Lists.newLinkedList();
+                List<Double> noneZeroSeriesList  = Lists.newLinkedList();
+                series.forEach((t)->{
+                    if (t==null||t.doubleValue()==0){
+                        zeroSeriesList.add(t);
+                        noneZeroSeriesList.add(null);
+                    }else{
+                        zeroSeriesList.add(null);
+                        noneZeroSeriesList.add(t);
+                    }
+                });
+                occReslute.put("zeroSeries", zeroSeriesList);
+                occReslute.put("noneZeroSeries", noneZeroSeriesList);
+                reslutMap.put("monthOcc", occReslute);
                 Logger.info("以三个月计算占用度从hbase中查询正常有返回值为{} ， 查询时间为{}，页面入参：监测站id{}，开始时间{},中心频率{}", occ, LocalDateTime.now().toString(), stationCode, beginTime, centorFreq);
             }
 
@@ -704,8 +732,10 @@ public class AlarmDataController {
         Map<String, Object> hasMap = Maps.newLinkedHashMap();
 
         try {
+             long start = LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli();
             StationInfoPagedResult reslut = stationService.getStationServiceHttpSoap11Endpoint().queryStationWithPagination(info, pageNumber, limitNumber);
-
+            long end = LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli();
+            double totalTime = (end-start)/1000;
             int totlal = reslut.getPageInfo().getTotalPages();
             List<Station> stations = Collections.emptyList();
             if (sortName == null) {
@@ -764,7 +794,7 @@ public class AlarmDataController {
             hasMap.put("total", totlal);
             hasMap.put("rows", stations);
 
-            Logger.info("四方台站webservice  StationService调用正常，操作时间{} ,入参 ：查询条件{} 当前个数{} 限制个数{}", LocalDateTime.now().toString(), info, pageNumber, limitNumber);
+            Logger.info("四方台站webservice  StationService调用正常，操作时间{} ,入参 ：查询条件{} 当前个数{} 限制个数{} 查询时间{}", LocalDateTime.now().toString(), info, pageNumber, limitNumber,totalTime);
         } catch (Exception e) {
             Logger.error("四方台站webservice  StationService调用异常，操作时间{} ,入参 ：查询条件{} 当前个数{} 限制个数{} 异常详情 : {}", LocalDateTime.now().toString(), info, pageNumber, limitNumber, e);
         }

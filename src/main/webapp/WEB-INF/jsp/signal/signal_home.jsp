@@ -41,7 +41,7 @@
 	  </div>
       </div>
     <span id = "signal_list1" >
-       <select class='station-list select2-picker'>
+       <select class='signal-list1 station-list select2-picker'>
       </select>
     </span>
     
@@ -373,6 +373,7 @@
   <input id = 'stationKey' class = 'after_modal_colse'  style="display: none"/>
   <input style="display: none" id ='mapUrl' value="${mapUrl}" />
   <input style="display: none" id ='FromSingal' value="${FromSingal}" />
+  <input style="display: none" id ='singalID' value="${singalId}" />
   <link rel="stylesheet" type="text/css" href="3.9/js/esri/dijit/css/Popup.css" />
 
   <script src="3.9/init.js"></script>

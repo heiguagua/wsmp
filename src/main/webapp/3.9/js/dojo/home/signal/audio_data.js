@@ -8,8 +8,9 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
         //var url = "assets/json/audio-player-list.json";
         ajax.get(url, null, function(result) {
             var data = result;
-            if(!data) {
+            if(!data || data.length == 0) {
                 data = null;
+                return;
             }
             $('#audio-table').bootstrapTable({
                 method : 'get',
@@ -193,6 +194,9 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
     }
     function destroy(){
         $('#audio-table').bootstrapTable('destroy');
+        if (wavesurfer) {
+            wavesurfer.destroy();
+        }
     }
     function autoClickInit(){
         $("#audio").on("click", function() {

@@ -8,7 +8,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax,echarts) {
 			//console.log(data);
         var dayChart;
 		var optionDay = {};
-		if(data.dayOcc &&data.dayOcc.xAxis.length&&data.dayOcc.series.length){
+		if(data.dayOcc &&data.dayOcc.xAxis.length&&data.dayOcc.noneZeroSeries!=null){
 			optionDay = {
 				color : [ 'rgb(55,165,255)' ],
 				tooltip : {
@@ -17,7 +17,10 @@ define([ "ajax", "echarts", "jquery" ], function(ajax,echarts) {
 						//console.log(param)
 						if(param && param[0] && param[0].name && param[0].value!=null) {
 							return param[0].name+"点占用度" + param[0].value.toFixed(2)+"%";
-						}else{
+						}else if(param && param[1] && param[1].name && param[1].value!=null){
+                            return param[1].name+"点占用度" + param[1].value.toFixed(2)+"%";
+						}
+						else{
                             return "没有数据";
 						}
 
@@ -78,14 +81,30 @@ define([ "ajax", "echarts", "jquery" ], function(ajax,echarts) {
 					}
 				},
 				series : [
-					{
-						name : '',
-						type : 'line',
-						showSymbol : false,
-						symbolSize : 6,
-						data : data.dayOcc.series
-						//[ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, 51.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, 55.2, 58.4, 60.0, 58.1, 56.2, 58.9 ]
-					}
+                    {
+                        name : '',
+                        type : 'line',
+                        showSymbol : true,
+                        symbolSize : 6,
+                        data : data.dayOcc.zeroSeries,
+                        //data : [ null,null, 0, null,null, null,null, null,null, null ]
+                        // reslut.series
+                        //[ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, ]
+                    },
+                    {
+                        name : '',
+                        type : 'line',
+                        showSymbol : true,
+                        symbolSize : 6,
+                        data : data.dayOcc.noneZeroSeries,
+                        lineStyle :{
+                            normal :{
+                                type :"dashed"
+                            }
+                        }
+                        // reslut.series
+                        //[ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, ]
+                    }
 				]
 			};
 		}
