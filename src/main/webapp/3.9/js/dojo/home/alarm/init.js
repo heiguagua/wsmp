@@ -147,6 +147,15 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
             });
         }
 
+        function clearMap() {
+            if(glayer){
+                glayer.clear();
+            }
+            if (heatLayer){
+                heatLayer.setData([]);
+            }
+        }
+
         function station_change() {
 
             var value = $("#station_list").find('option:selected').val();
@@ -247,8 +256,7 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
                 map.addLayer(glayer);
 
                 dojo.connect(map, "onClick", function (e) {
-                    console.log(esri.graphic.geometry);
-                    if (e.graphic.geometry.type = 'point') {
+                    if (esri.graphic.geometry.type = 'point') {
                         console.log(true);
                         var id = e.graphic.geometry.stationId;
                         var data = {"stationId": id}
@@ -390,13 +398,13 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
         }
 
         function getFeatures(result) {
-            console.log(result);
-            console.log(map.getLevel());
-            // heatLayer.clear();
-
-            if (map.getLevel()==8){
-                heatLayer.config
-            }
+            // console.log(result);
+            // console.log(map.getLevel());
+            // // heatLayer.clear();
+            //
+            // if (map.getLevel()==8){
+            //     heatLayer.config
+            // }
 
             console.log(heatLayer.config);
 
@@ -409,7 +417,7 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
             console.log(screenRightPiont);
             var screenLeftPiont =  webMercatorUtils.xyToLngLat(xmin,ymin);
             console.log("=============================================");
-            console.log(JSON.stringify(k));;
+            console.log(JSON.stringify(k));
             heatLayer.refresh();
             heatLayer.setData(k);
         }
@@ -959,6 +967,7 @@ define(["home/alarm/alarm_manage", "ajax","esri/geometry/webMercatorUtils","esri
 
         return {
             init: pares,
+            clearMap:clearMap,
             stationChange: station_change
         }
     });

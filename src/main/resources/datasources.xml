@@ -23,8 +23,8 @@
 		<username>station_gy</username>
 		<password>oracle</password>
 		<validationQuery>select 1 from dual</validationQuery>
-		<removeAbandoned>true</removeAbandoned>
 		<removeAbandonedTimeout>6000</removeAbandonedTimeout>
+		<removeAbandoned>true</removeAbandoned>
 		<testWhileIdle>true</testWhileIdle>
 		<dbType>oracle</dbType>
 	</datasource>

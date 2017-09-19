@@ -26,6 +26,16 @@ define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"]
 			//parser.parse();
 			var map = mapInit();
 		}
+
+		function clearMap() {
+            if(glayer){
+                glayer.clear();
+            }
+            if (heatLayer){
+                heatLayer.setData([]);
+            }
+        }
+
 		//"http://127.0.0.1:8080/data/PBS/rest/services/MyPBSService1/MapServer"
 		function mapInit() {
 
@@ -537,6 +547,7 @@ define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"]
 
 		return {
 			init : pares,
-            select_change : select_change
+            select_change : select_change,
+            clearMap:clearMap
 		}
 	});
