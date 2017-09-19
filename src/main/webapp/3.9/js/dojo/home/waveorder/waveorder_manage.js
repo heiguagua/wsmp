@@ -343,7 +343,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 										}
 									}
 								}
-								return '<div class="dpopover" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
+								return '<div class="dpopover" data-container="body" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
 										+ content + '">' + value + '</div>';
 							},
 							events : {
@@ -451,7 +451,14 @@ define(	["ajax", "dojo/parser", "esri/map",
 						+ "分钟");
 						refresh_timer_init(value);
 					}
-
+				});
+				
+				// 监听更新输入框点击事件
+				$("#minutes").click(function(){
+					layer.tips('默认更新时间为3分钟', '#minutes-li', {
+								tips : [3, '#FF5722'],
+								time : 2000
+							});
 				})
 
 			}
@@ -940,7 +947,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 											}
 										}
 									}
-									return '<div class="dpopover" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
+									return '<div class="dpopover"  data-container="body" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
 											+ content + '">' + value + '</div>';
 								}
 							}, {
@@ -958,7 +965,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 								titleTooltip : "备注",
 								formatter : function(value, row, index) {
 									value = value == null ? "-" : value;
-									return '<div class="dpopover" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
+									return '<div class="dpopover" data-container="body" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
 											+ value + '">' + value + '</div>';
 								}
 
@@ -1044,7 +1051,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 											}
 										}
 									}
-									return '<div class="dpopover" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
+									return '<div class="dpopover" data-container="body"  data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
 											+ content + '">' + value + '</div>';
 								}
 							}, {
@@ -1068,15 +1075,15 @@ define(	["ajax", "dojo/parser", "esri/map",
 								titleTooltip : "备注",
 								formatter : function(value, row, index) {
 									value = value == null ? "-" : value;
-									return '<div class="dpopover" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
+									return '<div class="dpopover"  data-container="body" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
 											+ value + '">' + value + '</div>';
 								}
 							}],
-					onLoadSuccess : function() {
-						$("#table-alarm-undeal").find(".dpopover").popover({
-									html : true
-								});
-					},
+//					onLoadSuccess : function() {
+//						$("#table-alarm-undeal").find(".dpopover").popover({
+//									html : true
+//								});
+//					},
 					onAll:function(){
 						$("#table-alarm-undeal").find(".dpopover").popover({
 							html : true
