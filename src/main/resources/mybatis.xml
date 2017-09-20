@@ -6,11 +6,11 @@
 		mapperPackages="com.chinawiserv.wsmp.mapper.mybaits"
 		executorType="SIMPLE"
 	/>  -->
-	
 	<mybatis dataSourceName="datasource2"
-        mapperLocationsPath="classpath:mapper/oracle/*.xml"
+        mapperLocations="mapper/oracle/*.xml"
         mapperPackages="com.chinawiserv.wsmp.mapper.oracle"
         executorType="SIMPLE"
+		configLocation="mybatis-config.xml"
     />
 		
 </mybatis-config>
