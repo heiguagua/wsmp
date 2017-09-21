@@ -1190,9 +1190,9 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
         data = JSON.stringify(data);
         $("#signal_list1 .select2-picker").load("signal/singallist",{param:data}, function() {
             if($("#signal_list1 .select2-picker").val()==null||$(".select2-picker").find("option").length==0||$(".select2-picker").find("option").val()=='未查询到数据'){//没有相关的日期选项时
-
                 $("#signal_list1 .select2-picker").html('<option class = "redio" disabled>未查询到数据</option>');
-                $("#station-list2").html('<option style="width: 300px;" class="station">未查询到数据</option>')
+                $("#station-list2").html('<option style="width: 300px;" class="station">未查询到数据</option>');
+                initMap.clearMap();
                 return;
             }
 
@@ -1347,10 +1347,9 @@ define(["jquery", "bootstrap", "echarts", "ajax","home/signal/spectrum_data","ho
                         if(day.substring(0,1)=='0'){
                             day = day.substring(1);
                         }
-
-                        if(param[0].value=!null){
+                        if(param[0].value!=null){
                             return year+'年'+month+'月'+day+'日' + "占用度" + param[0].value.toFixed(2)+"%";
-                        }else if(param[1].value=!null){
+                        }else if(param[1].value!=null){
                             return year+'年'+month+'月'+day+'日' + "占用度" + param[1].value.toFixed(2)+"%";
                         }else{
                             return "没有数据";

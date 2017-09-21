@@ -32,7 +32,7 @@
 			</xs:annotation>
 		</xs:attribute>
 			
-		<xs:attribute name="configLocationPath" type="noWhiteSpace" use="optional" default="">
+		<xs:attribute name="configLocation" type="noWhiteSpace" use="optional" default="">
 			<xs:annotation>
 				<xs:documentation>
 					<![CDATA[主配置文件的路径]]>
@@ -40,7 +40,7 @@
 			</xs:annotation>
 		</xs:attribute>
 		
-		<xs:attribute name="mapperLocationsPath" type="noWhiteSpace" default="">
+		<xs:attribute name="mapperLocations" type="noWhiteSpace" default="">
 			<xs:annotation>
 				<xs:documentation>
 					<![CDATA[映射类文件的路径]]>
