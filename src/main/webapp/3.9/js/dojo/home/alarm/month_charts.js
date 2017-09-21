@@ -195,7 +195,13 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
 		load_month_mouse_event();
 
 	}
-	
+
+	function clearMonthCharts() {
+		if(monthChart){
+            monthChart.clear();
+		}
+    }
+
 	// 电平峰值鼠标区域选择放大缩小事件
     function load_month_mouse_event(){
     	document.oncontextmenu=new Function("event.returnValue=false;");
@@ -349,6 +355,7 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
 		}
 
 		return {
-			init : charts_init
+			init : charts_init,
+			clear:clearMonthCharts
 		}
 	});

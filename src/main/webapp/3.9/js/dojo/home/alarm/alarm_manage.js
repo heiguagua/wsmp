@@ -532,6 +532,8 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                             $("#signal_list .select2-picker").html('<option class = "redio" disabled>未查询到数据</option>');
                             $("#station_picker").html('<option style="width: 300px;" class="station">未查询到数据</option>');
                             $('#signal_list .select2-picker').select2();
+                            level_charts.clear()
+                            month_charts.clear();
                             mapinit.clearMap();
                             return;
                         }

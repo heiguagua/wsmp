@@ -1,14 +1,20 @@
 package com.chinawiserv.wsmp.cache;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
-import com.chinawiserv.apps.util.logger.Logger;
-import com.chinawiserv.wsmp.pojo.AlarmDealed;
-import com.chinawiserv.wsmp.pojo.AlarmUnDealed;
-import com.chinawiserv.wsmp.pojo.BandStatusTable;
-import com.chinawiserv.wsmp.pojo.RedioType;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Type;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,17 +24,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.EncodedResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
-import org.springframework.util.ResourceUtils;
 
-import javax.annotation.PostConstruct;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Type;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.util.*;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
+import com.chinawiserv.apps.util.logger.Logger;
+import com.chinawiserv.wsmp.pojo.AlarmDealed;
+import com.chinawiserv.wsmp.pojo.AlarmUnDealed;
+import com.chinawiserv.wsmp.pojo.BandStatusTable;
+import com.chinawiserv.wsmp.pojo.RedioType;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 @Configuration
 @SpringBootApplication
@@ -40,7 +45,7 @@ public class CacheConfig {
 
 	public final static String DATA_LIST = "dataList";
 
-	@Value("${config.home:classpath:}")
+	@Value("${config.location:classpath:}")
 	private String configHome;
 
 	@Autowired
@@ -50,7 +55,7 @@ public class CacheConfig {
 	@Bean
 	public AlarmDealed getAlarmDealed() throws IOException {
 
-		final Resource resource = this.def.getResource(configHome.concat("table_column/alarm_dealed.properties"));
+		final Resource resource = this.def.getResource(configHome.trim().concat("table_column/alarm_dealed.properties"));
 		final EncodedResource encodedResource = new EncodedResource(resource, Charset.forName("utf-8"));
 		final Properties p = PropertiesLoaderUtils.loadProperties(encodedResource);
 		final String radio = p.getProperty("radio", "频率");
@@ -67,7 +72,7 @@ public class CacheConfig {
 	@Bean
 	public AlarmUnDealed getAlarmUnDealed() throws IOException {
 
-		final Resource resource = this.def.getResource(configHome.concat("table_column/alarm_undealed.properties"));
+		final Resource resource = this.def.getResource(configHome.trim().concat("table_column/alarm_undealed.properties"));
 		EncodedResource encodedResource = new EncodedResource(resource, Charset.forName("utf-8"));
 		final Properties p = PropertiesLoaderUtils.loadProperties(encodedResource);
 		final String radio = p.getProperty("radio", "频率");
@@ -84,7 +89,7 @@ public class CacheConfig {
 	public BandStatusTable getBandStatusTable() throws IOException {
 
 		// DefaultResourceLoader loader = new DefaultResourceLoader();
-		final Resource resource = this.def.getResource(configHome.concat("table_column/band_status.properties"));
+		final Resource resource = this.def.getResource(configHome.trim().concat("table_column/band_status.properties"));
 		final EncodedResource encodedResource = new EncodedResource(resource, Charset.forName("utf-8"));
 		final Properties p = PropertiesLoaderUtils.loadProperties(encodedResource);
 		final String radioName = p.getProperty("radio_name", "频段名称");
@@ -99,7 +104,7 @@ public class CacheConfig {
 	@Bean
 	public RedioType getRedioType() throws IOException {
 
-		final Resource resource = this.def.getResource(configHome.concat("checkbox/RedioType.properties"));
+		final Resource resource = this.def.getResource(configHome.trim().concat("checkbox/RedioType.properties"));
 		final EncodedResource encodedResource = new EncodedResource(resource, Charset.forName("utf-8"));
 		final Properties p = PropertiesLoaderUtils.loadProperties(encodedResource);
 		final String legalNormalStation = p.getProperty("legalNormalStation", "合法台站正常");
@@ -113,10 +118,9 @@ public class CacheConfig {
 	@Bean(name = MAP_DATA)
 	public List<Object> mapData() throws IOException {
 
-		final Resource resource = this.def.getResource(configHome.concat("boundary/5100.json"));
+		final Resource resource = this.def.getResource(configHome.trim().concat("boundary/5100.json"));
 		final File file = resource.getFile();
-		final Type type = new TypeReference<LinkedHashMap<String, Object>>() {
-		}.getType();
+		final Type type = new TypeReference<LinkedHashMap<String, Object>>() {}.getType();
 
 		try (InputStream is = Files.newInputStream(file.toPath())) {
 
@@ -132,121 +136,124 @@ public class CacheConfig {
 	@Bean(name = "kringGraid")
 	public List<Map<String, Object>> graidData() throws IOException {
 
-		final Resource resource = this.def.getResource(configHome.concat("geoJson/5101.json"));
+		final Resource resource = this.def.getResource(configHome.trim().concat("geoJson/5101.json"));
 		final File file = resource.getFile();
 		final Type type = new TypeReference<LinkedHashMap<String, Object>>() {}.getType();
 
 		try (InputStream is = Files.newInputStream(file.toPath())) {
 
 			final LinkedHashMap<String, Object> map = JSON.parseObject(is, type);
-			List<Map<String,Object>> reslute = (List<Map<String, Object>>) map.get("point");
+			List<Map<String, Object>> reslute = (List<Map<String, Object>>) map.get("point");
 			return reslute;
 		}
-//		double start = System.currentTimeMillis();
-//		final Resource resource = this.def.getResource(configHome.concat("geoJson/5101.json"));
-//		Path path = Paths.get("G:/ideaSpace/wsmp/src/main/resources/boundary/5100.json");
-//		final File file = path.toFile();
-//		final Type type = new TypeReference<ConcurrentMap<String, Object>>() {
-//		}.getType();
-//		List<List<BigDecimal>> regions;
-//		try (InputStream is = Files.newInputStream(file.toPath())) {
-//
-//			final Map<String, Object> map = JSON.parseObject(is, type);
-//			Map<String, Object> boundary = (Map<String, Object>) map.get("5101");
-//			regions = (List<List<BigDecimal>>) boundary.get("boundary");
-//
-//
-//		}
-//
-//		List<BigDecimal> xmax = regions.stream().max((t1, t2) -> t1.get(0).doubleValue() > t2.get(0).doubleValue() ? 1 : -1).get();
-//		List<BigDecimal> xmin = regions.stream().min((t1, t2) -> t1.get(0).doubleValue() > t2.get(0).doubleValue() ? 1 : -1).get();
-//		List<BigDecimal> ymax = regions.stream().max((t1, t2) -> t1.get(1).doubleValue() > t2.get(1).doubleValue() ? 1 : -1).get();
-//		List<BigDecimal> ymin = regions.stream().min((t1, t2) -> t1.get(1).doubleValue() > t2.get(1).doubleValue() ? 1 : -1).get();
-//		double xlimit = xmax.get(0).doubleValue();
-//		System.out.println("xmax   " + xmax.get(0).doubleValue());
-//		System.out.println("xmin   " + xmin.get(0).doubleValue());
-//		System.out.println("ymax   " + ymax.get(1).doubleValue());
-//		System.out.println("ymin   " + ymin.get(1).doubleValue());
-//		final int row = regions.size();
-//		final int columm = 2;
-//		final double[][] transArry = new double[row][columm];
-//
-//		for (int i = 0; i < row; i++) {
-//			List<BigDecimal> element = regions.get(i);
-//
-//			double x = element.get(0).doubleValue();
-//			double y = element.get(1).doubleValue();
-//
-////            y = Math.log(Math.tan((90 + y) * Math.PI / 360)) / (Math.PI / 180);
-////            y = y * 20037508.34 / 180;
-//			//* 20037508.34 / 180;
-//
-//			transArry[i][0] = x;
-//			transArry[i][1] = y;
-//
-//		}
-//
-//		int yMuner = 100;
-//		double xStart = xmin.get(0).doubleValue();
-//		double ymaxSart = ymax.get(1).doubleValue();
-//		double yminSart = ymin.get(1).doubleValue();
-//		double[][] point = transArry;
-//		double[][] poly = transArry;
-//		double yStep = (ymaxSart - yminSart) / yMuner;
-//		double[][] stratPoint = new double[yMuner][2];
-//		double currentY = ymaxSart;
-//		for (int i = 0; i < yMuner; i++) {
-//			stratPoint[i][0] = xStart;
-//			stratPoint[i][1] = currentY;
-//			currentY -= yStep;
-//		}
-//
-//		double xStep = yStep;
-//		// LinkedBlockingDeque<Map<String,Double>> deque = new LinkedBlockingDeque<>();
-//		LinkedList<Map<String, Object>> deque = new LinkedList<>();
-//		Stream.of(stratPoint).forEach((t) -> {
-//			double x = t[0];
-//			double y = t[1];
-//			while (true) {
-//				//  System.out.println("x  :"+x +"   "+"y  :"+y);
-//				x = x + xStep;
-//
-//				if (x > xlimit) {
-//					break;
-//				}
-//
-//				if (isInSide(x, y, poly)) {
-//					Map<String, Object> map = Maps.newHashMap();
-//					map.put("x", x);
-//					map.put("y", y);
-//					deque.add(map);
-//				}
-//			}
-//		});
-//		double end = System.currentTimeMillis();
-//		System.out.println("耗时 : " + (end - start) / 1000 + "   " + "个数 :" + deque.size());
-//		// System.out.println(deque);
-//		return deque;
+		// double start = System.currentTimeMillis();
+		// final Resource resource =
+		// this.def.getResource(configHome.concat("geoJson/5101.json"));
+		// Path path =
+		// Paths.get("G:/ideaSpace/wsmp/src/main/resources/boundary/5100.json");
+		// final File file = path.toFile();
+		// final Type type = new TypeReference<ConcurrentMap<String, Object>>()
+		// {
+		// }.getType();
+		// List<List<BigDecimal>> regions;
+		// try (InputStream is = Files.newInputStream(file.toPath())) {
+		//
+		// final Map<String, Object> map = JSON.parseObject(is, type);
+		// Map<String, Object> boundary = (Map<String, Object>) map.get("5101");
+		// regions = (List<List<BigDecimal>>) boundary.get("boundary");
+		//
+		//
+		// }
+		//
+		// List<BigDecimal> xmax = regions.stream().max((t1, t2) ->
+		// t1.get(0).doubleValue() > t2.get(0).doubleValue() ? 1 : -1).get();
+		// List<BigDecimal> xmin = regions.stream().min((t1, t2) ->
+		// t1.get(0).doubleValue() > t2.get(0).doubleValue() ? 1 : -1).get();
+		// List<BigDecimal> ymax = regions.stream().max((t1, t2) ->
+		// t1.get(1).doubleValue() > t2.get(1).doubleValue() ? 1 : -1).get();
+		// List<BigDecimal> ymin = regions.stream().min((t1, t2) ->
+		// t1.get(1).doubleValue() > t2.get(1).doubleValue() ? 1 : -1).get();
+		// double xlimit = xmax.get(0).doubleValue();
+		// System.out.println("xmax " + xmax.get(0).doubleValue());
+		// System.out.println("xmin " + xmin.get(0).doubleValue());
+		// System.out.println("ymax " + ymax.get(1).doubleValue());
+		// System.out.println("ymin " + ymin.get(1).doubleValue());
+		// final int row = regions.size();
+		// final int columm = 2;
+		// final double[][] transArry = new double[row][columm];
+		//
+		// for (int i = 0; i < row; i++) {
+		// List<BigDecimal> element = regions.get(i);
+		//
+		// double x = element.get(0).doubleValue();
+		// double y = element.get(1).doubleValue();
+		//
+		//// y = Math.log(Math.tan((90 + y) * Math.PI / 360)) / (Math.PI / 180);
+		//// y = y * 20037508.34 / 180;
+		// //* 20037508.34 / 180;
+		//
+		// transArry[i][0] = x;
+		// transArry[i][1] = y;
+		//
+		// }
+		//
+		// int yMuner = 100;
+		// double xStart = xmin.get(0).doubleValue();
+		// double ymaxSart = ymax.get(1).doubleValue();
+		// double yminSart = ymin.get(1).doubleValue();
+		// double[][] point = transArry;
+		// double[][] poly = transArry;
+		// double yStep = (ymaxSart - yminSart) / yMuner;
+		// double[][] stratPoint = new double[yMuner][2];
+		// double currentY = ymaxSart;
+		// for (int i = 0; i < yMuner; i++) {
+		// stratPoint[i][0] = xStart;
+		// stratPoint[i][1] = currentY;
+		// currentY -= yStep;
+		// }
+		//
+		// double xStep = yStep;
+		// // LinkedBlockingDeque<Map<String,Double>> deque = new
+		// LinkedBlockingDeque<>();
+		// LinkedList<Map<String, Object>> deque = new LinkedList<>();
+		// Stream.of(stratPoint).forEach((t) -> {
+		// double x = t[0];
+		// double y = t[1];
+		// while (true) {
+		// // System.out.println("x :"+x +" "+"y :"+y);
+		// x = x + xStep;
+		//
+		// if (x > xlimit) {
+		// break;
+		// }
+		//
+		// if (isInSide(x, y, poly)) {
+		// Map<String, Object> map = Maps.newHashMap();
+		// map.put("x", x);
+		// map.put("y", y);
+		// deque.add(map);
+		// }
+		// }
+		// });
+		// double end = System.currentTimeMillis();
+		// System.out.println("耗时 : " + (end - start) / 1000 + " " + "个数 :" +
+		// deque.size());
+		// // System.out.println(deque);
+		// return deque;
 
-//        System.out.println(JSON.toJSONString(deque));
+		// System.out.println(JSON.toJSONString(deque));
 
 	}
-
 
 	public static Boolean isInSide(double pointX, double pointY, double[][] poly) {
 		double px = pointX, py = pointY;
 		boolean flag = false;
 
 		for (int i = 0, l = poly.length, j = l - 1; i < l; j = i, i++) {
-			double sx = poly[i][0],
-					sy = poly[i][1],
-					tx = poly[j][0],
-					ty = poly[j][1];
+			double sx = poly[i][0], sy = poly[i][1], tx = poly[j][0], ty = poly[j][1];
 
 			// 点与多边形顶点重合
-			if ((sx == px && sy == py) || (tx == px && ty == py)) {
-				return true;
-			}
+			if ((sx == px && sy == py) || (tx == px && ty == py)) { return true; }
 
 			// 判断线段两端点是否在射线两侧
 			if ((sy < py && ty >= py) || (sy >= py && ty < py)) {
@@ -254,9 +261,7 @@ public class CacheConfig {
 				double x = sx + (py - sy) * (tx - sx) / (ty - sy);
 
 				// 点在多边形的边上
-				if (x == px) {
-					return true;
-				}
+				if (x == px) { return true; }
 
 				// 射线穿过多边形的边界
 				if (x > px) {
@@ -268,7 +273,6 @@ public class CacheConfig {
 		// 射线穿过多边形边界的次数为奇数时点在多边形内
 		return flag;
 	}
-
 
 	@Bean(name = DATA_LIST)
 	public Object stationList() {
@@ -316,7 +320,7 @@ public class CacheConfig {
 	@PostConstruct
 	public void init() throws FileNotFoundException {
 
-		this.configHome = "file:" + ResourceUtils.getFile(this.configHome).getAbsolutePath().concat("/");
+		this.configHome = this.configHome.trim();
 		Logger.info("config home is : {} ", this.configHome);
 	}
 }
