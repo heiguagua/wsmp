@@ -124,6 +124,12 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
 
 
 	}
+
+	function levelChartClear() {
+        if (maxlevelChart){
+            maxlevelChart.clear();
+		}
+    }
 		
 		// 电平峰值鼠标区域选择放大缩小事件
 	    function load_level_mouse_event(){
@@ -252,6 +258,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
 	    }
 
 	return {
-		init : charts_init
+		init : charts_init,
+		clear:levelChartClear
 	}
 });

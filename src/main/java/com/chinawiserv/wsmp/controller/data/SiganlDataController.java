@@ -57,7 +57,13 @@ public class SiganlDataController {
 
 		long frequencyLong = Long.parseLong(frequency);
 		//Map<String, Object> map = Maps.newHashMap();
-		Map<String, Object> map = hbaseClient.queryModulationMode(id, timeStart, LocalDateTime.now().format(formatter), frequencyLong);
+		Map<String, Object> map = Collections.emptyMap();
+		try {
+			map = hbaseClient.queryModulationMode(id, timeStart, LocalDateTime.now().format(formatter), frequencyLong);
+		} catch (Exception e) {
+			Logger.errorThrow("调制方式异常信息",e);
+			return  map;
+		}
 //		map.put("noise ",4);
 //		map.put("normal",7);
 		return map;
