@@ -19,6 +19,9 @@ import org.springframework.core.io.support.EncodedResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 import javax.annotation.PostConstruct;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -27,6 +30,7 @@ import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.*;
+import java.util.List;
 
 @Configuration
 public class CacheConfig {
@@ -36,6 +40,8 @@ public class CacheConfig {
 	public final static String USR_DATA = "userData";
 
 	public final static String DATA_LIST = "dataList";
+
+	public final static String COLOR_LIST = "color";
 
 	@Value("${config.location:classpath:}")
 	private String configHome;
@@ -307,6 +313,33 @@ public class CacheConfig {
 			final LinkedHashMap<String, Object> map = JSON.parseObject(is, type);
 			return map;
 		}
+	}
+
+	@Bean(name = COLOR_LIST)
+	public  List<Color> getColors() throws IOException{
+		//File file = new File("E:\\qzother\\wsmps\\src\\main\\java\\com\\chinawiserv\\wsmp\\a.png"
+		final Resource resource = this.def.getResource(configHome.trim().concat("image/a.png"));
+		final File file = resource.getFile();
+		BufferedImage bi = null;
+		try {
+			bi = ImageIO.read(file);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		int width = bi.getWidth();
+		int minx = bi.getMinX();
+		List<Color> colors =new ArrayList<Color>();
+		 int[] rgb = new int[3];
+		for (int i = minx; i < width; i++) {
+			colors.add(new Color( bi.getRGB(i, 0))) ;
+			// 下面三行代码将一个数字转换为RGB数字
+            int pixel =  bi.getRGB(i, 0);
+            rgb[0] = (pixel & 0xff0000) >> 16;
+            rgb[1] = (pixel & 0xff00) >> 8;
+            rgb[2] = (pixel & 0xff);
+		}
+
+		return colors;
 	}
 
 	@PostConstruct
