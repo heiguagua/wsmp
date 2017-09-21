@@ -15,7 +15,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 
 			//初始化
 			function wo_init() {
-
+				// 地图初始化
+				MAP1 = mapInit();
 				// 取得用户信息
 				var user = getUser();
 				// 得到区域信息
@@ -679,11 +680,14 @@ define(	["ajax", "dojo/parser", "esri/map",
 				table_radio_init(monitors, userID);
 				table_alarm_undealed(monitorsID, monitors);
 				table_alarm_dealed(monitorsID, monitors);
-				//MAP1 = mapInit();
+				//改变地图中心
+				var center = new Point({
+							"x" : MONITORS[0].Longitude,
+							"y" : MONITORS[0].Latitude
+						});
+				MAP1.centerAt(center);
+				addPoint(monitors, 1, "false");// 默认选中1，子类型为false
 				redioType(monitors);
-				if (MAP1 != null) {
-					addPoint(monitors, 1, "false");
-				}
 			}
 
 			// 取得用户信息
@@ -857,18 +861,14 @@ define(	["ajax", "dojo/parser", "esri/map",
 			//下方地图初始化
 			function mapInit() {
 
-//				var mapUrl = $("#mapUrl").val();
 				var mapUrl = Binding.getMapUrl();
-				var url = mapUrl;
 				var map = new Map("mapDiv1", {
 							logo : false,
-							center : [MONITORS[0].Longitude,
-									MONITORS[0].Latitude],
 							maxZoom : 16,
 							zoom : 8
 						});
 
-				var agoLayer = new ArcGISTiledMapServiceLayer(url, {
+				var agoLayer = new ArcGISTiledMapServiceLayer(mapUrl, {
                     		showAttribution:false
 						});
 				var glayer = new GraphicsLayer({
@@ -1124,13 +1124,10 @@ define(	["ajax", "dojo/parser", "esri/map",
 					responseHandler : function(res) {
 						return res;
 					},
-					// 必须要在此bootstraptable渲染成功之后才能渲染地图,不然地图会有错误
 					onLoadSuccess : function() {
 						$("#table-radio").find(".dpopover").popover({
 									html : true
 								});
-						MAP1 = mapInit();
-						addPoint(monitors, 1, "false");// 默认选中1，子类型为false
 					},
 					onAll:function(){
 						$("#table-radio").find(".dpopover").popover({
