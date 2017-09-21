@@ -1,6 +1,8 @@
 package com.chinawiserv.wsmp.controller.data;
 
-import com.chinawiserv.wsmp.cache.CacheConfig;
+import java.io.IOException;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,9 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.awt.*;
-import java.io.IOException;
-import java.util.List;
+import com.chinawiserv.wsmp.cache.CacheConfig;
 
 /**
  * Created by jh on 2017/9/12.
@@ -28,7 +28,7 @@ public class CacheDataController {
 
     @Autowired
     @Qualifier(CacheConfig.COLOR_LIST)
-    List<Color> colorsList;
+    List<int[]> colorsList;
 //    @Value("${config.home:classpath:}")
 //	private String configHome;
 //
