@@ -25,6 +25,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="AreaCodes" type="{http://tempuri.org/}ArrayOfInt" minOccurs="0"/&gt;
  *         &lt;element name="StartTime" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
  *         &lt;element name="StopTime" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
+ *         &lt;element name="IsInValid" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -40,7 +41,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "stationNumber",
     "areaCodes",
     "startTime",
-    "stopTime"
+    "stopTime",
+    "isInValid"
 })
 public class RadioSignalSubClassifiedQueryRequest {
 
@@ -58,6 +60,8 @@ public class RadioSignalSubClassifiedQueryRequest {
     @XmlElement(name = "StopTime", required = true, nillable = true)
     @XmlSchemaType(name = "dateTime")
     protected XMLGregorianCalendar stopTime;
+    @XmlElement(name = "IsInValid")
+    protected boolean isInValid;
 
     /**
      * 获取type属性的值。
@@ -193,6 +197,22 @@ public class RadioSignalSubClassifiedQueryRequest {
      */
     public void setStopTime(XMLGregorianCalendar value) {
         this.stopTime = value;
+    }
+
+    /**
+     * 获取isInValid属性的值。
+     * 
+     */
+    public boolean isIsInValid() {
+        return isInValid;
+    }
+
+    /**
+     * 设置isInValid属性的值。
+     * 
+     */
+    public void setIsInValid(boolean value) {
+        this.isInValid = value;
     }
 
 }

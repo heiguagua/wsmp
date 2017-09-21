@@ -17,18 +17,21 @@ define([], function() {
 
 		// 信号详情 查看链接点击事件
 		$("#table-signal-list").on("click", ".signalManageA", function(e) {
-					console.log(e);
-					var freq = e.target.getAttribute("centorfreq");
-					console.log(freq);
-					const urlObj = {
-						ServerName : 'host2',// 跳四方用host1,跳自己这边用host2
-						DisplayName : '信号管理',
-						MultiTabable : false,
-						ReflushIfExist : true,
-						Url : 'radio/app/signal?id=sefon&cenFreg=' + freq
-					};
-					Binding.openUrl(JSON.stringify(urlObj));
-				})
+			console.log(e);
+			var freq = e.target.getAttribute("centorfreq");
+			var signalId = e.target.getAttribute("signalid");
+			console.log(freq);
+			console.log(signalId);
+			const urlObj = {
+				ServerName : 'host2',
+				DisplayName : '信号管理',
+				MultiTabable : false,
+				ReflushIfExist : true,
+				Url : 'radio/app/signal?id=sefon&cenFreg=' + freq
+						+ '&signalId=' + signalId
+			};
+			Binding.openUrl(JSON.stringify(urlObj));
+		})
 
 		var AREACODE = $("#areaCode").val();
 		var signalType = $("#signalType").val();
@@ -129,9 +132,16 @@ define([], function() {
 							return value;
 						}
 					}, {
+						field : 'id',
+						visible : false,
+						formatter : function(value, row, index) {
+							return value;
+						}
+					}, {
 						field : "signalManage",
 						formatter : function(value, row, index) {
-							return '<a class="signalManageA" centorFreq='
+							return '<a signalId=' + row.id
+									+ ' class="signalManageA" centorFreq='
 									+ row.centor + '>查看</a>';
 						}
 					}],
