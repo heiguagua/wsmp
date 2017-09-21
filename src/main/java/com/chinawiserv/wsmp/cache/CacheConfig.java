@@ -1,14 +1,23 @@
 package com.chinawiserv.wsmp.cache;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
-import com.chinawiserv.apps.util.logger.Logger;
-import com.chinawiserv.wsmp.pojo.AlarmDealed;
-import com.chinawiserv.wsmp.pojo.AlarmUnDealed;
-import com.chinawiserv.wsmp.pojo.BandStatusTable;
-import com.chinawiserv.wsmp.pojo.RedioType;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Type;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+
+import javax.annotation.PostConstruct;
+import javax.imageio.ImageIO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -18,15 +27,15 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.EncodedResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 
-import javax.annotation.PostConstruct;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Type;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.util.*;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
+import com.chinawiserv.apps.util.logger.Logger;
+import com.chinawiserv.wsmp.pojo.AlarmDealed;
+import com.chinawiserv.wsmp.pojo.AlarmUnDealed;
+import com.chinawiserv.wsmp.pojo.BandStatusTable;
+import com.chinawiserv.wsmp.pojo.RedioType;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 @Configuration
 public class CacheConfig {
@@ -36,6 +45,8 @@ public class CacheConfig {
 	public final static String USR_DATA = "userData";
 
 	public final static String DATA_LIST = "dataList";
+
+	public final static String COLOR_LIST = "color";
 
 	@Value("${config.location:classpath:}")
 	private String configHome;
@@ -307,6 +318,33 @@ public class CacheConfig {
 			final LinkedHashMap<String, Object> map = JSON.parseObject(is, type);
 			return map;
 		}
+	}
+
+	@Bean(name = COLOR_LIST)
+	public  List<int[]> getColors() {
+		//File file = new File("E:\\qzother\\wsmps\\src\\main\\java\\com\\chinawiserv\\wsmp\\a.png"
+		BufferedImage bi = null;
+		try {
+			final Resource resource = this.def.getResource(configHome.trim().concat("image/a.png"));
+			final File file = resource.getFile();
+			bi = ImageIO.read(file);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		int width = bi.getWidth();
+		int minx = bi.getMinX();
+		List<int[]> colors =new ArrayList<int[]>();
+		for (int i = minx; i < width; i++) {
+			int[] rgb = new int[3];
+			// 下面三行代码将一个数字转换为RGB数字
+            int pixel =  bi.getRGB(i, 0);
+            rgb[0] = (pixel & 0xff0000) >> 16;
+            rgb[1] = (pixel & 0xff00) >> 8;
+            rgb[2] = (pixel & 0xff);
+            colors.add(rgb) ;
+		}
+
+		return colors;
 	}
 
 	@PostConstruct

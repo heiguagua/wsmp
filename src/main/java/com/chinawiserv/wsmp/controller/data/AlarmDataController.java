@@ -877,19 +877,19 @@ public class AlarmDataController {
 //            String[] areaList = areaCode.split(",");
 //            List<String> areaCodeList = new ArrayList<>(Arrays.asList(areaList));
 
-            int centorFreqDouble = Integer.parseInt((String) map.get("centorFreq"));
+            int centorFreqInt = Integer.parseInt((String) map.get("centorFreq"));
 
-            int upFreqDouble = centorFreqDouble + 5000000;
-            int downFreqDouble = centorFreqDouble - 5000000;
+            int upFreqInt = centorFreqInt + 5000000;
+            int downFreqInt = centorFreqInt - 5000000;
 
             Map<String, Object> requestParam = Maps.newLinkedHashMap();
             requestParam.put("index", index);
-            requestParam.put("count", limit);
+            requestParam.put("count", 10);
             List<Station> reslutDtos = Collections.emptyList();
 //            list.put("string", areaCodeList);
             //requestParam.put("areaCodeList", list);
-            requestParam.put("beginFreq", downFreqDouble);
-            requestParam.put("endFreq", upFreqDouble);
+            requestParam.put("beginFreq", downFreqInt);
+            requestParam.put("endFreq", upFreqInt);
 
             final RStatQuerySignalsResponse2 response = (RStatQuerySignalsResponse2) service.radioStationServiceCall("rStatQuerySignals",
                     mapper.writeValueAsString(requestParam), RStatQuerySignalsRequest.class);

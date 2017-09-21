@@ -472,9 +472,6 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
             month_charts.init(result,name);
             level_charts.init(result);
 
-
-
-
         });
 
     }
@@ -482,6 +479,7 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
     function init_select2() {
         $('.station-list').select2();
         $("#search").keydown(function (e) {
+            $(".typeCode").removeAttribute("checked");
             //数字0-9(keycode:48-57)，小键盘数字0-9（keycode:96-106,小数点keycode:110 190，enter键13或108,backspace键8）
             if((e.keyCode>=48&&e.keyCode<=57 )|| (e.keyCode>=96&&e.keyCode<=106)||e.keyCode==110||e.keyCode==190||e.keyCode==13||e.keyCode==108||e.keyCode==8||e.keyCode==16||e.keyCode==229||(e.keyCode>=37&&e.keyCode<=40)){
                 if (e.keyCode == 13) {
