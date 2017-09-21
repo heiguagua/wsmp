@@ -121,6 +121,7 @@ public class WaveOrderDataController {
 		request3.setFreqBandList(array);
 		request3.setStationNumber(stationArray);
 		request3.setType(1);
+		request3.setIsInValid(false);
 		RadioSignalSubClassifiedQueryResponse response3 = serviceRadioSignalSoap.queryRadioSignalSubClassified(request3);
 		final List<Integer> legalSubTypeCountList = response3.getLstOnFreqBand().getSignalSubStaticsOnFreqBand().stream()
 				.map(m -> m.getCount())

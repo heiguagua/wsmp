@@ -160,6 +160,7 @@ public class WaveOrderViewController {
 		RadioSignalSubClassifiedQueryRequest request2 = new RadioSignalSubClassifiedQueryRequest();
 		request2.setStationNumber(value);
 		request2.setType(1);
+		request2.setIsInValid(false);
 		RadioSignalSubClassifiedQueryResponse response2 = serviceRadioSignalSoap.queryRadioSignalSubClassified(request2);
 		
 		Integer legalSubTypeCount = response2.getLstOnStation().getSignalSubStaticsOnStation().stream().mapToInt(m -> m.getCount()).reduce(0,(a,b) -> a + b);
@@ -211,6 +212,7 @@ public class WaveOrderViewController {
 		RadioSignalSubClassifiedQueryRequest request2 = new RadioSignalSubClassifiedQueryRequest();
 		request2.setStationNumber(value);
 		request2.setType(1);
+		request2.setIsInValid(false);
 		RadioSignalSubClassifiedQueryResponse response2 = serviceRadioSignalSoap.queryRadioSignalSubClassified(request2);
 		Integer legalSubTypeCount = response2.getLstOnStation().getSignalSubStaticsOnStation().stream().mapToInt(m -> m.getCount()).reduce(0,(a,b) -> a + b);
 		rsCount.setLegalUnNormalStationNumber(legalSubTypeCount);
