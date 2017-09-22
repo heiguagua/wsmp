@@ -17,10 +17,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 			function wo_init() {
 				// 地图初始化
 				MAP1 = mapInit();
-				// 取得用户信息
-				var user = getUser();
 				// 得到区域信息
-				getArea(user);
+				getArea();
 				// 下拉框初始化
 				selector_init();
 				// 时间选择器初始化
@@ -698,7 +696,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 			}
 
 			// 根据用户取得区域信息
-			function getArea(user) {
+			function getArea() {
+				var user = getUser();
 				if (user.AreaType == "Province") {
 					// 显示省级选项
 					var province = user.Area;
