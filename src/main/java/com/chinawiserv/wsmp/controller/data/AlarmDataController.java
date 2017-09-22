@@ -1,10 +1,12 @@
 package com.chinawiserv.wsmp.controller.data;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.chinawiserv.apps.util.logger.Logger;
 import com.chinawiserv.wsmp.IDW.IDWMain;
 import com.chinawiserv.wsmp.IDW.IDWPoint;
+import com.chinawiserv.wsmp.client.HttpServiceConfig;
 import com.chinawiserv.wsmp.client.WebServiceSoapFactory;
 import com.chinawiserv.wsmp.hbase.HbaseClient;
 import com.chinawiserv.wsmp.hbase.query.OccAndMax;
@@ -58,6 +60,9 @@ public class AlarmDataController {
 
     @Autowired
     private StationService stationService;
+    
+    @Value("${kring.url}")
+	private String kringUrl;
 
     private Interpolation kri = new Interpolation();
     //@Autowired
@@ -425,6 +430,7 @@ public class AlarmDataController {
 //        List<LevelLocate> relate = hbaseClient.queryLevelLocate((String) param.get("beginTime"), frequency );
         List<LevelLocate> mapPoint = Collections.emptyList();
         List<Map<String, Object>> levelPoint = Lists.newLinkedList();
+        Object kriking3=null;
         try {
 
             final long frequency = Long.valueOf(param.get("frequency").toString());
@@ -438,12 +444,21 @@ public class AlarmDataController {
             Logger.info("地图上显示的点 信息为{}", JSON.toJSONString(mapPoint));
 
             int[] ids = mapPoint.stream().mapToInt(m -> Integer.valueOf(m.getId())).toArray();
-
-            double[] flon = mapPoint.stream().mapToDouble(LevelLocate::getFlon).toArray();
-            double[] flat = mapPoint.stream().mapToDouble(LevelLocate::getFlat).toArray();
-            double[] level = mapPoint.stream().mapToDouble(LevelLocate::getLevel).toArray();
-            int[] waringsensorid = mapPoint.stream().mapToInt((LevelLocate t) -> Integer.parseInt(t.getId())
-            ).toArray();
+            //构造克里金二维数组参数
+            double [][] kringParam= new double[mapPoint.size()][3];
+            for (int i = 0; i < ids.length; i++) {
+				kringParam[i][0] = mapPoint.get(i).getFlat();
+				kringParam[i][1] = mapPoint.get(i).getFlon();
+				kringParam[i][2] = mapPoint.get(i).getLevel();
+			}
+            
+            String string = HttpServiceConfig.httpclient(kringParam, kringUrl);
+            kriking3 = JSONObject.parseObject(string);
+//            double[] flon = mapPoint.stream().mapToDouble(LevelLocate::getFlon).toArray();
+//            double[] flat = mapPoint.stream().mapToDouble(LevelLocate::getFlat).toArray();
+//            double[] level = mapPoint.stream().mapToDouble(LevelLocate::getLevel).toArray();
+//            int[] waringsensorid = mapPoint.stream().mapToInt((LevelLocate t) -> Integer.parseInt(t.getId())
+//            ).toArray();
 
             //少要八个点才能计算出来
 
@@ -458,57 +473,17 @@ public class AlarmDataController {
 //                mapLocate.put("radius",  result.getOangeR().get(index));
 //                levelPoint.add(mapLocate);
 //            }
-
-
-            Logger.info("场强定位计算正常 操作时间{} 入参值为 id :{},flon:{},flat:{},level:{},waringsensorid:{}", LocalDateTime.now().toString(),
-                    JSON.toJSONString(ids), JSON.toJSONString(flon), JSON.toJSONString(flat), JSON.toJSONString(level), JSON.toJSONString(waringsensorid));
             Logger.info("场强定位计算正常 操作时间{} 返回值为{}", LocalDateTime.now().toString(), JSON.toJSONString(levelPoint));
         } catch (NumberFormatException e) {
             Logger.error("场强定位计算 ,操作时间：{},入参：开始时间：{}，中心频率：{} 异常 ：{}", LocalDateTime.now(), param.get("beginTime"), param.get("frequency"), e);
         }
 
         int coulm = mapPoint.size();
-
-        double[][] p = new double[coulm][3];
 //        Random random = new Random();
        // List<DataInfo> dataOuts = Lists.newLinkedList();
-        //List<DataInfo> temple = Lists.newLinkedList();
-
-        double xMin = -1, xMax = -1, yMin = -1, yMax = -1;
+        //List<DataInfo> temple = Lists.newLinkedList()
         List<IDWPoint> inData = Lists.newLinkedList();
-        for (int index = 0; index < coulm; index++) {
-            p[index][0] = mapPoint.get(index).getFlon();
-//            double y = mapPoint.get(index).getFlat();
-//            y = Math.log(Math.tan((90 + y) * Math.PI / 360)) / (Math.PI / 180);
-//            y = y * 20037508.34 / 180;
-            p[index][1] =mapPoint.get(index).getFlat();
-            p[index][2] = (mapPoint.get(index).getLevel()+40);
-            //inPutData.add(new DataInfo(p[index][0],p[index][1],p[index][2]));
-            inData.add(new IDWPoint(p[index][0], p[index][1], p[index][2]));
-            if (xMin == -1) {
-
-                xMin = p[index][0];
-                yMin = p[index][1];
-
-            } else {
-
-                xMax = p[index][0];
-                yMax = p[index][1];
-
-                if (xMin > xMax) {
-                    double b = xMin;
-                    xMin = xMax;
-                    xMax = b;
-                }
-
-                if (yMin > yMax) {
-                    double b = yMin;
-                    yMin = yMax;
-                    yMax = b;
-                }
-            }
-
-        }
+     
 //        p[2][0] = xMin + (xMax - xMin) / 2 ;
 //        p[2][1] = yMin + (yMax - yMin) / 2 ;
 //        p[2][2] = 17;
@@ -522,7 +497,6 @@ public class AlarmDataController {
         List<IDWPoint> outData = Lists.newLinkedList();
         double[][] t1 = new double[kringGraid.size()][3];
         int beginIndex = 0;
-        IDWMain idw = new IDWMain();
         for (Map<String, Object> dataOut : kringGraid) {
             double x = Double.parseDouble(dataOut.get("x").toString());
             double y = Double.parseDouble(dataOut.get("y").toString());
@@ -535,19 +509,6 @@ public class AlarmDataController {
             beginIndex++;
 //            dataOuts.add(new DataInfo(x,y,0));
 //            temple.add(new DataInfo(x,y,5));
-        }
-
-        double[][] t2 = new double[0][0];
-
-
-        double[][] t = new double[t2.length + t1.length][3];
-//        double[][] t = t2;
-        for (int i = 0, j = t2.length; i < j; i++) {
-            t[i] = t2[i];
-        }
-        int in = 0;
-        for (int i = t2.length, j = t.length; i < j; i++) {
-            t[i] = t1[in++];
         }
 
 //        temple.addAll(dataOuts);
@@ -614,7 +575,7 @@ public class AlarmDataController {
 //            kri.InitCal(inPutData, dataOuts);
 //            kri.OkrigingCal();
 //            dataOuts = kri.CopyResults();
-
+        	IDWMain idw = new IDWMain();
             idw.getRes(inData, outData);
             double numerator = outData.stream().filter((e) -> e.getZ() > intKrikingValue).count();
             int denominator = kringGraid.size()+coulm;
@@ -691,6 +652,7 @@ public class AlarmDataController {
         mapPiont.put("levelPoint", levelPoint);
         mapPiont.put("kriking", kriking);
         mapPiont.put("kriking2", kriking2);
+        mapPiont.put("kriking3", kriking3);
         mapPiont.put("electrCoverage", electrCoverage);
 
         // map.put("x", "106.709177096");
