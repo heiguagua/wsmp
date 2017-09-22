@@ -45,6 +45,7 @@ public class WaveOrderViewController {
 	private static IImportFreqRangeManageService serviceImportFreqRangeManage;
 	
 	
+	
 	@PostConstruct
 	public void init() throws MalformedURLException {
 	    URL url2 = new URL(urlRadioSignal);
@@ -158,14 +159,22 @@ public class WaveOrderViewController {
 		RadioSignalClassifiedQueryResponse response = serviceRadioSignalSoap.queryRadioSignalClassified(request);
 		//System.out.println("===============================response:"+JSON.toJSONString(response));
 		RedioStatusCount rsCount = new RedioStatusCount();
-		//设置合法子类型(违规)
+		//设置合法子类型(违规),并且是有效的
 		RadioSignalSubClassifiedQueryRequest request2 = new RadioSignalSubClassifiedQueryRequest();
 		request2.setStationNumber(value);
 		request2.setType(1);
 		request2.setIsInValid(false);
 		RadioSignalSubClassifiedQueryResponse response2 = serviceRadioSignalSoap.queryRadioSignalSubClassified(request2);
-		Integer legalSubTypeCount = response2.getLstOnStation().getSignalSubStaticsOnStation().stream().mapToInt(m -> m.getCount()).reduce(0,(a,b) -> a + b);
-		rsCount.setLegalUnNormalStationNumber(legalSubTypeCount);
+		Integer legalSubTypeValidCount = response2.getLstOnStation().getSignalSubStaticsOnStation().stream().mapToInt(m -> m.getCount()).reduce(0,(a,b) -> a + b);
+		rsCount.setLegalUnNormalStationNumber(legalSubTypeValidCount);
+		
+		//设置合法子类型(违规),并且是失效的
+		RadioSignalSubClassifiedQueryRequest request3 = new RadioSignalSubClassifiedQueryRequest();
+		request3.setStationNumber(value);
+		request3.setType(1);
+		request3.setIsInValid(true);
+		RadioSignalSubClassifiedQueryResponse response3 = serviceRadioSignalSoap.queryRadioSignalSubClassified(request3);
+		Integer legalSubTypeInvalidCount = response3.getLstOnStation().getSignalSubStaticsOnStation().stream().mapToInt(m -> m.getCount()).reduce(0,(a,b) -> a + b);
 		
 		response.getLstOnStation().getSignalStaticsOnStation().stream()
 			.flatMap(t -> t.getSignalStaticsLst().getSignalStatics().stream())
@@ -176,7 +185,7 @@ public class WaveOrderViewController {
 			.forEach(f -> {
 				switch(f.getKey()) {
 				case 1:
-					rsCount.setLegalNormalStationNumber(f.getValue() - legalSubTypeCount);
+					rsCount.setLegalNormalStationNumber(f.getValue() - legalSubTypeInvalidCount - legalSubTypeValidCount);
 					break;
 				case 2:
 					rsCount.setKonwStationNumber(f.getValue());

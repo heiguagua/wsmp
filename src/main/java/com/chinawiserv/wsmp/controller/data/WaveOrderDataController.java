@@ -116,14 +116,25 @@ public class WaveOrderDataController {
 		request2.setStationNumber(stationArray);
 		RadioSignalClassifiedQueryResponse response2 = serviceRadioSignalSoap.queryRadioSignalClassified(request2);
 
-		//查询合法子类型(违规)
+		//查询合法子类型(违规),并且是有效的
 		RadioSignalSubClassifiedQueryRequest request3 = new RadioSignalSubClassifiedQueryRequest();
 		request3.setFreqBandList(array);
 		request3.setStationNumber(stationArray);
 		request3.setType(1);
 		request3.setIsInValid(false);
 		RadioSignalSubClassifiedQueryResponse response3 = serviceRadioSignalSoap.queryRadioSignalSubClassified(request3);
-		final List<Integer> legalSubTypeCountList = response3.getLstOnFreqBand().getSignalSubStaticsOnFreqBand().stream()
+		final List<Integer> legalSubTypeValidCountList = response3.getLstOnFreqBand().getSignalSubStaticsOnFreqBand().stream()
+				.map(m -> m.getCount())
+				.collect(Collectors.toList());
+		
+		//查询合法子类型(违规),并且是无效的
+		RadioSignalSubClassifiedQueryRequest request4 = new RadioSignalSubClassifiedQueryRequest();
+		request4.setFreqBandList(array);
+		request4.setStationNumber(stationArray);
+		request4.setType(1);
+		request4.setIsInValid(true);
+		RadioSignalSubClassifiedQueryResponse response4 = serviceRadioSignalSoap.queryRadioSignalSubClassified(request4);
+		final List<Integer> legalSubTypeInvalidCountList = response4.getLstOnFreqBand().getSignalSubStaticsOnFreqBand().stream()
 				.map(m -> m.getCount())
 				.collect(Collectors.toList());
 		
@@ -139,7 +150,7 @@ public class WaveOrderDataController {
 			RedioStatusCount rsCount = new RedioStatusCount();
 			rsCount.setRedioName(freqNames.get(index.get()));
 			//设置合法子类型（违规）
-			rsCount.setLegalUnNormalStationNumber(legalSubTypeCountList.get(index.get()));
+			rsCount.setLegalUnNormalStationNumber(legalSubTypeValidCountList.get(index.get()));
 			rsCount.setBeginFreq(t.getBand().getFreqMin());
 			rsCount.setEndFreq(t.getBand().getFreqMax());
 			//是否有重点监测信息
@@ -155,7 +166,7 @@ public class WaveOrderDataController {
 				int count = t1.getCount();
 				switch (signalType) {
 				case 1:
-					rsCount.setLegalNormalStationNumber(count - legalSubTypeCountList.get(index.get()));
+					rsCount.setLegalNormalStationNumber(count - legalSubTypeInvalidCountList.get(index.get()) - legalSubTypeValidCountList.get(index.get()));
 					break;
 				case 2:
 					rsCount.setKonwStationNumber(count);
