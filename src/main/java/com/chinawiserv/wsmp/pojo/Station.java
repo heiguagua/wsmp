@@ -35,7 +35,11 @@ public class Station {
 	}
 
 	public String getTapeWidth() {
-		return tapeWidth;
+		try {
+			return new Double(Double.parseDouble(tapeWidth)*1000).toString();
+		} catch (NumberFormatException e) {
+			return tapeWidth;
+		}
 	}
 
 	public void setTapeWidth(String tapeWidth) {
