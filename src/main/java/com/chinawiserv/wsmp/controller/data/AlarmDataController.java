@@ -893,16 +893,30 @@ public class AlarmDataController {
 
             final RStatQuerySignalsResponse2 response = (RStatQuerySignalsResponse2) service.radioStationServiceCall("rStatQuerySignals",
                     mapper.writeValueAsString(requestParam), RStatQuerySignalsRequest.class);
+            if (sortName == null) {
+            	  reslutDtos = response.getRStatSignalList().getRadioStationSignalDTO().stream().map((RadioStationSignalDTO t) -> {
 
-            if ("centerFrequency".equals(sortName) && "desc".equals(order)) {
+                      final RadioStationDTO radioStationDTO = t.getStation();
+
+                      final RadioFreqDTO radioFreqDTO = t.getFreq();
+
+                      double centerFre = radioFreqDTO.getCenterFreq().doubleValue() / 1000000;
+                      double tapeWidth = radioFreqDTO.getBandWidth().doubleValue() / 1000000;
+                      final String centerFreString = centerFre + "";
+                      final String tapeWidthString = tapeWidth + "";
+
+                      return new Station(radioStationDTO.getID(), radioStationDTO.getName(), centerFreString, tapeWidthString);
+                  }).collect(toList());
+
+            }else if ("centerFrequency".equals(sortName) && "desc".equals(order)) {
                 reslutDtos = response.getRStatSignalList().getRadioStationSignalDTO().stream().sorted((c1, c2) -> c1.getFreq().getCenterFreq().intValue() < c2.getFreq().getCenterFreq().intValue() ? 1 : -1).map((RadioStationSignalDTO t) -> {
 
                     final RadioStationDTO radioStationDTO = t.getStation();
 
                     final RadioFreqDTO radioFreqDTO = t.getFreq();
 
-                    int centerFre = radioFreqDTO.getCenterFreq().intValue() / 1000000;
-                    int tapeWidth = radioFreqDTO.getBandWidth().intValue() / 1000000;
+                    double centerFre = radioFreqDTO.getCenterFreq().doubleValue() / 1000000;
+                    double tapeWidth = radioFreqDTO.getBandWidth().doubleValue() / 1000000;
                     final String centerFreString = centerFre + "";
                     final String tapeWidthString = tapeWidth + "";
 
@@ -916,8 +930,8 @@ public class AlarmDataController {
 
                     final RadioFreqDTO radioFreqDTO = t.getFreq();
 
-                    int centerFre = radioFreqDTO.getCenterFreq().intValue() / 1000000;
-                    int tapeWidth = radioFreqDTO.getBandWidth().intValue() / 1000000;
+                    double centerFre = radioFreqDTO.getCenterFreq().doubleValue() / 1000000;
+                    double tapeWidth = radioFreqDTO.getBandWidth().doubleValue() / 1000000;
                     final String centerFreString = centerFre + "";
                     final String tapeWidthString = tapeWidth + "";
 
@@ -931,8 +945,8 @@ public class AlarmDataController {
 
                     final RadioFreqDTO radioFreqDTO = t.getFreq();
 
-                    int centerFre = radioFreqDTO.getCenterFreq().intValue() / 1000000;
-                    int tapeWidth = radioFreqDTO.getBandWidth().intValue() / 1000000;
+                    double centerFre = radioFreqDTO.getCenterFreq().doubleValue() / 1000000;
+                    double tapeWidth = radioFreqDTO.getBandWidth().doubleValue() / 1000000;
                     final String centerFreString = centerFre + "";
                     final String tapeWidthString = tapeWidth + "";
 
@@ -946,8 +960,8 @@ public class AlarmDataController {
 
                     final RadioFreqDTO radioFreqDTO = t.getFreq();
 
-                    int centerFre = radioFreqDTO.getCenterFreq().intValue() / 1000000;
-                    int tapeWidth = radioFreqDTO.getBandWidth().intValue() / 1000000;
+                    double centerFre = radioFreqDTO.getCenterFreq().doubleValue() / 1000000;
+                    double tapeWidth = radioFreqDTO.getBandWidth().doubleValue() / 1000000;
                     final String centerFreString = centerFre + "";
                     final String tapeWidthString = tapeWidth + "";
 
