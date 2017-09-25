@@ -123,6 +123,7 @@ public class SignalViewController {
 			redioDetail.setFreqPeakNumFSK(Optional.ofNullable(map.get("freqPeakNumFSK")).orElse("-"));
 
 			model.addAttribute("redioDetail", redioDetail);
+			model.addAttribute("hBaseMap", map);
 
 			Logger.info("方法 特征值查询 操作时间{} 请求成功 中心频率{} 开始时间{} 监测站id{} 信号id{} 返回值{} ", "signal_detail", LocalDateTime.now().toString(),centorfreq,beginTime,stationCode,id,JSON.toJSONString(map));
 		}
