@@ -113,13 +113,13 @@ public class WaveOrderDataController {
 		@SuppressWarnings("unchecked")
 		List<String> stationString = (List<String>) param.get("monitorsID");
 		stationArray.setString(stationString );
-		request2.setStationNumber(stationArray);
+		request2.setStationsOnBand(stationArray);
 		RadioSignalClassifiedQueryResponse response2 = serviceRadioSignalSoap.queryRadioSignalClassified(request2);
 
 		//查询合法子类型(违规),并且是有效的
 		RadioSignalSubClassifiedQueryRequest request3 = new RadioSignalSubClassifiedQueryRequest();
 		request3.setFreqBandList(array);
-		request3.setStationNumber(stationArray);
+		request3.setStationsOnBand(stationArray);
 		request3.setType(1);
 		request3.setIsInValid(false);
 		RadioSignalSubClassifiedQueryResponse response3 = serviceRadioSignalSoap.queryRadioSignalSubClassified(request3);
@@ -130,7 +130,7 @@ public class WaveOrderDataController {
 		//查询合法子类型(违规),并且是无效的
 		RadioSignalSubClassifiedQueryRequest request4 = new RadioSignalSubClassifiedQueryRequest();
 		request4.setFreqBandList(array);
-		request4.setStationNumber(stationArray);
+		request4.setStationsOnBand(stationArray);
 		request4.setType(1);
 		request4.setIsInValid(true);
 		RadioSignalSubClassifiedQueryResponse response4 = serviceRadioSignalSoap.queryRadioSignalSubClassified(request4);

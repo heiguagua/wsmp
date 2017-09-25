@@ -20,6 +20,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
  *         &lt;element name="FreqBandList" type="{http://tempuri.org/}ArrayOfFrequencyBand" minOccurs="0"/&gt;
+ *         &lt;element name="StationsOnBand" type="{http://tempuri.org/}ArrayOfString" minOccurs="0"/&gt;
  *         &lt;element name="StationNumber" type="{http://tempuri.org/}ArrayOfString" minOccurs="0"/&gt;
  *         &lt;element name="AreaCodes" type="{http://tempuri.org/}ArrayOfInt" minOccurs="0"/&gt;
  *         &lt;element name="StartTime" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
@@ -35,6 +36,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "RadioSignalClassifiedQueryRequest", propOrder = {
     "freqBandList",
+    "stationsOnBand",
     "stationNumber",
     "areaCodes",
     "startTime",
@@ -44,6 +46,8 @@ public class RadioSignalClassifiedQueryRequest {
 
     @XmlElement(name = "FreqBandList")
     protected ArrayOfFrequencyBand freqBandList;
+    @XmlElement(name = "StationsOnBand")
+    protected ArrayOfString stationsOnBand;
     @XmlElement(name = "StationNumber")
     protected ArrayOfString stationNumber;
     @XmlElement(name = "AreaCodes")
@@ -77,6 +81,30 @@ public class RadioSignalClassifiedQueryRequest {
      */
     public void setFreqBandList(ArrayOfFrequencyBand value) {
         this.freqBandList = value;
+    }
+
+    /**
+     * 获取stationsOnBand属性的值。
+     * 
+     * @return
+     *     possible object is
+     *     {@link ArrayOfString }
+     *     
+     */
+    public ArrayOfString getStationsOnBand() {
+        return stationsOnBand;
+    }
+
+    /**
+     * 设置stationsOnBand属性的值。
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link ArrayOfString }
+     *     
+     */
+    public void setStationsOnBand(ArrayOfString value) {
+        this.stationsOnBand = value;
     }
 
     /**
