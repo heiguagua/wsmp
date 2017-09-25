@@ -21,7 +21,10 @@
   <link rel="stylesheet" href="3.9/js/dojo/webgis/widgets/themes/darkangel/override.css">
   <link href='3.9/js/dojo/library/timepicker/css/bootstrap-datetimepicker.min.css' rel='stylesheet' />
   <link href='3.9/js/dojo/library/layer/layer.css' rel='stylesheet' />
-
+  <style>
+    .box{position: relative;}
+    .levelsColor{position:absolute;top:62px;right:20px;height:22px}.levelsColor input[type="number"]{width:40px}.levelsColor input[type="number"],.levelsColor a,.levelsColor img{display:inline-block;*display:inline;*zoom:1;height:22px;float:left}.levelsColor img{padding-top:0px}#valCtrl{height:23px;padding:0px 15px;background:#6F6FF2;color:#fff;font-size:12px;text-decoration:none;line-height:23px}
+  </style>
 </head>
 
 <body id='alarm'>
@@ -36,7 +39,7 @@
   <span id="signal_list">
       <select id = "singal_picker" class='singalPicker station-list select2-picker'>
       </select>
-    </span>
+      </span>
 
   <span id="station_list">
       <select id = "station_picker" class='station-list select2-picker'>
@@ -114,6 +117,16 @@
       </div>
       <div id="mapDiv"></div>
       <div id="heatLayer"></div>
+      <%--控件--%>
+      <div id="levelsColor" class="levelsColor">
+        <form method="#">
+          <input type="number" name="startVal" min="1" id="minCtrl" value="0">
+          <img src="images/a.png" alt="">
+          <input type="number" name="endVal" max="10" id="maxCtrl" value="160">
+          <a href="#" id="valCtrl">确认</a>
+        </form>
+      </div>
+      <%--控件 end--%>
     </div>
   </section>
   <section class='flex-row'>
@@ -247,11 +260,6 @@
                 var map = init.init();
             });
         });
-
-
-
-
-
 </script>
 </body>
 </html>

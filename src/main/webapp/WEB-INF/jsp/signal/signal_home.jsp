@@ -22,6 +22,10 @@
 <link rel="stylesheet" href="3.9/js/dojo/webgis/widgets/themes/darkangel/override.css">
 <link href='3.9/js/dojo/library/timepicker/css/bootstrap-datetimepicker.min.css' rel='stylesheet' />
 <link href='3.9/js/dojo/library/layer/layer.css' rel='stylesheet' />
+<style>
+.box{position: relative;}
+.levelsColor{position:absolute;top:142px;right:20px;height:22px}.levelsColor input[type="number"]{width:40px}.levelsColor input[type="number"],.levelsColor a,.levelsColor img{display:inline-block;*display:inline;*zoom:1;height:22px;float:left}.levelsColor img{padding-top:0px}#valCtrl{height:23px;padding:0px 15px;background:#6F6FF2;color:#fff;font-size:12px;text-decoration:none;line-height:23px}
+</style>
 <script src="3.9/js/dojo/library/wavesuffer/wavesuffer.js"></script>
 <script src="3.9/js/dojo/library/lodash/lodash.js"></script>
 </head>
@@ -77,8 +81,19 @@
 							<input type="text" class="gate-filter" placeholder="请输入门限" /> <button class="btn btn-submit" id="gate-btn">提交</button>电磁覆盖率:&nbsp; <span class='coverage-number'></span>
 						</div>
 					</div>
-					<div id="mapDiv"style= "padding: 10px"></div>
+					<div id="mapDiv" style= "padding: 10px"></div>
+					<div id="mapDiv1"></div>
 					<div id="heatLayer"></div>
+					 <%--控件--%>
+				      <div id="levelsColor" class="levelsColor">
+				        <form method="#">
+				          <input type="number" name="startVal" min="1" id="minCtrl" value="0">
+				          <img src="images/a.png" alt="">
+				          <input type="number" name="endVal" max="10" id="maxCtrl" value="160">
+				          <a href="#" id="valCtrl">确认</a>
+				        </form>
+				      </div>
+				      <%--控件 end--%>
 				</div>
 			</section>
 		<%--</span>--%>
@@ -183,7 +198,6 @@
 					<label class='module-name'>数据回放<span class="data-type">音频</span></label>
 					<a class="ico-close close-box " id="audio-close">&times;</a>
 					<a class='btn btn-default btn-choose pull-right' id="audio-choose-btn">选择数据</a>
-					 
 					<div class="data-choose-list" id="audio-choose-list">
 						<div class="pull-right"><span id="audio-list-close" class="ico-close">&times;</span></div>
 						<table class="table table-striped table-hover" id="audio-table">
@@ -201,7 +215,6 @@
 								<div id="playBtn" class="controlBtn" title="stop">O</div>
 								<div id="next" class="controlBtn" title="next">&gt;I</div>
 							</li>
-							
 							<li>
 								<div id="empty" title="清空列表">清空</div>
 							</li>
