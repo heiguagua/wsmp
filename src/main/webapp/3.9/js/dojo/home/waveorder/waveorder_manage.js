@@ -665,6 +665,12 @@ define(	["ajax", "dojo/parser", "esri/map",
 			// 区域切换
 			function select2_change(areaCode) {
 
+				var have_monitors = $("#area_select").select2("data")[0].element.getAttribute("have_monitors");
+				console.log(have_monitors);
+				if(have_monitors == "false") {
+					layer.alert("该市暂无监测站信息！")
+					return null;
+				}
 				AREACODE = areaCode;// 更新全局变量
 				var user = getUser();
 				var userID = user.ID;
@@ -713,6 +719,14 @@ define(	["ajax", "dojo/parser", "esri/map",
 					// 显示市级选项
 					for (var i = 0; i < citys.length; i++) {
 						var option_city = document.createElement("option");
+						//每个市级选项判断是否有监测站信息，如果没有，则给每个选项添加个标志位
+						var monitors = getMonitors(citys[i].Code);
+						var bool = monitors.length == 0 ? false : true;
+						//或者直接禁用选项
+						if (monitors.length == 0) {
+							option_city.setAttribute("disabled", true);
+						}
+						option_city.setAttribute("have_monitors", bool);
 						option_city.setAttribute("value", citys[i].Code);
 						option_city.setAttribute("id", "option_city" + i);
 						$("#area_select").append(option_city);
