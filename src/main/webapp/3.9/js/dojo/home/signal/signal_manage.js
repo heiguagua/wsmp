@@ -1045,6 +1045,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
         });
         $(".search-icon").click(function() {
             getFreqList();
+            console.log(initMap)
             initMap.selectChange();
             // mapinit.stationChange();
         });
@@ -1677,6 +1678,20 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
     function initSelect2() {
         $('.select2-picker').select2();
     }
+    function formatCurrency(num) {
+        num = num.toString().replace(/\$|\,/g,'');
+        if(isNaN(num))
+        num = "0";
+        sign = (num == (num = Math.abs(num)));
+        num = Math.floor(num*100+0.50000000001);
+        cents = num%100;
+        num = Math.floor(num/100).toString();
+        if(cents<10)
+        cents = "0" + cents;
+        for (var i = 0; i < Math.floor((num.length-(1+i))/3); i++)
+        num = num.substring(0,num.length-(4*i+3))+','+num.substring(num.length-(4*i+3));
+        return (((sign)?'':'-') + num + '.' + cents);
+    }
     //左侧 内容渲染
     function getSinalDetail(data) {
         $("#signal_detail").load("signal/sigaldetail", data, function() {
@@ -1716,12 +1731,14 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
             ajax.get("data/signal/FmRate", para, function(reslut) {
                 console.log(reslut)
                 if ($.isEmptyObject(reslut) || !reslut.name.length) {
-                    $('#radioChart').html("<h4 style='margin-top:120px;font-weight: 500;font-size:14px ;text-align: center;' >未识别调制方式</h4>")
+                    // $('#radioChart').html("<h4 style='margin-top:120px;font-weight: 500;font-size:14px ;text-align: center;' >未识别调制方式</h4>")
+                    $('#radioChart').html("<h4 style='margin-top:40px;font-weight: 500;font-size:14px ;text-align: center;' >未识别调制方式</h4>")
                 } else {
                     initChart(reslut, data);
                 }
             });
             $("#singletonFreq").click(function() {
+                console.log('ok')
                 var reopenParam = {};
                 reopenParam.ServerName = "host";
                 reopenParam.DisplayName = "单频测量";
@@ -1733,6 +1750,10 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                 var paramStr = JSON.stringify(reopenParam)
                     // console.log(paramStr)
                 Binding.openUrl(paramStr);
+            });
+             $(".features-list .item-value").each(function(i, e) {
+                var dd=$(e).html();
+                $(e).html(dd.substr(0,dd.indexOf(".")+3))
             });
         });
     }

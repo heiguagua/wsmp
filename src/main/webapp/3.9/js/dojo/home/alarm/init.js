@@ -178,6 +178,7 @@ define(["home/alarm/alarm_manage", "ajax", "esri/geometry/webMercatorUtils", "es
                     for (var i = 0; i < colorArr.length; i++) {
                         colorArr[i][3]=250;
                     }
+                var ddd=reslut.kriking3.result;
                 setMap(0,10,ddd,colorArr,reslut.stationPiont,true)
                   document.getElementById("valCtrl").addEventListener("click", function (evt){
                         setMap(0,10,ddd,colorArr,reslut.stationPiont,true)
@@ -359,7 +360,8 @@ define(["home/alarm/alarm_manage", "ajax", "esri/geometry/webMercatorUtils", "es
             if(ok && ddd && stationPiont){
                 //设置标注的经纬度
                 for (var i = 0; i < ddd.length; i++) {
-                    setPot(graphicLayer, MyMap, ddd[i].x, ddd[i].y, getGrb(ddd[i].val, colorArr), 2 * nn);
+                    setPot(graphicLayer, MyMap, ddd[i][1], ddd[i][0], getGrb(ddd[i][2], colorArr), 2 * nn);
+                    // setPot(graphicLayer, MyMap, ddd[i].x, ddd[i].y, getGrb(ddd[i].val, colorArr), 2 * nn);
                 }
                 var monitorSymbol = new esri.symbols.PictureMarkerSymbol({
                     "url": "images/monitor-station-union.png",

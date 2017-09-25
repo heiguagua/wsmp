@@ -83,13 +83,13 @@
 					</div>
 					<div id="mapDiv" style= "padding: 10px"></div>
 					<div id="mapDiv1"></div>
-					<div id="heatLayer"></div>
+					<!-- <div id="heatLayer"></div> -->
 					 <%--控件--%>
 				      <div id="levelsColor" class="levelsColor">
 				        <form method="#">
-				          <input type="number" name="startVal" min="1" id="minCtrl" value="0">
+				          <input type="number" name="startVal" min="1" id="minCtrl" value="-40">
 				          <img src="images/a.png" alt="">
-				          <input type="number" name="endVal" max="10" id="maxCtrl" value="160">
+				          <input type="number" name="endVal" max="10" id="maxCtrl" value="120">
 				          <a href="#" id="valCtrl">确认</a>
 				        </form>
 				      </div>
