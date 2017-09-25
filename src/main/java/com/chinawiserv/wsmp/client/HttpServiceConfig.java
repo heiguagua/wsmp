@@ -32,6 +32,8 @@ public class HttpServiceConfig {
           
          JSONObject jsonObj = new JSONObject();
          jsonObj.put("data", dataIn);
+         jsonObj.put("stepx", 0.02);  
+         jsonObj.put("stepy", 0.02);
           
          HttpEntity<String> formEntity = new HttpEntity<String>(jsonObj.toString(), headers);
  
