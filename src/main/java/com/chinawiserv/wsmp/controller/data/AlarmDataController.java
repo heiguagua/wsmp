@@ -452,7 +452,18 @@ public class AlarmDataController {
 				kringParam[i][2] = mapPoint.get(i).getLevel();
 			}
             
-            String string = HttpServiceConfig.httpclient(kringParam, kringUrl);
+            List<double[]> list =new ArrayList<double[]>( Arrays.asList(kringParam));
+            Iterator<double[]> ite = list.iterator();
+            while (ite.hasNext()) {
+            	double[] ds = ite.next();
+				if(ds[0]<53.55&&ds[0]>3.86&&ds[1]<135.05&&ds[1]>73.66){
+				}else {
+					ite.remove();
+				}
+			}
+            
+            
+            String string = HttpServiceConfig.httpclient(list.toArray(new double[list.size()][3]), kringUrl);
             kriking3 = JSONObject.parseObject(string);
 //            double[] flon = mapPoint.stream().mapToDouble(LevelLocate::getFlon).toArray();
 //            double[] flat = mapPoint.stream().mapToDouble(LevelLocate::getFlat).toArray();
