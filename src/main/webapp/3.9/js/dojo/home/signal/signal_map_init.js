@@ -175,30 +175,34 @@ define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"]
             var graphicLayer = new esri.layers.GraphicsLayer();
             //把图层添加到地图上
             MyMap.addLayer(graphicLayer);
-            if(ok && ddd && stationPiont){
-                //设置标注的经纬度
-                for (var i = 0; i < ddd.length; i++) {
-                   setPot(graphicLayer, MyMap, ddd[i][1], ddd[i][0], getGrb(ddd[i][2], colorArr), 2 * nn);
-                    // setPot(graphicLayer, MyMap, ddd[i].x, ddd[i].y, getGrb(ddd[i].val, colorArr), 2 * nn);
+            // if(ok && ddd && stationPiont){
+                if(ddd.length){
+                    //设置标注的经纬度
+                    for (var i = 0; i < ddd.length; i++) {
+                       setPot(graphicLayer, MyMap, ddd[i][1], ddd[i][0], getGrb(ddd[i][2], colorArr), 2 * nn);
+                        // setPot(graphicLayer, MyMap, ddd[i].x, ddd[i].y, getGrb(ddd[i].val, colorArr), 2 * nn);
+                    }
                 }
                 var monitorSymbol = new esri.symbols.PictureMarkerSymbol({
                     "url": "images/monitor-station-union.png",
                     "height": 26,
                     "width": 26
                 });
-                for (var i = 0; i < stationPiont.length; i++) {
-                    var points = new esri.geometry.Point(stationPiont[i]);
-                    var txtsms = new esri.symbols.TextSymbol(stationPiont[i].count).setOffset(19, 8).setColor(new esri.Color([0xFF, 0, 0])).setAlign(esri.symbols.Font.ALIGN_START).setFont(new esri.symbols.Font("12pt").setWeight(esri.symbols.Font.WEIGHT_BOLD));
-                    var graphic = new esri.Graphic(points, txtsms);
-                    var tgraphic = new esri.Graphic(points, monitorSymbol);
-                    graphicLayer.add(graphic);
-                    graphicLayer.add(tgraphic);
-                }
+                 if(stationPiont.length){
+                    for (var i = 0; i < stationPiont.length; i++) {
+                        var points = new esri.geometry.Point(stationPiont[i]);
+                        var txtsms = new esri.symbols.TextSymbol(stationPiont[i].count).setOffset(19, 8).setColor(new esri.Color([0xFF, 0, 0])).setAlign(esri.symbols.Font.ALIGN_START).setFont(new esri.symbols.Font("12pt").setWeight(esri.symbols.Font.WEIGHT_BOLD));
+                        var graphic = new esri.Graphic(points, txtsms);
+                        var tgraphic = new esri.Graphic(points, monitorSymbol);
+                        graphicLayer.add(graphic);
+                        graphicLayer.add(tgraphic);
+                    }
+                  }
                 MyMap.on('zoom-end', function(eve) {
                     var lv = MyMap.getZoom();
                     setMap(lv, lv,ddd,colorArr,stationPiont,true)
                 })
-            }
+            // }
         }
         function setPot(graphicLayer, MyMap, x, y, color, num) {
             // var num=num && num||0';

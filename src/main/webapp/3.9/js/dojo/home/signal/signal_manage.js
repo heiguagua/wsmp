@@ -1695,6 +1695,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
     //左侧 内容渲染
     function getSinalDetail(data) {
         $("#signal_detail").load("signal/sigaldetail", data, function() {
+            console.log(data)
             //无带宽以“-”替代
             //console.log($("#redioDetailCentor").html())
             if ($("#redioDetailCentor").html().indexOf('0.0') == 0) {
