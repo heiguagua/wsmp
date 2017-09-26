@@ -672,6 +672,75 @@ public class AlarmDataController {
         // map.put("stationId", "oopsoo");
         return mapPiont;
     }
+    @SuppressWarnings("unchecked")
+	@PostMapping(path = "/getStationVersion2")
+    public @ResponseBody
+    Map<String, Object> getStationVersion2(@RequestBody Map<String, Object> param) {
+    	List<LevelLocate> mapPoint = Collections.emptyList();
+    	JSONObject kriking3=null;
+    	try {
+    		
+    		final long frequency = Long.valueOf(param.get("frequency").toString());
+    		
+    		List<LevelLocate> relate = hbaseClient.queryLevelLocate(LocalDateTime.now().format(formatter), frequency);
+    		Logger.info("均值查询正常返回个数为 :{}, 操作时间：{},入参：开始时间：{}，中心频率：{}", relate.size(), LocalDateTime.now().toString(), LocalDateTime.now().format(formatter), frequency);
+    		List<String> stationcode = (List<String>) param.get("stationCodes");
+    		
+    		mapPoint = relate.stream().filter(t -> stationcode.contains(t.getId())).collect(toList());
+    		
+    		Logger.info("地图上显示的点 信息为{}", JSON.toJSONString(mapPoint));
+    		
+    		int[] ids = mapPoint.stream().mapToInt(m -> Integer.valueOf(m.getId())).toArray();
+    		//构造克里金二维数组参数
+    		double [][] kringParam= new double[mapPoint.size()][3];
+    		for (int i = 0; i < ids.length; i++) {
+    			kringParam[i][0] = mapPoint.get(i).getFlat();
+    			kringParam[i][1] = mapPoint.get(i).getFlon();
+    			kringParam[i][2] = mapPoint.get(i).getLevel();
+    		}
+    		
+    		List<double[]> list =new ArrayList<double[]>( Arrays.asList(kringParam));
+    		Iterator<double[]> ite = list.iterator();
+    		while (ite.hasNext()) {
+    			double[] ds = ite.next();
+    			if(ds[0]<53.55&&ds[0]>3.86&&ds[1]<135.05&&ds[1]>73.66){
+    			}else {
+    				ite.remove();
+    			}
+    		}
+    		String string = HttpServiceConfig.httpclient(list.toArray(new double[list.size()][3]), kringUrl);
+    		kriking3 = JSONObject.parseObject(string);
+    		Logger.info("场强定位计算正常 操作时间{} 返回值为{}", LocalDateTime.now().toString(),kriking3);
+    	} catch (NumberFormatException e) {
+    		Logger.error("场强定位计算 ,操作时间：{},入参：开始时间：{}，中心频率：{} 异常 ：{}", LocalDateTime.now(), param.get("beginTime"), param.get("frequency"), e);
+    	}
+    	
+    	int coulm = mapPoint.size();
+    	String electrCoverage = "0";
+    	
+    	if (coulm > 0) {
+    		Object object = kriking3.get("result");
+    		List<Integer[]> list = JSONObject.parseArray(object.toString(), Integer[].class);
+    		double numerator = list.stream().filter((e) -> e[2] >= intKrikingValue).count();
+    		int denominator = list.size()+coulm;
+    		electrCoverage = df.format(denominator > 0 ? numerator / denominator : 0);
+    	}
+    	List<Map<String, String>> stationPiont = mapPoint.stream().map(station -> {
+    		HashMap<String, String> element = Maps.newHashMap();
+    		element.put("x", station.getFlon() + "");
+    		element.put("y", station.getFlat() + "");
+    		element.put("count", (station.getLevel()) + "");
+    		element.put("stationId", station.getId());
+    		return element;
+    	}).collect(toList());
+    	
+    	Map<String, Object> mapPiont = new HashMap<>();
+    	mapPiont.put("stationPiont", stationPiont);
+    	mapPiont.put("kriking3", kriking3);
+    	mapPiont.put("electrCoverage", electrCoverage);
+    	
+    	return mapPiont;
+    }
 
 
     @GetMapping(path = "/stationsf")
