@@ -1131,7 +1131,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						params.userID = userID;
 						return params
 					},
-					pageSize : 9, // 单页记录数
+					pageSize : 5, // 单页记录数
 					pageList : [5, 10, 20, 30], // 分页步进值
 					clickToSelect : true, // 是否启用点击选中行
 					responseHandler : function(res) {
@@ -1237,12 +1237,14 @@ define(	["ajax", "dojo/parser", "esri/map",
 										+ row.beginFreq
 										+ '" data-endFreq="'
 										+ row.endFreq
+										/*+ '"><span class="icon-peizhi"></span></a>';*/
 										+ '"> <img src="images/Group 15.png"> </img></a>';
 							} else {
 								return '<a data-toggle="modal" data-target="#modalConfig" data-beginFreq="'
 										+ row.beginFreq
 										+ '" data-endFreq="'
 										+ row.endFreq
+										/*+ '"> <span class="icon-peizhi"></span></a>';*/
 										+ '"> <img src="images/Fill 30.png"> </img></a>';
 							}
 						}

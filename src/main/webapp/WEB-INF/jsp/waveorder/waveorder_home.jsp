@@ -57,7 +57,7 @@
 		<!--频段状态-->
 		<section class='flex-row'>
 			<div class='box right10'
-				style="min-height: 660px; max-height: 660px;">
+				style="min-height: 415px; max-height: 415px;">
 				<table class="table table-striped text-center" id='table-radio'>
 				</table>
 			</div>
