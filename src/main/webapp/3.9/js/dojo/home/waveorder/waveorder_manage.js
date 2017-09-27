@@ -508,7 +508,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 					return false;
 				}
 				
-				if(document.importantMonitorForm.IQCount.value > document.importantMonitorForm.totalIQCount.value) {
+				/*if(document.importantMonitorForm.IQCount.value > document.importantMonitorForm.totalIQCount.value) {
 					$("#totalIQCount").focus();
 					$("#totalIQCount").val("");
 					layer.tips('采集总数 不能小于 单次采集次数 !', '#totalIQCount', {
@@ -543,7 +543,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 								time : 4000
 							});
 					return false;
-				}
+				}*/
 				if(document.importantMonitorForm.audioTimespan.value > document.importantMonitorForm.totalAudioTimespan.value && document.importantMonitorForm.totalAudioTimespan.value != -1) {
 					$("#totalAudioTimespan").focus();
 					$("#totalAudioTimespan").val("");
@@ -571,7 +571,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 					$("#duration").focus();
 					return false
 				}
-				if (!document.importantMonitorForm.IQCount.validity.valid) {
+				/*if (!document.importantMonitorForm.IQCount.validity.valid) {
 					$("#IQCount").focus();
 					return false
 				}
@@ -602,7 +602,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 				if (!document.importantMonitorForm.totalITUCount.validity.valid) {
 					$("#totalITUCount").focus();
 					return false
-				}
+				}*/
 				if (!document.importantMonitorForm.audioTimespan.validity.valid) {
 					$("#audioTimespan").focus();
 					return false
@@ -1131,7 +1131,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						params.userID = userID;
 						return params
 					},
-					pageSize : 9, // 单页记录数
+					pageSize : 5, // 单页记录数
 					pageList : [5, 10, 20, 30], // 分页步进值
 					clickToSelect : true, // 是否启用点击选中行
 					responseHandler : function(res) {
@@ -1237,13 +1237,15 @@ define(	["ajax", "dojo/parser", "esri/map",
 										+ row.beginFreq
 										+ '" data-endFreq="'
 										+ row.endFreq
-										+ '"> <img src="images/Group 15.png"> </img></a>';
+										/*+ '"><em class="icon-peizhi"></em></a>';*/
+										+ '"> <img src="images/Group 15.png" width="24"> </img></a>';
 							} else {
 								return '<a data-toggle="modal" data-target="#modalConfig" data-beginFreq="'
 										+ row.beginFreq
 										+ '" data-endFreq="'
 										+ row.endFreq
-										+ '"> <img src="images/Fill 30.png"> </img></a>';
+										/*+ '"> <em class="icon-peizhi"></em></a>';*/
+										+ '"> <img src="images/Fill 30.png"  width="24"> </img></a>';
 							}
 						}
 					}]
