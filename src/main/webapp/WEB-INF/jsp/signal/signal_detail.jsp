@@ -5,17 +5,21 @@
   <div class='signal-profile '>
     <div class='item info  flex-column justify-center'>
       <div class="flex-row">
+      <!-- 隐藏域 -->
+      <input type="hidden" name="redioDetailCentor" value="${redioDetail.band}" id="redioDetailCentor">
+      <!-- <input type="hidden" name="redioDetailCentor" value="${redioDetail.band}" id="redioDetailCentor"> -->
+      <!-- 隐藏域 end-->
         <!-- 自定义 -->
         <div class="flex-column flex1 radio-info">
-            <div class='t-i-item justify-center detect-way' style="height: 30px;text-align: center">带宽:<span  id="redioDetailCentor">${redioDetail.band}kHz</span></div>
+           <!--  <div class='t-i-item justify-center detect-way' style="height: 30px;text-align: center">带宽:<span  id="redioDetailCentor">${redioDetail.band}kHz</span></div>
             <div class='t-i-item justify-center'>
                 <div id = 'singletonFreq' style="text-align: center;padding: 10px 0;">
                   <img src='images/way_1.png' width="40" alt='单频测量' />
                 </div>
-          </div>
+          </div> -->
         </div>
         <div class="flex-column flex1">
-         <div class='radio-chart' id='radioChart' style="min-height: 100px"></div>
+         <div class='radio-chart' id='radioChart' style="min-height: 100px;padding-top: 25px;padding-right: 15px;"></div>
         </div>
         <!-- 自定义 -->
         <!-- <div class='radio-info flex-column flex1'> -->

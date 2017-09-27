@@ -26,7 +26,10 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
 				})
 				
         //点击配置按钮，如果有信号管理输入频率能查到值时，弹出重点监测配置，否则不弹出
-        $("#clickModalConfig").click(function(){
+        // $("#clickModalConfig").click(function(){
+
+        $("#clickModalConfig").on('click',function(event){
+                event.preventDefault();
             var warningID = $("#signal_list").find('option:selected').attr("value");
             var centorFreq = $("#signal_list").find('option:selected').attr("centorfreq");
             console.log(warningID);
@@ -258,10 +261,6 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
 		//重点监测删除点击事件
 		$("#important_monitor").on("click","#buttonDelete",function(e) {
 			//确实是否删除
-//			layer.confirm('is not?', {icon: 3, title:'提示'}, function(index){
-//				  console.log(index);
-//				  layer.close(index);
-//				});
                 var str = $("#important-monitor-form").serialize();
                 $.ajax({
                     url : 'alarmmanage/importantMonitorDelete',

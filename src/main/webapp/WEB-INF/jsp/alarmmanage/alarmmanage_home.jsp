@@ -32,7 +32,7 @@
 <div class='header-bar'>
   <span class='module-name'>告警管理</span>
   <div class='header-search'>
-    <input type='text' id="search" placeholder="请输入信号频率"/>
+    <input type='text' id="search" placeholder="请输入告警频率"/>
     <span class='search-icon'></span>
     <span class="input-group-addon search-icon-uint">MHz</span>
   </div>
@@ -120,9 +120,9 @@
       <%--控件--%>
       <div id="levelsColor" class="levelsColor">
         <form method="#">
-          <input type="number" name="startVal" min="1" id="minCtrl" value="-40">
+          <input type="number" name="startVal" min="1" id="minCtrl" value="-40" alt="请输入最小值"  title="请输入最小值">
           <img src="images/a.png" alt="">
-          <input type="number" name="endVal" max="10" id="maxCtrl" value="120">
+          <input type="number" name="endVal" max="10" id="maxCtrl" value="120" alt="请输入最大值" title="请输入最大值" >
           <a href="#" id="valCtrl">确认</a>
         </form>
       </div>

@@ -334,6 +334,8 @@ define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"]
         }
 
 		function select_change() {
+         var dk=$("#redioDetailCentor").val();
+         $("#dk").html("&#160;&#160;带宽："+(dk||0)+"KHz")
 				// signal_manage.changeView();
                 var requsetparam = {}
                 var id = $("#signal_list1").find('option:selected').val();
@@ -478,13 +480,14 @@ define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"]
 					{
 						name : '信号',
 						type : 'pie',
-						radius : [ '40%', '65%' ],
+						radius : [ '35%', '60%' ],
 						avoidLabelOverlap : false,
 						label : {
 							normal : {
 								show : true,
 								position : 'outside',
-								formatter : '{b} {d}%',
+                // formatter : '{b} {d}%',
+								formatter : '{b}',
 								textStyle : {
 									fontSize : '16'
 								}
@@ -492,8 +495,8 @@ define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"]
 							emphasis : {
 								show : true,
 								textStyle : {
-									fontSize : '16',
-									fontWeight : 'bold'
+									fontSize : '14',
+									// fontWeight : 'bold'
 								}
 							}
 						},

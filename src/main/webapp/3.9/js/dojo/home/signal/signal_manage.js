@@ -7,6 +7,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
         initMap = init;
     }
     function init() {
+        $("#dk").html($("#redioDetailCentor").val())
         init_select2();
         //时间选择器初始化
         $.fn.datetimepicker.defaults = {
@@ -424,7 +425,10 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
         });
     }
     function submitButton() {
-        $("#submitButton").click(function() {
+        // $("#submitButton").click(function() {
+           $("#submitButton").on('click',function(event){
+                event.preventDefault();
+                $("#submitButton").attr('disabled', 'disabled');
             var data = {};
             var stationKey = $("#stationKey").val();
             var typeCode = $("#typeCode").val();
@@ -1196,16 +1200,41 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
     var month_total_length = 0; // x轴数据总数
     var drag_flag = false; // 月占用度是否拖拽
     function initMonthchart(levelParam) {
+        console.log(levelParam.monthOcc.xAxis)
         var optionMonth1 = {};
         if (levelParam.monthOcc && levelParam.monthOcc.xAxis.length && levelParam.monthOcc.noneZeroSeries != null) {
             optionMonth1 = {
                 color: ['rgb(55,165,255)'],
                 tooltip: {
-                    'trigger': 'axis',
-                    formatter: function(param) {
-                        month_start_index_temp = param[0].dataIndex;
-                        month_end_index = param[0].dataIndex;
-                        var time = param[0].name + '';
+                    // 'trigger': 'axis',
+                    // formatter: function(param) {
+                    //     console.log(param)
+                    //     month_start_index_temp = param[0].dataIndex;
+                    //     month_end_index = param[0].dataIndex;
+                    //     var time = param[0].name + '';
+                    //     // console.log(time)
+                    //     var year = time.substring(0, 4);
+                    //     var month = time.substring(4, 6);
+                    //     var day = time.substring(6);
+                    //     if (month.substring(0, 1) == '0') {
+                    //         month = month.substring(1);
+                    //     }
+                    //     if (day.substring(0, 1) == '0') {
+                    //         day = day.substring(1);
+                    //     }
+                    //     if (param[0].value != null) {
+                    //         return year + '年' + month + '月' + day + '日' + "占用度" + param[0].value.toFixed(2) + "%";
+                    //     } else if (param[1].value != null) {
+                    //         return year + '年' + month + '月' + day + '日' + "占用度" + param[1].value.toFixed(2) + "%";
+                    //     } else {
+                    //         return "没有数据";
+                    //     }
+                    // }
+                    //"{a} <br/>{b}: {c} ({d}%)"
+                     trigger: 'item',
+                     formatter:function(param){
+                        var time = param.name + '';
+                        // console.log(time)
                         var year = time.substring(0, 4);
                         var month = time.substring(4, 6);
                         var day = time.substring(6);
@@ -1215,14 +1244,12 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                         if (day.substring(0, 1) == '0') {
                             day = day.substring(1);
                         }
-                        if (param[0].value != null) {
-                            return year + '年' + month + '月' + day + '日' + "占用度" + param[0].value.toFixed(2) + "%";
-                        } else if (param[1].value != null) {
-                            return year + '年' + month + '月' + day + '日' + "占用度" + param[1].value.toFixed(2) + "%";
-                        } else {
+                        if(param.value){
+                            return year + '年' + month + '月' + day + '日' + "</br>占用度" + param.value.toFixed(2) + "%";
+                        }else{
                             return "没有数据";
                         }
-                    }
+                     }
                 },
                 dataZoom: [{
                     show: false,
@@ -1515,14 +1542,14 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                         position: 'outside',
                         formatter: '{b} {d}%',
                         textStyle: {
-                            fontSize: '12'
+                            fontSize: '10'
                         },
                     },
                     emphasis: {
                         show: true,
                         textStyle: {
-                            fontSize: '12',
-                            fontWeight: 'bold'
+                            fontSize: '10',
+                            // fontWeight: 'bold'
                         }
                     }
                 },

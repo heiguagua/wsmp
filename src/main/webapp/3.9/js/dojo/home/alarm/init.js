@@ -25,7 +25,11 @@ define(["home/alarm/alarm_manage", "ajax", "esri/geometry/webMercatorUtils", "es
         var agoLayer = null;
         //config.defaults.io.corsEnabledServers.push("192.168.13.79:7080");
         function pares() {
-            $("#submitButton").click(function() {
+            // $("#submitButton").click(function() {
+            // 
+        $("#submitButton").on('click',function(event){
+                event.preventDefault();
+                 $("#submitButton").attr('disabled', 'disabled');
                 var stationID = $("#stationId").val(); //选中的表某行的id
                 var des = $("#des").val();
                 if (des && des.length > 255) {
@@ -620,7 +624,7 @@ define(["home/alarm/alarm_manage", "ajax", "esri/geometry/webMercatorUtils", "es
                             //'<span class="search-icon"></span></div>' +
                             '<table class="table table-striped" id="table-station-list"></table>' +
                             '<div class="mark-content">' +
-                            '<button type="button" class="btn btn-primary addStation">添加台站</button>' +
+                            // '<button type="button" class="btn btn-primary addStation">添加台站</button>' +
                             '<p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息">' + text + '</textarea></div>';
                         $("#stationWrap").html("");
                         $("#stationWrap").html(temp);

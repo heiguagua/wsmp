@@ -14,43 +14,62 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
 			optionMonth ={
 				color : [ 'rgb(55,165,255)' ],
 				tooltip : {
-					'trigger' : 'axis',
-					formatter:function(param){
-						maxlevel_start_index_temp = param[1].dataIndex;
-						maxlevel_end_index = param[1].dataIndex;
-						if(param && param[1] && param[1].name && param[1].value!=null) {
-							var time =param[1].name+'';
-							var year =time.substring(0,4);
-							var month =time.substring(4,6);
-							var day =time.substring(6);
-							if(month.substring(0,1)=='0'){
-								month = month.substring(1);
-							}
-							if(day.substring(0,1)=='0'){
-								day = day.substring(1);
-							}
-
-							return year+'年'+month+'月'+day+'日' + "占用度" + param[1].value.toFixed(2)+"%";
-						}else if(param && param[0] && param[0].name && param[0].value!=null){
-                                var time =param[0].name+'';
-                                var year =time.substring(0,4);
-                                var month =time.substring(4,6);
-                                var day =time.substring(6);
-                                if(month.substring(0,1)=='0'){
-                                    month = month.substring(1);
-                                }
-                                if(day.substring(0,1)=='0'){
-                                    day = day.substring(1);
-                                }
-
-                                return year+'年'+month+'月'+day+'日' + "占用度" + param[0].value.toFixed(2)+"%";
-
-						}
-						else{
+					 trigger: 'item',
+                     formatter:function(param){
+                        var time = param.name + '';
+                        // console.log(time)
+                        var year = time.substring(0, 4);
+                        var month = time.substring(4, 6);
+                        var day = time.substring(6);
+                        if (month.substring(0, 1) == '0') {
+                            month = month.substring(1);
+                        }
+                        if (day.substring(0, 1) == '0') {
+                            day = day.substring(1);
+                        }
+                        if(param.value){
+                            return year + '年' + month + '月' + day + '日' + "</br>占用度" + param.value.toFixed(2) + "%";
+                        }else{
                             return "没有数据";
-						}
+                        }
+                     }
+					// 'trigger' : 'axis',
+					// formatter:function(param){
+					// 	maxlevel_start_index_temp = param[1].dataIndex;
+					// 	maxlevel_end_index = param[1].dataIndex;
+					// 	if(param && param[1] && param[1].name && param[1].value!=null) {
+					// 		var time =param[1].name+'';
+					// 		var year =time.substring(0,4);
+					// 		var month =time.substring(4,6);
+					// 		var day =time.substring(6);
+					// 		if(month.substring(0,1)=='0'){
+					// 			month = month.substring(1);
+					// 		}
+					// 		if(day.substring(0,1)=='0'){
+					// 			day = day.substring(1);
+					// 		}
 
-					}
+					// 		return year+'年'+month+'月'+day+'日' + "占用度" + param[1].value.toFixed(2)+"%";
+					// 	}else if(param && param[0] && param[0].name && param[0].value!=null){
+     //                            var time =param[0].name+'';
+     //                            var year =time.substring(0,4);
+     //                            var month =time.substring(4,6);
+     //                            var day =time.substring(6);
+     //                            if(month.substring(0,1)=='0'){
+     //                                month = month.substring(1);
+     //                            }
+     //                            if(day.substring(0,1)=='0'){
+     //                                day = day.substring(1);
+     //                            }
+
+     //                            return year+'年'+month+'月'+day+'日' + "占用度" + param[0].value.toFixed(2)+"%";
+
+					// 	}
+					// 	else{
+     //                        return "没有数据";
+					// 	}
+
+					// }
 				},
 				dataZoom : [{
 					show:false,

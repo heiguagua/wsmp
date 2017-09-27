@@ -1237,13 +1237,13 @@ define(	["ajax", "dojo/parser", "esri/map",
 										+ row.beginFreq
 										+ '" data-endFreq="'
 										+ row.endFreq
-										+ '"> <img src="images/Group 15.png"> </img></a>';
+										+ '"> <img src="images/Group 15.png" width="24"> </img></a>';
 							} else {
 								return '<a data-toggle="modal" data-target="#modalConfig" data-beginFreq="'
 										+ row.beginFreq
 										+ '" data-endFreq="'
 										+ row.endFreq
-										+ '"> <img src="images/Fill 30.png"> </img></a>';
+										+ '"> <img src="images/Fill 30.png"  width="24"> </img></a>';
 							}
 						}
 					}]

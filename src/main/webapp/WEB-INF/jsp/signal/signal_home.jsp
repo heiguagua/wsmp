@@ -53,8 +53,13 @@
        <select id = "station-list2"  class='station-list2 select2-picker'>
       </select>
     </span>
-    
+     <span id = "station_list" >
+       <span class="search-icon-uint"><i id="dk"></i></span>
+    </span>
        <div class='config pull-right'>
+      <a class='btn btn-default btn-config' id="singletonFreq">
+        <img  src='images/way_1.png' width="18" />&nbsp;&nbsp;单频测量
+      </a>
       <a class='btn btn-default btn-config'>
         <img src='images/export.png' />&nbsp;&nbsp;导出报表
       </a>
@@ -87,9 +92,9 @@
 					 <%--控件--%>
 				      <div id="levelsColor" class="levelsColor">
 				        <form method="#">
-				          <input type="number" name="startVal" min="1" id="minCtrl" value="-40">
+				          <input type="number" name="startVal" min="1" id="minCtrl" value="-40" alt="请输入最小值"  title="请输入最小值">
 				          <img src="images/a.png" alt="">
-				          <input type="number" name="endVal" max="10" id="maxCtrl" value="120">
+				          <input type="number" name="endVal" max="10" id="maxCtrl" value="120" alt="请输入最大值" title="请输入最大值" >
 				          <a href="#" id="valCtrl">确认</a>
 				        </form>
 				      </div>
