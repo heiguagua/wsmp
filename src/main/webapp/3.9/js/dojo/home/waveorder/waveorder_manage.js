@@ -1237,14 +1237,14 @@ define(	["ajax", "dojo/parser", "esri/map",
 										+ row.beginFreq
 										+ '" data-endFreq="'
 										+ row.endFreq
-										/*+ '"><span class="icon-peizhi"></span></a>';*/
+										/*+ '"><em class="icon-peizhi"></em></a>';*/
 										+ '"> <img src="images/Group 15.png"> </img></a>';
 							} else {
 								return '<a data-toggle="modal" data-target="#modalConfig" data-beginFreq="'
 										+ row.beginFreq
 										+ '" data-endFreq="'
 										+ row.endFreq
-										/*+ '"> <span class="icon-peizhi"></span></a>';*/
+										/*+ '"> <em class="icon-peizhi"></em></a>';*/
 										+ '"> <img src="images/Fill 30.png"> </img></a>';
 							}
 						}

@@ -230,6 +230,7 @@
   padding-left: 10px;
 }
 
+[class*=" icon-"],
 [class^=icon-] {
     font-family: icomoon!important;
     speak: none;
