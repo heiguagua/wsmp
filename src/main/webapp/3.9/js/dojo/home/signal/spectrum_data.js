@@ -331,6 +331,11 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
       },
       options: []
     };
+    // var avga=max_min_avg.avg,avgarr=[];
+    //   for (var i = 0; i < avga.length; i++) {
+    //     avgarr.push(parseFloat(avga[i].toFixed(2)))
+    //   }
+    //   console.log(avgarr)
     for (var i = 0; i < spectrum_play_list.length; i++) {
       var single_ser = {};
       single_ser.series = [];
@@ -346,6 +351,8 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
       single_ser.series.push({ // 最小值
         data: max_min_avg.min
       });
+      /////////////////////////////////
+      /////////////////////////////////
       single_ser.series.push({ // 平均值
         data: max_min_avg.avg
       });
@@ -641,7 +648,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
       var data = _.map(n.data, 'data');
       max.push(_.max(data));
       min.push(_.min(data));
-      avg.push(_.sum(data) / n.data.length);
+      avg.push((_.sum(data) / n.data.length).toFixed(2));
     });
     max_min_avg.max = max;
     max_min_avg.min = min;

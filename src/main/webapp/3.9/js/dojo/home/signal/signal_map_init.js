@@ -162,7 +162,7 @@ define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"]
                 center:center,
                 zoom: lv,
                 maxZoom: 12,
-                minZoom: 9,
+                // minZoom: 9,
                 logo:false
             });
             var mapUtl = Binding.getMapUrl();
@@ -175,8 +175,8 @@ define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"]
             var graphicLayer = new esri.layers.GraphicsLayer();
             //把图层添加到地图上
             MyMap.addLayer(graphicLayer);
-            // if(ok && ddd && stationPiont){
-                if(ddd.length){
+            if(ok && ddd && stationPiont){
+                if(ok && ddd.length){
                     //设置标注的经纬度
                     for (var i = 0; i < ddd.length; i++) {
                        setPot(graphicLayer, MyMap, ddd[i][1], ddd[i][0], getGrb(ddd[i][2], colorArr), 2 * nn);
@@ -188,12 +188,23 @@ define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"]
                     "height": 26,
                     "width": 26
                 });
-                 if(stationPiont.length){
+                 if(ok && stationPiont.length){
                     for (var i = 0; i < stationPiont.length; i++) {
                         var points = new esri.geometry.Point(stationPiont[i]);
-                        var txtsms = new esri.symbols.TextSymbol(stationPiont[i].count).setOffset(19, 8).setColor(new esri.Color([0xFF, 0, 0])).setAlign(esri.symbols.Font.ALIGN_START).setFont(new esri.symbols.Font("12pt").setWeight(esri.symbols.Font.WEIGHT_BOLD));
+                        // var txtsms = new esri.symbols.TextSymbol(stationPiont[i].count).setOffset(19, 8).setColor(new esri.Color([0xFF, 0, 0])).setAlign(esri.symbols.Font.ALIGN_START).setFont(new esri.symbols.Font("12pt").setWeight(esri.symbols.Font.WEIGHT_BOLD));
+                        var txtsms = new esri.symbols.TextSymbol(stationPiont[i].count).setOffset(19, 8).setColor(new esri.Color([0,0,0,125])).setAlign(esri.symbols.Font.ALIGN_START).setFont(new esri.symbols.Font("12pt").setWeight(esri.symbols.Font.WEIGHT_BOLD));
+
                         var graphic = new esri.Graphic(points, txtsms);
                         var tgraphic = new esri.Graphic(points, monitorSymbol);
+                        var bgsms=new PictureMarkerSymbol({
+                                "url" : "images/yellow_small.png",
+                                "height" : 20,
+                                "width" : 20,
+                                "xoffset" : 14,
+                                "yoffset" : 10
+                            });
+                        var graphicbg = new esri.Graphic(points,bgsms);// 计数底图
+                        graphicLayer.add(graphicbg);
                         graphicLayer.add(graphic);
                         graphicLayer.add(tgraphic);
                     }
@@ -202,7 +213,7 @@ define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"]
                     var lv = MyMap.getZoom();
                     setMap(lv, lv,ddd,colorArr,stationPiont,true)
                 })
-            // }
+            }
         }
         function setPot(graphicLayer, MyMap, x, y, color, num) {
             // var num=num && num||0';
@@ -346,6 +357,23 @@ define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"]
                                 colorArr[i][3]=250;
                             }
                         var ddd=reslut.kriking3.result;
+                        // 设置默认
+                          Array.prototype.max = function(){ 
+                              return Math.max.apply({},this) 
+                            }
+                            Array.prototype.min = function(){ 
+                              return Math.min.apply({},this) 
+                            }
+                          var stationPiont=reslut.stationPiont
+                          if(stationPiont.length){
+                              var countArr=[];
+                              for (var i = 0; i < stationPiont.length; i++) {
+                                countArr.push(parseInt(stationPiont[i].count));
+                              }
+                             document.getElementById("minCtrl").value=countArr.min();
+                             document.getElementById("maxCtrl").value=countArr.max();
+                           }
+                        // 设置默认
                         setMap(0,10,ddd,colorArr,reslut.stationPiont,true)
                           document.getElementById("valCtrl").addEventListener("click", function (evt){
                                 setMap(0,10,ddd,colorArr,reslut.stationPiont,true)

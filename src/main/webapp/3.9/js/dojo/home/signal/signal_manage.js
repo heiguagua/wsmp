@@ -85,6 +85,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
         $("#frequency").on("click", function() {
                 if ($(this).is(":checked")) {
                     $("#frequency-wrap").slideDown();
+                    // $(this).parents(".nav-pills").after($("#frequency-wrap").html())
                 } else {
                     $("#frequency-wrap").slideUp();
                 }
@@ -92,6 +93,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
             // 选择IQ数据
         $("#IQ").on("click", function() {
                 if ($(this).is(":checked")) {
+                    // $(this).parents(".nav-pills").after($("#IQ-wrap").html())
                     $("#IQ-wrap").slideDown();
                 } else {
                     $("#IQ-wrap").slideUp();
@@ -100,6 +102,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
             // IQ数据选择数据按钮事件
         $("#IQ-choose-btn").on("click", function(ev) {
                 if ($("#IQ-choose-list").is(":hidden")) {
+                    // $(this).parents(".nav-pills").after($("#IQ-choose-list").html())
                     $("#IQ-choose-list").slideDown();
                 } else {
                     $("#IQ-choose-list").slideUp();
@@ -1490,7 +1493,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
     function initChart(reslut) {
         // draw radio pie chart
         var option = {
-            color: ['rgb(44,205,125)', 'rgb(55,165,255)'],
+            color: ['rgb(44,205,125)', 'rgb(55,165,255)','rgb(66,205,255)','rgb(77,255,255)','rgb(255,205,125)','rgb(99,165,255)'],
             tooltip: {
                 trigger: 'item',
                 formatter: "{a} <br/>{b}: {c} ({d}%)"
@@ -1513,7 +1516,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                         formatter: '{b} {d}%',
                         textStyle: {
                             fontSize: '12'
-                        }
+                        },
                     },
                     emphasis: {
                         show: true,
@@ -1530,18 +1533,15 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                         length2: 0
                     }
                 },
-                data: reslut.value
-                    //                      [
-                    //                      {
-                    //                          value : 20,
-                    //                          name : 'AM'
-                    //                      },
-                    //                      {
-                    //                          value : 80,
-                    //                          name : 'FM'
-                    //                      }
-                    //                  ]
-            }]
+                data: reslut.value,
+                formatter:function(val){   //让series 中的文字进行换行  
+                     return val.name.substring(0,5)+"\n"+val.name.substring(6);
+                }
+            }],
+            axisLabel: {  
+               interval:0,  
+               rotate:40  
+            },
         };
         var myChart = echarts.init($('#radioChart')[0]);
         myChart.setOption(option);

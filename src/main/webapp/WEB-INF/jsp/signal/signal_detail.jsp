@@ -6,7 +6,7 @@
     <div class='item info  flex-column justify-center'>
       <div class="flex-row">
         <!-- 自定义 -->
-        <div class="flex-column flex1">
+        <div class="flex-column flex1 radio-info">
             <div class='t-i-item justify-center detect-way' style="height: 30px;text-align: center">带宽:<span  id="redioDetailCentor">${redioDetail.band}kHz</span></div>
             <div class='t-i-item justify-center'>
                 <div id = 'singletonFreq' style="text-align: center;padding: 10px 0;">
@@ -93,7 +93,7 @@
         <div class='item feature' style="width: 100%;">
           <div class='features' style="max-width: 100%">
             <h4 class='title'>信号特征</h4>
-            <ul class='features-list' style="height:260px;overflow-y: auto">
+            <ul class='features-list' style="height:200px;overflow-y: auto">
           <!--     <li><div class='item-name' title="谱密度最大值">谱密度最大值</div>
                 <div class='item-value' title="${redioDetail.rMax}">${redioDetail.rMax}</div></li>
               <li><div class='item-name' title="频谱周期性">频谱周期性</div>
