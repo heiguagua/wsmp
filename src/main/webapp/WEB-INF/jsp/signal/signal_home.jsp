@@ -97,7 +97,8 @@
 				</div>
 			</section>
 		<%--</span>--%>
-			数据回放:<ul class="nav nav-pills ">
+			<ul class="nav nav-pills" style="padding-bottom: 5px;">
+				<li style="float:left"><a href="#">数据回放:</a></li>
 				<li role="presentation"><a href="#">
 					<div class="checkbox checkbox-primary flex1 ">
 						<input type="checkbox" value="1" name="data-type" id="frequency">
