@@ -1238,14 +1238,14 @@ define(	["ajax", "dojo/parser", "esri/map",
 										+ '" data-endFreq="'
 										+ row.endFreq
 										/*+ '"><em class="icon-peizhi"></em></a>';*/
-										+ '"> <img src="images/Group 15.png" width="24"> </img></a>';
+										+ '"> <img src="images/Group 15.png" width="24"></a>';
 							} else {
 								return '<a data-toggle="modal" data-target="#modalConfig" data-beginFreq="'
 										+ row.beginFreq
 										+ '" data-endFreq="'
 										+ row.endFreq
 										/*+ '"> <em class="icon-peizhi"></em></a>';*/
-										+ '"> <img src="images/Fill 30.png"  width="24"> </img></a>';
+										+ '"> <img src="images/Fill 30.png" width="24"/></a>';
 							}
 						}
 					}]
