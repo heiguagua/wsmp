@@ -188,6 +188,14 @@ public class AlarmManagerViewController {
 			dto.setEndFreq(Double.valueOf(centorFreq.divide(divisor).toString()));
 			dto.setFreqRange(false);
 			dto.setWarnID(map.get("warningID").toString());
+			dto.setIQCount(0);
+			dto.setTotalIQCount(0);
+			dto.setFeatureCount(0);
+			dto.setTotalFeatureCount(0);
+			dto.setITUCount(0);
+			dto.setTotalITUCount(0);
+			dto.setSpecCount(0);
+			dto.setTotalSpecCount(0);
 			Logger.info(
 					"===================================================没有数据传入model:" + JSON.toJSONString(dto));
 			model.addAttribute("dto", dto);

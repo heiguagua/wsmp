@@ -106,6 +106,14 @@ public class WaveOrderViewController {
 		dto.setBeginFreq(beginFreq);
 		dto.setEndFreq(endFreq);
 		dto.setFreqRange(true);
+		dto.setIQCount(0);
+		dto.setTotalIQCount(0);
+		dto.setFeatureCount(0);
+		dto.setTotalFeatureCount(0);
+		dto.setITUCount(0);
+		dto.setTotalITUCount(0);
+		dto.setSpecCount(0);
+		dto.setTotalSpecCount(0);
 		Logger.info("没有数据传入model:{}",JSON.toJSONString(dto));
 		model.addAttribute("dto",dto);
 		return "waveorder/important_monitor_insert";

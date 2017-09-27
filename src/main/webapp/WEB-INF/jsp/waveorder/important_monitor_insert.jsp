@@ -53,7 +53,8 @@
 				class="wrap-title">采集总数</span></label>
 	</div>
 	<div class="form-box-wrap form-box-down">
-		<div class="form-group col-sm-6">
+		<%-- 暂时保留！后端设值为0 --%>
+		<%-- <div class="form-group col-sm-6">
 			<label for="" class="col-sm-3 control-label">IQ帧数</label>
 			<div class="col-sm-9">
 				<div class="input-group">
@@ -130,7 +131,7 @@
 					<span class="input-group-addon unit">帧</span>
 				</div>
 			</div>
-		</div>
+		</div> --%>
 		<div class="form-group col-sm-6">
 			<label for="" class="col-sm-3 control-label">声音时间</label>
 			<div class="col-sm-9">
