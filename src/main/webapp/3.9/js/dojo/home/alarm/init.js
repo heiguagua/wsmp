@@ -353,11 +353,9 @@ define(["home/alarm/alarm_manage", "ajax", "esri/geometry/webMercatorUtils", "es
            if(code.length<5){
              code=code+"00";
            }
-           // console.log("code:",code,code.length)
            var center=[];
             for (var i = 0; i < areas.length; i++) {
                 if(areas[i].code===code){
-                    // console.log(111,areas[i])
                     center.push(areas[i].longitude)
                     center.push(areas[i].latitude)
                 }
@@ -377,14 +375,8 @@ define(["home/alarm/alarm_manage", "ajax", "esri/geometry/webMercatorUtils", "es
                 center:center,
                 zoom: lv,
                 maxZoom: 12,
-<<<<<<< HEAD
-                // minZoom: 9,
-                logo:false
-=======
-                minZoom: 9,
                 logo:false,
                 showAttribution:false
->>>>>>> origin/develop
             });
             var mapUtl = Binding.getMapUrl();
             var myTiledMapServiceLayer = new esri.layers.ArcGISTiledMapServiceLayer(mapUtl,{ id: "街道地图",howAttribution: false});
