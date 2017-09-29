@@ -10,6 +10,10 @@ import com.chinawiserv.wsmp.client.HttpServiceConfig;
 import com.chinawiserv.wsmp.client.WebServiceSoapFactory;
 import com.chinawiserv.wsmp.hbase.HbaseClient;
 import com.chinawiserv.wsmp.hbase.query.OccAndMax;
+import com.chinawiserv.wsmp.javatoc.LevelCompute;
+import com.chinawiserv.wsmp.javatoc.LocateSignalCompute;
+import com.chinawiserv.wsmp.javatoc.model.LevelResult;
+import com.chinawiserv.wsmp.javatoc.model.SignalResult;
 import com.chinawiserv.wsmp.kriging.Interpolation;
 import com.chinawiserv.wsmp.model.LevelLocate;
 import com.chinawiserv.wsmp.pojo.IntensiveMonitoring;
@@ -672,11 +676,48 @@ public class AlarmDataController {
         // map.put("stationId", "oopsoo");
         return mapPiont;
     }
+    //场强定位
+    @PostMapping(path = "/getFieldStrengthPosition")
+    public @ResponseBody
+    SignalResult getFieldStrengthPosition(@RequestBody Map<String, Object> param) {
+    	Logger.info("参数param{} ", param);
+    	String stationPiont = param.get("stationPiont").toString();
+//    	String threshold = param.get("threshold").toString();
+    	@SuppressWarnings("rawtypes")
+		List<Map> list = JSONObject.parseArray(stationPiont, Map.class);
+//    	element.put("x", station.getFlon() + "");
+//		element.put("y", station.getFlat() + "");
+//		element.put("count", (station.getLevel()) + "");
+//		element.put("stationId", station.getId());
+//    	List<Map<String, Object>> levelPoint = Lists.newLinkedList();
+    	double[] flon = list.stream().mapToDouble(map->Double.parseDouble(map.get("x").toString())).toArray();
+        double[] flat = list.stream().mapToDouble(map->Double.parseDouble(map.get("y").toString())).toArray();
+        double[] level = list.stream().mapToDouble(map->Double.parseDouble(map.get("count").toString())).toArray();
+        int[] ids = list.stream().mapToInt(map -> Integer.parseInt(map.get("stationId").toString())).toArray();
+
+        //少要八个点才能计算出来
+
+//        LevelResult result = LevelCompute.levelCompute(ids,flon,flat,level, ids.length,Double.valueOf(threshold), ids);
+        SignalResult result  = LocateSignalCompute.locateSignalCompute(ids.length,flon,flat,level);
+//        int size = result.getOangeR().size();
+//        for (int index = 0;index < size;index++){
+//
+//            Map<String, Object> mapLocate = Maps.newHashMap();
+//
+//            mapLocate.put("x", result.getOutLon().get(index));
+//            mapLocate.put("y", result.getOutLat().get(index));
+//            mapLocate.put("radius",  result.getOangeR().get(index));
+//            levelPoint.add(mapLocate);
+//        }
+        Logger.info("场强定位计算正常 操作时间{} 返回值为{}", LocalDateTime.now().toString(), result.getLon(),result.getLat(),result.getRangeR());
+    	return result;
+    }
     @SuppressWarnings("unchecked")
 	@PostMapping(path = "/getStationVersion2")
     public @ResponseBody
     Map<String, Object> getStationVersion2(@RequestBody Map<String, Object> param) {
     	List<LevelLocate> mapPoint = Collections.emptyList();
+    	
     	JSONObject kriking3=null;
     	try {
     		
@@ -710,6 +751,7 @@ public class AlarmDataController {
     		}
     		String string = HttpServiceConfig.httpclient(list.toArray(new double[list.size()][3]), kringUrl);
     		kriking3 = JSONObject.parseObject(string);
+    		
     		Logger.info("场强定位计算正常 操作时间{} 返回值为{}", LocalDateTime.now().toString(),kriking3);
     	} catch (NumberFormatException e) {
     		Logger.error("场强定位计算 ,操作时间：{},入参：开始时间：{}，中心频率：{} 异常 ：{}", LocalDateTime.now(), param.get("beginTime"), param.get("frequency"), e);
