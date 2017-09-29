@@ -1526,7 +1526,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                 formatter: "{a} <br/>{b}: {c} ({d}%)"
             },
             legend: {
-                show: false,
+                show: true,
                 orient: 'vertical',
                 x: 'left',
                 data: reslut.name
@@ -1534,7 +1534,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
             series: [{
                 name: '信号',
                 type: 'pie',
-                radius: ['40%', '65%'],
+                radius: ['0%', '60%'],
                 avoidLabelOverlap: false,
                 label: {
                     normal: {
@@ -1565,10 +1565,10 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                      return val.name.substring(0,5)+"\n"+val.name.substring(6);
                 }
             }],
-            axisLabel: {  
-               interval:0,  
-               rotate:40  
-            },
+            // axisLabel: {  
+            //    interval:0,  
+            //    rotate:40  
+            // },
         };
         var myChart = echarts.init($('#radioChart')[0]);
         myChart.setOption(option);

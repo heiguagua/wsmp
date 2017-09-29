@@ -177,7 +177,8 @@ define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"]
                 zoom: lv,
                 maxZoom: 12,
                 logo:false,
-                showAttribution:false
+                showAttribution:false,
+				height:500
             });
             var mapUtl = Binding.getMapUrl();
             var myTiledMapServiceLayer = new esri.layers.ArcGISTiledMapServiceLayer(mapUtl,{ id: "街道地图",howAttribution: false});
