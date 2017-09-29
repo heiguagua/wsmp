@@ -176,7 +176,38 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
             }
         });
         //聚类监测站
+        var layerspt=[
+            '<div class="modal fade" id="modalsetStationPiont" tabindex="-1" role="dialog" aria-labelledby="modalsetStationPiontLabel">',
+            '<div class="modal-dialog modal-lg" role="document">',
+            '<div class="modal-content">',
+            '<div class="modal-header">',
+            '<button type="button" class="close" data-dismiss="modal" aria-label="Close">',
+            '<span aria-hidden="true">&times;</span>',
+            '</button>',
+            '<h4 class="modal-title" id="modalsetStationPiontLabel">选择监测站</h4>',
+            '</div>',
+            '<div class="modal-body">',
+            '<div role="tabpanel" class="tab-pane active " id="envim">',
+            '<div class=\'flex-row\'>',
+            '<div class=\'flex1 config-left\'id="StationPiontChecked">',
+            '<table id="StationPiontTable"></table>',
+            '</div>',
+            '</div>',
+            '</div>',
+            '</div>',
+            '<div class="modal-footer">',
+            '<button id = "spSubmitButton" type="button" class="btn btn-primary">提交</button>',
+            '<button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left:15px">取消</button>',
+            '</div>',
+            '</div>',
+            '</div>',
+            '</div>'
+        ].join("");
         $("#setStationPiont").click(function() {
+            $("#modalsetStationPiont").remove()
+            $("body").append(layerspt)
+            // $("#StationPiontChecked").html('<table id="StationPiontTable"></table>');
+            // $("#spSubmitButton").attr("disabled",false);
             var spv=$("#getStationPiont").val();
             if (spv === null || spv==="" || spv === undefined) {
                 layer.alert("请输入频率");
@@ -204,7 +235,6 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                     }
                     }
                 }
-
                 $('#StationPiontTable').bootstrapTable({
                     columns: [{
                         field:'checked',
@@ -231,7 +261,9 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                 });
             }
             $("#modalsetStationPiont").modal('show');
-            $("#spSubmitButton").on("click",function(){
+            $("#spSubmitButton").on("click",function(event){
+                event.preventDefault();
+                $("#spSubmitButton").attr("disabled",true);
                 var spck=  $('#StationPiontTable') .bootstrapTable('getAllSelections'),parms=[];
                 for(var i=0;i<spck.length;i++){
                     parms.push({
@@ -245,7 +277,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                 ajax.post("data/alarm/getFieldStrengthPosition", data, function(reslut) {
                     var lon=reslut.lon||103.940;
                     var lat=reslut.lat||30.830;
-                    var rangeR=reslut.rangeR||10;
+                    var rangeR=reslut.rangeR||100000;
                     initMap.selectChange([lon,lat,rangeR]);
                     console.log(lon,lat,rangeR)
                 })
