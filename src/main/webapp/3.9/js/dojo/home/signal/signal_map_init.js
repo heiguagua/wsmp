@@ -228,7 +228,6 @@ define(["home/signal/signal_manage", "ajax" ,"esri/symbols/PictureMarkerSymbol"]
                   console.log(cri)
                   if(ok && cri.length){
 					  // var symbol1 = new esri.symbol.SimpleFillSymbol().setColor(new esri.Color([155,205,250,0.5])).outline.setColor("white");
-					  // var symbol = new esri.symbol.SimpleFillSymbol().setColor(new esri.Color([155,205,250,0.5])).outline.setColor(new esri.Color([155,205,250,0.5]));
 					  var symbol = new esri.symbol.SimpleFillSymbol().setColor(new esri.Color([155,205,250,0.5]));
 					  var circle = new esri.geometry.Circle({
 						  center: [cri[0],cri[1]],
