@@ -26,7 +26,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="Status" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
  *         &lt;element name="AreaCode" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
  *         &lt;element name="Keyword" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="ELevel" type="{http://www.w3.org/2001/XMLSchema}unsignedLong"/&gt;
+ *         &lt;element name="ELevel" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *         &lt;element name="StationKey" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="SaveDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
  *         &lt;element name="LastTimeDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
@@ -75,9 +75,8 @@ public class FreqWarningDTO {
     protected int areaCode;
     @XmlElement(name = "Keyword")
     protected String keyword;
-    @XmlElement(name = "ELevel", required = true)
-    @XmlSchemaType(name = "unsignedLong")
-    protected BigInteger eLevel;
+    @XmlElement(name = "ELevel")
+    protected long eLevel;
     @XmlElement(name = "StationKey")
     protected String stationKey;
     @XmlElement(name = "SaveDate", required = true)
@@ -227,24 +226,16 @@ public class FreqWarningDTO {
     /**
      * 获取eLevel属性的值。
      * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
      */
-    public BigInteger getELevel() {
+    public long getELevel() {
         return eLevel;
     }
 
     /**
      * 设置eLevel属性的值。
      * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
      */
-    public void setELevel(BigInteger value) {
+    public void setELevel(long value) {
         this.eLevel = value;
     }
 
