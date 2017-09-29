@@ -86,7 +86,7 @@
 							<input type="text" class="gate-filter" placeholder="请输入门限" /> <button class="btn btn-submit" id="gate-btn">提交</button>电磁覆盖率:&nbsp; <span class='coverage-number'></span>
 						</div>
 					</div>
-					<div id="mapDiv" style= "padding: 10px"></div>
+					<div id="mapDiv" style= "padding: 0px;height: 480px;"></div>
 					<div id="mapDiv1"></div>
 					<!-- <div id="heatLayer"></div> -->
 					 <%--控件--%>

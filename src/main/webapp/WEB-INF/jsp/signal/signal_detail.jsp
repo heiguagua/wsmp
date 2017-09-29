@@ -10,16 +10,17 @@
       <!-- <input type="hidden" name="redioDetailCentor" value="${redioDetail.band}" id="redioDetailCentor"> -->
       <!-- 隐藏域 end-->
         <!-- 自定义 -->
-        <div class="flex-column flex1 radio-info">
+        <%--<div class="flex-column flex1 radio-info" style="height: 200px;padding-top: 10px">--%>
            <!--  <div class='t-i-item justify-center detect-way' style="height: 30px;text-align: center">带宽:<span  id="redioDetailCentor">${redioDetail.band}kHz</span></div>
             <div class='t-i-item justify-center'>
                 <div id = 'singletonFreq' style="text-align: center;padding: 10px 0;">
                   <img src='images/way_1.png' width="40" alt='单频测量' />
                 </div>
           </div> -->
-        </div>
-        <div class="flex-column flex1">
-         <div class='radio-chart' id='radioChart' style="min-height: 100px;padding-top: 25px;padding-right: 15px;"></div>
+        <%--</div>--%>
+        <%--<div class="flex-column flex1">--%>
+        <div class="flex-column flex1" style="height: 200px;padding-top: 10px">
+         <div class='radio-chart' id='radioChart' stylesssssssss="min-height: 100px;padding-top: 25px;padding-right: 15px;" style="min-height: 200px"></div>
         </div>
         <!-- 自定义 -->
         <!-- <div class='radio-info flex-column flex1'> -->
