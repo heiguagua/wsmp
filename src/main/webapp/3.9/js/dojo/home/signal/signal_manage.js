@@ -175,6 +175,117 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                 })
             }
         });
+        //聚类监测站
+        var layerspt=[
+            '<div class="modal fade" id="modalsetStationPiont" tabindex="-1" role="dialog" aria-labelledby="modalsetStationPiontLabel">',
+            '<div class="modal-dialog modal-lg" role="document">',
+            '<div class="modal-content">',
+            '<div class="modal-header">',
+            '<button type="button" class="close" data-dismiss="modal" aria-label="Close">',
+            '<span aria-hidden="true">&times;</span>',
+            '</button>',
+            '<h4 class="modal-title" id="modalsetStationPiontLabel">选择监测站</h4>',
+            '</div>',
+            '<div class="modal-body">',
+            '<div role="tabpanel" class="tab-pane active " id="envim">',
+            '<div class=\'flex-row\'>',
+            '<div class=\'flex1 config-left\'id="StationPiontChecked">',
+            '<table id="StationPiontTable"></table>',
+            '</div>',
+            '</div>',
+            '</div>',
+            '</div>',
+            '<div class="modal-footer">',
+            '<button id = "spSubmitButton" type="button" class="btn btn-primary">提交</button>',
+            '<button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left:15px">取消</button>',
+            '</div>',
+            '</div>',
+            '</div>',
+            '</div>'
+        ].join("");
+        $("#setStationPiont").click(function() {
+            $("#modalsetStationPiont").remove()
+            $("body").append(layerspt)
+            // $("#StationPiontChecked").html('<table id="StationPiontTable"></table>');
+            // $("#spSubmitButton").attr("disabled",false);
+            var spv=$("#getStationPiont").val();
+            if (spv === null || spv==="" || spv === undefined) {
+                layer.alert("请输入频率");
+                return;
+            }
+            console.log(JSON.parse(spv))
+            var dd=JSON.parse(spv);
+            if(dd.length){
+                var info = Binding.getUser();
+                info = JSON.parse(info);
+                var code = info.Area.Code;
+                var stationObj = Binding.getMonitorNodes(code),dds=[];
+                stationObj = JSON.parse(stationObj);
+                console.log("xxxxxxx",stationObj,dd)
+                for(var i=0;i<dd.length;i++){
+                    for(var j=0;j<stationObj.length;j++){
+                    if(dd[i].stationId===stationObj[j].Num){
+                        dds.push({
+                            'name':stationObj[j].Name,
+                            "x":dd[i].x,
+                            "y":dd[i].y,
+                            "stationId":dd[i].stationId,
+                            "count":dd[i].count
+                        })
+                    }
+                    }
+                }
+                $('#StationPiontTable').bootstrapTable({
+                    columns: [{
+                        field:'checked',
+                        checkbox:true,
+                        title: '选择'
+                    },{
+                        field: 'name',
+                        title: '名称'
+                    },{
+                        field: 'stationId',
+                        title: '代码'
+                    }, {
+                        field: 'x',
+                        title: '经度'
+                    }, {
+                        field: 'y',
+                        title: '纬度'
+                    }, {
+                        field: 'count',
+                        title: '电平均值',
+                        width: '15%'
+                    }],
+                    data: dds
+                });
+            }
+            $("#modalsetStationPiont").modal('show');
+            $("#spSubmitButton").on("click",function(event){
+                event.preventDefault();
+                $("#spSubmitButton").attr("disabled",true);
+                var spck=  $('#StationPiontTable') .bootstrapTable('getAllSelections'),parms=[];
+                for(var i=0;i<spck.length;i++){
+                    parms.push({
+                        "x":spck[i].x,
+                        "y":spck[i].y,
+                        "stationId":spck[i].stationId,
+                        "count":spck[i].count
+                    })
+                }
+                var data = {"stationPiont":parms};
+                ajax.post("data/alarm/getFieldStrengthPosition", data, function(reslut) {
+                    var lon=reslut.lon||103.940;
+                    var lat=reslut.lat||30.830;
+                    var rangeR=reslut.rangeR||100000;
+                    initMap.selectChange([lon,lat,rangeR]);
+                    console.log(lon,lat,rangeR)
+                })
+                // initMap.selectChange([104.067923,30.679943,10000]);
+                $('#modalsetStationPiont').modal('hide')
+                   // console.log(spck)
+            })
+        });
         //重点监测配置点击事件
         //$("#modalConfig").on("shown.bs.modal",function(e){
         //  var warningID = $("#signal_list1").find('option:selected').attr("warningid");

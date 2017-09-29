@@ -84,6 +84,7 @@
 							<span id = "stationName">&nbsp;&nbsp;</span>
 						</label>
 						<div class='pull-right'>
+							<button class="btn btn-submit" id="setStationPiont">聚类监测站</button>&#160;
 							<input type="text" class="gate-filter" placeholder="请输入门限" /> <button class="btn btn-submit" id="gate-btn">提交</button>电磁覆盖率:&nbsp; <span class='coverage-number'></span>
 						</div>
 					</div>
@@ -389,6 +390,34 @@
       </div>
     </div>
   </div>
+  <%--聚类监测站--%>
+  <input type="hidden" id="getStationPiont">
+  <div class="modal fade" id="modalsetStationPiont" tabindex="-1" role="dialog" aria-labelledby="modalsetStationPiontLabel">
+	  <div class="modal-dialog modal-lg" role="document">
+		  <div class="modal-content">
+			  <div class="modal-header">
+				  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					  <span aria-hidden="true">&times;</span>
+				  </button>
+				  <h4 class="modal-title" id="modalsetStationPiontLabel">选择监测站</h4>
+			  </div>
+			  <div class="modal-body">
+				  <div role="tabpanel" class="tab-pane active " id="envim">
+					  <div class='flex-row'>
+						  <div class='flex1 config-left'id="StationPiontChecked">
+							  <table id="StationPiontTable"></table>
+						  </div>
+					  </div>
+				  </div>
+			  </div>
+			  <div class="modal-footer">
+				  <button id = "spSubmitButton" type="button" class="btn btn-primary">提交</button>
+				  <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left:15px">取消</button>
+			  </div>
+		  </div>
+	  </div>
+  </div>
+  <%--聚类监测站end--%>
   <input id = 'typeCode' class = 'after_modal_colse' style="display: none"/>
   <input id = 'stationKey' class = 'after_modal_colse'  style="display: none"/>
   <input style="display: none" id ='mapUrl' value="${mapUrl}" />
