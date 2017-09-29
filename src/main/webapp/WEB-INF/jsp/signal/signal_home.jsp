@@ -34,10 +34,11 @@
   <!--header-->
   <div class='header-bar'>
     <span class='module-name'>信号管理</span>
-    <div class='header-search'>
-		<input id='search' type='text' placeholder="请输入信号频率" />
+    <div class='header-search' style="margin-left: 2px">
+		<%--<input id='search' type='text' placeholder="请输入信号频率"  />--%>
+		<input id='search' type='text' placeholder="请输入频率" style="width:80px" />
 		<span class='search-icon'></span>
-		<span class="input-group-addon search-icon-uint">MHz</span>
+		<span class="input-group-addon search-icon-uint" style="left:80px">MHz</span>
       <div class='search-result-wrap'>
 		<ul id="search-result">
 
