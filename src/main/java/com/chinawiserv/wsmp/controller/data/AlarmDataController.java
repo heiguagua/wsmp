@@ -895,6 +895,7 @@ public class AlarmDataController {
             final Map<String, Object> signal = param.get("sigal");
 
             final Map<String, Object> station = param.get("station");
+            station.put("isManualInsert", true);
             final FreqWarningQueryResponse response = (FreqWarningQueryResponse) service.freqWarnServiceCall("query",
                     mapper.writeValueAsString(signal.get("warmingId")), FreqWarningQueryRequest.class);
 
@@ -933,7 +934,6 @@ public class AlarmDataController {
 
             res = (RadioSignalOperationReponse) service.radioSignalServiceCall("insertRadioSignal",
                     mapper.writeValueAsString(station), RadioSignalDTO.class);
-
             Map<String, Object> waringID = (Map<String, Object>) signal.get("warmingId");
             //service.getFreqWarnService().updateStatus((String) waringID.get("id"), 1);
             service.getFreqWarnService().updateSelected((String) waringID.get("id"), 1, null, (String) station.get("des"), (String) station.get("stationKey"));

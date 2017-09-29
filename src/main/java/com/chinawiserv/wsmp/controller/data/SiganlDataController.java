@@ -153,7 +153,6 @@ public class SiganlDataController {
 
 	@GetMapping(path = "/stationList", params = "id")
 	public Object stationList(@RequestParam Map<String, String> param) throws JsonProcessingException {
-
 		final List<String> reslutList = Lists.newLinkedList();
 
 		try {
