@@ -37,11 +37,7 @@ public class ArrayOfSignalTypeDTO {
     @XmlElement(name = "SignalTypeDTO", nillable = true)
     protected List<SignalTypeDTO> signalTypeDTO;
 
-    public void setSignalTypeDTO(List<SignalTypeDTO> signalTypeDTO) {
-		this.signalTypeDTO = signalTypeDTO;
-	}
-
-	/**
+    /**
      * Gets the value of the signalTypeDTO property.
      * 
      * <p>
@@ -69,5 +65,10 @@ public class ArrayOfSignalTypeDTO {
         }
         return this.signalTypeDTO;
     }
+
+	public void setSignalTypeDTO(List<SignalTypeDTO> signalTypeDTO2) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

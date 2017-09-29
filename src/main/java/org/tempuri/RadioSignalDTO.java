@@ -34,6 +34,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="SaveDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
  *         &lt;element name="ExtendFields" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="WarningFreqID" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="IsManualInsert" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
  *         &lt;element name="InvalidDate" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
  *         &lt;element name="Des" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="AppendDTOs" type="{http://tempuri.org/}ArrayOfRadioSignalAppendDTO" minOccurs="0"/&gt;
@@ -64,6 +65,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "saveDate",
     "extendFields",
     "warningFreqID",
+    "isManualInsert",
     "invalidDate",
     "des",
     "appendDTOs",
@@ -104,6 +106,8 @@ public class RadioSignalDTO {
     protected String extendFields;
     @XmlElement(name = "WarningFreqID")
     protected String warningFreqID;
+    @XmlElement(name = "IsManualInsert")
+    protected boolean isManualInsert;
     @XmlElement(name = "InvalidDate", required = true)
     @XmlSchemaType(name = "dateTime")
     protected XMLGregorianCalendar invalidDate;
@@ -396,6 +400,22 @@ public class RadioSignalDTO {
      */
     public void setWarningFreqID(String value) {
         this.warningFreqID = value;
+    }
+
+    /**
+     * 获取isManualInsert属性的值。
+     * 
+     */
+    public boolean isIsManualInsert() {
+        return isManualInsert;
+    }
+
+    /**
+     * 设置isManualInsert属性的值。
+     * 
+     */
+    public void setIsManualInsert(boolean value) {
+        this.isManualInsert = value;
     }
 
     /**

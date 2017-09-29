@@ -26,6 +26,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="TypeCodes" type="{http://tempuri.org/}ArrayOfSignalTypeDTO" minOccurs="0"/&gt;
  *         &lt;element name="AreaCodes" type="{http://tempuri.org/}ArrayOfInt" minOccurs="0"/&gt;
  *         &lt;element name="StationIDs" type="{http://tempuri.org/}ArrayOfString" minOccurs="0"/&gt;
+ *         &lt;element name="StationKey" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="IsManualInsert" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
  *         &lt;element name="StartTime" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
  *         &lt;element name="StopTime" type="{http://www.w3.org/2001/XMLSchema}dateTime"/&gt;
  *         &lt;element name="StartIndex" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
@@ -47,6 +49,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "typeCodes",
     "areaCodes",
     "stationIDs",
+    "stationKey",
+    "isManualInsert",
     "startTime",
     "stopTime",
     "startIndex",
@@ -69,6 +73,10 @@ public class RadioSignalQueryRequest {
     protected ArrayOfInt areaCodes;
     @XmlElement(name = "StationIDs")
     protected ArrayOfString stationIDs;
+    @XmlElement(name = "StationKey")
+    protected String stationKey;
+    @XmlElement(name = "IsManualInsert", required = true, type = Boolean.class, nillable = true)
+    protected Boolean isManualInsert;
     @XmlElement(name = "StartTime", required = true, nillable = true)
     @XmlSchemaType(name = "dateTime")
     protected XMLGregorianCalendar startTime;
@@ -224,6 +232,54 @@ public class RadioSignalQueryRequest {
      */
     public void setStationIDs(ArrayOfString value) {
         this.stationIDs = value;
+    }
+
+    /**
+     * 获取stationKey属性的值。
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getStationKey() {
+        return stationKey;
+    }
+
+    /**
+     * 设置stationKey属性的值。
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setStationKey(String value) {
+        this.stationKey = value;
+    }
+
+    /**
+     * 获取isManualInsert属性的值。
+     * 
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *     
+     */
+    public Boolean isIsManualInsert() {
+        return isManualInsert;
+    }
+
+    /**
+     * 设置isManualInsert属性的值。
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *     
+     */
+    public void setIsManualInsert(Boolean value) {
+        this.isManualInsert = value;
     }
 
     /**

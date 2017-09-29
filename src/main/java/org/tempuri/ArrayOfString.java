@@ -37,11 +37,7 @@ public class ArrayOfString {
     @XmlElement(nillable = true)
     protected List<String> string;
 
-    public void setString(List<String> string) {
-		this.string = string;
-	}
-
-	/**
+    /**
      * Gets the value of the string property.
      * 
      * <p>
@@ -69,5 +65,10 @@ public class ArrayOfString {
         }
         return this.string;
     }
+
+	public void setString(List<String> monitorsID) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }
