@@ -175,6 +175,84 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                 })
             }
         });
+        //聚类监测站
+        $("#setStationPiont").click(function() {
+            var spv=$("#getStationPiont").val();
+            if (spv === null || spv==="" || spv === undefined) {
+                layer.alert("请输入频率");
+                return;
+            }
+            console.log(JSON.parse(spv))
+            var dd=JSON.parse(spv);
+            if(dd.length){
+                var info = Binding.getUser();
+                info = JSON.parse(info);
+                var code = info.Area.Code;
+                var stationObj = Binding.getMonitorNodes(code),dds=[];
+                stationObj = JSON.parse(stationObj);
+                console.log("xxxxxxx",stationObj,dd)
+                for(var i=0;i<dd.length;i++){
+                    for(var j=0;j<stationObj.length;j++){
+                    if(dd[i].stationId===stationObj[j].Num){
+                        dds.push({
+                            'name':stationObj[j].Name,
+                            "x":dd[i].x,
+                            "y":dd[i].y,
+                            "stationId":dd[i].stationId,
+                            "count":dd[i].count
+                        })
+                    }
+                    }
+                }
+
+                $('#StationPiontTable').bootstrapTable({
+                    columns: [{
+                        field:'checked',
+                        checkbox:true,
+                        title: '选择'
+                    },{
+                        field: 'name',
+                        title: '名称'
+                    },{
+                        field: 'stationId',
+                        title: '代码'
+                    }, {
+                        field: 'x',
+                        title: '经度'
+                    }, {
+                        field: 'y',
+                        title: '纬度'
+                    }, {
+                        field: 'count',
+                        title: '电平均值',
+                        width: '15%'
+                    }],
+                    data: dds
+                });
+            }
+            $("#modalsetStationPiont").modal('show');
+            $("#spSubmitButton").on("click",function(){
+                var spck=  $('#StationPiontTable') .bootstrapTable('getAllSelections'),parms=[];
+                for(var i=0;i<spck.length;i++){
+                    parms.push({
+                        "x":spck[i].x,
+                        "y":spck[i].y,
+                        "stationId":spck[i].stationId,
+                        "count":spck[i].count
+                    })
+                }
+                var data = {"stationPiont":parms};
+                ajax.post("data/alarm/getFieldStrengthPosition", data, function(reslut) {
+                    var lon=reslut.lon||103.940;
+                    var lat=reslut.lat||30.830;
+                    var rangeR=reslut.rangeR||10;
+                    console.log(lon,lat,rangeR)
+                })
+                initMap.selectChange([104.067923,30.679943,10000]);
+                $('#modalsetStationPiont').modal('hide')
+                   // console.log(spck)
+            })
+        });
         //重点监测配置点击事件
         //$("#modalConfig").on("shown.bs.modal",function(e){
         //  var warningID = $("#signal_list1").find('option:selected').attr("warningid");
