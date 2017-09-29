@@ -37,7 +37,11 @@ public class ArrayOfFrequencyBand {
     @XmlElement(name = "FrequencyBand", nillable = true)
     protected List<FrequencyBand> frequencyBand;
 
-    /**
+    public void setFrequencyBand(List<FrequencyBand> frequencyBand) {
+		this.frequencyBand = frequencyBand;
+	}
+
+	/**
      * Gets the value of the frequencyBand property.
      * 
      * <p>
@@ -65,10 +69,5 @@ public class ArrayOfFrequencyBand {
         }
         return this.frequencyBand;
     }
-
-	public void setFrequencyBand(List<FrequencyBand> freqList) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }
