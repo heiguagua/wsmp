@@ -93,9 +93,9 @@
 							id='table-alarm-dealed'>
 						</table>
 					</div>
-					<div role="tabpanel" class="tab-pane" id='auto_comfirm'>
+					<div role="tabpanel" class="tab-pane" id='auto_confirm'>
 						<table class="table table-striped text-center"
-							id=''>
+							id='radio_auto_confirm'>
 						</table>
 					</div>
 				</div>

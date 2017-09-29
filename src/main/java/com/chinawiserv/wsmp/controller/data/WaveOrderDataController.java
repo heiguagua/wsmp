@@ -26,6 +26,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -259,6 +260,61 @@ public class WaveOrderDataController {
 		Map<String, Object> result = Maps.newLinkedHashMap();
 		result.put("total", alarmRows.size());
 		result.put("data", alarmRows);
+		return result;
+	}
+	
+	@PostMapping("/radioAutoConfirm")
+	public Map<String, Object> getRadioAutoConfirm(@RequestBody Map<String, Object> param) {
+		RadioSignalQueryRequest request = new RadioSignalQueryRequest();
+		request.setIsManualInsert(false);
+		ArrayOfString value = new ArrayOfString();
+		@SuppressWarnings("unchecked")
+		List<String> stationString = (List<String>) param.get("monitorsID");
+		value.setString(stationString);
+		request.setStationIDs(value );
+		ArrayOfSignalTypeDTO typeCodes = new ArrayOfSignalTypeDTO();
+		List<SignalTypeDTO> signalTypeDTO = Lists.newArrayList();
+		SignalTypeDTO e = new SignalTypeDTO();
+		e.setSignalType(1);
+		SignalTypeDTO e2 = new SignalTypeDTO();
+		e2.setSignalType(2);
+		SignalTypeDTO e3 = new SignalTypeDTO();
+		e3.setSignalType(3);
+		SignalTypeDTO e4 = new SignalTypeDTO();
+		e4.setSignalType(4);
+		signalTypeDTO.add(e );
+		signalTypeDTO.add(e2 );
+		signalTypeDTO.add(e3 );
+		signalTypeDTO.add(e4 );
+		typeCodes.setSignalTypeDTO(signalTypeDTO );
+		request.setTypeCodes(typeCodes );
+		List<RedioDetail> redioRows = Lists.newArrayList();
+		RadioSignalQueryResponse response = serviceRadioSignalSoap.queryRadioSignal(request );
+		response.getRadioSignals().getRadioSignalDTO().stream().forEach(t -> {
+			RedioDetail redio = new RedioDetail();
+			BigDecimal cFreq = new BigDecimal(t.getCenterFreq());
+			BigDecimal divisor = new BigDecimal(1000000);
+			redio.setCentor(Double.valueOf((cFreq.divide(divisor).toString())));
+			redio.setBand(t.getBandWidth()/1000);
+			redio.setId(t.getID());
+			// 设置监测站
+			List<String> monitorID = Lists.newArrayList();
+			t.getStationDTOs().getRadioSignalStationDTO().stream().forEach(t1 -> {
+				// System.out.println("=====监测站ID:"+t1.getStationNumber());
+				monitorID.add(t1.getStationNumber());
+			});
+			redio.setMonitorID(monitorID);
+			// 设置台站
+			String stationName = Optional.ofNullable(t.getRadioStation())
+					.map(m -> m.getStation())
+					.map(m -> m.getName())
+					.orElse("-");
+			redio.setStation(stationName);
+			redioRows.add(redio);
+		});
+		Map<String, Object> result = Maps.newLinkedHashMap();
+		result.put("total", redioRows.size());
+		result.put("data", redioRows);
 		return result;
 	}
 

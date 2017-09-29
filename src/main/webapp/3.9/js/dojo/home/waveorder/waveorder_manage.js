@@ -12,6 +12,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 			var MAP1 = null;
 			var AREACODE = null;
 			var MONITORS = null;
+			var INTERVAL_warning = null;
 
 			//初始化
 			function wo_init() {
@@ -91,9 +92,41 @@ define(	["ajax", "dojo/parser", "esri/map",
 							Binding.openUrl(JSON.stringify(urlObj));
 
 						})
+				// 信号自动确认 频率链接点击事件
+				$("#radio_auto_confirm").on("click", ".centerFreqA",
+						function(e) {
+							var freq = e.target.text;
+							const urlObj = {
+								ServerName : 'host1',
+								DisplayName : '单频率',
+								MultiTabable : false,
+								ReflushIfExist : true,
+								Url : '#/FrequencySingle/' + freq
+							};
+							Binding.openUrl(JSON.stringify(urlObj));
+
+						})
 
 				// 信号详情 查看链接点击事件
 				$("#table-signal-list").on("click", ".signalManageA",
+						function(e) {
+							console.log(e);
+							var freq = e.target.getAttribute("centorfreq");
+							var signalId = e.target.getAttribute("signalid");
+							console.log(freq);
+							console.log(signalId);
+							const urlObj = {
+								ServerName : 'host2',
+								DisplayName : '信号管理',
+								MultiTabable : false,
+								ReflushIfExist : true,
+								Url : 'radio/app/signal?id=sefon&cenFreg='
+										+ freq + '&signalId=' + signalId
+							};
+							Binding.openUrl(JSON.stringify(urlObj));
+						})
+				// 自动确认信号 查看链接点击事件
+				$("#radio_auto_confirm").on("click", ".signalManageA",
 						function(e) {
 							console.log(e);
 							var freq = e.target.getAttribute("centorfreq");
@@ -614,15 +647,18 @@ define(	["ajax", "dojo/parser", "esri/map",
 				return true
 			}
 
-			// 告警数据更新定时器初始化
+			// 告警数据和信号自动确认 更新定时器初始化
 			function refresh_timer_init(minutes) {
-				clearInterval(interval);
-				var interval = setInterval(task, 1000 * 60 * minutes);
+				clearInterval(INTERVAL_warning);
+				INTERVAL_warning = setInterval(task, 1000 * 60 * minutes);
 				function task() {
 					$('#table-alarm-undeal').bootstrapTable('refresh', {
 								silent : true
 							});
 					$('#table-alarm-dealed').bootstrapTable('refresh', {
+								silent : true
+							});
+					$('#radio_auto_confirm').bootstrapTable('refresh', {
 								silent : true
 							});
 				}
@@ -684,6 +720,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 				table_radio_init(monitors, userID);
 				table_alarm_undealed(monitorsID, monitors);
 				table_alarm_dealed(monitorsID, monitors);
+				radio_auto_confirm(monitorsID, monitors);
 				//改变地图中心
 				var center = new Point({
 							"x" : MONITORS[0].Longitude,
@@ -1105,6 +1142,119 @@ define(	["ajax", "dojo/parser", "esri/map",
 				};
 
 				$('#table-alarm-undeal').bootstrapTable(option)
+			}
+			
+			// 告警自动确认成信号页面
+			function radio_auto_confirm(monitorsID, monitors) {
+				$('#radio_auto_confirm').bootstrapTable("destroy");
+				var option = {
+					method : 'post',
+					contentType : "application/json", 
+					url : "data/waveorder/radioAutoConfirm", // 要请求数据的文件路径
+					striped : true, // 是否显示行间隔色
+					dataField : "data",
+					sidePagination : 'client',
+					detailView : false,
+					pageNumber : 1, // 初始化加载第一页，默认第一页
+					pagination : true, // 是否分页
+					queryParamsType : 'limit', // 查询参数组织方式
+					queryParams : function(params) {
+						params.monitorsID = monitorsID;
+						return params
+					}, // 请求服务器时所传的参数
+					pageSize : 16, // 单页记录数
+					pageList : [5, 10, 20, 30], // 分页步进值
+					clickToSelect : true, // 是否启用点击选中行
+					//					showRefresh : true,
+					responseHandler : function(res) {
+						return res;
+					},
+					columns : [{
+						 	align: 'center',
+							field : 'centor',
+							title : '频率(MHz)',
+							titleTooltip : "频率(MHz)",
+							sortable : true,
+							sortName : "centor",
+							width : '15%',
+							formatter : function(value, row, index) {
+								return '<a class="centerFreqA">' + value
+										+ '</a>';
+							}
+							
+						}, {
+							align: 'center',
+							field : 'band',
+							title : '带宽(kHz)',
+							width : '15%',
+							titleTooltip : "带宽(kHz)",
+							sortable : true
+						}, {
+							align: 'center',
+							field : 'success_rate',
+							title : '监测发射功率',
+							width : '18%',
+							titleTooltip : "监测发射功率",
+							sortable : true
+						}, {
+							align: 'center',
+							field : 'monitorID',
+							title : '监测站',
+							width : '20%',
+							titleTooltip : "监测站",
+							sortable : true,
+							sortName : "monitorID",
+							formatter : function(value, row, index) {
+								var monitors = getMonitors(AREACODE);
+								var content = "";
+								for (var i = 0; i < value.length; i++) {
+									for (var j = 0; j < monitors.length; j++) {
+										if (value[i] == monitors[j].Num) {
+											value[i] = monitors[j].Name;
+											var sub_content = "<div class='popover-item'>"
+													+ value[i] + "</div>";
+											content += sub_content;
+										}
+									}
+								}
+								return '<div class="dpopover" data-container="body" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
+										+ content + '">' + value + '</div>';
+							},
+							events : {
+
+							}
+						}, {
+							align: 'center',
+							field : 'station',
+							title : '发射源',
+							width : '20%',
+							titleTooltip : "发射源",
+							formatter : function(value, row, index) {
+								value = value == null ? "-" : value;
+								return value;
+							}
+						}, {
+							field : 'id',
+							visible : false,
+							formatter : function(value, row, index) {
+								return value;
+							}
+						}, {
+							align: 'center',
+							field : "signalManage",
+							formatter : function(value, row, index) {
+								return '<a signalId=' + row.id
+										+ ' class="signalManageA" centorFreq='
+										+ row.centor + '>查看</a>';
+							}
+						}],
+					onAll:function(){
+						$("#radio_auto_confirm").find(".dpopover").popover({
+							html : true
+						});
+					}
+				};
+				$('#radio_auto_confirm').bootstrapTable(option);
 			}
 
 			// 信号统计表格
