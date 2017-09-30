@@ -1,5 +1,49 @@
 package com.chinawiserv.wsmp.controller.data;
 
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+
+import java.math.BigInteger;
+import java.text.DecimalFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.function.BinaryOperator;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.tempuri.FreqWarningDTO;
+import org.tempuri.FreqWarningOperationResponse;
+import org.tempuri.FreqWarningQueryRequest;
+import org.tempuri.FreqWarningQueryResponse;
+import org.tempuri.RStatQuerySignalsRequest;
+import org.tempuri.RStatQuerySignalsResponse2;
+import org.tempuri.RadioFreqDTO;
+import org.tempuri.RadioSignalDTO;
+import org.tempuri.RadioSignalOperationReponse;
+import org.tempuri.RadioStationDTO;
+import org.tempuri.RadioStationSignalDTO;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
@@ -10,9 +54,7 @@ import com.chinawiserv.wsmp.client.HttpServiceConfig;
 import com.chinawiserv.wsmp.client.WebServiceSoapFactory;
 import com.chinawiserv.wsmp.hbase.HbaseClient;
 import com.chinawiserv.wsmp.hbase.query.OccAndMax;
-import com.chinawiserv.wsmp.javatoc.LevelCompute;
 import com.chinawiserv.wsmp.javatoc.LocateSignalCompute;
-import com.chinawiserv.wsmp.javatoc.model.LevelResult;
 import com.chinawiserv.wsmp.javatoc.model.SignalResult;
 import com.chinawiserv.wsmp.kriging.Interpolation;
 import com.chinawiserv.wsmp.model.LevelLocate;
@@ -27,25 +69,6 @@ import com.sefon.ws.model.xsd.StationInfo;
 import com.sefon.ws.model.xsd.StationInfoPagedResult;
 import com.sefon.ws.model.xsd.StationQuerySpecInfo;
 import com.sefon.ws.service.impl.StationService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
-import org.tempuri.*;
-
-import java.math.BigInteger;
-import java.text.DecimalFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.util.function.BinaryOperator;
-
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
 
 @RestControllerAdvice
 @RequestMapping("/data/alarm")
@@ -681,10 +704,7 @@ public class AlarmDataController {
     public @ResponseBody
     SignalResult getFieldStrengthPosition(@RequestBody Map<String, Object> param) {
     	Logger.info("参数param{} ", param);
-    	String stationPiont = param.get("stationPiont").toString();
-//    	String threshold = param.get("threshold").toString();
-    	@SuppressWarnings("rawtypes")
-		List<Map> list = JSONObject.parseArray(stationPiont, Map.class);
+    	List<Map> list=(List<Map>)param.get("stationPiont");
 //    	element.put("x", station.getFlon() + "");
 //		element.put("y", station.getFlat() + "");
 //		element.put("count", (station.getLevel()) + "");
@@ -825,7 +845,7 @@ public class AlarmDataController {
             if (sortName == null) {
                 stations = reslut.getStations().stream().map(s -> {
                     String id = s.getStationID();
-                    String stationName = s.getSTATName();
+                    String stationName = s.getSTATName()== null ? "-" :s.getSTATName();
                     String centerFreqStr = s.getFREQEFB() == null ? "-" : s.getFREQEFB().toString();
                     String bandWidth = s.getNETBand() == null ? "-" : s.getNETBand().toString();
                     return new Station(id, stationName, centerFreqStr, bandWidth);
@@ -835,7 +855,7 @@ public class AlarmDataController {
                 stations = reslut.getStations().stream().sorted((StationInfo c1, StationInfo c2) -> c1.getFREQEFB() < c2.getFREQEFB() ? 1 : -1).map(s -> {
 
                     String id = s.getStationID();
-                    String stationName = s.getSTATName();
+                    String stationName = s.getSTATName()== null ? "-" :s.getSTATName();
                     String centerFreqStr = s.getFREQEFB() == null ? "-" : s.getFREQEFB().toString();
                     String bandWidth = s.getNETBand() == null ? "-" : s.getNETBand().toString();
                     return new Station(id, stationName, centerFreqStr, bandWidth);
@@ -845,7 +865,7 @@ public class AlarmDataController {
                 stations = reslut.getStations().stream().sorted((StationInfo c1, StationInfo c2) -> c1.getFREQEFB() > c2.getFREQEFB() ? 1 : -1).map(s -> {
 
                     String id = s.getStationID();
-                    String stationName = s.getSTATName();
+                    String stationName = s.getSTATName()== null ? "-" :s.getSTATName();
                     String centerFreqStr = s.getFREQEFB() == null ? "-" : s.getFREQEFB().toString();
                     String bandWidth = s.getNETBand() == null ? "-" : s.getNETBand().toString();
                     return new Station(id, stationName, centerFreqStr, bandWidth);
@@ -857,7 +877,7 @@ public class AlarmDataController {
                 stations = reslut.getStations().stream().sorted((StationInfo c1, StationInfo c2) -> c1.getNETBand() > c2.getNETBand() ? 1 : -1).map(s -> {
 
                     String id = s.getStationID();
-                    String stationName = s.getSTATName();
+                    String stationName = s.getSTATName()== null ? "-" :s.getSTATName();
                     String centerFreqStr = s.getFREQEFB() == null ? "-" : s.getFREQEFB().toString();
                     String bandWidth = s.getNETBand() == null ? "-" : s.getNETBand().toString();
                     return new Station(id, stationName, centerFreqStr, bandWidth);
@@ -867,7 +887,7 @@ public class AlarmDataController {
                 stations = reslut.getStations().stream().sorted((StationInfo c1, StationInfo c2) -> c1.getNETBand() < c2.getNETBand() ? 1 : -1).map(s -> {
 
                     String id = s.getStationID();
-                    String stationName = s.getSTATName();
+                    String stationName = s.getSTATName()== null ? "-" :s.getSTATName();
                     String centerFreqStr = s.getFREQEFB() == null ? "-" : s.getFREQEFB().toString();
                     String bandWidth = s.getNETBand() == null ? "-" : s.getNETBand().toString();
                     return new Station(id, stationName, centerFreqStr, bandWidth);

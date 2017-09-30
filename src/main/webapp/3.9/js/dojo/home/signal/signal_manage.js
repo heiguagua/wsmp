@@ -2,8 +2,8 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
     var initMap;
     var time = null;
     function setMap(init) {
-        console.log("+++++++++++++++++++++");
-        console.log(init);
+        //console.log("+++++++++++++++++++++");
+        //console.log(init);
         initMap = init;
     }
     function init() {
@@ -24,10 +24,14 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
             })
             // 信号列表change事件
         $("#signal_list1 .select2-picker").change(function() {
-            var FromSingal = $("#FromSingal").val();
-            if (FromSingal != null && FromSingal.length != 0) {
-                return;
-            }
+            // var FromSingal = $("#FromSingal").val();
+            // if (FromSingal != null && FromSingal.length != 0) {
+            //     ///////////////////////////////////////
+            //     changeView();
+            //     mapinit.stationChange();
+            //     ///////////////////////////////////////
+            //     return;
+            // }
             destroy_chart_table();
             var selected_val = $(this).val();
             getStations(selected_val);
@@ -43,14 +47,6 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
         configModalSubmit();
         //音频点击操作事件
         audio_data.autoClickInit();
-        //$("#audio").on("click", function() {
-        //    if ($(this).is(":checked")) {
-        //        $("#audio-wrap").slideDown();
-        //    } else {
-        //        $("#audio-wrap").slideUp();
-        //        wavesurfer.destroy();
-        //    }
-        //})
         // 频谱数据选择数据按钮事件
         $("#spectrum-choose-btn").on("click", function(ev) {
                 if ($("#spectrum-choose-list").is(":hidden")) {
@@ -77,11 +73,6 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
             })
             //关闭音频播放
         audio_data.audioloseClick();
-        //$("#audio-close").on("click", function() {
-        //    $("#audio-wrap").slideUp();
-        //    $("#audio").prop("checked", false);
-        //    wavesurfer.destroy();
-        //})
         //选择频谱
         $("#frequency").on("click", function() {
                 if ($(this).is(":checked")) {
@@ -149,7 +140,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                 layer.alert("请输入频率");
                 return;
             }
-            console.log(warningID);
+            //console.log(warningID);
             if (warningID && centorFreq) {
                 var data = {};
                 data.warningID = warningID;
@@ -176,7 +167,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
             }
         });
         //聚类监测站
-        var layerspt=[
+        var layerspt = [
             '<div class="modal fade" id="modalsetStationPiont" tabindex="-1" role="dialog" aria-labelledby="modalsetStationPiontLabel">',
             '<div class="modal-dialog modal-lg" role="document">',
             '<div class="modal-content">',
@@ -206,44 +197,45 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
         $("#setStationPiont").click(function() {
             $("#modalsetStationPiont").remove()
             $("body").append(layerspt)
-            // $("#StationPiontChecked").html('<table id="StationPiontTable"></table>');
-            // $("#spSubmitButton").attr("disabled",false);
-            var spv=$("#getStationPiont").val();
-            if (spv === null || spv==="" || spv === undefined) {
+                // $("#StationPiontChecked").html('<table id="StationPiontTable"></table>');
+                // $("#spSubmitButton").attr("disabled",false);
+            var spv = $("#getStationPiont").val();
+            if (spv === null || spv === "" || spv === undefined) {
                 layer.alert("请输入频率");
                 return;
             }
-            console.log(JSON.parse(spv))
-            var dd=JSON.parse(spv);
-            if(dd.length){
+            //console.log(JSON.parse(spv))
+            var dd = JSON.parse(spv);
+            if (dd.length) {
                 var info = Binding.getUser();
                 info = JSON.parse(info);
                 var code = info.Area.Code;
-                var stationObj = Binding.getMonitorNodes(code),dds=[];
+                var stationObj = Binding.getMonitorNodes(code),
+                    dds = [];
                 stationObj = JSON.parse(stationObj);
-                console.log("xxxxxxx",stationObj,dd)
-                for(var i=0;i<dd.length;i++){
-                    for(var j=0;j<stationObj.length;j++){
-                    if(dd[i].stationId===stationObj[j].Num){
-                        dds.push({
-                            'name':stationObj[j].Name,
-                            "x":dd[i].x,
-                            "y":dd[i].y,
-                            "stationId":dd[i].stationId,
-                            "count":dd[i].count
-                        })
-                    }
+                //console.log("xxxxxxx", stationObj, dd)
+                for (var i = 0; i < dd.length; i++) {
+                    for (var j = 0; j < stationObj.length; j++) {
+                        if (dd[i].stationId === stationObj[j].Num) {
+                            dds.push({
+                                'name': stationObj[j].Name,
+                                "x": dd[i].x,
+                                "y": dd[i].y,
+                                "stationId": dd[i].stationId,
+                                "count": dd[i].count
+                            })
+                        }
                     }
                 }
                 $('#StationPiontTable').bootstrapTable({
                     columns: [{
-                        field:'checked',
-                        checkbox:true,
+                        field: 'checked',
+                        checkbox: true,
                         title: '选择'
-                    },{
+                    }, {
                         field: 'name',
                         title: '名称'
-                    },{
+                    }, {
                         field: 'stationId',
                         title: '代码'
                     }, {
@@ -261,55 +253,36 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                 });
             }
             $("#modalsetStationPiont").modal('show');
-            $("#spSubmitButton").on("click",function(event){
+            $("#spSubmitButton").on("click", function(event) {
                 event.preventDefault();
-                $("#spSubmitButton").attr("disabled",true);
-                var spck=  $('#StationPiontTable') .bootstrapTable('getAllSelections'),parms=[];
-                for(var i=0;i<spck.length;i++){
+                $("#spSubmitButton").attr("disabled", true);
+                var spck = $('#StationPiontTable').bootstrapTable('getAllSelections'),
+                    parms = [];
+                for (var i = 0; i < spck.length; i++) {
                     parms.push({
-                        "x":spck[i].x,
-                        "y":spck[i].y,
-                        "stationId":spck[i].stationId,
-                        "count":spck[i].count
+                        "x": spck[i].x,
+                        "y": spck[i].y,
+                        "stationId": spck[i].stationId,
+                        "count": spck[i].count
                     })
                 }
-                var data = {"stationPiont":parms};
+                var data = {
+                    "stationPiont": parms
+                };
                 ajax.post("data/alarm/getFieldStrengthPosition", data, function(reslut) {
-                    var lon=reslut.lon||103.940;
-                    var lat=reslut.lat||30.830;
-                    var rangeR=reslut.rangeR||100000;
-                    initMap.selectChange([lon,lat,rangeR]);
-                    console.log(lon,lat,rangeR)
-                })
-                // initMap.selectChange([104.067923,30.679943,10000]);
+                        var lon = reslut.lon || 103.940;
+                        var lat = reslut.lat || 30.830;
+                        var rangeR = reslut.rangeR || 100000;
+                        initMap.selectChange([lon, lat, rangeR * 1000]);
+                        //console.log(lon, lat, rangeR)
+                    }, function(reslut) {
+                        initMap.selectChange([104.067923, 30.679943, 10000]);
+                    })
+                    // initMap.selectChange([104.067923,30.679943,10000]);
                 $('#modalsetStationPiont').modal('hide')
-                   // console.log(spck)
+                    // //console.log(spck)
             })
         });
-        //重点监测配置点击事件
-        //$("#modalConfig").on("shown.bs.modal",function(e){
-        //  var warningID = $("#signal_list1").find('option:selected').attr("warningid");
-        //  var centorFreq = $("#signal_list1").find('option:selected').attr("centorfreq");
-        //  console.log(warningID);
-        //  var data = {};
-        //  data.warningID = warningID;
-        //  data.centorFreq = centorFreq;
-        //  var str = JSON.stringify(data);
-        //  $.ajax({
-        //  url : 'signal/importantMonitor',
-        //  type : 'post',
-        //  data : str,//传输数据
-        //  contentType : 'application/json',//传输数据类型
-        //  dataType : 'html',//返回数据类型
-        //  success : function (html) {
-        //      $("#important_monitor").html(html);
-        //      $("#modalConfig").find(".time-picker").datetimepicker({
-        //
-        //      });
-        //  }
-        //})
-        //});
-        //
         //重点监测更新点击事件
         $("#important_monitor").on("click", "#buttonUpdate", function(e) {
             var valid = beforeSubmit(document.importantMonitorForm);
@@ -357,42 +330,6 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                 });
                 return false;
             }
-          /*  if (document.importantMonitorForm.IQCount.value > document.importantMonitorForm.totalIQCount.value) {
-                $("#totalIQCount").focus();
-                $("#totalIQCount").val("");
-                layer.tips('采集总数 不能小于 单次采集次数 !', '#totalIQCount', {
-                    tips: [1, '#FF5722'],
-                    time: 4000
-                });
-                return false;
-            }
-            if (document.importantMonitorForm.specCount.value > document.importantMonitorForm.totalSpecCount.value) {
-                $("#totalSpecCount").focus();
-                $("#totalSpecCount").val("");
-                layer.tips('采集总数 不能小于 单次采集次数 !', '#totalSpecCount', {
-                    tips: [1, '#FF5722'],
-                    time: 4000
-                });
-                return false;
-            }
-            if (document.importantMonitorForm.featureCount.value > document.importantMonitorForm.totalFeatureCount.value) {
-                $("#totalFeatureCount").focus();
-                $("#totalFeatureCount").val("");
-                layer.tips('采集总数 不能小于 单次采集次数 !', '#totalFeatureCount', {
-                    tips: [1, '#FF5722'],
-                    time: 4000
-                });
-                return false;
-            }
-            if (document.importantMonitorForm.ITUCount.value > document.importantMonitorForm.totalITUCount.value) {
-                $("#totalITUCount").focus();
-                $("#totalITUCount").val("");
-                layer.tips('采集总数 不能小于 单次采集次数 !', '#totalITUCount', {
-                    tips: [1, '#FF5722'],
-                    time: 4000
-                });
-                return false;
-            }*/
             if (document.importantMonitorForm.audioTimespan.value > document.importantMonitorForm.totalAudioTimespan.value && document.importantMonitorForm.totalAudioTimespan.value != -1) {
                 $("#totalAudioTimespan").focus();
                 $("#totalAudioTimespan").val("");
@@ -419,38 +356,6 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                 $("#duration").focus();
                 return false
             }
-            /*if (!document.importantMonitorForm.IQCount.validity.valid) {
-                $("#IQCount").focus();
-                return false
-            }
-            if (!document.importantMonitorForm.totalIQCount.validity.valid) {
-                $("#totalIQCount").focus();
-                return false
-            }
-            if (!document.importantMonitorForm.specCount.validity.valid) {
-                $("#specCount").focus();
-                return false
-            }
-            if (!document.importantMonitorForm.totalSpecCount.validity.valid) {
-                $("#totalSpecCount").focus();
-                return false
-            }
-            if (!document.importantMonitorForm.featureCount.validity.valid) {
-                $("#featureCount").focus();
-                return false
-            }
-            if (!document.importantMonitorForm.totalFeatureCount.validity.valid) {
-                $("#totalFeatureCount").focus();
-                return false
-            }
-            if (!document.importantMonitorForm.ITUCount.validity.valid) {
-                $("#ITUCount").focus();
-                return false
-            }
-            if (!document.importantMonitorForm.totalITUCount.validity.valid) {
-                $("#totalITUCount").focus();
-                return false
-            }*/
             if (!document.importantMonitorForm.audioTimespan.validity.valid) {
                 $("#audioTimespan").focus();
                 return false
@@ -463,11 +368,11 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
         }
         //重点监测添加点击事件
         $("#important_monitor").on("click", "#buttonInsert", function(e) {
-            //console.log(document.importantMonitorForm)
+            ////console.log(document.importantMonitorForm)
             var valid = beforeSubmit(document.importantMonitorForm);
             if (valid) {
                 var str = $("#important-monitor-form").serialize();
-                //console.log(str)
+                ////console.log(str)
                 $.ajax({
                     url: 'signal/importantMonitorCreateOrUpdate',
                     type: 'post',
@@ -490,11 +395,6 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
         });
         //重点监测删除点击事件
         $("#important_monitor").on("click", "#buttonDelete", function(e) {
-            //确实是否删除
-            //          layer.confirm('is not?', {icon: 3, title:'提示'}, function(index){
-            //                console.log(index);
-            //                layer.close(index);
-            //              });
             var str = $("#important-monitor-form").serialize();
             $.ajax({
                 url: 'signal/importantMonitorDelete',
@@ -537,36 +437,23 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
     }
     function submitButton() {
         // $("#submitButton").click(function() {
-           $("#submitButton").on('click',function(event){
-                event.preventDefault();
-                $("#submitButton").attr('disabled', 'disabled');
+        $("#submitButton").on('click', function(event) {
+            event.preventDefault();
+            $("#submitButton").attr('disabled', 'disabled');
             var data = {};
             var stationKey = $("#stationKey").val();
             var typeCode = $("#typeCode").val();
-            //console.log("typeCode:"+typeCode)
+            ////console.log("typeCode:"+typeCode)
             var des = $("#des").val();
-            //console.log("备注信息:"+des.length)
+            ////console.log("备注信息:"+des.length)
             if (des && des.length > 255) {
                 layer.alert('备注信息不能超过255个字符');
                 return
             }
             var id = $("#signal_list1").find("option:selected").val();
             typeCode = parseInt(typeCode);
-            //console.log($("#table-station-list").find(".no-records-found").length==0)
+            ////console.log($("#table-station-list").find(".no-records-found").length==0)
             //var tableIsHasData =$("#table-station-list").find(".no-records-found").length==0;//true表示有数据，false表示无数据
-            //当信号不是非法信号和不明信号时，模态框提交内容必需要选中台站某行
-            //if(typeCode ==2&& !stationKey){
-            //    if(!tableIsHasData){
-            //        $("#submitButton").attr('disabled','true');
-            //        layer.alert('没有台站列表信息，请先添加台站');
-            //        return
-            //    }else if(tableIsHasData){
-            //        $("#submitButton").removeAttr('disabled');
-            //        layer.alert('请选择要关联的台站');
-            //        return
-            //    }
-            //
-            //}
             data.id = id;
             data.typeCode = typeCode;
             data.stationKey = stationKey;
@@ -599,7 +486,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                     params.historyType = $('#typeCodes').val();
                     var isInvalid = $('#isNormal').is(":checked") ? $('#isNormal').val() : $('#noNormal').val();
                     params.isInvalid = parseInt(isInvalid);
-                    console.log('isInvalid:' + params.isInvalid);
+                    //console.log('isInvalid:' + params.isInvalid);
                     if (params.isInvalid) { //恢复正常,结束时间可选；
                         var invalidDate = $('#stopTime').val();
                         if (invalidDate) {
@@ -612,8 +499,8 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                         params.invalidDate = invalidDate;
                     }
                     //params= JSON.stringify(params);
-                    //console.log("添加违规记录参数："+params);
-                    //console.log("添加还是修改："+addOpUpdate);
+                    ////console.log("添加违规记录参数："+params);
+                    ////console.log("添加还是修改："+addOpUpdate);
                     if (addOpUpdate) {
                         if (params.isInvalid == 1) {
                             ajax.put("data/signal/AbnormalHistoryByInvaliDate", params, function() {
@@ -663,7 +550,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
             var kmz = $('#search').val();
             var id = $("#signal_list1").find('option:selected').val(); //选中的时间的id
             $("#typeCode").val($(this).val());
-            //console.log("typeCode:"+$(this).val(),$("#typeCode").val())
+            ////console.log("typeCode:"+$(this).val(),$("#typeCode").val())
             var text = $("#signal_list1").find('option:selected').attr("des");
             if (text == undefined) {
                 text = '';
@@ -745,7 +632,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
             $("#stopTime").change(function(e) {
                 var timestamp1 = Date.parse(new Date($("#startTime").val())); //开始时间的时间戳
                 var timestamp2 = Date.parse(new Date($("#stopTime").val()))
-                console.log(timestamp1 - timestamp2);
+                //console.log(timestamp1 - timestamp2);
                 if (timestamp1 > timestamp2) { //如果开始时间大于结束时间
                     layer.alert('结束时间不能大于开始时间');
                     $("#stopTime").val('');
@@ -764,30 +651,17 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
             });
             //查询违规记录
             var data = {};
-            console.log('查询违规记录:' + id);
+            //console.log('查询违规记录:' + id);
             if (id != "") {
                 data.id = id;
                 ajax.get("data/signal/AbnormalHistory", data, function(result) {
-                    console.log(result);
+                    //console.log(result);
                     if (result.id != '') {
                         $("#addOrUpdateName").html('修改违规记录');
                         $("#important-monitor-form").attr("style", "display:block;")
                         $("#searchId").val(result.id); //通过此value判断是否是修改违规记录还是新增违规记录
                         $('#startTime').val(result.saveDate); //开始时间
                         $('#typeCodes').val(result.historyType); //类型
-                        ////结果类型是否恢复正常，是显示结束时间，否不显示
-                        //var type= parseInt(result.isInvalid);
-                        //switch (type) {
-                        //    case 0:
-                        //        $("#noNormal").attr("checked", "checked");
-                        //        $("#stationWrap").find(".endTimeForm").attr('style','display:none');
-                        //        break;
-                        //    case 1:
-                        //        $("#isNormal").attr("checked", "checked");
-                        //        $('#stopTime').val(result.historyType);//结束时间
-                        //        $("#stationWrap").find(".endTimeForm").attr('style','display:block');
-                        //        break
-                        //}
                         $("#noNormal").attr("checked", "checked");
                         $("#stationWrap").find(".endTimeForm").attr('style', 'display:none');
                     } else {
@@ -815,7 +689,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                 queryParams: function(params) {
                     var info = Binding.getUser();
                     info = JSON.parse(info);
-                    console.log(info);
+                    //console.log(info);
                     var codes = info.Area.Citys;
                     var codeList = [];
                     for (var index = 0; index < codes.length; index++) {
@@ -823,10 +697,10 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                     }
                     codeList.push(info.Area.Code);
                     var codeStr = JSON.stringify(codeList);
-                    console.log(codeStr);
+                    //console.log(codeStr);
                     codeStr = codeStr.replace("[", "").replace("]", "");
                     var centorFreq = $('#signal_list1').find('option:selected').attr("centorFreq");
-                    //console.log(centorFreq);
+                    ////console.log(centorFreq);
                     params.areaCode = codeStr;
                     params.centorFreq = centorFreq;
                     return params
@@ -839,7 +713,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                 },
                 onClickRow: function(row) {
                     //data.id = row.signalId;
-                    console.log(row);
+                    //console.log(row);
                     $("#stationKey").val(row.id);
                     //                              ajax.post("data/alarm/instersingal",data,function(){
                     //
@@ -889,87 +763,6 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
             $("#modalStationAlarm").modal();
         });
         //合法违规信号
-        //$("#undeclared").click(function() {
-        //    var value = $('option:selected').val();
-        //    var kmz = $('#search').val();
-        //    var data = {};
-        //    var typeCode = $(this).val();
-        //    $("#typeCode").val(typeCode);
-        //    data.type = "none";
-        //    var temp = '<div class="header-search"><input type="text" placeholder="输入中心频率">' +
-        //        '<span class="search-icon"></span></div>' +
-        //        '<table class="table table-striped" id="table-station-list"></table>' +
-        //        '<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息"></textarea></div>';
-        //    $("#stationWrap").html("");
-        //    $("#stationWrap").html(temp);
-        //    $('#table-station-list').bootstrapTable({
-        //        method : 'get',
-        //        contentType : "application/x-www-form-urlencoded", //必须要有！！！！
-        //        striped : true, //是否显示行间隔色
-        //        dataField : "rows", //bootstrap table 可以前端分页也可以后端分页，这里
-        //        //我们使用的是后端分页，后端分页时需返回含有total：总记录数,这个键值好像是固定的
-        //        //rows： 记录集合 键值可以修改  dataField 自己定义成自己想要的就好
-        //        detailView : false,
-        //        pageNumber : 1, //初始化加载第一页，默认第一页
-        //        pagination : true, //是否分页
-        //        url : "data/alarm/StationInfo",
-        //        queryParamsType : 'limit', //查询参数组织方式
-        //        queryParams : function(params) {
-        //            var info = Binding.getUser();
-        //
-        //            info = JSON.parse(info);
-        //            console.log(info);
-        //            var codes = info.Area.Citys;
-        //            var codeList = [];
-        //
-        //            for (var index =0;index<codes.length;index++){
-        //                codeList.push(codes[index].Code);
-        //            }
-        //            codeList.push(info.Area.Code);
-        //            var codeStr = JSON.stringify(codeList);
-        //
-        //            console.log(codeStr);
-        //            codeStr = codeStr.replace("[","").replace("]","");
-        //            params.areaCode = codeStr;
-        //
-        //            return params
-        //        }, //请求服务器时所传的参数
-        //        onClickRow : function(row) {
-        //            //data.id = row.signalId;
-        //            $("#stationId").val(row.id);
-        //        //                                ajax.post("data/alarm/instersingal",data,function(){
-        //        //
-        //        //                                });
-        //        },
-        //        sidePagination : 'server', //指定服务器端分页
-        //        pageSize : 7, //单页记录数
-        //        pageList : [5, 10, 20, 30], //分页步进值
-        //        clickToSelect : true, //是否启用点击选中行
-        //        responseHandler : function(res) {
-        //            return res;
-        //        },
-        //        columns : [{
-        //            field : 'stationName',
-        //            title : '台站名称'
-        //        }, {
-        //            field : 'centerFrequency',
-        //            title : '中心频率（MHz）',
-        //            formatter : function(value, row, index) {
-        //                return '<a>' + value + '</a>';
-        //            }
-        //        }, {
-        //            field : 'tapeWidth',
-        //            title : '带宽（kHz）'
-        //        }]
-        //    });
-        //
-        //    $('#table-station-list').on('click-row.bs.table', function(row, $element, field) {
-        //        $('#table-station-list tr').removeClass("selected");
-        //        field.addClass("selected");
-        //    });
-        //
-        //    $("#modalStationAlarm").modal();
-        //});
         //已知信号(已知)
         $("#nonlocal_station").click(function() {
             var value = $('option:selected').val();
@@ -983,8 +776,6 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
             $("#typeCode").val(typeCode);
             data.type = "none";
             var temp =
-                //'<div class="header-search"><input type="text" placeholder="输入中心频率">' +
-                //'<span class="search-icon"></span></div>' +
                 '<table class="table table-striped" id="table-station-list"></table>' +
                 '<button type="button" class="btn btn-primary addStation">添加台站</button>' +
                 '<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息">' + text + '</textarea></div>';
@@ -1001,7 +792,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                 reopenParam.ReflushIfExist = "False";
                 reopenParam.Url = "RadioStationViewModel";
                 var paramStr = JSON.stringify(reopenParam)
-                    //console.log(paramStr)
+                    ////console.log(paramStr)
                 Binding.openUrl(paramStr);
             });
             $('#table-station-list').bootstrapTable({
@@ -1025,7 +816,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                 queryParams: function(params) {
                     var info = Binding.getUser();
                     info = JSON.parse(info);
-                    console.log(info);
+                    //console.log(info);
                     var codes = info.Area.Citys;
                     var codeList = [];
                     var centorFreq = $('#signal_list1').find('option:selected').attr("centorFreq");
@@ -1034,7 +825,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                     }
                     codeList.push(info.Area.Code);
                     var codeStr = JSON.stringify(codeList);
-                    console.log(codeStr);
+                    //console.log(codeStr);
                     codeStr = codeStr.replace("[", "").replace("]", "");
                     params.areaCode = codeStr;
                     params.centorFreq = centorFreq;
@@ -1043,9 +834,6 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                 onClickRow: function(row) {
                     //data.id = row.signalId;
                     $("#stationId").val(row.id);
-                    //                              ajax.post("data/alarm/instersingal",data,function(){
-                    //
-                    //                              });
                 },
                 sidePagination: 'server', //指定服务器端分页
                 pageSize: 10, //单页记录数
@@ -1122,21 +910,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
             $("#modalStationAlarm").modal();
         });
     }
-    function radioTypeUpdataClick() {
-        //      $(".radio").click(function(){
-        //          var typeCode = $(this).val();
-        //          var id = $("#signal_list1").find('option:selected').val();
-        //          var data = {};
-        //
-        //          data.typeCode = typeCode;
-        //          data.id =id;
-        //
-        //          ajax.put("data/signal/one/update",data,function(){
-        //              console.log("succed")
-        //          });
-        //
-        //      });
-    }
+    function radioTypeUpdataClick() {}
     function destroy_chart_table() {
         // 清除图表
         spectrum_data.destroy();
@@ -1163,7 +937,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
         });
         $(".search-icon").click(function() {
             getFreqList();
-            console.log(initMap)
+            //console.log(initMap)
             initMap.selectChange();
             // mapinit.stationChange();
         });
@@ -1183,22 +957,22 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
         data.beginFreq = val;
         data.endFreq = val;
         var info = Binding.getUser();
-        console.log(info);
+        //console.log(info);
         info = JSON.parse(info);
         var stationList = [];
         var codes = info.Area.Code;
         var stations = Binding.getMonitorNodes(codes);
         stations = JSON.parse(stations);
-        console.log(stations);
+        //console.log(stations);
         var stationCodeList = {};
         stationCodeList.string = stationList;
         for (var index = 0; index < stations.length; index++) {
-            console.log(stations[index].Num);
+            //console.log(stations[index].Num);
             stationList.push(stations[index].Num);
         }
         data.stationIDs = stationCodeList;
         //$("#signal_list1 .select2-picker").html('');
-        console.log(data);
+        //console.log(data);
         $("#signal_list1 .select2-picker").html('');
         $("#signal_detail").html('');
         data = JSON.stringify(data);
@@ -1257,9 +1031,9 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                     }
                 }
             }
-            console.log(html);
+            //console.log(html);
             $("#station-list2").append(html);
-            console.log($("#station-list2"));
+            //console.log($("#station-list2"));
             changeView();
         });
     }
@@ -1289,7 +1063,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
         iq_data.init(stationcode, centorfreq, beginTime, endTime);
         // 加载音频数据
         audio_data.init(stationcode, centorfreq, beginTime, endTime);
-        // console.log(initMap);
+        // //console.log(initMap);
         initMap.selectChange();
     }
     function changeFirstChartView(stationcode) {
@@ -1311,145 +1085,225 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
     var month_total_length = 0; // x轴数据总数
     var drag_flag = false; // 月占用度是否拖拽
     function initMonthchart(levelParam) {
-        console.log(levelParam.monthOcc.xAxis)
+        //console.log(levelParam.monthOcc.xAxis)
         var optionMonth1 = {};
         if (levelParam.monthOcc && levelParam.monthOcc.xAxis.length && levelParam.monthOcc.noneZeroSeries != null) {
-            optionMonth1 = {
-                color: ['rgb(55,165,255)'],
-                tooltip: {
-                    // 'trigger': 'axis',
-                    // formatter: function(param) {
-                    //     console.log(param)
-                    //     month_start_index_temp = param[0].dataIndex;
-                    //     month_end_index = param[0].dataIndex;
-                    //     var time = param[0].name + '';
-                    //     // console.log(time)
-                    //     var year = time.substring(0, 4);
-                    //     var month = time.substring(4, 6);
-                    //     var day = time.substring(6);
-                    //     if (month.substring(0, 1) == '0') {
-                    //         month = month.substring(1);
-                    //     }
-                    //     if (day.substring(0, 1) == '0') {
-                    //         day = day.substring(1);
-                    //     }
-                    //     if (param[0].value != null) {
-                    //         return year + '年' + month + '月' + day + '日' + "占用度" + param[0].value.toFixed(2) + "%";
-                    //     } else if (param[1].value != null) {
-                    //         return year + '年' + month + '月' + day + '日' + "占用度" + param[1].value.toFixed(2) + "%";
-                    //     } else {
-                    //         return "没有数据";
-                    //     }
-                    // }
-                    //"{a} <br/>{b}: {c} ({d}%)"
-                     trigger: 'item',
-                     formatter:function(param){
-                        var time = param.name + '';
-                        // console.log(time)
-                        var year = time.substring(0, 4);
-                        var month = time.substring(4, 6);
-                        var day = time.substring(6);
-                        if (month.substring(0, 1) == '0') {
-                            month = month.substring(1);
-                        }
-                        if (day.substring(0, 1) == '0') {
-                            day = day.substring(1);
-                        }
-                        if(param.value){
-                            return year + '年' + month + '月' + day + '日' + "</br>占用度" + param.value.toFixed(2) + "%";
-                        }else{
-                            return "没有数据";
-                        }
-                     }
-                },
-                dataZoom: [{
-                    show: false,
-                    type: 'slider',
-                    start: 0,
-                    end: 100,
-                    height: 15,
-                    y: 260
-                }],
-                grid: {
-                    left: '1%',
-                    right: '4%',
-                    bottom: '12%',
-                    top: 30,
-                    containLabel: true
-                },
-                textStyle: {
-                    color: "#505363"
-                },
-                xAxis: {
-                    type: 'category',
-                    name: '时间',
-                    boundaryGap: false,
-                    axisLine: {
-                        lineStyle: {
-                            color: '#DAE5F0'
+            // optionMonth1 = {
+            //     color: ['rgb(55,165,255)'],
+            //     tooltip: {
+            //         trigger: 'item',
+            //         formatter: function(param) {
+            //             var time = param.name + '';
+            //             // //console.log(time)
+            //             var year = time.substring(0, 4);
+            //             var month = time.substring(4, 6);
+            //             var day = time.substring(6);
+            //             if (month.substring(0, 1) == '0') {
+            //                 month = month.substring(1);
+            //             }
+            //             if (day.substring(0, 1) == '0') {
+            //                 day = day.substring(1);
+            //             }
+            //             if (param.value) {
+            //                 return year + '年' + month + '月' + day + '日' + "</br>占用度" + param.value.toFixed(2) + "%";
+            //             } else {
+            //                 return "没有数据";
+            //             }
+            //         }
+            //     },
+            //     dataZoom: [{
+            //         show: false,
+            //         type: 'slider',
+            //         start: 0,
+            //         end: 100,
+            //         height: 15,
+            //         y: 260
+            //     }],
+            //     grid: {
+            //         left: '1%',
+            //         right: '4%',
+            //         bottom: '12%',
+            //         top: 30,
+            //         containLabel: true
+            //     },
+            //     textStyle: {
+            //         color: "#505363"
+            //     },
+            //     xAxis: {
+            //         type: 'category',
+            //         name: '时间',
+            //         boundaryGap: false,
+            //         axisLine: {
+            //             lineStyle: {
+            //                 color: '#DAE5F0'
+            //             }
+            //         },
+            //         axisTick: {
+            //             show: false
+            //         },
+            //         axisLabel: {
+            //             textStyle: {
+            //                 color: '#505363'
+            //             },
+            //             rotate: -40,
+            //             align: 'left'
+            //         },
+            //         data: levelParam.monthOcc.xAxis
+            //     },
+            //     yAxis: {
+            //         type: 'value',
+            //         name: '百分比(%)',
+            //         max: 100,
+            //         splitNumber: 10,
+            //         axisLine: {
+            //             lineStyle: {
+            //                 color: '#DAE5F0'
+            //             }
+            //         },
+            //         axisTick: {
+            //             show: false
+            //         },
+            //         axisLabel: {
+            //             textStyle: {
+            //                 color: '#505363'
+            //             }
+            //         },
+            //         splitLine: {
+            //             lineStyle: {
+            //                 color: '#DAE5F0'
+            //             }
+            //         }
+            //     },
+            //     series: [{
+            //         name: '',
+            //         type: 'line',
+            //         showSymbol: true,
+            //         symbolSize: 6,
+            //         data: levelParam.monthOcc.zeroSeries,
+            //         //data : [ null,null, 0, null,null, null,null, null,null, null ]
+            //         // reslut.series
+            //         //[ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, ]
+            //     }, {
+            //         name: '',
+            //         type: 'line',
+            //         showSymbol: true,
+            //         symbolSize: 6,
+            //         data: levelParam.monthOcc.noneZeroSeries,
+            //         lineStyle: {
+            //             normal: {
+            //                 type: "dashed"
+            //             }
+            //         }
+            //         // reslut.series
+            //         //[ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, ]
+            //     }]
+            // };
+            // ///////////////////////////////////////////////////////////////
+            data = [["2000-06-05",116],["2000-06-06",129],["2000-06-07",135],["2000-06-08",86],["2000-06-09",73],["2000-06-10",85],["2000-06-11",73],["2000-06-12",68],["2000-06-13",92],["2000-06-14",130],["2000-06-15",245],["2000-06-16",139],["2000-06-17",115],["2000-06-18",111],["2000-06-19",309],["2000-06-20",206],["2000-06-21",137],["2000-06-22",128],["2000-06-23",85],["2000-06-24",94],["2000-06-25",71],["2000-06-26",106],["2000-06-27",84],["2000-06-28",93],["2000-06-29",85],["2000-06-30",73],["2000-07-01",83],["2000-07-02",125],["2000-07-03",107],["2000-07-04",82],["2000-07-05",44],["2000-07-06",72],["2000-07-07",106],["2000-07-08",107],["2000-07-09",66],["2000-07-10",91],["2000-07-11",92],["2000-07-12",113],["2000-07-13",107],["2000-07-14",131],["2000-07-15",111],["2000-07-16",64],["2000-07-17",69],["2000-07-18",88],["2000-07-19",77],["2000-07-20",83],["2000-07-21",111],["2000-07-22",57],["2000-07-23",55],["2000-07-24",60]];
+            var dateList = data.map(function (item) {
+                return item[0];
+            });
+            var valueList = data.map(function (item) {
+                return item[1];
+            });
+            optionMonth1={
+                    color: ['rgb(55,165,255)'],
+                    tooltip: {
+                        // trigger: 'item',
+                        trigger: 'axis',
+                        formatter: function(param) {
+                            var time=JSON.stringify(param[0].name);
+                            var year = time.substring(0, 4);
+                            var month = time.substring(4, 6);
+                            var day = time.substring(6);
+                            if (month.substring(0, 1) == '0') {
+                                month = month.substring(1);
+                            }
+                            if (day.substring(0, 1) == '0') {
+                                day = day.substring(1);
+                            }
+                            // console.log(year + '年' + month + '月' + day + '日',(param[0].value.toFixed(2)))
+                            if (param[0].value) {
+                                return year + '年' + month + '月' + day + '日' + "</br>占用度" + (param[0].value.toFixed(2)) + "%";
+                            } else {
+                                return "没有数据";
+                            }
                         }
                     },
-                    axisTick: {
-                        show: false
+                    dataZoom: [{
+                        show:false,
+                        // type: 'inside',
+                        type : 'slider',
+                        start : 0,
+                        end : 100,
+                        // height : 15,
+                        // y : 260
+                    }],
+                    grid: {
+                        left: '1%',
+                        right: '4%',
+                        bottom: '22%',
+                        top: 30,
+                        containLabel: true
                     },
-                    axisLabel: {
-                        textStyle: {
-                            color: '#505363'
+                    textStyle: {
+                        color: "#505363"
+                    },
+                    xAxis: [{
+                        type : 'category',
+                        axisLine : {
+                            lineStyle : {
+                                color : '#DAE5F0'
+                            }
                         },
-                        rotate: -40,
-                        align: 'left'
-                    },
-                    data: levelParam.monthOcc.xAxis
-                        //data:[12,23,45,67]
-                },
-                yAxis: {
-                    type: 'value',
-                    name: '百分比(%)',
-                    max: 100,
-                    splitNumber: 10,
-                    axisLine: {
-                        lineStyle: {
-                            color: '#DAE5F0'
+                        axisTick : {
+                            show : false
+                        },
+                        axisLabel : {
+                            textStyle : {
+                                color : '#505363'
+                            },
+                            rotate: -40,
+                            align: 'left'
+                        },
+                        data: levelParam.monthOcc.xAxis
+                        // data: dateList
+                    }],
+                   yAxis: {
+                        type : 'value',
+                        name:'百分比(%)',
+                        max : 120,
+                        min : -40,
+                        splitNumber : 10,
+                        axisLine : {
+                            lineStyle : {
+                                color : '#DAE5F0'
+                            }
+                        },
+                        axisTick : {
+                            show : false
+                        },
+                        axisLabel : {
+                            textStyle : {
+                                color : '#505363'
+                            }
+                        },
+                        splitLine : {
+                            lineStyle : {
+                                color : '#DAE5F0'
+                            }
                         }
                     },
-                    axisTick: {
-                        show: false
-                    },
-                    axisLabel: {
-                        textStyle: {
-                            color: '#505363'
-                        }
-                    },
-                    splitLine: {
-                        lineStyle: {
-                            color: '#DAE5F0'
-                        }
-                    }
-                },
-                series: [{
-                    name: '',
-                    type: 'line',
-                    showSymbol: true,
-                    symbolSize: 6,
-                    data: levelParam.monthOcc.zeroSeries,
-                    //data : [ null,null, 0, null,null, null,null, null,null, null ]
-                    // reslut.series
-                    //[ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, ]
-                }, {
-                    name: '',
-                    type: 'line',
-                    showSymbol: true,
-                    symbolSize: 6,
-                    data: levelParam.monthOcc.noneZeroSeries,
-                    lineStyle: {
-                        normal: {
-                            type: "dashed"
-                        }
-                    }
-                    // reslut.series
-                    //[ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, ]
-                }]
-            };
+                    series: [{
+                        name : '',
+                        type : 'line',
+                        showSymbol : false,
+                        symbolSize : 6,
+                        data : levelParam.monthOcc.noneZeroSeries
+                        // data : valueList
+                    }]
+            }
+            // ///////////////////////////////////////////////////////////////
             month_total_length = levelParam.monthOcc.xAxis.length;
         }
         monthChart = echarts.init($('#monthChart1')[0]);
@@ -1463,7 +1317,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
         });
         //渲染图表title，添加监测站名称
         var name = $('#station-list2').find('option:selected').text(); //选中的台站名称
-        // console.log(name)
+        // //console.log(name)
         name = name.replace("未查询到数据", "");
         // $("#stationName").html(name);
         $("#levelChartTitle").html(name + "——电平峰值");
@@ -1474,7 +1328,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                 drag_flag = false;
                 return;
             }
-            // console.log(params.name)
+            // //console.log(params.name)
             time = params.name;
             var currenttime = params.name + '';
             var year = currenttime.substring(0, 4);
@@ -1631,7 +1485,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
     function initChart(reslut) {
         // draw radio pie chart
         var option = {
-            color: ['rgb(44,205,125)', 'rgb(55,165,255)','rgb(66,205,255)','rgb(77,255,255)','rgb(255,205,125)','rgb(99,165,255)'],
+            color: ['rgb(44,205,125)', 'rgb(55,165,255)', 'rgb(66,205,255)', 'rgb(77,255,255)', 'rgb(255,205,125)', 'rgb(99,165,255)'],
             tooltip: {
                 trigger: 'item',
                 formatter: "{a} <br/>{b}: {c} ({d}%)"
@@ -1672,9 +1526,10 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                     }
                 },
                 data: reslut.value,
-                formatter:function(val){   //让series 中的文字进行换行  
-                     return val.name.substring(0,5)+"\n"+val.name.substring(6);
-                }
+                formatter: function(val) {    //让series 中的文字进行换行  
+                                     
+                    return  val.name.substring(0, 5) + "\n" + val.name.substring(6);            
+                }
             }],
             // axisLabel: {  
             //    interval:0,  
@@ -1701,7 +1556,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
         secondLevel.beginTime = time;
         secondLevel.centorFreq = centorfreq;
         ajax.get("data/alarm/secondLevelChart", secondLevel, function(reslut) {
-            // console.log(reslut);
+            // //console.log(reslut);
             var optionDay = {};
             if (reslut.dayOcc && reslut.dayOcc.xAxis.length && reslut.dayOcc.noneZeroSeries.length) {
                 optionDay = {
@@ -1709,7 +1564,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                     tooltip: {
                         trigger: 'axis',
                         formatter: function(param) {
-                            //console.log(param)
+                            ////console.log(param)
                             if (param && param[0] && param[0].name && param[0].value != null) {
                                 return param[0].name + "点占用度" + param[0].value.toFixed(2) + "%";
                             } else if (param && param[1] && param[1].name && param[1].value != null) {
@@ -1817,25 +1672,25 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
         $('.select2-picker').select2();
     }
     function formatCurrency(num) {
-        num = num.toString().replace(/\$|\,/g,'');
-        if(isNaN(num))
-        num = "0";
+        num = num.toString().replace(/\$|\,/g, '');
+        if (isNaN(num))
+            num = "0";
         sign = (num == (num = Math.abs(num)));
-        num = Math.floor(num*100+0.50000000001);
-        cents = num%100;
-        num = Math.floor(num/100).toString();
-        if(cents<10)
-        cents = "0" + cents;
-        for (var i = 0; i < Math.floor((num.length-(1+i))/3); i++)
-        num = num.substring(0,num.length-(4*i+3))+','+num.substring(num.length-(4*i+3));
-        return (((sign)?'':'-') + num + '.' + cents);
+        num = Math.floor(num * 100 + 0.50000000001);
+        cents = num % 100;
+        num = Math.floor(num / 100).toString();
+        if (cents < 10)
+            cents = "0" + cents;
+        for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3); i++)
+            num = num.substring(0, num.length - (4 * i + 3)) + ',' + num.substring(num.length - (4 * i + 3));
+        return (((sign) ? '' : '-') + num + '.' + cents);
     }
     //左侧 内容渲染
     function getSinalDetail(data) {
         $("#signal_detail").load("signal/sigaldetail", data, function() {
-            console.log(data)
-            //无带宽以“-”替代
-            //console.log($("#redioDetailCentor").html())
+            //console.log(data)
+                //无带宽以“-”替代
+                ////console.log($("#redioDetailCentor").html())
             if ($("#redioDetailCentor").html().indexOf('0.0') == 0) {
                 $("#redioDetailCentor").html('-')
             }
@@ -1868,7 +1723,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
             para.timeStart = beginTime;
             para.frequency = centorfreq;
             ajax.get("data/signal/FmRate", para, function(reslut) {
-                console.log(reslut)
+                //console.log(reslut)
                 if ($.isEmptyObject(reslut) || !reslut.name.length) {
                     // $('#radioChart').html("<h4 style='margin-top:120px;font-weight: 500;font-size:14px ;text-align: center;' >未识别调制方式</h4>")
                     $('#radioChart').html("<h4 style='margin-top:40px;font-weight: 500;font-size:14px ;text-align: center;' >未识别调制方式</h4>")
@@ -1877,7 +1732,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                 }
             });
             $("#singletonFreq").click(function() {
-                console.log('ok')
+                //console.log('ok')
                 var reopenParam = {};
                 reopenParam.ServerName = "host";
                 reopenParam.DisplayName = "单频测量";
@@ -1887,12 +1742,12 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                 var centFreq = $("#search").val();
                 reopenParam.Url = "FIXFQViewModel?SerialNumber=" + statiocode + "&TaskType=FIXFQ&frequency=" + centFreq;
                 var paramStr = JSON.stringify(reopenParam)
-                    // console.log(paramStr)
+                    // //console.log(paramStr)
                 Binding.openUrl(paramStr);
             });
-             $(".features-list .item-value").each(function(i, e) {
-                var dd=$(e).html();
-                $(e).html(dd.substr(0,dd.indexOf(".")+3))
+            $(".features-list .item-value").each(function(i, e) {
+                var dd = $(e).html();
+                $(e).html(dd.substr(0, dd.indexOf(".") + 3))
             });
         });
     }

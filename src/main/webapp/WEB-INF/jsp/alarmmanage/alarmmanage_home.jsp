@@ -255,8 +255,9 @@
             "dojo/domReady!","layer","datetimepicker" ],
         function(init) {
             require([ "bootstrap", "select2","echarts", "home/alarm/alarm_manage" ,"datetimepicker_cn"], function(bootstrap,select2,echarts, alarm_manage) {
+                // console.debug('xxxxxxxxxxxxxxxx')
                 alarm_manage.init();
-                alarm_manage.setMapInit(init);
+               alarm_manage.setMapInit(init);
                 var map = init.init();
             });
         });

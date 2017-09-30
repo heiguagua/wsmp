@@ -61,9 +61,9 @@
       <a class='btn btn-default btn-config' id="singletonFreq">
         <img  src='images/way_1.png' width="18" />&nbsp;&nbsp;单频测量
       </a>
-      <a class='btn btn-default btn-config'>
-        <img src='images/export.png' />&nbsp;&nbsp;导出报表
-      </a>
+      <%--<a class='btn btn-default btn-config'>--%>
+        <%--<img src='images/export.png' />&nbsp;&nbsp;导出报表--%>
+      <%--</a>--%>
       <a class='btn btn-default btn-config' id="clickModalConfig"  >
         <img src='images/config.png' />&nbsp;&nbsp;配置
       </a>
@@ -83,9 +83,11 @@
 							<%--<img src='images/locate.png' />--%>
 							<span id = "stationName">&nbsp;&nbsp;</span>
 						</label>
+						<button class="btn btn-submit" id="setStationPiont">场强定位选站</button>&#160;
 						<div class='pull-right'>
-							<button class="btn btn-submit" id="setStationPiont">聚类监测站</button>&#160;
-							<input type="text" class="gate-filter" placeholder="请输入门限" /> <button class="btn btn-submit" id="gate-btn">提交</button>电磁覆盖率:&nbsp; <span class='coverage-number'></span>
+							<%--<button class="btn btn-submit" id="setStationPiont">聚类监测站</button>&#160;--%>
+							<%--<input type="text" class="gate-filter" placeholder="请输入门限" /> <button class="btn btn-submit" id="gate-btn">提交</button>--%>
+								电磁覆盖率:&nbsp; <span class='coverage-number'></span>
 						</div>
 					</div>
 					<div id="mapDiv" style= "padding: 0px;height: 480px;"></div>
