@@ -168,18 +168,18 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                 }
             })
         });
-        $("station_list").change(function() {
-            changeView();
-        });
+        // $("station_list").change(function() {
+        //     changeView();
+        // });
         $("#signal_list").change(function(e) {
-            if ($("#FormQZ").val() != null && $("#FormQZ").val().length != 0) {
-               //////////////////////////
-                changeView();
-                mapinit.stationChange();
-               //////////////////////////
-                return;
-            } else {
-            }
+            // if ($("#FormQZ").val() != null && $("#FormQZ").val().length != 0) {
+            //    //////////////////////////
+            //     changeView();
+            //     mapinit.stationChange();
+            //    //////////////////////////
+            //     return;
+            // } else {
+            // }
             stationselectinit();
             changeView();
             mapinit.stationChange();
