@@ -365,11 +365,12 @@ public class WaveOrderDataController {
 					});
 					redio.setMonitorID(monitorID);
 					// 设置台站
-					String stationName = Optional.ofNullable(t.getRadioStation())
-							.map(m -> m.getStation())
-							.map(m -> m.getName())
-							.orElse("-");
-					redio.setStation(stationName);
+					redio.setStation(t.getName());
+//					String stationName = Optional.ofNullable(t.getRadioStation())
+//							.map(m -> m.getStation())
+//							.map(m -> m.getName())
+//							.orElse("-");
+//					redio.setStation(stationName);
 					redioRows.add(redio);
 				}
 				
@@ -398,11 +399,7 @@ public class WaveOrderDataController {
 						});
 						redio.setMonitorID(monitorID);
 						// 设置台站
-						String stationName = Optional.ofNullable(t.getRadioStation())
-								.map(m -> m.getStation())
-								.map(m -> m.getName())
-								.orElse("-");
-						redio.setStation(stationName);
+						redio.setStation(t.getName());
 						redioRows.add(redio);
 					}
 			});

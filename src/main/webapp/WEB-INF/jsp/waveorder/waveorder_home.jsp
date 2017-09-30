@@ -45,11 +45,12 @@
 			</select>
 
 		</div>
-		<div class="config pull-right">
+		<!-- 暂时隐藏 -->
+		<!-- <div class="config pull-right">
 			<a class="btn btn-default btn-evaluate" data-toggle="modal"
 				data-target="#modalEvaluate"> <i class="fa fa-eye"></i>&nbsp;&nbsp;电磁环境评估
 			</a>
-		</div>
+		</div> -->
 	</div>
 
 	<!--content-->
@@ -247,7 +248,7 @@
 							<p>下一月</p>
 						</div>
 					</div>
-					<!--电磁环境评估-->
+					电磁环境评估
 					<section class='flex-row'>
 						<div class='box'>
 							<div id="mapDiv2"></div>

@@ -350,6 +350,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 							titleTooltip : "带宽(kHz)",
 							sortable : true
 						}, {
+							visible : false,
 							field : 'success_rate',
 							title : '监测发射功率',
 							width : '18%',
@@ -358,7 +359,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						}, {
 							field : 'monitorID',
 							title : '监测站',
-							width : '20%',
+							width : '30%',
 							titleTooltip : "监测站",
 							sortable : true,
 							sortName : "monitorID",
@@ -384,8 +385,10 @@ define(	["ajax", "dojo/parser", "esri/map",
 						}, {
 							field : 'station',
 							title : '发射源',
-							width : '20%',
+							width : '30%',
 							titleTooltip : "发射源",
+							sortable : true,
+							sortName : "station",
 							formatter : function(value, row, index) {
 								value = value == null ? "-" : value;
 								return value;
@@ -494,6 +497,13 @@ define(	["ajax", "dojo/parser", "esri/map",
 				})
 
 			}
+			
+			// 频段排序
+//			function freqRangeSorter(a, b) {
+//				a = a.replace('-', '');
+//				b = b.replace('-', '');
+//				return a - b;
+//			}
 			
 			// 得到区域的边界
 			function getAreaBoundary(glayer) {
@@ -1201,7 +1211,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 							align: 'center',
 							field : 'monitorID',
 							title : '监测站',
-							width : '20%',
+							width : '30%',
 							titleTooltip : "监测站",
 							sortable : true,
 							sortName : "monitorID",
@@ -1228,8 +1238,10 @@ define(	["ajax", "dojo/parser", "esri/map",
 							align: 'center',
 							field : 'station',
 							title : '发射源',
-							width : '20%',
+							width : '30%',
 							titleTooltip : "发射源",
+							sortable : true,
+							sortName : "station",
 							formatter : function(value, row, index) {
 								value = value == null ? "-" : value;
 								return value;
@@ -1305,6 +1317,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						titleTooltip : '频段名称',
 						sortable : true,
 						sortName : "redioName",
+						//sorter : freqRangeSorter,
 						formatter : function(value, row, index) {
 							return '<div class="dpopover" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
 									+ value + '">' + value + '</div>';
@@ -1389,14 +1402,14 @@ define(	["ajax", "dojo/parser", "esri/map",
 										+ '" data-endFreq="'
 										+ row.endFreq
 										/*+ '"><em class="icon-peizhi"></em></a>';*/
-										+ '"> <img src="images/Group 15.png" width="24"></a>';
+										+ '"> <img src="images/Group 15.png" width="20"></a>';
 							} else {
 								return '<a data-toggle="modal" data-target="#modalConfig" data-beginFreq="'
 										+ row.beginFreq
 										+ '" data-endFreq="'
 										+ row.endFreq
 										/*+ '"> <em class="icon-peizhi"></em></a>';*/
-										+ '"> <img src="images/Fill 30.png" width="24"/></a>';
+										+ '"> <img src="images/Fill 30.png" width="20"/></a>';
 							}
 						}
 					}]
