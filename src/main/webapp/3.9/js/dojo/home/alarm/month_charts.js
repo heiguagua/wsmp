@@ -11,97 +11,184 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
 		var optionMonth ={};
 		console.log(reslut)
 		if(reslut.monthOcc &&(reslut.monthOcc.xAxis.length >0)&&(reslut.monthOcc.noneZeroSeries.length>0)){
-			optionMonth ={
-				color : [ 'rgb(55,165,255)' ],
-				tooltip : {
-					 trigger: 'item',
-                     formatter:function(param){
-                        var time = param.name + '';
-                        // console.log(time)
-                        var year = time.substring(0, 4);
-                        var month = time.substring(4, 6);
-                        var day = time.substring(6);
-                        if (month.substring(0, 1) == '0') {
-                            month = month.substring(1);
-                        }
-                        if (day.substring(0, 1) == '0') {
-                            day = day.substring(1);
-                        }
-                        if(param.value){
-                            return year + '年' + month + '月' + day + '日' + "</br>占用度" + param.value.toFixed(2) + "%";
-                        }else{
-                            return "没有数据";
-                        }
-                     }
-					// 'trigger' : 'axis',
-					// formatter:function(param){
-					// 	maxlevel_start_index_temp = param[1].dataIndex;
-					// 	maxlevel_end_index = param[1].dataIndex;
-					// 	if(param && param[1] && param[1].name && param[1].value!=null) {
-					// 		var time =param[1].name+'';
-					// 		var year =time.substring(0,4);
-					// 		var month =time.substring(4,6);
-					// 		var day =time.substring(6);
-					// 		if(month.substring(0,1)=='0'){
-					// 			month = month.substring(1);
-					// 		}
-					// 		if(day.substring(0,1)=='0'){
-					// 			day = day.substring(1);
-					// 		}
-
-					// 		return year+'年'+month+'月'+day+'日' + "占用度" + param[1].value.toFixed(2)+"%";
-					// 	}else if(param && param[0] && param[0].name && param[0].value!=null){
-     //                            var time =param[0].name+'';
-     //                            var year =time.substring(0,4);
-     //                            var month =time.substring(4,6);
-     //                            var day =time.substring(6);
-     //                            if(month.substring(0,1)=='0'){
-     //                                month = month.substring(1);
-     //                            }
-     //                            if(day.substring(0,1)=='0'){
-     //                                day = day.substring(1);
-     //                            }
-
-     //                            return year+'年'+month+'月'+day+'日' + "占用度" + param[0].value.toFixed(2)+"%";
-
-					// 	}
-					// 	else{
-     //                        return "没有数据";
-					// 	}
-
-					// }
+			// optionMonth ={
+			// 	color : [ 'rgb(55,165,255)' ],
+			// 	tooltip : {
+			// 		 trigger: 'item',
+             //         formatter:function(param){
+             //            var time = param.name + '';
+             //            // console.log(time)
+             //            var year = time.substring(0, 4);
+             //            var month = time.substring(4, 6);
+             //            var day = time.substring(6);
+             //            if (month.substring(0, 1) == '0') {
+             //                month = month.substring(1);
+             //            }
+             //            if (day.substring(0, 1) == '0') {
+             //                day = day.substring(1);
+             //            }
+             //            if(param.value){
+             //                return year + '年' + month + '月' + day + '日' + "</br>占用度" + param.value.toFixed(2) + "%";
+             //            }else{
+             //                return "没有数据";
+             //            }
+             //         }
+			// 	},
+			// 	dataZoom : [{
+			// 		show:false,
+			// 		type : 'slider',
+			// 		start : 0,
+			// 		end : 100,
+			// 		height : 15,
+			// 		y : 260
+			// 	}],
+			// 	grid : {
+			// 		left : '1%',
+			// 		right : '4%',
+			// 		bottom : '12%',
+			// 		top : 30,
+			// 		containLabel : true
+			// 	},
+			// 	textStyle: {
+			// 		color: "#505363"
+			// 	},
+			// 	xAxis : {
+			// 		type : 'category',
+			// 		name:'时间',
+			// 		boundaryGap : false,
+			// 		axisLine : {
+			// 			lineStyle : {
+			// 				color : '#DAE5F0'
+			// 			},
+			// 			textStyle: {
+			// 				color: '#DAE5F0',
+			// 				fontSize: 12
+			// 			}
+            //
+			// 		},
+			// 		axisTick : {
+			// 			show : false
+			// 		},
+			// 		axisLabel : {
+			// 			textStyle : {
+			// 				color : '#505363'
+			// 			},
+			// 			rotate:-40,
+			// 			align: 'left'
+            //
+			// 		},
+			// 		data : reslut.monthOcc.xAxis
+			// 		//
+			// 	},
+			// 	yAxis : {
+			// 		type : 'value',
+			// 		name:'百分比(%)',
+			// 		max : 100,
+			// 		min: -100,
+			// 		splitNumber : 10,
+			// 		axisLine : {
+			// 			lineStyle : {
+			// 				color : '#DAE5F0'
+			// 			}
+			// 		},
+			// 		axisTick : {
+			// 			show : false
+			// 		},
+			// 		axisLabel : {
+			// 			textStyle : {
+			// 				color : '#505363'
+			// 			}
+			// 		},
+			// 		splitLine : {
+			// 			lineStyle : {
+			// 				color : '#DAE5F0'
+			// 			}
+			// 		}
+			// 	},
+			// 	series : [
+			// 		{
+			// 			name : '',
+			// 			type : 'line',
+			// 			showSymbol : true,
+			// 			symbolSize : 6,
+			// 			data : reslut.monthOcc.zeroSeries,
+			// 			//data : [ null,null, 0, null,null, null,null, null,null, null ]
+			// 			// reslut.series
+			// 			//[ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, ]
+			// 		},
+             //        {
+             //            name : '',
+             //            type : 'line',
+             //            showSymbol : true,
+             //            symbolSize : 6,
+             //            data : reslut.monthOcc.noneZeroSeries,
+             //            lineStyle :{
+             //                normal :{
+             //                    type :"dashed"
+			// 				}
+			// 			}
+             //            // reslut.series
+             //            //[ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, ]
+             //        }
+			// 	]
+			// };
+			// ///////////////////////////////////////////////////////////////
+			data = [["2000-06-05",116],["2000-06-06",129],["2000-06-07",135],["2000-06-08",86],["2000-06-09",73],["2000-06-10",85],["2000-06-11",73],["2000-06-12",68],["2000-06-13",92],["2000-06-14",130],["2000-06-15",245],["2000-06-16",139],["2000-06-17",115],["2000-06-18",111],["2000-06-19",309],["2000-06-20",206],["2000-06-21",137],["2000-06-22",128],["2000-06-23",85],["2000-06-24",94],["2000-06-25",71],["2000-06-26",106],["2000-06-27",84],["2000-06-28",93],["2000-06-29",85],["2000-06-30",73],["2000-07-01",83],["2000-07-02",125],["2000-07-03",107],["2000-07-04",82],["2000-07-05",44],["2000-07-06",72],["2000-07-07",106],["2000-07-08",107],["2000-07-09",66],["2000-07-10",91],["2000-07-11",92],["2000-07-12",113],["2000-07-13",107],["2000-07-14",131],["2000-07-15",111],["2000-07-16",64],["2000-07-17",69],["2000-07-18",88],["2000-07-19",77],["2000-07-20",83],["2000-07-21",111],["2000-07-22",57],["2000-07-23",55],["2000-07-24",60]];
+			var dateList = data.map(function (item) {
+				return item[0];
+			});
+			var valueList = data.map(function (item) {
+				return item[1];
+			});
+			optionMonth={
+				color: ['rgb(55,165,255)'],
+				tooltip: {
+					// trigger: 'item',
+					trigger: 'axis',
+					formatter: function(param) {
+						var time=JSON.stringify(param[0].name);
+						var year = time.substring(0, 4);
+						var month = time.substring(4, 6);
+						var day = time.substring(6);
+						if (month.substring(0, 1) == '0') {
+							month = month.substring(1);
+						}
+						if (day.substring(0, 1) == '0') {
+							day = day.substring(1);
+						}
+						// console.log(year + '年' + month + '月' + day + '日',(param[0].value.toFixed(2)))
+						if (param[0].value) {
+							return year + '年' + month + '月' + day + '日' + "</br>占用度" + (param[0].value.toFixed(2)) + "%";
+						} else {
+							return "没有数据";
+						}
+					}
 				},
-				dataZoom : [{
+				dataZoom: [{
 					show:false,
+					// type: 'inside',
 					type : 'slider',
 					start : 0,
 					end : 100,
-					height : 15,
-					y : 260
+					// height : 15,
+					// y : 260
 				}],
-				grid : {
-					left : '1%',
-					right : '4%',
-					bottom : '12%',
-					top : 30,
-					containLabel : true
+				grid: {
+					left: '1%',
+					right: '4%',
+					bottom: '22%',
+					top: 30,
+					containLabel: true
 				},
 				textStyle: {
 					color: "#505363"
 				},
-				xAxis : {
+				xAxis: [{
 					type : 'category',
-					name:'时间',
-					boundaryGap : false,
 					axisLine : {
 						lineStyle : {
 							color : '#DAE5F0'
-						},
-						textStyle: {
-							color: '#DAE5F0',
-							fontSize: 12
 						}
-
 					},
 					axisTick : {
 						show : false
@@ -110,18 +197,17 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
 						textStyle : {
 							color : '#505363'
 						},
-						rotate:-40,
+						rotate: -40,
 						align: 'left'
-
 					},
-					data : reslut.monthOcc.xAxis
-					//
-				},
-				yAxis : {
+					data:  reslut.monthOcc.xAxis
+					// data: dateList
+				}],
+				yAxis: {
 					type : 'value',
 					name:'百分比(%)',
 					max : 100,
-					min: -100,
+					min : 0,
 					splitNumber : 10,
 					axisLine : {
 						lineStyle : {
@@ -142,33 +228,16 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
 						}
 					}
 				},
-				series : [
-					{
-						name : '',
-						type : 'line',
-						showSymbol : true,
-						symbolSize : 6,
-						data : reslut.monthOcc.zeroSeries,
-						//data : [ null,null, 0, null,null, null,null, null,null, null ]
-						// reslut.series
-						//[ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, ]
-					},
-                    {
-                        name : '',
-                        type : 'line',
-                        showSymbol : true,
-                        symbolSize : 6,
-                        data : reslut.monthOcc.noneZeroSeries,
-                        lineStyle :{
-                            normal :{
-                                type :"dashed"
-							}
-						}
-                        // reslut.series
-                        //[ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, ]
-                    }
-				]
-			};
+				series: [{
+					name : '',
+					type : 'line',
+					showSymbol : false,
+					symbolSize : 6,
+					data : reslut.monthOcc.noneZeroSeries
+					// data : valueList
+				}]
+			}
+			// ///////////////////////////////////////////////////////////////
 			maxlevel_total_length = reslut.monthOcc.xAxis.length;
 		}
 
