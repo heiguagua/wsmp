@@ -69,7 +69,7 @@
 					<li id='warningEnsure' role="presentation" class="active"><a
 						href="#undeal">实时告警未确认</a></li>
 					<li id='warningUnsure' role="presentation"><a href="#dealed">实时告警已确认</a></li>
-					<li id='warningUnsure' role="presentation"><a href="#auto_confirm">自动确认</a></li>
+					<li id='warningUnsure' role="presentation"><a href="#auto_confirm">信号智能识别</a></li>
 					<li class="pull-right" id="minutes-li"><input
 						placeholder='更新间隔(分钟)' id="minutes" class="minutes"
 						style="IME-MODE: disabled; WIDTH: 100px; HEIGHT: 25px"
@@ -93,9 +93,9 @@
 							id='table-alarm-dealed'>
 						</table>
 					</div>
-					<div role="tabpanel" class="tab-pane" id='auto_comfirm'>
+					<div role="tabpanel" class="tab-pane" id='auto_confirm'>
 						<table class="table table-striped text-center"
-							id=''>
+							id='radio_auto_confirm'>
 						</table>
 					</div>
 				</div>

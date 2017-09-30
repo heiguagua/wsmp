@@ -278,7 +278,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                     var lon=reslut.lon||103.940;
                     var lat=reslut.lat||30.830;
                     var rangeR=reslut.rangeR||100000;
-                    initMap.selectChange([lon,lat,rangeR]);
+                    initMap.selectChange([lon,lat,rangeR*1000]);
                     console.log(lon,lat,rangeR)
                 }, function(reslut) {
                     initMap.selectChange([104.067923,30.679943,10000]);
