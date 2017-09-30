@@ -845,7 +845,7 @@ public class AlarmDataController {
             if (sortName == null) {
                 stations = reslut.getStations().stream().map(s -> {
                     String id = s.getStationID();
-                    String stationName = s.getSTATName();
+                    String stationName = s.getSTATName()== null ? "-" :s.getSTATName();
                     String centerFreqStr = s.getFREQEFB() == null ? "-" : s.getFREQEFB().toString();
                     String bandWidth = s.getNETBand() == null ? "-" : s.getNETBand().toString();
                     return new Station(id, stationName, centerFreqStr, bandWidth);
@@ -855,7 +855,7 @@ public class AlarmDataController {
                 stations = reslut.getStations().stream().sorted((StationInfo c1, StationInfo c2) -> c1.getFREQEFB() < c2.getFREQEFB() ? 1 : -1).map(s -> {
 
                     String id = s.getStationID();
-                    String stationName = s.getSTATName();
+                    String stationName = s.getSTATName()== null ? "-" :s.getSTATName();
                     String centerFreqStr = s.getFREQEFB() == null ? "-" : s.getFREQEFB().toString();
                     String bandWidth = s.getNETBand() == null ? "-" : s.getNETBand().toString();
                     return new Station(id, stationName, centerFreqStr, bandWidth);
@@ -865,7 +865,7 @@ public class AlarmDataController {
                 stations = reslut.getStations().stream().sorted((StationInfo c1, StationInfo c2) -> c1.getFREQEFB() > c2.getFREQEFB() ? 1 : -1).map(s -> {
 
                     String id = s.getStationID();
-                    String stationName = s.getSTATName();
+                    String stationName = s.getSTATName()== null ? "-" :s.getSTATName();
                     String centerFreqStr = s.getFREQEFB() == null ? "-" : s.getFREQEFB().toString();
                     String bandWidth = s.getNETBand() == null ? "-" : s.getNETBand().toString();
                     return new Station(id, stationName, centerFreqStr, bandWidth);
@@ -877,7 +877,7 @@ public class AlarmDataController {
                 stations = reslut.getStations().stream().sorted((StationInfo c1, StationInfo c2) -> c1.getNETBand() > c2.getNETBand() ? 1 : -1).map(s -> {
 
                     String id = s.getStationID();
-                    String stationName = s.getSTATName();
+                    String stationName = s.getSTATName()== null ? "-" :s.getSTATName();
                     String centerFreqStr = s.getFREQEFB() == null ? "-" : s.getFREQEFB().toString();
                     String bandWidth = s.getNETBand() == null ? "-" : s.getNETBand().toString();
                     return new Station(id, stationName, centerFreqStr, bandWidth);
@@ -887,7 +887,7 @@ public class AlarmDataController {
                 stations = reslut.getStations().stream().sorted((StationInfo c1, StationInfo c2) -> c1.getNETBand() < c2.getNETBand() ? 1 : -1).map(s -> {
 
                     String id = s.getStationID();
-                    String stationName = s.getSTATName();
+                    String stationName = s.getSTATName()== null ? "-" :s.getSTATName();
                     String centerFreqStr = s.getFREQEFB() == null ? "-" : s.getFREQEFB().toString();
                     String bandWidth = s.getNETBand() == null ? "-" : s.getNETBand().toString();
                     return new Station(id, stationName, centerFreqStr, bandWidth);
