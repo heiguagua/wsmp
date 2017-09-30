@@ -280,6 +280,8 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                     var rangeR=reslut.rangeR||100000;
                     initMap.selectChange([lon,lat,rangeR]);
                     console.log(lon,lat,rangeR)
+                }, function(reslut) {
+                    initMap.selectChange([104.067923,30.679943,10000]);
                 })
                 // initMap.selectChange([104.067923,30.679943,10000]);
                 $('#modalsetStationPiont').modal('hide')
