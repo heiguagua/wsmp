@@ -1190,6 +1190,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 							titleTooltip : "带宽(kHz)",
 							sortable : true
 						}, {
+							visible : false,
 							align: 'center',
 							field : 'success_rate',
 							title : '监测发射功率',
