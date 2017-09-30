@@ -759,17 +759,20 @@ public class AlarmDataController {
     			kringParam[i][1] = mapPoint.get(i).getFlon();
     			kringParam[i][2] = mapPoint.get(i).getLevel();
     		}
-    		
-    		List<double[]> list =new ArrayList<double[]>( Arrays.asList(kringParam));
-    		Iterator<double[]> ite = list.iterator();
-    		while (ite.hasNext()) {
-    			double[] ds = ite.next();
-    			if(ds[0]<53.55&&ds[0]>3.86&&ds[1]<135.05&&ds[1]>73.66){
-    			}else {
-    				ite.remove();
-    			}
-    		}
-    		String string = HttpServiceConfig.httpclient(list.toArray(new double[list.size()][3]), kringUrl);
+    		 List<double[]> list = Arrays.asList(kringParam);
+    		 Logger.info("参数1{}",JSON.toJSONString(list));
+    		 List<double[]> collect = list.stream().filter(ds -> ds[0]<53.55&&ds[0]>3.86&&ds[1]<135.05&&ds[1]>73.66).collect(toList());
+//    		List<double[]> list =new ArrayList<double[]>( Arrays.asList(kringParam));
+//    		Iterator<double[]> ite = list.iterator();
+//    		while (ite.hasNext()) {
+//    			double[] ds = ite.next();
+//    			if(ds[0]<53.55&&ds[0]>3.86&&ds[1]<135.05&&ds[1]>73.66){
+//    			}else {
+//    				ite.remove();
+//    			}
+//    		}
+    		Logger.info("参数2{}",JSON.toJSONString(collect));
+    		String string = HttpServiceConfig.httpclient(collect.toArray(new double[collect.size()][3]), kringUrl);
     		kriking3 = JSONObject.parseObject(string);
     		
     		Logger.info("场强定位计算正常 操作时间{} 返回值为{}", LocalDateTime.now().toString(),kriking3);
@@ -783,9 +786,11 @@ public class AlarmDataController {
     	if (coulm > 0) {
     		Object object = kriking3.get("result");
     		List<Integer[]> list = JSONObject.parseArray(object.toString(), Integer[].class);
-    		double numerator = list.stream().filter((e) -> e[2] >= intKrikingValue).count();
-    		int denominator = list.size()+coulm;
-    		electrCoverage = df.format(denominator > 0 ? numerator / denominator : 0);
+    		if(list!=null&&!list.isEmpty()) {
+	    		double numerator = list.stream().filter((e) -> e[2] >= intKrikingValue).count();
+	    		int denominator = list.size()+coulm;
+	    		electrCoverage = df.format(denominator > 0 ? numerator / denominator : 0);
+    		}
     	}
     	List<Map<String, String>> stationPiont = mapPoint.stream().map(station -> {
     		HashMap<String, String> element = Maps.newHashMap();
