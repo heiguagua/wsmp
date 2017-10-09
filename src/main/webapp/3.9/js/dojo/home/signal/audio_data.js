@@ -80,7 +80,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                         return new Date(value).format('yyyy-MM-dd hh:mm:ss');
                     }
                 }, {
-                    field : 'centerFreq',
+                    field : 'centerfreq',
                     title : '测量中心频率(MHz)',
                     align:'center',
                     width : '15%',
