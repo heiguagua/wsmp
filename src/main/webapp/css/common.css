@@ -580,7 +580,7 @@ border-radius: 4px;
     margin-left: 50px;
 }
 .popover.top>.arrow{
-	margin-left:-50px;
+	margin-left:-40px;
 }
 .popover.top>.arrow:after{
 	    border-top-color: #FFF;
