@@ -93,16 +93,12 @@ define([], function() {
 						titleTooltip : "带宽(kHz)",
 						sortable : true
 					}, {
-						field : 'success_rate',
-						title : '监测发射功率',
-						width : '18%',
-						titleTooltip : "监测发射功率",
-						sortable : true
-					}, {
 						field : 'monitorID',
 						title : '监测站',
 						width : '20%',
 						titleTooltip : "监测站",
+						sortable : true,
+						sortName : "monitorID",
 						formatter : function(value, row, index) {
 							var monitors = getMonitors(AREACODE);
 							var content = "";
@@ -127,6 +123,8 @@ define([], function() {
 						title : '发射源',
 						width : '20%',
 						titleTooltip : "发射源",
+						sortable : true,
+						sortName : "station",
 						formatter : function(value, row, index) {
 							value = value == null ? "-" : value;
 							return value;
