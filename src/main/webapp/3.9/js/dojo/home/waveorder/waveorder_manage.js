@@ -1388,11 +1388,18 @@ define(	["ajax", "dojo/parser", "esri/map",
 									+ row.endFreq + '">' + value + '</a>';
 						}
 					}, {
+						title : '<input type="checkbox" id="importantMonitor_filter">',
+						align : 'right',
+						formatter : function(value, row, index) {
+							return "";
+						}
+					}, {
 						field : 'importantMonitor',
-						title : '重点监测'
-								+ '<input type="checkbox" id="importantMonitor_filter">',
+						title : '重点监测',
+								//+ '<input type="checkbox" id="importantMonitor_filter">',
 						width : '15%',
 						titleTooltip : '重点监测',
+						align : 'left',
 						sortable : true,
 						sortName : "importantMonitor",
 						formatter : function(value, row, index) {
