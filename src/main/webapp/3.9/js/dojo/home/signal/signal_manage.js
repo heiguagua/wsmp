@@ -1272,8 +1272,8 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                    yAxis: {
                         type : 'value',
                         name:'百分比(%)',
-                        max : 120,
-                        min : -40,
+                        max : 100,
+                        min : 0,
                         splitNumber : 10,
                         axisLine : {
                             lineStyle : {
