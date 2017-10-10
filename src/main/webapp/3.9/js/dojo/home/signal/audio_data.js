@@ -85,7 +85,10 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                     align:'center',
                     width : '15%',
                     align:'center',
-                    titleTooltip:"测量中心频率(MHz)"
+                    titleTooltip:"测量中心频率(MHz)",
+                    formatter : function(value) {
+                        return parseFloat(value);
+                    }
                 }, {
                     field : 'audioLength',
                     title : '声音数据长度',
