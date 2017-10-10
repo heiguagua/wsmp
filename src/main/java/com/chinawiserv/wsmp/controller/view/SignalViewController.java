@@ -11,6 +11,8 @@ import com.chinawiserv.wsmp.pojo.RedioDetail;
 import com.chinawiserv.wsmp.pojo.Singal;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
+
+import org.apache.hadoop.hbase.TableNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -84,10 +86,17 @@ public class SignalViewController {
 	@PostMapping(path = "/sigaldetail")
 	public String signal_detail(Model model, @RequestParam String centorfreq, @RequestParam String beginTime, @RequestParam String endTime,
 			@RequestParam String areaCode, @RequestParam String stationCode, @RequestParam String id) {
+		System.out.println( LocalDateTime.now().format(formatter));
+		Map<String, Object> map=Maps.newHashMap();
 		try {
-			// long frequency = Long.parseLong(centorfreq);
-			System.out.println( LocalDateTime.now().format(formatter));
-			Map<String, Object> map = hbaseClient.queryFeaturePara(stationCode, LocalDateTime.now().format(formatter), Long.parseLong(centorfreq));
+			map = hbaseClient.queryFeaturePara(stationCode, LocalDateTime.now().format(formatter), Long.parseLong(centorfreq));
+			Logger.info("方法 hbaseClient.queryFeaturePara查询  返回值{} ",JSON.toJSONString(map));
+		} catch (TableNotFoundException e) {
+			Logger.error("方法 hbaseClient.queryFeaturePara查询 操作时间{} 请求正常  原因{}", LocalDateTime.now().toString(), e);
+		} catch (Exception e) {
+			Logger.error("方法 hbaseClient.queryFeaturePara查询 操作时间{} 请求异常  原因{}", LocalDateTime.now().toString(), e);
+		}
+		try {
 
 			Map<String, Object> requestPara = Maps.newLinkedHashMap();
 
@@ -128,7 +137,7 @@ public class SignalViewController {
 			Logger.info("方法 特征值查询 操作时间{} 请求成功 中心频率{} 开始时间{} 监测站id{} 信号id{} 返回值{} ", "signal_detail", LocalDateTime.now().toString(),centorfreq,beginTime,stationCode,id,JSON.toJSONString(map));
 		}
 		catch (Exception e) {
-			Logger.error("方法 特征值查询 操作时间{} 请求异常  原因{}", "signal_detail", LocalDateTime.now().toString(), e);
+			Logger.error("方法 特征值查询 操作时间{} 请求异常  原因{}", "signal_detail", LocalDateTime.now().toString(), e,e.getClass());
 		}
 
 		return "signal/signal_detail";
