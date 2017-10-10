@@ -87,7 +87,10 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                     title : '中心频率(MHz)',
                     width : '10%',
                     align:'center',
-                    titleTooltip:"中心频率(MHz)"
+                    titleTooltip:"中心频率(MHz)",
+                    formatter : function(value) {
+                        return parseFloat(value);
+                    }
 
                 }, {
                     field : 'spectrumSpan',

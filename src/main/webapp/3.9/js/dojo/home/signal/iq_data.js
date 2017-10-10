@@ -84,7 +84,10 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                     title : '中心频率(MHz)',
                     align:'center',
                     width : '10%',
-                    titleTooltip:"中心频率(MHz)"
+                    titleTooltip:"中心频率(MHz)",
+                    formatter : function(value) {
+                        return parseFloat(value);
+                    }
                 }, {
                     field : 'nmber',
                     title : 'I或Q数据个数',
