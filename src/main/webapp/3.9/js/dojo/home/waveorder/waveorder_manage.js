@@ -366,18 +366,19 @@ define(	["ajax", "dojo/parser", "esri/map",
 							formatter : function(value, row, index) {
 								var monitors = getMonitors(AREACODE);
 								var content = "";
-								for (var i = 0; i < value.length; i++) {
-									for (var j = 0; j < monitors.length; j++) {
-										if (value[i] == monitors[j].Num) {
-											value[i] = monitors[j].Name;
-											var sub_content = "<div class='popover-item'>"
-													+ value[i] + "</div>";
-											content += sub_content;
+									var value1 = [];
+									for (var i = 0; i < value.length; i++) {
+										for (var j = 0; j < monitors.length; j++) {
+											if (value[i] == monitors[j].Num) {
+												value1[i] = monitors[j].Name;
+												var sub_content = "<div class='popover-item'>"
+														+ value1[i] + "</div>";
+												content += sub_content;
+											}
 										}
 									}
-								}
-								return '<div class="dpopover" data-container="body" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
-										+ content + '">' + value + '</div>';
+									return '<div class="dpopover" data-container="body"  data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
+											+ content + '">' + value1 + '</div>';
 							},
 							events : {
 
@@ -433,6 +434,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 									});
 							MAP1.setZoom(8);
 							MAP1.centerAt(center);
+							redioType(MONITORS);
+							addPoint(MONITORS, 1, "false");
 						});
 
 				// 初始化电磁环境评估地图事件
@@ -475,6 +478,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 								layer.msg("设置更新时间成功！时间：" + e.target.value
 										+ "分钟");
 								refresh_timer_init(e.target.value);
+								$("#minutes").val("");
 							}
 						});
 						
@@ -485,6 +489,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						layer.msg("设置更新时间成功！时间：" +value
 						+ "分钟");
 						refresh_timer_init(value);
+						$("#minutes").val("");
 					}
 				});
 				
@@ -498,12 +503,14 @@ define(	["ajax", "dojo/parser", "esri/map",
 
 			}
 			
-			// 频段排序
-//			function freqRangeSorter(a, b) {
-//				a = a.replace('-', '');
-//				b = b.replace('-', '');
-//				return a - b;
-//			}
+			 //频段排序
+			function freqRangeSorter(a, b) {
+				var matcha = a.match(/^[0-9\.\-]+/);
+				var matchb = b.match(/^[0-9\.\-]+/);
+				a = matcha == null ? "9999" : a.substring(0,a.indexOf("-"));
+				b = matchb == null ? "9999" : b.substring(0,b.indexOf("-"));
+				return a - b;
+			}
 			
 			// 得到区域的边界
 			function getAreaBoundary(glayer) {
@@ -997,18 +1004,19 @@ define(	["ajax", "dojo/parser", "esri/map",
 								sortName : "stationID",
 								formatter : function(value, row, index) {
 									var content = "";
+									var value1 = [];
 									for (var i = 0; i < value.length; i++) {
 										for (var j = 0; j < monitors.length; j++) {
 											if (value[i] == monitors[j].Num) {
-												value[i] = monitors[j].Name;
+												value1[i] = monitors[j].Name;
 												var sub_content = "<div class='popover-item'>"
-														+ value[i] + "</div>";
+														+ value1[i] + "</div>";
 												content += sub_content;
 											}
 										}
 									}
-									return '<div class="dpopover"  data-container="body" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
-											+ content + '">' + value + '</div>';
+									return '<div class="dpopover" data-container="body"  data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
+											+ content + '">' + value1 + '</div>';
 								}
 							}, {
 								field : 'status',
@@ -1101,18 +1109,19 @@ define(	["ajax", "dojo/parser", "esri/map",
 								titleTooltip : "监测站",
 								formatter : function(value, row, index) {
 									var content = "";
+									var value1 = [];
 									for (var i = 0; i < value.length; i++) {
 										for (var j = 0; j < monitors.length; j++) {
 											if (value[i] == monitors[j].Num) {
-												value[i] = monitors[j].Name;
+												value1[i] = monitors[j].Name;
 												var sub_content = "<div class='popover-item'>"
-														+ value[i] + "</div>";
+														+ value1[i] + "</div>";
 												content += sub_content;
 											}
 										}
 									}
 									return '<div class="dpopover" data-container="body"  data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
-											+ content + '">' + value + '</div>';
+											+ content + '">' + value1 + '</div>';
 								}
 							}, {
 								field : 'status',
@@ -1218,18 +1227,19 @@ define(	["ajax", "dojo/parser", "esri/map",
 							formatter : function(value, row, index) {
 								var monitors = getMonitors(AREACODE);
 								var content = "";
-								for (var i = 0; i < value.length; i++) {
-									for (var j = 0; j < monitors.length; j++) {
-										if (value[i] == monitors[j].Num) {
-											value[i] = monitors[j].Name;
-											var sub_content = "<div class='popover-item'>"
-													+ value[i] + "</div>";
-											content += sub_content;
+									var value1 = [];
+									for (var i = 0; i < value.length; i++) {
+										for (var j = 0; j < monitors.length; j++) {
+											if (value[i] == monitors[j].Num) {
+												value1[i] = monitors[j].Name;
+												var sub_content = "<div class='popover-item'>"
+														+ value1[i] + "</div>";
+												content += sub_content;
+											}
 										}
 									}
-								}
-								return '<div class="dpopover" data-container="body" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
-										+ content + '">' + value + '</div>';
+									return '<div class="dpopover" data-container="body"  data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
+											+ content + '">' + value1 + '</div>';
 							},
 							events : {
 
@@ -1317,7 +1327,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						titleTooltip : '频段名称',
 						sortable : true,
 						sortName : "redioName",
-						//sorter : freqRangeSorter,
+						sorter : freqRangeSorter,
 						formatter : function(value, row, index) {
 							return '<div class="dpopover" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
 									+ value + '">' + value + '</div>';
