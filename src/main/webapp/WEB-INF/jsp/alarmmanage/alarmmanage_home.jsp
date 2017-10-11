@@ -46,6 +46,9 @@
       </select>
     </span>
   <div id="configWFreqWarming" class='config pull-right'>
+    <a class='btn btn-default btn-config' id="singletonFreq">
+      <img  src='images/way_1.png' width="18" />&nbsp;&nbsp;单频测量
+    </a>
     <a class='btn btn-default btn-config'  id="clickModalConfig"> <img src='images/config.png' />&nbsp;&nbsp;配置
     </a>
   </div>
@@ -54,8 +57,8 @@
 <!--content-->
 <div class='content-wrap'>
   <section class='flex-row'>
-    <div class='box right10 flex-column'>
-      <div class='detect-way flex-row flex1'>
+    <%--<div class='box right10 flex-column'>--%>
+      <%--<div class='detect-way flex-row flex1'>--%>
         <%--<div class='way-key flex1' id="warning_confirm">--%>
         <%--<div class='way-sign'>--%>
         <%--<img src='images/way_2.png' alt='告警确认' />--%>
@@ -68,16 +71,16 @@
         <%--</div>--%>
         <%--<p>重点监测</p>--%>
         <%--</div>--%>
-        <div id="singletonFreq" class='way-single flex1'>
-          <div class='way-sign'>
-            <img src='images/way_1.png' alt='单频测量' />
-          </div>
-          <p>单频测量</p>
-        </div>
-      </div>
-    </div>
+        <%--<div id="singletonFreq" class='way-single flex1'>--%>
+          <%--<div class='way-sign'>--%>
+            <%--<img src='images/way_1.png' alt='单频测量' />--%>
+          <%--</div>--%>
+          <%--<p>单频测量</p>--%>
+        <%--</div>--%>
+      <%--</div>--%>
+    <%--</div>--%>
     <div class='box2 flex-column'>
-      <div class='flex-row radio-type-check align-center flex1'>
+      <div class='flex-row radio-type-check align-center flex1' style="padding: 15px">
         <div class="radio radio-primary flex1 ">
           <input class ="typeCode"  type="radio" value="1" name="signal-type" id="legal-normal">
           <label for="legal-normal"> ${redioType.legalNormalStation} </label>
