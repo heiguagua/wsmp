@@ -2,9 +2,9 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
- <div class='signal-wrap' style="height: 42px;padding-top: 8px;padding-left: 15px;">
+ <div class='signal-wrap' style="height: 42px;padding-top: 8px;padding-left: 15px;position: relative;">
           <label class='signal-detect'><image src='images/sifon_1.png' style="margin-right: 5px;/>&nbsp;"<a id="waveorder_manage" style="color: #068AE7;">电波秩序</a></label>
-          <ul class='signal-category'>
+          <ul class='signal-category' style="position: absolute;right: 20px">
             <li class='item'>
               <div class="radio radio-primary  ">
                 <input type="radio" name="signal-type" id="legal" title="合法正常信号" checked="checked" value="1" isSubType="false">
