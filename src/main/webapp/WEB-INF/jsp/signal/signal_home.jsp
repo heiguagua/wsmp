@@ -248,8 +248,8 @@
 					<div class="wrapper">
 
 						<div id="visualizer">
-						<div class="progress progress-striped active" id="progress-bar">
-                        <div class="progress-bar progress-bar-info"></div>
+						<div class="progress progress-striped active" id="progress-bar" style="height:128px;top:0;background:#fff;border: none;">
+                        <div class="progress-bar progress-bar-info" style="height:128px"></div>
                     </div>
 							<!-- <canvas width="800px" height="350" id="canvas">抱歉！您的浏览器不支持Canvas :(</canvas>
 							<div id="mirrorWrapper">
