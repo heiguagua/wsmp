@@ -1,11 +1,10 @@
 @charset "UTF-8";
 #waveOrder_map_to_sifon .signal-wrap {
-    /*padding: 15px;*/
     padding-bottom: 5px;
     border-bottom: 1px solid #DAE5F0;
     overflow: hidden;
     display: flex;
-    flex-direction: row;
+    flex-direction: row
 }
 #waveOrder_map_to_sifon .signal-wrap .signal-detect {
     height: 30px;
@@ -13,55 +12,58 @@
     font-size: 14px;
     color: #068AE7;
     margin-bottom: 0;
-    vertical-align: middle;
+    vertical-align: middle
 }
 #waveOrder_map_to_sifon .signal-category {
     height: 30px;
     display: inline-block;
     font-size: 12px;
     margin-bottom: 0;
-    vertical-align: middle; }
+    vertical-align: middle
+}
 #waveOrder_map_to_sifon .signal-category .item {
     height: 30px;
     position: relative;
     float: left;
     margin-left: 20px;
-    /*background: #090;*/
-    /*margin-right: 20px;*/
-    width: 60px;
-     }
+    width: 60px
+}
 #waveOrder_map_to_sifon .signal-category .signal-sign {
     display: inline-block;
     vertical-align: middle;
     width: 11px;
     height: 11px;
-     border-radius: 3px; 
-     /*border-radius: 50%; */
+    border-radius: 3px;
     margin-left: 10px;
-    margin-right: 5px; }
+    margin-right: 5px
+}
 #waveOrder_map_to_sifon .signal-category .signal-sign.legal {
-    background: #2ccd7d; }
+    background: #2ccd7d
+}
 #waveOrder_map_to_sifon .signal-category .signal-sign.legal-wrong {
-    background: #2ccd7d;
-    /*border: 2px solid #ff6059;*/
-     }
+    background: #2ccd7d
+}
 #waveOrder_map_to_sifon .signal-category .signal-sign.known {
-    background: #2ccd7d;
-    /*border: 2px solid #d1d1d1; */
+    background: #2ccd7d
 }
 #waveOrder_map_to_sifon .signal-category .signal-sign.illegal {
-    background: #ff6059; }
+    background: #ff6059
+}
 #waveOrder_map_to_sifon .signal-category .signal-sign.unknown {
-    background: #d1d1d1; }
+    background: #d1d1d1
+}
 #waveOrder_map_to_sifon .signal-category .number {
     display: inline-block;
-    vertical-align: middle; }
-#waveOrder_map_to_sifon .signal-category .legal-number, #waveOrder_map_to_sifon .signal-category .legal-wrong, #waveOrder .signal-category .known {
-    color: #2ccd7d; }
+    vertical-align: middle
+}
+#waveOrder_map_to_sifon .signal-category .legal-number,
+#waveOrder_map_to_sifon .signal-category .legal-wrong,
+#waveOrder .signal-category .known {
+}
 #waveOrder_map_to_sifon .signal-category .illegal-number {
-    color: #ff6059; }
+}
 #waveOrder_map_to_sifon .signal-category .unknown-number {
-    color: #d1d1d1; }
+}
 #waveOrder_map_to_sifon .btn-refresh {
     height: 30px;
     background: #FFF;
@@ -71,118 +73,98 @@
     color: #6F7479;
     letter-spacing: 0;
     line-height: 18px;
-    border: 1px solid #DAE5F0; }
-#waveOrder_map_to_sifon .btn-evaluate{
+    border: 1px solid #DAE5F0
+}
+#waveOrder_map_to_sifon .btn-evaluate {
     background: #FFF;
     padding: 5px 15px;
     border-radius: 4px;
     font-size: 12px;
     color: #6F7479;
     border: 1px solid #DAE5F0;
-    height: 30px;}
+    height: 30px
+}
 #waveOrder_map_to_sifon .btn-refresh .fa-refresh {
     color: #DDD;
-    font-size: 16px; }
+    font-size: 16px
+}
 #waveOrder_map_to_sifon .elect-evaluate-wrap {
     padding: 15px;
     font-size: 14px;
     overflow: hidden;
-    border-bottom: 1px solid #DAE5F0; }
+    border-bottom: 1px solid #DAE5F0
+}
 #waveOrder_map_to_sifon .elect-evaluate-wrap .module-name {
-    color: #505363; }
+    color: #505363
+}
 #waveOrder_map_to_sifon .elect-evaluate-wrap .coverage-number {
     color: #37A5FF;
-    font-size: 18px; }
-.mark-title{
-    font-size:12px;}
-.mark-info{
+    font-size: 18px
+}
+.mark-title {
+    font-size: 12px
+}
+.mark-info {
     background: #FFFFFF;
     border: 1px solid #B8C9DA;
     border-radius: 4px;
     width: 100%;
     height: 100px;
-    padding: 10px;}
+    padding: 10px
+}
 .waveOrder_map_to_sifon {
     padding-left: 0;
     padding-right: 0;
     height: 100%;
     width: 100%;
-    overflow: hidden;
+    overflow: hidden
 }
-.waveOrder_map_to_sifon_wrap{
+.waveOrder_map_to_sifon_wrap {
     width: 100%;
-    overflow: hidden;
+    overflow: hidden
 }
-.waveOrder_map_to_sifon_box{
-    border: none;
+.waveOrder_map_to_sifon_box {
+    border: none
 }
-
-
-
-#waveOrder_map_to_sifon .signal-category .radio input[type="radio"]{
-    position: absolute;width: 100%;
-    height: 30px;
+#waveOrder_map_to_sifon .signal-category .radio input[type="radio"] {
+    position: absolute;
+    width: 100%;
+    height: 30px
 }
-#waveOrder_map_to_sifon .signal-category .radio{
+#waveOrder_map_to_sifon .signal-category .radio {
     padding-left: 20px;
     height: 30px;
-    /*position: relative;*/
-    position: absolute;width: 100%;z-index: 99;
+    position: absolute;
+    width: 100%;
+    z-index: 99
 }
-#waveOrder_map_to_sifon .signal-category .radio label{
+#waveOrder_map_to_sifon .signal-category .radio label {
     margin-top: 8px;
-    display: none;
+    display: none
 }
-#waveOrder_map_to_sifon .signal-category .radio label::before{
-    width: 12px;height: 12px;left: 16px;
+#waveOrder_map_to_sifon .signal-category .radio label::before {
+    width: 12px;
+    height: 12px;
+    left: 16px
 }
-
-#waveOrder_map_to_sifon .signal-category .radio.radio-primary input[type="radio"]:checked+label::after{
-    width: 10px;height: 10px;top: 2px;left: 17px;
+#waveOrder_map_to_sifon .signal-category .radio.radio-primary input[type="radio"]:checked+label::after {
+    width: 10px;
+    height: 10px;
+    top: 2px;
+    left: 17px
 }
-
-
-
-
-#waveOrder .signal-category .radio input[type="radio"]{
-    position: absolute;width: 100%;
-    height: 30px;
+#waveOrder .signal-category .radio input[type="radio"] {
+    position: absolute;
+    width: 100%;
+    height: 30px
 }
-/*#waveOrder .signal-category .radio{*/
-    /*padding-left: 20px;*/
-    /*height: 30px;*/
-    /*position: absolute;*/
-    /*width: 100%;*/
-    /*z-index: 99;*/
-/*}*/
-/*#waveOrder .signal-category .radio label{
-    margin-top: 8px;
-    display: none;
-}*/
 #waveOrder .signal-category .radio label::before,
-#waveOrder .signal-category .radio label::after{
-    /*width: 12px;height: 12px;left: 16px;*/
-    display: none;
+#waveOrder .signal-category .radio label::after {
+    display: none
 }
-#waveOrder .signal-category .signal-sign{width: 12px;height: 12px;border: none;border-radius: 3px}
-/*
-
-#waveOrder .signal-category .radio.radio-primary input[type="radio"]:checked+label::after{
-    width: 10px;height: 10px;top: 2px;left: 17px;
-}
-
-#waveOrder .signal-category .item {
-    height: 30px;
-    position: relative;
-    float: left;
-    margin-left: 20px;
-    width: 60px;
-     }
 #waveOrder .signal-category .signal-sign {
-    display: inline-block;
-    vertical-align: middle;
-    width: 11px;
-    height: 11px;
-     border-radius: 3px; 
-    margin-left: 10px;
-    margin-right: 5px; }*/
+    width: 12px;
+    height: 12px;
+    border: none;
+    border-radius: 3px
+}
