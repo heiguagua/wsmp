@@ -197,10 +197,10 @@ define(["home/signal/signal_manage", "ajax", "esri/symbols/PictureMarkerSymbol"]
       return mercator;
     }
     function select_change(cri) {
-      var dk = $("#redioDetailCentor").val();
-      if(dk>0){
-         $("#dk").html("&#160;&#160;带宽：" + (dk || 0) + "KHz")
-      }
+//      var dk = $("#redioDetailCentor").val();
+//      if(dk>0){
+//         $("#dk").html("&#160;&#160;带宽：" + (dk || 0) + "KHz")
+//      }
         // signal_manage.changeView();
       var requsetparam = {}
       var id = $("#signal_list1").find('option:selected').val();
