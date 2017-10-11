@@ -985,6 +985,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                 $("#signal_list1 .select2-picker").html('<option class = "redio" disabled>未查询到数据</option>');
                 $("#station-list2").html('<option style="width: 300px;" class="station">未查询到数据</option>');
                 initMap.clearMap();
+            	$("#dk").html("");
                 return;
             }
             if ($("#singalID").val() != null && $("#singalID").val().length != 0) {
