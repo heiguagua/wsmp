@@ -15,7 +15,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax,echarts) {
 					trigger : 'axis',
 					formatter:function(param){
 						//console.log(param)
-						if(param && param[0] && param[0].name && param[0].value!=null) {
+						if(param && param[0] && param[0].name && param[0].value!=null && param[0].value>0) {
 							return param[0].name+"点占用度" + param[0].value.toFixed(2)+"%";
 						}else if(param && param[1] && param[1].name && param[1].value!=null && param[1].value>0){
                             return param[1].name+"点占用度" + param[1].value.toFixed(2)+"%";
