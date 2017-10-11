@@ -56,7 +56,7 @@
 
 <!--content-->
 <div class='content-wrap'>
-  <section class='flex-row'>
+  <section class='flex-row' style="margin-bottom: 15px;">
     <%--<div class='box right10 flex-column'>--%>
       <%--<div class='detect-way flex-row flex1'>--%>
         <%--<div class='way-key flex1' id="warning_confirm">--%>
@@ -101,6 +101,8 @@
           <input class ="typeCode" type="radio" value="4" name="signal-type" id="unknown">
           <label for="unknown"> ${redioType.unKonw} </label>
         </div>
+        <div class="radio radio-primary flex1 "> </div>
+        <div class="radio radio-primary flex1 "> </div>
       </div>
     </div>
   </section>
