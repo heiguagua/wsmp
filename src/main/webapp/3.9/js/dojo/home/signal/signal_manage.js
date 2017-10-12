@@ -7,7 +7,8 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
         initMap = init;
     }
     function init() {
-        $("#dk").html($("#redioDetailCentor").val())
+//    	console.log($("#redioDetailCentor").val());
+//        $("#dk").html($("#redioDetailCentor").val())
         init_select2();
         //时间选择器初始化
         $.fn.datetimepicker.defaults = {
@@ -943,6 +944,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
         });
     }
     function getFreqList() {
+    	console.log(1);
         // 清除图表
         destroy_chart_table();
         var val = $("#search").val();
@@ -983,6 +985,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                 $("#signal_list1 .select2-picker").html('<option class = "redio" disabled>未查询到数据</option>');
                 $("#station-list2").html('<option style="width: 300px;" class="station">未查询到数据</option>');
                 initMap.clearMap();
+            	$("#dk").html("");
                 return;
             }
             if ($("#singalID").val() != null && $("#singalID").val().length != 0) {
@@ -1565,9 +1568,9 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                         trigger: 'axis',
                         formatter: function(param) {
                             ////console.log(param)
-                            if (param && param[0] && param[0].name && param[0].value != null) {
+                            if (param && param[0] && param[0].name && param[0].value != null && param[0].value>0) {
                                 return param[0].name + "点占用度" + param[0].value.toFixed(2) + "%";
-                            } else if (param && param[1] && param[1].name && param[1].value != null) {
+                            } else if (param && param[1] && param[1].name && param[1].value != null && param[1].value>0) {
                                 return param[1].name + "点占用度" + param[1].value.toFixed(2) + "%";
                             } else {
                                 return "没有数据"
@@ -1691,8 +1694,12 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
             //console.log(data)
                 //无带宽以“-”替代
                 ////console.log($("#redioDetailCentor").html())
+            var dk = $("#redioDetailCentor").val();
+            if(dk>0){
+               $("#dk").html("&#160;&#160;带宽：" + (dk || 0) + "KHz")
+            }
             if ($("#redioDetailCentor").html().indexOf('0.0') == 0) {
-                $("#redioDetailCentor").html('-')
+            	$("#redioDetailCentor").html('-')
             }
             var type = $('#signal_list1').find('option:selected').attr("typecode");
             type = parseInt(type);

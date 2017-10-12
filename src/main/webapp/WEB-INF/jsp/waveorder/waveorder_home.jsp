@@ -32,6 +32,7 @@
 	href='3.9/js/dojo/library/timepicker/css/bootstrap-datetimepicker.min.css'
 	rel='stylesheet' />
 <link href='3.9/js/dojo/library/layer/layer.css' rel='stylesheet' />
+<link href='css/waveOrder_map_to_sifon.css' rel='stylesheet' />
 </head>
 
 <body id='waveOrder'>

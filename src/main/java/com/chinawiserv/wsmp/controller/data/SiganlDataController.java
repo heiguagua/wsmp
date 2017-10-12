@@ -79,7 +79,8 @@ public class SiganlDataController {
 		//Map<String, Object> map = hbaseClient.queryModulationMode(id, timeStart, timeStop, Long.parseLong(frequency));
 
 		try {
-			Map<String, Object>  map = hbaseClient.queryModulationMode(id, timeStart,  LocalDateTime.now().format(formatter), Long.parseLong(frequency));
+//			Map<String, Object>  map = hbaseClient.queryModulationMode(id, timeStart,  LocalDateTime.now().format(formatter), Long.parseLong(frequency));
+			Map<String, Object>  map = hbaseClient.queryModulationMode(id, "19710901100950",  LocalDateTime.now().format(formatter), Long.parseLong(frequency));
 			List<String> lists = Lists.newLinkedList();
 //			int sum =  map.values().stream().mapToInt(m->Integer.parseInt(m.toString())).reduce(0,(a, b) ->  a +  b);
 
