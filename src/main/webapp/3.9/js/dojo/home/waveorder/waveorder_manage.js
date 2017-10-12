@@ -505,6 +505,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 			
 			 //频段排序
 			function freqRangeSorter(a, b) {
+				console.log(a);
 				var matcha = a.match(/^[0-9\.\-]+/);
 				var matchb = b.match(/^[0-9\.\-]+/);
 				a = matcha == null ? "9999" : a.substring(0,a.indexOf("-"));
@@ -1330,7 +1331,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						sorter : freqRangeSorter,
 						formatter : function(value, row, index) {
 							return '<div class="dpopover" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
-									+ value + '">' + value + '</div>';
+									+ value +'">' + value + '</div>';
 						}
 					}, {
 						field : 'legalNormalStationNumber',
