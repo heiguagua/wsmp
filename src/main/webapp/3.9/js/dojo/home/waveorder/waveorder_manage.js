@@ -986,13 +986,13 @@ define(	["ajax", "dojo/parser", "esri/map",
 								}
 							}, {
 								field : 'firstTime',
-								width : '20%',
+								width : '15%',
 								title : '首次出现时间',
 								titleTooltip : "首次出现时间",
 								sortable : true
 							}, {
 								field : 'lastingTime',
-								width : '20%',
+								width : '15%',
 								title : '最后出现时间',
 								titleTooltip : "最后出现时间",
 								sortable : true
@@ -1028,10 +1028,18 @@ define(	["ajax", "dojo/parser", "esri/map",
 									return '已确认';
 								}
 							}, {
+								field : 'keyword',
+								title : '告警内容',
+								titleTooltip : "告警内容",
+								width : '10%',
+								formatter : function(value, row, index) {
+									return value;
+								}
+							},{
 								field : 'mark',
 								width : '10%',
-								title : '备注',
-								titleTooltip : "备注",
+								title : '描述',
+								titleTooltip : "描述",
 								formatter : function(value, row, index) {
 									value = value == null ? "-" : value;
 									return '<div class="dpopover" data-container="body" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
@@ -1091,13 +1099,13 @@ define(	["ajax", "dojo/parser", "esri/map",
 								}
 							}, {
 								field : 'firstTime',
-								width : '20%',
+								width : '15%',
 								title : '首次出现时间',
 								sortable : true,
 								titleTooltip : "首次出现时间"
 							}, {
 								field : 'lastingTime',
-								width : '20%',
+								width : '15%',
 								title : '最后出现时间',
 								sortable : true,
 								titleTooltip : "最后出现时间"
@@ -1139,10 +1147,18 @@ define(	["ajax", "dojo/parser", "esri/map",
 									return value;
 								}
 							}, {
+								field : 'keyword',
+								width : '10%',
+								title : '告警内容',
+								titleTooltip : "告警内容",
+								formatter : function(value, row, index) {
+									return value;
+								}
+							},{
 								field : 'mark',
 								width : '10%',
-								title : '备注',
-								titleTooltip : "备注",
+								title : '描述',
+								titleTooltip : "描述",
 								formatter : function(value, row, index) {
 									value = value == null ? "-" : value;
 									return '<div class="dpopover"  data-container="body" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'

@@ -20,6 +20,8 @@ public class Alarm {
 	private String mark;
 	
 	private List<String> stationID;
+	
+	private String keyword;
 
 	public Alarm() {
 
@@ -106,6 +108,14 @@ public class Alarm {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getKeyword() {
+		return keyword;
+	}
+
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
 	}
 
 }

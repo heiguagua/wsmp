@@ -26,11 +26,9 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -214,6 +212,7 @@ public class WaveOrderDataController {
 				alarm.setLastingTime(m.getLastTimeDate().toString().replace('T',' '));
 				alarm.setMark(m.getDescription());
 				alarm.setId(m.getID());
+				alarm.setKeyword(m.getKeyword());
 				List<String> stationID = Lists.newArrayList();
 				m.getStatList().getFreqWarningStatDTO().stream().forEach(t1 -> {
 					stationID.add(t1.getStationGUID());
@@ -250,6 +249,7 @@ public class WaveOrderDataController {
 					alarm.setFirstTime(m.getSaveDate().toString().replace('T',' '));
 					alarm.setLastingTime(m.getLastTimeDate().toString().replace('T',' '));
 					alarm.setMark(m.getDescription());
+					alarm.setKeyword(m.getKeyword());
 					List<String> stationID = Lists.newArrayList();
 					m.getStatList().getFreqWarningStatDTO().stream().forEach(t1 -> {
 						stationID.add(t1.getStationGUID());
