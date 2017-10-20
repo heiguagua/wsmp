@@ -125,6 +125,7 @@
       <%--控件--%>
       <div id="levelsColor" class="levelsColor">
         <form method="#">
+         <input type="number" name="opVal" min="0" max="1" id="opCtrl" value="0.7" alt="请输入透明度范围值0~1"  title="请输入透明度范围值0~1" style="margin-right: 5px">
           <input type="number" name="startVal" min="1" id="minCtrl" value="-40" alt="请输入最小值"  title="请输入最小值">
           <img src="images/a.png" alt="">
           <input type="number" name="endVal" max="10" id="maxCtrl" value="120" alt="请输入最大值" title="请输入最大值" >
