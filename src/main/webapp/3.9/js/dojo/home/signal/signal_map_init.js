@@ -104,7 +104,28 @@ define(["home/signal/signal_manage", "ajax", "esri/symbols/PictureMarkerSymbol"]
             var points = new esri.geometry.Point(stationPiont[i]);
             // var txtsms = new esri.symbols.TextSymbol(stationPiont[i].count).setOffset(19, 8).setColor(new esri.Color([0xFF, 0, 0])).setAlign(esri.symbols.Font.ALIGN_START).setFont(new esri.symbols.Font("12pt").setWeight(esri.symbols.Font.WEIGHT_BOLD));
             var txtsms = new esri.symbols.TextSymbol(stationPiont[i].count).setOffset(19, 8).setColor(new esri.Color([0, 0, 0, 125])).setAlign(esri.symbols.Font.ALIGN_START).setFont(new esri.symbols.Font("12pt").setWeight(esri.symbols.Font.WEIGHT_BOLD));
-            var graphic = new esri.Graphic(points, txtsms);
+            //基站文本提示
+            console.log(stationPiont[i])
+            var spx=Number(stationPiont[i]['x'].toString().match(/^\d+(?:\.\d{0,3})?/));
+            var spy=Number(stationPiont[i]['y'].toString().match(/^\d+(?:\.\d{0,3})?/));
+            // var attrs = {"a":stationPiont[i]['x'],"b":stationPiont[i]['y'],"c":stationPiont[i]['count']};
+            var attrs = {"a":spx,"b":spy,"c":stationPiont[i]['count'],"d":''};
+            // 中文名称
+            var info = Binding.getUser();
+                info = JSON.parse(info);
+                var code = info.Area.Code;
+                var stationObj = Binding.getMonitorNodes(code),
+                    dds = [];
+                stationObj = JSON.parse(stationObj);
+            for (var j = 0; j < stationObj.length; j++) {
+                  if (stationPiont[i]['stationId'] === stationObj[j].Num) {
+                    attrs['d']= stationObj[j].Name;
+                  }
+              }
+            var gits = new esri.InfoTemplate("场强定位信息","名称: ${d} <br/> 经度: ${a} <br/> 纬度: ${b} <br/>统计:${c}");
+            var graphic = new esri.Graphic(points, txtsms,attrs,gits);
+            //基站文本提示 end
+            // var graphic = new esri.Graphic(points, txtsms);
             var tgraphic = new esri.Graphic(points, monitorSymbol);
             var bgsms = new PictureMarkerSymbol({
               "url": "images/yellow_small.png",
