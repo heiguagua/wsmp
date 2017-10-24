@@ -493,4 +493,87 @@ public class WaveOrderDataController {
 		}
 	}
 	
+	@PostMapping("/SignalCountOnMonitors")
+	public List<HashMap<String,Object>> getSignalCountOnMonitors(@RequestBody Map<String,Object> param) {
+		// 根据信号类型，监测站列表（id or name）查询能够监测到该信号的监测站ID和个数，和每个监测站的该信号个数。
+				RadioSignalQueryRequest request = new RadioSignalQueryRequest();
+				// 设置信号类型
+				ArrayOfSignalTypeDTO value = new ArrayOfSignalTypeDTO();
+				List<SignalTypeDTO> signalTypeDTO = Lists.newArrayList();
+				SignalTypeDTO dto = new SignalTypeDTO();
+				dto.setSignalType(Integer.valueOf(param.get("signalType").toString()));
+				signalTypeDTO.add(dto);
+				value.setSignalTypeDTO(signalTypeDTO);
+				request.setTypeCodes(value);
+				// 设置监测站，过滤有信号的监测站ID
+				ArrayOfString value1 = new ArrayOfString();
+				final List<?> monitorsID = (List<?>) param.get("monitorsNum");
+				List<String> string = monitorsID.stream().map(o -> o.toString()).collect(Collectors.toList());
+				value1.setString(string);
+				request.setStationIDs(value1);
+				RadioSignalQueryResponse response = serviceRadioSignalSoap.queryRadioSignal(request);
+				
+				//重新封装结果集
+				@SuppressWarnings("unchecked")
+				final List<Map<String,Object>> monitors = (List<Map<String, Object>>) param.get("monitors");
+				@SuppressWarnings("serial")
+				List<HashMap<String, Object>> monitorsList = monitors.stream()
+				.map(e -> new HashMap<String,Object>(){{
+					put("monitorID",e.get("Num"));
+					put("count",0);
+					put("monitorName",e.get("Name"));
+					put("x",e.get("Longitude"));
+					put("y",e.get("Latitude"));
+				}}).collect(Collectors.toList());
+				
+				if(param.get("isSubType").toString().equals("true")) {
+					//如果是子类型
+					Map<String, List<RadioSignalStationDTO>> map1 = response.getRadioSignals().getRadioSignalDTO().stream()
+						.filter(t -> t.getAbnormalHistory().getRadioSignalAbnormalHistoryDTO().stream().findAny().isPresent() && t.getAbnormalHistory().getRadioSignalAbnormalHistoryDTO().stream().findAny().get().isIsInvalid() == false)
+						.flatMap(m ->m.getStationDTOs().getRadioSignalStationDTO().stream())
+						.collect(Collectors.groupingBy(RadioSignalStationDTO::getStationNumber));
+					//统计有信号的同一种监测站的信号数
+					@SuppressWarnings("serial")
+					List<HashMap<String, Object>> countList = map1.entrySet().stream()
+					.map(e -> new HashMap<String,Object>(){{
+						put("monitorID",e.getKey());
+						put("count",e.getValue().size());
+					}}).collect(Collectors.toList());
+					//循环遍历两个List,得到resultList
+					List<HashMap<String,Object>> resultList = monitorsList.stream().peek(t -> {
+						countList.stream().forEach(t1 -> {
+							if(t.get("monitorID").equals(t1.get("monitorID"))) {
+								t.put("count", t1.get("count"));
+							}
+						});
+					}).collect(Collectors.toList());
+					return resultList;
+				}else {
+					//如果是大类型
+					Map<String, List<RadioSignalStationDTO>> map1 = response.getRadioSignals().getRadioSignalDTO().stream()
+							.collect(Collectors.partitioningBy(t -> t.getAbnormalHistory().getRadioSignalAbnormalHistoryDTO()
+									.stream().findAny().isPresent()))
+							.get(false).stream()
+							.flatMap(m -> m.getStationDTOs().getRadioSignalStationDTO().stream())
+							.collect(Collectors.groupingBy(RadioSignalStationDTO::getStationNumber));
+					
+					//统计有信号的同一种监测站的信号数
+					@SuppressWarnings("serial")
+					List<HashMap<String, Object>> countList = map1.entrySet().stream()
+					.map(e -> new HashMap<String,Object>(){{
+						put("monitorID",e.getKey());
+						put("count",e.getValue().size());
+					}}).collect(Collectors.toList());
+					//循环遍历两个List,得到resultList
+					List<HashMap<String,Object>> resultList = monitorsList.stream().peek(t -> {
+						countList.stream().forEach(t1 -> {
+							if(t.get("monitorID").equals(t1.get("monitorID"))) {
+								t.put("count", t1.get("count"));
+							}
+						});
+					}).collect(Collectors.toList());
+					return resultList;
+				}
+	}
+	
 }

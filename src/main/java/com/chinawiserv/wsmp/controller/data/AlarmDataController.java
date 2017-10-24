@@ -20,6 +20,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BinaryOperator;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -60,6 +61,7 @@ import com.chinawiserv.wsmp.kriging.Interpolation;
 import com.chinawiserv.wsmp.model.LevelLocate;
 import com.chinawiserv.wsmp.pojo.IntensiveMonitoring;
 import com.chinawiserv.wsmp.pojo.Station;
+import com.chinawiserv.wsmp.util.Distance;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
@@ -739,6 +741,7 @@ public class AlarmDataController {
     	List<LevelLocate> mapPoint = Collections.emptyList();
     	
     	JSONObject kriking3=null;
+    	JSONObject kriking3new = new JSONObject();
     	try {
     		
     		final long frequency = Long.valueOf(param.get("frequency").toString());
@@ -774,6 +777,17 @@ public class AlarmDataController {
     		Logger.info("参数2{}",JSON.toJSONString(collect));
     		String string = HttpServiceConfig.httpclient(collect.toArray(new double[collect.size()][3]), kringUrl);
     		kriking3 = JSONObject.parseObject(string);
+    		//过滤kriking点
+    		Object object = kriking3.get("result");
+        	List<double[]> krikinglist = JSONObject.parseArray(object.toString(), double[].class);
+    	    Integer r = 4;
+    	    List<double[]> krikinglistFiletered = krikinglist.stream().filter(e -> {
+    	    	for(int i=0;i<kringParam.length;i++) {
+    	    		if(Distance.getDistance(e, kringParam[i]) < r) return true;
+    	    	}
+    	    	return false;
+    	    }).collect(Collectors.toList());
+    	    kriking3new.put("result", krikinglistFiletered);
     		
     		Logger.info("场强定位计算正常 操作时间{} 返回值为{}", LocalDateTime.now().toString(),kriking3);
     	} catch (NumberFormatException e) {
@@ -790,8 +804,10 @@ public class AlarmDataController {
 	    		double numerator = list.stream().filter((e) -> e[2] >= intKrikingValue).count();
 	    		int denominator = list.size()+coulm;
 	    		electrCoverage = df.format(denominator > 0 ? numerator / denominator : 0);
+	    		
     		}
     	}
+    	
     	List<Map<String, String>> stationPiont = mapPoint.stream().map(station -> {
     		HashMap<String, String> element = Maps.newHashMap();
     		element.put("x", station.getFlon() + "");
@@ -803,7 +819,7 @@ public class AlarmDataController {
     	
     	Map<String, Object> mapPiont = new HashMap<>();
     	mapPiont.put("stationPiont", stationPiont);
-    	mapPiont.put("kriking3", kriking3);
+    	mapPiont.put("kriking3", kriking3new);
     	mapPiont.put("electrCoverage", electrCoverage);
     	
     	return mapPiont;
