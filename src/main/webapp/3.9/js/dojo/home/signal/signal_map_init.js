@@ -68,7 +68,7 @@ define(["home/signal/signal_manage", "ajax", "esri/symbols/PictureMarkerSymbol"]
       var MyMap = new esri.Map("mapDiv", {
         center: center,
         zoom: lv,
-        maxZoom: 12,
+        maxZoom: 15,
         logo: false,
         showAttribution: false,
         height: 500
@@ -86,11 +86,27 @@ define(["home/signal/signal_manage", "ajax", "esri/symbols/PictureMarkerSymbol"]
       var graphicLayer = new esri.layers.GraphicsLayer();
       //把图层添加到地图上
       MyMap.addLayer(graphicLayer);
+       ajax.get("cache/data/mapdata",null,function(reslut){
+          var opCtrl = document.getElementById("opCtrl").value||0.2;
+          if(opCtrl<0){
+              opCtrl=0
+          }else if(opCtrl>1){
+              opCtrl=1
+          }
+          var sfs = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID,null, new esri.Color([58,151,194,opCtrl]));
+          var Citygraphic = new esri.Graphic(new esri.geometry.Polygon(reslut), sfs);
+          graphicLayer.add(Citygraphic);
+        });
       if (ok && ddd && stationPiont) {
         if (ok && ddd.length) {
+          //计算步长
+          var dx=(ddd[1][0]-ddd[0][0])||0.0061060204081648806;
+          // var dy=(ddd[60][1]-ddd[0][1])||0.0012826703440396159;
+          var dy=0.00131;
           //设置标注的经纬度
           for (var i = 0; i < ddd.length; i++) {
-            setPot(graphicLayer, MyMap, ddd[i][1], ddd[i][0], getGrb(ddd[i][2], colorArr), 2 * nn);
+            setPot(graphicLayer, MyMap, ddd[i][1], ddd[i][0], getGrb(ddd[i][2], colorArr), 2 * nn,[ddd[i][1]+dy,ddd[i][0]+dx]);
+            // setPot(graphicLayer, MyMap, ddd[i][1], ddd[i][0], getGrb(ddd[i][2], colorArr), 2 * nn);
             // setPot(graphicLayer, MyMap, ddd[i].x, ddd[i].y, getGrb(ddd[i].val, colorArr), 2 * nn);
           }
         }
@@ -104,8 +120,30 @@ define(["home/signal/signal_manage", "ajax", "esri/symbols/PictureMarkerSymbol"]
             var points = new esri.geometry.Point(stationPiont[i]);
             // var txtsms = new esri.symbols.TextSymbol(stationPiont[i].count).setOffset(19, 8).setColor(new esri.Color([0xFF, 0, 0])).setAlign(esri.symbols.Font.ALIGN_START).setFont(new esri.symbols.Font("12pt").setWeight(esri.symbols.Font.WEIGHT_BOLD));
             var txtsms = new esri.symbols.TextSymbol(stationPiont[i].count).setOffset(19, 8).setColor(new esri.Color([0, 0, 0, 125])).setAlign(esri.symbols.Font.ALIGN_START).setFont(new esri.symbols.Font("12pt").setWeight(esri.symbols.Font.WEIGHT_BOLD));
-            var graphic = new esri.Graphic(points, txtsms);
-            var tgraphic = new esri.Graphic(points, monitorSymbol);
+            //基站文本提示
+            console.log(stationPiont[i])
+            var spx=Number(stationPiont[i]['x'].toString().match(/^\d+(?:\.\d{0,3})?/));
+            var spy=Number(stationPiont[i]['y'].toString().match(/^\d+(?:\.\d{0,3})?/));
+            // var attrs = {"a":stationPiont[i]['x'],"b":stationPiont[i]['y'],"c":stationPiont[i]['count']};
+            var attrs = {"a":spx,"b":spy,"c":stationPiont[i]['count'],"d":''};
+            // 中文名称
+            var info = Binding.getUser();
+                info = JSON.parse(info);
+                var code = info.Area.Code;
+                var stationObj = Binding.getMonitorNodes(code),
+                    dds = [];
+                stationObj = JSON.parse(stationObj);
+            for (var j = 0; j < stationObj.length; j++) {
+                  if (stationPiont[i]['stationId'] === stationObj[j].Num) {
+                    attrs['d']= stationObj[j].Name;
+                  }
+              }
+            var gits = new esri.InfoTemplate("场强定位信息","名称: ${d} <br/> 经度: ${a} <br/> 纬度: ${b} <br/>统计:${c}");
+            var graphic = new esri.Graphic(points, txtsms,attrs,gits);
+            var tgraphic = new esri.Graphic(points, monitorSymbol,attrs,gits);
+            //基站文本提示 end
+            // var graphic = new esri.Graphic(points, txtsms);
+            // var tgraphic = new esri.Graphic(points, monitorSymbol);
             var bgsms = new PictureMarkerSymbol({
               "url": "images/yellow_small.png",
               "height": 20,
@@ -119,7 +157,7 @@ define(["home/signal/signal_manage", "ajax", "esri/symbols/PictureMarkerSymbol"]
             graphicLayer.add(tgraphic);
           }
         }
-        console.log(cri)
+        // console.log(cri)
         if (ok && cri && cri.length) {
           // var symbol1 = new esri.symbol.SimpleFillSymbol().setColor(new esri.Color([155,205,250,0.5])).outline.setColor("white");
           var symbol = new esri.symbol.SimpleFillSymbol().setColor(new esri.Color([155, 205, 250, 0.5])).setOutline(new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new esri.Color([255, 255, 255]), 2));
@@ -134,26 +172,43 @@ define(["home/signal/signal_manage", "ajax", "esri/symbols/PictureMarkerSymbol"]
           var circleGeometry = new esri.Graphic(circle, symbol,attr,infoTemplate);
           graphicLayer.add(circleGeometry);
         }
-        MyMap.on('zoom-end', function(eve) {
-          var lv = MyMap.getZoom();
-          setMap(lv, lv, ddd, colorArr, stationPiont, true, cri)
-        })
+        // MyMap.on('zoom-end', function(eve) {
+        //   var lv = MyMap.getZoom();
+        //   setMap(lv, lv, ddd, colorArr, stationPiont, true, cri)
+        // })
       }
     }
-    function setPot(graphicLayer, MyMap, x, y, color, num) {
-      // var num=num && num||0';
-      graphicLayer.add(new esri.Graphic(new esri.geometry.Point(x, y, MyMap.spatialReference), new esri.symbol.SimpleMarkerSymbol({
-        "style": "esriSMSSquare",
-        "color": color,
-        "outline": {
-          "width": num,
-          "color": color
-        }
-      })))
+   function setPot(graphicLayer, MyMap, x, y, color, num,parr) {
+       var parrs=[[x,y],[x,parr[1]],[parr[0],parr[1]],[parr[0],y]];
+       var myPolygon = {"geometry":{"rings":[parrs],"spatialReference":{"wkid":4326}},"symbol":{"color":color,"outline":{"color":color,"width":0,"type":"esriSLS","style":"esriSLSSolid"},"type":"esriSFS","style":"esriSFSSolid"}};
+       graphicLayer.add(new esri.Graphic(myPolygon))
+
     }
+    // function setPot(graphicLayer, MyMap, x, y, color, num) {
+    //   // var num=num && num||0';
+    //   graphicLayer.add(new esri.Graphic(new esri.geometry.Point(x, y, MyMap.spatialReference), new esri.symbol.SimpleMarkerSymbol({
+    //     "style": "esriSMSSquare",
+    //     "color": color,
+    //     "outline": {
+    //       "width": num,
+    //       "color": color
+    //     }
+    //   })))
+    // }
     function getGrb(val, colorArr) {
       var minCtrl = document.getElementById("minCtrl");
       var maxCtrl = document.getElementById("maxCtrl");
+      var opCtrl = document.getElementById("opCtrl").value;
+      if(opCtrl<0){
+          opCtrl=0
+      }else if(opCtrl>1){
+          opCtrl=1
+       }
+      //颜色
+       for (var i = 0; i < colorArr.length; i++) {
+          // colorArr[i][3] = 250;
+          colorArr[i][3] = opCtrl*255;
+        }
       var faVal = colorArr.length / ((maxCtrl.value - minCtrl.value));
       if (val > maxCtrl.value) {
         return colorArr[colorArr.length - 1];
@@ -231,7 +286,8 @@ define(["home/signal/signal_manage", "ajax", "esri/symbols/PictureMarkerSymbol"]
           var colorArr = [[58,151,194],[58,151,194],[64,153,194],[64,153,194],[75,156,191],[75,156,191],[79,158,189],[79,158,189],[87,160,186],[87,160,186],[92,161,184],[92,161,184],[98,164,181],[98,164,181],[104,166,179],[104,166,179],[109,168,176],[109,168,176],[114,172,176],[114,172,176],[120,173,172],[120,173,172],[125,176,170],[125,176,170],[130,179,166],[130,179,166],[136,181,166],[136,181,166],[141,184,162],[141,184,162],[145,186,161],[145,186,161],[151,189,158],[151,189,158],[155,191,156],[155,191,156],[161,194,153],[161,194,153],[164,196,151],[164,196,151],[171,201,149],[171,201,149],[173,201,145],[173,201,145],[181,207,145],[181,207,145],[182,207,140],[182,207,140],[190,212,140],[190,212,140],[194,214,135],[194,214,135],[199,217,134],[199,217,134],[203,219,129],[203,219,129],[206,222,129],[206,222,129],[211,224,123],[211,224,123],[215,227,123],[215,227,123],[223,232,121],[223,232,121],[227,235,117],[227,235,117],[231,237,114],[231,237,114],[233,240,110],[233,240,110],[238,242,107],[238,242,107],[242,245,105],[242,245,105],[250,250,102],[250,250,102],[250,250,100],[250,250,100],[250,242,97],[250,242,97],[250,237,95],[250,237,95],[252,234,91],[252,234,91],[252,228,91],[252,228,91],[252,222,86],[252,222,86],[252,216,83],[252,216,83],[252,210,81],[252,210,81],[252,206,78],[252,206,78],[252,199,76],[252,199,76],[252,194,76],[252,194,76],[252,189,71],[252,189,71],[252,183,71],[252,183,71],[252,179,68],[252,179,68],[252,171,66],[252,171,66],[252,167,63],[252,167,63],[252,160,61],[252,160,61],[252,155,58],[252,155,58],[250,149,55],[250,149,55],[250,146,55],[250,146,55],[250,138,52],[250,138,52],[250,133,50],[250,133,50],[250,128,47],[250,128,47],[247,124,47],[247,124,47],[247,119,45],[247,119,45],[247,114,42],[247,114,42],[245,104,39],[245,104,39],[245,104,39],[245,104,39],[245,96,37],[245,96,37],[242,89,34],[242,89,34],[242,86,34],[242,86,34],[242,81,31],[242,81,31],[240,71,29],[240,71,29],[240,67,29],[240,67,29],[237,58,26],[237,58,26],[237,54,26],[237,54,26],[237,45,24],[237,45,24],[235,41,23],[235,41,23],[235,28,21],[235,28,21],[232,21,21],[232,21,21],[232,21,21],[232,21,21]],
             vv = [];
           for (var i = 0; i < colorArr.length; i++) {
-            colorArr[i][3] = 250;
+            // colorArr[i][3] = 250;
+            colorArr[i][3] = 200;
           }
           var ddd = reslut.kriking3.result;
           // 设置默认
@@ -250,6 +306,7 @@ define(["home/signal/signal_manage", "ajax", "esri/symbols/PictureMarkerSymbol"]
             }
             document.getElementById("minCtrl").value = countArr.min();
             document.getElementById("maxCtrl").value = countArr.max();
+            document.getElementById("opCtrl").value = 0.6;
           }
           // 设置默认
           setMap(0, 10, ddd, colorArr, reslut.stationPiont, true, cri)

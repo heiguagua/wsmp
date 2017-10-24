@@ -232,11 +232,27 @@ define(["home/alarm/alarm_manage", "ajax", "esri/geometry/webMercatorUtils", "es
             var graphicLayer = new esri.layers.GraphicsLayer();
             //把图层添加到地图上
             MyMap.addLayer(graphicLayer);
+            ajax.get("cache/data/mapdata",null,function(reslut){
+              var opCtrl = document.getElementById("opCtrl").value||0.2;
+              if(opCtrl<0){
+                  opCtrl=0
+              }else if(opCtrl>1){
+                  opCtrl=1
+              }
+              var sfs = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID,null, new esri.Color([58,151,194,opCtrl]));
+              var Citygraphic = new esri.Graphic(new esri.geometry.Polygon(reslut), sfs);
+              graphicLayer.add(Citygraphic);
+            });
             if (ok && ddd && stationPiont) {
                 //设置标注的经纬度
                 if (ok && ddd.length) {
+                    //计算步长
+                    var dx=(ddd[1][0]-ddd[0][0])||0.0061060204081648806;
+                    // var dy=(ddd[60][1]-ddd[0][1])||0.0012826703440396159;
+                    var dy=0.00131;
                     for (var i = 0; i < ddd.length; i++) {
-                        setPot(graphicLayer, MyMap, ddd[i][1], ddd[i][0], getGrb(ddd[i][2], colorArr), 2 * nn);
+                        setPot(graphicLayer, MyMap, ddd[i][1], ddd[i][0], getGrb(ddd[i][2], colorArr), 2 * nn,[ddd[i][1]+dy,ddd[i][0]+dx]);
+                        // setPot(graphicLayer, MyMap, ddd[i][1], ddd[i][0], getGrb(ddd[i][2], colorArr), 2 * nn);
                     }
                 }
                 var monitorSymbol = new esri.symbols.PictureMarkerSymbol({
@@ -256,33 +272,71 @@ define(["home/alarm/alarm_manage", "ajax", "esri/geometry/webMercatorUtils", "es
                             "yoffset": 10
                         });
                         var graphicbg = new esri.Graphic(points, bgsms); // 计数底图
-                        var graphic = new esri.Graphic(points, txtsms);
-                        var tgraphic = new esri.Graphic(points, monitorSymbol);
+                        //基站文本提示
+                        var spx=Number(stationPiont[i]['x'].toString().match(/^\d+(?:\.\d{0,3})?/));
+                        var spy=Number(stationPiont[i]['y'].toString().match(/^\d+(?:\.\d{0,3})?/));
+                        // var attrs = {"a":stationPiont[i]['x'],"b":stationPiont[i]['y'],"c":stationPiont[i]['count']};
+                        var attrs = {"a":spx,"b":spy,"c":stationPiont[i]['count'],"d":''};
+                        // 中文名称
+                        var info = Binding.getUser();
+                            info = JSON.parse(info);
+                            var code = info.Area.Code;
+                            var stationObj = Binding.getMonitorNodes(code),
+                                dds = [];
+                            stationObj = JSON.parse(stationObj);
+                        for (var j = 0; j < stationObj.length; j++) {
+                              if (stationPiont[i]['stationId'] === stationObj[j].Num) {
+                                attrs['d']= stationObj[j].Name;
+                              }
+                          }
+                        var gits = new esri.InfoTemplate("场强定位信息","名称: ${d} <br/> 经度: ${a} <br/> 纬度: ${b} <br/>统计:${c}");
+                        var graphic = new esri.Graphic(points, txtsms,attrs,gits);
+                        var tgraphic = new esri.Graphic(points, monitorSymbol,attrs,gits);
+                        //基站文本提示 end
+                        // var graphic = new esri.Graphic(points, txtsms);
+                        // var tgraphic = new esri.Graphic(points, monitorSymbol);
                         graphicLayer.add(graphicbg);
                         graphicLayer.add(graphic);
                         graphicLayer.add(tgraphic);
                     }
                 }
-                MyMap.on('zoom-end', function(eve) {
-                    var lv = MyMap.getZoom();
-                    setMap(lv, lv, ddd, colorArr, stationPiont, true)
-                })
+                // MyMap.on('zoom-end', function(eve) {
+                //     var lv = MyMap.getZoom();
+                //     setMap(lv, lv, ddd, colorArr, stationPiont, true)
+                // })
             }
         }
-        function setPot(graphicLayer, MyMap, x, y, color, num) {
-            // var num=num && num||0';
-            graphicLayer.add(new esri.Graphic(new esri.geometry.Point(x, y, MyMap.spatialReference), new esri.symbol.SimpleMarkerSymbol({
-                "style": "esriSMSSquare",
-                "color": color,
-                "outline": {
-                    "width": num,
-                    "color": color
-                }
-            })))
+        function setPot(graphicLayer, MyMap, x, y, color, num,parr) {
+           var parrs=[[x,y],[x,parr[1]],[parr[0],parr[1]],[parr[0],y]];
+           var myPolygon = {"geometry":{"rings":[parrs],"spatialReference":{"wkid":4326}},"symbol":{"color":color,"outline":{"color":color,"width":0,"type":"esriSLS","style":"esriSLSSolid"},"type":"esriSFS","style":"esriSFSSolid"}};
+           graphicLayer.add(new esri.Graphic(myPolygon))
+
         }
+        // function setPot(graphicLayer, MyMap, x, y, color, num) {
+        //     // var num=num && num||0';
+        //     graphicLayer.add(new esri.Graphic(new esri.geometry.Point(x, y, MyMap.spatialReference), new esri.symbol.SimpleMarkerSymbol({
+        //         "style": "esriSMSSquare",
+        //         "color": color,
+        //         "outline": {
+        //             "width": num,
+        //             "color": color
+        //         }
+        //     })))
+        // }
         function getGrb(val, colorArr) {
             var minCtrl = document.getElementById("minCtrl");
             var maxCtrl = document.getElementById("maxCtrl");
+            var opCtrl = document.getElementById("opCtrl").value;
+              if(opCtrl<0){
+                  opCtrl=0
+              }else if(opCtrl>1){
+                  opCtrl=1
+               }
+          //颜色
+           for (var i = 0; i < colorArr.length; i++) {
+              // colorArr[i][3] = 250;
+              colorArr[i][3] = opCtrl*255;
+            }
             var faVal = colorArr.length / ((maxCtrl.value - minCtrl.value));
             if (val > maxCtrl.value) {
                 return colorArr[colorArr.length - 1];

@@ -192,7 +192,8 @@ public class AlarmDataController {
                 List<Double> zeroSeriesList  = Lists.newLinkedList();
                 List<Double> noneZeroSeriesList  = Lists.newLinkedList();
                 series.forEach((t)->{
-                    if (t==null||t.doubleValue()==0){
+//                    if (t==null||t.doubleValue()==0){
+                    if (t==null){
                         zeroSeriesList.add(t);
                         noneZeroSeriesList.add(null);
                     }else{
