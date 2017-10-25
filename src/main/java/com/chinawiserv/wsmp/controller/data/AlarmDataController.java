@@ -781,7 +781,8 @@ public class AlarmDataController {
     		//过滤kriking点
     		Object object = kriking3.get("result");
         	List<double[]> krikinglist = JSONObject.parseArray(object.toString(), double[].class);
-    	    Integer r = 4;
+        	//过滤距离
+    	    Integer r = 30;
     	    List<double[]> krikinglistFiletered = krikinglist.stream().filter(e -> {
     	    	for(int i=0;i<kringParam.length;i++) {
     	    		if(Distance.getDistance(e, kringParam[i]) < r) return true;

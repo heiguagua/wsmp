@@ -190,19 +190,6 @@ define(	["ajax", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer",
 							}
 							map.addLayer(glayer);
 						});
-				// 缩放监听事件
-				// map.on("zoom-end",function(zoom){
-				// console.log(zoom);
-				// //以最大层级为标准，缩小就减小图标大小,并且只减小监测站图标
-				// if(zoom.level < map.getMaxZoom()) {
-				// //先清除图片或者清除图片层或者隐藏图片层
-				// glayer_max.hide();
-				// glayer_zoom.show();
-				//					}else {
-				//						glayer_zoom.hide();
-				//						glayer_max.show();
-				//					}
-				//				});	
 			}
 
 			return {

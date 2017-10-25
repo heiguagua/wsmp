@@ -101,8 +101,8 @@ define(["home/signal/signal_manage", "ajax", "esri/symbols/PictureMarkerSymbol"]
         if (ok && ddd.length) {
           //计算步长
           var dx=(ddd[1][0]-ddd[0][0])||0.0061060204081648806;
-          // var dy=(ddd[60][1]-ddd[0][1])||0.0012826703440396159;
-          var dy=0.00131;
+           var dy=(ddd[60][1]-ddd[0][1])||0.0012826703440396159;
+//          var dy=0.00131;
           //设置标注的经纬度
           for (var i = 0; i < ddd.length; i++) {
             setPot(graphicLayer, MyMap, ddd[i][1], ddd[i][0], getGrb(ddd[i][2], colorArr), 2 * nn,[ddd[i][1]+dy,ddd[i][0]+dx]);

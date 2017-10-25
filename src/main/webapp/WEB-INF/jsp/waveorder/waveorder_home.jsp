@@ -33,9 +33,20 @@
 	rel='stylesheet' />
 <link href='3.9/js/dojo/library/layer/layer.css' rel='stylesheet' />
 <link href='css/waveOrder_map_to_sifon.css' rel='stylesheet' />
+<style>
+      .dijitTooltipContainer {
+        background: #fff;
+        box-shadow: 0 0 5px #888;
+        left: 1em;
+        padding: 0.5em;
+        position: absolute;
+        top: 1em;
+        z-index: 40;
+      }
+</style>
 </head>
 
-<body id='waveOrder'>
+<body id='waveOrder' class="tundra">
 	<input style="display: none" id ='mapUrl' value="${mapUrl}" />
 	<input value="${areaCode}" hidden="true" id="areaCode">
 	<!--header-->
@@ -222,8 +233,29 @@
 			</div>
 		</div>
 	</div>
+	
+	<!-- Modal SignalsOnMonitors-->
+	<div class="modal fade" id="modalSignalsOnMonitors" tabindex="-1" role="dialog"
+		aria-labelledby="modalSignalLabel">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="modalSignalLabel1">信号列表</h4>
+				</div>
+				<div class="modal-body padding20">
+					<table class="table table-striped " id='table-signalsOnMonitors-list'>
 
-	<!-- Modal Signal-->
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal Evaluate-->
 	<div class="modal fade" id="modalEvaluate" tabindex="-1" role="dialog"
 		aria-labelledby="modalEvaluateLabel">
 		<div class="modal-dialog modal-lg" role="document">

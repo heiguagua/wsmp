@@ -26,6 +26,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -524,6 +525,8 @@ public class WaveOrderDataController {
 					put("monitorName",e.get("Name"));
 					put("x",e.get("Longitude"));
 					put("y",e.get("Latitude"));
+					put("signalType",Integer.valueOf(param.get("signalType").toString()));
+					put("isSubType",param.get("isSubType").toString());
 				}}).collect(Collectors.toList());
 				
 				if(param.get("isSubType").toString().equals("true")) {
@@ -576,4 +579,90 @@ public class WaveOrderDataController {
 				}
 	}
 	
+	@PostMapping("/SignalsOnMonitors")
+	public Map<String, Object> getSignalsOnMonitors(@RequestBody Map<String,Object> param) {
+		RadioSignalQueryRequest request = new RadioSignalQueryRequest();
+		// 设置监测站ID
+		ArrayOfString stationArray = new ArrayOfString();
+		List<String> stationIDList = new ArrayList<String>();
+		stationIDList.add(param.get("monitorID").toString());
+		stationArray.setString(stationIDList );
+		request.setStationIDs(stationArray);
+		// 入参:信号类型
+		ArrayOfSignalTypeDTO signaTypeArray = new ArrayOfSignalTypeDTO();
+		List<SignalTypeDTO> signalTypeDTO = Lists.newArrayList();
+		SignalTypeDTO signalType = new SignalTypeDTO();
+		signalType.setSignalType(Integer.valueOf(param.get("signalType").toString()));
+		signalTypeDTO.add(signalType);
+		signaTypeArray.setSignalTypeDTO(signalTypeDTO);
+		request.setTypeCodes(signaTypeArray);
+		// 返回结果:
+		RadioSignalQueryResponse response = serviceRadioSignalSoap.queryRadioSignal(request);
+		List<RedioDetail> redioRows = Lists.newArrayList();
+		if(param.get("isSubType").toString().equals("true")) {
+			//如果是子类型
+			response.getRadioSignals().getRadioSignalDTO().stream().forEach(t -> {
+				// 判断是否存在任何同一频段下合法信号的子类型信号，如果存在，则添加到返回集里面
+				if (t.getAbnormalHistory().getRadioSignalAbnormalHistoryDTO().stream().findAny().isPresent() && t.getAbnormalHistory().getRadioSignalAbnormalHistoryDTO().stream().findAny().get().isIsInvalid() == false) {
+					Logger.debug("存在子类的大类型频段：{}", t.getCenterFreq());
+					t.getAbnormalHistory().getRadioSignalAbnormalHistoryDTO().stream().forEach(t2 -> {
+						Logger.debug("子类型:{}", t2.getHistoryType());
+					});
+					RedioDetail redio = new RedioDetail();
+					BigDecimal cFreq = new BigDecimal(t.getCenterFreq());
+					BigDecimal divisor = new BigDecimal(1000000);
+					redio.setCentor(Double.valueOf((cFreq.divide(divisor).toString())));
+					redio.setBand(t.getBandWidth()/1000);
+					redio.setId(t.getID());
+					// 设置监测站
+					List<String> monitorID = Lists.newArrayList();
+					t.getStationDTOs().getRadioSignalStationDTO().stream().forEach(t1 -> {
+						monitorID.add(t1.getStationNumber());
+					});
+					redio.setMonitorID(monitorID);
+					// 设置台站
+					redio.setStation(t.getName());
+//					String stationName = Optional.ofNullable(t.getRadioStation())
+//							.map(m -> m.getStation())
+//							.map(m -> m.getName())
+//							.orElse("-");
+//					redio.setStation(stationName);
+					redioRows.add(redio);
+				}
+				
+			});
+		}else {
+			//如果是大类型
+			response.getRadioSignals().getRadioSignalDTO().stream().forEach(t -> {
+				// System.out.println("====信号频率："+t.getCenterFreq());
+				// 每个大类信号，都要先判断一下是否有子类型信号，如果出来有结果，则减去子类型信号的总数即为大类型的个数。
+				// 判断是否存在任何同一频段下合法信号的子类型信号，如果存在，则不添加到返回集里面
+					if(t.getAbnormalHistory().getRadioSignalAbnormalHistoryDTO().stream().findAny().isPresent()) {
+						Logger.debug("存在子类的大类型频段：{}", t.getCenterFreq());
+					}else {
+						//如果不存在子类型，则添加到大类型中
+						RedioDetail redio = new RedioDetail();
+						BigDecimal cFreq = new BigDecimal(t.getCenterFreq());
+						BigDecimal divisor = new BigDecimal(1000000);
+						redio.setCentor(Double.valueOf((cFreq.divide(divisor).toString())));
+						redio.setBand(t.getBandWidth()/1000);
+						redio.setId(t.getID());
+						// 设置监测站
+						List<String> monitorID = Lists.newArrayList();
+						t.getStationDTOs().getRadioSignalStationDTO().stream().forEach(t1 -> {
+							// System.out.println("=====监测站ID:"+t1.getStationNumber());
+							monitorID.add(t1.getStationNumber());
+						});
+						redio.setMonitorID(monitorID);
+						// 设置台站
+						redio.setStation(t.getName());
+						redioRows.add(redio);
+					}
+			});
+		}
+		Map<String, Object> result = Maps.newLinkedHashMap();
+		result.put("total", redioRows.size());
+		result.put("data", redioRows);
+		return result;
+	}
 }
