@@ -538,12 +538,10 @@ define(	["ajax", "dojo/parser", "esri/map",
 				
 				// 监测站图标点击进入模态框出现事件
 				$("#modalSignalsOnMonitors").on('show.bs.modal', function(e) {
-					console.log(e);
 					var a = e.relatedTarget;
 					var monitorID = a.monitorid;// data()函数里面要取小写
 					var signalType = a.signaltype;
 					var isSubType = a.issubtype;
-					console.log(monitorID + "|" + signalType +" |"+ isSubType);
 					$('#table-signalsOnMonitors-list').bootstrapTable("destroy");
 					$('#table-signalsOnMonitors-list').bootstrapTable({
 						method : 'post',
@@ -903,8 +901,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 							"y" : MONITORS[0].Latitude
 						});
 				MAP1.centerAt(center);
-				//改变监测站点
-				addMonitors(MAP1,monitors);
 				//改变行政区域边界
 				addAreaBoundary(MAP1);
 				//改变每个监测站点上的信号总数
@@ -991,9 +987,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 			
 			// 向地图上添加监测站图标
 			function addMonitors(map,monitors) {
-				map.on('load', function() {
 							var glayer = map.getLayer('glayer');
-							glayer.clear();
 							// 监测站symbol
 							var monitorSymbol = new PictureMarkerSymbol({
 										"url" : "images/monitor-station-union.png",
@@ -1011,7 +1005,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 										monitorPoint, monitorSymbol);// 监测站图
 								glayer.add(monitorGraphic);
 							}
-						})
 			}
 			
 			
@@ -1019,6 +1012,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 			function addSignalCountOnMonitors(monitors, signalType, isSubType) {
 				var map = MAP1;
 				var glayer = map.getLayer('glayer');
+				glayer.clear();
+				addMonitors(map,monitors);
 				var data = {};
 				data.monitorsNum = [];
 				data.signalType = signalType;
@@ -1060,10 +1055,9 @@ define(	["ajax", "dojo/parser", "esri/map",
 					"url" : url_countBackgroundSymbol,
 					"height" : 18,
 					"width" : 34,
-					"xoffset" : 17,
-					"yoffset" : 15
+					"xoffset" : 16,
+					"yoffset" : 14
 				});
-				glayer.hide();
 				ajax.post("data/waveorder/SignalCountOnMonitors", data,function(result) {
 									console.log(result);
 									for (var i = 0; i < result.length; i++) {
@@ -1076,7 +1070,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 												.setAlign(Font.ALIGN_START)
 												.setFont(
 														new Font()
-																.setSize("12pt")
+																.setSize("10pt")
 																.setFamily(
 																		" .PingFangSC-Medium"));
 
@@ -1088,7 +1082,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 										glayer.add(countBackgroundGraphic);
 										glayer.add(countGraphic);
 									}
-									glayer.show();
 						});
 			}
 

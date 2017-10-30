@@ -28,6 +28,13 @@ define(["ajax"], function(ajax) {
 					}
 					topTable(areaCode, startTime, endTime, userID, monitorsID);
 				});
+				
+		// 时间选择器点击事件
+//		$(".time-picker").on("click", function(e) {
+//					$(e.currentTarget).datetimepicker("show");
+//					$(e.currentTarget).datetimepicker("setStartDate",
+//							new Date());
+//				})
 	}
 
 	//时间选择器初始化

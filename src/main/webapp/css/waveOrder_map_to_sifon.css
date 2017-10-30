@@ -41,10 +41,12 @@
     background: #2ccd7d
 }
 #waveOrder_map_to_sifon .signal-category .signal-sign.legal-wrong {
-    background: #2ccd7d
+    background: #2ccd7d;
+    border: 2px solid #ff6059
 }
 #waveOrder_map_to_sifon .signal-category .signal-sign.known {
-    background: #2ccd7d
+    background: #2ccd7d;
+    border: 2px solid #d1d1d1
 }
 #waveOrder_map_to_sifon .signal-category .signal-sign.illegal {
     background: #ff6059

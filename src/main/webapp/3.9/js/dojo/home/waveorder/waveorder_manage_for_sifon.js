@@ -1,11 +1,13 @@
-define(	["ajax", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer",
-				"dojo/request", "esri/layers/GraphicsLayer",
+define(	["ajax", "dojo/parser", "esri/map",
+				"esri/layers/ArcGISTiledMapServiceLayer", "dojo/request",
+				"esri/layers/GraphicsLayer", "esri/dijit/Scalebar",
 				"esri/symbols/TextSymbol", "esri/geometry/Point",
 				"esri/graphic", "esri/symbols/Font",
 				"esri/symbols/SimpleMarkerSymbol",
-				"esri/symbols/PictureMarkerSymbol"], function(ajax, Map,
-				ArcGISTiledMapServiceLayer, request, GraphicsLayer, TextSymbol,
-				Point, graphic, Font, SimpleMarkerSymbol, PictureMarkerSymbol) {
+				"esri/symbols/PictureMarkerSymbol","dijit/popup","dijit/TooltipDialog","esri/lang"], function(ajax, parser,
+				Map, ArcGISTiledMapServiceLayer, request, GraphicsLayer,
+				Scalebar, TextSymbol, Point, graphic, Font, SimpleMarkerSymbol,
+				PictureMarkerSymbol,dijitPopup,TooltipDialog,esriLang) {
 			var AREACODE = $("#areaCode").val();
 			var MONITORS = getMonitors(AREACODE);
 			var MAP1 = mapInit();
@@ -13,15 +15,22 @@ define(	["ajax", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer",
 
 			function wo_init() {
 				redioType(MONITORS);
-				addPoint(MONITORS, 1, "false");// 默认选中合法正常类型
-
-				// 地图点的展示
+				//改变地图中心
+				var center = new Point({
+							"x" : MONITORS[0].Longitude,
+							"y" : MONITORS[0].Latitude
+						});
+				MAP1.centerAt(center);
+				//改变行政区域边界
+				addAreaBoundary(MAP1);
+				//改变每个监测站点上的信号总数
+				addSignalCountOnMonitors(MONITORS,1,"false");//默认选中1，子类型为false
 
 				// 信号类型切换点击事件
 				$("#redioType").on("click", "input", function(e) {
 							var typeCode = Number(e.target.value)
 							var isSubType = e.target.getAttribute("issubtype");
-							addPoint(MONITORS, typeCode, isSubType);
+							addSignalCountOnMonitors(MONITORS, typeCode, isSubType);
 						});
 
 				// 电波秩序链接点击事件
@@ -72,7 +81,8 @@ define(	["ajax", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer",
 			}
 			
 			// 得到区域的边界
-			function getAreaBoundary(glayer) {
+			function addAreaBoundary(map) {
+				var glayer1 = map.getLayer("glayer1");
 				ajax.get("cache/data/mapdata",null,function(result){
                     var sfs = new esri.symbol.SimpleFillSymbol(
 									esri.symbol.SimpleFillSymbol.STYLE_SOLID,
@@ -80,40 +90,102 @@ define(	["ajax", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer",
 									new dojo.Color([135, 206, 250, 0.3]));
                     var polygon =new esri.geometry.Polygon(result);
                     var Citygraphic = new esri.Graphic(polygon, sfs);
-                    glayer.add(Citygraphic);
+                    glayer1.add(Citygraphic);
                 });
 			}
 			
-			// 下方地图初始化
+			//下方地图初始化
 			function mapInit() {
-				// var mapUrl = $("#mapUrl").val();
+
 				var mapUrl = Binding.getMapUrl();
 				var map = new Map("mapDiv1", {
-							fadeOnZoom : false,
 							logo : false,
-							center : [MONITORS[0].Longitude,
-									MONITORS[0].Latitude],
 							maxZoom : 16,
-							minZoom : 6,
 							zoom : 8
 						});
+
 				var agoLayer = new ArcGISTiledMapServiceLayer(mapUrl, {
-							showAttribution : false
+                    		showAttribution:false
 						});
 				var glayer = new GraphicsLayer({
-							id : "glayer"
-						});
+					id : "glayer"
+				});
+				var glayer1 = new GraphicsLayer({
+					id : "glayer1"
+				});
 				map.addLayer(agoLayer);
-				map.addLayer(glayer);
+				map.addLayer(glayer1);//行政区域边界图层
+				map.addLayer(glayer);//监测站图层
+				//监测站图标点击事件aaa
+							dialog = new TooltipDialog({
+								id : "tooltipDialog",
+								style : "position: absolute; width: 250px; font: normal normal normal 10pt Helvetica;z-index:100"
+							});
+							dialog.startup();
+							glayer.on("mouse-over", function(e) {
+								var info = e.graphic.geometry;
+								var t = "<b>"+ info.monitorName+"</b><hr>"
+										+"<b>ID: </b>"+ info.monitorID +"<br>"
+										+ "<b>纬度: </b>"+ info.y +"<br>"
+										+ "<b>经度: </b>"+ info.x +"<br>"
+
+								var content = esriLang.substitute(
+									e.graphic.attributes, t);
+								dialog.setContent(content);
+								dijitPopup.open({
+									popup : dialog,
+									x : e.pageX,
+									y : e.pageY
+								});
+							});
+							glayer.on("mouse-out", function(e) {
+								dijitPopup.close(dialog);
+							});
+							//监测站图标点击进入信号统计模态框事件
+//							glayer.on("click", function(e) {
+//								console.log(e);
+//								var info = e.graphic.geometry;
+//								if(typeof info.signalType == "undefined") return;
+//								// 触发模态框,传入监测站id,信号类型，是否子类型，返回监测站所监测到的所有信号
+//								$("#modalSignalsOnMonitors").modal("show", {
+//										monitorid : info.monitorID,
+//										signaltype : info.signalType,
+//										issubtype : info.isSubType
+//								});
+//							})
+							
 				return map;
 			}
 
-			// 根据监测站列表，信号类型绘出监测站点
-			function addPoint(monitors, signalType, isSubType) {
+			// 向地图上添加监测站图标
+			function addMonitors(map,monitors) {
+							var glayer = map.getLayer('glayer');
+							// 监测站symbol
+							var monitorSymbol = new PictureMarkerSymbol({
+										"url" : "images/monitor-station-union.png",
+										"height" : 24,
+										"width" : 24
+									});
+							for (var i = 0; i < monitors.length; i++) {
+								var monitor = {};
+								monitor.x = monitors[i].Longitude;
+								monitor.y = monitors[i].Latitude;
+								monitor.monitorID = monitors[i].Num;
+								monitor.monitorName = monitors[i].Name;
+								var monitorPoint = new Point(monitor);
+								var monitorGraphic = new esri.Graphic(
+										monitorPoint, monitorSymbol);// 监测站图
+								glayer.add(monitorGraphic);
+							}
+			}
+			
+			
+			// 	取得每个监测站上的信号总量，并绘出图形
+			function addSignalCountOnMonitors(monitors, signalType, isSubType) {
 				var map = MAP1;
 				var glayer = map.getLayer('glayer');
 				glayer.clear();
-				getAreaBoundary(glayer);
+				addMonitors(map,monitors);
 				var data = {};
 				data.monitorsNum = [];
 				data.signalType = signalType;
@@ -122,73 +194,66 @@ define(	["ajax", "esri/map", "esri/layers/ArcGISTiledMapServiceLayer",
 				for (var i = 0; i < monitors.length; i++) {
 					data.monitorsNum[i] = monitors[i].Num;
 				}
-				// 顶层图标大小
-				// 监测站symbol
-				var monitorSymbol = new PictureMarkerSymbol({
-							"url" : "images/monitor-station-union.png",
-							"height" : 24,
-							"width" : 24
-						});
-				// 计数点symbol
+				// 信号统计背景url
 				var url_countBackgroundSymbol = null;
-				if (isSubType == "true") {
+				if(isSubType == "true") {
 					switch (signalType) {
-						case 1 :
-							url_countBackgroundSymbol = "images/undeclared.svg";
-							break;
-						default :
-							break;
+					case 1:
+						url_countBackgroundSymbol = "images/undeclared.svg";
+						break;
+					default:
+						break;
 					}
-				} else {
+				}else {
 					switch (signalType) {
-						case 1 :
-							url_countBackgroundSymbol = "images/legal.svg";
-							break;
-						case 2 :
-							url_countBackgroundSymbol = "images/known.svg";
-							break;
-						case 3 :
-							url_countBackgroundSymbol = "images/illegal.svg";
-							break;
-						case 4 :
-							url_countBackgroundSymbol = "images/unknown.svg";
-							break;
-						default :
-							break;
+					case 1:
+						url_countBackgroundSymbol = "images/legal.svg";
+						break;
+					case 2:
+						url_countBackgroundSymbol = "images/known.svg";
+						break;
+					case 3:
+						url_countBackgroundSymbol = "images/illegal.svg";
+						break;
+					case 4:
+						url_countBackgroundSymbol = "images/unknown.svg";
+						break;
+					default:
+						break;
 					}
 				}
+				//信号统计背景Symbol
 				var countBackgroundSymbol = new PictureMarkerSymbol({
-							"url" : url_countBackgroundSymbol,
-							"height" : 18,
-							"width" : 34,
-							"xoffset" : 17,
-							"yoffset" : 15
-						});
-				ajax.post("data/waveorder/monitorsPoint", data,
-						function(result) {
-							console.log(result);
-							for (var i = 0; i < result.length; i++) {
-								var monitorPoint = new Point(result[i]);
-								var countSymbol = new TextSymbol(String(monitorPoint.count))
-										.setOffset(22, 15)
-										.setColor(new esri.Color([0xff, 0xff,
-														0xff]))
-										.setAlign(Font.ALIGN_START)
-										.setFont(new Font()
-														.setSize("12pt")
-														.setFamily(" .PingFangSC-Medium"));
+					"url" : url_countBackgroundSymbol,
+					"height" : 18,
+					"width" : 34,
+					"xoffset" : 16,
+					"yoffset" : 14
+				});
+				ajax.post("data/waveorder/SignalCountOnMonitors", data,function(result) {
+									console.log(result);
+									for (var i = 0; i < result.length; i++) {
+										var monitorPoint = new Point(result[i]);
+										var countSymbol = new TextSymbol(String(monitorPoint.count))
+												.setOffset(22,15) 
+												.setColor(
+														new esri.Color([ 0xff,
+																0xff, 0xff ]))
+												.setAlign(Font.ALIGN_START)
+												.setFont(
+														new Font()
+																.setSize("10pt")
+																.setFamily(
+																		" .PingFangSC-Medium"));
 
-								var countGraphic = new esri.Graphic(
-										monitorPoint, countSymbol);// 计数图
-								var countBackgroundGraphic = new esri.Graphic(
-										monitorPoint, countBackgroundSymbol);// 计数底图
-								var monitorGraphic = new esri.Graphic(
-										monitorPoint, monitorSymbol);// 监测站图
-								glayer.add(monitorGraphic);
-								glayer.add(countBackgroundGraphic);
-								glayer.add(countGraphic);
-							}
-							map.addLayer(glayer);
+										var countGraphic = new esri.Graphic(
+												monitorPoint,countSymbol);// 计数图
+										var countBackgroundGraphic = new esri.Graphic(
+												monitorPoint,
+												countBackgroundSymbol);// 计数底图
+										glayer.add(countBackgroundGraphic);
+										glayer.add(countGraphic);
+									}
 						});
 			}
 

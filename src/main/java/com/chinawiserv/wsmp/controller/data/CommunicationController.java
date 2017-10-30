@@ -193,7 +193,7 @@ public class CommunicationController {
 		    		JSONObject result = restTemplate.postForObject(urlFreqBandList, entity, JSONObject.class);
 		    		String stationCoverageRate = result.getJSONObject("data").getJSONArray("result").getJSONObject(0).getString("stationCoverageRate");
 		    		String freqBandOccupyAngle = result.getJSONObject("data").getJSONArray("result").getJSONObject(0).getString("freqBandOccupyAngle");
-		    		freqBandOccupyAngle = freqBandOccupyAngle == null ? "0" : freqBandOccupyAngle;
+		    		freqBandOccupyAngle = freqBandOccupyAngle.equals("无") || freqBandOccupyAngle == null ? "0" : freqBandOccupyAngle;
 		    		stationCoverageRate = stationCoverageRate.equals("--") || stationCoverageRate == null || stationCoverageRate.equals("无") ? "0" : stationCoverageRate;
 		    		communication.setStationCoverage(stationCoverageRate);
 		    		communication.setOccupancy(freqBandOccupyAngle);
@@ -219,7 +219,8 @@ public class CommunicationController {
     	});
     	futureList.forEach(t -> {
     		try {
-				communicationRows.add(t.get());
+    			CommunicationTableTop top = t.get() == null ? new CommunicationTableTop() : t.get();
+				communicationRows.add(top);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

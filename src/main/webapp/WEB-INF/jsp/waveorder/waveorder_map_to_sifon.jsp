@@ -30,9 +30,20 @@
 	href="3.9/js/dojo/webgis/widgets/themes/darkangel/darkangel.css">
 <link rel="stylesheet"
 	href="3.9/js/dojo/webgis/widgets/themes/darkangel/override.css">
+<style>
+.dijitTooltipContainer {
+	background: #fff;
+	box-shadow: 0 0 5px #888;
+	left: 1em;
+	padding: 0.5em;
+	position: absolute;
+	top: 1em;
+	z-index: 40;
+}
+</style>
 </head>
 
-<body id='waveOrder_map_to_sifon' class='waveOrder_map_to_sifon'>
+<body id='waveOrder_map_to_sifon' class='waveOrder_map_to_sifon tundra'>
 	<div class='content-wrap waveOrder_map_to_sifon_wrap' style="padding: 0;">
 		<!--信号监测-->
 		<section class='flex-row'>
