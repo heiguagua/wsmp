@@ -70,14 +70,14 @@
 		<!--频段状态-->
 		<section class='flex-row'>
 			<div class='box right10'
-				style="min-height: 330px; max-height: 330px;">
+				style="min-height: 300px; max-height: 330px;">
 				<table class="table table-striped text-center" id='table-radio'>
 				</table>
 			</div>
 		</section>
 		<section>
 			<div class='box box-tabs flex-column'
-				style="min-height: 700px; max-height: 700px;">
+				style="min-height: 650px; max-height: 650;">
 				<ul class="nav nav-tabs" id="tabs">
 					<li id='warningEnsure' role="presentation" class="active"><a
 						href="#undeal">实时告警未确认</a></li>

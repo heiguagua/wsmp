@@ -1591,7 +1591,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 				}
 				$('#table-radio').bootstrapTable("destroy");
 				$('#table-radio').bootstrapTable({
-					//height : 625,
+//					height : 300,
 					method : 'post',
 					contentType : "application/json",
 					url : "data/waveorder/rediostatus", // 要请求数据的文件路径
@@ -1610,6 +1610,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 					pageSize : 5, // 单页记录数
 					pageList : [5, 10, 20, 30], // 分页步进值
 					clickToSelect : true, // 是否启用点击选中行
+//					showFooter: true,
 					responseHandler : function(res) {
 						return res;
 					},
@@ -1624,6 +1625,20 @@ define(	["ajax", "dojo/parser", "esri/map",
 						});
 					},
 					columns : [{
+						align : 'left',
+						formatter : function(value,row,index) {
+							return index + 1;
+						},
+						footerFormatter : function(data) {
+							console.log(data);
+							var sum = 0;
+							for(var i=0;i<data.length;i++) {
+								sum += data[i].legalNormalStationNumber;
+							}
+							return sum;
+						}
+						
+					},{
 						field : 'redioName',
 						title : '频段名称',
 						width : '20%',
@@ -1631,6 +1646,14 @@ define(	["ajax", "dojo/parser", "esri/map",
 						sortable : true,
 						sortName : "redioName",
 						sorter : freqRangeSorter,
+						footerFormatter : function(data) {
+							console.log(data);
+							var sum = 0;
+							for(var i=0;i<data.length;i++) {
+								sum += data[i].legalNormalStationNumber;
+							}
+							return sum;
+						},
 						formatter : function(value, row, index) {
 							return '<div class="dpopover" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
 									+ value +'">' + value + '</div>';
@@ -1642,6 +1665,15 @@ define(	["ajax", "dojo/parser", "esri/map",
 						titleTooltip : '合法正常信号',
 						sortable : true,
 						sortName : "legalNormalStationNumber",
+						falign : "center",
+						footerFormatter : function(data) {
+							console.log(data);
+							var sum = 0;
+							for(var i=0;i<data.length;i++) {
+								sum += data[i].legalNormalStationNumber;
+							}
+							return sum;
+						},
 						formatter : function(value, row, index) {
 							return '<a data-toggle="modal" data-target="#modalSignal" data-radioType="1" data-isSubType="false" data-beginFreq="'
 									+ row.beginFreq
@@ -1655,6 +1687,14 @@ define(	["ajax", "dojo/parser", "esri/map",
 						titleTooltip : '合法违规信号',
 						sortable : true,
 						sortName : "legalUnNormalStationNumber",
+						footerFormatter : function(data) {
+							console.log(data);
+							var sum = 0;
+							for(var i=0;i<data.length;i++) {
+								sum += data[i].legalNormalStationNumber;
+							}
+							return sum;
+						},
 						formatter : function(value, row, index) {
 							return '<a data-toggle="modal" data-target="#modalSignal" data-radioType="1" data-isSubType="true" data-beginFreq="'
 									+ row.beginFreq
@@ -1668,6 +1708,14 @@ define(	["ajax", "dojo/parser", "esri/map",
 						titleTooltip : '已知信号',
 						sortable : true,
 						sortName : "konwStationNumber",
+						footerFormatter : function(data) {
+							console.log(data);
+							var sum = 0;
+							for(var i=0;i<data.length;i++) {
+								sum += data[i].legalNormalStationNumber;
+							}
+							return sum;
+						},
 						formatter : function(value, row, index) {
 							return '<a data-toggle="modal" data-target="#modalSignal" data-radioType="2" data-isSubType="false" data-beginFreq="'
 									+ row.beginFreq
@@ -1681,6 +1729,14 @@ define(	["ajax", "dojo/parser", "esri/map",
 						titleTooltip : '非法信号',
 						sortable : true,
 						sortName : "illegalSignal",
+						footerFormatter : function(data) {
+							console.log(data);
+							var sum = 0;
+							for(var i=0;i<data.length;i++) {
+								sum += data[i].legalNormalStationNumber;
+							}
+							return sum;
+						},
 						formatter : function(value, row, index) {
 							return '<a data-toggle="modal" data-target="#modalSignal" data-radioType="3" data-isSubType="false" data-beginFreq="'
 									+ row.beginFreq
@@ -1694,6 +1750,14 @@ define(	["ajax", "dojo/parser", "esri/map",
 						titleTooltip : '不明信号',
 						sortable : true,
 						sortName : "unKonw",
+						footerFormatter : function(data) {
+							console.log(data);
+							var sum = 0;
+							for(var i=0;i<data.length;i++) {
+								sum += data[i].legalNormalStationNumber;
+							}
+							return sum;
+						},
 						formatter : function(value, row, index) {
 							return '<a data-toggle="modal" data-target="#modalSignal" data-radioType="4" data-isSubType="false" data-beginFreq="'
 									+ row.beginFreq
@@ -1703,6 +1767,14 @@ define(	["ajax", "dojo/parser", "esri/map",
 					}, {
 						title : '<input type="checkbox" id="importantMonitor_filter">',
 						align : 'right',
+						footerFormatter : function(data) {
+							console.log(data);
+							var sum = 0;
+							for(var i=0;i<data.length;i++) {
+								sum += data[i].legalNormalStationNumber;
+							}
+							return sum;
+						},
 						formatter : function(value, row, index) {
 							return "";
 						}
@@ -1715,6 +1787,14 @@ define(	["ajax", "dojo/parser", "esri/map",
 						align : 'left',
 						sortable : true,
 						sortName : "importantMonitor",
+						footerFormatter : function(data) {
+							console.log(data);
+							var sum = 0;
+							for(var i=0;i<data.length;i++) {
+								sum += data[i].legalNormalStationNumber;
+							}
+							return sum;
+						},
 						formatter : function(value, row, index) {
 							if (value == true) {
 								return '<a data-toggle="modal" data-target="#modalConfig" data-beginFreq="'

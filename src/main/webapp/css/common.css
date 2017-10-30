@@ -118,8 +118,8 @@ label, .control-label {
 .table {
 	font-size: 14px;
 	border-bottom: none !important;
-	margin-top: 10px;
-	table-layout: fixed;
+	/* margin-top: 10px;
+	table-layout: fixed; */
 }
 
 .table tr th {
