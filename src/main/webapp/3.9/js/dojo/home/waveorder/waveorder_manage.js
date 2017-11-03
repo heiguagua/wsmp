@@ -658,8 +658,14 @@ define(	["ajax", "dojo/parser", "esri/map",
 				
 			}
 			
+<<<<<<< HEAD
+			 //频段排序
+			function freqRangeSorter(a, b) {
+				console.log(a);
+=======
 			 //频段名称排序
 			function freqNameSorter(a, b) {
+>>>>>>> 310082c7ddc2b9f15ce7dc1bdbbc8404747986c6
 				var matcha = a.match(/^[0-9\.\-]+/);
 				var matchb = b.match(/^[0-9\.\-]+/);
 				a = matcha == null ? "9999" : a.substring(0,a.indexOf("-"));
@@ -1263,10 +1269,9 @@ define(	["ajax", "dojo/parser", "esri/map",
 						return res;
 					},
 					columns : [{
-								class : 'sortTable2',
 								field : 'radio',
 								width : '15%',
-								title : '频率(MHz)'+"<img src='images/arrow-both.png'width='24'/> ",
+								title : '频率(MHz)',
 								sortable : true,
 								sortName : "radio",
 								titleTooltip : "频率(MHz)",
@@ -1275,24 +1280,21 @@ define(	["ajax", "dojo/parser", "esri/map",
 											+ '</a>';
 								}
 							}, {
-								class : 'sortTable2',
 								field : 'firstTime',
 								width : '15%',
-								title : '首次出现时间'+"<img src='images/arrow-both.png'width='24'/> ",
+								title : '首次出现时间',
 								titleTooltip : "首次出现时间",
 								sortable : true
 							}, {
-								class : 'sortTable2',
 								field : 'lastingTime',
 								width : '15%',
-								title : '最后出现时间'+"<img src='images/arrow-both.png'width='24'/> ",
+								title : '最后出现时间',
 								titleTooltip : "最后出现时间",
 								sortable : true
 							}, {
-								class : 'sortTable2',
 								field : 'stationID',
 								width : '15%',
-								title : '监测站'+"<img src='images/arrow-both.png'width='24'/> ",
+								title : '监测站',
 								titleTooltip : "监测站",
 								sortable : true,
 								sortName : "stationID",
@@ -1349,14 +1351,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 						$("#table-alarm-dealed").find(".dpopover").popover({
 							html : true
 						});
-						$(".sortTable2").on("click",function(e){
-							$("th.sortTable2").find('img').attr("src","images/arrow-both.png");
-							if($(this).children().attr("class").match("desc")){
-								$(this).find('img').attr("src","images/arrow-up.png");
-							}else{
-								$(this).find('img').attr("src","images/arrow-bottom.png");
-							}
-						});
 					}
 				});
 			}
@@ -1388,9 +1382,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 						return res;
 					},
 					columns : [{
-								class : 'sortTable2',
 								field : 'radio',
-								title : '频率(MHz)'+"<img src='images/arrow-both.png'width='24'/> ",
+								title : '频率(MHz)',
 								width : '15%',
 								sortable : true,
 								sortName : "radio",
@@ -1400,23 +1393,20 @@ define(	["ajax", "dojo/parser", "esri/map",
 											+ '</a>';
 								}
 							}, {
-								class : 'sortTable2',
 								field : 'firstTime',
 								width : '15%',
-								title : '首次出现时间'+"<img src='images/arrow-both.png'width='24'/> ",
+								title : '首次出现时间',
 								sortable : true,
 								titleTooltip : "首次出现时间"
 							}, {
-								class : 'sortTable2',
 								field : 'lastingTime',
 								width : '15%',
-								title : '最后出现时间'+"<img src='images/arrow-both.png'width='24'/> ",
+								title : '最后出现时间',
 								sortable : true,
 								titleTooltip : "最后出现时间"
 							}, {
-								class : 'sortTable2',
 								field : 'stationID',
-								title : '监测站'+"<img src='images/arrow-both.png'width='24'/> ",
+								title : '监测站',
 								width : '15%',
 								sortable : true,
 								sortName : "stationID",
@@ -1479,14 +1469,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 						$("#table-alarm-undeal").find(".dpopover").popover({
 							html : true
 						});
-						$(".sortTable2").on("click",function(e){
-							$("th.sortTable2").find('img').attr("src","images/arrow-both.png");
-							if($(this).children().attr("class").match("desc")){
-								$(this).find('img').attr("src","images/arrow-up.png");
-							}else{
-								$(this).find('img').attr("src","images/arrow-bottom.png");
-							}
-						});
 					}
 				};
 
@@ -1519,10 +1501,9 @@ define(	["ajax", "dojo/parser", "esri/map",
 						return res;
 					},
 					columns : [{
-							class : 'sortTable2',
 						 	align: 'center',
 							field : 'centor',
-							title : '频率(MHz)'+"<img src='images/arrow-both.png'width='24'/> ",
+							title : '频率(MHz)',
 							titleTooltip : "频率(MHz)",
 							sortable : true,
 							sortName : "centor",
@@ -1533,27 +1514,24 @@ define(	["ajax", "dojo/parser", "esri/map",
 							}
 							
 						}, {
-							class : 'sortTable2',
 							align: 'center',
 							field : 'band',
-							title : '带宽(kHz)'+"<img src='images/arrow-both.png'width='24'/> ",
+							title : '带宽(kHz)',
 							width : '15%',
 							titleTooltip : "带宽(kHz)",
 							sortable : true
 						}, {
-							class : 'sortTable2',
 							visible : false,
 							align: 'center',
 							field : 'success_rate',
-							title : '监测发射功率'+"<img src='images/arrow-both.png'width='24'/> ",
+							title : '监测发射功率',
 							width : '18%',
 							titleTooltip : "监测发射功率",
 							sortable : true
 						}, {
-							class : 'sortTable2',
 							align: 'center',
 							field : 'monitorID',
-							title : '监测站'+"<img src='images/arrow-both.png'width='24'/> ",
+							title : '监测站',
 							width : '30%',
 							titleTooltip : "监测站",
 							sortable : true,
@@ -1579,10 +1557,9 @@ define(	["ajax", "dojo/parser", "esri/map",
 
 							}
 						}, {
-							class : 'sortTable2',
 							align: 'center',
 							field : 'station',
-							title : '发射源'+"<img src='images/arrow-both.png'width='24'/> ",
+							title : '发射源',
 							width : '30%',
 							titleTooltip : "发射源",
 							sortable : true,
@@ -1609,14 +1586,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 					onAll:function(){
 						$("#radio_auto_confirm").find(".dpopover").popover({
 							html : true
-						});
-							$(".sortTable2").on("click",function(e){
-							$("th.sortTable2").find('img').attr("src","images/arrow-both.png");
-							if($(this).children().attr("class").match("desc")){
-								$(this).find('img').attr("src","images/arrow-up.png");
-							}else{
-								$(this).find('img').attr("src","images/arrow-bottom.png");
-							}
 						});
 					}
 				};
@@ -1658,14 +1627,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 						$("#table-radio").find(".dpopover").popover({
 									html : true
 								});
-						$(".sortTable1").on("click",function(e){
-							$("th.sortTable1").find('img').attr("src","images/arrow-both.png");
-							if($(this).children().attr("class").match("desc")){
-								$(this).find('img').attr("src","images/arrow-up.png");
-							}else{
-								$(this).find('img').attr("src","images/arrow-bottom.png");
-							}
-						});
 					},
 					onAll:function(){
 						$("#table-radio").find(".dpopover").popover({
@@ -1687,6 +1648,11 @@ define(	["ajax", "dojo/parser", "esri/map",
 						}
 						
 					},{
+<<<<<<< HEAD
+						field : 'redioName',
+						title : '频段名称',
+						width : '20%',
+=======
 						class : "sortTable1",
 						field : 'beginFreq',
 						sortable : true,
@@ -1705,6 +1671,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						field : 'redioName',
 						title : '频段名称'+"<img src='images/arrow-both.png'width='24'/> " ,
 						width : '15%',
+>>>>>>> 310082c7ddc2b9f15ce7dc1bdbbc8404747986c6
 						titleTooltip : '频段名称',
 						sortable : true,
 						sortName : "beginFreq",
@@ -1722,10 +1689,14 @@ define(	["ajax", "dojo/parser", "esri/map",
 									+ value +'">' + value + '</div>';
 						}
 					}, {
-						class : "sortTable1",
 						field : 'legalNormalStationNumber',
+<<<<<<< HEAD
+						title : '合法正常信号',
+						width : '15%',
+=======
 						title : '合法正常信号'+"<img src='images/arrow-both.png'width='24'/> " ,
 						width : '10%',
+>>>>>>> 310082c7ddc2b9f15ce7dc1bdbbc8404747986c6
 						titleTooltip : '合法正常信号',
 						sortable : true,
 						sortName : "legalNormalStationNumber",
@@ -1745,9 +1716,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 									+ row.endFreq + '">' + value + '</a>';
 						}
 					}, {
-						class : "sortTable1",
 						field : 'legalUnNormalStationNumber',
-						title : '合法违规信号'+"<img src='images/arrow-both.png'width='24'/> " ,
+						title : '合法违规信号',
 						width : '15%',
 						titleTooltip : '合法违规信号',
 						sortable : true,
@@ -1767,9 +1737,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 									+ row.endFreq + '">' + value + '</a>';
 						}
 					}, {
-						class : "sortTable1",
 						field : 'konwStationNumber',
-						title : '已知信号'+"<img src='images/arrow-both.png'width='24'/> " ,
+						title : '已知信号',
 						width : '10%',
 						titleTooltip : '已知信号',
 						sortable : true,
@@ -1789,9 +1758,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 									+ row.endFreq + '">' + value + '</a>';
 						}
 					}, {
-						class : "sortTable1",
 						field : 'illegalSignal',
-						title : '非法信号'+"<img src='images/arrow-both.png'width='24'/> " ,
+						title : '非法信号',
 						width : '10%',
 						titleTooltip : '非法信号',
 						sortable : true,
@@ -1811,9 +1779,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 									+ row.endFreq + '">' + value + '</a>';
 						}
 					}, {
-						class : "sortTable1",
 						field : 'unKonw',
-						title : '不明信号'+"<img src='images/arrow-both.png'width='24'/> " ,
+						title : '不明信号',
 						width : '10%',
 						titleTooltip : '不明信号',
 						sortable : true,
@@ -1848,9 +1815,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 							return "";
 						}
 					}, {
-						class : "sortTable1",
 						field : 'importantMonitor',
-						title : '重点监测'+"<img src='images/arrow-both.png'width='24'/> " ,
+						title : '重点监测',
 								//+ '<input type="checkbox" id="importantMonitor_filter">',
 						width : '10%',
 						titleTooltip : '重点监测',
