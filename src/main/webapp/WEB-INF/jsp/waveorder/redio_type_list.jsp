@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
  <div class='signal-wrap'>
-          <label class='signal-detect'>信号监测</label>
+          <label class='signal-detect'  v-text="dd.waveorder.title2"></label>
           <ul class='signal-category' style="position: absolute;right: 130px;">
             <li class='item'>
               <div class="radio radio-primary  ">
@@ -36,6 +36,7 @@
             </li>
           </ul>
           <a class='btn btn-default btn-refresh pull-right'>
-            <img src='images/refresh.png' />&nbsp;&nbsp;刷新
+            <img src='images/refresh.png' />&nbsp;&nbsp;<span  v-text="dd.btn.refresh"></span>
           </a>
         </div>
+<script src="config.js"></script>
