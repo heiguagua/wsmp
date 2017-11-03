@@ -157,7 +157,7 @@
 	<div class="form-group ">
 		<div class="col-sm-12 mrg-top15 text-right">
 			<%--<input type="submit"  value="提交" id="buttonInsert" class="btn btn-default btn-apply"/>--%>
-			<button type="button" id="buttonInsert" class="btn btn-default btn-apply">提交</button>
+			<button type="button" id="buttonInsert" class="btn btn-default btn-apply" v-text="dd.btn.submit">提交</button>
 		</div>
 	</div>
 	
@@ -167,5 +167,5 @@
 	<input name="beginFreq" value="${dto.getBeginFreq()}" hidden="true">
 	<input name="endFreq" value="${dto.getEndFreq()}" hidden="true">
 </form>
-
+<script src="config.js"></script>
 			

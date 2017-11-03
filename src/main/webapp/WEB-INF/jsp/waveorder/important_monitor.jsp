@@ -157,11 +157,11 @@
 	<div class="form-group ">
 		<div class="col-sm-9 mrg-top15 text-right">
 			<%--<input type="submit" value="更新" id="buttonUpdate" class="btn btn-default btn-apply"/>--%>
-			<button type="button" id="buttonUpdate" class="btn btn-default btn-apply">更新</button>
+			<button type="button" id="buttonUpdate" class="btn btn-default btn-apply"   v-text="dd.btn.update">更新</button>
 		</div>
 		<div class="col-sm-3  mrg-top15 text-left">
 			<%--<input type="submit" value="删除" id="buttonDelete" class="btn btn-default btn-apply"/>--%>
-			<button type="button" id="buttonDelete" class="btn btn-default btn-apply">删除</button>
+			<button type="button" id="buttonDelete" class="btn btn-default btn-apply"   v-text="dd.btn.delete">删除</button>
 		</div>
 	</div>
 	
@@ -171,5 +171,5 @@
 	<input name="beginFreq" value="${dto.getBeginFreq()}" hidden="true">
 	<input name="endFreq" value="${dto.getEndFreq()}" hidden="true">
 </form>
-
+<script src="config.js"></script>
 			

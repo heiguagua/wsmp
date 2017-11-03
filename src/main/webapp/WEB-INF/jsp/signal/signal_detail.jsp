@@ -97,7 +97,7 @@
         <!-- <div class='item feature flex1'> -->
         <div class='item feature' style="width: 100%;">
           <div class='features' style="max-width: 100%">
-            <h4 class='title'>信号特征</h4>
+            <h4 class='title' v-text="dd.signal.feature">信号特征</h4>
             <ul class='features-list' style="height:200px;overflow-y: auto">
           <!--     <li><div class='item-name' title="谱密度最大值">谱密度最大值</div>
                 <div class='item-value' title="${redioDetail.rMax}">${redioDetail.rMax}</div></li>
@@ -203,4 +203,6 @@
 
     </div>
   </div>
+  <script src="config.js"></script>
 </html>
+

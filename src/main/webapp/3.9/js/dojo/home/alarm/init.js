@@ -215,7 +215,7 @@ define(["home/alarm/alarm_manage", "ajax", "esri/geometry/webMercatorUtils", "es
             var MyMap = new esri.Map("mapDiv", {
                 center: center,
                 zoom: lv,
-                maxZoom: 12,
+                maxZoom: 15,
                 logo: false,
                 showAttribution: false
             });

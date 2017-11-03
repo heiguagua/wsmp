@@ -22,6 +22,7 @@
 <link rel="stylesheet" href="3.9/js/dojo/webgis/widgets/themes/darkangel/override.css">
 <link href='3.9/js/dojo/library/timepicker/css/bootstrap-datetimepicker.min.css' rel='stylesheet' />
 <link href='3.9/js/dojo/library/layer/layer.css' rel='stylesheet' />
+	<script src="3.9/vue.js"></script>
 <style>
 .box{position: relative;}
 .levelsColor{position:absolute;top:142px;right:20px;height:22px}.levelsColor input[type="number"]{width:40px}.levelsColor input[type="number"],.levelsColor a,.levelsColor img{display:inline-block;*display:inline;*zoom:1;height:22px;float:left}.levelsColor img{padding-top:0px}#valCtrl{height:23px;padding:0px 15px;background:#6F6FF2;color:#fff;font-size:12px;text-decoration:none;line-height:23px}
@@ -31,9 +32,10 @@
 </head>
 
 <body id='signal'>
+<div id="apps">
   <!--header-->
   <div class='header-bar'>
-    <span class='module-name'>信号管理</span>
+    <span class='module-name' v-text="dd.signal.title"></span>
     <div class='header-search' style="margin-left: 2px">
 		<%--<input id='search' type='text' placeholder="请输入信号频率"  />--%>
 		<input id='search' type='text' placeholder="请输入频率" style="width:80px" />
@@ -59,13 +61,13 @@
     </span>
        <div class='config pull-right'>
       <a class='btn btn-default btn-config' id="singletonFreq">
-        <img  src='images/way_1.png' width="18" />&nbsp;&nbsp;单频测量
+        <img  src='images/way_1.png' width="18" />&nbsp;&nbsp;<span v-text="dd.btn.frequency">单频测量</span>
       </a>
       <%--<a class='btn btn-default btn-config'>--%>
         <%--<img src='images/export.png' />&nbsp;&nbsp;导出报表--%>
       <%--</a>--%>
       <a class='btn btn-default btn-config' id="clickModalConfig"  >
-        <img src='images/config.png' />&nbsp;&nbsp;配置
+        <img src='images/config.png' />&nbsp;&nbsp;<span v-text="dd.btn.configuration">配置</span>
       </a>
 		   <%--data-toggle="modal" data-target="#modalConfig"--%>
     </div>
@@ -83,11 +85,11 @@
 							<%--<img src='images/locate.png' />--%>
 							<span id = "stationName">&nbsp;&nbsp;</span>
 						</label>
-						<button class="btn btn-submit" id="setStationPiont">场强定位选站</button>&#160;
+						<button class="btn btn-submit" id="setStationPiont" v-text="dd.btn.locorg">场强定位选站</button>&#160;
 						<div class='pull-right'>
 							<%--<button class="btn btn-submit" id="setStationPiont">聚类监测站</button>&#160;--%>
 							<%--<input type="text" class="gate-filter" placeholder="请输入门限" /> <button class="btn btn-submit" id="gate-btn">提交</button>--%>
-								电磁覆盖率:&nbsp; <span class='coverage-number'></span>
+								<span v-text="dd.info.electromagnetic">电磁覆盖率</span>&nbsp; <span class='coverage-number'></span>
 						</div>
 					</div>
 					<div id="mapDiv" style= "padding: 0px;height: 480px;"></div>
@@ -100,7 +102,7 @@
 				          <input type="number" name="startVal" min="1" id="minCtrl" value="-40" alt="请输入最小值"  title="请输入最小值">
 				          <img src="images/a.png" alt="">
 				          <input type="number" name="endVal" max="10" id="maxCtrl" value="120" alt="请输入最大值" title="请输入最大值" >
-				          <a href="#" id="valCtrl">确认</a>
+				          <a href="#" id="valCtrl" <td  v-text="dd.btn.affirm">确认</a>
 				        </form>
 				      </div>
 				      <%--控件 end--%>
@@ -108,7 +110,7 @@
 			</section>
 		<%--</span>--%>
 			<ul class="nav nav-pills" style="padding-bottom: 5px;">
-				<li style="float:left"><a href="#">数据回放:</a></li>
+				<li style="float:left"><a href="#" v-text="dd.signal.title1">数据回放:</a></li>
 				<li role="presentation"><a href="#">
 					<div class="checkbox checkbox-primary flex1 ">
 						<input type="checkbox" value="1" name="data-type" id="frequency">
@@ -131,14 +133,14 @@
 		<section class='flex-row'  style="display: none" id="frequency-wrap">
 			<div class='box'>
 				<div class='data-play'>
-					<label class='module-name'>数据回放<span class="data-type">频谱</span></label>
-					<a class='btn btn-default btn-choose pull-right' id="spectrum-choose-btn">选择数据</a>
+					<label class='module-name' ><span v-text="dd.signal.title1">数据回放</span><span class="data-type">频谱</span></label>
+					<a class='btn btn-default btn-choose pull-right' id="spectrum-choose-btn" v-text="dd.btn.select">选择数据</a>
 					<div class="data-choose-list" id="spectrum-choose-list">
 						<div class="pull-right"><span id="data-list-close" class="ico-close">&times;</span></div>
 						<table class="table table-striped table-hover spectrum-table" id="spectrum-table">
-							<tr class="empty-msg"><td>未查询到数据！</td></tr>
+							<tr class="empty-msg"><td  v-text="dd.info.nodata">未查询到数据！</td></tr>
 						</table>
-						<div class="text-center confirm-wrap"><a class="btn btn-confirm" id="spectrum-confirm">确定</a><a class="btn btn-cancel">取消</a></div>
+						<div class="text-center confirm-wrap"><a class="btn btn-confirm" id="spectrum-confirm"  v-text="dd.btn.affirm">确定</a><a class="btn btn-cancel" v-text="dd.btn.cancle">取消</a></div>
 					</div>
 					<%--<ul class="nav nav-pills pull-right">--%>
 						<%--<li role="presentation"><a href="#">--%>
@@ -178,15 +180,15 @@
     <section class='flex-row' style="display: none" id="IQ-wrap">
 			<div class='box'>
 				<div class='data-play'>
-					<label class='module-name'>数据回放<span class="data-type">IQ数据</span></label>
+					<label class='module-name'><span v-text="dd.signal.title1">数据回放</span><span class="data-type">IQ数据</span></label>
 					<a class="ico-close close-box " id="IQ-close">&times;</a>
-					<a class='btn btn-default btn-choose pull-right' id="IQ-choose-btn">选择数据</a>
+					<a class='btn btn-default btn-choose pull-right' id="IQ-choose-btn" v-text="dd.btn.select">选择数据</a>
 					<div class="data-choose-list" id="IQ-choose-list">
 						<div class="pull-right"><span id="IQ-list-close" class="ico-close">&times;</span></div>
 						<table class="table table-striped table-hover" id="IQ-table">
-							<tr class="empty-msg"><td>未查询到数据！</td></tr>
+							<tr class="empty-msg"><td  v-text="dd.info.nodata">未查询到数据！</td></tr>
 						</table>
-						<div class="text-center confirm-wrap"><a class="btn btn-confirm" id="iq-confirm">确定</a><a class="btn btn-cancel">取消</a></div>
+						<div class="text-center confirm-wrap"><a class="btn btn-confirm" id="iq-confirm"  v-text="dd.btn.affirm">确定</a><a class="btn btn-cancel" v-text="dd.btn.cancle">取消</a></div>
 					</div>
 				</div>
 				<div class="data-play-chart">
@@ -206,15 +208,15 @@
 		<section class="flex-row" style="display: none" id="audio-wrap">
 			<div class='box'>
 				<div class='data-play'>
-					<label class='module-name'>数据回放<span class="data-type">音频</span></label>
+					<label class='module-name'><span v-text="dd.signal.title1">数据回放</span><span class="data-type">音频</span></label>
 					<a class="ico-close close-box " id="audio-close">&times;</a>
-					<a class='btn btn-default btn-choose pull-right' id="audio-choose-btn">选择数据</a>
+					<a class='btn btn-default btn-choose pull-right' id="audio-choose-btn" v-text="dd.btn.select">选择数据</a>
 					<div class="data-choose-list" id="audio-choose-list">
 						<div class="pull-right"><span id="audio-list-close" class="ico-close">&times;</span></div>
 						<table class="table table-striped table-hover" id="audio-table">
-							<tr class="empty-msg"><td>未查询到数据！</td></tr>
+							<tr class="empty-msg"><td  v-text="dd.info.nodata">未查询到数据！</td></tr>
 						</table>
-						<div class="text-center confirm-wrap"><a class="btn btn-confirm" id="audio-confirm">确定</a><a class="btn btn-cancel">取消</a></div>
+						<div class="text-center confirm-wrap"><a class="btn btn-confirm" id="audio-confirm"  v-text="dd.btn.affirm">确定</a><a class="btn btn-cancel" v-text="dd.btn.cancle">取消</a></div>
 					</div>
 					<aside class="control" style="display:none">
 						<p class="winTitle">
@@ -227,11 +229,11 @@
 								<div id="next" class="controlBtn" title="next">&gt;I</div>
 							</li>
 							<li>
-								<div id="empty" title="清空列表">清空</div>
+								<div id="empty" title="清空列表" v-text="dd.btn.empty">清空</div>
 							</li>
 							<li>
 								<div class="添加" title="添加文件，或者拖拽文件至列表">
-									<label for="addFiles">添加</label> 
+									<label for="addFiles" v-text="dd.btn.add">添加</label>
 									<input type="file"	id="addFiles" multiple style="width:100px;opacity:0" />
 								</div>
 							</li>
@@ -294,7 +296,7 @@
 		<section class='flex-row'>
 			<div class='box'>
 				<div class='month-data flex-column'>
-					<h4 id='levelChartTitle' class='title'>电平峰值</h4>
+					<h4 id='levelChartTitle' class='title' v-text="dd.info.charttit1">电平峰值</h4>
 					<div class='flex1' id='levelChart'></div>
 				</div>
 			</div>
@@ -302,7 +304,7 @@
 		<section class='flex-row'>
 			<div class='box'>
 				<div class='month-data flex-column'>
-					<h4 id='monthChartTitle' class='title'>近3个月占用度（按天统计）</h4>
+					<h4 id='monthChartTitle' class='title'  v-text="dd.info.charttit2">近3个月占用度（按天统计）</h4>
 					<div class='flex1' id='monthChart1'></div>
 				</div>
 			</div>
@@ -317,7 +319,7 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-          <h4 class="modal-title" id="modalDayLabel">峰值与日占用度（按24小时统计）</h4>
+          <h4 class="modal-title" id="modalDayLabel"  v-text="dd.info.charttit3">峰值与日占用度（按24小时统计）</h4>
         </div>
         <div class="modal-body">
 			<div class="box">
@@ -342,7 +344,7 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-          <h4 class="modal-title" id="modalHourLabel">小时场强度（按60分钟统计）</h4>
+          <h4 class="modal-title" id="modalHourLabel"  v-text="dd.info.charttit4">小时场强度（按60分钟统计）</h4>
         </div>
         <div class="modal-body">
           <div id='hourChart'></div>
@@ -361,7 +363,7 @@
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
-					<h4 class="modal-title" id="modalConfigLabel">重点监测参数配置</h4>
+					<h4 class="modal-title" id="modalConfigLabel"  v-text="dd.info.laytit1">重点监测参数配置</h4>
 				</div>
 				<div class="modal-body">
 					<div role="tabpanel" class="tab-pane active " id="envim">
@@ -381,14 +383,14 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-          <h4 class="modal-title" id="modalStationAlarmLabel">台站列表</h4>
+          <h4 class="modal-title" id="modalStationAlarmLabel"   v-text="dd.info.station">台站列表</h4>
         </div>
         <div class="modal-body">
           	<div id="stationWrap"></div>
         </div>
         <div class="modal-footer">
-        <button id = "submitButton" type="button" class="btn btn-primary">提交</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left:15px">取消</button>
+        <button id = "submitButton" type="button" class="btn btn-primary"  v-text="dd.btn.submit">提交</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left:15px" v-text="dd.btn.cancle">取消</button>
       </div>
       </div>
     </div>
@@ -402,7 +404,7 @@
 				  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					  <span aria-hidden="true">&times;</span>
 				  </button>
-				  <h4 class="modal-title" id="modalsetStationPiontLabel">选择监测站</h4>
+				  <h4 class="modal-title" id="modalsetStationPiontLabel"  v-text="dd.info.laytit2">选择监测站</h4>
 			  </div>
 			  <div class="modal-body">
 				  <div role="tabpanel" class="tab-pane active " id="envim">
@@ -414,12 +416,13 @@
 				  </div>
 			  </div>
 			  <div class="modal-footer">
-				  <button id = "spSubmitButton" type="button" class="btn btn-primary">提交</button>
-				  <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left:15px">取消</button>
+				  <button id = "spSubmitButton" type="button" class="btn btn-primary"  v-text="dd.btn.submit">提交</button>
+				  <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left:15px" v-text="dd.btn.cancle">取消</button>
 			  </div>
 		  </div>
 	  </div>
   </div>
+</div>
   <%--聚类监测站end--%>
   <input id = 'typeCode' class = 'after_modal_colse' style="display: none"/>
   <input id = 'stationKey' class = 'after_modal_colse'  style="display: none"/>
@@ -447,5 +450,6 @@
 
       });
   </script>
+<script src="config.js"></script>
 </body>
 </html>
