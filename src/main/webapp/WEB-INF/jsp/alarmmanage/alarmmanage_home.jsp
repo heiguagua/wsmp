@@ -25,12 +25,14 @@
     .box{position: relative;}
     .levelsColor{position:absolute;top:62px;right:20px;height:22px}.levelsColor input[type="number"]{width:40px}.levelsColor input[type="number"],.levelsColor a,.levelsColor img{display:inline-block;*display:inline;*zoom:1;height:22px;float:left}.levelsColor img{padding-top:0px}#valCtrl{height:23px;padding:0px 15px;background:#6F6FF2;color:#fff;font-size:12px;text-decoration:none;line-height:23px}
   </style>
+  <script src="3.9/vue.js"></script>
 </head>
 
 <body id='alarm'>
+<div id="apps">
 <!--header-->
 <div class='header-bar'>
-  <span class='module-name'>告警管理</span>
+  <span class='module-name'  v-text="dd.alarm.title">告警管理</span>
   <div class='header-search'>
     <input type='text' id="search" placeholder="请输入告警频率"/>
     <span class='search-icon'></span>
@@ -47,9 +49,9 @@
     </span>
   <div id="configWFreqWarming" class='config pull-right'>
     <a class='btn btn-default btn-config' id="singletonFreq">
-      <img  src='images/way_1.png' width="18" />&nbsp;&nbsp;单频测量
+      <img  src='images/way_1.png' width="18" />&nbsp;&nbsp;<span  v-text="dd.btn.frequency">单频测量</span>
     </a>
-    <a class='btn btn-default btn-config'  id="clickModalConfig"> <img src='images/config.png' />&nbsp;&nbsp;配置
+    <a class='btn btn-default btn-config'  id="clickModalConfig"> <img src='images/config.png' />&nbsp;&nbsp;<span  v-text="dd.btn.configuration">配置</span>
     </a>
   </div>
 </div>
@@ -116,7 +118,7 @@
           </span>
         </label>
         <div class='pull-right'>
-          电磁覆盖率:&nbsp;
+          <span v-text="dd.info.electromagnetic">电磁覆盖率</span>&nbsp;
           <span class='coverage-number'></span>
         </div>
       </div>
@@ -129,7 +131,7 @@
           <input type="number" name="startVal" min="1" id="minCtrl" value="-40" alt="请输入最小值"  title="请输入最小值">
           <img src="images/a.png" alt="">
           <input type="number" name="endVal" max="10" id="maxCtrl" value="120" alt="请输入最大值" title="请输入最大值" >
-          <a href="#" id="valCtrl">确认</a>
+          <a href="#" id="valCtrl"  v-text="dd.btn.affirm">确认</a>
         </form>
       </div>
       <%--控件 end--%>
@@ -138,7 +140,7 @@
   <section class='flex-row'>
     <div class='box'>
       <div class='month-data flex-column'>
-        <h4 id="levelTitle" class="text-center">电平峰值</h4>
+        <h4 id="levelTitle" class="text-center"  v-text="dd.info.charttit1">电平峰值</h4>
         <div id="level" class='title levelChart' style="height: 400px"></div>
       </div>
     </div>
@@ -146,7 +148,7 @@
   <section class='flex-row'>
     <div class='box'>
       <div class='month-data flex-column'>
-        <h4 id="monthTitle" class="text-center">近3个月占用度（按天统计）</h4>
+        <h4 id="monthTitle" class="text-center"  v-text="dd.info.charttit2">近3个月占用度（按天统计）</h4>
         <div id="month1" class='title flex1 flex-column' style="height: 100%"></div>
       </div>
     </div>
@@ -187,7 +189,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title" id="modalHourLabel">小时场强度（按60分钟统计）</h4>
+        <h4 class="modal-title" id="modalHourLabel"  v-text="dd.info.charttit3">小时场强度（按60分钟统计）</h4>
       </div>
       <div class="modal-body">
         <div id='hour'></div>
@@ -204,14 +206,14 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title" id="modalStationAlarmLabel">台站列表</h4>
+        <h4 class="modal-title" id="modalStationAlarmLabel"  v-text="dd.info.station">台站列表</h4>
       </div>
       <div class="modal-body">
         <div id="stationWrap"></div>
       </div>
       <div class="modal-footer">
-        <button id = "submitButton" type="button" class="btn btn-primary">提交</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left:15px">取消</button>
+        <button id = "submitButton" type="button" class="btn btn-primary"  v-text="dd.btn.submit">提交</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left:15px"  v-text="dd.btn.cancle">取消</button>
       </div>
     </div>
   </div>
@@ -227,7 +229,7 @@
                 aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title" id="modalConfigLabel">重点监测参数配置</h4>
+        <h4 class="modal-title" id="modalConfigLabel" v-text="dd.info.laytit1">重点监测参数配置</h4>
       </div>
       <div class="modal-body">
         <div role="tabpanel" class="tab-pane active " >
@@ -240,7 +242,7 @@
     </div>
   </div>
 </div>
-
+</div>
 <input id="stationCode" value="" style="display: none;">
 <input id="stationId" class ="after_modal_colse" style="display: none;"  value="" >
 <input id="typeCode" class ="after_modal_colse" style="display: none;"  value="" >
@@ -268,5 +270,6 @@
             });
         });
 </script>
+<script src="config.js"></script>
 </body>
 </html>

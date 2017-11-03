@@ -44,14 +44,16 @@
         z-index: 40;
       }
 </style>
+	<script src="3.9/vue.js"></script>
 </head>
 
 <body id='waveOrder' class="tundra">
+<div id="apps">
 	<input style="display: none" id ='mapUrl' value="${mapUrl}" />
 	<input value="${areaCode}" hidden="true" id="areaCode">
 	<!--header-->
 	<div class='header-bar'>
-		<span class='module-name'>电波秩序管理</span>
+		<span class='module-name' v-text="dd.waveorder.title"></span>
 		<div class='search-filters'>
 			<select id='area_select' class='city-list select2-picker'>
 			</select>
@@ -80,9 +82,9 @@
 				style="min-height: 650px; max-height: 650;">
 				<ul class="nav nav-tabs" id="tabs">
 					<li id='warningEnsure' role="presentation" class="active"><a
-						href="#undeal">实时告警未确认</a></li>
-					<li id='warningUnsure' role="presentation"><a href="#dealed">实时告警已确认</a></li>
-					<li id='warningUnsure' role="presentation"><a href="#auto_confirm">信号智能识别</a></li>
+						href="#undeal" v-text="dd.waveorder.tab1"></a></li>
+					<li id='warningUnsure' role="presentation"><a href="#dealed"  v-text="dd.waveorder.tab2"></a></li>
+					<li id='warningUnsure' role="presentation"><a href="#auto_confirm"  v-text="dd.waveorder.tab3"></a></li>
 					<li class="pull-right" id="minutes-li"><input
 						placeholder='更新间隔(分钟)' id="minutes" class="minutes"
 						style="IME-MODE: disabled; WIDTH: 100px; HEIGHT: 25px"
@@ -127,92 +129,6 @@
 	</div>
 
 	<!-- Modal Station-->
-	<div class="modal fade" id="modalStation" tabindex="-1" role="dialog"
-		aria-labelledby="modalStationLabel">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-					<h4 class="modal-title" id="modalStationLabel">台站列表</h4>
-				</div>
-				<div class="modal-body " style="padding-bottom: 0">
-					<div class="header-search" style="margin-left: 0">
-						<input type="text" placeholder="输入中心频率"> <span
-							class="search-icon"></span>
-						<div class="search-result-wrap">
-							<ul>
-
-							</ul>
-						</div>
-					</div>
-					<table class="table table-striped" id='table-station-list'>
-						<thead>
-							<tr>
-								<th title='台站名称' width='35%'>台站名称</th>
-								<th title='中心频率（kHz）' width='45%'>中心频率（kHz）</th>
-								<th title='带宽（kHz）' width='20%'>带宽（kHz）</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>87.7</td>
-								<td><a>调频广播</a></td>
-								<td>97</td>
-							</tr>
-							<tr>
-								<td>87.7</td>
-								<td><a>调频广播</a></td>
-								<td>97</td>
-							</tr>
-							<tr>
-								<td>87.7</td>
-								<td><a>调频广播</a></td>
-								<td>97</td>
-							</tr>
-							<tr>
-								<td>87.7</td>
-								<td><a>调频广播</a></td>
-								<td>97</td>
-							</tr>
-							<tr>
-								<td>87.7</td>
-								<td><a>调频广播</a></td>
-								<td>97</td>
-							</tr>
-							<tr>
-								<td>87.7</td>
-								<td><a>调频广播</a></td>
-								<td>97</td>
-							</tr>
-							<tr>
-								<td>87.7</td>
-								<td><a>调频广播</a></td>
-								<td>97</td>
-							</tr>
-							<tr>
-								<td>87.7</td>
-								<td><a>调频广播</a></td>
-								<td>97</td>
-							</tr>
-						</tbody>
-					</table>
-
-					<p class="mark-title">备注</p>
-					<textarea placeholder="请输入备注信息" class="mark-info">
-					</textarea>
-				</div>
-				<div class="modal-footer">
-					<button id="submitButton" type="button" class="btn btn-primary">提交</button>
-					<button type="button" class="btn btn-default" data-dismiss="modal"
-						style="margin-left: 15px">取消</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
 	<!-- Modal Signal-->
 	<div class="modal fade" id="modalSignal" tabindex="-1" role="dialog"
 		aria-labelledby="modalSignalLabel">
@@ -223,7 +139,7 @@
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
-					<h4 class="modal-title" id="modalSignalLabel">信号列表</h4>
+					<h4 class="modal-title" id="modalSignalLabel"  v-text="dd.info.laytit"></h4>
 				</div>
 				<div class="modal-body padding20">
 					<table class="table table-striped" id='table-signal-list'>
@@ -244,7 +160,7 @@
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
-					<h4 class="modal-title" id="modalSignalLabel1">信号列表</h4>
+					<h4 class="modal-title" id="modalSignalLabel1" v-text="dd.info.laytit"></h4>
 				</div>
 				<div class="modal-body padding20">
 					<table class="table table-striped " id='table-signalsOnMonitors-list'>
@@ -303,7 +219,7 @@
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
-					<h4 class="modal-title" id="modalConfigLabel">重点监测参数配置</h4>
+					<h4 class="modal-title" id="modalConfigLabel" v-text="dd.info.laytit1"></h4>
 				</div>
 				<div class="modal-body">
 					<div role="tabpanel" class="tab-pane active ">
@@ -318,7 +234,7 @@
 		</div>
 	</div>
 	</div>
-
+</div>
 	<script src="3.9/init.js"></script>
 	<script type="text/javascript">
 		require(
@@ -339,5 +255,6 @@
 							})
 				});
 	</script>
+<script src="config.js"></script>
 </body>
 </html>
