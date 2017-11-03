@@ -235,7 +235,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 									for (var i = 0; i < result.length; i++) {
 										var monitorPoint = new Point(result[i]);
 										var countSymbol = new TextSymbol(String(monitorPoint.count))
-												.setOffset(21,15) 
+												.setOffset(22,15) 
 												.setColor(
 														new esri.Color([ 0xff,
 																0xff, 0xff ]))

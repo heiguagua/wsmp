@@ -133,36 +133,23 @@ define(["ajax"], function(ajax) {
 					responseHandler : function(res) {
 						return res;
 					},
-					onLoadSuccess : function() {
-						$(".sortTable1").on("click",function(e){
-							$("th.sortTable1").find('img').attr("src","images/arrow-both.png");
-							if($(this).children().attr("class").match("desc")){
-								$(this).find('img').attr("src","images/arrow-up.png");
-							}else{
-								$(this).find('img').attr("src","images/arrow-bottom.png");
-							}
-						});
-					},
 					columns : [{
-								class : 'sortTable1',
 								field : 'generation',
-								title : '2G-4G'+"<img src='images/arrow-both.png'width='24'/> ",
+								title : '2G-4G',
 								sortable : true,
 								formatter : function(value, row, index) {
 									return '<a>' + value + '</a>';
 								}
 							}, {
-								class : 'sortTable1',
 								field : 'operator',
-								title : '运营商'+"<img src='images/arrow-both.png'width='24'/> ",
+								title : '运营商',
 								sortable : true,
 								formatter : function(value, row, index) {
 									return '<a>' + value + '</a>';
 								}
 							}, {
-								class : 'sortTable1',
 								field : 'freqRange',
-								title : '频段范围'+"<img src='images/arrow-both.png'width='24'/> ",
+								title : '频段范围',
 								sortable : true,
 								sortName : "freqRange",
 								sorter : freqRangeSorter,
@@ -170,37 +157,32 @@ define(["ajax"], function(ajax) {
 									return '<a>' + value + '</a>';
 								}
 							}, {
-								class : 'sortTable1',
 								field : 'techName',
-								title : '技术制式 '+"<img src='images/arrow-both.png'width='24'/> ",
+								title : '技术制式 ',
 								sortName : "techName",
 								sortable : true
 
 							}, {
-								class : 'sortTable1',
 								field : 'infoChannel',
-								title : '频段信道数'+"<img src='images/arrow-both.png'width='24'/> ",
+								title : '频段信道数',
 								sortName : "infoChannel",
 								sortable : true
 							}, {
-								class : 'sortTable1',
 								field : 'monitorCoverage',
-								title : '监测网覆盖率'+"<img src='images/arrow-both.png'width='24'/> ",
+								title : '监测网覆盖率',
 								sortName : "monitorCoverage",
 								sortable : true
 							}, {
-								class : 'sortTable1',
 								field : 'stationCoverage',
-								title : '台站覆盖率'+"<img src='images/arrow-both.png'width='24'/> ",
+								title : '台站覆盖率',
 								sortName : "stationCoverage",
 								sortable : true,
 								formatter : function(value, row, index) {
 									return value + '%';
 								}
 							}, {
-								class : 'sortTable1',
 								field : 'occupancy',
-								title : '频段占用度'+"<img src='images/arrow-both.png'width='24'/> ",
+								title : '频段占用度',
 								sortName : "occupancy",
 								sortable : true,
 								formatter : function(value, row, index) {

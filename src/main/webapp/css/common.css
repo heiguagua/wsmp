@@ -713,15 +713,3 @@ border-radius: 4px;
 .modal-width {
 	width: 750px;
 }
-
-.fixed-table-container thead th .desc {
-    background-image:none;
-}
-
-.fixed-table-container thead th .asc {
-    background-image:none;
-}
-
-.fixed-table-container thead th .both {
-    background-image:none;
-}

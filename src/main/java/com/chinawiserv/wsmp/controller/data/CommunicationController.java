@@ -219,7 +219,7 @@ public class CommunicationController {
     	});
     	futureList.forEach(t -> {
     		try {
-    			CommunicationTableTop top = t.get();
+    			CommunicationTableTop top = t.get() == null ? new CommunicationTableTop() : t.get();
 				communicationRows.add(top);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
