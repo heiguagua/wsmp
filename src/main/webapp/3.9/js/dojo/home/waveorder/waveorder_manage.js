@@ -658,14 +658,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 				
 			}
 			
-<<<<<<< HEAD
-			 //频段排序
-			function freqRangeSorter(a, b) {
-				console.log(a);
-=======
 			 //频段名称排序
 			function freqNameSorter(a, b) {
->>>>>>> 310082c7ddc2b9f15ce7dc1bdbbc8404747986c6
 				var matcha = a.match(/^[0-9\.\-]+/);
 				var matchb = b.match(/^[0-9\.\-]+/);
 				a = matcha == null ? "9999" : a.substring(0,a.indexOf("-"));
@@ -1512,7 +1506,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 								return '<a class="centerFreqA">' + value
 										+ '</a>';
 							}
-							
 						}, {
 							align: 'center',
 							field : 'band',
@@ -1648,11 +1641,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 						}
 						
 					},{
-<<<<<<< HEAD
-						field : 'redioName',
-						title : '频段名称',
-						width : '20%',
-=======
 						class : "sortTable1",
 						field : 'beginFreq',
 						sortable : true,
@@ -1671,7 +1659,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 						field : 'redioName',
 						title : '频段名称'+"<img src='images/arrow-both.png'width='24'/> " ,
 						width : '15%',
->>>>>>> 310082c7ddc2b9f15ce7dc1bdbbc8404747986c6
 						titleTooltip : '频段名称',
 						sortable : true,
 						sortName : "beginFreq",
@@ -1690,13 +1677,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 						}
 					}, {
 						field : 'legalNormalStationNumber',
-<<<<<<< HEAD
-						title : '合法正常信号',
-						width : '15%',
-=======
 						title : '合法正常信号'+"<img src='images/arrow-both.png'width='24'/> " ,
 						width : '10%',
->>>>>>> 310082c7ddc2b9f15ce7dc1bdbbc8404747986c6
 						titleTooltip : '合法正常信号',
 						sortable : true,
 						sortName : "legalNormalStationNumber",
