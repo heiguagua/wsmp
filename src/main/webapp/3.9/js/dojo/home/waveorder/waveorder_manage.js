@@ -364,12 +364,19 @@ define(	["ajax", "dojo/parser", "esri/map",
 						pageSize : 10, // 单页记录数
 						pageList : [5, 10, 20, 30], // 分页步进值
 						clickToSelect : true, // 是否启用点击选中行
+						search : true,
+//						searchOnEnterKey : true,
+						strictSearch : true,
+//						searchText : "搜索信号",
 						responseHandler : function(res) {
 							return res;
 						},
 						columns : [{
+							class : "sortTable3",
+							searchable : true,
+							searchFormatter : false,
 							field : 'centor',
-							title : '频率(MHz)',
+							title : '频率(MHz)' +"<img src='images/arrow-both.png'width='24'/> ",
 							titleTooltip : "频率(MHz)",
 							sortable : true,
 							sortName : "centor",
@@ -379,21 +386,27 @@ define(	["ajax", "dojo/parser", "esri/map",
 										+ '</a>';
 							}
 						}, {
+							class : "sortTable3",
+							searchable : false,
 							field : 'band',
-							title : '带宽(kHz)',
+							title : '带宽(kHz)' +"<img src='images/arrow-both.png'width='24'/> ",
 							width : '15%',
 							titleTooltip : "带宽(kHz)",
 							sortable : true
 						}, {
+							class : "sortTable3",
+							searchable : false,
 							visible : false,
 							field : 'success_rate',
-							title : '监测发射功率',
+							title : '监测发射功率' +"<img src='images/arrow-both.png'width='24'/> ",
 							width : '18%',
 							titleTooltip : "监测发射功率",
 							sortable : true
 						}, {
+							class : "sortTable3",
+							searchable : false,
 							field : 'monitorID',
-							title : '监测站',
+							title : '监测站' +"<img src='images/arrow-both.png'width='24'/> ",
 							width : '30%',
 							titleTooltip : "监测站",
 							sortable : true,
@@ -419,8 +432,10 @@ define(	["ajax", "dojo/parser", "esri/map",
 
 							}
 						}, {
+							class : "sortTable3",
+							searchable : false,
 							field : 'station',
-							title : '发射源',
+							title : '发射源' +"<img src='images/arrow-both.png'width='24'/> ",
 							width : '30%',
 							titleTooltip : "发射源",
 							sortable : true,
@@ -430,12 +445,14 @@ define(	["ajax", "dojo/parser", "esri/map",
 								return value;
 							}
 						}, {
+							searchable : false,
 							field : 'id',
 							visible : false,
 							formatter : function(value, row, index) {
 								return value;
 							}
 						}, {
+							searchable : false,
 							field : "signalManage",
 							formatter : function(value, row, index) {
 								return '<a signalId=' + row.id
@@ -447,6 +464,14 @@ define(	["ajax", "dojo/parser", "esri/map",
 							$("#table-signal-list").find(".dpopover").popover({
 										html : true
 									});
+							$(".sortTable3").on("click",function(e){
+							$("th.sortTable3").find('img').attr("src","images/arrow-both.png");
+							if($(this).children().attr("class").match("desc")){
+								$(this).find('img').attr("src","images/arrow-up.png");
+							}else{
+								$(this).find('img').attr("src","images/arrow-bottom.png");
+							}
+						});
 						},
 						onAll:function(){
 							$("#table-signal-list").find(".dpopover").popover({
@@ -568,8 +593,9 @@ define(	["ajax", "dojo/parser", "esri/map",
 							return res;
 						},
 						columns : [{
+							class : "sortTable4",
 							field : 'centor',
-							title : '频率(MHz)',
+							title : '频率(MHz)' +"<img src='images/arrow-both.png'width='24'/> ",
 							titleTooltip : "频率(MHz)",
 							sortable : true,
 							sortName : "centor",
@@ -579,21 +605,24 @@ define(	["ajax", "dojo/parser", "esri/map",
 										+ '</a>';
 							}
 						}, {
+							class : "sortTable4",
 							field : 'band',
-							title : '带宽(kHz)',
+							title : '带宽(kHz)' +"<img src='images/arrow-both.png'width='24'/> ",
 							width : '15%',
 							titleTooltip : "带宽(kHz)",
 							sortable : true
 						}, {
+							class : "sortTable4",
 							visible : false,
 							field : 'success_rate',
-							title : '监测发射功率',
+							title : '监测发射功率' +"<img src='images/arrow-both.png'width='24'/> ",
 							width : '18%',
 							titleTooltip : "监测发射功率",
 							sortable : true
 						}, {
+							class : "sortTable4",
 							field : 'monitorID',
-							title : '监测站',
+							title : '监测站' +"<img src='images/arrow-both.png'width='24'/> ",
 							width : '30%',
 							titleTooltip : "监测站",
 							sortable : true,
@@ -619,8 +648,9 @@ define(	["ajax", "dojo/parser", "esri/map",
 
 							}
 						}, {
+							class : "sortTable4",
 							field : 'station',
-							title : '发射源',
+							title : '发射源' +"<img src='images/arrow-both.png'width='24'/> ",
 							width : '30%',
 							titleTooltip : "发射源",
 							sortable : true,
@@ -647,6 +677,14 @@ define(	["ajax", "dojo/parser", "esri/map",
 							$("#table-signalsOnMonitors-list").find(".dpopover").popover({
 										html : true
 									});
+							$(".sortTable4").on("click",function(e){
+							$("th.sortTable4").find('img').attr("src","images/arrow-both.png");
+							if($(this).children().attr("class").match("desc")){
+								$(this).find('img').attr("src","images/arrow-up.png");
+							}else{
+								$(this).find('img').attr("src","images/arrow-bottom.png");
+							}
+						});
 						},
 						onAll:function(){
 							$("#table-signalsOnMonitors-list").find(".dpopover").popover({
