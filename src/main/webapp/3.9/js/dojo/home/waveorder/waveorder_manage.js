@@ -78,6 +78,26 @@ define(	["ajax", "dojo/parser", "esri/map",
 							})
 				});
 
+				// 信号统计表 频段名称链接点击事件
+				$("#table-radio").on("click", ".redioNameA",
+						function(e) {
+							alert("!!!");
+//							console.log(e);
+//							var freq = e.target.getAttribute("centorfreq");
+//							var signalId = e.target.getAttribute("signalid");
+//							console.log(freq);
+//							console.log(signalId);
+//							const urlObj = {
+//								ServerName : 'host2',
+//								DisplayName : '信号管理',
+//								MultiTabable : false,
+//								ReflushIfExist : true,
+//								Url : 'radio/app/signal?id=sefon&cenFreg='
+//										+ freq + '&signalId=' + signalId
+//							};
+//							Binding.openUrl(JSON.stringify(urlObj));
+			})
+						
 				// 信号详情 频率链接点击事件
 				$("#table-signal-list").on("click", ".centerFreqA",
 						function(e) {
@@ -1688,7 +1708,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 					pageSize : 5, // 单页记录数
 					pageList : [5, 10, 20, 30], // 分页步进值
 					clickToSelect : true, // 是否启用点击选中行
-//					showFooter: true,
+					showFooter: true,
 					responseHandler : function(res) {
 						return res;
 					},
@@ -1714,16 +1734,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						align : 'left',
 						formatter : function(value,row,index) {
 							return index + 1;
-						},
-						footerFormatter : function(data) {
-							console.log(data);
-							var sum = 0;
-							for(var i=0;i<data.length;i++) {
-								sum += data[i].legalNormalStationNumber;
-							}
-							return sum;
 						}
-						
 					},{
 						class : "sortTable1",
 						field : 'beginFreq',
@@ -1747,17 +1758,9 @@ define(	["ajax", "dojo/parser", "esri/map",
 						sortable : true,
 						sortName : "beginFreq",
 						sorter : freqRangeSorter,
-						footerFormatter : function(data) {
-							console.log(data);
-							var sum = 0;
-							for(var i=0;i<data.length;i++) {
-								sum += data[i].legalNormalStationNumber;
-							}
-							return sum;
-						},
 						formatter : function(value, row, index) {
 							return '<div class="dpopover" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
-									+ value +'">' + value + '</div>';
+									+ value +'"> <a class="redioNameA">'+ value + '</a> </div>';
 						}
 					}, {
 						class : "sortTable1",
@@ -1794,7 +1797,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 							console.log(data);
 							var sum = 0;
 							for(var i=0;i<data.length;i++) {
-								sum += data[i].legalNormalStationNumber;
+								sum += data[i].legalUnNormalStationNumber;
 							}
 							return sum;
 						},
@@ -1816,7 +1819,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 							console.log(data);
 							var sum = 0;
 							for(var i=0;i<data.length;i++) {
-								sum += data[i].legalNormalStationNumber;
+								sum += data[i].konwStationNumber;
 							}
 							return sum;
 						},
@@ -1838,7 +1841,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 							console.log(data);
 							var sum = 0;
 							for(var i=0;i<data.length;i++) {
-								sum += data[i].legalNormalStationNumber;
+								sum += data[i].illegalSignal;
 							}
 							return sum;
 						},
@@ -1860,7 +1863,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 							console.log(data);
 							var sum = 0;
 							for(var i=0;i<data.length;i++) {
-								sum += data[i].legalNormalStationNumber;
+								sum += data[i].unKonw;
 							}
 							return sum;
 						},
@@ -1874,14 +1877,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 						title : '<input type="checkbox" id="importantMonitor_filter">',
 						align : 'right',
 						width : "5%",
-						footerFormatter : function(data) {
-							console.log(data);
-							var sum = 0;
-							for(var i=0;i<data.length;i++) {
-								sum += data[i].legalNormalStationNumber;
-							}
-							return sum;
-						},
 						formatter : function(value, row, index) {
 							return "";
 						}
@@ -1895,14 +1890,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 						align : 'left',
 						sortable : true,
 						sortName : "importantMonitor",
-						footerFormatter : function(data) {
-							console.log(data);
-							var sum = 0;
-							for(var i=0;i<data.length;i++) {
-								sum += data[i].legalNormalStationNumber;
-							}
-							return sum;
-						},
 						formatter : function(value, row, index) {
 							if (value == true) {
 								return '<a data-toggle="modal" data-target="#modalConfig" data-beginFreq="'

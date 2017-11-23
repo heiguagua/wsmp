@@ -747,6 +747,7 @@ public class AlarmDataController {
     		
     		final long frequency = Long.valueOf(param.get("frequency").toString());
     		
+    		//查询电频均值
     		List<LevelLocate> relate = hbaseClient.queryLevelLocate(LocalDateTime.now().format(formatter), frequency);
     		Logger.info("均值查询正常返回个数为 :{}, 操作时间：{},入参：开始时间：{}，中心频率：{}", relate.size(), LocalDateTime.now().toString(), LocalDateTime.now().format(formatter), frequency);
     		List<String> stationcode = (List<String>) param.get("stationCodes");
@@ -782,14 +783,17 @@ public class AlarmDataController {
     		Object object = kriking3.get("result");
         	List<double[]> krikinglist = JSONObject.parseArray(object.toString(), double[].class);
         	//过滤距离
-    	    Integer r = 30;
-    	    List<double[]> krikinglistFiletered = krikinglist.stream().filter(e -> {
-    	    	for(int i=0;i<kringParam.length;i++) {
-    	    		if(Distance.getDistance(e, kringParam[i]) < r) return true;
-    	    	}
-    	    	return false;
-    	    }).collect(Collectors.toList());
-    	    kriking3new.put("result", krikinglistFiletered);
+			Integer r = 30;
+			if(krikinglist != null) {
+			List<double[]> krikinglistFiletered = krikinglist.stream().filter(e -> {
+				for (int i = 0; i < kringParam.length; i++) {
+					if (Distance.getDistance(e, kringParam[i]) < r)
+						return true;
+				}
+				return false;
+			}).collect(Collectors.toList());
+			kriking3new.put("result", krikinglistFiletered);
+			}
     		
     		Logger.info("场强定位计算正常 操作时间{} 返回值为{}", LocalDateTime.now().toString(),kriking3);
     	} catch (NumberFormatException e) {

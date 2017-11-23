@@ -58,7 +58,7 @@ var config={
             laytable:['频率(MHz)','带宽(kHz)','监测站','发射源']
         },
         alarm:{
-            title:"告警管理xxx",
+            title:"告警管理xxx"
         },
         signal:{
             title:"信号管理",
