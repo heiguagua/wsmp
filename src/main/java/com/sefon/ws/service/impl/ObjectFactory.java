@@ -30,22 +30,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link QuerySelfFreqInfoByID }
-     * 
-     */
-    public QuerySelfFreqInfoByID createQuerySelfFreqInfoByID() {
-        return new QuerySelfFreqInfoByID();
-    }
-
-    /**
-     * Create an instance of {@link QuerySelfFreqInfoByIDResponse }
-     * 
-     */
-    public QuerySelfFreqInfoByIDResponse createQuerySelfFreqInfoByIDResponse() {
-        return new QuerySelfFreqInfoByIDResponse();
-    }
-
-    /**
      * Create an instance of {@link QuerySelfFreqInfoByPID }
      * 
      */
@@ -59,6 +43,22 @@ public class ObjectFactory {
      */
     public QuerySelfFreqInfoByPIDResponse createQuerySelfFreqInfoByPIDResponse() {
         return new QuerySelfFreqInfoByPIDResponse();
+    }
+
+    /**
+     * Create an instance of {@link QuerySelfFreqInfoByID }
+     * 
+     */
+    public QuerySelfFreqInfoByID createQuerySelfFreqInfoByID() {
+        return new QuerySelfFreqInfoByID();
+    }
+
+    /**
+     * Create an instance of {@link QuerySelfFreqInfoByIDResponse }
+     * 
+     */
+    public QuerySelfFreqInfoByIDResponse createQuerySelfFreqInfoByIDResponse() {
+        return new QuerySelfFreqInfoByIDResponse();
     }
 
 }

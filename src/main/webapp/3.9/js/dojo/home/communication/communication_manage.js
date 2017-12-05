@@ -217,21 +217,22 @@ define(["ajax"], function(ajax) {
 
 		$('.select2-picker').select2();
 
+		//下方表格
 		$('#table-station-compare').bootstrapTable({
 			method : 'get',
 			contentType : "application/x-www-form-urlencoded",// 必须要有！！！！
-			url : "../assets/json/table-station-compare.json",// 要请求数据的文件路径
-//			url : "data/communication/bottomTable",// 要请求数据的文件路径
+//			url : "../assets/json/table-station-compare.json",// 要请求数据的文件路径
+			url : "data/communication/bottomTable",// 要请求数据的文件路径
 			striped : true, // 是否显示行间隔色
-			dataField : "rows",// bootstrap table 可以前端分页也可以后端分页，这里
+			dataField : "data",// bootstrap table 可以前端分页也可以后端分页，这里
 			detailView : false,
 			pageNumber : 1, // 初始化加载第一页，默认第一页
-			pagination : true,// 是否分页
+//			pagination : true,// 是否分页
 			queryParamsType : 'limit',// 查询参数组织方式
 			// queryParams:queryParams,//请求服务器时所传的参数
-			sidePagination : 'server',// 指定服务器端分页
-			pageSize : 10,// 单页记录数
-			pageList : [5, 10, 20, 30],// 分页步进值
+			sidePagination : 'client',// 指定服务器端分页
+//			pageSize : 10,// 单页记录数
+//			pageList : [5, 10, 20, 30],// 分页步进值
 			clickToSelect : true,// 是否启用点击选中行
 			responseHandler : function(res) {
 				return res;
@@ -242,7 +243,7 @@ define(["ajax"], function(ajax) {
 						class : ''
 
 					}, {
-						field : 'G2',
+						field : 'g2',
 						title : '2G',
 						formatter : function(value, row, index) {
 							if (row.G2_compare == 'up') {
@@ -253,7 +254,7 @@ define(["ajax"], function(ajax) {
 									+ '<span class="fa fa-arrow-down"></span>';
 						}
 					}, {
-						field : 'G3',
+						field : 'g3',
 						title : '3G',
 						formatter : function(value, row, index) {
 							if (row.G3_compare == 'up') {
@@ -264,7 +265,7 @@ define(["ajax"], function(ajax) {
 									+ '<span class="fa fa-arrow-down"></span>';
 						}
 					}, {
-						field : 'G4',
+						field : 'g4',
 						title : '4G ',
 						formatter : function(value, row, index) {
 							if (row.G4_compare == 'up') {

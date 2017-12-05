@@ -1,18 +1,17 @@
 
 package com.sefon.ws.model.freq.xsd;
 
+import java.math.BigDecimal;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import java.math.BigDecimal;
-import java.util.Optional;
 
 
 /**
- * <p>FreqSelfInfo complex type锟斤拷 Java 锟洁。
+ * <p>FreqSelfInfo complex type的 Java 类。
  * 
- * <p>锟斤拷锟斤拷模式片锟斤拷指锟斤拷锟斤拷锟斤拷锟节达拷锟斤拷锟叫碉拷预锟斤拷锟斤拷锟捷★拷
+ * <p>以下模式片段指定包含在此类中的预期内容。
  * 
  * <pre>
  * &lt;complexType name="FreqSelfInfo"&gt;
@@ -86,7 +85,7 @@ public class FreqSelfInfo {
     protected String st;
 
     /**
-     * 锟斤拷取channelBandwidth锟斤拷锟皆碉拷值锟斤拷
+     * 获取channelBandwidth属性的值。
      * 
      * @return
      *     possible object is
@@ -98,7 +97,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 锟斤拷锟斤拷channelBandwidth锟斤拷锟皆碉拷值锟斤拷
+     * 设置channelBandwidth属性的值。
      * 
      * @param value
      *     allowed object is
@@ -110,7 +109,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 锟斤拷取deadTime锟斤拷锟皆碉拷值锟斤拷
+     * 获取deadTime属性的值。
      * 
      * @return
      *     possible object is
@@ -122,7 +121,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 锟斤拷锟斤拷deadTime锟斤拷锟皆碉拷值锟斤拷
+     * 设置deadTime属性的值。
      * 
      * @param value
      *     allowed object is
@@ -134,7 +133,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 锟斤拷取effectiveTime锟斤拷锟皆碉拷值锟斤拷
+     * 获取effectiveTime属性的值。
      * 
      * @return
      *     possible object is
@@ -146,7 +145,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 锟斤拷锟斤拷effectiveTime锟斤拷锟皆碉拷值锟斤拷
+     * 设置effectiveTime属性的值。
      * 
      * @param value
      *     allowed object is
@@ -158,7 +157,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 锟斤拷取freqDesc锟斤拷锟皆碉拷值锟斤拷
+     * 获取freqDesc属性的值。
      * 
      * @return
      *     possible object is
@@ -166,11 +165,11 @@ public class FreqSelfInfo {
      *     
      */
     public String getFreqDesc() {
-        return Optional.ofNullable(freqDesc).orElse("-");
+        return freqDesc;
     }
 
     /**
-     * 锟斤拷锟斤拷freqDesc锟斤拷锟皆碉拷值锟斤拷
+     * 设置freqDesc属性的值。
      * 
      * @param value
      *     allowed object is
@@ -178,11 +177,11 @@ public class FreqSelfInfo {
      *     
      */
     public void setFreqDesc(String value) {
-    	this.freqDesc = Optional.ofNullable(value).orElse("-");
+        this.freqDesc = value;
     }
 
     /**
-     * 锟斤拷取freqMax锟斤拷锟皆碉拷值锟斤拷
+     * 获取freqMax属性的值。
      * 
      * @return
      *     possible object is
@@ -194,7 +193,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 锟斤拷锟斤拷freqMax锟斤拷锟皆碉拷值锟斤拷
+     * 设置freqMax属性的值。
      * 
      * @param value
      *     allowed object is
@@ -206,7 +205,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 锟斤拷取freqMin锟斤拷锟皆碉拷值锟斤拷
+     * 获取freqMin属性的值。
      * 
      * @return
      *     possible object is
@@ -218,7 +217,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 锟斤拷锟斤拷freqMin锟斤拷锟皆碉拷值锟斤拷
+     * 设置freqMin属性的值。
      * 
      * @param value
      *     allowed object is
@@ -230,7 +229,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 锟斤拷取freqSection锟斤拷锟皆碉拷值锟斤拷
+     * 获取freqSection属性的值。
      * 
      * @return
      *     possible object is
@@ -242,7 +241,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 锟斤拷锟斤拷freqSection锟斤拷锟皆碉拷值锟斤拷
+     * 设置freqSection属性的值。
      * 
      * @param value
      *     allowed object is
@@ -254,7 +253,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 锟斤拷取id锟斤拷锟皆碉拷值锟斤拷
+     * 获取id属性的值。
      * 
      * @return
      *     possible object is
@@ -266,7 +265,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 锟斤拷锟斤拷id锟斤拷锟皆碉拷值锟斤拷
+     * 设置id属性的值。
      * 
      * @param value
      *     allowed object is
@@ -278,7 +277,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 锟斤拷取isManuallyAdd锟斤拷锟皆碉拷值锟斤拷
+     * 获取isManuallyAdd属性的值。
      * 
      * @return
      *     possible object is
@@ -290,7 +289,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 锟斤拷锟斤拷isManuallyAdd锟斤拷锟皆碉拷值锟斤拷
+     * 设置isManuallyAdd属性的值。
      * 
      * @param value
      *     allowed object is
@@ -302,7 +301,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 锟斤拷取isSeries锟斤拷锟皆碉拷值锟斤拷
+     * 获取isSeries属性的值。
      * 
      * @return
      *     possible object is
@@ -314,7 +313,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 锟斤拷锟斤拷isSeries锟斤拷锟皆碉拷值锟斤拷
+     * 设置isSeries属性的值。
      * 
      * @param value
      *     allowed object is
@@ -326,7 +325,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 锟斤拷取parentId锟斤拷锟皆碉拷值锟斤拷
+     * 获取parentId属性的值。
      * 
      * @return
      *     possible object is
@@ -338,7 +337,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 锟斤拷锟斤拷parentId锟斤拷锟皆碉拷值锟斤拷
+     * 设置parentId属性的值。
      * 
      * @param value
      *     allowed object is
@@ -350,7 +349,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 锟斤拷取serviceName锟斤拷锟皆碉拷值锟斤拷
+     * 获取serviceName属性的值。
      * 
      * @return
      *     possible object is
@@ -362,7 +361,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 锟斤拷锟斤拷serviceName锟斤拷锟皆碉拷值锟斤拷
+     * 设置serviceName属性的值。
      * 
      * @param value
      *     allowed object is
@@ -374,7 +373,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 锟斤拷取st锟斤拷锟皆碉拷值锟斤拷
+     * 获取st属性的值。
      * 
      * @return
      *     possible object is
@@ -386,7 +385,7 @@ public class FreqSelfInfo {
     }
 
     /**
-     * 锟斤拷锟斤拷st锟斤拷锟皆碉拷值锟斤拷
+     * 设置st属性的值。
      * 
      * @param value
      *     allowed object is

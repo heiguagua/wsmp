@@ -40,8 +40,9 @@ FROM
 				NET_TS IN (
 					'LY0101',
 					'LY0102',
-					'LY0103',
-					'LY0104'
+					'LY0104',
+					'LY0105',
+					'LY0106'
 				) AND NET_START_DATE BETWEEN (SELECT trunc(sysdate,'yyyy') FROM dual) and (SELECT LAST_DAY(ADD_MONTHS(TRUNC(sysdate,'y'),11))FROM dual)
 		) tb ON tb.ORG_GUID = RO.GUID
 		LEFT JOIN RSBT_STATION ON RO.GUID = RSBT_STATION.NET_GUID
@@ -86,7 +87,9 @@ FROM
 					'LY0101',
 					'LY0102',
 					'LY0103',
-					'LY0104'
+					'LY0104',
+					'LY0105',
+					'LY0106'
 				) AND NET_START_DATE BETWEEN (select trunc(add_months(sysdate,-12),'year') from dual) and (select LAST_DAY(ADD_MONTHS(TRUNC(SYSDATE,'y'),-1))from dual)
 		) tb ON tb.ORG_GUID = RO.GUID
 		LEFT JOIN RSBT_STATION ON RO.GUID = RSBT_STATION.NET_GUID

@@ -1,12 +1,12 @@
 
 package com.sefon.ws.model.xsd;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -56,7 +56,11 @@ public class StationQuerySpecInfo {
     protected String endDate;
     @XmlElement(nillable = true)
     protected List<QueryFreqRangeInfo> freqRanges;
-    protected Boolean isLoad;
+    public void setFreqRanges(List<QueryFreqRangeInfo> freqRanges) {
+		this.freqRanges = freqRanges;
+	}
+
+	protected Boolean isLoad;
     @XmlElement(nillable = true)
     protected Double signalFreq;
     @XmlElement(name = "statStatus", nillable = true)
@@ -86,11 +90,6 @@ public class StationQuerySpecInfo {
      * 
      * 
      */
-    public void setFreqRanges(List<QueryFreqRangeInfo> freqRanges) {
-        this.freqRanges = freqRanges;
-    }
-
-
     public List<String> getAreaCodes() {
         if (areaCodes == null) {
             areaCodes = new ArrayList<String>();
@@ -254,25 +253,25 @@ public class StationQuerySpecInfo {
 
     /**
      * Gets the value of the techSystems property.
-     *
+     * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the techSystems property.
-     *
+     * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getTechSystems().add(newItem);
      * </pre>
-     *
-     *
+     * 
+     * 
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link String }
-     *
-     *
+     * 
+     * 
      */
     public List<String> getTechSystems() {
         if (techSystems == null) {
@@ -281,7 +280,4 @@ public class StationQuerySpecInfo {
         return this.techSystems;
     }
 
-    public void setAreaCodes(List<String> areaCodes) {
-        this.areaCodes = areaCodes;
-    }
 }

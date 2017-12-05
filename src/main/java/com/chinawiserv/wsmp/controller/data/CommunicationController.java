@@ -3,6 +3,7 @@ package com.chinawiserv.wsmp.controller.data;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.chinawiserv.apps.logger.Logger;
+import com.chinawiserv.wsmp.pojo.CommunicationTableButtom;
 import com.chinawiserv.wsmp.pojo.CommunicationTableTop;
 import com.chinawiserv.wsmp.pojo.CountResult;
 import com.chinawiserv.wsmp.service.StationCountService;
@@ -75,6 +76,8 @@ public class CommunicationController {
     
     private static Map<String,String> techCodingTable;
     
+    private static Map<String,String> operatorTable;
+    
     private static ExecutorService eService;
 	
     private RestTemplate restTemplate;
@@ -89,10 +92,17 @@ public class CommunicationController {
 		radioSignalServiceSoap = radioSignalService.getRadioSignalWebServiceSoap();
 		//技术制式编码表
 		techCodingTable = Maps.newHashMap();
-		techCodingTable.put("LY0101", "GSM/GPRS系统");
-		techCodingTable.put("LY0102", "CDMA系统");
-		techCodingTable.put("LY0103", "WCDMA系统");
-		techCodingTable.put("LY0104", "TD-SCDMA系统");
+		techCodingTable.put("LY0101", "GSM/GPRS系统");//2g
+		techCodingTable.put("LY0102", "CDMA系统");//3g
+		techCodingTable.put("LY0103", "WCDMA系统");//3g
+		techCodingTable.put("LY0104", "TD-SCDMA系统");//3g
+		techCodingTable.put("LY0105", "TD-LTE系统");//4g
+		techCodingTable.put("LY0106", "FDD-LTE系统");//4g
+		//运营商编码表
+		operatorTable = Maps.newHashMap();
+		operatorTable.put("529", "电信");
+		operatorTable.put("535", "移动");
+		operatorTable.put("536", "联通");
 		//初始化restTemplate
 		restTemplate = new RestTemplate();
 		//初始化线程池
@@ -182,7 +192,7 @@ public class CommunicationController {
 					Logger.info("任务{}开始", Thread.currentThread().getId());
 		    		CommunicationTableTop communication = new CommunicationTableTop();
 		    		communication.setGeneration(m.getServiceName());
-		    		communication.setOperator(m.getFreqDesc());
+		    		communication.setOperator(Optional.ofNullable(m.getFreqDesc()).orElse(""));
 		    		communication.setFreqRange(m.getFreqMin().toString() + '-' + m.getFreqMax().toString());
 		    		communication.setTechName(techCodingTable.get(m.getSt()));
 		    		communication.setInfoChannel(m.getFreqMax().subtract(m.getFreqMin()).multiply(new BigDecimal("1000")).divide(new BigDecimal(m.getChannelBandwidth())).toString());
@@ -279,13 +289,23 @@ public class CommunicationController {
 //    }
 
     @RequestMapping("/bottomTable")
-    public Object bottomtable() {
-        List<CountResult> current = service.getCurrentYearCount();
+    public Map<String, Object> bottomtable(){
+        List<CountResult> current = service.getCurrentYearCount();//2017年没有数据，暂时用去年的
         List<CountResult> last = service.getLastYearCount();
+        
+        List<CommunicationTableButtom> resultList = last.stream().collect(Collectors.groupingBy(CountResult :: getOrgSystemCode)).entrySet().stream().map(m -> {
+        	CommunicationTableButtom row = new CommunicationTableButtom();
+        	row.setStation_type(operatorTable.get(m.getKey()));
+        	row.setG2(m.getValue().stream().filter(f -> f.getNetTs().equals("LY0101")).map(m1 -> m1.getNum()).reduce((a,b) -> a + b).orElse("0"));
+        	row.setG3(m.getValue().stream().filter(f -> f.getNetTs().equals("LY0102")||f.getNetTs().equals("LY0103")||f.getNetTs().equals("LY0104")).map(m1 -> m1.getNum()).reduce((a,b) -> a + b).orElse("0"));
+        	row.setG4(m.getValue().stream().filter(f -> f.getNetTs().equals("LY0105")||f.getNetTs().equals("LY0106")).map(m1 -> m1.getNum()).reduce((a,b) -> a + b).orElse("0"));
+        	Integer total = Integer.valueOf(row.getG2())+Integer.valueOf(row.getG3())+Integer.valueOf(row.getG4());
+        	row.setStation_total(total.toString());
+        	return row;
+        }).collect(Collectors.toList());
 
-        Map<String, CountResult> currentMap = current.stream().collect(toMap(k->k.getNetTs()+"_"+k.getOrgSystemCode(),v->v));
-        Map<String, CountResult> lastMap = last.stream().collect(toMap(k->k.getNetTs()+"_"+k.getOrgSystemCode(),v->v));
-
-        return null;
+        Map<String, Object> result = Maps.newLinkedHashMap();
+		result.put("data", resultList);
+		return result;
     }
 }

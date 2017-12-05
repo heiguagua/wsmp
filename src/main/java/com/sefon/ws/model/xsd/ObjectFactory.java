@@ -30,14 +30,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link StationInfo }
-     * 
-     */
-    public StationInfo createStationInfo() {
-        return new StationInfo();
-    }
-
-    /**
      * Create an instance of {@link StationQuerySpecInfo }
      * 
      */
@@ -51,6 +43,14 @@ public class ObjectFactory {
      */
     public StationInfoPagedResult createStationInfoPagedResult() {
         return new StationInfoPagedResult();
+    }
+
+    /**
+     * Create an instance of {@link StationInfo }
+     * 
+     */
+    public StationInfo createStationInfo() {
+        return new StationInfo();
     }
 
     /**
