@@ -221,6 +221,7 @@ define(["ajax"], function(ajax) {
 			method : 'get',
 			contentType : "application/x-www-form-urlencoded",// 必须要有！！！！
 			url : "../assets/json/table-station-compare.json",// 要请求数据的文件路径
+//			url : "data/communication/bottomTable",// 要请求数据的文件路径
 			striped : true, // 是否显示行间隔色
 			dataField : "rows",// bootstrap table 可以前端分页也可以后端分页，这里
 			detailView : false,

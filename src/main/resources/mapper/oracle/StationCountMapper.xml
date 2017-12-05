@@ -50,8 +50,8 @@ FROM
 	)
 GROUP BY
 	NET_TS,
-	ORG_SYS_CODE
-	GUID,
+	ORG_SYS_CODE,
+	GUID
 </select >
 
 <select id ="countBylastYear" resultMap = "countResult">
@@ -87,7 +87,7 @@ FROM
 					'LY0102',
 					'LY0103',
 					'LY0104'
-				) AND NET_START_DATE BETWEEN (select trunc(add_months(sysdate,-12),'year') from dual) and (select trunc(add_months(sysdate,-12),'year') from dual)
+				) AND NET_START_DATE BETWEEN (select trunc(add_months(sysdate,-12),'year') from dual) and (select LAST_DAY(ADD_MONTHS(TRUNC(SYSDATE,'y'),-1))from dual)
 		) tb ON tb.ORG_GUID = RO.GUID
 		LEFT JOIN RSBT_STATION ON RO.GUID = RSBT_STATION.NET_GUID
 		WHERE

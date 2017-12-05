@@ -1708,7 +1708,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 					pageSize : 5, // 单页记录数
 					pageList : [5, 10, 20, 30], // 分页步进值
 					clickToSelect : true, // 是否启用点击选中行
-					showFooter: true,
+//					showFooter: true,
 					responseHandler : function(res) {
 						return res;
 					},

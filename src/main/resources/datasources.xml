@@ -18,9 +18,9 @@
 	<!--oracle连接配置-->
 	<datasource name="datasource2" primary="true">
 		<url>
-		<![CDATA[jdbc:oracle:thin:@192.168.21.105:1521:wireless]]>
+		<![CDATA[jdbc:oracle:thin:@192.168.21.100:1521:wireless]]>
 		</url>
-		<username>station_gy</username>
+		<username>station</username>
 		<password>oracle</password>
 		<validationQuery>select 1 from dual</validationQuery>
 		<removeAbandonedTimeout>6000</removeAbandonedTimeout>
@@ -28,5 +28,5 @@
 		<testWhileIdle>true</testWhileIdle>
 		<dbType>oracle</dbType>
 	</datasource>
-
+	
 </datasources>
