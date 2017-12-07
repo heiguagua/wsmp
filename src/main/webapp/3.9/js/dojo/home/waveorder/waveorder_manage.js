@@ -81,7 +81,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 				// 信号统计表 频段名称链接点击事件
 				$("#table-radio").on("click", ".redioNameA",
 						function(e) {
-							alert("!!!");
+							console.log("click");
 //							console.log(e);
 //							var freq = e.target.getAttribute("centorfreq");
 //							var signalId = e.target.getAttribute("signalid");
@@ -744,13 +744,14 @@ define(	["ajax", "dojo/parser", "esri/map",
 			}
 			// 表单提交前的验证
 			function beforeSubmit(form) {
-				if(document.importantMonitorForm.audioTimespan.value > document.importantMonitorForm.duration.value) {
+				if(parseInt(document.importantMonitorForm.audioTimespan.value) > parseInt(document.importantMonitorForm.duration.value)) {
 					$("#audioTimespan").focus();
 					$("#audioTimespan").val("");
 					layer.tips('声音采集时间 不能大于 执行时长 !', '#audioTimespan', {
 								tips : [1, '#FF5722'],
 								time : 4000
 							});
+					console.log("111");
 					return false;
 				}
 				
@@ -812,7 +813,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 							});
 					return false;
 				}*/
-				if(document.importantMonitorForm.audioTimespan.value > document.importantMonitorForm.totalAudioTimespan.value && document.importantMonitorForm.totalAudioTimespan.value != -1) {
+				if(parseInt(document.importantMonitorForm.audioTimespan.value) > parseInt(document.importantMonitorForm.totalAudioTimespan.value) && parseInt(document.importantMonitorForm.totalAudioTimespan.value) != -1) {
 					$("#totalAudioTimespan").focus();
 					$("#totalAudioTimespan").val("");
 					layer.tips('采集总数 不能小于 单次采集次数 !', '#totalAudioTimespan', {
@@ -1261,7 +1262,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 							dialog.startup();
 							glayer.on("mouse-over", function(e) {
 								var info = e.graphic.geometry;
-								var t = "<b>"+ info.monitorName+"</b><hr>"
+								var t = "<b>"+ info.monitorName+"</b><hr style='margin-top: 8px;margin-bottom: 8px;'>"
 										+"<b>ID: </b>"+ info.monitorID +"<br>"
 										+ "<b>纬度: </b>"+ info.y +"<br>"
 										+ "<b>经度: </b>"+ info.x +"<br>"
@@ -1275,9 +1276,9 @@ define(	["ajax", "dojo/parser", "esri/map",
 									y : e.pageY
 								});
 							});
-							glayer.on("mouse-out", function(e) {
-								dijitPopup.close(dialog);
-							});
+//							glayer.on("mouse-out", function(e) {
+//								dijitPopup.close(dialog);
+//							});
 							//监测站图标点击进入信号统计模态框事件
 							glayer.on("click", function(e) {
 								console.log(e);
