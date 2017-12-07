@@ -1276,9 +1276,9 @@ define(	["ajax", "dojo/parser", "esri/map",
 									y : e.pageY
 								});
 							});
-//							glayer.on("mouse-out", function(e) {
-//								dijitPopup.close(dialog);
-//							});
+							glayer.on("mouse-out", function(e) {
+								dijitPopup.close(dialog);
+							});
 							//监测站图标点击进入信号统计模态框事件
 							glayer.on("click", function(e) {
 								console.log(e);

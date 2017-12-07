@@ -124,7 +124,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 							dialog.startup();
 							glayer.on("mouse-over", function(e) {
 								var info = e.graphic.geometry;
-								var t = "<b>"+ info.monitorName+"</b><hr>"
+								var t = "<b>"+ info.monitorName+"</b><hr style='margin-top: 8px;margin-bottom: 8px;'>"
 										+"<b>ID: </b>"+ info.monitorID +"<br>"
 										+ "<b>纬度: </b>"+ info.y +"<br>"
 										+ "<b>经度: </b>"+ info.x +"<br>"
