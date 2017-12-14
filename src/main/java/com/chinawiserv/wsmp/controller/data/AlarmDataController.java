@@ -5,7 +5,9 @@ import static java.util.stream.Collectors.toMap;
 
 import java.math.BigInteger;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -748,7 +750,7 @@ public class AlarmDataController {
     		final long frequency = Long.valueOf(param.get("frequency").toString());
     		
     		//查询电频均值
-    		List<LevelLocate> relate = hbaseClient.queryLevelLocate(LocalDateTime.now().format(formatter), frequency);
+    		List<LevelLocate> relate = hbaseClient.queryLevelLocate(LocalDateTime.now().format(formatter), frequency);//LocalDateTime.of(LocalDate.of(2017, 10, 23), LocalTime.now()).format(formatter)
     		Logger.info("均值查询正常返回个数为 :{}, 操作时间：{},入参：开始时间：{}，中心频率：{}", relate.size(), LocalDateTime.now().toString(), LocalDateTime.now().format(formatter), frequency);
     		List<String> stationcode = (List<String>) param.get("stationCodes");
     		

@@ -102,6 +102,7 @@ public class WaveOrderDataController {
 			freq.setFreqMax(freqMax);
 			return freq;
 		}).collect(Collectors.toList());
+		Logger.info("查询自定义频段,{},返回:{}",urlFreq,JSON.toJSONString(response));
 		// 根据自定义频段和监测站查询信号类型
 		RadioSignalClassifiedQueryRequest request2 = new RadioSignalClassifiedQueryRequest();
 		//设置自定义频段
@@ -115,6 +116,7 @@ public class WaveOrderDataController {
 		stationArray.setString(stationString );
 		request2.setStationsOnBand(stationArray);
 		RadioSignalClassifiedQueryResponse response2 = serviceRadioSignalSoap.queryRadioSignalClassified(request2);
+		Logger.info("查询信号类型统计,{},返回:{}",urlRadioSignal,JSON.toJSONString(response2));
 
 		//查询合法子类型(违规),并且是有效的
 		RadioSignalSubClassifiedQueryRequest request3 = new RadioSignalSubClassifiedQueryRequest();
@@ -123,6 +125,7 @@ public class WaveOrderDataController {
 		request3.setType(1);
 		request3.setIsInValid(false);
 		RadioSignalSubClassifiedQueryResponse response3 = serviceRadioSignalSoap.queryRadioSignalSubClassified(request3);
+		Logger.info("查询有效的合法信号(违规)子类型统计,{},返回:{}",urlRadioSignal,JSON.toJSONString(response3));
 		final List<Integer> legalSubTypeValidCountList = response3.getLstOnFreqBand().getSignalSubStaticsOnFreqBand().stream()
 				.map(m -> m.getCount())
 				.collect(Collectors.toList());
@@ -134,6 +137,7 @@ public class WaveOrderDataController {
 		request4.setType(1);
 		request4.setIsInValid(true);
 		RadioSignalSubClassifiedQueryResponse response4 = serviceRadioSignalSoap.queryRadioSignalSubClassified(request4);
+		Logger.info("查询无效的合法信号(违规)类型统计,{},返回:{}",urlRadioSignal,JSON.toJSONString(response4));
 		final List<Integer> legalSubTypeInvalidCountList = response4.getLstOnFreqBand().getSignalSubStaticsOnFreqBand().stream()
 				.map(m -> m.getCount())
 				.collect(Collectors.toList());
@@ -202,6 +206,7 @@ public class WaveOrderDataController {
 		stationArray.setString(stationString);
 		request.setStationIDs(stationArray);
 		FreqWarningQueryResponse response = serviceFreqWarningSoap.query(request);
+		//Logger.info("查询告警未确认,{},返回:{}",urlFreqWarning,JSON.toJSONString(response));
 		List<Alarm> alarmRows = response.getWarningInfos().getFreqWarningDTO().stream()
 			.sorted((a,b) -> b.getLastTimeDate().toString().compareTo(a.getLastTimeDate().toString()))
 			.map(m -> {
@@ -240,6 +245,7 @@ public class WaveOrderDataController {
 		stationArray.setString(stationString);
 		request.setStationIDs(stationArray);
 		FreqWarningQueryResponse response = serviceFreqWarningSoap.query(request);
+		//Logger.info("查询告警已确认,{},返回:{}",urlFreqWarning,JSON.toJSONString(response));
 		List<Alarm> alarmRows = response.getWarningInfos().getFreqWarningDTO().stream()
 				.sorted((a,b) -> b.getLastTimeDate().toString().compareTo(a.getLastTimeDate().toString()))
 				.map(m -> {
@@ -291,6 +297,7 @@ public class WaveOrderDataController {
 		request.setTypeCodes(typeCodes );
 		List<RedioDetail> redioRows = Lists.newArrayList();
 		RadioSignalQueryResponse response = serviceRadioSignalSoap.queryRadioSignal(request );
+		//Logger.info("查询信号自动确认,{},返回:{}",urlRadioSignal,JSON.toJSONString(response));
 		response.getRadioSignals().getRadioSignalDTO().stream().forEach(t -> {
 			RedioDetail redio = new RedioDetail();
 			BigDecimal cFreq = new BigDecimal(t.getCenterFreq());
@@ -343,6 +350,7 @@ public class WaveOrderDataController {
 		request.setEndFreq(new BigInteger(param.get("endFreq").toString()));
 		// 返回结果:
 		RadioSignalQueryResponse response = serviceRadioSignalSoap.queryRadioSignal(request);
+		Logger.info("查询信号详情,{},返回:{}",urlRadioSignal,JSON.toJSONString(response));
 		List<RedioDetail> redioRows = Lists.newArrayList();
 		if((Boolean)(param.get("isSubType"))) {
 			//如果是子类型
@@ -430,7 +438,7 @@ public class WaveOrderDataController {
 		value1.setString(string);
 		request.setStationIDs(value1);
 		RadioSignalQueryResponse response = serviceRadioSignalSoap.queryRadioSignal(request);
-		
+		Logger.info("查询监测站信号统计,{},返回:{}",urlRadioSignal,JSON.toJSONString(response));
 		//重新封装结果集
 		@SuppressWarnings("unchecked")
 		final List<Map<String,Object>> monitors = (List<Map<String, Object>>) param.get("monitors");
@@ -513,7 +521,7 @@ public class WaveOrderDataController {
 				value1.setString(string);
 				request.setStationIDs(value1);
 				RadioSignalQueryResponse response = serviceRadioSignalSoap.queryRadioSignal(request);
-				
+				Logger.info("查询监测站上信号个数统计,{},返回:{}",urlRadioSignal,JSON.toJSONString(response));
 				//重新封装结果集
 				@SuppressWarnings("unchecked")
 				final List<Map<String,Object>> monitors = (List<Map<String, Object>>) param.get("monitors");
@@ -598,6 +606,7 @@ public class WaveOrderDataController {
 		request.setTypeCodes(signaTypeArray);
 		// 返回结果:
 		RadioSignalQueryResponse response = serviceRadioSignalSoap.queryRadioSignal(request);
+		Logger.info("查询监测站上信号详情,{},返回:{}",urlRadioSignal,JSON.toJSONString(response));
 		List<RedioDetail> redioRows = Lists.newArrayList();
 		if(param.get("isSubType").toString().equals("true")) {
 			//如果是子类型
