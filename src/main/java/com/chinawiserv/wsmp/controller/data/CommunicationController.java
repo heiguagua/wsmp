@@ -195,7 +195,7 @@ public class CommunicationController {
 		    		communication.setOperator(Optional.ofNullable(m.getFreqDesc()).orElse(""));
 		    		communication.setFreqRange(m.getFreqMin().toString() + '-' + m.getFreqMax().toString());
 		    		communication.setTechName(techCodingTable.get(m.getSt()));
-		    		communication.setInfoChannel(m.getFreqMax().subtract(m.getFreqMin()).multiply(new BigDecimal("1000")).divide(new BigDecimal(m.getChannelBandwidth())).toString());
+		    		communication.setInfoChannel(m.getFreqMax().subtract(m.getFreqMin()).multiply(new BigDecimal("1000000")).divide(new BigDecimal(m.getChannelBandwidth())).toString());
 		    		//查询并设置频段占用度和台站覆盖率
 		    		request.put("freqMin", m.getFreqMin());
 		    		request.put("freqMax", m.getFreqMax());
