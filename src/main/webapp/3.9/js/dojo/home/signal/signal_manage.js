@@ -311,7 +311,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
         });
         // 表单提交前的验证
         function beforeSubmit(form) {
-            if (document.importantMonitorForm.audioTimespan.value > document.importantMonitorForm.duration.value) {
+            if (parseInt(document.importantMonitorForm.audioTimespan.value) > parseInt(document.importantMonitorForm.duration.value)) {
                 //layer.msg("声音采集时间不能大于执行时间!" , function() {});
                 $("#audioTimespan").focus();
                 $("#audioTimespan").val("");
@@ -331,7 +331,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                 });
                 return false;
             }
-            if (document.importantMonitorForm.audioTimespan.value > document.importantMonitorForm.totalAudioTimespan.value && document.importantMonitorForm.totalAudioTimespan.value != -1) {
+            if (parseInt(document.importantMonitorForm.audioTimespan.value) > parseInt(document.importantMonitorForm.totalAudioTimespan.value) && parseInt(document.importantMonitorForm.totalAudioTimespan.value) != -1) {
                 $("#totalAudioTimespan").focus();
                 $("#totalAudioTimespan").val("");
                 layer.tips('采集总数 不能小于 单次采集次数 !', '#totalAudioTimespan', {

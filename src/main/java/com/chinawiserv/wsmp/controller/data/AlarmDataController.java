@@ -750,7 +750,11 @@ public class AlarmDataController {
     		final long frequency = Long.valueOf(param.get("frequency").toString());
     		
     		//查询电频均值
-    		List<LevelLocate> relate = hbaseClient.queryLevelLocate(LocalDateTime.now().format(formatter), frequency);//LocalDateTime.of(LocalDate.of(2017, 10, 23), LocalTime.now()).format(formatter)
+    		List<LevelLocate> relate = Collections.emptyList();
+    		for(int i=0;relate.size() == 0;i++) {
+    			relate = hbaseClient.queryLevelLocate(LocalDateTime.of(LocalDate.now().plusDays(0-i), LocalTime.now()).format(formatter), frequency);//LocalDateTime.of(LocalDate.of(2017, 10, 23), LocalTime.now()).format(formatter)	
+    		}
+    		 
     		Logger.info("均值查询正常返回个数为 :{}, 操作时间：{},入参：开始时间：{}，中心频率：{}", relate.size(), LocalDateTime.now().toString(), LocalDateTime.now().format(formatter), frequency);
     		List<String> stationcode = (List<String>) param.get("stationCodes");
     		

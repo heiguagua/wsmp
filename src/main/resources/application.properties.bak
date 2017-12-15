@@ -1,4 +1,5 @@
 
+
 server.jsp-servlet.registered=true
 server.jsp-servlet.init-parameters.development=true
 server.port=8079
@@ -16,37 +17,35 @@ spring.jta.atomikos.properties.logBaseDir=logs
 #mybatis-plus.configLocation=classpath:mybatis-config.xml
 #xadatasource.open = true
 #cxf.path=/Service
-
+kriking.value=0
 service.home=./services
-###############################博创webservice#######################################
-freqWarningWebService.wsdl=http://192.168.21.106:8192/FreqWarningWebService.asmx?wsdl
-fregHistoryWebService.wsdl=http://192.168.21.106:8192/FreqHistoryWebService.asmx?wsdl
-radioStationWebService.wsdl=http://192.168.21.106:8192/RadioStationWebService.asmx?wsdl
-radioSignalWebService.wsdl=http://192.168.21.106:8192/RadioSignalWebService.asmx?wsdl
-importFreqRangeManageService.wsdl=http://192.168.21.106:1234/bigdata/ImportFreqRangeManageService?wsdl
-###############################博创webservice#######################################
+###############################閿熸枻鎷烽敓鏂ゆ嫹webservice#######################################
+freqWarningWebService.wsdl=http://192.168.21.121:8192/FreqWarningWebService.asmx?wsdl
+fregHistoryWebService.wsdl=http://192.168.21.121:8192/FreqHistoryWebService.asmx?wsdl
+radioStationWebService.wsdl=http://192.168.21.121:8192/RadioStationWebService.asmx?wsdl
+radioSignalWebService.wsdl=http://192.168.21.121:8192/RadioSignalWebService.asmx?wsdl
+importFreqRangeManageService.wsdl=http://192.168.21.121:1234/bigdata/ImportFreqRangeManageService?wsdl
+###############################閿熸枻鎷烽敓鏂ゆ嫹webservice#######################################
 #importFreqRangeManageService.wsdl=http://192.168.21.7:1234/bigdata/ImportFreqRangeManageService?wsdl
-################################地图服务地址#########################################
-mapservice.wdsl=http://192.168.21.105:8081/PBS/rest/services/guiyang/MapServer
-################################地图服务地址#########################################
-#config.home=file:./config/
-config.home=classpath:
-datasources.location=${config.home}datasources.xml
-datasourcesxsd.location=${config.home}datasouces.xsd
-mybaties.location=${config.home}mybatis.xml
-mybatiesxsd.location=${config.home}mybatis.xsd
+################################閿熸枻鎷峰浘閿熸枻鎷烽敓鏂ゆ嫹閿熻?########################################
+mapservice.wdsl=http://192.168.21.106:7081/PBS/rest/services/chengdu/MapServer
+################################閿熸枻鎷峰浘閿熸枻鎷烽敓鏂ゆ嫹閿熻?########################################
+kring.url=http://192.168.21.100:9999/api/krying_insert
 
 
 
 
 
 
-###################################四方webservice地址##################################
-sefon.webservice.freqservice=http://192.168.21.105:7180/ws/services/FreqService?wsdl
-sefon.webservice.stationservice=http://192.168.21.105:7180/ws/services/StationService?wsdl
-
-sefon.webservice.queryToolservice=http://192.168.21.105:7180/ws/services/QueryToolsService?wsdl
-###################################四方webservice地址##################################
+###################################閿熶茎鍑ゆ嫹webservice閿熸枻鎷峰潃##################################
+sefon.webservice.freqservice=http://192.168.21.100:7180/ws/services/FreqService?wsdl
+sefon.webservice.stationservice=http://192.168.21.100:7180/ws/services/StationService?wsdl
+#sefon.httpservice.getFreqBandList=http://192.168.21.232:8080/sam/api/station/distribution/getFreqBandList
+sefon.httpservice.getFreqBandList=http://192.168.21.100:7080/sam/api/station/distribution/getFreqBandList
+sefon.httpservice.getFreqBandListByOption=http://192.168.21.232:8080/sam/api/station/distribution/getFreqBandListByOption
+#sefon.httpservice.getFreqBandListByOption=http://192.168.21.105:7080/sam/api/station/distribution/getFreqBandListByOption
+sefon.webservice.queryToolservice=http://192.168.21.100:7180/ws/services/QueryToolsService?wsdl
+###################################閿熶茎鍑ゆ嫹webservice閿熸枻鎷峰潃##################################
 logging.path=logs
 mulit-datasources.open=true
 mulit-myabits.open=true

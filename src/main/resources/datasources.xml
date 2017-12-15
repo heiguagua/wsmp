@@ -18,7 +18,8 @@
 	<!--oracle连接配置-->
 	<datasource name="datasource2" primary="true">
 		<url>
-		<![CDATA[jdbc:oracle:thin:@192.168.0.3:1521:wireless]]><!-- 192.168.21.100 -->
+		<![CDATA[jdbc:oracle:thin:@192.168.0.3:1521:wireless]]><!-- vpn -->
+		<!--<![CDATA[jdbc:oracle:thin:@192.168.21.100:1521:wireless]]> -->
 		</url>
 		<username>station</username>
 		<password>oracle</password>
