@@ -751,7 +751,7 @@ public class AlarmDataController {
     		
     		//查询电频均值
     		List<LevelLocate> relate = Collections.emptyList();
-    		for(int i=0;relate.size() == 0;i++) {
+    		for(int i=0;relate.size() == 0&&i<180;i++) {
     			relate = hbaseClient.queryLevelLocate(LocalDateTime.of(LocalDate.now().plusDays(0-i), LocalTime.now()).format(formatter), frequency);//LocalDateTime.of(LocalDate.of(2017, 10, 23), LocalTime.now()).format(formatter)	
     		}
     		 
