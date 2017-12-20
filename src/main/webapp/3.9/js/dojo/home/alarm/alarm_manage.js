@@ -302,11 +302,14 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                 if (e.keyCode == 13) {
                     var centerFrq = $(this).val();
                     var data = {};
-                    if (centerFrq && !isNaN(centerFrq) && centerFrq != '0') {
+                    if (centerFrq && !isNaN(centerFrq) && centerFrq != '0' && centerFrq.match(/^[1-9][0-9]*(.[0-9]+)?$/)) {
                         $(this).val(centerFrq);
                         centerFrq = (parseFloat(centerFrq)) * 1000000;
                     } else {
-                        layer.alert("操作失误，请输入大于0的数字！");
+                        layer.tips('请输入正常频率值！', '#search', {
+								tips : [3, '#FF5722'],
+								time : 2000
+							});
                         return;
                     }
                     var info = Binding.getUser();
@@ -357,9 +360,7 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                     });
                 }
             } else {
-                layer.alert("操作失误，请输入大于0的数字！");
-                $("#search").blur();
-                return;
+               return;
             }
         });
         $(".search-icon").click(function() {
@@ -370,7 +371,10 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                 $("#search").val(centerFrq);
                 centerFrq = (parseFloat(centerFrq)) * 1000000;
             } else {
-                layer.alert("操作失误，请输入大于0的数字！");
+                layer.tips('请输入正常频率值！', '#search', {
+								tips : [3, '#FF5722'],
+								time : 2000
+							});
                 return;
             }
             var info = Binding.getUser();

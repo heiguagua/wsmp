@@ -931,8 +931,8 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                     getFreqList();
                 }
             } else {
-                layer.alert("操作失误，请输入大于0的数字！");
-                $("#search").blur();
+                //layer.alert("操作失误，请输入大于0的数字！");
+                //$("#search").blur();
                 return;
             }
         });
@@ -949,11 +949,14 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
         destroy_chart_table();
         var val = $("#search").val();
         var data = {};
-        if (val && !isNaN(val) && val != '0') {
+        if (val && !isNaN(val) && val != '0' && val.match(/^[1-9][0-9]*(.[0-9]+)?$/)) {
             $("#search").val(val);
             val = parseFloat(val) * 1000000;
         } else {
-            layer.alert("操作失误，请输入大于0的数字！");
+            layer.tips('请输入正常频率值！', '#search', {
+								tips : [3, '#FF5722'],
+								time : 2000
+							});
             return;
         }
         data.beginFreq = val;

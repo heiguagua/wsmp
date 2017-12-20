@@ -34,7 +34,8 @@
 <div class='header-bar'>
   <span class='module-name'  v-text="dd.alarm.title">告警管理</span>
   <div class='header-search' style="vertical-align: bottom">
-    <input type='text' id="search" placeholder="请输入告警频率"/>
+    <input type='text' id="search" placeholder="请输入告警频率" onkeyup="this.value=this.value.replace(/[^0-9.]/g,'')"
+						onafterpaste="this.value=this.value.replace(/[^0-9.]/g,'')"/>
     <span class='search-icon'></span>
     <span class="input-group-addon search-icon-uint">MHz</span>
   </div>

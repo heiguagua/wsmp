@@ -38,7 +38,8 @@
     <span class='module-name' v-text="dd.signal.title"></span>
     <div class='header-search' style="margin-left: 2px;vertical-align: bottom">
 		<%--<input id='search' type='text' placeholder="请输入信号频率"  />--%>
-		<input id='search' type='text' placeholder="请输入频率" style="width:80px" />
+		<input id='search' type='text' placeholder="请输入频率" style="width:80px" onkeyup="this.value=this.value.replace(/[^0-9.]/g,'')"
+						onafterpaste="this.value=this.value.replace(/[^0-9.]/g,'')" />
 		<span class='search-icon'></span>
 		<span class="input-group-addon search-icon-uint" style="left:80px">MHz</span>
       <div class='search-result-wrap'>
