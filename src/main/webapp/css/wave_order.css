@@ -64,30 +64,34 @@ line-height: 20px;
   float: left;
   margin-left: 20px
 }
-#waveOrder .signal-category .signal-sign {
-  display: inline-block;
-  vertical-align: middle;
-  width: 15px;
-  height: 15px;
-  margin-left: 10px;
-  margin-right: 5px
-}
-#waveOrder .signal-category .signal-sign.legal {
-  background: #2ccd7d
-}
-#waveOrder .signal-category .signal-sign.legal-wrong {
-  background: #2ccd7d;
-  border: 2px solid #ff6059
-}
-#waveOrder .signal-category .signal-sign.known {
-  background: #2ccd7d;
-  border: 2px solid #d1d1d1
-}
-#waveOrder .signal-category .signal-sign.illegal {
-  background: #ff6059
-}
-#waveOrder .signal-category .signal-sign.unknown {
-  background: #d1d1d1
+/*#waveOrder .signal-category .signal-sign {*/
+  /*display: inline-block;*/
+  /*vertical-align: middle;*/
+  /*width: 15px;*/
+  /*height: 15px;*/
+  /*margin-left: 10px;*/
+  /*margin-right: 5px*/
+/*}*/
+/*#waveOrder .signal-category .signal-sign.legal {*/
+  /*background: #2ccd7d*/
+/*}*/
+/*#waveOrder .signal-category .signal-sign.legal-wrong {*/
+  /*background: #2ccd7d;*/
+  /*border: 2px solid #ff6059*/
+/*}*/
+/*#waveOrder .signal-category .signal-sign.known {*/
+  /*background: #2ccd7d;*/
+  /*border: 2px solid #d1d1d1*/
+/*}*/
+/*#waveOrder .signal-category .signal-sign.illegal {*/
+  /*background: #ff6059*/
+/*}*/
+/*#waveOrder .signal-category .signal-sign.unknown {*/
+  /*background: #d1d1d1*/
+/*}*/
+#waveOrder .signal-category img {
+ width: 16px;
+  height: 16px;
 }
 #waveOrder .signal-category .number {
   display: inline-block;
