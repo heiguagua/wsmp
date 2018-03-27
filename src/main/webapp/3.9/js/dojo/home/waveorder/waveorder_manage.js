@@ -441,38 +441,18 @@ define(	["ajax", "dojo/parser", "esri/map",
 								}
 							})
 				});
-                 //信号分类统计列表点击频段名称跳转至单频率
+                 //信号分类统计列表点击频段名称跳转至单频段
 				$('#table-radio').on("click",".redioNameA",function(e){
-					var freq = e.target.text;
+					var freq = e.target.dataset.frequeryband;
 					const urlObj = {
 						ServerName : 'host1',
-						DisplayName : '单频率',
+						DisplayName : '单频段',
 						MultiTabable : false,
 						ReflushIfExist : true,
-						Url : '#/FrequencySingle/' + freq
+						Url : '#/FrequencyChannel/' + freq
 					};
 					Binding.openUrl(JSON.stringify(urlObj));
 				})
-//				// 信号统计表 频段名称链接点击事件
-//				$("#table-radio").on("click", ".redioNameA",
-//						function(e) {
-//							console.log("click");
-////							console.log(e);
-////							var freq = e.target.getAttribute("centorfreq");
-////							var signalId = e.target.getAttribute("signalid");
-////							console.log(freq);
-////							console.log(signalId);
-////							const urlObj = {
-////								ServerName : 'host2',
-////								DisplayName : '信号管理',
-////								MultiTabable : false,
-////								ReflushIfExist : true,
-////								Url : 'radio/app/signal?id=sefon&cenFreg='
-////										+ freq + '&signalId=' + signalId
-////							};
-////							Binding.openUrl(JSON.stringify(urlObj));
-//			})
-						
 				// 信号详情 频率链接点击事件
 				$("#table-signal-list").on("click", ".centerFreqA",
 						function(e) {
@@ -2342,8 +2322,11 @@ define(	["ajax", "dojo/parser", "esri/map",
 						sortable : true,
 						sortName : "redioName",
 						formatter : function(value, row, index) {
+							var divide = 1000000;
+							var beginFreq = Math.round(row.beginFreq / divide * 1000) / 1000;
+							var endFreq = Math.round(row.endFreq / divide * 1000) / 1000;
 							return '<div class="dpopover" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
-									+ value +'"> <a class="redioNameA">'+ value + '</a> </div>';
+									+ value +'"> <a class="redioNameA" data-frequeryBand="'+(beginFreq+ "-" +endFreq)+'">'+ value + '</a> </div>';
 						}
 					},
 						{

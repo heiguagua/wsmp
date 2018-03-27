@@ -1,7 +1,6 @@
 define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "home/alarm/hour_charts", "bootstrap", "home/alarm/level_charts"], function(ajax, echarts, month_charts, day_chart, hour_chart, bootstrap, level_charts) {
     var mapinit;
     function init() {
-        signal_list
         //时间选择器初始化
         $.fn.datetimepicker.defaults = {
             language: 'zh-CN',
@@ -171,6 +170,7 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
         // $("station_list").change(function() {
         //     changeView();
         // });
+        //告警管理频率变换时操作
         $("#signal_list").change(function(e) {
             // if ($("#FormQZ").val() != null && $("#FormQZ").val().length != 0) {
             //    //////////////////////////
@@ -184,6 +184,11 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
             changeView();
             mapinit.stationChange();
         });
+        //告警管理监测站变换时操作
+        $("#station_picker").change(function(e){
+            changeView();
+            mapinit.stationChange();
+        })
         $("#singletonFreq").click(function() {
             var reopenParam = {};
             reopenParam.ServerName = "host";

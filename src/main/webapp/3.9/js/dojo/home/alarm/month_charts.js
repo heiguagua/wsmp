@@ -169,13 +169,13 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
 					// type: 'inside',
 					type : 'slider',
 					start : 0,
-					end : 100,
+					end : 100
 					// height : 15,
 					// y : 260
 				}],
 				grid: {
 					left: '1%',
-					right: '4%',
+					right: '6%',
 					bottom: '22%',
 					top: 30,
 					containLabel: true
@@ -185,6 +185,10 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
 				},
 				xAxis: [{
 					type : 'category',
+					name:'时间(天)',
+					nameTextStyle: {
+						verticalAlign:'bottom'
+					},
 					axisLine : {
 						lineStyle : {
 							color : '#DAE5F0'
