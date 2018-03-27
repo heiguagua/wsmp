@@ -167,5 +167,5 @@
 	<input name="beginFreq" value="${dto.getBeginFreq()}" hidden="true">
 	<input name="endFreq" value="${dto.getEndFreq()}" hidden="true">
 </form>
-<script src="config.js"></script>
+<%--<script src="config.js"></script>--%>
 			

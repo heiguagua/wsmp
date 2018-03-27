@@ -35,7 +35,7 @@
 <div id="apps">
   <!--header-->
   <div class='header-bar'>
-    <span class='module-name' v-text="dd.signal.title"></span>
+    <span class='module-name' v-text="dd.signal.title">信号管理</span>
     <div class='header-search' style="margin-left: 2px;vertical-align: bottom">
 		<%--<input id='search' type='text' placeholder="请输入信号频率"  />--%>
 		<input id='search' type='text' placeholder="请输入频率" style="width:80px" onkeyup="this.value=this.value.replace(/[^0-9.]/g,'')"
@@ -103,7 +103,7 @@
 				          <input type="number" name="startVal" min="1" id="minCtrl" value="-40" alt="请输入最小值"  title="请输入最小值">
 				          <img src="images/a.png" alt="">
 				          <input type="number" name="endVal" max="10" id="maxCtrl" value="120" alt="请输入最大值" title="请输入最大值" >
-				          <a href="#" id="valCtrl" <td  v-text="dd.btn.affirm">确认</a>
+				          <a href="#" id="valCtrl" ><td  v-text="dd.btn.affirm">确认</a>
 				        </form>
 				      </div>
 				      <%--控件 end--%>
@@ -451,6 +451,6 @@
 
       });
   </script>
-<script src="config.js"></script>
+<%--<script src="config.js"></script>--%>
 </body>
 </html>

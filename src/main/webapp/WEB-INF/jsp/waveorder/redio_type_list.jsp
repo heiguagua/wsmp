@@ -2,12 +2,12 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
  <div class='signal-wrap'>
-          <label class='signal-detect'  v-text="dd.waveorder.title2"></label>
+          <label class='signal-detect'>信号监测</label>
           <ul class='signal-category' style="position: absolute;right: 130px;">
             <li class='item'>
               <div class="radio radio-primary  ">
                 <input type="radio" name="signal-type" id="legal"  title="合法正常信号" checked="checked" value="1" isSubType="false">
-                <label for="legal"> 合法正常信号</label>
+                <label for="legal" style="color: rgb(64, 158, 255);"> 合法正常信号</label>
               </div> <span class='signal-sign legal' title="合法正常信号"></span> <span class='number legal-number'  title="合法正常信号">${redio.legalNormalStationNumber}</span>
             </li>
             <li class='item'>
@@ -39,4 +39,3 @@
             <img src='images/refresh.png' />&nbsp;&nbsp;<span  v-text="dd.btn.refresh"></span>
           </a>
         </div>
-<script src="config.js"></script>

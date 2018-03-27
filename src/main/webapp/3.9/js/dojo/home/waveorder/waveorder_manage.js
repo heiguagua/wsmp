@@ -4,18 +4,379 @@ define(	["ajax", "dojo/parser", "esri/map",
 				"esri/symbols/TextSymbol", "esri/geometry/Point",
 				"esri/graphic", "esri/symbols/Font",
 				"esri/symbols/SimpleMarkerSymbol",
-				"esri/symbols/PictureMarkerSymbol","dijit/popup","dijit/TooltipDialog","esri/lang"], function(ajax, parser,
+				"esri/symbols/PictureMarkerSymbol","dijit/popup","dijit/TooltipDialog","esri/lang","library/map/appMap","config"], function(ajax, parser,
 				Map, ArcGISTiledMapServiceLayer, request, GraphicsLayer,
 				Scalebar, TextSymbol, Point, graphic, Font, SimpleMarkerSymbol,
-				PictureMarkerSymbol,dijitPopup,TooltipDialog,esriLang) {
+				PictureMarkerSymbol,dijitPopup,TooltipDialog,esriLang,AppMap,config) {
 			//全局变量
 			var MAP1 = null;
 			var AREACODE = null;
 			var MONITORS = null;
 			var INTERVAL_warning = null;
+	        var app =null;
 
 			//初始化
 			function wo_init() {
+
+					var vm =new Vue({
+						el: '#apps',
+						data: function() {
+							var currentDate =new Date();
+							var start =(currentDate - 3600 * 1000 * 24 *30);//默认设置为近一月
+							var currentTimeProgress =moment(start).format("YYYY-MM-DD");
+							return {
+								dd:config.config,
+								pickerOptions2: {
+									shortcuts: [{
+										text: '最近一周',
+										onClick:function(picker) {
+											const end = new Date();
+											const start = new Date();
+											start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+											picker.$emit('pick', [start, end]);
+										}
+									}, {
+										text: '最近一个月',
+										onClick:function(picker) {
+											const end = new Date();
+											const start = new Date();
+											start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+											picker.$emit('pick', [start, end]);
+										}
+									}, {
+										text: '最近三个月',
+										onClick:function(picker) {
+											const end = new Date();
+											const start = new Date();
+											start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+											picker.$emit('pick', [start, end]);
+										}
+									}]
+								},
+								//time: [start, currentDate],
+								startTime:start,
+								endTime:currentDate,
+								options: [{
+									value: 'hour',
+									label: '小时/帧'
+								}, {
+									value: 'date',
+									label: '天/帧'
+								}, {
+								value: 'month',
+									label: '月/帧'
+							     }],
+								playType: 'date',
+								currentTimeProgress:'',
+								sliderProgress:1,
+								step:100/30,//步长
+								//配置项
+								showOrHide:true,
+								showOrHideClass: { //显示还是弹出表单
+									display:"none"
+								},
+								normalparamform: {
+									colorMinValue:-75,//颜色最小值
+									colorMaxValue:74,//颜色最大值
+									opercityValue: 30,//透明度 ，0为不透明，100为完全透明
+									morStationisShow:true,//监测站显示或者隐藏
+									morStationIcon:'图标显示方式' ,//站点图标显示方式
+									type:['显示监测站能量值','只显示超过门限的监测站'],//显示监测站能量值,只显示超过门限的监测站
+
+									//插值设置
+									isShowNoValueMorStation:false ,//是否显示未插值站
+									morStationListType:['移动'] ,//监测站列表类型 移动/固定
+									morStationAllList:getstationsInfo().stations,//所有的监测站列表
+									//morStationList:["123监测站","川大花园监测站1","龙泉山监测站"] //监测站列表
+									morStationList:["51010123","51010026","51010020"] //监测站列表
+								},
+
+								//业务设置 设置电平门限，时间段，城市
+								dialogTableVisible:false,
+								form: {
+									maxValue:12,
+									time: [],
+									region: ''
+								},
+								formLabelWidth: '120px',
+								//告警信息列表,系统配置频段
+								searchFre:0,
+								searchBrand:'',
+								filterText: '',
+								showOrHideBrandInfo: false,//显示还是隐藏频段信息
+								data2: [{
+									id: 1,
+									label: '一级 1',
+									children: [{
+										id: 4,
+										label: '二级 1-1',
+										children: [{
+											id: 9,
+											label: '三级 1-1-1'
+										}, {
+											id: 10,
+											label: '三级 1-1-2'
+										}]
+									}]
+								}, {
+									id: 2,
+									label: '一级 2',
+									children: [{
+										id: 5,
+										label: '二级 2-1'
+									}, {
+										id: 6,
+										label: '二级 2-2'
+									}]
+								}, {
+									id: 3,
+									label: '一级 3',
+									children: [{
+										id: 7,
+										label: '二级 3-1'
+									}, {
+										id: 8,
+										label: '二级 3-2'
+									}]
+								}],
+								defaultProps: {
+									children: 'children',
+									label: 'label'
+								}
+
+
+							}
+						},
+						methods:{
+							//日期选择器输入框获得焦点时，停止播放
+							timefocus: function() {
+								this.stop();
+							},
+							//日期选择器输入框改变值时，继续播放
+							startTimeChange: function(){
+								vm.endTime ='';
+							},
+							//日期选择器输入框改变值时，继续播放
+							endTimeChange: function(){
+								console.log(vm.endTime-vm.startTime)
+								if((vm.endTime-vm.startTime)<0){
+									vm.endTime ='';
+									layer.msg("结束时间不能小于开始时间")
+								}else{
+									this.autoPlay();
+								}
+
+							},
+							//改变选择播放帧；按原始数据，按小时，按天,按月
+							selectChange: function(){
+								console.log(vm.playType)
+								this.stop();
+								if(vm.playType=='hour'){//默认设置为近一天
+                                     vm.startTime = vm.endTime - 3600 * 1000 * 24;
+								}else if(vm.playType=='date'){//默认设置为近一月
+									vm.startTime = vm.endTime - 3600 * 1000 * 24*30;
+								}else if(vm.playType=='month'){//默认设置为近一年
+									vm.startTime = vm.endTime - 3600 * 1000 * 24*365;
+								}
+								this.autoPlay();
+
+							},
+							//拖动进度条或点击进度条位置来切换到指定帧，继续播放
+							changeSlider: function(){
+								console.log(vm.sliderProgress);
+								this.autoPlay();
+							},
+							//自动播放，自动修改进度条值，即修改某帧的值，自动调用态势图的接口数据
+							autoPlay:function(){
+								var count= 0;
+								var int = setInterval(function(){
+									//console.log(vm.sliderProgress)
+									//if(vm.sliderProgress>=100){
+									//	clearInterval(int);
+									//	vm.sliderProgress=0;
+									//}
+									if(vm.playType=='hour'){
+										//默认设置为近一天
+										var hours =(vm.endTime-vm.startTime)/(3600*1000);
+										//hours =24;
+										console.log("按小时/帧播放，共："+hours+"小时")
+										if(count>hours-1){
+											clearInterval(int);
+											vm.sliderProgress=0;
+											count= 0;
+											return;
+										}
+										//console.log(count)
+										vm.step=100/hours; //步长
+										vm.sliderProgress =vm.sliderProgress+100/hours;
+										var dd =(vm.endTime-vm.startTime)/hours;
+										vm.currentTimeProgress =moment(moment(vm.startTime)+3600*1000*count++).format("YYYY-MM-DD HH");
+										console.log(moment(vm.currentTimeProgress).format("YYYYMMDDHH"));
+
+									}else if(vm.playType=='date'){
+										//默认设置为近一月
+										var dates =(vm.endTime-vm.startTime)/(3600*1000*24);
+										//dates =30;
+										console.log("按天/帧播放，共："+dates+"天")
+										if(count>dates-1){
+											clearInterval(int);
+											vm.sliderProgress=0;
+											count= 0;
+											return;
+										}
+
+										vm.step=100/dates; //步长
+										vm.sliderProgress =vm.sliderProgress+100/dates;
+										var dd =(vm.endTime-vm.startTime)/dates;
+										vm.currentTimeProgress =moment(moment(vm.startTime)+3600*1000*24*count++).format("YYYY-MM-DD");
+										console.log(moment(vm.currentTimeProgress).format("YYYYMMDD"));
+										//baseMapInit();
+
+									}else if(vm.playType=='month'){
+										//默认设置为近一年
+										var months =(vm.endTime-vm.startTime)/(3600*1000*24*30);
+										//months =12;
+										console.log("按月/帧播放，共："+months+"月")
+										if(count>months-1){
+											clearInterval(int);
+											vm.sliderProgress=0;
+											count= 0;
+											return;
+										}
+										vm.step=100/months; //步长
+										vm.sliderProgress =vm.sliderProgress+100/months;
+										var dd =(vm.endTime-vm.startTime)/months;
+										vm.currentTimeProgress =moment(moment(vm.startTime)+3600*1000*24*30*count++).format("YYYY-MM");
+										console.log(moment(vm.currentTimeProgress).format("YYYYMM"));
+
+									}else{
+										vm.step=100; //步长
+										vm.sliderProgress =vm.sliderProgress+1;
+										var dd =(vm.endTime-vm.startTime);
+										vm.currentTimeProgress =moment(moment(vm.startTime)+vm.sliderProgress*dd).format("YYYY-MM-DD HH:mm:ss");
+									}
+
+								},2000)
+								sessionStorage.setItem('evaluatePlay',int);
+							},
+							//点击播放按钮，需要换成暂停图标，暂停播放
+							play :function() {
+								var str =$("#btn-play").html();
+								if(str=='<i class="fa fa-play-circle"></i>'){//播放状态：需要暂停；
+									$("#btn-play").html('<i class="fa fa-pause-circle"></i>');
+									var int =sessionStorage.getItem("evaluatePlay");
+									clearInterval(int);
+
+								}else {//暂停状态：
+									$("#btn-play").html('<i class="fa fa-play-circle"></i>');
+									this.autoPlay();
+								}
+							},
+							//播放上一条
+							playPre: function(){
+								if(vm.sliderProgress<=0){
+									vm.sliderProgress=100;
+								}
+								vm.sliderProgress =vm.sliderProgress-1;
+								var dd =(vm.endTime-vm.startTime)/100;
+								if(vm.value=='h'){
+									vm.currentTimeProgress =moment(moment(vm.startTime)+vm.sliderProgress*dd).format("YYYY-MM-DD HH");
+								}else if(vm.value=='d'){
+									vm.currentTimeProgress =moment(moment(vm.startTime)+vm.sliderProgress*dd).format("YYYY-MM-DD");
+								}else{
+									vm.currentTimeProgress =moment(moment(vm.startTime)+vm.sliderProgress*dd).format("YYYY-MM-DD HH:mm:ss");
+								}
+							},
+							//播放下一条
+							playNext: function(){
+								if(vm.sliderProgress>=100){
+									clearInterval(int);
+									vm.sliderProgress=0;
+									return;
+								}
+								vm.sliderProgress =vm.sliderProgress+1;
+								var dd =(vm.endTime-vm.startTime)/100;
+								if(vm.value=='h'){
+									vm.currentTimeProgress =moment(moment(vm.startTime)+vm.sliderProgress*dd).format("YYYY-MM-DD HH");
+								}else if(vm.value=='d'){
+									vm.currentTimeProgress =moment(moment(vm.startTime)+vm.sliderProgress*dd).format("YYYY-MM-DD");
+								}else{
+									vm.currentTimeProgress =moment(moment(vm.startTime)+vm.sliderProgress*dd).format("YYYY-MM-DD HH:mm:ss");
+								}
+
+							},
+							//停止播放
+							stop: function(){
+								vm.sliderProgress=0;
+								var int =sessionStorage.getItem("evaluatePlay");
+								clearInterval(int);
+							},
+							//配置项
+							showForm: function() {
+								if(vm.showOrHide){
+									vm.showOrHide =false;
+									vm.showOrHideClass ={
+										display:"block"
+									}
+								}else{
+									vm.showOrHide =true;
+									vm.showOrHideClass ={
+										display:"none"
+									}
+								}
+
+							},
+							onSubmit: function () {
+								console.log(vm.normalparamform);
+			//                if(vm.form.maxValue&&vm.form.time.length&&vm.form.region){
+			//
+			//                }
+								this.showForm();
+							},
+							//告警信息列表,系统配置频段,选中频率或频段
+							 searchFreChange: function(){
+								 console.log(vm.searchFre)
+								 if(this.searchFre !=1){
+									 this.showOrHideBrandInfo =false
+								 }
+
+							 },
+							filterNode:function(value, data) {
+								if (!value) return true;
+								return data.label.indexOf(value) !== -1;
+							},
+							nodeClick: function(data){
+								console.log(data)
+								vm.searchBrand =data.label;
+								this.showOrHideBrandInfo =false;//隐藏频段信息
+							},
+							//显示频段信息
+							showBrandInfo: function() {
+								if(this.searchFre ==1){
+									this.showOrHideBrandInfo =true
+								}else{
+									this.showOrHideBrandInfo =false
+								}
+							}
+
+
+						},
+						watch: {
+							filterText:function(val) {
+								this.$refs.tree2.filter(val);
+							}
+						},
+						mounted:function(){
+							//this.autoPlay();
+
+							//console.log(this.morStationAllList)
+						}
+					});
+
+                 //统计数据，电波秩序总览中，显示各列中每种信号类型的总数
+				getSignalCounts();
+
+
 				// 地图初始化
 				MAP1 = mapInit();
 				// 得到区域信息
@@ -41,10 +402,13 @@ define(	["ajax", "dojo/parser", "esri/map",
 
 				// 信号类型切换点击事件
 				$("#redioType").on("click", "input", function(e) {
-							var typeCode = Number(e.target.value)
-							var isSubType = e.target.getAttribute("issubtype");
-							addSignalCountOnMonitors(MONITORS, typeCode, isSubType);
-						});
+
+					$("#redioType label").removeClass("color").removeAttr("style");
+					$("#"+e.toElement.id).siblings("label").css("color","#409EFF")
+					var typeCode = Number(e.target.value)
+					var isSubType = e.target.getAttribute("issubtype");
+					addSignalCountOnMonitors(MONITORS, typeCode, isSubType);
+				});
 
 						
 				// 时间选择器点击事件
@@ -77,26 +441,37 @@ define(	["ajax", "dojo/parser", "esri/map",
 								}
 							})
 				});
-
-				// 信号统计表 频段名称链接点击事件
-				$("#table-radio").on("click", ".redioNameA",
-						function(e) {
-							console.log("click");
-//							console.log(e);
-//							var freq = e.target.getAttribute("centorfreq");
-//							var signalId = e.target.getAttribute("signalid");
-//							console.log(freq);
-//							console.log(signalId);
-//							const urlObj = {
-//								ServerName : 'host2',
-//								DisplayName : '信号管理',
-//								MultiTabable : false,
-//								ReflushIfExist : true,
-//								Url : 'radio/app/signal?id=sefon&cenFreg='
-//										+ freq + '&signalId=' + signalId
-//							};
-//							Binding.openUrl(JSON.stringify(urlObj));
-			})
+                 //信号分类统计列表点击频段名称跳转至单频率
+				$('#table-radio').on("click",".redioNameA",function(e){
+					var freq = e.target.text;
+					const urlObj = {
+						ServerName : 'host1',
+						DisplayName : '单频率',
+						MultiTabable : false,
+						ReflushIfExist : true,
+						Url : '#/FrequencySingle/' + freq
+					};
+					Binding.openUrl(JSON.stringify(urlObj));
+				})
+//				// 信号统计表 频段名称链接点击事件
+//				$("#table-radio").on("click", ".redioNameA",
+//						function(e) {
+//							console.log("click");
+////							console.log(e);
+////							var freq = e.target.getAttribute("centorfreq");
+////							var signalId = e.target.getAttribute("signalid");
+////							console.log(freq);
+////							console.log(signalId);
+////							const urlObj = {
+////								ServerName : 'host2',
+////								DisplayName : '信号管理',
+////								MultiTabable : false,
+////								ReflushIfExist : true,
+////								Url : 'radio/app/signal?id=sefon&cenFreg='
+////										+ freq + '&signalId=' + signalId
+////							};
+////							Binding.openUrl(JSON.stringify(urlObj));
+//			})
 						
 				// 信号详情 频率链接点击事件
 				$("#table-signal-list").on("click", ".centerFreqA",
@@ -198,7 +573,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 							};
 							Binding.openUrl(JSON.stringify(urlObj));
 						})
-
 				// 告警未处理频率链接点击事件
 				$("#table-alarm-undeal").on("click", ".centerFreqA",
 						function(e) {
@@ -385,6 +759,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						pageList : [5, 10, 20, 30], // 分页步进值
 						clickToSelect : true, // 是否启用点击选中行
 						search : true,
+						searchAlign:"left",
 //						searchOnEnterKey : true,
 						strictSearch : true,
 //						searchText : "搜索信号",
@@ -500,6 +875,21 @@ define(	["ajax", "dojo/parser", "esri/map",
 						}
 					});
 				});
+				//信号分类统计列表 点击告警数量弹出告警列表tab(未完成)
+				$("#modalAlarm").on("show.bs.modal", function(e) {
+					var a = $(e.relatedTarget);
+					var beginFreq = a.data('beginfreq');// data()函数里面要取小写
+					var endFreq = a.data('endfreq');
+					var radioType = a.data('radiotype');
+					var monitorsID = new Array();
+					for (var i = 0; i < MONITORS.length; i++) {
+						monitorsID[i] = MONITORS[i].Num;
+					}
+					var isSubType = a.data('issubtype');
+					$('#table-Alarm-list').bootstrapTable("destroy");
+					$('#table-Alarm-list').bootstrapTable({});
+
+				});
 
 				//地图刷新按钮点击事件
 				$("#redioType").on("click", ".btn", function(e) {
@@ -521,24 +911,30 @@ define(	["ajax", "dojo/parser", "esri/map",
 				// 初始化电磁环境评估地图事件
 				$('#modalEvaluate').on('shown.bs.modal', function(e) {
 
-							var mapUrl = Binding.getMapUrl();
-							var url = mapUrl;
-							var map2 = new Map("mapDiv2", {
-									center :[MONITORS[0].Longitude,MONITORS[0].Latitude],
-									zoom : 8,
-									logo : false
-								});
-							var agoLayer2 = new ArcGISTiledMapServiceLayer(url,
-									{
-										id : "街道地图1",
-                                        showAttribution:false
-									});
-							var glayer2 = new GraphicsLayer({
-								id : "glayer2"
-							});
-							map2.addLayer(agoLayer2);
-							map2.addLayer(glayer2);
-							addAreaBoundary(map2);
+							//var mapUrl = Binding.getMapUrl();
+							//var url = mapUrl;
+							//var map2 = new Map("mapDiv2", {
+							//		center :[MONITORS[0].Longitude,MONITORS[0].Latitude],
+							//		zoom : 8,
+							//		logo : false
+							//	});
+							//var agoLayer2 = new ArcGISTiledMapServiceLayer(url,
+							//		{
+							//			id : "街道地图1",
+                             //           showAttribution:false
+							//		});
+							//var glayer2 = new GraphicsLayer({
+							//	id : "glayer2"
+							//});
+							//map2.addLayer(agoLayer2);
+							//map2.addLayer(glayer2);
+							//addAreaBoundary(map2);
+					      vm.autoPlay();
+					      baseMapInit();
+
+
+
+
 						});
 
 				//过滤重点监测频段
@@ -575,8 +971,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 				
 				// 监听更新输入框点击事件
 				$("#minutes").click(function(){
-					layer.tips('默认更新时间为3分钟', '#minutes-li', {
-								tips : [3, '#FF5722'],
+					layer.tips('默认更新时间为1分钟', '#minutes-li', {
+								tips : [1, '#FF5722'],
 								time : 2000
 							});
 				});
@@ -714,6 +1110,99 @@ define(	["ajax", "dojo/parser", "esri/map",
 					});
 				})
 				
+			}
+	       //电波秩序总览中，显示每种信号类型的总数
+			function getSignalCounts(){
+				ajax.post("data/waveorder/statisticsForSingnalsAndWarnings",null,function(result){
+					console.log(result)
+					$('#alarmTotalCount').text(result.alarmTotalCount);//总告警数
+					$('#undealedAlarmCounts').text(result.alarmUnconfiredCount);//未处理告警数
+					$('#dealedAlarmCounts').text(result.alarmConfirmedCount);//已处理告警数
+					$('#autoConfirmcounts').text(result.signalAutoCount);//智能识别信号数
+					$('#signalCounts').text(result.signalCount);//总信号数
+				});
+			}
+	       //获取所有监测站列表信息
+			function getstationsInfo(){
+				var info = Binding.getUser();
+				info = JSON.parse(info);
+				var code = info.Area.Code;
+				var stationObj = Binding.getMonitorNodes(code);
+				//console.log(stationObj);
+				stationObj = JSON.parse(stationObj);
+				//[{Latitude:30.755066,Longitude:103.98112,Name:"123监测站",Num:"51010123",StationType:"7",StationTypeName:"超短波移动监测车"}]
+				var codes = [];
+				var stationsName = [];
+				var stations = [];
+				for (var index = 0; index < stationObj.length; index++) {
+					codes.push(stationObj[index].Num);
+					stationsName.push(stationObj[index].Name);
+					stations.push({"code":stationObj[index].Num,"name":stationObj[index].Name});
+				}
+				//console.log(stations)
+				return {
+					codes:codes,
+					stationsName:stationsName,
+					stations:stations
+				}
+			}
+	       //态势图的渲染
+	        function baseMapInit(){
+				app = new AppMap('mapDiv2', {
+					// center: [104.360, 33.360],
+					//maxZoom: 12
+					minZoom: 10 //禁止缩放，就把maxZoom 和minZoom弄成一样的，10
+				});
+				//初始化所有图层
+				app.polygonLayer();
+				app.situationLayer();
+				app.stationsLayer();
+
+				$.get('cache/data/mapdata', function (data) {
+					app.polygonLayer({
+						data: data
+					});
+				});
+				var codes =getstationsInfo().codes;
+				var data = {
+					"stationCodes": codes
+					//playType:"hour",
+					//currentTime:"2018030810"
+
+					//"frequency": centorFreq,
+					//"beginTime": beginTime
+				};
+
+				ajax.post("data/alarm/getStationVersion2", data, function (result) {
+					var stations = result.stationPiont,
+						data = result.kriking3.result;
+//                    console.log(stations)//[{x:25515.12, y:25326, count: , stationId}]
+					// 设置默认
+					Array.prototype.max = function() {
+						return Math.max.apply({}, this)
+					}
+					Array.prototype.min = function() {
+						return Math.min.apply({}, this)
+					}
+					if (stations.length) {
+						var countArr = [];
+						for (var i = 0; i < stations.length; i++) {
+							countArr.push(parseInt(stations[i].count));
+						}
+						document.getElementById("minCtrl").value = countArr.min();
+						document.getElementById("maxCtrl").value = countArr.max();
+					}
+					app.update('situation', {
+						data: data,
+						opacity: 0.7
+					});
+					//配置项在stationsLayer的里，透明度是situation层，其他都在stationsLayer
+					app.stationsLayer({
+						data: stations
+					});
+					$(".coverage-number").html(result.electrCoverage * 100 + "%");
+				});
+
 			}
 			
 			 //频段名称排序
@@ -1116,7 +1605,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 				var countBackgroundSymbol = new PictureMarkerSymbol({
 					"url" : url_countBackgroundSymbol,
 					"height" : 18,
-					"width" : 34,
+					"width" : 20,
 					"xoffset" : 16,
 					"yoffset" : 14
 				});
@@ -1314,18 +1803,30 @@ define(	["ajax", "dojo/parser", "esri/map",
 						return params
 					}, // 请求服务器时所传的参数
 					sidePagination : 'client', // 指定服务器端分页
-					pageSize : 16, // 单页记录数
-					pageList : [5, 10, 20, 30], // 分页步进值
+					pageSize : 15, // 单页记录数
+					pageList : [15, 30, 50, 100], // 分页步进值,
+					sortName: "radio",
+					sortable: true,
+					sortOrder: "asc",
 					clickToSelect : true, // 是否启用点击选中行
 					//					showRefresh : true,
 					responseHandler : function(res) {
 						return res;
 					},
-					columns : [{
+					columns : [
+							{
+								align : 'center',
+								width : '4%',
+								title: '序号',
+								formatter : function(value,row,index) {
+									return index + 1;
+								}
+							}, {
 								class : 'sortTable2',
+							    align : 'center',
 								field : 'radio',
-								width : '15%',
-								title : '频率(MHz)'+"<img src='images/arrow-both.png'width='24'/> ",
+								width : '10%',
+								title : '频率(MHz)'+"<img src='images/arrow-up.png'width='24'/> ",
 								sortable : true,
 								sortName : "radio",
 								titleTooltip : "频率(MHz)",
@@ -1335,6 +1836,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 								}
 							}, {
 								class : 'sortTable2',
+							    align : 'left',
 								field : 'firstTime',
 								width : '15%',
 								title : '首次出现时间'+"<img src='images/arrow-both.png'width='24'/> ",
@@ -1342,6 +1844,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 								sortable : true
 							}, {
 								class : 'sortTable2',
+							    align : 'left',
 								field : 'lastingTime',
 								width : '15%',
 								title : '最后出现时间'+"<img src='images/arrow-both.png'width='24'/> ",
@@ -1403,6 +1906,16 @@ define(	["ajax", "dojo/parser", "esri/map",
 						$("#table-alarm-dealed").find(".dpopover").popover({
 									html : true
 								});
+						$(".table-alarm-dealed").find(".pull-right .pagination").append("<span class='goPage'>跳转到第<input id='alarmDealedPageBtn' class='pageNum' type='text'>页</span>")
+						$("#alarmDealedPageBtn").on("blur",function(e){
+							$("#table-alarm-dealed").bootstrapTable("selectPage",parseInt($("#alarmDealedPageBtn").val()));
+						})
+					},
+					onPageChange:function(){
+						$(".table-alarm-dealed").find(".pull-right .pagination").append("<span class='goPage'>跳转到第<input id='alarmDealedPageBtn' class='pageNum' type='text'>页</span>")
+						$("#alarmDealedPageBtn").on("blur",function(e){
+							$("#table-alarm-dealed").bootstrapTable("selectPage",parseInt($("#alarmDealedPageBtn").val()));
+						})
 					},
 					onAll:function(){
 						$("#table-alarm-dealed").find(".dpopover").popover({
@@ -1439,18 +1952,30 @@ define(	["ajax", "dojo/parser", "esri/map",
 						params.monitorsID = monitorsID;
 						return params
 					}, // 请求服务器时所传的参数
-					pageSize : 16, // 单页记录数
-					pageList : [5, 10, 20, 30], // 分页步进值
+					pageSize : 15, // 单页记录数
+					pageList : [15, 30, 50, 100],
+					sortName: "radio",
+					sortable: true,
+					sortOrder: "asc",
 					clickToSelect : true, // 是否启用点击选中行
 					//					showRefresh : true,
 					responseHandler : function(res) {
 						return res;
 					},
-					columns : [{
+					columns : [
+							{
+								align : 'center',
+								width : '4%',
+								title: '序号',
+								formatter : function(value,row,index) {
+									return index + 1;
+								}
+							},{
 								class : 'sortTable2',
+							    align : 'center',
 								field : 'radio',
-								title : '频率(MHz)'+"<img src='images/arrow-both.png'width='24'/> ",
-								width : '15%',
+								title : '频率(MHz)'+"<img src='images/arrow-up.png'width='24'/> ",
+								width : '10%',
 								sortable : true,
 								sortName : "radio",
 								titleTooltip : "频率(MHz)",
@@ -1460,6 +1985,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 								}
 							}, {
 								class : 'sortTable2',
+							    align : 'left',
 								field : 'firstTime',
 								width : '15%',
 								title : '首次出现时间'+"<img src='images/arrow-both.png'width='24'/> ",
@@ -1467,6 +1993,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 								titleTooltip : "首次出现时间"
 							}, {
 								class : 'sortTable2',
+							    align : 'left',
 								field : 'lastingTime',
 								width : '15%',
 								title : '最后出现时间'+"<img src='images/arrow-both.png'width='24'/> ",
@@ -1529,11 +2056,21 @@ define(	["ajax", "dojo/parser", "esri/map",
 											+ value + '">' + value + '</div>';
 								}
 							}],
-//					onLoadSuccess : function() {
-//						$("#table-alarm-undeal").find(".dpopover").popover({
-//									html : true
-//								});
-//					},
+					onLoadSuccess : function() {
+						//$("#table-alarm-undeal").find(".dpopover").popover({
+						//			html : true
+						//		});
+						$(".table-alarm-undeal").find(".pull-right .pagination").append("<span class='goPage'>跳转到第<input id='alarmUndealPageBtn' class='pageNum' type='text'>页</span>")
+						$("#alarmUndealPageBtn").on("blur",function(e){
+							$("#table-alarm-undeal").bootstrapTable("selectPage",parseInt($("#alarmUndealPageBtn").val()));
+						})
+					},
+					onPageChange:function(){
+						$(".table-alarm-undeal").find(".pull-right .pagination").append("<span class='goPage'>跳转到第<input id='PageBtn' class='pageNum' type='text'>页</span>")
+						$("#alarmUndealPageBtn").on("blur",function(e){
+							$("#table-alarm-undeal").bootstrapTable("selectPage",parseInt($("#alarmUndealPageBtn").val()));
+						})
+					},
 					onAll:function(){
 						$("#table-alarm-undeal").find(".dpopover").popover({
 							html : true
@@ -1570,22 +2107,34 @@ define(	["ajax", "dojo/parser", "esri/map",
 						params.monitorsID = monitorsID;
 						return params
 					}, // 请求服务器时所传的参数
-					pageSize : 16, // 单页记录数
-					pageList : [5, 10, 20, 30], // 分页步进值
+					pageSize : 15, // 单页记录数
+					pageList : [15, 30, 50, 100], // 分页步进值
+					sortName: "centor",
+					sortable: true,
+					sortOrder: "asc",
 					clickToSelect : true, // 是否启用点击选中行
 					//					showRefresh : true,
 					responseHandler : function(res) {
 						return res;
 					},
-					columns : [{
+					columns : [
+
+						{
+							align : 'center',
+							width : '4%',
+							title: '序号',
+							formatter : function(value,row,index) {
+								return index + 1;
+							}
+						},{
 							class : 'sortTable2',
-						 	align: 'center',
+							align: 'center',
 							field : 'centor',
-							title : '频率(MHz)'+"<img src='images/arrow-both.png'width='24'/> ",
+							title : '频率(MHz)'+"<img src='images/arrow-up.png'width='24'/> ",
 							titleTooltip : "频率(MHz)",
 							sortable : true,
 							sortName : "centor",
-							width : '15%',
+							width : '10%',
 							formatter : function(value, row, index) {
 								return '<a class="centerFreqA">' + value
 										+ '</a>';
@@ -1665,6 +2214,18 @@ define(	["ajax", "dojo/parser", "esri/map",
 										+ row.centor + '>查看</a>';
 							}
 						}],
+					onLoadSuccess : function() {
+						$(".radio_auto_confirm").find(".pull-right .pagination").append("<span class='goPage'>跳转到第<input id='autoConfirmPageBtn' class='pageNum' type='text'>页</span>")
+						$("#autoConfirmPageBtn").on("blur",function(e){
+							$("#radio_auto_confirm").bootstrapTable("selectPage",parseInt($("#autoConfirmPageBtn").val()));
+						})
+					},
+					onPageChange:function(){
+						$(".radio_auto_confirm").find(".pull-right .pagination").append("<span class='goPage'>跳转到第<input id='autoConfirmPageBtn' class='pageNum' type='text'>页</span>")
+						$("#autoConfirmPageBtn").on("blur",function(e){
+							$("#radio_auto_confirm").bootstrapTable("selectPage",parseInt($("#autoConfirmPageBtn").val()));
+						})
+					},
 					onAll:function(){
 						$("#radio_auto_confirm").find(".dpopover").popover({
 							html : true
@@ -1701,15 +2262,20 @@ define(	["ajax", "dojo/parser", "esri/map",
 					pageNumber : 1, // 初始化加载第一页，默认第一页
 					pagination : true, // 是否分页
 					queryParamsType : 'limit', // 查询参数组织方式
+					data_local: "zh-US",//表格汉化
 					queryParams : function(params) {
 						params.monitorsID = monitorsID;
 						params.userID = userID;
+						//params.offset,//从数据库第几条记录开始
+						//params.limit//找多少条
 						return params
 					},
 					pageSize : 5, // 单页记录数
 					pageList : [5, 10, 20, 30], // 分页步进值
 					clickToSelect : true, // 是否启用点击选中行
-//					showFooter: true,
+					sortName: "beginFreq",
+					sortable: true,
+					sortOrder: "asc",
 					responseHandler : function(res) {
 						return res;
 					},
@@ -1725,14 +2291,29 @@ define(	["ajax", "dojo/parser", "esri/map",
 								$(this).find('img').attr("src","images/arrow-bottom.png");
 							}
 						});
+						$(".table-radio").find(".pull-right .pagination").append("<span class='goPage'>跳转到第<input id='PageBtn' class='pageNum' type='text'>页</span>")
+						//$(".table-radio").find(".pull-right.pagination").append("<input type='button' value='go' class='pageBtn'>")
+						$("#PageBtn").on("blur",function(e){
+							$("#table-radio").bootstrapTable("selectPage",parseInt($("#PageBtn").val()));
+						})
+
+					},
+					onPageChange:function(){
+						$(".table-radio").find(".pull-right .pagination").append("<span class='goPage'>跳转到第<input id='PageBtn' class='pageNum' type='text'>页</span>")
+						//$(".table-radio").find(".pull-right.pagination").append("<input type='button' value='go' class='pageBtn'>")
+						$("#PageBtn").on("blur",function(e){
+							$("#table-radio").bootstrapTable("selectPage",parseInt($("#PageBtn").val()));
+						})
 					},
 					onAll:function(){
 						$("#table-radio").find(".dpopover").popover({
 							html : true
 						});
+
 					},
 					columns : [{
-						align : 'left',
+						align : 'center',
+						title: '序号',
 						formatter : function(value,row,index) {
 							return index + 1;
 						}
@@ -1741,9 +2322,10 @@ define(	["ajax", "dojo/parser", "esri/map",
 						field : 'beginFreq',
 						sortable : true,
 						sortName : "beginFreq",
-						sorter :  freqRangeSorter,
-						title : "频段范围"+"<img src='images/arrow-both.png'width='24'/> ",
+						align : 'left',
+						title : "频段范围"+"<img src='images/arrow-up.png'width='24'/> ",
 						width : '10%',
+						titleTooltip : '频段范围',
 						formatter : function(value,row,index) {
 									var divide = 1000000;
 									var beginFreq = Math.round(value / divide * 1000) / 1000; 
@@ -1752,18 +2334,36 @@ define(	["ajax", "dojo/parser", "esri/map",
 						}
 					},{
 						class : "sortTable1",
+						align : 'left',
 						field : 'redioName',
 						title : '频段名称'+"<img src='images/arrow-both.png'width='24'/> " ,
-						width : '15%',
+						width : '14%',
 						titleTooltip : '频段名称',
 						sortable : true,
-						sortName : "beginFreq",
-						sorter : freqRangeSorter,
+						sortName : "redioName",
 						formatter : function(value, row, index) {
 							return '<div class="dpopover" data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
 									+ value +'"> <a class="redioNameA">'+ value + '</a> </div>';
 						}
-					}, {
+					},
+						{
+						class : "sortTable1",
+							align : "center",
+						field : 'legalNormalStationNumber',
+						title : '告警数量'+"<img src='images/arrow-both.png'width='24'/> " ,
+						width : '10%',
+						titleTooltip : '告警数量',
+						sortable : true,
+						sortName : "legalNormalStationNumber",
+						formatter : function(value, row, index) {
+							return '<a data-toggle="modal" data-target="#modalSignal" data-radioType="1" data-isSubType="false" data-beginFreq="'
+								+ row.beginFreq
+								+ '" data-endFreq="'
+								+ row.endFreq + '">' + value + '</a>';
+						}
+
+					},
+						{
 						class : "sortTable1",
 						field : 'legalNormalStationNumber',
 						title : '合法正常信号'+"<img src='images/arrow-both.png'width='24'/> " ,
@@ -1771,7 +2371,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						titleTooltip : '合法正常信号',
 						sortable : true,
 						sortName : "legalNormalStationNumber",
-						falign : "center",
+						align : "center",
 						footerFormatter : function(data) {
 							console.log(data);
 							var sum = 0;
@@ -1790,7 +2390,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						class : "sortTable1",
 						field : 'legalUnNormalStationNumber',
 						title : '合法违规信号'+"<img src='images/arrow-both.png'width='24'/> " ,
-						width : '15%',
+						width : '10%',
 						titleTooltip : '合法违规信号',
 						sortable : true,
 						sortName : "legalUnNormalStationNumber",
@@ -1877,7 +2477,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 					}, {
 						title : '<input type="checkbox" id="importantMonitor_filter">',
 						align : 'right',
-						width : "5%",
+						width : "2%",
 						formatter : function(value, row, index) {
 							return "";
 						}

@@ -6,7 +6,7 @@
     <div class='item info  flex-column justify-center'>
       <div class="flex-row">
       <!-- 隐藏域 -->
-      <input type="hidden" name="redioDetailCentor" value="${redioDetail.band}" id="redioDetailCentor">
+      <input type="hidden" name="redioDetailCentor" value="${redioDetail.band}" id="redioDetailCentor"/>
       <!-- <input type="hidden" name="redioDetailCentor" value="${redioDetail.band}" id="redioDetailCentor"> -->
       <!-- 隐藏域 end-->
         <!-- 自定义 -->
@@ -64,11 +64,11 @@
         <div class='signal-type flex1 flex-column justify-center'>
           <div class='flex1 flex-row align-center mrg-top15'>
             <div class="radio radio-primary flex1 ">
-              <input type="radio" value = '1' name="signal-type" id="legal-normal">
+              <input type="radio" value = '1' name="signal-type" id="legal-normal"/>
               <label for="legal-normal"> 合法信号 </label>
             </div>
             <div class="radio radio-primary flex1 ">
-              <input type="radio" value = '2' name="signal-type" id="nonlocal_station">
+              <input type="radio" value = '2' name="signal-type" id="nonlocal_station"/>
               <label for="nonlocal_station"> 已知信号 </label>
             </div>
             <%--<div class="radio radio-primary flex1 ">--%>
@@ -79,16 +79,16 @@
           <div class='flex1 flex-row align-center mrg-bottom15'>
 
             <div class="radio radio-primary flex1 ">
-              <input type="radio" value = '3' name="signal-type" id="illegal" checked>
+              <input type="radio" value = '3' name="signal-type" id="illegal" checked/>
               <label for="illegal"> 非法信号 </label>
             </div>
             <div class="radio radio-primary flex1 ">
-              <input type="radio" value = '4' name="signal-type" id="unknown">
+              <input type="radio" value = '4' name="signal-type" id="unknown"/>
               <label for="unknown"> 不明信号 </label>
             </div>
           </div>
         </div>
-        <input id = "redio-type" style="display: none;" value = "${redioDetail.type}">
+        <input id = "redio-type" style="display: none;" value = "${redioDetail.type}"/>
       </div>
       <div class="flex-row row3">
         <!-- <div class='item chart flex1 flex-row'> -->
@@ -203,6 +203,6 @@
 
     </div>
   </div>
-  <script src="config.js"></script>
+  <%--<script src="config.js"></script>--%>
 </html>
 

@@ -163,7 +163,7 @@ label, .control-label {
 }
 
 .pagination-detail {
-	display: none;
+	display: block;
 }
 
 .pagination {
@@ -725,3 +725,69 @@ border-radius: 4px;
 .fixed-table-container thead th .both {
     background-image:none;
 }
+/*态势图的播放器以及配置参数start*/
+.el-row {
+	margin-bottom:5px;
+}
+.el-row:last-child {
+	margin-bottom: 0;
+}
+.el-col {
+	border-radius: 4px;
+}
+.row-bg {
+	padding: 10px 0;
+	background-color: #f9fafc;
+}
+.normalparamform{
+	min-width: 450px;
+	transform-origin: center top 0px;
+	z-index: 2146;
+	position: absolute;
+	/*top: 96px;*/
+	/*left: 1px;*/
+	right:1px;
+	border: 1px solid #e4e7ed;
+	border-radius: 4px;
+	background-color: #fff;
+	box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+	box-sizing: border-box;
+	margin: 5px 0;
+}
+.el-form-item {
+	padding: 10px !important;
+	margin-bottom: 0 !important;
+}
+.el-form-item__label{
+	text-align: left!important;
+}
+.el-form-item-border {
+	border-top: 1px solid #ebeef5;
+}
+/*态势图的播放器以及配置参数end*/
+
+/*分页参数*/
+/*.pageBtn{*/
+	/*border: 1px solid #cdd3d8;*/
+	/*border-radius: 5px;*/
+	/*padding: 5px 11px !important;*/
+	/*margin-left: 10px;*/
+	/*font-family: HelveticaNeue;*/
+	/*font-size: 12px;*/
+	/*background: #49b2fc;*/
+/*}*/
+.pageNum {
+	width: 50px;
+	border: 1px solid #cdd3d8;
+	border-radius: 5px;
+	padding: 5px 11px !important;
+	font-family: HelveticaNeue;
+	font-size: 12px;
+}
+.goPage {
+	height: 100%;
+	background: #f9fcfe;
+	font-family: '微软雅黑';
+	color: #505363;
+}
+
