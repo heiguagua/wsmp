@@ -294,7 +294,7 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
 		}
     }
 
-	// 电平峰值鼠标区域选择放大缩小事件
+	// 占用度鼠标区域选择放大缩小事件
     function load_month_mouse_event(){
     	document.oncontextmenu=new Function("event.returnValue=false;");
     	var start_index = 0;      				// mousedown时的x轴index

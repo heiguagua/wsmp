@@ -1241,13 +1241,13 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                         // type: 'inside',
                         type : 'slider',
                         start : 0,
-                        end : 100,
+                        end : 100
                         // height : 15,
                         // y : 260
                     }],
                     grid: {
                         left: '1%',
-                        right: '4%',
+                        right: '6%',
                         bottom: '22%',
                         top: 30,
                         containLabel: true
@@ -1257,6 +1257,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                     },
                     xAxis: [{
                         type : 'category',
+                        name:'时间(天)',
                         axisLine : {
                             lineStyle : {
                                 color : '#DAE5F0'
@@ -1582,7 +1583,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                     },
                     grid: {
                         left: '1%',
-                        right: '7%',
+                        right: '6%',
                         bottom: '2%',
                         top: 30,
                         containLabel: true
@@ -1592,7 +1593,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                     },
                     xAxis: {
                         type: 'category',
-                        name: '时间(h)',
+                        name: '时刻',
                         boundaryGap: false,
                         axisLine: {
                             lineStyle: {

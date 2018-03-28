@@ -25,7 +25,7 @@
 	<script src="3.9/vue.js"></script>
 <style>
 .box{position: relative;}
-.levelsColor{position:absolute;top:142px;right:20px;height:22px}.levelsColor input[type="number"]{width:40px}.levelsColor input[type="number"],.levelsColor a,.levelsColor img{display:inline-block;*display:inline;*zoom:1;height:22px;float:left}.levelsColor img{padding-top:0px}#valCtrl{height:23px;padding:0px 15px;background:#6F6FF2;color:#fff;font-size:12px;text-decoration:none;line-height:23px}
+.levelsColor{position:absolute;top:980px;right:20px;height:22px}.levelsColor input[type="number"]{width:40px}.levelsColor input[type="number"],.levelsColor a,.levelsColor img{display:inline-block;*display:inline;*zoom:1;height:22px;float:left}.levelsColor img{padding-top:0px}#valCtrl{height:23px;padding:0px 15px;background:#6F6FF2;color:#fff;font-size:12px;text-decoration:none;line-height:23px}
 </style>
 <script src="3.9/js/dojo/library/wavesuffer/wavesuffer.js"></script>
 <script src="3.9/js/dojo/library/lodash/lodash.js"></script>
@@ -80,33 +80,15 @@
 			<section class='flex-row'>
 				<div id="signal_detail" class='box right10'>
 				</div>
-				<div class='box3 flex-column'>
-					<div class='locate-coverage'>
-						<label class='module-name'>
-							<%--<img src='images/locate.png' />--%>
-							<span id = "stationName">&nbsp;&nbsp;</span>
-						</label>
-						<button class="btn btn-submit" id="setStationPiont" v-text="dd.btn.locorg">场强定位选站</button>&#160;
-						<div class='pull-right'>
-							<%--<button class="btn btn-submit" id="setStationPiont">聚类监测站</button>&#160;--%>
-							<%--<input type="text" class="gate-filter" placeholder="请输入门限" /> <button class="btn btn-submit" id="gate-btn">提交</button>--%>
-								<span v-text="dd.info.electromagnetic">电磁覆盖率</span>&nbsp; <span class='coverage-number'></span>
-						</div>
+				<div class='box3'>
+					<div class='month-data levelChart'>
+						<h4 id='levelChartTitle' class='title' v-text="dd.info.charttit1">电平峰值</h4>
+						<div class='flex1' id='levelChart' style="min-height: 330px;"></div>
 					</div>
-					<div id="mapDiv" style= "padding: 0px;height: 480px;"></div>
-					<div id="mapDiv1"></div>
-					<!-- <div id="heatLayer"></div> -->
-					 <%--控件--%>
-				      <div id="levelsColor" class="levelsColor">
-				        <form method="#">
-				          <input type="number" name="opVal" min="0" max="1" id="opCtrl" value="0.7" alt="请输入透明度范围值0~1"  title="请输入透明度范围值0~1" style="margin-right: 5px">
-				          <input type="number" name="startVal" min="1" id="minCtrl" value="-40" alt="请输入最小值"  title="请输入最小值">
-				          <img src="images/a.png" alt="">
-				          <input type="number" name="endVal" max="10" id="maxCtrl" value="120" alt="请输入最大值" title="请输入最大值" >
-				          <a href="#" id="valCtrl" ><td  v-text="dd.btn.affirm">确认</a>
-				        </form>
-				      </div>
-				      <%--控件 end--%>
+					<div class='month-data '>
+						<h4 id='monthChartTitle' class='title'  v-text="dd.info.charttit2">近3个月占用度（按天统计）</h4>
+						<div class='flex1' id='monthChart1' style="min-height: 330px;"></div>
+					</div>
 				</div>
 			</section>
 		<%--</span>--%>
@@ -294,22 +276,50 @@
 				<%--<div id="heatLayer"></div>--%>
 			<%--</div>--%>
 		<%--</section>--%>
-		<section class='flex-row'>
-			<div class='box'>
-				<div class='month-data flex-column'>
-					<h4 id='levelChartTitle' class='title' v-text="dd.info.charttit1">电平峰值</h4>
-					<div class='flex1' id='levelChart'></div>
+		<%--<section class='flex-row'>--%>
+			<%--<div class='box'>--%>
+				<%--<div class='month-data flex-column'>--%>
+					<%--<h4 id='levelChartTitle' class='title' v-text="dd.info.charttit1">电平峰值</h4>--%>
+					<%--<div class='flex1' id='levelChart'></div>--%>
+				<%--</div>--%>
+			<%--</div>--%>
+		<%--</section>--%>
+		<%--<section class='flex-row'>--%>
+			<%--<div class='box'>--%>
+				<%--<div class='month-data flex-column'>--%>
+					<%--<h4 id='monthChartTitle' class='title'  v-text="dd.info.charttit2">近3个月占用度（按天统计）</h4>--%>
+					<%--<div class='flex1' id='monthChart1'></div>--%>
+				<%--</div>--%>
+			<%--</div>--%>
+		<%--</section>--%>
+			<div class='box3 flex-column'>
+				<div class='locate-coverage'>
+					<label class='module-name'>
+						<%--<img src='images/locate.png' />--%>
+						<span id = "stationName">&nbsp;&nbsp;</span>
+					</label>
+					<button class="btn btn-submit" id="setStationPiont" v-text="dd.btn.locorg">场强定位选站</button>&#160;
+					<div class='pull-right'>
+						<%--<button class="btn btn-submit" id="setStationPiont">聚类监测站</button>&#160;--%>
+						<%--<input type="text" class="gate-filter" placeholder="请输入门限" /> <button class="btn btn-submit" id="gate-btn">提交</button>--%>
+						<span v-text="dd.info.electromagnetic">电磁覆盖率</span>&nbsp; <span class='coverage-number'></span>
+					</div>
 				</div>
-			</div>
-		</section>
-		<section class='flex-row'>
-			<div class='box'>
-				<div class='month-data flex-column'>
-					<h4 id='monthChartTitle' class='title'  v-text="dd.info.charttit2">近3个月占用度（按天统计）</h4>
-					<div class='flex1' id='monthChart1'></div>
+				<div id="mapDiv" style= "padding: 0px;height: 480px;"></div>
+				<div id="mapDiv1"></div>
+				<!-- <div id="heatLayer"></div> -->
+				<%--控件--%>
+				<div id="levelsColor" class="levelsColor">
+					<form method="#">
+						<input type="number" name="opVal" min="0" max="1" id="opCtrl" value="0.7" alt="请输入透明度范围值0~1"  title="请输入透明度范围值0~1" style="margin-right: 5px">
+						<input type="number" name="startVal" min="1" id="minCtrl" value="-40" alt="请输入最小值"  title="请输入最小值">
+						<img src="images/a.png" alt="">
+						<input type="number" name="endVal" max="10" id="maxCtrl" value="120" alt="请输入最大值" title="请输入最大值" >
+						<a href="#" id="valCtrl" ><td  v-text="dd.btn.affirm">确认</a>
+					</form>
 				</div>
+				<%--控件 end--%>
 			</div>
-		</section>
 	</div>
 
   <!-- Modal 日占用度-->

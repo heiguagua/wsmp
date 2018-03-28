@@ -98,7 +98,7 @@
         <div class='item feature' style="width: 100%;">
           <div class='features' style="max-width: 100%">
             <h4 class='title' v-text="dd.signal.feature">信号特征</h4>
-            <ul class='features-list' style="height:200px;overflow-y: auto">
+            <ul class='features-list' style="height: 430px;overflow-y: auto">
           <!--     <li><div class='item-name' title="谱密度最大值">谱密度最大值</div>
                 <div class='item-value' title="${redioDetail.rMax}">${redioDetail.rMax}</div></li>
               <li><div class='item-name' title="频谱周期性">频谱周期性</div>

@@ -2,8 +2,8 @@
  * Created by wuhaoran on 2017/2/25.
  */
 //
-define(["home/signal/signal_manage", "ajax", "esri/symbols/PictureMarkerSymbol"],
-  function(signal_manage, ajax, PictureMarkerSymbol) {
+define(["home/signal/signal_manage", "ajax", "esri/symbols/PictureMarkerSymbol","library/map/appMap"],
+  function(signal_manage, ajax, PictureMarkerSymbol,AppMap) {
     dojo.require("esri.map");
     dojo.require("esri.layers.FeatureLayer");
     dojo.require("esri.symbols.SimpleMarkerSymbol");
@@ -20,6 +20,7 @@ define(["home/signal/signal_manage", "ajax", "esri/symbols/PictureMarkerSymbol"]
     var map = null;
     var mapUrl = $("#mapUrl").val();
     var k = null;
+      var app =null;
     //var map = null;
     //config.defaults.io.corsEnabledServers.push("192.168.13.79:7080");
     function pares() {
@@ -38,7 +39,22 @@ define(["home/signal/signal_manage", "ajax", "esri/symbols/PictureMarkerSymbol"]
     //"http://127.0.0.1:8080/data/PBS/rest/services/MyPBSService1/MapServer"
     function mapInit() {
       dojo.ready(function() {
-        setMap(0, 10)
+        //setMap(0, 10)
+          app = new AppMap('mapDiv', {
+              // center: [104.360, 33.360],
+              maxZoom: 12
+//                            minZoom: 10, //禁止缩放，就把maxZoom 和minZoom弄成一样的，10
+          });
+          //初始化所有图层
+          app.polygonLayer();
+          app.situationLayer();
+          app.stationsLayer();
+
+          $.get('cache/data/mapdata', function (data) {
+              app.polygonLayer({
+                  data: data
+              });
+          });
       });
       select_change();
     }
@@ -281,40 +297,68 @@ define(["home/signal/signal_manage", "ajax", "esri/symbols/PictureMarkerSymbol"]
           "frequency": centorfreq,
           "beginTime": beginTime
         };
-        ajax.post("data/alarm/getStationVersion2", data, function(reslut) {
+        ajax.post("data/alarm/getStationVersion2", data, function(result) {
           ////////////////////////////////////////////////////
-          var colorArr = [[58,151,194],[58,151,194],[64,153,194],[64,153,194],[75,156,191],[75,156,191],[79,158,189],[79,158,189],[87,160,186],[87,160,186],[92,161,184],[92,161,184],[98,164,181],[98,164,181],[104,166,179],[104,166,179],[109,168,176],[109,168,176],[114,172,176],[114,172,176],[120,173,172],[120,173,172],[125,176,170],[125,176,170],[130,179,166],[130,179,166],[136,181,166],[136,181,166],[141,184,162],[141,184,162],[145,186,161],[145,186,161],[151,189,158],[151,189,158],[155,191,156],[155,191,156],[161,194,153],[161,194,153],[164,196,151],[164,196,151],[171,201,149],[171,201,149],[173,201,145],[173,201,145],[181,207,145],[181,207,145],[182,207,140],[182,207,140],[190,212,140],[190,212,140],[194,214,135],[194,214,135],[199,217,134],[199,217,134],[203,219,129],[203,219,129],[206,222,129],[206,222,129],[211,224,123],[211,224,123],[215,227,123],[215,227,123],[223,232,121],[223,232,121],[227,235,117],[227,235,117],[231,237,114],[231,237,114],[233,240,110],[233,240,110],[238,242,107],[238,242,107],[242,245,105],[242,245,105],[250,250,102],[250,250,102],[250,250,100],[250,250,100],[250,242,97],[250,242,97],[250,237,95],[250,237,95],[252,234,91],[252,234,91],[252,228,91],[252,228,91],[252,222,86],[252,222,86],[252,216,83],[252,216,83],[252,210,81],[252,210,81],[252,206,78],[252,206,78],[252,199,76],[252,199,76],[252,194,76],[252,194,76],[252,189,71],[252,189,71],[252,183,71],[252,183,71],[252,179,68],[252,179,68],[252,171,66],[252,171,66],[252,167,63],[252,167,63],[252,160,61],[252,160,61],[252,155,58],[252,155,58],[250,149,55],[250,149,55],[250,146,55],[250,146,55],[250,138,52],[250,138,52],[250,133,50],[250,133,50],[250,128,47],[250,128,47],[247,124,47],[247,124,47],[247,119,45],[247,119,45],[247,114,42],[247,114,42],[245,104,39],[245,104,39],[245,104,39],[245,104,39],[245,96,37],[245,96,37],[242,89,34],[242,89,34],[242,86,34],[242,86,34],[242,81,31],[242,81,31],[240,71,29],[240,71,29],[240,67,29],[240,67,29],[237,58,26],[237,58,26],[237,54,26],[237,54,26],[237,45,24],[237,45,24],[235,41,23],[235,41,23],[235,28,21],[235,28,21],[232,21,21],[232,21,21],[232,21,21],[232,21,21]],
-            vv = [];
-          for (var i = 0; i < colorArr.length; i++) {
-            // colorArr[i][3] = 250;
-            colorArr[i][3] = 200;
-          }
-          var ddd = reslut.kriking3.result;
-          // 设置默认
-          Array.prototype.max = function() {
-            return Math.max.apply({}, this)
-          }
-          Array.prototype.min = function() {
-            return Math.min.apply({}, this)
-          }
-          var stationPiont = reslut.stationPiont
-          $("#getStationPiont").val(JSON.stringify(stationPiont));
-          if (stationPiont.length) {
-            var countArr = [];
-            for (var i = 0; i < stationPiont.length; i++) {
-              countArr.push(parseInt(stationPiont[i].count));
-            }
-            document.getElementById("minCtrl").value = countArr.min();
-            document.getElementById("maxCtrl").value = countArr.max();
-            document.getElementById("opCtrl").value = 0.6;
-          }
-          // 设置默认
-          setMap(0, 10, ddd, colorArr, reslut.stationPiont, true, cri)
-          document.getElementById("valCtrl").addEventListener("click", function(evt) {
-              setMap(0, 10, ddd, colorArr, reslut.stationPiont, true, cri)
-            })
+          //var colorArr = [[58,151,194],[58,151,194],[64,153,194],[64,153,194],[75,156,191],[75,156,191],[79,158,189],[79,158,189],[87,160,186],[87,160,186],[92,161,184],[92,161,184],[98,164,181],[98,164,181],[104,166,179],[104,166,179],[109,168,176],[109,168,176],[114,172,176],[114,172,176],[120,173,172],[120,173,172],[125,176,170],[125,176,170],[130,179,166],[130,179,166],[136,181,166],[136,181,166],[141,184,162],[141,184,162],[145,186,161],[145,186,161],[151,189,158],[151,189,158],[155,191,156],[155,191,156],[161,194,153],[161,194,153],[164,196,151],[164,196,151],[171,201,149],[171,201,149],[173,201,145],[173,201,145],[181,207,145],[181,207,145],[182,207,140],[182,207,140],[190,212,140],[190,212,140],[194,214,135],[194,214,135],[199,217,134],[199,217,134],[203,219,129],[203,219,129],[206,222,129],[206,222,129],[211,224,123],[211,224,123],[215,227,123],[215,227,123],[223,232,121],[223,232,121],[227,235,117],[227,235,117],[231,237,114],[231,237,114],[233,240,110],[233,240,110],[238,242,107],[238,242,107],[242,245,105],[242,245,105],[250,250,102],[250,250,102],[250,250,100],[250,250,100],[250,242,97],[250,242,97],[250,237,95],[250,237,95],[252,234,91],[252,234,91],[252,228,91],[252,228,91],[252,222,86],[252,222,86],[252,216,83],[252,216,83],[252,210,81],[252,210,81],[252,206,78],[252,206,78],[252,199,76],[252,199,76],[252,194,76],[252,194,76],[252,189,71],[252,189,71],[252,183,71],[252,183,71],[252,179,68],[252,179,68],[252,171,66],[252,171,66],[252,167,63],[252,167,63],[252,160,61],[252,160,61],[252,155,58],[252,155,58],[250,149,55],[250,149,55],[250,146,55],[250,146,55],[250,138,52],[250,138,52],[250,133,50],[250,133,50],[250,128,47],[250,128,47],[247,124,47],[247,124,47],[247,119,45],[247,119,45],[247,114,42],[247,114,42],[245,104,39],[245,104,39],[245,104,39],[245,104,39],[245,96,37],[245,96,37],[242,89,34],[242,89,34],[242,86,34],[242,86,34],[242,81,31],[242,81,31],[240,71,29],[240,71,29],[240,67,29],[240,67,29],[237,58,26],[237,58,26],[237,54,26],[237,54,26],[237,45,24],[237,45,24],[235,41,23],[235,41,23],[235,28,21],[235,28,21],[232,21,21],[232,21,21],[232,21,21],[232,21,21]],
+          //  vv = [];
+          //for (var i = 0; i < colorArr.length; i++) {
+          //  // colorArr[i][3] = 250;
+          //  colorArr[i][3] = 200;
+          //}
+          //var ddd = result.kriking3.result;
+          //// 设置默认
+          //Array.prototype.max = function() {
+          //  return Math.max.apply({}, this)
+          //}
+          //Array.prototype.min = function() {
+          //  return Math.min.apply({}, this)
+          //}
+          //var stationPiont = result.stationPiont
+          //$("#getStationPiont").val(JSON.stringify(stationPiont));
+          //if (stationPiont.length) {
+          //  var countArr = [];
+          //  for (var i = 0; i < stationPiont.length; i++) {
+          //    countArr.push(parseInt(stationPiont[i].count));
+          //  }
+          //  document.getElementById("minCtrl").value = countArr.min();
+          //  document.getElementById("maxCtrl").value = countArr.max();
+          //  document.getElementById("opCtrl").value = 0.6;
+          //}
+          //// 设置默认
+          //setMap(0, 10, ddd, colorArr, result.stationPiont, true, cri)
+          //document.getElementById("valCtrl").addEventListener("click", function(evt) {
+          //    setMap(0, 10, ddd, colorArr, result.stationPiont, true, cri)
+          //  })
             ////////////////////////////////////////////////////
-          $(".coverage-number").html(reslut.electrCoverage * 100 + "%");
+
+            //初始化地图
+            var stations = result.stationPiont,
+                data = result.kriking3.result;
+            //  console.log(stations)//[{x:25515.12, y:25326, count: , stationId}]
+            // 设置默认
+            Array.prototype.max = function() {
+                return Math.max.apply({}, this)
+            }
+            Array.prototype.min = function() {
+                return Math.min.apply({}, this)
+            }
+            if (stations.length) {
+                var countArr = [];
+                for (var i = 0; i < stations.length; i++) {
+                    countArr.push(parseInt(stations[i].count));
+                }
+                document.getElementById("minCtrl").value = countArr.min();
+                document.getElementById("maxCtrl").value = countArr.max();
+            }
+            app.update('situation', {
+                data: data,
+                opacity: 0.7
+            });
+            //配置项在stationsLayer的里，透明度是situation层，其他都在stationsLayer
+            app.stationsLayer({
+                data: stations
+            });
+          $(".coverage-number").html(result.electrCoverage * 100 + "%");
         });
       });
     }
