@@ -91,7 +91,23 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                         type : 'line',
                         showSymbol : false,
                         symbolSize : 6,
-                        data : reslut.max.series
+                        data : reslut.max.series,
+                        markPoint: {
+                            data: [
+                                {name: '信号频率', value: 9, xAxis: 104, yAxis: 9}
+                            ]
+                        }
+                        //markPoint: {
+                        //	data: [
+                        //		{type: 'max', name: '最大值'},
+                        //		{type: 'min', name: '最小值'}
+                        //	]
+                        //},
+                        //markLine: {
+                        //	data: [
+                        //		{type: 'average', name: '平均值'}
+                        //	]
+                        //}
                         // reslut.series
                         //[ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, ]
                     }

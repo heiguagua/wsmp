@@ -269,8 +269,8 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
 			if(day.substring(0,1)=='0'){
 				day = day.substring(1);
 			}
-			$("#modalDayLabel").html(year+'年'+month+'月'+day+'日'+name+'的峰值与日占用度（按24小时统计）');
-			$("#dayLevelChartTitle").html(year+'年'+month+'月'+day+'日的峰值');
+			$("#modalDayLabel").html(year+'年'+month+'月'+day+'日'+name+'的电平峰值与日占用度（按24小时统计）');
+			$("#dayLevelChartTitle").html(year+'年'+month+'月'+day+'日的电平峰值');
 			$("#dayChartTitle").html(year+'年'+month+'月'+day+'日的日占用度');
 			if(drag_flag){
 				drag_flag = false;

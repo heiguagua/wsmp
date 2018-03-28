@@ -28,7 +28,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax,echarts) {
 				},
 				grid : {
 					left : '1%',
-					right : '7%',
+					right : '6%',
 					bottom : '2%',
 					top : 30,
 					containLabel : true
@@ -38,7 +38,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax,echarts) {
 				},
 				xAxis : {
 					type : 'category',
-					name:'时间(h)',
+					name:'时刻',
 					boundaryGap : false,
 					axisLine : {
 						lineStyle : {
@@ -54,7 +54,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax,echarts) {
 						}
 					},
 					data : data.dayOcc.xAxis
-					//[ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24' ]
+					//data :[ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 ]
 				},
 				yAxis : {
 					type : 'value',
@@ -86,10 +86,10 @@ define([ "ajax", "echarts", "jquery" ], function(ajax,echarts) {
                         type : 'line',
                         showSymbol : true,
                         symbolSize : 6,
-                        data : data.dayOcc.zeroSeries,
+						data : data.dayOcc.zeroSeries
                         //data : [ null,null, 0, null,null, null,null, null,null, null ]
                         // reslut.series
-                        //[ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, ]
+                        //data : [ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9,59.1, 58.2, 58, 57.9]
                     },
                     {
                         name : '',
@@ -97,11 +97,11 @@ define([ "ajax", "echarts", "jquery" ], function(ajax,echarts) {
                         showSymbol : true,
                         symbolSize : 6,
                         data : data.dayOcc.noneZeroSeries,
-                        lineStyle :{
-                            normal :{
-                                type :"dashed"
-                            }
-                        }
+                        //lineStyle :{
+                        //    normal :{
+                        //        type :"dashed"
+                        //    }
+                        //}
                         // reslut.series
                         //[ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, ]
                     }
@@ -113,7 +113,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax,echarts) {
 		}
 
         dayChart = echarts.init($('#dayChart')[0]);
-		dayChart.setOption();optionDay
+		dayChart.setOption(optionDay);
 		// dayChart.on('click', function() {
 		// 	$('#modalHour').modal()
 		// })

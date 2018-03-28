@@ -34,7 +34,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                 }],
                 grid : {
                     left : '1%',
-                    right : '2%',
+                    right : '6%',
                     bottom : '2%',
                     top : 30,
                     containLabel : true
@@ -44,10 +44,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                 },
                 xAxis : {
                     type : 'category',
-                    //name:'信号频率(MHz)',
-                    //nameRotate:'-90',
-                    //nameLocation:'end',
-                    //boundaryGap : false,
+                    name:'时刻',
                     axisLine : {
                         lineStyle : {
                             color : '#DAE5F0'

@@ -170,11 +170,11 @@
         <div id='day'>
           <div class="box">
             <h5 class="text-center" id="dayLevelChartTitle"></h5>
-            <div id = "dayLevelChart" style="width: 800px;height: 300px"></div>
+            <div id = "dayLevelChart" style="width: 850px;height: 300px"></div>
           </div>
           <div class="box" style="margin-top:10px">
             <h5 class="text-center" id="dayChartTitle"></h5>
-            <div id = "dayChart" style="width: 800px;height: 300px"></div>
+            <div id = "dayChart" style="width: 850px;height: 300px"></div>
           </div>
         </div>
       </div>
