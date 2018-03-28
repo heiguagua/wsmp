@@ -135,35 +135,35 @@
                                 <em style="margin: 0px 5px;">-</em>
                                 <input type="text" id="searchFremax" class="searchFre" value="108" placeholder="最大值"
                                    style="width: 50px; line-height: 1;">
-                                <el-radio :label="1" v-model="searchFre" name="searchFre" @change="searchFreChange()">频段(MHz)：</el-radio>
+                                <%--<el-radio :label="1" v-model="searchFre" name="searchFre" @change="searchFreChange()">频段(MHz)：</el-radio>--%>
                                 <%--<select  class='city-list select2-picker'>--%>
                                 <%--</select>--%>
-                                <div class="searchBrand-layout">
-                                    <el-input
-                                            size="small"
-                                            placeholder="请输入内容"
-                                            suffix-icon="el-icon-search"
-                                            @focus="showBrandInfo()"
-                                            v-model="searchBrand">
-                                    </el-input>
-                                    <div class="searchBrand" v-if="showOrHideBrandInfo">
-                                        <el-input
-                                                placeholder="输入关键字进行过滤"
-                                                v-model="filterText">
-                                        </el-input>
-                                        <el-tree
-                                                class="filter-tree"
-                                                :data="data2"
-                                                default-expand-all
-                                                :filter-node-method="filterNode"
-                                                @node-click="nodeClick"
-                                                ref="tree2">
-                                        </el-tree>
-                                    </div>
-                                </div>
-                                <el-radio :label="2" v-model="searchFre" name="searchFre" @change="searchFreChange()">是否重点监测数据</el-radio>
-                                <el-radio :label="3" v-model="searchFre" name="searchFre" @change="searchFreChange()">全部</el-radio>
-                                <button class="btn btn-info btn-refresh-table">查询</button>
+                                <%--<div class="searchBrand-layout">--%>
+                                    <%--<el-input--%>
+                                            <%--size="small"--%>
+                                            <%--placeholder="请输入内容"--%>
+                                            <%--suffix-icon="el-icon-search"--%>
+                                            <%--@focus="showBrandInfo()"--%>
+                                            <%--v-model="searchBrand">--%>
+                                    <%--</el-input>--%>
+                                    <%--<div class="searchBrand" v-if="showOrHideBrandInfo">--%>
+                                        <%--<el-input--%>
+                                                <%--placeholder="输入关键字进行过滤"--%>
+                                                <%--v-model="filterText">--%>
+                                        <%--</el-input>--%>
+                                        <%--<el-tree--%>
+                                                <%--class="filter-tree"--%>
+                                                <%--:data="data2"--%>
+                                                <%--default-expand-all--%>
+                                                <%--:filter-node-method="filterNode"--%>
+                                                <%--@node-click="nodeClick"--%>
+                                                <%--ref="tree2">--%>
+                                        <%--</el-tree>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                                <%--<el-radio :label="2" v-model="searchFre" name="searchFre" @change="searchFreChange()">是否重点监测数据</el-radio>--%>
+                                <%--<el-radio :label="3" v-model="searchFre" name="searchFre" @change="searchFreChange()">全部</el-radio>--%>
+                                <button id="filterFrequeryBand"class="btn btn-info btn-refresh-table">查询</button>
 
                             <%--</div>--%>
                     </li>

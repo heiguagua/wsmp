@@ -373,8 +373,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 						}
 					});
 
-                 //统计数据，电波秩序总览中，显示各列中每种信号类型的总数
-				getSignalCounts();
 
 
 				// 地图初始化
@@ -387,10 +385,11 @@ define(	["ajax", "dojo/parser", "esri/map",
 				datetimepicker_init();
 				// 告警定时更新初始化
 				refresh_timer_init(3);
-
 				// 监听下拉框点击事件
 				$(".select2-picker").on("select2:select", function(e) {
 							var areaCode = e.target.value;
+							//统计数据，电波秩序总览中，显示各列中每种信号类型的总数
+							getSignalCounts(areaCode);
 							select2_change(areaCode);
 						});
 
@@ -1092,8 +1091,11 @@ define(	["ajax", "dojo/parser", "esri/map",
 				
 			}
 	       //电波秩序总览中，显示每种信号类型的总数
-			function getSignalCounts(){
-				ajax.post("data/waveorder/statisticsForSingnalsAndWarnings",null,function(result){
+			function getSignalCounts(areaCode){
+				var data ={
+					areaCode:areaCode
+				};
+				ajax.post("data/waveorder/statisticsForSingnalsAndWarnings",data,function(result){
 					console.log(result)
 					$('#alarmTotalCount').text(result.alarmTotalCount);//总告警数
 					$('#undealedAlarmCounts').text(result.alarmUnconfiredCount);//未处理告警数
@@ -1387,6 +1389,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 				// 默认选中第一个
 				var defaultAreaCode = $("#area_select").select2('val');
 				console.log(defaultAreaCode);
+				//统计数据，电波秩序总览中，显示各列中每种信号类型的总数
+				getSignalCounts(defaultAreaCode);
 				// $('.select2-picker').val(defaultAreaCode); // Change the
 				// value or make some change to the internal state
 				// $('.select2-picker').trigger('change.select2'); //触发事件
@@ -1402,7 +1406,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 					select2_change(areaCode);
 				}
 			}
-
 			// 区域切换
 			function select2_change(areaCode) {
 
@@ -1422,10 +1425,43 @@ define(	["ajax", "dojo/parser", "esri/map",
 				for (var i = 0; i < monitors.length; i++) {
 					monitorsID[i] = monitors[i].Num;
 				}
+				$("#searchFremax").on('blur',function(){
+					var beginFreq =$("#searchFremin").val(),
+						endFreq =$("#searchFremax").val();
+					if((parseInt(endFreq)-parseInt(beginFreq))<0){
+                     layer.msg('最大频率不能小于最小频率');
+						$("#searchFremax").val('')
+					}
+				})
+				$("#searchFremin").on('focus',function(){
+					$("#searchFremin").val('');
+				})
+				//按频段过滤显示“实时告警未确认”、“实时告警已确认”、“信号智能识别”的内容,监听查询
+				$("#filterFrequeryBand").on("click", function(e) {
+					//按频段过滤显示“实时告警未确认”、“实时告警已确认”、“信号智能识别”的内容
+					var beginFreq =$("#searchFremin").val(),
+						endFreq =$("#searchFremax").val();
+					console.log('过滤频段：'+beginFreq+'-'+endFreq)
+					var filter ={
+						beginFreq:beginFreq,
+						endFreq:endFreq
+					}
+					table_alarm_undealed(monitorsID, monitors,filter);
+					table_alarm_dealed(monitorsID, monitors,filter);
+					radio_auto_confirm(monitorsID, monitors,filter);
+				});
+				//按频段过滤显示“实时告警未确认”、“实时告警已确认”、“信号智能识别”的内容
+				var beginFreq =$("#searchFremin").val(),
+					endFreq =$("#searchFremax").val();
+				console.log('过滤频段：'+beginFreq+'-'+endFreq)
+				var filter ={
+					beginFreq:beginFreq,
+					endFreq:endFreq
+				}
 				table_radio_init(monitors, userID);
-				table_alarm_undealed(monitorsID, monitors);
-				table_alarm_dealed(monitorsID, monitors);
-				radio_auto_confirm(monitorsID, monitors);
+				table_alarm_undealed(monitorsID, monitors,filter);
+				table_alarm_dealed(monitorsID, monitors,filter);
+				radio_auto_confirm(monitorsID, monitors,filter);
 				//改变地图中心
 				var center = new Point({
 							"x" : MONITORS[0].Longitude,
@@ -1765,7 +1801,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 			}
 
 			// 告警处理页面
-			function table_alarm_dealed(monitorsID, monitors) {
+			function table_alarm_dealed(monitorsID, monitors,filter) {
 				$('#table-alarm-dealed').bootstrapTable("destroy");
 				$('#table-alarm-dealed').bootstrapTable({
 					//height : 630,
@@ -1780,6 +1816,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 					queryParamsType : 'limit', // 查询参数组织方式
 					queryParams : function(params) {
 						params.monitorsID = monitorsID;
+						params.beginFreq = filter.beginFreq;
+						params.endFreq=filter.endFreq;
 						return params
 					}, // 请求服务器时所传的参数
 					sidePagination : 'client', // 指定服务器端分页
@@ -1914,7 +1952,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 			}
 
 			// 告警未处理页面
-			function table_alarm_undealed(monitorsID, monitors) {
+			function table_alarm_undealed(monitorsID, monitors,filter) {
 				$('#table-alarm-undeal').bootstrapTable("destroy");
 				var option = {
 					//height : 630,
@@ -1930,6 +1968,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 					queryParamsType : 'limit', // 查询参数组织方式
 					queryParams : function(params) {
 						params.monitorsID = monitorsID;
+						params.beginFreq = filter.beginFreq;
+						params.endFreq=filter.endFreq;
 						return params
 					}, // 请求服务器时所传的参数
 					pageSize : 15, // 单页记录数
@@ -2070,7 +2110,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 			}
 			
 			// 告警自动确认成信号页面
-			function radio_auto_confirm(monitorsID, monitors) {
+			function radio_auto_confirm(monitorsID, monitors,filter) {
 				$('#radio_auto_confirm').bootstrapTable("destroy");
 				var option = {
 					method : 'post',
@@ -2085,6 +2125,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 					queryParamsType : 'limit', // 查询参数组织方式
 					queryParams : function(params) {
 						params.monitorsID = monitorsID;
+						params.beginFreq = filter.beginFreq;
+						params.endFreq=filter.endFreq;
 						return params
 					}, // 请求服务器时所传的参数
 					pageSize : 15, // 单页记录数
