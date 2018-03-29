@@ -13,15 +13,23 @@ define([ "ajax", "echarts", "jquery" ], function(ajax,echarts) {
 				color : [ 'rgb(55,165,255)' ],
 				tooltip : {
 					trigger : 'axis',
+					axisPointer: {
+						type: 'line',
+						animation: false,
+						lineStyle: {
+							type:'dashed',
+							opacity:0.5
+							//color:'red'
+						}
+					},
 					formatter:function(param){
-						//console.log(param)
 						if(param && param[0] && param[0].name && param[0].value!=null && param[0].value>0) {
-							return param[0].name+"点占用度" + param[0].value.toFixed(2)+"%";
+							return "<div align='left'>时间 :  "+param[0].name+"时</br>占用度 : " + param[0].value.toFixed(2) + "%</div>";
 						}else if(param && param[1] && param[1].name && param[1].value!=null && param[1].value>0){
-                            return param[1].name+"点占用度" + param[1].value.toFixed(2)+"%";
+							return "<div align='left'>时间 :  "+param[1].name+"时</br>占用度 : " + param[1].value.toFixed(2) + "%</div>";
 						}
 						else{
-                            return "没有数据";
+							return "<div align='left'>时间 :  "+param[1].name + "时</br>占用度 : 没有数据</div>";
 						}
 
 					}
@@ -38,7 +46,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax,echarts) {
 				},
 				xAxis : {
 					type : 'category',
-					name:'时刻',
+					name:'时间',
 					boundaryGap : false,
 					axisLine : {
 						lineStyle : {
@@ -96,7 +104,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax,echarts) {
                         type : 'line',
                         showSymbol : true,
                         symbolSize : 6,
-                        data : data.dayOcc.noneZeroSeries,
+                        data : data.dayOcc.noneZeroSeries
                         //lineStyle :{
                         //    normal :{
                         //        type :"dashed"

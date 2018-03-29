@@ -1443,8 +1443,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 						endFreq =$("#searchFremax").val();
 					console.log('过滤频段：'+beginFreq+'-'+endFreq)
 					var filter ={
-						beginFreq:beginFreq,
-						endFreq:endFreq
+						beginFreq:parseInt(beginFreq)*1000000,
+						endFreq:parseInt(endFreq)*1000000
 					}
 					table_alarm_undealed(monitorsID, monitors,filter);
 					table_alarm_dealed(monitorsID, monitors,filter);
@@ -1455,8 +1455,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 					endFreq =$("#searchFremax").val();
 				console.log('过滤频段：'+beginFreq+'-'+endFreq)
 				var filter ={
-					beginFreq:beginFreq,
-					endFreq:endFreq
+					beginFreq:parseInt(beginFreq)*1000000,
+					endFreq:parseInt(endFreq)*1000000
 				}
 				table_radio_init(monitors, userID);
 				table_alarm_undealed(monitorsID, monitors,filter);
@@ -2374,18 +2374,18 @@ define(	["ajax", "dojo/parser", "esri/map",
 						{
 						class : "sortTable1",
 							align : "center",
-						field : 'legalNormalStationNumber',
+						field : 'alarmingNumber',
 						title : '告警数量'+"<img src='images/arrow-both.png'width='24'/> " ,
 						width : '10%',
 						titleTooltip : '告警数量',
 						sortable : true,
-						sortName : "legalNormalStationNumber",
-						formatter : function(value, row, index) {
-							return '<a data-toggle="modal" data-target="#modalSignal" data-radioType="1" data-isSubType="false" data-beginFreq="'
-								+ row.beginFreq
-								+ '" data-endFreq="'
-								+ row.endFreq + '">' + value + '</a>';
-						}
+						sortName : "alarmingNumber"
+						//formatter : function(value, row, index) {
+						//	return '<a data-toggle="modal" data-target="#modalAlarm" data-radioType="1" data-isSubType="false" data-beginFreq="'
+						//		+ row.beginFreq
+						//		+ '" data-endFreq="'
+						//		+ row.endFreq + '">' + value + '</a>';
+						//}
 
 					},
 						{
