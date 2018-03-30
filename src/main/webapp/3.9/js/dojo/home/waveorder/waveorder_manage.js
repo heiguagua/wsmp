@@ -2040,6 +2040,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 											}
 										}
 									}
+
+									value1=(value1+"").replace(/,/g,"");
 									return '<div class="dpopover" data-container="body"  data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
 											+ content + '">' + value1 + '</div>';
 								}
