@@ -1081,7 +1081,6 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
         fisrtLevel.beginTime = beginTime;
         fisrtLevel.centorFreq = centorfreq;
         ajax.get("data/alarm/firstLevelChart", fisrtLevel, function(result) {
-            console.log(fisrtLevel.centorFreq/1000000)
             initMonthchart(result); //月占用度
             maxlevel_chart.init(result,(fisrtLevel.centorFreq/1000000)); //电平峰值
         });

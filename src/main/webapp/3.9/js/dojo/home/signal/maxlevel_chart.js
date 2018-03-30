@@ -10,7 +10,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
             var y=0;
             for(var i in reslut.max.xAxis ){
               if(reslut.max.xAxis[i] ==centorFreq){
-                  x=i;
+                  x=parseInt(i);
                   y=reslut.max.series[i];
               }
             }
@@ -59,7 +59,6 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                     type : 'category',
                     name:'信号频率(MHz)',
                     nameRotate:'-60',
-                    //boundaryGap : false,
                     axisLine : {
                         lineStyle : {
                             color : '#DAE5F0'
@@ -109,18 +108,15 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                         symbolSize : 6,
                         data : reslut.max.series,
                         markPoint: {
-                            //symbol:'circle',
-                                // default: 'pin','circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow'
-                            data: [{
-                                name: '最大值',
-                                type: 'max'
-                            }, {coord: [x,x]}
+                            data: [
+                                {
+                                    name: '中心频率',
+                                    coord: [x, y]
+                                    //symbol:'circle' //'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow'
+                                }
+
                             ]
-
-
                         }
-                        // reslut.series
-                        //[ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, ]
                     }
                 ]
             };
