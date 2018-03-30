@@ -789,6 +789,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 								var monitors = getMonitors(AREACODE);
 								var content = "";
 									var value1 = [];
+									var temp = [];
 									for (var i = 0; i < value.length; i++) {
 										for (var j = 0; j < monitors.length; j++) {
 											if (value[i] == monitors[j].Num) {
@@ -796,11 +797,12 @@ define(	["ajax", "dojo/parser", "esri/map",
 												var sub_content = "<div class='popover-item'>"
 														+ value1[i] + "</div>";
 												content += sub_content;
+												temp.push(value1[i]);
 											}
 										}
 									}
 									return '<div class="dpopover" data-container="body"  data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
-											+ content + '">' + value1 + '</div>';
+											+ content + '">' + temp + '</div>';
 							},
 							events : {
 
@@ -826,7 +828,10 @@ define(	["ajax", "dojo/parser", "esri/map",
 								return value;
 							}
 						}, {
+							width : '20%',
 							searchable : false,
+							title : '操作',
+							titleTooltip : "操作",
 							field : "signalManage",
 							formatter : function(value, row, index) {
 								return '<a signalId=' + row.id
@@ -1879,6 +1884,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 								formatter : function(value, row, index) {
 									var content = "";
 									var value1 = [];
+									var temp=[];
 									for (var i = 0; i < value.length; i++) {
 										for (var j = 0; j < monitors.length; j++) {
 											if (value[i] == monitors[j].Num) {
@@ -1886,11 +1892,12 @@ define(	["ajax", "dojo/parser", "esri/map",
 												var sub_content = "<div class='popover-item'>"
 														+ value1[i] + "</div>";
 												content += sub_content;
+												temp.push(value1[i]);
 											}
 										}
 									}
 									return '<div class="dpopover" data-container="body"  data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
-											+ content + '">' + value1 + '</div>';
+											+ content + '">' + temp + '</div>';
 								}
 							}, {
 								field : 'status',
@@ -2030,6 +2037,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 								formatter : function(value, row, index) {
 									var content = "";
 									var value1 = [];
+									var temp=[];
 									for (var i = 0; i < value.length; i++) {
 										for (var j = 0; j < monitors.length; j++) {
 											if (value[i] == monitors[j].Num) {
@@ -2037,13 +2045,12 @@ define(	["ajax", "dojo/parser", "esri/map",
 												var sub_content = "<div class='popover-item'>"
 														+ value1[i] + "</div>";
 												content += sub_content;
+												temp.push(value1[i]);
 											}
 										}
 									}
-
-									value1=(value1+"").replace(/,/g,"");
 									return '<div class="dpopover" data-container="body"  data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
-											+ content + '">' + value1 + '</div>';
+											+ content + '">' + temp + '</div>';
 								}
 							}, {
 								field : 'status',
@@ -2194,6 +2201,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 								var monitors = getMonitors(AREACODE);
 								var content = "";
 									var value1 = [];
+									var temp=[];
 									for (var i = 0; i < value.length; i++) {
 										for (var j = 0; j < monitors.length; j++) {
 											if (value[i] == monitors[j].Num) {
@@ -2201,11 +2209,12 @@ define(	["ajax", "dojo/parser", "esri/map",
 												var sub_content = "<div class='popover-item'>"
 														+ value1[i] + "</div>";
 												content += sub_content;
+												temp.push(value1[i]);
 											}
 										}
 									}
 									return '<div class="dpopover" data-container="body"  data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
-											+ content + '">' + value1 + '</div>';
+											+ content + '">' + temp + '</div>';
 							},
 							events : {
 
@@ -2230,6 +2239,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 								return value;
 							}
 						}, {
+							title : '操作',
+							titleTooltip : "操作",
 							align: 'center',
 							field : "signalManage",
 							formatter : function(value, row, index) {

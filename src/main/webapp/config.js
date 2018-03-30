@@ -30,7 +30,7 @@ var config={
         },
         info:{
             maplaytit:"场强定位信息",
-            laytit:"信息列表",
+            laytit:"信号列表",
             laytit1:"重点监测参数配置",
             laytit2:"选择监测站",
             electromagnetic:"电磁覆盖率",
