@@ -23,7 +23,7 @@ public class HttpServiceConfig {
 	// return null;
 	// }
 	
-	public static String httpclient(double[][] dataIn,String url ) {
+	public static String httpclient(double[][] dataIn,String url, Boolean isAdut) {
 		 RestTemplate restTemplate = new RestTemplate();
          HttpHeaders headers = new HttpHeaders();
          MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8");
@@ -32,10 +32,17 @@ public class HttpServiceConfig {
           
          JSONObject jsonObj = new JSONObject();
          jsonObj.put("data", dataIn);
-         jsonObj.put("stepx", 0.02);  
-         jsonObj.put("stepy", 0.02);
-         jsonObj.put("scale", 0.086);
-          
+         jsonObj.put("stepx", 0.0138);
+         jsonObj.put("stepy", 0.0305);
+         jsonObj.put("scale", 0.25);
+         jsonObj.put("radis", 195);
+         if(isAdut){
+             jsonObj.put("stepx", 0.03);
+             jsonObj.put("stepy", 0.03);
+             jsonObj.put("scale", 0.35);
+             jsonObj.put("radis", 120);
+         }
+
          HttpEntity<String> formEntity = new HttpEntity<String>(jsonObj.toString(), headers);
  
          String result = restTemplate.postForObject(url, formEntity, String.class);
