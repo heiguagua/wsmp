@@ -115,13 +115,13 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
         maxlevelChart = echarts.init($('#dayLevelChart')[0]);
         maxlevelChart.setOption(optionMonth);
 
-        load_level_mouse_event();
+        //load_level_mouse_event();
 
         window.onresize = function() {
             maxlevelChart.clear();
             maxlevelChart.setOption(optionMonth);
         }
-
+      return maxlevelChart
     }
 
     // 电平峰值鼠标区域选择放大缩小事件

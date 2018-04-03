@@ -323,12 +323,61 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
 
 			ajax.get("data/alarm/secondLevelChart",data,function(reslut){
 
-	//			level_charts.init(reslut);
-	//
-	//			month_charts.init(reslut);
+				var levelCharts = day_levelcharts.init(reslut); //某天的峰值
+				var dayChart =  day_chart.init(reslut);//某天的占用度
+                ////同一天内的占用度图和电平图支持上下联动，包含横纵坐标的显示和操作
+				levelCharts.on('mouseover', function(params) {
+					dayChart.dispatchAction({
+						type: 'highlight',
+						seriesIndex: 0,
+						dataIndex: params.dataIndex
+				   });
+				// 显示 tooltip
+					dayChart.dispatchAction({
+						type: 'showTip',
+						seriesIndex: 0,
+						dataIndex: params.dataIndex
+					});
 
-				day_chart.init(reslut);
-				day_levelcharts.init(reslut);
+			});
+				levelCharts.on('mouseout', function(params) {
+					dayChart.dispatchAction({
+						type: 'downplay',
+						seriesIndex: 0,
+						dataIndex: params.dataIndex
+					});
+					// 显示 tooltip
+					dayChart.dispatchAction({
+						type: 'hideTip'
+					});
+
+				});
+				dayChart.on('mouseover', function(params) {
+					levelCharts.dispatchAction({
+						type: 'highlight',
+						seriesIndex: 0,
+						dataIndex: params.dataIndex
+					});
+					// 显示 tooltip
+					levelCharts.dispatchAction({
+						type: 'showTip',
+						seriesIndex: 0,
+						dataIndex: params.dataIndex
+					});
+
+				});
+				dayChart.on('mouseout', function(params) {
+					levelCharts.dispatchAction({
+						type: 'downplay',
+						seriesIndex: 0,
+						dataIndex: params.dataIndex
+					});
+					// 显示 tooltip
+					levelCharts.dispatchAction({
+						type: 'hideTip'
+					});
+
+				});
 
 
 			});
