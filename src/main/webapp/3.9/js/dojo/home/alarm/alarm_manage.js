@@ -172,14 +172,6 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
         // });
         //告警管理频率变换时操作
         $("#signal_list").change(function(e) {
-            // if ($("#FormQZ").val() != null && $("#FormQZ").val().length != 0) {
-            //    //////////////////////////
-            //     changeView();
-            //     mapinit.stationChange();
-            //    //////////////////////////
-            //     return;
-            // } else {
-            // }
             stationselectinit();
             changeView();
             mapinit.stationChange();
@@ -222,16 +214,7 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                 });
             }
         });
-        //init select2
         init_select2();
-        var singal = $("#FormQZ").val();
-        if (singal) {
-            var search = $("#search");
-            search.val(singal);
-            var e = jQuery.Event("keydown"); //模拟一个键盘事件
-            e.keyCode = 13; //keyCode=13是回车
-            $("#search").trigger(e); //模拟页码框按下回车
-        }
     }
     function configWarmingClick() {
         $("#configWFreqWarming").click(function() {
@@ -329,7 +312,6 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                     var codes = info.Area.Code;
                     var stationList = [];
                     for (var index = 0; index < stations.length; index++) {
-                        //console.log(stations[index].Num);
                         stationList.push(stations[index].Num);
                     }
                     var stationCodeList = {};
@@ -359,9 +341,7 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                         stationselectinit();
                         $('.select2-picker').select2();
                         changeView();
-                        //console.log(mapinit);
                         mapinit.stationChange();
-                        //$("#illegal").click();
                     });
                 }
             } else {

@@ -22,10 +22,38 @@
 <link rel="stylesheet" href="3.9/js/dojo/webgis/widgets/themes/darkangel/override.css">
 <link href='3.9/js/dojo/library/timepicker/css/bootstrap-datetimepicker.min.css' rel='stylesheet' />
 <link href='3.9/js/dojo/library/layer/layer.css' rel='stylesheet' />
-	<script src="3.9/vue.js"></script>
+<script src="3.9/vue.js"></script>
 <style>
 .box{position: relative;}
-.levelsColor{position:absolute;top:980px;right:20px;height:22px}.levelsColor input[type="number"]{width:40px}.levelsColor input[type="number"],.levelsColor a,.levelsColor img{display:inline-block;*display:inline;*zoom:1;height:22px;float:left}.levelsColor img{padding-top:0px}#valCtrl{height:23px;padding:0px 15px;background:#6F6FF2;color:#fff;font-size:12px;text-decoration:none;line-height:23px}
+.levelsColor{
+	position: relative;
+	top: -475px;
+	left: 850px;
+	/*position:absolute;top:980px;right:20px;height:22px*/
+}
+.levelsColor input[type="number"]{
+	width:40px;
+	border: 1px solid #DAE5F0;
+	border-radius: 4px;
+}.levelsColor input[type="number"],.levelsColor a,.levelsColor img{
+	 display:inline-block;*display:inline;*zoom:1;height:22px;float:left
+ }
+.levelsColor img{
+	padding-top:0px
+    border: 1px solid #DAE5F0;
+	border-radius: 4px;
+}
+#valCtrl{
+	border: 1px solid #DAE5F0;
+	border-radius: 4px;
+	height:23px;
+	padding:0px 15px;
+	background:#6F6FF2;
+	color:#fff;
+	font-size:12px;
+	text-decoration:none;
+	line-height:23px
+}
 </style>
 <script src="3.9/js/dojo/library/wavesuffer/wavesuffer.js"></script>
 <script src="3.9/js/dojo/library/lodash/lodash.js"></script>
@@ -306,7 +334,7 @@
 					</div>
 				</div>
 				<div id="mapDiv" style= "padding: 0px;height: 480px;"></div>
-				<div id="mapDiv1"></div>
+				<%--<div id="mapDiv1"></div>--%>
 				<!-- <div id="heatLayer"></div> -->
 				<%--控件--%>
 				<div id="levelsColor" class="levelsColor">
