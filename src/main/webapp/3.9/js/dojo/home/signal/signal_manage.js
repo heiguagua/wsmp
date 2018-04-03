@@ -1474,13 +1474,12 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                         },
                         formatter: function(param) {
                             ////console.log(param)
-                            if(param && param[0] && param[0].name && param[0].value!=null && param[0].value>0) {
+                            if(param[0].value!=null ) {
                                 return "<div align='left'>时间 :  "+param[0].name+"时</br>占用度 : " + param[0].value.toFixed(2) + "%</div>";
-                            }else if(param && param[1] && param[1].name && param[1].value!=null && param[1].value>0){
-                                return "<div align='left'>时间 :  "+param[1].name+"时</br>占用度 : " + param[1].value.toFixed(2) + "%</div>";
-                            }
-                            else{
-                                return "<div align='left'>时间 :  "+param[1].name + "时</br>占用度 : 没有数据</div>";
+                            //}else if(param && param[1] && param[1].name && param[1].value!=null && param[1].value>0){
+                            //    return "<div align='left'>时间 :  "+param[1].name+"时</br>占用度 : " + param[1].value.toFixed(2) + "%</div>";
+                            } else{
+                                return "<div align='left'>时间 :  "+param[0].name + "时</br>占用度 : 没有数据</div>";
                             }
                             //if (param && param[0] && param[0].name && param[0].value != null && param[0].value>0) {
                             //    return param[0].name + "点占用度" + param[0].value.toFixed(2) + "%";
@@ -1546,33 +1545,27 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                         }
                     },
                     series: [
-                        // {
-                        //     name : '',
-                        //     type : 'line',
-                        //     showSymbol : false,
-                        //     symbolSize : 6,
-                        //     data : reslut.dayOcc.series
-                        // }
+                        //{
+                        //    name: '',
+                        //    type: 'line',
+                        //    showSymbol: true,
+                        //    symbolSize: 6,
+                        //    data: reslut.dayOcc.zeroSeries,
+                        //    //data : [ null,null, 0, null,null, null,null, null,null, null ]
+                        //    // reslut.series
+                        //    //[ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, ]
+                        //},
                         {
                             name: '',
                             type: 'line',
                             showSymbol: true,
                             symbolSize: 6,
-                            data: reslut.dayOcc.zeroSeries,
-                            //data : [ null,null, 0, null,null, null,null, null,null, null ]
-                            // reslut.series
-                            //[ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, ]
-                        }, {
-                            name: '',
-                            type: 'line',
-                            showSymbol: true,
-                            symbolSize: 6,
                             data: reslut.dayOcc.noneZeroSeries,
-                            lineStyle: {
-                                normal: {
-                                    type: "dashed"
-                                }
-                            }
+                            //lineStyle: {
+                            //    normal: {
+                            //        type: "dashed"
+                            //    }
+                            //}
                             // reslut.series
                             //[ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, ]
                         }
@@ -1582,7 +1575,62 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
             var element = document.getElementById("dayChart");
             var dayChart = echarts.init(element);
             dayChart.setOption(optionDay); //某天的占用度
-            daylevel_chart.init(reslut); //某天的峰值
+           var levelCharts = daylevel_chart.init(reslut); //某天的峰值
+
+              //同一天内的占用度图和电平图支持上下联动，包含横纵坐标的显示和操作
+            levelCharts.on('mouseover', function(params) {
+                dayChart.dispatchAction({
+                    type: 'highlight',
+                    seriesIndex: 0,
+                    dataIndex: params.dataIndex
+                });
+                // 显示 tooltip
+                dayChart.dispatchAction({
+                    type: 'showTip',
+                    seriesIndex: 0,
+                    dataIndex: params.dataIndex
+                });
+
+            });
+            levelCharts.on('mouseout', function(params) {
+                dayChart.dispatchAction({
+                    type: 'downplay',
+                    seriesIndex: 0,
+                    dataIndex: params.dataIndex
+                });
+                // 显示 tooltip
+                dayChart.dispatchAction({
+                    type: 'hideTip'
+                });
+
+            });
+            dayChart.on('mouseover', function(params) {
+                levelCharts.dispatchAction({
+                    type: 'highlight',
+                    seriesIndex: 0,
+                    dataIndex: params.dataIndex
+                });
+                // 显示 tooltip
+                levelCharts.dispatchAction({
+                    type: 'showTip',
+                    seriesIndex: 0,
+                    dataIndex: params.dataIndex
+                });
+
+            });
+            dayChart.on('mouseout', function(params) {
+                levelCharts.dispatchAction({
+                    type: 'downplay',
+                    seriesIndex: 0,
+                    dataIndex: params.dataIndex
+                });
+                // 显示 tooltip
+                levelCharts.dispatchAction({
+                    type: 'hideTip'
+                });
+
+            });
+
         });
     }
     function initSelect2() {
