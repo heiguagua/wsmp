@@ -5,7 +5,7 @@ package com.chinawiserv.wsmp.pojo.request;
  */
 public class StationPositionInfo {
     /**
-     * 经度
+     * 经 度
      */
     private Double flat;
     /**

@@ -3,7 +3,7 @@ package com.chinawiserv.wsmp.pojo.request;
 import java.util.List;
 
 /**
- * Created by yangh on 4/3/2018.
+ * Created by yangh on  4/3/2018.
  */
 public class EstimateRequest {
 
