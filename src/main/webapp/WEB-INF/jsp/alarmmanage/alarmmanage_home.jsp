@@ -23,7 +23,32 @@
   <link href='3.9/js/dojo/library/layer/layer.css' rel='stylesheet' />
   <style>
     .box{position: relative;}
-    .levelsColor{position:absolute;top:62px;right:20px;height:22px}.levelsColor input[type="number"]{width:40px}.levelsColor input[type="number"],.levelsColor a,.levelsColor img{display:inline-block;*display:inline;*zoom:1;height:22px;float:left}.levelsColor img{padding-top:0px}#valCtrl{height:23px;padding:0px 15px;background:#6F6FF2;color:#fff;font-size:12px;text-decoration:none;line-height:23px}
+    .levelsColor{
+      position:absolute;top:62px;right:20px;height:22px
+    }
+    .levelsColor input[type="number"]{
+      width:40px;
+      border: 1px solid #DAE5F0;
+      border-radius: 4px;
+    }.levelsColor input[type="number"],.levelsColor a,.levelsColor img{
+           display:inline-block;*display:inline;*zoom:1;height:22px;float:left
+         }
+    .levelsColor img{
+      padding-top:0px
+    border: 1px solid #DAE5F0;
+      border-radius: 4px;
+    }
+    #valCtrl{
+      border: 1px solid #DAE5F0;
+      border-radius: 4px;
+      height:23px;
+      padding:0px 15px;
+      background:#6F6FF2;
+      color:#fff;
+      font-size:12px;
+      text-decoration:none;
+      line-height:23px
+         }
   </style>
   <script src="3.9/vue.js"></script>
 </head>
@@ -259,16 +284,16 @@
 <script src="src/heatmap.js"></script>
 <script src="src/heatmap-arcgis.js"></script>
 <script type="text/javascript">
-    var test = 1;
     require([ "home/alarm/init", "jquery",
             "dojo/domReady!","layer","datetimepicker" ],
         function(init) {
             require([ "bootstrap", "select2","echarts", "home/alarm/alarm_manage" ,"datetimepicker_cn"], function(bootstrap,select2,echarts, alarm_manage) {
-                // console.debug('xxxxxxxxxxxxxxxx')
+                init.init();
+                alarm_manage.setMapInit(init);
                 alarm_manage.init();
-               alarm_manage.setMapInit(init);
-                var map = init.init();
-            });
+
+
+        });
         });
 </script>
 <script src="config.js"></script>
