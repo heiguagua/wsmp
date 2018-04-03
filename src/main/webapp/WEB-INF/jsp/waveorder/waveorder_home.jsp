@@ -374,110 +374,110 @@
                             <div id="mapDiv2"></div>
                             <%--控件--%>
                             <div id="levelsColor" class="levelsColor">
-                                <el-button type="default" size="small">
-                                    综合态势
-                                </el-button>
-                                <%--表单配置项start--%>
-                                <el-button type="primary" size="small" @click="showForm()">
-                                    <i v-if="showOrHide"class="el-icon-arrow-down el-icon--right"></i><i v-if="!showOrHide" class="el-icon-arrow-up el-icon--right"></i>&nbsp;设置
-                                </el-button>
-                                <el-form ref="form" :model="normalparamform" class="normalparamform" :style="showOrHideClass">
-                                    <el-form-item label="显示设置"></el-form-item>
-                                    <el-form-item class="el-form-item-border">
-                                        <el-row :gutter="20">
-                                            <el-col :span="4">
-                                                <el-input v-model="normalparamform.colorMinValue" placeholder="请输入内容"></el-input>
-                                            </el-col>
-                                            <el-col :span="12">
-                                                <img src="images/color.png" style="height: 40px;width: 100%;">
-                                            </el-col>
-                                            <el-col :span="4">
-                                                <el-input v-model="normalparamform.colorMaxValue" placeholder="请输入内容"></el-input>
-                                            </el-col>
-                                            <el-col :span="4">
-                                                <el-button type="primary"><i class="fa fa-repeat"></i> </el-button>
-                                            </el-col>
-                                        </el-row>
-                                    </el-form-item>
-                                    <el-form-item class="el-form-item-border">
-                                        <el-row >
-                                            <el-col :span="4">
-                                                透明度：
-                                            </el-col>
-                                            <el-col :span="20">
-                                                <el-slider v-model="normalparamform.opercityValue" ></el-slider>
-                                            </el-col>
-                                        </el-row>
-                                    </el-form-item>
-                                    <el-form-item label="监测站显示/隐藏" class="el-form-item-border">
-                                        <el-switch style="float:right" v-model="normalparamform.MorStationisShow"></el-switch>
-                                    </el-form-item>
-                                    <el-form-item v-if="normalparamform.MorStationisShow">
-                                        <el-radio-group v-model="normalparamform.morStationIcon">
-                                            <el-radio label="图标显示方式" name="morStationIcon"></el-radio>
-                                            <el-radio label="点显示方式" name="morStationIcon" ></el-radio>
-                                        </el-radio-group>
-                                    </el-form-item>
+                                <%--<el-button type="default" size="small">--%>
+                                    <%--综合态势--%>
+                                <%--</el-button>--%>
+                                <%--&lt;%&ndash;表单配置项start&ndash;%&gt;--%>
+                                <%--<el-button type="primary" size="small" @click="showForm()">--%>
+                                    <%--<i v-if="showOrHide"class="el-icon-arrow-down el-icon--right"></i><i v-if="!showOrHide" class="el-icon-arrow-up el-icon--right"></i>&nbsp;设置--%>
+                                <%--</el-button>--%>
+                                <%--<el-form ref="form" :model="normalparamform" class="normalparamform" :style="showOrHideClass">--%>
+                                    <%--<el-form-item label="显示设置"></el-form-item>--%>
+                                    <%--<el-form-item class="el-form-item-border">--%>
+                                        <%--<el-row :gutter="20">--%>
+                                            <%--<el-col :span="4">--%>
+                                                <%--<el-input v-model="normalparamform.colorMinValue" placeholder="请输入内容"></el-input>--%>
+                                            <%--</el-col>--%>
+                                            <%--<el-col :span="12">--%>
+                                                <%--<img src="images/color.png" style="height: 40px;width: 100%;">--%>
+                                            <%--</el-col>--%>
+                                            <%--<el-col :span="4">--%>
+                                                <%--<el-input v-model="normalparamform.colorMaxValue" placeholder="请输入内容"></el-input>--%>
+                                            <%--</el-col>--%>
+                                            <%--<el-col :span="4">--%>
+                                                <%--<el-button type="primary"><i class="fa fa-repeat"></i> </el-button>--%>
+                                            <%--</el-col>--%>
+                                        <%--</el-row>--%>
+                                    <%--</el-form-item>--%>
+                                    <%--<el-form-item class="el-form-item-border">--%>
+                                        <%--<el-row >--%>
+                                            <%--<el-col :span="4">--%>
+                                                <%--透明度：--%>
+                                            <%--</el-col>--%>
+                                            <%--<el-col :span="20">--%>
+                                                <%--<el-slider v-model="normalparamform.opercityValue" ></el-slider>--%>
+                                            <%--</el-col>--%>
+                                        <%--</el-row>--%>
+                                    <%--</el-form-item>--%>
+                                    <%--<el-form-item label="监测站显示/隐藏" class="el-form-item-border">--%>
+                                        <%--<el-switch style="float:right" v-model="normalparamform.MorStationisShow"></el-switch>--%>
+                                    <%--</el-form-item>--%>
                                     <%--<el-form-item v-if="normalparamform.MorStationisShow">--%>
-                                        <%--<el-checkbox-group v-model="normalparamform.type">--%>
-                                            <%--<el-checkbox label="显示监测站能量值" name="type"></el-checkbox>--%>
-                                            <%--<el-checkbox label="只显示超过门限的监测站" name="type"></el-checkbox>--%>
+                                        <%--<el-radio-group v-model="normalparamform.morStationIcon">--%>
+                                            <%--<el-radio label="图标显示方式" name="morStationIcon"></el-radio>--%>
+                                            <%--<el-radio label="点显示方式" name="morStationIcon" ></el-radio>--%>
+                                        <%--</el-radio-group>--%>
+                                    <%--</el-form-item>--%>
+                                    <%--&lt;%&ndash;<el-form-item v-if="normalparamform.MorStationisShow">&ndash;%&gt;--%>
+                                        <%--&lt;%&ndash;<el-checkbox-group v-model="normalparamform.type">&ndash;%&gt;--%>
+                                            <%--&lt;%&ndash;<el-checkbox label="显示监测站能量值" name="type"></el-checkbox>&ndash;%&gt;--%>
+                                            <%--&lt;%&ndash;<el-checkbox label="只显示超过门限的监测站" name="type"></el-checkbox>&ndash;%&gt;--%>
+                                        <%--&lt;%&ndash;</el-checkbox-group>&ndash;%&gt;--%>
+                                    <%--&lt;%&ndash;</el-form-item>&ndash;%&gt;--%>
+                                    <%--&lt;%&ndash;<el-form-item label="业务设置" class="el-form-item-border"></el-form-item>&ndash;%&gt;--%>
+                                    <%--&lt;%&ndash;<el-form-item class="el-form-item-border">&ndash;%&gt;--%>
+                                        <%--&lt;%&ndash;<a @click="dialogTableVisible = true"><span>电平门限：分析时段：2017-12-13至2017-12-14 区域：成都市</span></a>&ndash;%&gt;--%>
+                                        <%--&lt;%&ndash;<el-dialog title="设置" :visible.sync="dialogTableVisible">&ndash;%&gt;--%>
+                                            <%--&lt;%&ndash;<el-form :model="form">&ndash;%&gt;--%>
+                                                <%--&lt;%&ndash;<el-form-item label="电平门限：" :label-width="formLabelWidth">&ndash;%&gt;--%>
+                                                    <%--&lt;%&ndash;<el-input v-model="form.maxValue" auto-complete="off"></el-input>&ndash;%&gt;--%>
+                                                <%--&lt;%&ndash;</el-form-item>&ndash;%&gt;--%>
+                                                <%--&lt;%&ndash;<el-form-item label="时间：" :label-width="formLabelWidth">&ndash;%&gt;--%>
+                                                    <%--&lt;%&ndash;<el-date-picker&ndash;%&gt;--%>
+                                                            <%--&lt;%&ndash;v-model="form.time"&ndash;%&gt;--%>
+                                                            <%--&lt;%&ndash;type="datetimerange"&ndash;%&gt;--%>
+                                                            <%--&lt;%&ndash;align="right"&ndash;%&gt;--%>
+                                                            <%--&lt;%&ndash;unlink-panels&ndash;%&gt;--%>
+                                                            <%--&lt;%&ndash;prefix-icon="el-icon-date"&ndash;%&gt;--%>
+                                                            <%--&lt;%&ndash;range-separator="-"&ndash;%&gt;--%>
+                                                            <%--&lt;%&ndash;start-placeholder="开始日期"&ndash;%&gt;--%>
+                                                            <%--&lt;%&ndash;end-placeholder="结束日期"&ndash;%&gt;--%>
+                                                            <%--&lt;%&ndash;:picker-options="pickerOptions2">&ndash;%&gt;--%>
+                                                    <%--&lt;%&ndash;</el-date-picker>&ndash;%&gt;--%>
+                                                <%--&lt;%&ndash;</el-form-item>&ndash;%&gt;--%>
+                                                <%--&lt;%&ndash;<el-form-item label="区域：" :label-width="formLabelWidth">&ndash;%&gt;--%>
+                                                    <%--&lt;%&ndash;<el-select v-model="form.region" placeholder="请选择区域">&ndash;%&gt;--%>
+                                                        <%--&lt;%&ndash;<el-option label="成都" value=chengdu></el-option>&ndash;%&gt;--%>
+                                                        <%--&lt;%&ndash;<el-option label="绵阳" value="mianyang"></el-option>&ndash;%&gt;--%>
+                                                    <%--&lt;%&ndash;</el-select>&ndash;%&gt;--%>
+                                                <%--&lt;%&ndash;</el-form-item>&ndash;%&gt;--%>
+                                            <%--&lt;%&ndash;</el-form>&ndash;%&gt;--%>
+                                            <%--&lt;%&ndash;<div slot="footer" class="dialog-footer">&ndash;%&gt;--%>
+                                                <%--&lt;%&ndash;<el-button @click="dialogTableVisible = false">取 消</el-button>&ndash;%&gt;--%>
+                                                <%--&lt;%&ndash;<el-button type="primary" @click="dialogTableVisible = false">确 定</el-button>&ndash;%&gt;--%>
+                                            <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
+                                        <%--&lt;%&ndash;</el-dialog>&ndash;%&gt;--%>
+                                    <%--&lt;%&ndash;</el-form-item>&ndash;%&gt;--%>
+                                    <%--<el-form-item label="插值设置" class="el-form-item-border"></el-form-item>--%>
+                                    <%--<el-form-item label="是否显示未插值站" class="el-form-item-border">--%>
+                                        <%--<el-switch v-model="normalparamform.isShowNoValueMorStation"style="float:right"></el-switch>--%>
+                                    <%--</el-form-item>--%>
+                                    <%--<el-form-item label="监测站列表:">--%>
+                                        <%--<el-checkbox-group v-model="normalparamform.morStationListType">--%>
+                                            <%--<el-checkbox label="移动" name="morStationListType"></el-checkbox>--%>
+                                            <%--<el-checkbox label="固定" name="morStationListType"></el-checkbox>--%>
                                         <%--</el-checkbox-group>--%>
                                     <%--</el-form-item>--%>
-                                    <%--<el-form-item label="业务设置" class="el-form-item-border"></el-form-item>--%>
-                                    <%--<el-form-item class="el-form-item-border">--%>
-                                        <%--<a @click="dialogTableVisible = true"><span>电平门限：分析时段：2017-12-13至2017-12-14 区域：成都市</span></a>--%>
-                                        <%--<el-dialog title="设置" :visible.sync="dialogTableVisible">--%>
-                                            <%--<el-form :model="form">--%>
-                                                <%--<el-form-item label="电平门限：" :label-width="formLabelWidth">--%>
-                                                    <%--<el-input v-model="form.maxValue" auto-complete="off"></el-input>--%>
-                                                <%--</el-form-item>--%>
-                                                <%--<el-form-item label="时间：" :label-width="formLabelWidth">--%>
-                                                    <%--<el-date-picker--%>
-                                                            <%--v-model="form.time"--%>
-                                                            <%--type="datetimerange"--%>
-                                                            <%--align="right"--%>
-                                                            <%--unlink-panels--%>
-                                                            <%--prefix-icon="el-icon-date"--%>
-                                                            <%--range-separator="-"--%>
-                                                            <%--start-placeholder="开始日期"--%>
-                                                            <%--end-placeholder="结束日期"--%>
-                                                            <%--:picker-options="pickerOptions2">--%>
-                                                    <%--</el-date-picker>--%>
-                                                <%--</el-form-item>--%>
-                                                <%--<el-form-item label="区域：" :label-width="formLabelWidth">--%>
-                                                    <%--<el-select v-model="form.region" placeholder="请选择区域">--%>
-                                                        <%--<el-option label="成都" value=chengdu></el-option>--%>
-                                                        <%--<el-option label="绵阳" value="mianyang"></el-option>--%>
-                                                    <%--</el-select>--%>
-                                                <%--</el-form-item>--%>
-                                            <%--</el-form>--%>
-                                            <%--<div slot="footer" class="dialog-footer">--%>
-                                                <%--<el-button @click="dialogTableVisible = false">取 消</el-button>--%>
-                                                <%--<el-button type="primary" @click="dialogTableVisible = false">确 定</el-button>--%>
-                                            <%--</div>--%>
-                                        <%--</el-dialog>--%>
+                                    <%--<el-form-item >--%>
+                                        <%--<el-checkbox-group v-model="normalparamform.morStationList" class="el-form-item-border">--%>
+                                            <%--<el-checkbox v-for="station in normalparamform.morStationAllList" :label="station.code" :key="station.code">{{station.name}}</el-checkbox>--%>
+                                        <%--</el-checkbox-group>--%>
                                     <%--</el-form-item>--%>
-                                    <el-form-item label="插值设置" class="el-form-item-border"></el-form-item>
-                                    <el-form-item label="是否显示未插值站" class="el-form-item-border">
-                                        <el-switch v-model="normalparamform.isShowNoValueMorStation"style="float:right"></el-switch>
-                                    </el-form-item>
-                                    <el-form-item label="监测站列表:">
-                                        <el-checkbox-group v-model="normalparamform.morStationListType">
-                                            <el-checkbox label="移动" name="morStationListType"></el-checkbox>
-                                            <el-checkbox label="固定" name="morStationListType"></el-checkbox>
-                                        </el-checkbox-group>
-                                    </el-form-item>
-                                    <el-form-item >
-                                        <el-checkbox-group v-model="normalparamform.morStationList" class="el-form-item-border">
-                                            <el-checkbox v-for="station in normalparamform.morStationAllList" :label="station.code" :key="station.code">{{station.name}}</el-checkbox>
-                                        </el-checkbox-group>
-                                    </el-form-item>
-                                    <el-form-item>
-                                        <el-button>取消</el-button>
-                                        <el-button type="primary" @click="onSubmit">确认</el-button>
-                                    </el-form-item>
-                                </el-form>
+                                    <%--<el-form-item>--%>
+                                        <%--<el-button>取消</el-button>--%>
+                                        <%--<el-button type="primary" @click="onSubmit">确认</el-button>--%>
+                                    <%--</el-form-item>--%>
+                                <%--</el-form>--%>
                                 <%--表单配置项end--%>
                                 <%--<form method="#">--%>
                                 <%--<input type="number" name="opVal" min="0" max="1" id="opCtrl" value="0.7" alt="请输入透明度范围值0~1"--%>

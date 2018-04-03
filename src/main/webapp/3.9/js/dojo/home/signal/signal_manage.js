@@ -944,7 +944,6 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
         });
     }
     function getFreqList() {
-    	console.log(1);
         // 清除图表
         destroy_chart_table();
         var val = $("#search").val();

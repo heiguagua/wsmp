@@ -212,7 +212,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 										var dd =(vm.endTime-vm.startTime)/hours;
 										vm.currentTimeProgress =moment(moment(vm.startTime)+3600*1000*count++).format("YYYY-MM-DD HH");
 										console.log(moment(vm.currentTimeProgress).format("YYYYMMDDHH"));
-
+										baseMapInit(moment(vm.currentTimeProgress).format("YYYYMMDDHH"));
 									}else if(vm.playType=='date'){
 										//默认设置为近一月
 										var dates =(vm.endTime-vm.startTime)/(3600*1000*24);
@@ -230,7 +230,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 										var dd =(vm.endTime-vm.startTime)/dates;
 										vm.currentTimeProgress =moment(moment(vm.startTime)+3600*1000*24*count++).format("YYYY-MM-DD");
 										console.log(moment(vm.currentTimeProgress).format("YYYYMMDD"));
-										//baseMapInit();
+										baseMapInit(moment(vm.currentTimeProgress).format("YYYYMMDD"));
 
 									}else if(vm.playType=='month'){
 										//默认设置为近一年
@@ -248,12 +248,13 @@ define(	["ajax", "dojo/parser", "esri/map",
 										var dd =(vm.endTime-vm.startTime)/months;
 										vm.currentTimeProgress =moment(moment(vm.startTime)+3600*1000*24*30*count++).format("YYYY-MM");
 										console.log(moment(vm.currentTimeProgress).format("YYYYMM"));
-
+										baseMapInit(moment(vm.currentTimeProgress).format("YYYYMM"));
 									}else{
 										vm.step=100; //步长
 										vm.sliderProgress =vm.sliderProgress+1;
 										var dd =(vm.endTime-vm.startTime);
 										vm.currentTimeProgress =moment(moment(vm.startTime)+vm.sliderProgress*dd).format("YYYY-MM-DD HH:mm:ss");
+										baseMapInit(moment(vm.currentTimeProgress).format("YYYY-MM-DD HH:mm:ss"));
 									}
 
 								},2000)
@@ -914,7 +915,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 							//map2.addLayer(glayer2);
 							//addAreaBoundary(map2);
 					      vm.autoPlay();
-					      baseMapInit();
+					//baseMapInit(moment(vm.currentTimeProgress).format("YYYYMMDDHH"));
 
 
 
@@ -1121,20 +1122,24 @@ define(	["ajax", "dojo/parser", "esri/map",
 				var codes = [];
 				var stationsName = [];
 				var stations = [];
+				var stationsInfo = [];
 				for (var index = 0; index < stationObj.length; index++) {
 					codes.push(stationObj[index].Num);
 					stationsName.push(stationObj[index].Name);
 					stations.push({"code":stationObj[index].Num,"name":stationObj[index].Name});
+					stationsInfo.push({"flat":stationObj[index].Longitude,"flon":stationObj[index].Latitude,"id":stationObj[index].Num});
 				}
 				//console.log(stations)
 				return {
 					codes:codes,
 					stationsName:stationsName,
-					stations:stations
+					stations:stations,
+					stationsInfo:stationsInfo
+
 				}
 			}
 	       //态势图的渲染
-	        function baseMapInit(){
+	        function baseMapInit(time){
 				app = new AppMap('mapDiv2', {
 					// center: [104.360, 33.360],
 					//maxZoom: 12
@@ -1150,17 +1155,14 @@ define(	["ajax", "dojo/parser", "esri/map",
 						data: data
 					});
 				});
-				var codes =getstationsInfo().codes;
-				var data = {
-					"stationCodes": codes
-					//playType:"hour",
-					//currentTime:"2018030810"
 
-					//"frequency": centorFreq,
-					//"beginTime": beginTime
-				};
 
-				ajax.post("data/alarm/getStationVersion2", data, function (result) {
+				var stations =getstationsInfo().stationsInfo;
+				var data = {"time":time,stations:stations}
+				  //"time":"yyyyMMdd"
+					//stations:[{"flat":0,"flon":0,"id":987}]}
+
+				ajax.post("data/alarm/estimate", data, function (result) {
 					var stations = result.stationPiont,
 						data = result.kriking3.result;
 //                    console.log(stations)//[{x:25515.12, y:25326, count: , stationId}]
