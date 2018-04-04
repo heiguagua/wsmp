@@ -7,8 +7,6 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
         initMap = init;
     }
     function init() {
-//    	console.log($("#redioDetailCentor").val());
-//        $("#dk").html($("#redioDetailCentor").val())
         init_select2();
         //时间选择器初始化
         $.fn.datetimepicker.defaults = {
@@ -44,7 +42,6 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
         });
         submitButton();
         closeModal();
-        //spectrum_player();
         configModalSubmit();
         //音频点击操作事件
         audio_data.autoClickInit();
@@ -55,7 +52,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                 } else {
                     $("#spectrum-choose-list").slideUp();
                 }
-            })
+         })
             // 关闭频谱数据列表框
         $("#data-list-close").on("click", function() {
                 $("#spectrum-choose-list").slideUp();
@@ -67,7 +64,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                 } else {
                     $("#audio-choose-list").slideUp();
                 }
-            })
+         })
             // 关闭音频选择数据列表框
         $("#audio-list-close").on("click", function() {
                 $("#audio-choose-list").slideUp();
@@ -82,7 +79,10 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                 } else {
                     $("#frequency-wrap").slideUp();
                 }
-            })
+           //默认选中几条播放数据
+            spectrum_data.play();
+
+        })
             // 选择IQ数据
         $("#IQ").on("click", function() {
                 if ($(this).is(":checked")) {
@@ -91,8 +91,11 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                 } else {
                     $("#IQ-wrap").slideUp();
                 }
-            })
-            // IQ数据选择数据按钮事件
+            //默认选中几条播放数据
+            iq_data.play();
+        })
+
+          // IQ数据选择数据按钮事件
         $("#IQ-choose-btn").on("click", function(ev) {
                 if ($("#IQ-choose-list").is(":hidden")) {
                     // $(this).parents(".nav-pills").after($("#IQ-choose-list").html())
@@ -1061,6 +1064,20 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
         singalDetail.id = $("#signal_list1").find('option:selected').val();
         getSinalDetail(singalDetail);
         changeFirstChartView(stationcode);
+        //数据回放默认条数修改后
+        $("#playingDataNum").on("blur", function(ev) {
+            var num =$("#playingDataNum").val();
+            if(parseInt(num)>0){
+                //console.log(num)
+                // 加载频谱数据
+                spectrum_data.init(stationcode, centorfreq, beginTime, endTime);
+                // 加载IQ数据
+                iq_data.init(stationcode, centorfreq, beginTime, endTime);
+                // 加载音频数据
+                audio_data.init(stationcode, centorfreq, beginTime, endTime);
+            }
+
+        })
         // 加载频谱数据
         spectrum_data.init(stationcode, centorfreq, beginTime, endTime);
         // 加载IQ数据

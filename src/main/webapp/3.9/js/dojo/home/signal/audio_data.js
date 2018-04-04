@@ -2,7 +2,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
 	// 加载音频数据
     var audio_play_list = [];
     function load_audio_data(stationcode,centorfreq,beginTime,endTime) {
-
+        //centorfreq =100000000
         var url = "data/asiq/audio/" + stationcode + "/" + centorfreq + "/" + beginTime + "/" + endTime;
         //var url = "data/asiq/audio/52010126/10040000000000/20170810135330/20170810135330";
         //var url = "assets/json/audio-player-list.json";
@@ -12,6 +12,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                 data = null;
                 return;
             }
+            $('#audio-table').bootstrapTable("destroy");
             $('#audio-table').bootstrapTable({
                 method : 'get',
                 contentType : "application/x-www-form-urlencoded", //必须要有！！！！
@@ -97,6 +98,13 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                     titleTooltip:"声音数据长度"
                 }]
             });
+            var playingDataNum =$('#playingDataNum').val();
+            var total =data.length;
+            for(var i=0;i<playingDataNum;i++){
+                if(i<total){
+                 $('#audio-table').bootstrapTable("check", i);
+                }
+            }
         })
 
 
@@ -211,6 +219,8 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                     wavesurfer.destroy();
                 }
             }
+            //默认选中几条播放数据
+            audio_player();
         })
     }
     function audioloseClick(){

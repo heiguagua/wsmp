@@ -496,3 +496,9 @@ td.bs-checkbox{
 .avg-sign{
   background: #ffa500;
 }
+#playingDataNum {
+  border: 1px solid #DAE5F0;
+  border-radius: 4px;
+  padding-left: 10px;
+  width: 60px;
+}

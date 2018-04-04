@@ -140,12 +140,12 @@
 						<label for="audio"> 音频 </label>
 					</div>
 				</a></li>
-				<%--<li style="float:right">--%>
-					<%--<div class="flex1 ">--%>
-						<%--<label for="playingDataNum"> 数据回放默认条数: </label>--%>
-						<%--<input  value="3"  id="playingDataNum">--%>
-					<%--</div>--%>
-				<%--</li>--%>
+				<li style="float:right">
+					<div class="flex1 ">
+						<label for="playingDataNum"> 数据回放默认条数: </label>
+						<input type="number" min="1" value="2"  id="playingDataNum">
+					</div>
+				</li>
 			</ul>
 		<section class='flex-row'  style="display: none" id="frequency-wrap">
 			<div class='box'>

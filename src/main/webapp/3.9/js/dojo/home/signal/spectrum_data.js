@@ -7,7 +7,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
 	// 加载频谱数据
     var spectrum_play_list = [];
     function load_spectrum_data(stationcode,centorfreq,beginTime,endTime) {
-
+        //centorfreq =100000000
         var url = "data/asiq/spectrum/" + stationcode + "/" + centorfreq + "/" + beginTime + "/" + endTime;
         //var url = "data/asiq/spectrum/52010126/80000000/20170810144216/20170810144216";
         //var url = "assets/json/spectrum-player-list.json";
@@ -17,6 +17,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                 data = null;
                 return;
             }
+            $('#spectrum-table').bootstrapTable("destroy");
             $('#spectrum-table').bootstrapTable({
                 //method : 'get',
                 contentType : "application/x-www-form-urlencoded", //必须要有！！！！
@@ -106,6 +107,13 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                     titleTooltip:"频谱个(或点)数"
                 }]
             });
+            var playingDataNum =$('#playingDataNum').val();
+            var total =data.length;
+            for(var i=0;i<playingDataNum;i++){
+                if(i<total){
+                    $('#spectrum-table').bootstrapTable("check", i);
+                }
+            }
         })
 
 
@@ -127,7 +135,6 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
     var data_row = [];
     for (var i = 0; i < spectrum_play_list.length; i++) {
       timeline_length.push(i + 1);
-
       _.forEach(spectrum_play_list[i].freqData, function(value, index) {
         var data_obj = {};
         data_obj.freq = value;
