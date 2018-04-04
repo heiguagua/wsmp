@@ -24,6 +24,8 @@ import java.util.Map;
 import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 
+import com.chinawiserv.wsmp.pojo.request.EstimateRequest;
+import com.chinawiserv.wsmp.pojo.request.StationPositionInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -282,6 +284,87 @@ public class AlarmDataController {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    @PostMapping(path = "/estimate")
+    public @ResponseBody
+    Map<String, Object> estimate(@RequestBody EstimateRequest param) {
+
+        JSONObject kriking3=null;
+        String beginTime = param.getTime();
+        List<StationPositionInfo> stationsList = param.getStations();
+        try {
+            String[] stations=new String[stationsList.size()];
+            for(int i=0;i<stations.length;i++){
+                stations[i]=stationsList.get(i).getId()+"";
+            }
+            beginTime="20180402";
+            Map<String, Object> reMap = hbaseClient.queryPower("day", beginTime, stations);
+
+
+
+            //构造克里金二维数组参数
+            double [][] kringParam= new double[stationsList.size()][3];
+            for(int i = 0; i < stationsList.size(); i++){
+                StationPositionInfo info=stationsList.get(i);
+                String key=info.getId()+"";
+                if(reMap.containsKey(key)){
+                    kringParam[i][0] = info.getFlon();
+                    kringParam[i][1] = info.getFlat();
+                    if(reMap.get(key)!=null){
+                        info.setLevel(Double.parseDouble(reMap.get(key)+""));
+                    }
+                    if(Double.isNaN(info.getLevel())){
+                        kringParam[i][2] = 0;
+                    }else{
+                        kringParam[i][2] = info.getLevel();
+                    }
+
+                }
+            }
+
+            List<double[]> list = Arrays.asList(kringParam);
+            Logger.info("参数1{}",JSON.toJSONString(list));
+            List<double[]> collect = list.stream().filter(ds -> ds[0]<53.55&&ds[0]>3.86&&ds[1]<135.05&&ds[1]>73.66).collect(toList());
+            String string = HttpServiceConfig.httpclient(collect.toArray(new double[collect.size()][3]), kringUrl,false);
+            kriking3 = JSONObject.parseObject(string);
+
+            Logger.info("场强定位计算正常 操作时间{} 返回值为{}", LocalDateTime.now().toString(),kriking3);
+        } catch (NumberFormatException e) {
+            Logger.error("场强定位计算 ,操作异常 ：{}", e);
+        }
+
+        int coulm = stationsList.size();
+        String electrCoverage = "0";
+
+        if (coulm > 0) {
+            Object object = kriking3.get("result");
+            List<Integer[]> list = JSONObject.parseArray(object.toString(), Integer[].class);
+            if(list!=null&&!list.isEmpty()) {
+                double numerator = list.stream().filter((e) -> e[2] >= intKrikingValue).count();
+                int denominator = list.size()+coulm;
+                electrCoverage = df.format(denominator > 0 ? numerator / denominator : 0);
+
+            }
+        }
+
+        List<Map<String, String>> stationPiont = stationsList.stream().map(station -> {
+            HashMap<String, String> element = Maps.newHashMap();
+            element.put("x", station.getFlon() + "");
+            element.put("y", station.getFlat() + "");
+            element.put("count", (station.getLevel()) + "");
+            element.put("stationId", station.getId()+"");
+            return element;
+        }).collect(toList());
+
+        Map<String, Object> mapPiont = new HashMap<>();
+        mapPiont.put("stationPiont", stationPiont);
+        mapPiont.put("kriking3", kriking3);
+        mapPiont.put("electrCoverage", electrCoverage);
+
+        return mapPiont;
+    }
+
+
     @GetMapping(path = "/firstLevelChart")
     public Object firstLevelChart(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
 
@@ -495,7 +578,7 @@ public class AlarmDataController {
 			}
             
             
-            String string = HttpServiceConfig.httpclient(list.toArray(new double[list.size()][3]), kringUrl);
+            String string = HttpServiceConfig.httpclient(list.toArray(new double[list.size()][3]), kringUrl,false);
             kriking3 = JSONObject.parseObject(string);
 //            double[] flon = mapPoint.stream().mapToDouble(LevelLocate::getFlon).toArray();
 //            double[] flat = mapPoint.stream().mapToDouble(LevelLocate::getFlat).toArray();
@@ -742,9 +825,9 @@ public class AlarmDataController {
     public @ResponseBody
     Map<String, Object> getStationVersion2(@RequestBody Map<String, Object> param) {
     	List<LevelLocate> mapPoint = Collections.emptyList();
-    	
     	JSONObject kriking3=null;
     	JSONObject kriking3new = new JSONObject();
+
     	try {
     		
     		final long frequency = Long.valueOf(param.get("frequency").toString());
@@ -759,15 +842,38 @@ public class AlarmDataController {
     		List<String> stationcode = (List<String>) param.get("stationCodes");
     		
     		mapPoint = relate.stream().filter(t -> stationcode.contains(t.getId())).collect(toList());
-    		
+
+//            LevelLocate ee=new LevelLocate();
+//            ee.setFlat(103.96566009521484);
+//            ee.setFlon(30.746593475341797);
+//            ee.setLevel((byte)41);
+//            ee.setId("51010024");
+//            mapPoint.add(ee);
+            //由于克里金算法那边 必须传入4个以上的数据进去 得出来的结果才是正确的
+            //如果是三个点的那么第三个值就是一个定值  显示数据就会不对
+            //所以在不足四个的时候我们给他补足到4个 然后返回的时候 再将补充添加的数据去掉即在地图上不显示
+            Boolean isAdut=false;
+            if(mapPoint.size()<4){
+                int size=mapPoint.size();
+                for(int i=0;i<4-size;i++){
+                    LevelLocate ss=new LevelLocate();
+                    ss.setFlat(mapPoint.get(0).getFlat()+i*0.01);
+                    ss.setFlon(mapPoint.get(0).getFlon()+i*0.01);
+                    ss.setLevel((byte)(mapPoint.get(0).getLevel()+i));
+                    ss.setId("0");
+                    mapPoint.add(ss);
+                }
+                isAdut=true;
+            }
     		Logger.info("地图上显示的点 信息为{}", JSON.toJSONString(mapPoint));
-    		
-    		int[] ids = mapPoint.stream().mapToInt(m -> Integer.valueOf(m.getId())).toArray();
+
+            int[] ids = mapPoint.stream().mapToInt(m -> Integer.valueOf(m.getId())).toArray();
     		//构造克里金二维数组参数
     		double [][] kringParam= new double[mapPoint.size()][3];
     		for (int i = 0; i < ids.length; i++) {
+
     			kringParam[i][0] = mapPoint.get(i).getFlat();
-    			kringParam[i][1] = mapPoint.get(i).getFlon();
+                kringParam[i][1] = mapPoint.get(i).getFlon();
     			kringParam[i][2] = mapPoint.get(i).getLevel();
     		}
     		 List<double[]> list = Arrays.asList(kringParam);
@@ -783,23 +889,23 @@ public class AlarmDataController {
 //    			}
 //    		}
     		Logger.info("参数2{}",JSON.toJSONString(collect));
-    		String string = HttpServiceConfig.httpclient(collect.toArray(new double[collect.size()][3]), kringUrl);
+    		String string = HttpServiceConfig.httpclient(collect.toArray(new double[collect.size()][3]), kringUrl,isAdut);
     		kriking3 = JSONObject.parseObject(string);
     		//过滤kriking点
     		Object object = kriking3.get("result");
         	List<double[]> krikinglist = JSONObject.parseArray(object.toString(), double[].class);
-        	//过滤距离
-			Integer r = 30;
-			if(krikinglist != null) {
-			List<double[]> krikinglistFiletered = krikinglist.stream().filter(e -> {
-				for (int i = 0; i < kringParam.length; i++) {
-					if (Distance.getDistance(e, kringParam[i]) < r)
-						return true;
-				}
-				return false;
-			}).collect(Collectors.toList());
-			kriking3new.put("result", krikinglistFiletered);
-			}
+//        	//过滤距离
+//			Integer r = 30;
+//			if(krikinglist != null) {
+//			List<double[]> krikinglistFiletered = krikinglist.stream().filter(e -> {
+//                for (int i = 0; i < kringParam.length; i++) {
+//                    if (Distance.getDistance(e, kringParam[i]) < r)
+//                        return true;
+//                }
+//                return true;
+//            }).collect(Collectors.toList());
+			kriking3new.put("result", krikinglist);
+//			}
     		
     		Logger.info("场强定位计算正常 操作时间{} 返回值为{}", LocalDateTime.now().toString(),kriking3);
     	} catch (NumberFormatException e) {
@@ -821,15 +927,15 @@ public class AlarmDataController {
     	}
     	
     	List<Map<String, String>> stationPiont = mapPoint.stream().map(station -> {
-    		HashMap<String, String> element = Maps.newHashMap();
-    		element.put("x", station.getFlon() + "");
-    		element.put("y", station.getFlat() + "");
-    		element.put("count", (station.getLevel()) + "");
-    		element.put("stationId", station.getId());
-    		return element;
-    	}).collect(toList());
-    	
-    	Map<String, Object> mapPiont = new HashMap<>();
+            HashMap<String, String> element = Maps.newHashMap();
+            element.put("x", station.getFlon() + "");
+            element.put("y", station.getFlat() + "");
+            element.put("count", station.getLevel() + "");
+            element.put("stationId", station.getId());
+            return element;
+        }).filter(e -> !e.get("stationId").equals("0")).collect(toList());
+
+        Map<String, Object> mapPiont = new HashMap<>();
     	mapPiont.put("stationPiont", stationPiont);
     	mapPiont.put("kriking3", kriking3new);
     	mapPiont.put("electrCoverage", electrCoverage);

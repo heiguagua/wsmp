@@ -7,6 +7,8 @@ import java.util.List;
  */
 public class EstimateRequest {
 
+    private String type;
+
     private String time;
 
     private List<StationPositionInfo> stations;
@@ -25,5 +27,13 @@ public class EstimateRequest {
 
     public void setStations(List<StationPositionInfo> stations) {
         this.stations = stations;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

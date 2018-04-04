@@ -6,6 +6,7 @@ import com.chinawiserv.wsmp.client.WebServiceSoapFactory;
 import com.chinawiserv.wsmp.hbase.HbaseClient;
 import com.chinawiserv.wsmp.hbase.query.OccAndMax;
 import com.chinawiserv.wsmp.pojo.Singal;
+import com.chinawiserv.wsmp.util.PropertyUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.tempuri.*;
+import redis.clients.jedis.Jedis;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -23,6 +25,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.regex.Pattern;
 
 import static java.util.stream.Collectors.toList;
 
@@ -39,13 +42,48 @@ public class SiganlDataController {
 	DateTimeFormatter formatter;
 
 	@Autowired
-    private HbaseClient hbaseClient;
+	private HbaseClient hbaseClient;
 
 	@Value("${upperBound.value:5000000}")
-    private long upperBound;
+	private long upperBound;
 
 	@Value("${upperBound.value:5000000}")
-    private long lowerBound;
+	private long lowerBound;
+
+//	@Value("${data-replay.default.select.count}")
+//	private int defaultSelectCount;
+//
+//	private final String defaultSelectCountTitle = "data-replay.default.select.count";
+//
+//	@GetMapping("/getDefaultSelectCount")
+//	public Object getDefaultSelectCount() {
+//		Map<String, Object> resultMap = Maps.newHashMap();
+//		String defaultValue = PropertyUtils.getProperiesFromApplication(defaultSelectCountTitle);
+//		int defaultIntValue = 0;
+//		if(null == defaultValue) {
+//			defaultIntValue = defaultSelectCount;
+//		} else {
+//			defaultIntValue = Integer.parseInt(defaultValue);
+//		}
+//		resultMap.put("dataReplyDefaultCount", defaultIntValue);
+//		return resultMap;
+//	}
+//
+//	@PostMapping("/updateDefaultSelectCount")
+//	public Object updateDefaultSelectCount(@RequestBody Map<String, String> param) {
+//		Map<String, Object> resultMap = Maps.newHashMap();
+//		String defaultCount = param.get("dataReplyDefaultCount");
+//		Pattern pattern = Pattern.compile("[0-9]*");
+//		if(!StringUtils.isEmpty(defaultCount) && pattern.matcher(defaultCount).matches()) {
+//			PropertyUtils.updateProperiesToApplication(defaultSelectCountTitle, defaultCount);
+//			resultMap.put("result", "success");
+//			resultMap.put("message", defaultCount);
+//		} else {
+//			resultMap.put("result", "fail");
+//			resultMap.put("message", "invalid number format");
+//		}
+//		return resultMap;
+//	}
 
 	@PostMapping("/insterConfig")
 	public void insterConfig(@RequestBody Map<String, String> param) {
@@ -120,6 +158,13 @@ public class SiganlDataController {
 		System.out.println("waiting...");
 	}
 
+	@GetMapping("/fetchPower")
+	public Map<String, Object> queryPower(@RequestParam Map<String, Object> para) {
+
+		Map<String, Object> resultMap = Maps.newHashMap();
+		return resultMap;
+	}
+
 	@PutMapping("/signal")
 	public String insetSignal(@RequestParam Map<String, Object> para) {
 		System.out.println(para);
@@ -131,20 +176,20 @@ public class SiganlDataController {
 
 		try {
 			final RadioSignalQueryResponse responce = (RadioSignalQueryResponse) service.radioSignalServiceCall("queryRadioSignal",
-                    mapper.writeValueAsString(param), RadioSignalQueryRequest.class);
+					mapper.writeValueAsString(param), RadioSignalQueryRequest.class);
 
 			return responce.getRadioSignals().getRadioSignalDTO().stream().map(t -> {
 
-                final Singal singal = new Singal();
-                final String id = t.getID();
+				final Singal singal = new Singal();
+				final String id = t.getID();
 
-                singal.setId(id);
-                singal.setText(t.getCenterFreq().toString().concat("   ").concat(t.getSaveDate().toString()));
+				singal.setId(id);
+				singal.setText(t.getCenterFreq().toString().concat("   ").concat(t.getSaveDate().toString()));
 
 				Logger.info("获取信号列表时间成功 操作时间：{} 入参：{} 返回值：{}",LocalDateTime.now().toString(), JSON.toJSONString(param));
 
-                return singal;
-            }).collect(toList());
+				return singal;
+			}).collect(toList());
 		} catch (JsonProcessingException e) {
 			Logger.error("获取信号列表时间异常 操作时间：{} 入参：{} 异常：{}",LocalDateTime.now().toString(), JSON.toJSONString(param),e);
 		}
@@ -158,7 +203,7 @@ public class SiganlDataController {
 
 		try {
 			final RadioSignalQueryResponse responce = (RadioSignalQueryResponse) service.radioSignalServiceCall("queryRadioSignal",
-                    mapper.writeValueAsString(param), RadioSignalQueryRequest.class);
+					mapper.writeValueAsString(param), RadioSignalQueryRequest.class);
 
 			responce.getRadioSignals().getRadioSignalDTO().forEach(z -> z.getStationDTOs().getRadioSignalStationDTO().forEach(f -> reslutList.add(f.getStationNumber())));
 			Logger.info("获取监测站列表时间成功 操作时间：{} 入参：{} 返回值：{}",LocalDateTime.now().toString(), JSON.toJSONString(param));
@@ -175,7 +220,7 @@ public class SiganlDataController {
 		List<RadioSignalDTO> radioSignals =Collections.emptyList();
 		try {
 			final RadioSignalQueryResponse responce = (RadioSignalQueryResponse) service.radioSignalServiceCall("queryRadioSignal",
-                    mapper.writeValueAsString(param), RadioSignalQueryRequest.class);
+					mapper.writeValueAsString(param), RadioSignalQueryRequest.class);
 
 			radioSignals  = responce.getRadioSignals().getRadioSignalDTO();
 

@@ -90,7 +90,7 @@ FROM
 					'LY0104',
 					'LY0105',
 					'LY0106'
-				) AND NET_START_DATE BETWEEN (select trunc(add_months(sysdate,-12),'year') from dual) and (select LAST_DAY(ADD_MONTHS(TRUNC(SYSDATE,'y'),-1))from dual)
+				) AND NET_START_DATE BETWEEN (select trunc(add_months(sysdate,-24),'year') from dual) and (select LAST_DAY(ADD_MONTHS(TRUNC(SYSDATE,'y'),-13))from dual)
 		) tb ON tb.ORG_GUID = RO.GUID
 		LEFT JOIN RSBT_STATION ON RO.GUID = RSBT_STATION.NET_GUID
 		WHERE
