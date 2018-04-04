@@ -280,7 +280,7 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
             $("#levelTitle").html(name + "——电平峰值");
             $("#monthTitle").html(name + "——近3个月占用度（按天统计）");
             month_charts.init(result, name);
-            level_charts.init(result);
+            level_charts.init(result,data.centorFreq/1000000);
         });
     }
     function init_select2() {
