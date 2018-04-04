@@ -140,6 +140,12 @@
 						<label for="audio"> 音频 </label>
 					</div>
 				</a></li>
+				<%--<li style="float:right">--%>
+					<%--<div class="flex1 ">--%>
+						<%--<label for="playingDataNum"> 数据回放默认条数: </label>--%>
+						<%--<input  value="3"  id="playingDataNum">--%>
+					<%--</div>--%>
+				<%--</li>--%>
 			</ul>
 		<section class='flex-row'  style="display: none" id="frequency-wrap">
 			<div class='box'>
@@ -326,7 +332,7 @@
 						<%--<img src='images/locate.png' />--%>
 						<span id = "stationName">&nbsp;&nbsp;</span>
 					</label>
-					<button class="btn btn-submit" id="setStationPiont" v-text="dd.btn.locorg">场强定位选站</button>&#160;
+					<%--<button class="btn btn-submit" id="setStationPiont" v-text="dd.btn.locorg">场强定位选站</button>&#160;--%>
 					<div class='pull-right'>
 						<%--<button class="btn btn-submit" id="setStationPiont">聚类监测站</button>&#160;--%>
 						<%--<input type="text" class="gate-filter" placeholder="请输入门限" /> <button class="btn btn-submit" id="gate-btn">提交</button>--%>

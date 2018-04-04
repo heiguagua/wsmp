@@ -149,7 +149,7 @@
         </div>
       </div>
       <div id="mapDiv"></div>
-      <div id="heatLayer"></div>
+      <%--<div id="heatLayer"></div>--%>
       <%--控件--%>
       <div id="levelsColor" class="levelsColor">
         <form method="#">

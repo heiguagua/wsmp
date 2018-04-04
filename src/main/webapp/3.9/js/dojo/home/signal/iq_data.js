@@ -346,7 +346,6 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
         });
         iqChart.on('timelinechanged', function (p1) {
         	current_index = p1.currentIndex;
-            
             has_changed = true;
             if(current_index >= iq_play_list.length) {// 为了解决timelinechanged事件currentIndex第一次的值实际为第二条数据
               $(".iq-play-control .current-index").html(1);
@@ -355,7 +354,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
               $(".iq-play-control .current-index").html(current_index+1); 
             }
             option.options[current_index-1].xAxis.data = iq_play_list[current_index-1].freqData;
-            iq_total_length = iq_play_list[current_index].nmber;
+            iq_total_length = iq_play_list[current_index-1].nmber;
             iqChart.setOption(option); 
         });
         
@@ -376,7 +375,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
         var retcLeft = "0px", retcTop = "0px", retcHeight = "0px", retcWidth = "0px";
         var move_flag = true;
     	var mousedown = function(e){
-    		console.log("mousedown 1");
+    		//console.log("mousedown 1");
     		var evt = window.event || e;
             evt.preventDefault();
             if(evt.which == 1) { // 鼠标左键事件
@@ -388,7 +387,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                 startY = evt.pageY - evt.offsetY;
                // startY = evt.clientY + scrollTop;
                 var div = $('<div class="iq-cover-rect"></div>');
-                div.css({"margin-left":startX+"px","margin-top":startY+"px","height":evt.target.height +"px"});
+                div.css({"margin-left":startX+"px","margin-top":startY+"px","height":"1px"});
                 div.appendTo('body');
             }
             else if(e.which == 3) {// 鼠标右键点击

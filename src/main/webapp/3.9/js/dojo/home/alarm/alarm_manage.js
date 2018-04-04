@@ -276,6 +276,7 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
             //console.log(result);
             var name = $('#station_picker').find('option:selected').text(); //选中的台站名称
             name = name.replace("未查询到数据", "");
+            $("#stationName").html(name);
             $("#levelTitle").html(name + "——电平峰值");
             $("#monthTitle").html(name + "——近3个月占用度（按天统计）");
             month_charts.init(result, name);
