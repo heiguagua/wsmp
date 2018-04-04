@@ -314,6 +314,7 @@ public class AlarmDataController {
                         info.setLevel(Double.parseDouble(reMap.get(key)+""));
                     }
                     if(Double.isNaN(info.getLevel())){
+                        info.setLevel(0);
                         kringParam[i][2] = 0;
                     }else{
                         kringParam[i][2] = info.getLevel();
