@@ -67,82 +67,83 @@ define(	["ajax", "dojo/parser", "esri/map",
 									label: '月/帧'
 							     }],
 								playType: 'date',
+								count: 0,
 								currentTimeProgress:'',
 								sliderProgress:1,
 								step:100/30,//步长
 								//配置项
-								showOrHide:true,
-								showOrHideClass: { //显示还是弹出表单
-									display:"none"
-								},
-								normalparamform: {
-									colorMinValue:-75,//颜色最小值
-									colorMaxValue:74,//颜色最大值
-									opercityValue: 30,//透明度 ，0为不透明，100为完全透明
-									morStationisShow:true,//监测站显示或者隐藏
-									morStationIcon:'图标显示方式' ,//站点图标显示方式
-									type:['显示监测站能量值','只显示超过门限的监测站'],//显示监测站能量值,只显示超过门限的监测站
-
-									//插值设置
-									isShowNoValueMorStation:false ,//是否显示未插值站
-									morStationListType:['移动'] ,//监测站列表类型 移动/固定
-									morStationAllList:getstationsInfo().stations,//所有的监测站列表
-									//morStationList:["123监测站","川大花园监测站1","龙泉山监测站"] //监测站列表
-									morStationList:["51010123","51010026","51010020"] //监测站列表
-								},
-
-								//业务设置 设置电平门限，时间段，城市
-								dialogTableVisible:false,
-								form: {
-									maxValue:12,
-									time: [],
-									region: ''
-								},
-								formLabelWidth: '120px',
+								//showOrHide:true,
+								//showOrHideClass: { //显示还是弹出表单
+								//	display:"none"
+								//},
+								//normalparamform: {
+								//	colorMinValue:-75,//颜色最小值
+								//	colorMaxValue:74,//颜色最大值
+								//	opercityValue: 30,//透明度 ，0为不透明，100为完全透明
+								//	morStationisShow:true,//监测站显示或者隐藏
+								//	morStationIcon:'图标显示方式' ,//站点图标显示方式
+								//	type:['显示监测站能量值','只显示超过门限的监测站'],//显示监测站能量值,只显示超过门限的监测站
+                                //
+								//	//插值设置
+								//	isShowNoValueMorStation:false ,//是否显示未插值站
+								//	morStationListType:['移动'] ,//监测站列表类型 移动/固定
+								//	morStationAllList:getstationsInfo().stations,//所有的监测站列表
+								//	//morStationList:["123监测站","川大花园监测站1","龙泉山监测站"] //监测站列表
+								//	morStationList:["51010123","51010026","51010020"] //监测站列表
+								//},
+                                //
+								////业务设置 设置电平门限，时间段，城市
+								//dialogTableVisible:false,
+								//form: {
+								//	maxValue:12,
+								//	time: [],
+								//	region: ''
+								//},
+								//formLabelWidth: '120px',
 								//告警信息列表,系统配置频段
 								searchFre:0,
 								searchBrand:'',
-								filterText: '',
-								showOrHideBrandInfo: false,//显示还是隐藏频段信息
-								data2: [{
-									id: 1,
-									label: '一级 1',
-									children: [{
-										id: 4,
-										label: '二级 1-1',
-										children: [{
-											id: 9,
-											label: '三级 1-1-1'
-										}, {
-											id: 10,
-											label: '三级 1-1-2'
-										}]
-									}]
-								}, {
-									id: 2,
-									label: '一级 2',
-									children: [{
-										id: 5,
-										label: '二级 2-1'
-									}, {
-										id: 6,
-										label: '二级 2-2'
-									}]
-								}, {
-									id: 3,
-									label: '一级 3',
-									children: [{
-										id: 7,
-										label: '二级 3-1'
-									}, {
-										id: 8,
-										label: '二级 3-2'
-									}]
-								}],
-								defaultProps: {
-									children: 'children',
-									label: 'label'
-								}
+								filterText: ''
+								//showOrHideBrandInfo: false,//显示还是隐藏频段信息
+								//data2: [{
+								//	id: 1,
+								//	label: '一级 1',
+								//	children: [{
+								//		id: 4,
+								//		label: '二级 1-1',
+								//		children: [{
+								//			id: 9,
+								//			label: '三级 1-1-1'
+								//		}, {
+								//			id: 10,
+								//			label: '三级 1-1-2'
+								//		}]
+								//	}]
+								//}, {
+								//	id: 2,
+								//	label: '一级 2',
+								//	children: [{
+								//		id: 5,
+								//		label: '二级 2-1'
+								//	}, {
+								//		id: 6,
+								//		label: '二级 2-2'
+								//	}]
+								//}, {
+								//	id: 3,
+								//	label: '一级 3',
+								//	children: [{
+								//		id: 7,
+								//		label: '二级 3-1'
+								//	}, {
+								//		id: 8,
+								//		label: '二级 3-2'
+								//	}]
+								//}],
+								//defaultProps: {
+								//	children: 'children',
+								//	label: 'label'
+								//}
 
 
 							}
@@ -188,75 +189,68 @@ define(	["ajax", "dojo/parser", "esri/map",
 							},
 							//自动播放，自动修改进度条值，即修改某帧的值，自动调用态势图的接口数据
 							autoPlay:function(){
-								var count= 0;
+
 								var int = setInterval(function(){
-									//console.log(vm.sliderProgress)
-									//if(vm.sliderProgress>=100){
-									//	clearInterval(int);
-									//	vm.sliderProgress=0;
-									//}
 									if(vm.playType=='hour'){
 										//默认设置为近一天
 										var hours =(vm.endTime-vm.startTime)/(3600*1000);
 										//hours =24;
 										console.log("按小时/帧播放，共："+hours+"小时")
-										if(count>hours-1){
+										if(vm.count>hours-1){
 											clearInterval(int);
 											vm.sliderProgress=0;
-											count= 0;
+											vm.currentTimeProgress =(moment(vm.startTime)).format("YYYY-MM-DD HH");
+											vm.count= 0;
 											return;
 										}
-										//console.log(count)
+										//console.log(vm.count)
 										vm.step=100/hours; //步长
-										vm.sliderProgress =vm.sliderProgress+100/hours;
-										var dd =(vm.endTime-vm.startTime)/hours;
-										vm.currentTimeProgress =moment(moment(vm.startTime)+3600*1000*count++).format("YYYY-MM-DD HH");
-										console.log(moment(vm.currentTimeProgress).format("YYYYMMDDHH"));
-										baseMapInit(moment(vm.currentTimeProgress).format("YYYYMMDDHH"));
+										vm.sliderProgress =vm.sliderProgress+vm.step;
+										//var dd =(vm.endTime-vm.startTime)/hours;
+										vm.currentTimeProgress =moment(moment(vm.startTime)+3600*1000*vm.count).format("YYYY-MM-DD HH");
+										//console.log(moment(vm.currentTimeProgress).format("YYYYMMDDHH"));
+										updateMap(moment(vm.currentTimeProgress).format("YYYYMMDDHH"));
+										vm.count++;
 									}else if(vm.playType=='date'){
 										//默认设置为近一月
 										var dates =(vm.endTime-vm.startTime)/(3600*1000*24);
 										//dates =30;
 										console.log("按天/帧播放，共："+dates+"天")
-										if(count>dates-1){
+										if(vm.count>dates-1){
 											clearInterval(int);
 											vm.sliderProgress=0;
-											count= 0;
+											vm.currentTimeProgress =(moment(vm.startTime)).format("YYYY-MM-DD");
+											vm.count= 0;
 											return;
 										}
 
 										vm.step=100/dates; //步长
-										vm.sliderProgress =vm.sliderProgress+100/dates;
-										var dd =(vm.endTime-vm.startTime)/dates;
-										vm.currentTimeProgress =moment(moment(vm.startTime)+3600*1000*24*count++).format("YYYY-MM-DD");
-										console.log(moment(vm.currentTimeProgress).format("YYYYMMDD"));
-										baseMapInit(moment(vm.currentTimeProgress).format("YYYYMMDD"));
+										vm.sliderProgress =vm.sliderProgress+vm.step;
+										//var dd =(vm.endTime-vm.startTime)/dates;
+										vm.currentTimeProgress =moment(moment(vm.startTime)+3600*1000*24*vm.count).format("YYYY-MM-DD");
+										//console.log(moment(vm.currentTimeProgress).format("YYYYMMDD"));
+										updateMap(moment(vm.currentTimeProgress).format("YYYYMMDD"));
+										vm.count++;
 
 									}else if(vm.playType=='month'){
 										//默认设置为近一年
 										var months =(vm.endTime-vm.startTime)/(3600*1000*24*30);
 										//months =12;
 										console.log("按月/帧播放，共："+months+"月")
-										if(count>months-1){
+										if(vm.count>months-1){
 											clearInterval(int);
 											vm.sliderProgress=0;
-											count= 0;
+											vm.currentTimeProgress =(moment(vm.startTime)).format("YYYY-MM");
+											vm.count= 0;
 											return;
 										}
 										vm.step=100/months; //步长
-										vm.sliderProgress =vm.sliderProgress+100/months;
-										var dd =(vm.endTime-vm.startTime)/months;
-										vm.currentTimeProgress =moment(moment(vm.startTime)+3600*1000*24*30*count++).format("YYYY-MM");
-										console.log(moment(vm.currentTimeProgress).format("YYYYMM"));
-										baseMapInit(moment(vm.currentTimeProgress).format("YYYYMM"));
-									}else{
-										vm.step=100; //步长
-										vm.sliderProgress =vm.sliderProgress+1;
-										var dd =(vm.endTime-vm.startTime);
-										vm.currentTimeProgress =moment(moment(vm.startTime)+vm.sliderProgress*dd).format("YYYY-MM-DD HH:mm:ss");
-										baseMapInit(moment(vm.currentTimeProgress).format("YYYY-MM-DD HH:mm:ss"));
+										vm.sliderProgress =vm.sliderProgress+vm.step;
+										vm.currentTimeProgress =moment(moment(vm.startTime)+3600*1000*24*30*vm.count).format("YYYY-MM");
+										//console.log(moment(vm.currentTimeProgress).format("YYYYMM"));
+										updateMap(moment(vm.currentTimeProgress).format("YYYYMM"));
+										vm.count++;
 									}
-
 								},2000)
 								sessionStorage.setItem('evaluatePlay',int);
 							},
@@ -267,7 +261,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 									$("#btn-play").html('<i class="fa fa-pause-circle"></i>');
 									var int =sessionStorage.getItem("evaluatePlay");
 									clearInterval(int);
-
 								}else {//暂停状态：
 									$("#btn-play").html('<i class="fa fa-play-circle"></i>');
 									this.autoPlay();
@@ -275,65 +268,171 @@ define(	["ajax", "dojo/parser", "esri/map",
 							},
 							//播放上一条
 							playPre: function(){
-								if(vm.sliderProgress<=0){
-									vm.sliderProgress=100;
+								var str =$("#btn-play").html();
+								if(vm.playType=='hour'){
+									//默认设置为近一天
+									if(str=='<i class="fa fa-play-circle"></i>'){//播放状态：需要暂停；
+										$("#btn-play").html('<i class="fa fa-pause-circle"></i>');
+										var int =sessionStorage.getItem("evaluatePlay");
+										clearInterval(int);
+										vm.count--;
+									}
+									vm.count--;
+									if(vm.count<0){
+										vm.sliderProgress=0;
+										vm.currentTimeProgress =(moment(vm.startTime)).format("YYYY-MM-DD HH");
+										return;
+									}
+									vm.sliderProgress =vm.sliderProgress-vm.step;
+									vm.currentTimeProgress =moment(moment(vm.startTime)+3600*1000*vm.count).format("YYYY-MM-DD HH");
+									//console.log(moment(vm.currentTimeProgress).format("YYYYMMDDHH"));
+									updateMap(moment(vm.currentTimeProgress).format("YYYYMMDDHH"));
+								}else if(vm.playType=='date'){
+									//默认设置为近一月
+									if(str=='<i class="fa fa-play-circle"></i>'){//播放状态：需要暂停；
+										$("#btn-play").html('<i class="fa fa-pause-circle"></i>');
+										var int =sessionStorage.getItem("evaluatePlay");
+										clearInterval(int);
+										vm.count--;
+									}
+									vm.count--;
+									if(vm.count<0){
+										vm.sliderProgress=0;
+										vm.currentTimeProgress =(moment(vm.startTime)).format("YYYY-MM-DD");
+										return
+									}
+									vm.sliderProgress =vm.sliderProgress-vm.step;
+									vm.currentTimeProgress =moment(moment(vm.startTime)+3600*1000*24*vm.count).format("YYYY-MM-DD");
+									//console.log(moment(vm.currentTimeProgress).format("YYYYMMDD"));
+									updateMap(moment(vm.currentTimeProgress).format("YYYYMMDD"));
+
+								}else if(vm.playType=='month'){
+									//默认设置为近一年
+									if(str=='<i class="fa fa-play-circle"></i>'){//播放状态：需要暂停；
+										$("#btn-play").html('<i class="fa fa-pause-circle"></i>');
+										var int =sessionStorage.getItem("evaluatePlay");
+										clearInterval(int);
+										vm.count--;
+									}
+									vm.count--;
+									if(vm.count<0){
+										vm.currentTimeProgress =(moment(vm.startTime)).format("YYYY-MM");
+										vm.sliderProgress=0;
+										return
+									}
+									vm.sliderProgress =vm.sliderProgress-vm.step;
+									vm.currentTimeProgress =moment(moment(vm.startTime)+3600*1000*24*30*vm.count).format("YYYY-MM");
+									updateMap(moment(vm.currentTimeProgress).format("YYYYMM"));
 								}
-								vm.sliderProgress =vm.sliderProgress-1;
-								var dd =(vm.endTime-vm.startTime)/100;
-								if(vm.value=='h'){
-									vm.currentTimeProgress =moment(moment(vm.startTime)+vm.sliderProgress*dd).format("YYYY-MM-DD HH");
-								}else if(vm.value=='d'){
-									vm.currentTimeProgress =moment(moment(vm.startTime)+vm.sliderProgress*dd).format("YYYY-MM-DD");
-								}else{
-									vm.currentTimeProgress =moment(moment(vm.startTime)+vm.sliderProgress*dd).format("YYYY-MM-DD HH:mm:ss");
-								}
+
+
+
 							},
 							//播放下一条
 							playNext: function(){
-								if(vm.sliderProgress>=100){
-									clearInterval(int);
-									vm.sliderProgress=0;
-									return;
-								}
-								vm.sliderProgress =vm.sliderProgress+1;
-								var dd =(vm.endTime-vm.startTime)/100;
-								if(vm.value=='h'){
-									vm.currentTimeProgress =moment(moment(vm.startTime)+vm.sliderProgress*dd).format("YYYY-MM-DD HH");
-								}else if(vm.value=='d'){
-									vm.currentTimeProgress =moment(moment(vm.startTime)+vm.sliderProgress*dd).format("YYYY-MM-DD");
-								}else{
-									vm.currentTimeProgress =moment(moment(vm.startTime)+vm.sliderProgress*dd).format("YYYY-MM-DD HH:mm:ss");
-								}
+								var str =$("#btn-play").html();
+								if(vm.playType=='hour'){
+									//默认设置为近一天
+									if(str=='<i class="fa fa-play-circle"></i>'){//播放状态：需要暂停；
+										$("#btn-play").html('<i class="fa fa-pause-circle"></i>');
+										var int =sessionStorage.getItem("evaluatePlay");
+										clearInterval(int);
+										vm.count--;
+									}
+									vm.count++;
+									var hours =(vm.endTime-vm.startTime)/(3600*1000);
+									if(vm.count>hours-1){
+										vm.sliderProgress=0;
+										vm.currentTimeProgress =(moment(vm.startTime)).format("YYYY-MM-DD HH");
+										vm.count= 0;
+										return;
+									}
+									vm.sliderProgress =vm.sliderProgress+vm.step;
+									vm.currentTimeProgress =moment(moment(vm.startTime)+3600*1000*vm.count).format("YYYY-MM-DD HH");
+									//console.log(moment(vm.currentTimeProgress).format("YYYYMMDDHH"));
+									updateMap(moment(vm.currentTimeProgress).format("YYYYMMDDHH"));
 
+								}else if(vm.playType=='date'){
+									//默认设置为近一月
+									if(str=='<i class="fa fa-play-circle"></i>'){//播放状态：需要暂停；
+										$("#btn-play").html('<i class="fa fa-pause-circle"></i>');
+										var int =sessionStorage.getItem("evaluatePlay");
+										clearInterval(int);
+										vm.count--;
+									}
+									vm.count++;
+									var dates =(vm.endTime-vm.startTime)/(3600*1000*24);
+
+									if(vm.count>dates-1){
+										vm.currentTimeProgress =(moment(vm.startTime)).format("YYYY-MM-DD");
+										vm.sliderProgress=0;
+										vm.count= 0;
+										return;
+									}
+									vm.sliderProgress =vm.sliderProgress+vm.step;
+									vm.currentTimeProgress =moment(moment(vm.startTime)+3600*1000*24*vm.count).format("YYYY-MM-DD");
+									//console.log(moment(vm.currentTimeProgress).format("YYYYMMDD"));
+									updateMap(moment(vm.currentTimeProgress).format("YYYYMMDD"));
+
+								}else if(vm.playType=='month'){
+									//默认设置为近一年
+									if(str=='<i class="fa fa-play-circle"></i>'){//播放状态：需要暂停；
+										$("#btn-play").html('<i class="fa fa-pause-circle"></i>');
+										var int =sessionStorage.getItem("evaluatePlay");
+										clearInterval(int);
+										vm.count--;
+									}
+									vm.count++;
+									var months =(vm.endTime-vm.startTime)/(3600*1000*24*30);
+									if(vm.count>months-1){
+										vm.currentTimeProgress =(moment(vm.startTime)).format("YYYY-MM");
+										vm.sliderProgress=0;
+										vm.count= 0;
+										return;
+									}
+									vm.sliderProgress =vm.sliderProgress+vm.step;
+									vm.currentTimeProgress =moment(moment(vm.startTime)+3600*1000*24*30*vm.count).format("YYYY-MM");
+									//console.log(moment(vm.currentTimeProgress).format("YYYYMM"));
+									updateMap(moment(vm.currentTimeProgress).format("YYYYMM"));
+
+								}
 							},
 							//停止播放
 							stop: function(){
 								vm.sliderProgress=0;
+								vm.count=0;
+								if(vm.playType=='hours'){
+									vm.currentTimeProgress =(moment(vm.startTime)).format("YYYY-MM-DD HH");
+								}else if(vm.playType=='date'){
+									vm.currentTimeProgress =(moment(vm.startTime)).format("YYYY-MM-DD");
+								}else if(vm.playType=='month'){
+									vm.currentTimeProgress =(moment(vm.startTime)).format("YYYY-MM");
+								}
 								var int =sessionStorage.getItem("evaluatePlay");
 								clearInterval(int);
 							},
 							//配置项
-							showForm: function() {
-								if(vm.showOrHide){
-									vm.showOrHide =false;
-									vm.showOrHideClass ={
-										display:"block"
-									}
-								}else{
-									vm.showOrHide =true;
-									vm.showOrHideClass ={
-										display:"none"
-									}
-								}
-
-							},
-							onSubmit: function () {
-								console.log(vm.normalparamform);
-			//                if(vm.form.maxValue&&vm.form.time.length&&vm.form.region){
-			//
-			//                }
-								this.showForm();
-							},
+							//showForm: function() {
+							//	if(vm.showOrHide){
+							//		vm.showOrHide =false;
+							//		vm.showOrHideClass ={
+							//			display:"block"
+							//		}
+							//	}else{
+							//		vm.showOrHide =true;
+							//		vm.showOrHideClass ={
+							//			display:"none"
+							//		}
+							//	}
+                            //
+							//},
+			//				onSubmit: function () {
+			//					console.log(vm.normalparamform);
+			////                if(vm.form.maxValue&&vm.form.time.length&&vm.form.region){
+			////
+			////                }
+			//					this.showForm();
+			//				},
 							//告警信息列表,系统配置频段,选中频率或频段
 							 searchFreChange: function(){
 								 //console.log(vm.searchFre)
@@ -341,36 +440,34 @@ define(	["ajax", "dojo/parser", "esri/map",
 									 this.showOrHideBrandInfo =false
 								 }
 
-							 },
-							filterNode:function(value, data) {
-								if (!value) return true;
-								return data.label.indexOf(value) !== -1;
-							},
-							nodeClick: function(data){
-								console.log(data)
-								vm.searchBrand =data.label;
-								this.showOrHideBrandInfo =false;//隐藏频段信息
-							},
+							 }
+							//filterNode:function(value, data) {
+							//	if (!value) return true;
+							//	return data.label.indexOf(value) !== -1;
+							//},
+							//nodeClick: function(data){
+							//	console.log(data)
+							//	vm.searchBrand =data.label;
+							//	this.showOrHideBrandInfo =false;//隐藏频段信息
+							//},
 							//显示频段信息
-							showBrandInfo: function() {
-								if(this.searchFre ==1){
-									this.showOrHideBrandInfo =true
-								}else{
-									this.showOrHideBrandInfo =false
-								}
-							}
+							//showBrandInfo: function() {
+							//	if(this.searchFre ==1){
+							//		this.showOrHideBrandInfo =true
+							//	}else{
+							//		this.showOrHideBrandInfo =false
+							//	}
+							//}
 
 
 						},
-						watch: {
-							filterText:function(val) {
-								this.$refs.tree2.filter(val);
-							}
-						},
+						//watch: {
+						//	filterText:function(val) {
+						//		this.$refs.tree2.filter(val);
+						//	}
+						//},
 						mounted:function(){
-							//this.autoPlay();
 
-							//console.log(this.morStationAllList)
 						}
 					});
 
@@ -895,8 +992,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 
 				// 初始化电磁环境评估地图事件
 				$('#modalEvaluate').on('shown.bs.modal', function(e) {
+					baseMapInit();
 					vm.autoPlay();
-					//baseMapInit(moment(vm.currentTimeProgress).format("YYYYMMDDHH"));
 				});
 
 				//过滤重点监测频段
@@ -1116,7 +1213,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 				}
 			}
 	       //态势图的渲染
-	        function baseMapInit(time){
+	        function baseMapInit(){
 				//var info = Binding.getUser();
 				//info = JSON.parse(info);
 				//var code = info.Area.Code;
@@ -1132,6 +1229,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						center.push(areas[i].latitude)
 					}
 				}
+				//console.log(center)
 				app = new AppMap('mapDiv2', {
 					// center: [104.360, 33.360],
 					center:center,
@@ -1142,23 +1240,21 @@ define(	["ajax", "dojo/parser", "esri/map",
 				app.polygonLayer();
 				app.situationLayer();
 				app.stationsLayer();
-
 				$.get('cache/data/mapdata', function (data) {
 					app.polygonLayer({
 						data: data
 					});
 				});
-
-
-				var stations =getstationsInfo().stationsInfo;
-				var data = {"time":time,stations:stations}
-				  //"time":"yyyyMMdd"
-					//stations:[{"flat":0,"flon":0,"id":987}]}
-
+			}
+          	//更新态势图
+	        function updateMap(time){
+				console.log(time)
+				//debugger
+				var stationsAll =getstationsInfo().stationsInfo;
+				var data = {"time":time,stations:stationsAll}
 				ajax.post("data/alarm/estimate", data, function (result) {
 					var stations = result.stationPiont,
 						data = result.kriking3.result;
-//                    console.log(stations)//[{x:25515.12, y:25326, count: , stationId}]
 					// 设置默认
 					Array.prototype.max = function() {
 						return Math.max.apply({}, this)
@@ -1182,11 +1278,20 @@ define(	["ajax", "dojo/parser", "esri/map",
 					app.stationsLayer({
 						data: stations
 					});
+					document.getElementById('valCtrl').addEventListener('click', function () {
+						var opCtrl = document.getElementById("opCtrl").value||0.7;
+						if(opCtrl<0){
+							opCtrl=0
+						}else if(opCtrl>1){
+							opCtrl=1
+						}
+						app.update('situation', {
+							opacity: opCtrl
+						});
+					});
 					$(".coverage-number").html(result.electrCoverage * 100 + "%");
-				});
-
+				})
 			}
-			
 			 //频段名称排序
 			function freqNameSorter(a, b) {
 				var matcha = a.match(/^[0-9\.\-]+/);

@@ -48,11 +48,31 @@
             position: relative;
         }
 
-        .levelsColor {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            height: 22px
+        .levelsColor{
+            position:absolute;top:10px;right:20px;height:22px
+        }
+        .levelsColor input[type="number"]{
+            width:40px;
+            border: 1px solid #DAE5F0;
+            border-radius: 4px;
+        }.levelsColor input[type="number"],.levelsColor a,.levelsColor img{
+             display:inline-block;*display:inline;*zoom:1;height:22px;float:left
+         }
+        .levelsColor img{
+            padding-top:0px
+        border: 1px solid #DAE5F0;
+            border-radius: 4px;
+        }
+        #valCtrl{
+            border: 1px solid #DAE5F0;
+            border-radius: 4px;
+            height:23px;
+            padding:0px 15px;
+            background:#6F6FF2;
+            color:#fff;
+            font-size:12px;
+            text-decoration:none;
+            line-height:23px
         }
     </style>
     <link href='3.9/js/dojo/library/element-ui/lib/theme-chalk/index.css' rel='stylesheet'/>
@@ -479,16 +499,16 @@
                                     <%--</el-form-item>--%>
                                 <%--</el-form>--%>
                                 <%--表单配置项end--%>
-                                <%--<form method="#">--%>
-                                <%--<input type="number" name="opVal" min="0" max="1" id="opCtrl" value="0.7" alt="请输入透明度范围值0~1"--%>
-                                <%--title="请输入透明度范围值0~1" style="margin-right: 5px">--%>
-                                <%--<input type="number" name="startVal" min="1" id="minCtrl" value="-40" alt="请输入最小值"--%>
-                                <%--title="请输入最小值">--%>
-                                <%--<img src="images/a.png" alt="">--%>
-                                <%--<input type="number" name="endVal" max="10" id="maxCtrl" value="120" alt="请输入最大值"--%>
-                                <%--title="请输入最大值">--%>
-                                <%--<a href="#" id="valCtrl" v-text="dd.btn.affirm">确认</a>--%>
-                                <%--</form>--%>
+                                <form method="#">
+                                <input type="number" name="opVal" min="0" max="1" id="opCtrl" value="0.7" alt="请输入透明度范围值0~1"
+                                title="请输入透明度范围值0~1" style="margin-right: 5px">
+                                <input type="number" name="startVal" min="1" id="minCtrl" value="-40" alt="请输入最小值"
+                                title="请输入最小值">
+                                <img src="images/a.png" alt="">
+                                <input type="number" name="endVal" max="10" id="maxCtrl" value="120" alt="请输入最大值"
+                                title="请输入最大值">
+                                <a href="#" id="valCtrl" v-text="dd.btn.affirm">确认</a>
+                                </form>
                             </div>
                             <%--控件 end--%>
                         </div>

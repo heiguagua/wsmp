@@ -146,8 +146,14 @@ define(["home/alarm/alarm_manage", "ajax","library/map/appMap"],
                         data: stations
                     });
                     document.getElementById('valCtrl').addEventListener('click', function () {
+                        var opCtrl = document.getElementById("opCtrl").value||0.7;
+                        if(opCtrl<0){
+                            opCtrl=0
+                        }else if(opCtrl>1){
+                            opCtrl=1
+                        }
                         app.update('situation', {
-                            opacity: 0.7
+                            opacity: opCtrl
                         });
                     });
                     $(".coverage-number").html(result.electrCoverage * 100 + "%");

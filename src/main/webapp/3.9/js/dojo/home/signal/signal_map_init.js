@@ -103,6 +103,17 @@ define(["home/signal/signal_manage", "ajax","library/map/appMap"],
             app.stationsLayer({
                 data: stations
             });
+            document.getElementById('valCtrl').addEventListener('click', function () {
+                var opCtrl = document.getElementById("opCtrl").value||0.7;
+                if(opCtrl<0){
+                    opCtrl=0
+                }else if(opCtrl>1){
+                    opCtrl=1
+                }
+                app.update('situation', {
+                    opacity: opCtrl
+                });
+            });
           $(".coverage-number").html(result.electrCoverage * 100 + "%");
         });
       });
