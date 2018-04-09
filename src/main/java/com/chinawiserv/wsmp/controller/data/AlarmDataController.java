@@ -350,8 +350,8 @@ public class AlarmDataController {
 
         List<Map<String, String>> stationPiont = stationsList.stream().map(station -> {
             HashMap<String, String> element = Maps.newHashMap();
-            element.put("x", station.getFlon() + "");
-            element.put("y", station.getFlat() + "");
+            element.put("x", station.getFlat()+ "");
+            element.put("y", station.getFlon()  + "");
             element.put("count", (station.getLevel()) + "");
             element.put("stationId", station.getId()+"");
             return element;
