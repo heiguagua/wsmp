@@ -69,6 +69,11 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
         $("#audio-list-close").on("click", function() {
                 $("#audio-choose-list").slideUp();
             })
+        //关闭频谱播放框
+        $("#spectrum-close").on("click", function() {
+            $("#frequency-wrap").slideUp();
+            $("#frequency").prop("checked", false);
+        })
             //关闭音频播放
         audio_data.audioloseClick();
         //选择频谱
@@ -110,9 +115,9 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
             })
             //关闭IQ播放框
         $("#IQ-close").on("click", function() {
-                $("#IQ-wrap").slideUp();
-                $("#IQ").prop("checked", false);
-            })
+            $("#IQ-wrap").slideUp();
+            $("#IQ").prop("checked", false);
+        })
             // 弹出框数据列表取消按钮点击事件
         $(".data-choose-list .btn-cancel").each(function() {
                 $(this).on("click", function() {

@@ -114,6 +114,18 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                     $('#spectrum-table').bootstrapTable("check", i);
                 }
             }
+            $('#checkAllSpectrum').on('click',function(e){
+                if ($(this).is(":checked")) {
+                    for(var j=0;j<total;j++){
+                        $('#spectrum-table').bootstrapTable("check", j);
+                    }
+                }else{
+                    for(var j=0;j<total;j++){
+                        $('#spectrum-table').bootstrapTable("uncheck", j);
+                    }
+                }
+
+            })
         })
 
 

@@ -502,3 +502,7 @@ td.bs-checkbox{
   padding-left: 10px;
   width: 60px;
 }
+.checkAll {
+  margin-left: 26px;
+  margin-top: 20px;
+}

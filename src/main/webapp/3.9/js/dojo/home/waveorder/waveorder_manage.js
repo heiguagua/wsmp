@@ -995,7 +995,13 @@ define(	["ajax", "dojo/parser", "esri/map",
 					baseMapInit();
 					vm.autoPlay();
 				});
-
+				// 电磁环境评估模态框关闭
+				$('#modalEvaluate').on('hidden.bs.modal', function(e) {
+					vm.stop();
+					app.clear('situation');
+					app.clear('stations');
+					$(".coverage-number").html("");
+				});
 				//过滤重点监测频段
 				$('#importantMonitor_filter').on('click', function(e) {
 							if (e.target.checked == true) {
@@ -1289,7 +1295,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 							opacity: opCtrl
 						});
 					});
-					$(".coverage-number").html(result.electrCoverage * 100 + "%");
+					$(".coverage-number").html(result.electrCoverage* 100 + "%");
 				})
 			}
 			 //频段名称排序
