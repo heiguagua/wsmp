@@ -487,7 +487,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 				$(".select2-picker").on("select2:select", function(e) {
 							var areaCode = e.target.value;
 							//统计数据，电波秩序总览中，显示各列中每种信号类型的总数
-							getSignalCounts(areaCode);
 							select2_change(areaCode);
 						});
 
@@ -1237,9 +1236,13 @@ define(	["ajax", "dojo/parser", "esri/map",
 				
 			}
 	       //电波秩序总览中，显示每种信号类型的总数
-			function getSignalCounts(areaCode){
+			function getSignalCounts(areaCode,monitorsID,beginFreq,endFreq){
 				var data ={
-					areaCode:areaCode
+					areaCode:areaCode,
+					monitorsID :monitorsID,
+					beginFreq:beginFreq,
+					endFreq:endFreq
+
 				};
 				ajax.post("data/waveorder/statisticsForSingnalsAndWarnings",data,function(result){
 					//console.log(result)
@@ -1559,8 +1562,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 				// 默认选中第一个
 				var defaultAreaCode = $("#area_select").select2('val');
 				//console.log(defaultAreaCode);
-				//统计数据，电波秩序总览中，显示各列中每种信号类型的总数
-				getSignalCounts(defaultAreaCode);
 				// $('.select2-picker').val(defaultAreaCode); // Change the
 				// value or make some change to the internal state
 				// $('.select2-picker').trigger('change.select2'); //触发事件
@@ -1628,6 +1629,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 					beginFreq:parseInt(beginFreq)*1000000,
 					endFreq:parseInt(endFreq)*1000000
 				}
+				getSignalCounts(areaCode,monitorsID,beginFreq,endFreq);
 				table_radio_init(monitors, userID);
 				table_alarm_undealed(monitorsID, monitors,filter);
 				table_alarm_dealed(monitorsID, monitors,filter);
