@@ -76,7 +76,15 @@ define([], function() {
 			responseHandler : function(res) {
 				return res;
 			},
-			columns : [{
+			columns : [
+				{
+					align : 'left',
+					width : '10%',
+					title: '序号',
+					formatter : function(value,row,index) {
+						return index + 1;
+					}
+				},{
 						field : 'centor',
 						title : '频率(MHz)',
 						titleTooltip : "频率(MHz)",
@@ -137,6 +145,7 @@ define([], function() {
 						}
 					}, {
 						field : "signalManage",
+				        title : '操作',
 						formatter : function(value, row, index) {
 							return '<a signalId=' + row.id
 									+ ' class="signalManageA" centorFreq='

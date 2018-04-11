@@ -32,7 +32,7 @@
 	href="3.9/js/dojo/webgis/widgets/themes/darkangel/override.css">
 </head>
 
-<body id='waveOrder_map_to_sifon' class='waveOrder_map_to_sifon'>
+<body id='waveOrder_map_to_sifon' class='waveOrder_map_to_sifon table-signal-list'>
 	<input id="signalType" hidden="true" value="${signalType}">
 	<input id="isSubType" hidden="true" value="${isSubType}">
 	<input id="areaCode" hidden="true" value="${areaCode}">
