@@ -208,7 +208,12 @@ public class WaveOrderDataController {
 	public Map<String, Object> getStatisticsForSingnalsAndWarnings(@RequestBody Map<String, Object> param) {
 		// 根据未确认和监测站查询告警
 		FreqWarningQueryRequest request = new FreqWarningQueryRequest();
-		request.setAreaCode(Integer.valueOf(param.get("areaCode").toString()));
+//		request.setAreaCode(Integer.valueOf(param.get("areaCode").toString()));
+		// 设置监测站ID列表
+		ArrayOfString stationArray = new ArrayOfString();
+		List<String> stationString = (List<String>) param.get("monitorsID");
+		stationArray.setString(stationString);
+		request.setStationIDs(stationArray);
 		FreqWarningQueryResponse response = serviceFreqWarningSoap.query(request);
 		//Logger.info("查询告警未确认,{},返回:{}",urlFreqWarning,JSON.toJSONString(response));
 		List<FreqWarningDTO> alarmRows = response.getWarningInfos().getFreqWarningDTO();
