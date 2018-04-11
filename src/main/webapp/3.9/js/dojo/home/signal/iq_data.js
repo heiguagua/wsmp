@@ -105,6 +105,18 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                   $('#IQ-table').bootstrapTable("check", i);
                 }
             }
+            $('#checkAllIq').on('click',function(e){
+                if ($(this).is(":checked")) {
+                    for(var j=0;j<total;j++){
+                        $('#IQ-table').bootstrapTable("check", j);
+                    }
+                }else{
+                    for(var j=0;j<total;j++){
+                        $('#IQ-table').bootstrapTable("uncheck", j);
+                    }
+                }
+
+            })
         })
 
 
@@ -314,8 +326,8 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
             var q_data = [];
             var iq_data = [];
             var xAxis_data = [];
-            console.log(iq_play_list[i].idata.length);
-            console.log(iq_play_list[i].qdata.length);
+            //console.log(iq_play_list[i].idata.length);
+            //console.log(iq_play_list[i].qdata.length);
             for (var j = 0; j < iq_play_list[i].nmber; j++) {
                 i_data.push([j, iq_play_list[i].idata[j]]);
                 q_data.push([j, iq_play_list[i].qdata[j]]);

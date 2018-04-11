@@ -297,8 +297,8 @@ define(["esri/layers/ArcGISTiledMapServiceLayer", "esri/map","esri/Color",
         attr = {
             d: getStationName(stationId),
             c: count,
-            b: x.toString().match(/^\d+(?:\.\d{0,3})?/),
-            a: y.toString().match(/^\d+(?:\.\d{0,3})?/),
+            b: x.toString().match(/^\d+(?:\.\d{0,5})?/),
+            a: y.toString().match(/^\d+(?:\.\d{0,5})?/),
             Plant:"Mesa Mint"
         };
         

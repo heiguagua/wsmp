@@ -235,7 +235,7 @@
         <h4 class="modal-title" id="modalStationAlarmLabel"  v-text="dd.info.station">台站列表</h4>
       </div>
       <div class="modal-body">
-        <div id="stationWrap"></div>
+        <div id="stationWrap" class="table-station-list"></div>
       </div>
       <div class="modal-footer">
         <button id = "submitButton" type="button" class="btn btn-primary"  v-text="dd.btn.submit">提交</button>

@@ -105,6 +105,18 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                  $('#audio-table').bootstrapTable("check", i);
                 }
             }
+            $('#checkAllAudio').on('click',function(e){
+                if ($(this).is(":checked")) {
+                    for(var j=0;j<total;j++){
+                        $('#audio-table').bootstrapTable("check", j);
+                    }
+                }else{
+                    for(var j=0;j<total;j++){
+                        $('#audio-table').bootstrapTable("uncheck", j);
+                    }
+                }
+
+            })
         })
 
 

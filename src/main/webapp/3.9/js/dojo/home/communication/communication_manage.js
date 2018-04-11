@@ -127,13 +127,32 @@ define(["ajax"], function(ajax) {
 						return params
 					}, // 请求服务器时所传的参数
 					sidePagination : 'client',// 指定服务器端分页
-					pageSize : 10,// 单页记录数
-					pageList : [5, 10, 20, 30],// 分页步进值
+					pageSize : 15,// 单页记录数
+					//pageList : [5, 10, 20, 30],// 分页步进值
+			        pageList : [15, 30, 50, 100], // 分页步进值,
+					sortName: "freqRange",
+					sortable: true,
+					sortOrder: "asc",
 					clickToSelect : true,// 是否启用点击选中行
 					responseHandler : function(res) {
 						return res;
 					},
 					onLoadSuccess : function() {
+						$(".table-comms").find(".pull-right .pagination").append("<span class='goPage'>跳转到第<input id='tableCommsPageBtn' class='pageNum' type='text'>页</span>")
+						$("#tableCommsPageBtn").on("blur",function(e){
+							$("#table-comms").bootstrapTable("selectPage",parseInt($("#alarmDealedPageBtn").val()));
+						})
+					},
+					onPageChange:function(){
+						$(".table-comms").find(".pull-right .pagination").append("<span class='goPage'>跳转到第<input id='tableCommsPageBtn' class='pageNum' type='text'>页</span>")
+						$("#tableCommsPageBtn").on("blur",function(e){
+							$("#table-comms").bootstrapTable("selectPage",parseInt($("#tableCommsPageBtn").val()));
+						})
+					},
+					onAll:function(){
+						$("#table-comms").find(".dpopover").popover({
+							html : true
+						});
 						$(".sortTable1").on("click",function(e){
 							$("th.sortTable1").find('img').attr("src","images/arrow-both.png");
 							if($(this).children().attr("class").match("desc")){
@@ -143,32 +162,42 @@ define(["ajax"], function(ajax) {
 							}
 						});
 					},
-					columns : [{
+					columns : [
+							{
+								align : 'center',
+								width : '6%',
+								title: '序号',
+								formatter : function(value,row,index) {
+									return index + 1;
+								}
+							},{
 								class : 'sortTable1',
 								field : 'generation',
 								title : '2G-4G'+"<img src='images/arrow-both.png'width='24'/> ",
 								sortable : true,
 								formatter : function(value, row, index) {
-									return '<a>' + value + '</a>';
+									//return '<a>' + value + '</a>';
+									return '<div class="dpopover" data-container="body"  data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
+										+ value + '">' + value + '</div>';
 								}
 							}, {
 								class : 'sortTable1',
 								field : 'operator',
 								title : '运营商'+"<img src='images/arrow-both.png'width='24'/> ",
-								sortable : true,
-								formatter : function(value, row, index) {
-									return '<a>' + value + '</a>';
-								}
+								sortable : true
+								//formatter : function(value, row, index) {
+								//	return '<a>' + value + '</a>';
+								//}
 							}, {
 								class : 'sortTable1',
 								field : 'freqRange',
-								title : '频段范围'+"<img src='images/arrow-both.png'width='24'/> ",
+								title : '频段范围'+"<img src='images/arrow-up.png'width='24'/> ",
 								sortable : true,
 								sortName : "freqRange",
-								sorter : freqRangeSorter,
-								formatter : function(value, row, index) {
-									return '<a>' + value + '</a>';
-								}
+								sorter : freqRangeSorter
+								//formatter : function(value, row, index) {
+								//	return '<a>' + value + '</a>';
+								//}
 							}, {
 								class : 'sortTable1',
 								field : 'techName',

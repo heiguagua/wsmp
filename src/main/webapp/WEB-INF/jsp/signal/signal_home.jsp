@@ -28,7 +28,8 @@
 .levelsColor{
 	position: relative;
 	top: -475px;
-	left: 850px;
+	left: 62%;
+	width: 408px
 	/*position:absolute;top:980px;right:20px;height:22px*/
 }
 .levelsColor input[type="number"]{
@@ -151,9 +152,14 @@
 			<div class='box'>
 				<div class='data-play'>
 					<label class='module-name' ><span v-text="dd.signal.title1">数据回放</span><span class="data-type">频谱</span></label>
+					<a class="ico-close close-box " id="spectrum-close">&times;</a>
 					<a class='btn btn-default btn-choose pull-right' id="spectrum-choose-btn" v-text="dd.btn.select">选择数据</a>
 					<div class="data-choose-list" id="spectrum-choose-list">
 						<div class="pull-right"><span id="data-list-close" class="ico-close">&times;</span></div>
+						<div class="checkbox checkbox-primary checkAll ">
+							<input type="checkbox" name="data-type" value='1' id="checkAllSpectrum">
+							<label for="checkAllSpectrum"> 全选所有数据 </label>
+						</div>
 						<table class="table table-striped table-hover spectrum-table" id="spectrum-table">
 							<tr class="empty-msg"><td  v-text="dd.info.nodata">未查询到数据！</td></tr>
 						</table>
@@ -202,6 +208,10 @@
 					<a class='btn btn-default btn-choose pull-right' id="IQ-choose-btn" v-text="dd.btn.select">选择数据</a>
 					<div class="data-choose-list" id="IQ-choose-list">
 						<div class="pull-right"><span id="IQ-list-close" class="ico-close">&times;</span></div>
+						<div class="checkbox checkbox-primary checkAll">
+							<input type="checkbox" value='1' name="data-type" id="checkAllIq">
+							<label for="checkAllSpectrum">全选所有数据</label>
+						</div>
 						<table class="table table-striped table-hover" id="IQ-table">
 							<tr class="empty-msg"><td  v-text="dd.info.nodata">未查询到数据！</td></tr>
 						</table>
@@ -230,6 +240,10 @@
 					<a class='btn btn-default btn-choose pull-right' id="audio-choose-btn" v-text="dd.btn.select">选择数据</a>
 					<div class="data-choose-list" id="audio-choose-list">
 						<div class="pull-right"><span id="audio-list-close" class="ico-close">&times;</span></div>
+						<div class="checkbox checkbox-primary checkAll">
+							<input type="checkbox" value='1' name="data-type" id="checkAllAudio">
+							<label for="checkAllSpectrum">全选所有数据</label>
+						</div>
 						<table class="table table-striped table-hover" id="audio-table">
 							<tr class="empty-msg"><td  v-text="dd.info.nodata">未查询到数据！</td></tr>
 						</table>

@@ -56,7 +56,7 @@
   <!--content-->
   <div class='content-wrap'>
     <section>
-      <div class='box'>
+      <div class='box table-comms'>
         <table class="table table-striped text-center" id='table-comms'>
         </table>
       </div>
