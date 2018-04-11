@@ -386,7 +386,7 @@
                             </el-col>
                             <el-col :span="3" style="margin: 5px 20px 0 0 ;float: right;">
                                 <span v-text="dd.info.electromagnetic">电磁覆盖率</span>
-                                <span class='coverage-number'>131%</span>
+                                <span class='coverage-number'></span>
                             </el-col>
                         </el-row>
                         <%--播放器-end--%>
