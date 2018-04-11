@@ -293,7 +293,7 @@ define(["esri/layers/ArcGISTiledMapServiceLayer", "esri/map","esri/Color",
         };
         //设置基站点 和文字模板
         point = new Point(x, y, map.SpatialReference);
-        infoTemplate = new InfoTemplate("场强定位信息","名称: ${d} <br/> 经度: ${a} <br/> 纬度: ${b} <br/>统计:${c}");
+        infoTemplate = new InfoTemplate("场强定位信息","名称: ${d} <br/> 经度: ${a} <br/> 纬度: ${b} <br/>统计:${c}dBμV");
         attr = {
             d: getStationName(stationId),
             c: count,

@@ -190,7 +190,8 @@
                     <li class="pull-right" id="minutes-li">
                         <input class="minutes"
                             placeholder='更新间隔/分钟' id="minutes"
-                            style="IME-MODE: disabled; width: 100px;line-height: 1;"
+                            type="number"
+                            style="IME-MODE: disabled; width: 100px;line-height: 1.8;"
                             onkeyup="this.value=this.value.replace(/\D/g,'')"
                             onafterpaste="this.value=this.value.replace(/\D/g,'')"
                             maxlength="2" max="30" type="number" oninvalid="setCustomValidity('刷新范围1-30分钟');" oninput="setCustomValidity('');"/>
@@ -199,10 +200,10 @@
                             确认
                         </button>
                         <%--<button class="btn" style="height: 28px;">刷新</button>--%>
-                        <button class="btn btn-default btn-refresh">
-                            <%--<img src="images/refresh.png">&nbsp;&nbsp;--%>
-                            刷新
-                        </button>
+                        <%--<button class="btn btn-default btn-refresh">--%>
+                            <%--&lt;%&ndash;<img src="images/refresh.png">&nbsp;&nbsp;&ndash;%&gt;--%>
+                            <%--刷新--%>
+                        <%--</button>--%>
                     </li>
                 </ul>
                 <div class="tab-content flex1">
