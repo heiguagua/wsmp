@@ -813,6 +813,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 					var isSubType = a.data('issubtype');
 					$('#table-signal-list').bootstrapTable("destroy");
 					$('#table-signal-list').bootstrapTable({
+						height:450,
 						method : 'post',
 						cache : false,
 						contentType : "application/json",
@@ -1077,6 +1078,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 					var isSubType = a.issubtype;
 					$('#table-signalsOnMonitors-list').bootstrapTable("destroy");
 					$('#table-signalsOnMonitors-list').bootstrapTable({
+						height:450,
 						method : 'post',
 						cache : false,
 						contentType : "application/json",
@@ -1972,7 +1974,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 			function table_alarm_dealed(monitorsID, monitors,filter) {
 				$('#table-alarm-dealed').bootstrapTable("destroy");
 				$('#table-alarm-dealed').bootstrapTable({
-					//height : 630,
+					height : 510,
 					method : 'post',
 					contentType : "application/json", // 必须要有！！！！
 					url : "data/waveorder/alarmdealed", // 要请求数据的文件路径
@@ -2128,7 +2130,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 			function table_alarm_undealed(monitorsID, monitors,filter) {
 				$('#table-alarm-undeal').bootstrapTable("destroy");
 				var option = {
-					//height : 630,
+					height:610,
 					method : 'post',
 					contentType : "application/json", // 必须要有！！！！
 					url : "data/waveorder/alarmundealed", // 要请求数据的文件路径
@@ -2158,7 +2160,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 					columns : [
 							{
 								align : 'left',
-								width : '4%',
+								width : '6%',
 								title: '序号',
 								formatter : function(value,row,index) {
 									return index + 1;
@@ -2291,6 +2293,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 			function radio_auto_confirm(monitorsID, monitors,filter) {
 				$('#radio_auto_confirm').bootstrapTable("destroy");
 				var option = {
+					height : 510,
 					method : 'post',
 					contentType : "application/json", 
 					url : "data/waveorder/radioAutoConfirm", // 要请求数据的文件路径
@@ -2321,7 +2324,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 
 						{
 							align : 'left',
-							width : '4%',
+							width : '6%',
 							title: '序号',
 							formatter : function(value,row,index) {
 								return index + 1;
@@ -2455,7 +2458,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 				}
 				$('#table-radio').bootstrapTable("destroy");
 				$('#table-radio').bootstrapTable({
-//					height : 300,
+					height : 320,
 					method : 'post',
 					contentType : "application/json",
 					url : "data/waveorder/rediostatus", // 要请求数据的文件路径

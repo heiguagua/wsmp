@@ -51,6 +51,7 @@ define([], function() {
 		// 信号统计点击进入详情页事件
 		$('#table-signal-list').bootstrapTable("destroy");
 		$('#table-signal-list').bootstrapTable({
+			height:450,
 			method : 'post',
 			cache : false,
 			contentType : "application/json",

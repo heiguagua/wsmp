@@ -107,6 +107,7 @@ define(["ajax"], function(ajax) {
 	function topTable(areaCode, startTime, endTime, userID, monitorsID) {
 		$('#table-comms').bootstrapTable("destroy");
 		$('#table-comms').bootstrapTable({
+			        height : 680,
 					method : 'post',
 					contentType : "application/json",// 必须要有！！！！
 					url : "data/communication/topTable",// 要请求数据的文件路径
