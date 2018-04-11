@@ -364,12 +364,13 @@ public class AlarmDataController {
 
         if (coulm > 0) {
             Object object = kriking3.get("result");
-            List<Integer[]> list = JSONObject.parseArray(object.toString(), Integer[].class);
-            if(list!=null&&!list.isEmpty()) {
-                double numerator = list.stream().filter((e) -> e[2] >= intKrikingValue).count();
-                int denominator = list.size()+coulm;
-                electrCoverage = df.format(denominator > 0 ? numerator / denominator : 0);
-
+            if(!"".equals(object.toString())){
+                List<Integer[]> list = JSONObject.parseArray(object.toString(), Integer[].class);
+                if(list!=null&&!list.isEmpty()) {
+                    double numerator = list.stream().filter((e) -> e[2] >= intKrikingValue).count();
+                    int denominator = list.size()+coulm;
+                    electrCoverage = df.format(denominator > 0 ? numerator / denominator : 0);
+                }
             }
         }
 
