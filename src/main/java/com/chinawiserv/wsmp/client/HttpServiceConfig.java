@@ -48,6 +48,24 @@ public class HttpServiceConfig {
          String result = restTemplate.postForObject(url, formEntity, String.class);
          return result;
 	}
-	
-	
+
+    public static String httpclient(double[][] dataIn,String url, Boolean isAdut,int radis) {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8");
+        headers.setContentType(type);
+        headers.add("Accept", MediaType.APPLICATION_JSON.toString());
+
+        JSONObject jsonObj = new JSONObject();
+        jsonObj.put("data", dataIn);
+        jsonObj.put("stepx", 0.045);
+        jsonObj.put("stepy", 0.032);
+        jsonObj.put("scale", 0.5);
+        jsonObj.put("radis", radis);
+
+        HttpEntity<String> formEntity = new HttpEntity<String>(jsonObj.toString(), headers);
+
+        String result = restTemplate.postForObject(url, formEntity, String.class);
+        return result;
+    }
 }

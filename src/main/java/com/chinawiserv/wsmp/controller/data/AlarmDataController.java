@@ -298,7 +298,10 @@ public class AlarmDataController {
                 stations[i]=stationsList.get(i).getId()+"";
             }
             beginTime="20180402";
-            Map<String, Object> reMap = hbaseClient.queryPower("day", beginTime, stations);
+            if(param.getType()==null){
+                param.setType("day");
+            }
+            Map<String, Object> reMap = hbaseClient.queryPower(param.getType(), beginTime, stations);
 
 
 
@@ -311,22 +314,35 @@ public class AlarmDataController {
                     kringParam[i][0] = info.getFlon();
                     kringParam[i][1] = info.getFlat();
                     if(reMap.get(key)!=null){
-                        info.setLevel(Double.parseDouble(reMap.get(key)+""));
-                    }
-                    if(Double.isNaN(info.getLevel())){
+                        Float level=(Float)(reMap.get(key));
+                        if(!Float.isNaN((level))){
+                            DecimalFormat dFormat=new DecimalFormat("#.0");
+                            String temp=dFormat.format(level);
+                            info.setLevel(Double.valueOf(temp)+i);
+                            kringParam[i][2] = info.getLevel();
+                        }else{
+                            info.setLevel(0);
+                            kringParam[i][2] = 0;
+                        }
+                    }else{
                         info.setLevel(0);
                         kringParam[i][2] = 0;
-                    }else{
-                        kringParam[i][2] = info.getLevel();
                     }
 
                 }
             }
+            String ss="[[30.628000259399414,104.00900268554688,3.0],[30.528000259399414,103.90900268554688,4.0],[30.729568481445312,103.97245788574219,0.0],[30.75,103.88999938964844,-2.0],[30.628000259399414,104.00900268554688,3.0]]";
 
             List<double[]> list = Arrays.asList(kringParam);
+            list=JSONObject.parseArray(ss,double[].class);
+            for(int i = 0; i < stationsList.size(); i++){
+                stationsList.get(i).setFlat(list.get(i)[1]);
+                stationsList.get(i).setFlon(list.get(i)[0]);
+                stationsList.get(i).setLevel(list.get(i)[2]);
+            }
             Logger.info("参数1{}",JSON.toJSONString(list));
-            List<double[]> collect = list.stream().filter(ds -> ds[0]<53.55&&ds[0]>3.86&&ds[1]<135.05&&ds[1]>73.66).collect(toList());
-            String string = HttpServiceConfig.httpclient(collect.toArray(new double[collect.size()][3]), kringUrl,false);
+            List<double[]> collect = list.stream().filter(ds -> ds[0] < 53.55 && ds[0] > 3.86 && ds[1] < 135.05 && ds[1] > 73.66 && ds[2] != 0).collect(toList());
+            String string = HttpServiceConfig.httpclient(collect.toArray(new double[collect.size()][3]), kringUrl,false,100);
             kriking3 = JSONObject.parseObject(string);
 
             Logger.info("场强定位计算正常 操作时间{} 返回值为{}", LocalDateTime.now().toString(),kriking3);
