@@ -58,8 +58,8 @@ public class HttpServiceConfig {
 
         JSONObject jsonObj = new JSONObject();
         jsonObj.put("data", dataIn);
-        jsonObj.put("stepx", 0.045);
-        jsonObj.put("stepy", 0.032);
+        jsonObj.put("stepx", 0.035);
+        jsonObj.put("stepy", 0.03);
         jsonObj.put("scale", 0.5);
         jsonObj.put("radis", radis);
 
