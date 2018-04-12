@@ -156,7 +156,7 @@ define(["home/alarm/alarm_manage", "ajax","library/map/appMap"],
                             opacity: opCtrl
                         });
                     });
-                    $(".coverage-number").html(result.electrCoverage * 100 + "%");
+                    $(".coverage-number").html(parseInt(result.electrCoverage* 100)+ "%");
                 }
             })
         }

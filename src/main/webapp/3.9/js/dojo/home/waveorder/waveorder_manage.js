@@ -1359,7 +1359,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 							opacity: opCtrl
 						});
 					});
-					$(".coverage-number").html(result.electrCoverage* 100 + "%");
+					$(".coverage-number").html(parseInt(result.electrCoverage* 100)+ "%");
 				})
 			}
 			 //频段名称排序

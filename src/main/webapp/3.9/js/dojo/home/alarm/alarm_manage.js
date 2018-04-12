@@ -333,6 +333,9 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                             level_charts.clear()
                             month_charts.clear();
                             mapinit.clearMap();
+                            $("#stationName").html("");
+                            $("#levelTitle").html("电平峰值");
+                            $("#monthTitle").html("近3个月占用度（按天统计）");
                             return;
                         }
                         if ($("#waringId").val() != null && $("#waringId").val().length != 0) {

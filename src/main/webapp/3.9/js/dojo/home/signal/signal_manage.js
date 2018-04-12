@@ -995,6 +995,9 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                 $("#station-list2").html('<option style="width: 300px;" class="station">未查询到数据</option>');
                 initMap.clearMap();
             	$("#dk").html("");
+                $("#stationName").html("");
+                $("#levelChartTitle").html("电平峰值");
+                $("#monthChartTitle").html("近3个月占用度（按天统计）");
                 return;
             }
             if ($("#singalID").val() != null && $("#singalID").val().length != 0) {
