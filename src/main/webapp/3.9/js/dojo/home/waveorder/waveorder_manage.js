@@ -184,7 +184,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 							},
 							//拖动进度条或点击进度条位置来切换到指定帧，继续播放
 							changeSlider: function(){
-								//console.log(vm.sliderProgress);
+								//console.log(vm.sliderProgress,vm.step);
+								vm.count =vm.sliderProgress/vm.step;
 								this.autoPlay();
 							},
 							//自动播放，自动修改进度条值，即修改某帧的值，自动调用态势图的接口数据
@@ -195,7 +196,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 										//默认设置为近一天
 										var hours =(vm.endTime-vm.startTime)/(3600*1000);
 										//hours =24;
-										console.log("按小时/帧播放，共："+hours+"小时")
+										//console.log("按小时/帧播放，共："+hours+"小时")
 										if(vm.count>hours-1){
 											clearInterval(int);
 											vm.sliderProgress=0;
@@ -215,7 +216,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 										//默认设置为近一月
 										var dates =(vm.endTime-vm.startTime)/(3600*1000*24);
 										//dates =30;
-										console.log("按天/帧播放，共："+dates+"天")
+										//console.log("按天/帧播放，共："+dates+"天")
 										if(vm.count>dates-1){
 											clearInterval(int);
 											vm.sliderProgress=0;
@@ -236,7 +237,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 										//默认设置为近一年
 										var months =(vm.endTime-vm.startTime)/(3600*1000*24*30);
 										//months =12;
-										console.log("按月/帧播放，共："+months+"月")
+										//console.log("按月/帧播放，共："+months+"月")
 										if(vm.count>months-1){
 											clearInterval(int);
 											vm.sliderProgress=0;
