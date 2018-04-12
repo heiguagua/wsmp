@@ -118,7 +118,7 @@ public class AlarmDataController {
     @Value("${kriking.value}")
     private int intKrikingValue;
 
-    private DecimalFormat df = new DecimalFormat("#.00");
+    private DecimalFormat df = new DecimalFormat("0.00");
 
     @GetMapping(path = "/secondLevelChart")
     public Object secondLevelChart(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
