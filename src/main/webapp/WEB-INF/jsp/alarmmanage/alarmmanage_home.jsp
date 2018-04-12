@@ -148,7 +148,7 @@
           <span class='coverage-number'></span>
         </div>
       </div>
-      <div id="mapDiv"></div>
+      <div id="mapDiv" style="padding: 0px;height: 800px"></div>
       <%--<div id="heatLayer"></div>--%>
       <%--控件--%>
       <div id="levelsColor" class="levelsColor">

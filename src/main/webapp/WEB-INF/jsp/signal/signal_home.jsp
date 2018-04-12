@@ -27,7 +27,7 @@
 .box{position: relative;}
 .levelsColor{
 	position: relative;
-	top: -475px;
+	bottom: 795px;
 	left: 62%;
 	width: 408px
 	/*position:absolute;top:980px;right:20px;height:22px*/
@@ -353,7 +353,7 @@
 						<span v-text="dd.info.electromagnetic">电磁覆盖率</span>&nbsp; <span class='coverage-number'></span>
 					</div>
 				</div>
-				<div id="mapDiv" style= "padding: 0px;height: 480px;"></div>
+				<div id="mapDiv" style= "padding: 0px;height: 800px;"></div>
 				<%--<div id="mapDiv1"></div>--%>
 				<!-- <div id="heatLayer"></div> -->
 				<%--控件--%>
