@@ -153,6 +153,9 @@ label, .control-label {
 	border: none;
 }
 
+.fixed-table-header{
+	padding-left: 15px;
+}
 .fixed-table-body {
 	padding: 0 15px 25px 15px;
 }

@@ -165,13 +165,14 @@ define(["ajax"], function(ajax) {
 					},
 					columns : [
 							{
-								align : 'center',
+								align: "left",
 								width : '6%',
 								title: '序号',
 								formatter : function(value,row,index) {
 									return index + 1;
 								}
 							},{
+							    align: "left",
 								class : 'sortTable1',
 								field : 'generation',
 								title : '2G-4G'+"<img src='images/arrow-both.png'width='24'/> ",
@@ -184,6 +185,7 @@ define(["ajax"], function(ajax) {
 							}, {
 								class : 'sortTable1',
 								field : 'operator',
+							    align: "left",
 								title : '运营商'+"<img src='images/arrow-both.png'width='24'/> ",
 								sortable : true
 								//formatter : function(value, row, index) {
@@ -192,6 +194,7 @@ define(["ajax"], function(ajax) {
 							}, {
 								class : 'sortTable1',
 								field : 'freqRange',
+							    align: "left",
 								title : '频段范围'+"<img src='images/arrow-up.png'width='24'/> ",
 								sortable : true,
 								sortName : "freqRange",
@@ -201,6 +204,7 @@ define(["ajax"], function(ajax) {
 								//}
 							}, {
 								class : 'sortTable1',
+							    align: "left",
 								field : 'techName',
 								title : '技术制式 '+"<img src='images/arrow-both.png'width='24'/> ",
 								sortName : "techName",
@@ -208,18 +212,21 @@ define(["ajax"], function(ajax) {
 
 							}, {
 								class : 'sortTable1',
+							    align: "left",
 								field : 'infoChannel',
 								title : '频段信道数'+"<img src='images/arrow-both.png'width='24'/> ",
 								sortName : "infoChannel",
 								sortable : true
 							}, {
 								class : 'sortTable1',
+							    align: "left",
 								field : 'monitorCoverage',
 								title : '监测网覆盖率'+"<img src='images/arrow-both.png'width='24'/> ",
 								sortName : "monitorCoverage",
 								sortable : true
 							}, {
 								class : 'sortTable1',
+							    align: "left",
 								field : 'stationCoverage',
 								title : '台站覆盖率'+"<img src='images/arrow-both.png'width='24'/> ",
 								sortName : "stationCoverage",
@@ -229,6 +236,7 @@ define(["ajax"], function(ajax) {
 								}
 							}, {
 								class : 'sortTable1',
+							    align: "left",
 								field : 'occupancy',
 								title : '频段占用度'+"<img src='images/arrow-both.png'width='24'/> ",
 								sortName : "occupancy",

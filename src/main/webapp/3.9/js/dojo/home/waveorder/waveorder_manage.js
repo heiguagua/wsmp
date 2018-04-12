@@ -2523,8 +2523,9 @@ define(	["ajax", "dojo/parser", "esri/map",
 
 					},
 					columns : [{
-						align: "center",
+						align: "left",
 						title: '序号',
+						width : '6%',
 						formatter : function(value,row,index) {
 							return index + 1;
 						}
@@ -2534,7 +2535,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 						sortable : true,
 						sortName : "beginFreq",
 						align: "left",
-						halign: "left",
 						title : "频段范围"+"<img src='images/arrow-up.png'width='24'/> ",
 						width : '10%',
 						titleTooltip : '频段范围',
@@ -2547,7 +2547,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 					},{
 						class : "sortTable1",
 						align: "left",
-						halign: "left",
 						field : 'redioName',
 						title : '频段名称'+"<img src='images/arrow-both.png'width='24'/> " ,
 						width : '14%',
@@ -2565,7 +2564,6 @@ define(	["ajax", "dojo/parser", "esri/map",
 						{
 						class : "sortTable1",
 							align: "left",
-							halign: "left",
 						field : 'alarmingNumber',
 						title : '告警数量'+"<img src='images/arrow-both.png'width='24'/> " ,
 						width : '10%',
@@ -2588,7 +2586,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						titleTooltip : '合法正常信号',
 						sortable : true,
 							align: "left",
-							halign: "left",
+							//halign: "left",
 						sortName : "legalNormalStationNumber",
 						footerFormatter : function(data) {
 							var sum = 0;
@@ -2611,7 +2609,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						titleTooltip : '合法违规信号',
 						sortable : true,
 							align: "left",
-							halign: "left",
+							//halign: "left",
 						sortName : "legalUnNormalStationNumber",
 						footerFormatter : function(data) {
 							var sum = 0;
@@ -2634,7 +2632,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						titleTooltip : '已知信号',
 						sortable : true,
 							align: "left",
-							halign: "left",
+							//halign: "left",
 						sortName : "konwStationNumber",
 						footerFormatter : function(data) {
 							var sum = 0;
@@ -2657,7 +2655,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						titleTooltip : '非法信号',
 						sortable : true,
 							align: "left",
-							halign: "left",
+							//halign: "left",
 						sortName : "illegalSignal",
 						footerFormatter : function(data) {
 							console.log(data);
@@ -2681,7 +2679,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						titleTooltip : '不明信号',
 						sortable : true,
 							align: "left",
-							halign: "left",
+							//halign: "left",
 						sortName : "unKonw",
 						footerFormatter : function(data) {
 							var sum = 0;
