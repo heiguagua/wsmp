@@ -267,7 +267,7 @@
                             aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h4 class="modal-title" id="modalSignalLabel" v-text="dd.info.laytit"></h4>
+                    <h4 class="modal-title" id="modalSignalLabel" v-text="dd.info.laytit">信号列表</h4>
                 </div>
                 <div class="modal-body padding20 table-signal-list">
                     <table class="table table-striped" id='table-signal-list'>
@@ -288,7 +288,7 @@
                             aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h4 class="modal-title" id="modalSignalLabel1" v-text="dd.info.laytit"></h4>
+                    <h4 class="modal-title" id="modalSignalLabel1" v-text="dd.info.laytit">信号列表</h4>
                 </div>
                 <div class="modal-body padding20 table-signalsOnMonitors-list">
                     <table class="table table-striped " id='table-signalsOnMonitors-list'>

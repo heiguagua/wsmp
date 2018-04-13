@@ -51,6 +51,6 @@
             </li>
           </ul>
           <a class='btn btn-default btn-refresh pull-right'>
-            <img src='images/refresh.png' />&nbsp;&nbsp;<span  v-text="dd.btn.refresh"></span>
+            <img src='images/refresh.png' />&nbsp;&nbsp;<span  v-text="dd.btn.refresh">刷新</span>
           </a>
         </div>
