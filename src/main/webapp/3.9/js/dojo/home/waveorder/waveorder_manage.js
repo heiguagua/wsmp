@@ -2461,7 +2461,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 				}
 				$('#table-radio').bootstrapTable("destroy");
 				$('#table-radio').bootstrapTable({
-					height : 320,
+					//height : 320,
 					method : 'post',
 					contentType : "application/json",
 					url : "data/waveorder/rediostatus", // 要请求数据的文件路径
