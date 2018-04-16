@@ -339,7 +339,8 @@
                                             size="mini"
                                             @focus ="timefocus()"
                                             @change="startTimeChange()"
-                                            :picker-options="pickerOptions2">
+                                            <%--:picker-options="pickerOptions2"--%>
+                                            >
                                     </el-date-picker>
                             </el-col>
                             <el-col :span="1"><span  style="margin: 10px 0 0 10px;">~</span></el-col>
@@ -353,7 +354,8 @@
                                         size="mini"
                                         @focus ="timefocus()"
                                         @change="endTimeChange()"
-                                        :picker-options="pickerOptions2">
+                                        <%--:picker-options="pickerOptions2"--%>
+                                        >
                                 </el-date-picker>
                             </el-col>
                             <el-col :span="6">

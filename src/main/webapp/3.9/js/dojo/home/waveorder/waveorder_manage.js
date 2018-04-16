@@ -26,33 +26,33 @@ define(	["ajax", "dojo/parser", "esri/map",
 							var currentTimeProgress =moment(start).format("YYYY-MM-DD");
 							return {
 								dd:config.config,
-								pickerOptions2: {
-									shortcuts: [{
-										text: '最近一周',
-										onClick:function(picker) {
-											const end = new Date();
-											const start = new Date();
-											start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-											picker.$emit('pick', [start, end]);
-										}
-									}, {
-										text: '最近一个月',
-										onClick:function(picker) {
-											const end = new Date();
-											const start = new Date();
-											start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-											picker.$emit('pick', [start, end]);
-										}
-									}, {
-										text: '最近三个月',
-										onClick:function(picker) {
-											const end = new Date();
-											const start = new Date();
-											start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-											picker.$emit('pick', [start, end]);
-										}
-									}]
-								},
+								//pickerOptions2: {
+								//	shortcuts: [{
+								//		text: '最近一周',
+								//		onClick:function(picker) {
+								//			const end = new Date();
+								//			const start = new Date();
+								//			start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+								//			picker.$emit('pick', [start, end]);
+								//		}
+								//	}, {
+								//		text: '最近一个月',
+								//		onClick:function(picker) {
+								//			const end = new Date();
+								//			const start = new Date();
+								//			start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+								//			picker.$emit('pick', [start, end]);
+								//		}
+								//	}, {
+								//		text: '最近三个月',
+								//		onClick:function(picker) {
+								//			const end = new Date();
+								//			const start = new Date();
+								//			start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+								//			picker.$emit('pick', [start, end]);
+								//		}
+								//	}]
+								//},
 								//time: [start, currentDate],
 								startTime:start,
 								endTime:currentDate,
@@ -1644,7 +1644,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 				//改变行政区域边界
 				addAreaBoundary(MAP1);
 				//改变每个监测站点上的信号总数
-				addSignalCountOnMonitors(monitors,1,"false");//默认选中1，子类型为false
+				addSignalCountOnMonitors(monitors,3,"false");//默认选中3非法信号，子类型为false
 				redioType(monitors);
 			}
 
