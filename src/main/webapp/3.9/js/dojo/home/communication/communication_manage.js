@@ -177,6 +177,7 @@ define(["ajax"], function(ajax) {
 								field : 'generation',
 								title : '2G-4G'+"<img src='images/arrow-both.png'width='24'/> ",
 								sortable : true,
+							    titleTooltip : "2G-4G",
 								formatter : function(value, row, index) {
 									//return '<a>' + value + '</a>';
 									return '<div class="dpopover" data-container="body"  data-placement="top"  data-toggle="popover" data-trigger="hover" data-content="'
@@ -187,7 +188,8 @@ define(["ajax"], function(ajax) {
 								field : 'operator',
 							    align: "left",
 								title : '运营商'+"<img src='images/arrow-both.png'width='24'/> ",
-								sortable : true
+								sortable : true,
+		                        titleTooltip : "运营商"
 								//formatter : function(value, row, index) {
 								//	return '<a>' + value + '</a>';
 								//}
@@ -198,7 +200,8 @@ define(["ajax"], function(ajax) {
 								title : '频段范围'+"<img src='images/arrow-up.png'width='24'/> ",
 								sortable : true,
 								sortName : "freqRange",
-								sorter : freqRangeSorter
+								sorter : freqRangeSorter,
+							    titleTooltip : "频段范围"
 								//formatter : function(value, row, index) {
 								//	return '<a>' + value + '</a>';
 								//}
@@ -208,7 +211,8 @@ define(["ajax"], function(ajax) {
 								field : 'techName',
 								title : '技术制式 '+"<img src='images/arrow-both.png'width='24'/> ",
 								sortName : "techName",
-								sortable : true
+								sortable : true,
+							    titleTooltip : "技术制式"
 
 							}, {
 								class : 'sortTable1',
@@ -216,14 +220,16 @@ define(["ajax"], function(ajax) {
 								field : 'infoChannel',
 								title : '频段信道数'+"<img src='images/arrow-both.png'width='24'/> ",
 								sortName : "infoChannel",
-								sortable : true
+								sortable : true,
+							    titleTooltip : "频段信道数"
 							}, {
 								class : 'sortTable1',
 							    align: "left",
 								field : 'monitorCoverage',
 								title : '监测网覆盖率'+"<img src='images/arrow-both.png'width='24'/> ",
 								sortName : "monitorCoverage",
-								sortable : true
+								sortable : true,
+							    titleTooltip : "监测网覆盖率"
 							}, {
 								class : 'sortTable1',
 							    align: "left",
@@ -231,6 +237,7 @@ define(["ajax"], function(ajax) {
 								title : '台站覆盖率'+"<img src='images/arrow-both.png'width='24'/> ",
 								sortName : "stationCoverage",
 								sortable : true,
+							    titleTooltip : "台站覆盖率",
 								formatter : function(value, row, index) {
 									return value + '%';
 								}
@@ -241,6 +248,7 @@ define(["ajax"], function(ajax) {
 								title : '频段占用度'+"<img src='images/arrow-both.png'width='24'/> ",
 								sortName : "occupancy",
 								sortable : true,
+							    titleTooltip : "频段占用度",
 								formatter : function(value, row, index) {
 									return value + '%';
 								}
