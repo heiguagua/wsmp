@@ -7,7 +7,7 @@
           <ul class='signal-category' style="position: absolute;right: 20px">
             <li class='item'>
               <div class="radio radio-primary  ">
-                <input type="radio" name="signal-type" id="legal" title="合法正常信号" checked="checked" value="1" isSubType="false">
+                <input type="radio" name="signal-type" id="legal" title="合法正常信号"  value="1" isSubType="false">
                 <label for="legal"></label>
               </div>
               <%--<span title="合法正常信号" class='signal-sign legal'></span>--%>
@@ -34,7 +34,7 @@
             </li>
             <li class='item'>
               <div class="radio radio-primary  ">
-                <input type="radio" name="signal-type" title="非法信号" id="illegal" value="3" isSubType="false">
+                <input type="radio" name="signal-type" checked="checked" title="非法信号" id="illegal" value="3" isSubType="false">
                 <label for="illegal"></label>
               </div>
               <%--<span class='signal-sign illegal' title="非法信号"></span> --%>

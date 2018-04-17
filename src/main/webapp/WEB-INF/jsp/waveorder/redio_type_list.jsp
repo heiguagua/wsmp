@@ -6,8 +6,8 @@
           <ul class='signal-category' style="position: absolute;right: 130px;">
             <li class='item'>
               <div class="radio radio-primary  ">
-                <input type="radio" name="signal-type" id="legal"  title="合法正常信号" checked="checked" value="1" isSubType="false">
-                <label for="legal" style="color: rgb(64, 158, 255);"> 合法正常信号</label>
+                <input type="radio" name="signal-type" id="legal"  title="合法正常信号"  value="1" isSubType="false">
+                <label for="legal" > 合法正常信号</label>
               </div>
                 <%--<span class='signal-sign legal' title="合法正常信号"></span>--%>
                 <img src="images/legal.svg">
@@ -33,8 +33,8 @@
             </li>
             <li class='item'>
               <div class="radio radio-primary  ">
-                <input type="radio" name="signal-type" id="illegal" title="非法信号" value="3" isSubType="false">
-                <label for="illegal"> 非法信号</label>
+                <input type="radio" name="signal-type" checked="checked" id="illegal" title="非法信号" value="3" isSubType="false">
+                <label for="illegal" style="color: rgb(64, 158, 255);"> 非法信号</label>
               </div>
                 <%--<span class='signal-sign illegal' title="非法信号"></span> --%>
                 <img src="images/illegal.svg">
@@ -51,6 +51,6 @@
             </li>
           </ul>
           <a class='btn btn-default btn-refresh pull-right'>
-            <img src='images/refresh.png' />&nbsp;&nbsp;<span  v-text="dd.btn.refresh"></span>
+            <img src='images/refresh.png' />&nbsp;&nbsp;<span  v-text="dd.btn.refresh">刷新</span>
           </a>
         </div>

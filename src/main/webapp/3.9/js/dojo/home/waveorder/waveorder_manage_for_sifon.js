@@ -24,7 +24,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 				//改变行政区域边界
 				addAreaBoundary(MAP1);
 				//改变每个监测站点上的信号总数
-				addSignalCountOnMonitors(MONITORS,1,"false");//默认选中1，子类型为false
+				addSignalCountOnMonitors(MONITORS,3,"false");//默认选中3，子类型为false
 
 				// 信号类型切换点击事件
 				$("#redioType").on("click", "input", function(e) {
