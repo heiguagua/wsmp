@@ -67,6 +67,7 @@ public class HttpServiceConfig {
 	}
 
 //    public static String httpclient(double[][] dataIn,String url, Boolean isAdut,int radis) {
+
 //        RestTemplate restTemplate = new RestTemplate();
 //        HttpHeaders headers = new HttpHeaders();
 //        MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8");
