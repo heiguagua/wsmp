@@ -340,7 +340,7 @@ public class AlarmDataController {
 //                stationsList.get(i).setLevel(list.get(i)[2]);
 //            }
             Logger.info("参数1{}",JSON.toJSONString(list));
-            List<double[]> collect = list.stream().filter(ds -> ds[0] < 53.55 && ds[0] > 3.86 && ds[1] < 135.05 && ds[1] > 73.66 && ds[2] != 0).collect(toList());
+            List<double[]> collect = list.stream().filter(ds -> ds[0] < 53.55 && ds[0] > 3.86 && ds[1] < 135.05 && ds[1] > 73.66 ).collect(toList());
             int size=collect.size();
             int radis=100;
             if(size==3){//只是用于测试环境  因为测试环境只有三个可用数据 所以要构建一个 弄成4个点
@@ -351,7 +351,7 @@ public class AlarmDataController {
                 collect.add(temp);
                 radis=75;
             }
-            String string = HttpServiceConfig.httpclient(collect.toArray(new double[collect.size()][3]), kringUrl,false,radis);
+            String string = HttpServiceConfig.httpclient(collect.toArray(new double[collect.size()][3]), kringUrl,false);
             kriking3 = JSONObject.parseObject(string);
 
             Logger.info("场强定位计算正常 操作时间{} 返回值为{}", LocalDateTime.now().toString(),kriking3);
