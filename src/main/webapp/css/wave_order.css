@@ -270,4 +270,7 @@ line-height: 20px;
   border-radius: 4px;
   margin-left: 20px;
 }
+.table-radio .fixed-table-body {
+  height: 270px;
+}
 
