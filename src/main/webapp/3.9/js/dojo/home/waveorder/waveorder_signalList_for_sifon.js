@@ -51,6 +51,7 @@ define([], function() {
 		// 信号统计点击进入详情页事件
 		$('#table-signal-list').bootstrapTable("destroy");
 		$('#table-signal-list').bootstrapTable({
+			height:450,
 			method : 'post',
 			cache : false,
 			contentType : "application/json",
@@ -76,7 +77,15 @@ define([], function() {
 			responseHandler : function(res) {
 				return res;
 			},
-			columns : [{
+			columns : [
+				{
+					align : 'left',
+					width : '10%',
+					title: '序号',
+					formatter : function(value,row,index) {
+						return index + 1;
+					}
+				},{
 						field : 'centor',
 						title : '频率(MHz)',
 						titleTooltip : "频率(MHz)",
@@ -137,6 +146,7 @@ define([], function() {
 						}
 					}, {
 						field : "signalManage",
+				        title : '操作',
 						formatter : function(value, row, index) {
 							return '<a signalId=' + row.id
 									+ ' class="signalManageA" centorFreq='

@@ -1,7 +1,6 @@
 define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "home/alarm/hour_charts", "bootstrap", "home/alarm/level_charts"], function(ajax, echarts, month_charts, day_chart, hour_chart, bootstrap, level_charts) {
     var mapinit;
     function init() {
-        signal_list
         //时间选择器初始化
         $.fn.datetimepicker.defaults = {
             language: 'zh-CN',
@@ -171,19 +170,17 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
         // $("station_list").change(function() {
         //     changeView();
         // });
+        //告警管理频率变换时操作
         $("#signal_list").change(function(e) {
-            // if ($("#FormQZ").val() != null && $("#FormQZ").val().length != 0) {
-            //    //////////////////////////
-            //     changeView();
-            //     mapinit.stationChange();
-            //    //////////////////////////
-            //     return;
-            // } else {
-            // }
             stationselectinit();
             changeView();
             mapinit.stationChange();
         });
+        //告警管理监测站变换时操作
+        $("#station_picker").change(function(e){
+            changeView();
+            mapinit.stationChange();
+        })
         $("#singletonFreq").click(function() {
             var reopenParam = {};
             reopenParam.ServerName = "host";
@@ -217,16 +214,7 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                 });
             }
         });
-        //init select2
         init_select2();
-        var singal = $("#FormQZ").val();
-        if (singal) {
-            var search = $("#search");
-            search.val(singal);
-            var e = jQuery.Event("keydown"); //模拟一个键盘事件
-            e.keyCode = 13; //keyCode=13是回车
-            $("#search").trigger(e); //模拟页码框按下回车
-        }
     }
     function configWarmingClick() {
         $("#configWFreqWarming").click(function() {
@@ -288,10 +276,11 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
             //console.log(result);
             var name = $('#station_picker').find('option:selected').text(); //选中的台站名称
             name = name.replace("未查询到数据", "");
+            $("#stationName").html(name);
             $("#levelTitle").html(name + "——电平峰值");
             $("#monthTitle").html(name + "——近3个月占用度（按天统计）");
             month_charts.init(result, name);
-            level_charts.init(result);
+            level_charts.init(result,data.centorFreq/1000000);
         });
     }
     function init_select2() {
@@ -324,7 +313,6 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                     var codes = info.Area.Code;
                     var stationList = [];
                     for (var index = 0; index < stations.length; index++) {
-                        //console.log(stations[index].Num);
                         stationList.push(stations[index].Num);
                     }
                     var stationCodeList = {};
@@ -345,6 +333,9 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                             level_charts.clear()
                             month_charts.clear();
                             mapinit.clearMap();
+                            $("#stationName").html("");
+                            $("#levelTitle").html("电平峰值");
+                            $("#monthTitle").html("近3个月占用度（按天统计）");
                             return;
                         }
                         if ($("#waringId").val() != null && $("#waringId").val().length != 0) {
@@ -354,9 +345,7 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                         stationselectinit();
                         $('.select2-picker').select2();
                         changeView();
-                        //console.log(mapinit);
                         mapinit.stationChange();
-                        //$("#illegal").click();
                     });
                 }
             } else {

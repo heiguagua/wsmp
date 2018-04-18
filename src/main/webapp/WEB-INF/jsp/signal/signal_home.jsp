@@ -22,10 +22,39 @@
 <link rel="stylesheet" href="3.9/js/dojo/webgis/widgets/themes/darkangel/override.css">
 <link href='3.9/js/dojo/library/timepicker/css/bootstrap-datetimepicker.min.css' rel='stylesheet' />
 <link href='3.9/js/dojo/library/layer/layer.css' rel='stylesheet' />
-	<script src="3.9/vue.js"></script>
+<script src="3.9/vue.js"></script>
 <style>
 .box{position: relative;}
-.levelsColor{position:absolute;top:142px;right:20px;height:22px}.levelsColor input[type="number"]{width:40px}.levelsColor input[type="number"],.levelsColor a,.levelsColor img{display:inline-block;*display:inline;*zoom:1;height:22px;float:left}.levelsColor img{padding-top:0px}#valCtrl{height:23px;padding:0px 15px;background:#6F6FF2;color:#fff;font-size:12px;text-decoration:none;line-height:23px}
+.levelsColor{
+	position: relative;
+	bottom: 795px;
+	left: 62%;
+	width: 408px
+	/*position:absolute;top:980px;right:20px;height:22px*/
+}
+.levelsColor input[type="number"]{
+	width:40px;
+	border: 1px solid #DAE5F0;
+	border-radius: 4px;
+}.levelsColor input[type="number"],.levelsColor a,.levelsColor img{
+	 display:inline-block;*display:inline;*zoom:1;height:22px;float:left
+ }
+.levelsColor img{
+	padding-top:0px
+    border: 1px solid #DAE5F0;
+	border-radius: 4px;
+}
+#valCtrl{
+	border: 1px solid #DAE5F0;
+	border-radius: 4px;
+	height:23px;
+	padding:0px 15px;
+	background:#6F6FF2;
+	color:#fff;
+	font-size:12px;
+	text-decoration:none;
+	line-height:23px
+}
 </style>
 <script src="3.9/js/dojo/library/wavesuffer/wavesuffer.js"></script>
 <script src="3.9/js/dojo/library/lodash/lodash.js"></script>
@@ -38,7 +67,7 @@
     <span class='module-name' v-text="dd.signal.title">信号管理</span>
     <div class='header-search' style="margin-left: 2px;vertical-align: bottom">
 		<%--<input id='search' type='text' placeholder="请输入信号频率"  />--%>
-		<input id='search' type='text' placeholder="请输入频率" style="width:80px" onkeyup="this.value=this.value.replace(/[^0-9.]/g,'')"
+		<input id='search' type='text' placeholder="输入频率" style="width:80px" onkeyup="this.value=this.value.replace(/[^0-9.]/g,'')"
 						onafterpaste="this.value=this.value.replace(/[^0-9.]/g,'')" />
 		<span class='search-icon'></span>
 		<span class="input-group-addon search-icon-uint" style="left:80px">MHz</span>
@@ -80,33 +109,15 @@
 			<section class='flex-row'>
 				<div id="signal_detail" class='box right10'>
 				</div>
-				<div class='box3 flex-column'>
-					<div class='locate-coverage'>
-						<label class='module-name'>
-							<%--<img src='images/locate.png' />--%>
-							<span id = "stationName">&nbsp;&nbsp;</span>
-						</label>
-						<button class="btn btn-submit" id="setStationPiont" v-text="dd.btn.locorg">场强定位选站</button>&#160;
-						<div class='pull-right'>
-							<%--<button class="btn btn-submit" id="setStationPiont">聚类监测站</button>&#160;--%>
-							<%--<input type="text" class="gate-filter" placeholder="请输入门限" /> <button class="btn btn-submit" id="gate-btn">提交</button>--%>
-								<span v-text="dd.info.electromagnetic">电磁覆盖率</span>&nbsp; <span class='coverage-number'></span>
-						</div>
+				<div class='box3'>
+					<div class='month-data levelChart'>
+						<h4 id='levelChartTitle' class='title' v-text="dd.info.charttit1">电平峰值</h4>
+						<div class='flex1' id='levelChart' style="min-height: 330px;"></div>
 					</div>
-					<div id="mapDiv" style= "padding: 0px;height: 480px;"></div>
-					<div id="mapDiv1"></div>
-					<!-- <div id="heatLayer"></div> -->
-					 <%--控件--%>
-				      <div id="levelsColor" class="levelsColor">
-				        <form method="#">
-				          <input type="number" name="opVal" min="0" max="1" id="opCtrl" value="0.7" alt="请输入透明度范围值0~1"  title="请输入透明度范围值0~1" style="margin-right: 5px">
-				          <input type="number" name="startVal" min="1" id="minCtrl" value="-40" alt="请输入最小值"  title="请输入最小值">
-				          <img src="images/a.png" alt="">
-				          <input type="number" name="endVal" max="10" id="maxCtrl" value="120" alt="请输入最大值" title="请输入最大值" >
-				          <a href="#" id="valCtrl" ><td  v-text="dd.btn.affirm">确认</a>
-				        </form>
-				      </div>
-				      <%--控件 end--%>
+					<div class='month-data '>
+						<h4 id='monthChartTitle' class='title'  v-text="dd.info.charttit2">近3个月占用度（按天统计）</h4>
+						<div class='flex1' id='monthChart1' style="min-height: 330px;"></div>
+					</div>
 				</div>
 			</section>
 		<%--</span>--%>
@@ -130,14 +141,25 @@
 						<label for="audio"> 音频 </label>
 					</div>
 				</a></li>
+				<li style="float:right">
+					<div class="flex1 ">
+						<label for="playingDataNum"> 数据回放默认条数: </label>
+						<input type="number" min="1" value="2"  id="playingDataNum">
+					</div>
+				</li>
 			</ul>
 		<section class='flex-row'  style="display: none" id="frequency-wrap">
 			<div class='box'>
 				<div class='data-play'>
 					<label class='module-name' ><span v-text="dd.signal.title1">数据回放</span><span class="data-type">频谱</span></label>
+					<a class="ico-close close-box " id="spectrum-close">&times;</a>
 					<a class='btn btn-default btn-choose pull-right' id="spectrum-choose-btn" v-text="dd.btn.select">选择数据</a>
 					<div class="data-choose-list" id="spectrum-choose-list">
 						<div class="pull-right"><span id="data-list-close" class="ico-close">&times;</span></div>
+						<div class="checkbox checkbox-primary checkAll ">
+							<input type="checkbox" name="data-type" value='1' id="checkAllSpectrum">
+							<label for="checkAllSpectrum"> 全选所有数据 </label>
+						</div>
 						<table class="table table-striped table-hover spectrum-table" id="spectrum-table">
 							<tr class="empty-msg"><td  v-text="dd.info.nodata">未查询到数据！</td></tr>
 						</table>
@@ -186,6 +208,10 @@
 					<a class='btn btn-default btn-choose pull-right' id="IQ-choose-btn" v-text="dd.btn.select">选择数据</a>
 					<div class="data-choose-list" id="IQ-choose-list">
 						<div class="pull-right"><span id="IQ-list-close" class="ico-close">&times;</span></div>
+						<div class="checkbox checkbox-primary checkAll">
+							<input type="checkbox" value='1' name="data-type" id="checkAllIq">
+							<label for="checkAllSpectrum">全选所有数据</label>
+						</div>
 						<table class="table table-striped table-hover" id="IQ-table">
 							<tr class="empty-msg"><td  v-text="dd.info.nodata">未查询到数据！</td></tr>
 						</table>
@@ -214,6 +240,10 @@
 					<a class='btn btn-default btn-choose pull-right' id="audio-choose-btn" v-text="dd.btn.select">选择数据</a>
 					<div class="data-choose-list" id="audio-choose-list">
 						<div class="pull-right"><span id="audio-list-close" class="ico-close">&times;</span></div>
+						<div class="checkbox checkbox-primary checkAll">
+							<input type="checkbox" value='1' name="data-type" id="checkAllAudio">
+							<label for="checkAllSpectrum">全选所有数据</label>
+						</div>
 						<table class="table table-striped table-hover" id="audio-table">
 							<tr class="empty-msg"><td  v-text="dd.info.nodata">未查询到数据！</td></tr>
 						</table>
@@ -294,22 +324,50 @@
 				<%--<div id="heatLayer"></div>--%>
 			<%--</div>--%>
 		<%--</section>--%>
-		<section class='flex-row'>
-			<div class='box'>
-				<div class='month-data flex-column'>
-					<h4 id='levelChartTitle' class='title' v-text="dd.info.charttit1">电平峰值</h4>
-					<div class='flex1' id='levelChart'></div>
+		<%--<section class='flex-row'>--%>
+			<%--<div class='box'>--%>
+				<%--<div class='month-data flex-column'>--%>
+					<%--<h4 id='levelChartTitle' class='title' v-text="dd.info.charttit1">电平峰值</h4>--%>
+					<%--<div class='flex1' id='levelChart'></div>--%>
+				<%--</div>--%>
+			<%--</div>--%>
+		<%--</section>--%>
+		<%--<section class='flex-row'>--%>
+			<%--<div class='box'>--%>
+				<%--<div class='month-data flex-column'>--%>
+					<%--<h4 id='monthChartTitle' class='title'  v-text="dd.info.charttit2">近3个月占用度（按天统计）</h4>--%>
+					<%--<div class='flex1' id='monthChart1'></div>--%>
+				<%--</div>--%>
+			<%--</div>--%>
+		<%--</section>--%>
+			<div class='box3 flex-column'>
+				<div class='locate-coverage'>
+					<label class='module-name'>
+						<%--<img src='images/locate.png' />--%>
+						<span id = "stationName">&nbsp;&nbsp;</span>
+					</label>
+					<%--<button class="btn btn-submit" id="setStationPiont" v-text="dd.btn.locorg">场强定位选站</button>&#160;--%>
+					<div class='pull-right'>
+						<%--<button class="btn btn-submit" id="setStationPiont">聚类监测站</button>&#160;--%>
+						<%--<input type="text" class="gate-filter" placeholder="请输入门限" /> <button class="btn btn-submit" id="gate-btn">提交</button>--%>
+						<span v-text="dd.info.electromagnetic">电磁覆盖率</span>&nbsp; <span class='coverage-number'></span>
+					</div>
 				</div>
-			</div>
-		</section>
-		<section class='flex-row'>
-			<div class='box'>
-				<div class='month-data flex-column'>
-					<h4 id='monthChartTitle' class='title'  v-text="dd.info.charttit2">近3个月占用度（按天统计）</h4>
-					<div class='flex1' id='monthChart1'></div>
+				<div id="mapDiv" style= "padding: 0px;height: 800px;"></div>
+				<%--<div id="mapDiv1"></div>--%>
+				<!-- <div id="heatLayer"></div> -->
+				<%--控件--%>
+				<div id="levelsColor" class="levelsColor">
+					<form method="#">
+						<input type="number" name="opVal" min="0" max="1" id="opCtrl" value="0.7" alt="请输入透明度范围值0~1"  title="请输入透明度范围值0~1" style="margin-right: 5px">
+						<input type="number" name="startVal" min="1" id="minCtrl" value="-40" alt="请输入最小值"  title="请输入最小值">
+						<img src="images/a.png" alt="">
+						<input type="number" name="endVal" max="10" id="maxCtrl" value="120" alt="请输入最大值" title="请输入最大值" >
+						<a href="#" id="valCtrl" ><td  v-text="dd.btn.affirm">确认</a>
+					</form>
 				</div>
+				<%--控件 end--%>
 			</div>
-		</section>
 	</div>
 
   <!-- Modal 日占用度-->

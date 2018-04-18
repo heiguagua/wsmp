@@ -290,7 +290,7 @@ public class CommunicationController {
 
     @RequestMapping("/bottomTable")
     public Map<String, Object> bottomtable(){
-        List<CountResult> current = service.getCurrentYearCount();//2017年没有数据，暂时用去年的
+        //List<CountResult> current = service.getCurrentYearCount();//2017年没有数据，暂时用去年的
         List<CountResult> last = service.getLastYearCount();
         
         List<CommunicationTableButtom> resultList = last.stream().collect(Collectors.groupingBy(CountResult :: getOrgSystemCode)).entrySet().stream().map(m -> {

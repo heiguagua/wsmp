@@ -7,10 +7,11 @@
           <ul class='signal-category' style="position: absolute;right: 20px">
             <li class='item'>
               <div class="radio radio-primary  ">
-                <input type="radio" name="signal-type" id="legal" title="合法正常信号" checked="checked" value="1" isSubType="false">
+                <input type="radio" name="signal-type" id="legal" title="合法正常信号"  value="1" isSubType="false">
                 <label for="legal"></label>
               </div>
-              <span title="合法正常信号" class='signal-sign legal'></span>
+              <%--<span title="合法正常信号" class='signal-sign legal'></span>--%>
+              <img src="images/legal.svg">
               <span title="合法正常信号" class='number legal-number'>${redio.legalNormalStationNumber}</span>
             </li>
             <li class='item'>
@@ -18,7 +19,8 @@
                 <input type="radio" name="signal-type" title="合法违规信号" id="unregist" value="1" isSubType="true">
                 <label for="unregist"></label>
               </div>
-              <span title="合法违规信号" class='signal-sign legal-wrong'></span>
+              <%--<span class='signal-sign legal-wrong' title="合法违规信号"></span>--%>
+              <img src="images/undeclared.svg">
               <span title="合法违规信号" class='number legal-wrong-number'>${redio.legalUnNormalStationNumber}</span>
             </li>
             <li class='item'>
@@ -26,15 +28,17 @@
                 <input type="radio" name="signal-type" title="已知信号" id="otherStation" value="2" isSubType="false">
                 <label for="otherStation"></label>
               </div>
-              <span title="已知信号" class='signal-sign known'></span>
+              <%--<span class='signal-sign known' title="已知信号"></span> --%>
+              <img src="images/known.svg">
               <span title="已知信号" class='number known-number'>${redio.konwStationNumber}</span>
             </li>
             <li class='item'>
               <div class="radio radio-primary  ">
-                <input type="radio" name="signal-type" title="非法信号" id="illegal" value="3" isSubType="false">
+                <input type="radio" name="signal-type" checked="checked" title="非法信号" id="illegal" value="3" isSubType="false">
                 <label for="illegal"></label>
               </div>
-              <span title="非法信号" class='signal-sign illegal'></span>
+              <%--<span class='signal-sign illegal' title="非法信号"></span> --%>
+              <img src="images/illegal.svg">
               <span title="非法信号"class='number illegal-number'>${redio.illegalSignal}</span>
             </li>
             <li class='item'>
@@ -42,7 +46,8 @@
                 <input type="radio" name="signal-type"title="不明信号" id="unknown" value="4" isSubType="false">
                 <label for="unknown"></label>
               </div>
-              <span title="不明信号" class='signal-sign unknown'></span>
+              <%--<span class='signal-sign unknown' title="不明信号"></span>--%>
+              <img src="images/unknown.svg">
               <span title="不明信号" class='number unknown-number'>${redio.unKonw}</span>
             </li>
           </ul>

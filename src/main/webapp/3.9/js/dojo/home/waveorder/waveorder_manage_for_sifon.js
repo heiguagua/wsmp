@@ -9,8 +9,9 @@ define(	["ajax", "dojo/parser", "esri/map",
 				Scalebar, TextSymbol, Point, graphic, Font, SimpleMarkerSymbol,
 				PictureMarkerSymbol,dijitPopup,TooltipDialog,esriLang) {
 			var AREACODE = $("#areaCode").val();
-			var MONITORS = getMonitors(AREACODE);
 			var MAP1 = mapInit();
+			setTimeout({}, 1000 );
+			var MONITORS = getMonitors(AREACODE);
 			console.log(MAP1);
 
 			function wo_init() {
@@ -24,7 +25,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 				//改变行政区域边界
 				addAreaBoundary(MAP1);
 				//改变每个监测站点上的信号总数
-				addSignalCountOnMonitors(MONITORS,1,"false");//默认选中1，子类型为false
+				addSignalCountOnMonitors(MONITORS,3,"false");//默认选中3，子类型为false
 
 				// 信号类型切换点击事件
 				$("#redioType").on("click", "input", function(e) {
@@ -126,8 +127,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 								var info = e.graphic.geometry;
 								var t = "<b>"+ info.monitorName+"</b><hr style='margin-top: 8px;margin-bottom: 8px;'>"
 										+"<b>ID: </b>"+ info.monitorID +"<br>"
-										+ "<b>纬度: </b>"+ info.y +"<br>"
-										+ "<b>经度: </b>"+ info.x +"<br>"
+										+ "<b>纬度: </b>"+ info.y.toFixed(5) +"<br>"
+										+ "<b>经度: </b>"+ info.x.toFixed(5) +"<br>"
 
 								var content = esriLang.substitute(
 									e.graphic.attributes, t);

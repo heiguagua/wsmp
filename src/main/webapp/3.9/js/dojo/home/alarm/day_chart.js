@@ -12,23 +12,30 @@ define([ "ajax", "echarts", "jquery" ], function(ajax,echarts) {
 			optionDay = {
 				color : [ 'rgb(55,165,255)' ],
 				tooltip : {
-					trigger : 'axis',
-					formatter:function(param){
-						//console.log(param)
-						if(param && param[0] && param[0].name && param[0].value!=null && param[0].value>0) {
-							return param[0].name+"点占用度" + param[0].value.toFixed(2)+"%";
-						}else if(param && param[1] && param[1].name && param[1].value!=null && param[1].value>0){
-                            return param[1].name+"点占用度" + param[1].value.toFixed(2)+"%";
+					'trigger' : 'axis',
+					axisPointer: {
+						type: 'line',
+						animation: false,
+						lineStyle: {
+							type:'dashed',
+							opacity:0.5
+							//color:'red'
 						}
-						else{
-                            return "没有数据";
+					},
+					formatter:function(param){
+						if( param[0].value!=null) {
+							return "<div align='left'>时间 :  "+param[0].name+"时</br>占用度 : " + param[0].value.toFixed(2) + "%</div>";
+							//}else if(param && param[1] && param[1].name && param[1].value!=null && param[1].value>0){
+							//	return "<div align='left'>时间 :  "+param[1].name+"时</br>占用度 : " + param[1].value.toFixed(2) + "%</div>";
+						} else{
+							return "<div align='left'>时间 :  "+param[0].name + "时</br>占用度 : 没有数据</div>";
 						}
 
 					}
 				},
 				grid : {
 					left : '1%',
-					right : '7%',
+					right : '6%',
 					bottom : '2%',
 					top : 30,
 					containLabel : true
@@ -38,7 +45,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax,echarts) {
 				},
 				xAxis : {
 					type : 'category',
-					name:'时间(h)',
+					name:'时间',
 					boundaryGap : false,
 					axisLine : {
 						lineStyle : {
@@ -54,12 +61,13 @@ define([ "ajax", "echarts", "jquery" ], function(ajax,echarts) {
 						}
 					},
 					data : data.dayOcc.xAxis
-					//[ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24' ]
+					//data :[ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 ]
 				},
 				yAxis : {
 					type : 'value',
 					name:'百分比(%)',
 					max : 100,
+					min : 0,
 					splitNumber : 10,
 					axisLine : {
 						lineStyle : {
@@ -81,29 +89,25 @@ define([ "ajax", "echarts", "jquery" ], function(ajax,echarts) {
 					}
 				},
 				series : [
+                    //{
+                    //    name : '',
+                    //    type : 'line',
+                    //    showSymbol : true,
+                    //    symbolSize : 6,
+						//data : data.dayOcc.zeroSeries
+                    //    //data : [ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9,59.1, 58.2, 58, 57.9]
+                    //},
                     {
                         name : '',
                         type : 'line',
                         showSymbol : true,
                         symbolSize : 6,
-                        data : data.dayOcc.zeroSeries,
-                        //data : [ null,null, 0, null,null, null,null, null,null, null ]
-                        // reslut.series
-                        //[ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, ]
-                    },
-                    {
-                        name : '',
-                        type : 'line',
-                        showSymbol : true,
-                        symbolSize : 6,
-                        data : data.dayOcc.noneZeroSeries,
-                        lineStyle :{
-                            normal :{
-                                type :"dashed"
-                            }
-                        }
-                        // reslut.series
-                        //[ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, ]
+                        data : data.dayOcc.noneZeroSeries
+                        //lineStyle :{
+                        //    normal :{
+                        //        type :"dashed"
+                        //    }
+                        //}
                     }
 				]
 			};
@@ -113,15 +117,12 @@ define([ "ajax", "echarts", "jquery" ], function(ajax,echarts) {
 		}
 
         dayChart = echarts.init($('#dayChart')[0]);
-		dayChart.setOption();optionDay
-		// dayChart.on('click', function() {
-		// 	$('#modalHour').modal()
-		// })
-
+		dayChart.setOption(optionDay);
 		window.onresize = function(){
 			dayChart.clear();
 			dayChart.setOption(optionDay);
 		}
+		return dayChart
 
 	}
 	return {

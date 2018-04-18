@@ -3,22 +3,38 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
     var maxlevel_start_index_temp = 0;
     var maxlevel_end_index = 0;        // mouseup时的x轴index
     var maxlevel_total_length = 0;     // x轴数据总数
-    function maxlevelinit(reslut) {
+    function maxlevelinit(reslut,centorFreq) {
         var optionMonth ={};
         if(reslut.max &&reslut.max.xAxis.length&&reslut.max.series.length){
+            var x=0;
+            var y=0;
+            for(var i in reslut.max.xAxis ){
+              if(reslut.max.xAxis[i] ==centorFreq){
+                  x=parseInt(i);
+                  y=reslut.max.series[i];
+              }
+            }
              optionMonth = {
                 color : ['rgb(55,165,255)'],
                 tooltip : {
                     'trigger' : 'axis',
+                    axisPointer: {
+                        type: 'line',
+                        animation: false,
+                        lineStyle: {
+                            type:'dashed',
+                            opacity:0.5
+                            //color:'red'
+                        }
+                    },
                     formatter:function(param){
                         maxlevel_start_index_temp = param[0].dataIndex;
                         maxlevel_end_index = param[0].dataIndex;
-                        if (param[0].value!=null){
-                            return "信号频率"+param[0].name + "MHz 的电平峰值 " + param[0].value+"dBμV";
+                        if( param[0].value!=null){
+                            return "<div align='left'>信号频率 :  "+(param[0].name).toFixed(1) + "MHz <br/>电平峰值 : " + param[0].value+"dBμV</div>";
                         }else{
-                            return "没有数据";
+                            return "<div align='left'>信号频率 :  "+(param[0].name).toFixed(1) + "MHz <br/>电平峰值 : 没有数据</div>";
                         }
-
                     }
                 },
                 dataZoom : [{
@@ -31,7 +47,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                 }],
                 grid : {
                     left : '1%',
-                    right : '4%',
+                    right : '7%',
                     bottom : '2%',
                     top : 30,
                     containLabel : true
@@ -41,9 +57,8 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                 },
                 xAxis : {
                     type : 'category',
-                    //name:'信号频率(MHz)',
-                    //nameRotate:'-90',
-                    //boundaryGap : false,
+                    name:'信号频率(MHz)',
+                    nameRotate:'-60',
                     axisLine : {
                         lineStyle : {
                             color : '#DAE5F0'
@@ -91,9 +106,17 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                         type : 'line',
                         showSymbol : false,
                         symbolSize : 6,
-                        data : reslut.max.series
-                        // reslut.series
-                        //[ 55, 62.5, 55.2, 58.4, 60.0, 58.1, 59.1, 58.2, 58, 57.9, ]
+                        data : reslut.max.series,
+                        markPoint: {
+                            data: [
+                                {
+                                    name: '中心频率',
+                                    coord: [x, y]
+                                    //symbol:'circle' //'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow'
+                                }
+
+                            ]
+                        }
                     }
                 ]
             };

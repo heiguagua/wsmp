@@ -3,9 +3,9 @@
  */
 define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
     var maxlevelChart = null;
-    var maxlevel_start_index_temp = 0;
-    var maxlevel_end_index = 0;        // mouseup时的x轴index
-    var maxlevel_total_length = 0;     // x轴数据总数
+    //var maxlevel_start_index_temp = 0;
+    //var maxlevel_end_index = 0;        // mouseup时的x轴index
+    //var maxlevel_total_length = 0;     // x轴数据总数
     function charts_init(reslut) {
         var optionMonth ={};
         if(reslut.max &&reslut.max.xAxis.length&&reslut.max.series.length){
@@ -13,28 +13,29 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                 color : [ 'rgb(55,165,255)' ],
                 tooltip : {
                     'trigger' : 'axis',
+                    axisPointer: {
+                        type: 'line',
+                        animation: false,
+                        lineStyle: {
+                            type:'dashed',
+                            opacity:0.5
+                            //color:'red'
+                        }
+                    },
                     formatter:function(param){
-                        maxlevel_start_index_temp = param[0].dataIndex;
-                        maxlevel_end_index = param[0].dataIndex;
-                        if(param[0].value!=null){
-                            return "信号频率"+param[0].name + "MHz 的电平峰值 " + param[0].value+"dBμV";
+                        //maxlevel_start_index_temp = param[0].dataIndex;
+                        //maxlevel_end_index = param[0].dataIndex;
+                        if( param[0].value!=null){
+                            return "<div align='left'>时间 :  "+param[0].name + "时 <br/>电平峰值 : " + param[0].value+"dBμV</div>";
                         }else{
-                            return "没有数据"
+                            return "<div align='left'>时间 :  "+param[0].name + "时 <br/>电平峰值 : 没有数据</div>";
                         }
 
                     }
                 },
-                dataZoom : [{
-                    show:false,
-                    type : 'slider',
-                    start : 0,
-                    end : 100,
-                    height : 15,
-                    y : 260
-                }],
                 grid : {
                     left : '1%',
-                    right : '2%',
+                    right : '6%',
                     bottom : '2%',
                     top : 30,
                     containLabel : true
@@ -44,10 +45,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                 },
                 xAxis : {
                     type : 'category',
-                    //name:'信号频率(MHz)',
-                    //nameRotate:'-90',
-                    //nameLocation:'end',
-                    //boundaryGap : false,
+                    name:'时间',
                     axisLine : {
                         lineStyle : {
                             color : '#DAE5F0'
@@ -101,7 +99,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                     }
                 ]
             };
-            maxlevel_total_length = reslut.max.xAxis.length;
+            //maxlevel_total_length = reslut.max.xAxis.length;
         }
 
         if (maxlevelChart){
@@ -115,9 +113,9 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
             monthChart.setOption(optionMonth);
         }
 
-        load_level_mouse_event();
 
-
+        //load_level_mouse_event();
+        return maxlevelChart
     }
 
     // 电平峰值鼠标区域选择放大缩小事件

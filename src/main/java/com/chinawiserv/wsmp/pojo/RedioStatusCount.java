@@ -13,6 +13,9 @@ public class RedioStatusCount {
 	// 频段结束频率
 	private BigInteger endFreq;
 
+	// 告警数量
+	private Long alarmingNumber;
+
 	// 合法正常台站
 	private int legalNormalStationNumber;
 
@@ -37,6 +40,14 @@ public class RedioStatusCount {
 
 	public void setRedioName(String redioName) {
 		this.redioName = redioName;
+	}
+
+	public Long getAlarmingNumber() {
+		return alarmingNumber;
+	}
+
+	public void setAlarmingNumber(Long alarmingNumber) {
+		this.alarmingNumber = alarmingNumber;
 	}
 
 	public int getLegalNormalStationNumber() {

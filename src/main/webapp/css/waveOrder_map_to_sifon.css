@@ -28,31 +28,35 @@
     margin-left: 20px;
     width: 60px
 }
-#waveOrder_map_to_sifon .signal-category .signal-sign {
-    display: inline-block;
-    vertical-align: middle;
-    width: 11px;
-    height: 11px;
-    border-radius: 3px;
-    margin-left: 10px;
-    margin-right: 5px
-}
-#waveOrder_map_to_sifon .signal-category .signal-sign.legal {
-    background: #2ccd7d
-}
-#waveOrder_map_to_sifon .signal-category .signal-sign.legal-wrong {
-    background: #2ccd7d;
-    border: 2px solid #ff6059
-}
-#waveOrder_map_to_sifon .signal-category .signal-sign.known {
-    background: #2ccd7d;
-    border: 2px solid #d1d1d1
-}
-#waveOrder_map_to_sifon .signal-category .signal-sign.illegal {
-    background: #ff6059
-}
-#waveOrder_map_to_sifon .signal-category .signal-sign.unknown {
-    background: #d1d1d1
+/*#waveOrder_map_to_sifon .signal-category .signal-sign {*/
+    /*display: inline-block;*/
+    /*vertical-align: middle;*/
+    /*width: 11px;*/
+    /*height: 11px;*/
+    /*border-radius: 3px;*/
+    /*margin-left: 10px;*/
+    /*margin-right: 5px*/
+/*}*/
+/*#waveOrder_map_to_sifon .signal-category .signal-sign.legal {*/
+    /*background: #2ccd7d*/
+/*}*/
+/*#waveOrder_map_to_sifon .signal-category .signal-sign.legal-wrong {*/
+    /*background: #2ccd7d;*/
+    /*border: 2px solid #ff6059*/
+/*}*/
+/*#waveOrder_map_to_sifon .signal-category .signal-sign.known {*/
+    /*background: #2ccd7d;*/
+    /*border: 2px solid #d1d1d1*/
+/*}*/
+/*#waveOrder_map_to_sifon .signal-category .signal-sign.illegal {*/
+    /*background: #ff6059*/
+/*}*/
+/*#waveOrder_map_to_sifon .signal-category .signal-sign.unknown {*/
+    /*background: #d1d1d1*/
+/*}*/
+#waveOrder_map_to_sifon .signal-category img {
+    width: 16px;
+    height: 16px;
 }
 #waveOrder_map_to_sifon .signal-category .number {
     display: inline-block;

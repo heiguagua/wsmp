@@ -2,6 +2,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
 	var iq_play_list = [];
     // 加载IQ数据
     function load_iq_data(stationcode,centorfreq,beginTime,endTime) {
+        //centorfreq =100000000
         var url = "data/asiq/iq/" + stationcode + "/" + centorfreq + "/" + beginTime + "/" + endTime;
         //var url = "data/asiq/iq/52010126/80000000/20170810144216/20170810144216";
         //var url = "assets/json/iq-player-list.json";
@@ -11,6 +12,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                 data = null;
                 return;
             }
+            $('#IQ-table').bootstrapTable("destroy");
             $('#IQ-table').bootstrapTable({
                 method : 'get',
                 contentType : "application/x-www-form-urlencoded", //必须要有！！！！
@@ -96,6 +98,25 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                     titleTooltip:"I或Q数据个数"
                 }]
             });
+            var playingDataNum =$('#playingDataNum').val();
+            var total =data.length;
+            for(var i=0;i<playingDataNum;i++){
+                if(i<total){
+                  $('#IQ-table').bootstrapTable("check", i);
+                }
+            }
+            $('#checkAllIq').on('click',function(e){
+                if ($(this).is(":checked")) {
+                    for(var j=0;j<total;j++){
+                        $('#IQ-table').bootstrapTable("check", j);
+                    }
+                }else{
+                    for(var j=0;j<total;j++){
+                        $('#IQ-table').bootstrapTable("uncheck", j);
+                    }
+                }
+
+            })
         })
 
 
@@ -305,8 +326,8 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
             var q_data = [];
             var iq_data = [];
             var xAxis_data = [];
-            console.log(iq_play_list[i].idata.length);
-            console.log(iq_play_list[i].qdata.length);
+            //console.log(iq_play_list[i].idata.length);
+            //console.log(iq_play_list[i].qdata.length);
             for (var j = 0; j < iq_play_list[i].nmber; j++) {
                 i_data.push([j, iq_play_list[i].idata[j]]);
                 q_data.push([j, iq_play_list[i].qdata[j]]);
@@ -346,7 +367,6 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
         });
         iqChart.on('timelinechanged', function (p1) {
         	current_index = p1.currentIndex;
-            
             has_changed = true;
             if(current_index >= iq_play_list.length) {// 为了解决timelinechanged事件currentIndex第一次的值实际为第二条数据
               $(".iq-play-control .current-index").html(1);
@@ -355,7 +375,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
               $(".iq-play-control .current-index").html(current_index+1); 
             }
             option.options[current_index-1].xAxis.data = iq_play_list[current_index-1].freqData;
-            iq_total_length = iq_play_list[current_index].nmber;
+            iq_total_length = iq_play_list[current_index-1].nmber;
             iqChart.setOption(option); 
         });
         
@@ -376,7 +396,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
         var retcLeft = "0px", retcTop = "0px", retcHeight = "0px", retcWidth = "0px";
         var move_flag = true;
     	var mousedown = function(e){
-    		console.log("mousedown 1");
+    		//console.log("mousedown 1");
     		var evt = window.event || e;
             evt.preventDefault();
             if(evt.which == 1) { // 鼠标左键事件
@@ -388,7 +408,7 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                 startY = evt.pageY - evt.offsetY;
                // startY = evt.clientY + scrollTop;
                 var div = $('<div class="iq-cover-rect"></div>');
-                div.css({"margin-left":startX+"px","margin-top":startY+"px","height":evt.target.height +"px"});
+                div.css({"margin-left":startX+"px","margin-top":startY+"px","height":"1px"});
                 div.appendTo('body');
             }
             else if(e.which == 3) {// 鼠标右键点击
