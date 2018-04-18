@@ -9,8 +9,9 @@ define(	["ajax", "dojo/parser", "esri/map",
 				Scalebar, TextSymbol, Point, graphic, Font, SimpleMarkerSymbol,
 				PictureMarkerSymbol,dijitPopup,TooltipDialog,esriLang) {
 			var AREACODE = $("#areaCode").val();
-			var MONITORS = getMonitors(AREACODE);
 			var MAP1 = mapInit();
+			setTimeout({}, 1000 );
+			var MONITORS = getMonitors(AREACODE);
 			console.log(MAP1);
 
 			function wo_init() {
