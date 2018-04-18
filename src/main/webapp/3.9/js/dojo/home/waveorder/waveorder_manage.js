@@ -1316,8 +1316,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 				app = new AppMap('mapDiv2', {
 					// center: [104.360, 33.360],
 					center:center,
-					maxZoom: 10,
-					minZoom: 10 //禁止缩放，就把maxZoom 和minZoom弄成一样的，10
+					maxZoom: 12
+					//minZoom: 10 //禁止缩放，就把maxZoom 和minZoom弄成一样的，10
 				});
 				//初始化所有图层
 				app.polygonLayer();
@@ -1335,6 +1335,9 @@ define(	["ajax", "dojo/parser", "esri/map",
 				//debugger
 				var stationsAll =getstationsInfo().stationsInfo;
 				var data = {"time":time,stations:stationsAll}
+				$.ajaxSetup({
+						async : false
+				});
 				ajax.post("data/alarm/estimate", data, function (result) {
 					var stations = result.stationPiont,
 						data = result.kriking3.result;
