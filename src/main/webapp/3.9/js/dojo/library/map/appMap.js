@@ -151,7 +151,7 @@ define(["esri/layers/ArcGISTiledMapServiceLayer", "esri/map","esri/Color",
                 //layers.situation.add(setPointSymbol(data[i][1], data[i][0], getGrb(data[i][2]), options.width));
                 layers.situation.add(setPointSymbol(data[i][1], data[i][0], getGrb(data[i][2])));
         },
-        stationsLayer: function(op, type) {
+        stationsLayer: function(op, type) {//基站图层不用缓存
             /* 
                 {
                     data: [{"x":"103.96517944335938","count":"40","y":"30.743324279785156","stationId":"51070126"}],
@@ -179,16 +179,17 @@ define(["esri/layers/ArcGISTiledMapServiceLayer", "esri/map","esri/Color",
                 }
             */
             op = op || {};
-            op.data = op.data || cacheData.stations;
+            //op.data = op.data || cacheData.stations;
+            op.data = op.data || [];
             type = type || 'resume';
             var defaultOption = {
                 data: [],
                 opacity: 1
             },
             options = Object.assign(defaultOption, op);
-            cacheData.stations = options.stations;
+            //cacheData.stations = options.stations;
             options.template = options.template || {};
-            
+            AppMap.prototype.clear('stations');
             if(type == 'resume') {
                 if(!layers.stations) {
                     layers.stations = new GraphicsLayer({
@@ -200,6 +201,7 @@ define(["esri/layers/ArcGISTiledMapServiceLayer", "esri/map","esri/Color",
             };
            
             var data = options.data;
+
             for(var i = 0, len = data.length; i < len; i++) {
                 var g = setPictureSymbol(data[i].x, data[i].y, data[i].count, data[i].stationId, options.template);
                 layers.stations.add(g.graphic);
@@ -280,16 +282,17 @@ define(["esri/layers/ArcGISTiledMapServiceLayer", "esri/map","esri/Color",
             yoffset: 4
         };
         textBgDefault = {
-            url: "images/yellow_small.png",
-            height: 20,
-            width: 20,
+            //url: "images/yellow_small.png",
+            url: "images/undeclared.svg",
+            height: 25,
+            width: 25,
             xoffset: 16,
             yoffset: 8
         };
         stationParamsDefault = {
             url: "images/monitor-station-union.png",
-            height: 26,
-            width: 26
+            height: 15,
+            width: 15
         };
         //设置基站点 和文字模板
         point = new Point(x, y, map.SpatialReference);

@@ -140,14 +140,20 @@ define(["ajax"], function(ajax) {
 					},
 					onLoadSuccess : function() {
 						$(".table-comms").find(".pull-right .pagination").append("<span class='goPage'>跳转到第<input id='tableCommsPageBtn' class='pageNum' type='text'>页</span>")
-						$("#tableCommsPageBtn").on("blur",function(e){
-							$("#table-comms").bootstrapTable("selectPage",parseInt($("#alarmDealedPageBtn").val()));
+						$("#tableCommsPageBtn").on("blur keydown",function(e){
+							if (e.type=='blur'||(e.type=='keydown'&&e.keyCode == "13")) {
+
+								$("#table-comms").bootstrapTable("selectPage",parseInt($("#alarmDealedPageBtn").val()));
+							}
 						})
 					},
 					onPageChange:function(){
 						$(".table-comms").find(".pull-right .pagination").append("<span class='goPage'>跳转到第<input id='tableCommsPageBtn' class='pageNum' type='text'>页</span>")
-						$("#tableCommsPageBtn").on("blur",function(e){
-							$("#table-comms").bootstrapTable("selectPage",parseInt($("#tableCommsPageBtn").val()));
+						$("#tableCommsPageBtn").on("blur keydown",function(e){
+							if (e.type=='blur'||(e.type=='keydown'&&e.keyCode == "13")) {
+
+								$("#table-comms").bootstrapTable("selectPage",parseInt($("#tableCommsPageBtn").val()));
+							}
 						})
 					},
 					onAll:function(){

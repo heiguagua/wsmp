@@ -957,17 +957,25 @@ define(	["ajax", "dojo/parser", "esri/map",
 
 							$(".table-signal-list").find(".pull-right .pagination").append("<span class='goPage'>跳转到第<input id='tablesignalListPageBtn' class='pageNum' type='text'>页</span>")
 							//$(".table-radio").find(".pull-right.pagination").append("<input type='button' value='go' class='pageBtn'>")
-							$("#tablesignalListPageBtn").on("blur",function(e){
-								$("#table-signal-list").bootstrapTable("selectPage",parseInt($("#tablesignalListPageBtn").val()));
-							})
+							$("#tablesignalListPageBtn").on("blur keydown",function(e){
+								if (e.type=='blur'||(e.type=='keydown'&&e.keyCode == "13")) {
+
+									$("#table-signal-list").bootstrapTable("selectPage",parseInt($("#tablesignalListPageBtn").val()));
+								}
+							});
+
 						},
 
 						onPageChange:function(){
 							$(".table-signal-list").find(".pull-right .pagination").append("<span class='goPage'>跳转到第<input id='tablesignalListPageBtn' class='pageNum' type='text'>页</span>")
 							//$(".table-radio").find(".pull-right.pagination").append("<input type='button' value='go' class='pageBtn'>")
-							$("#tablesignalListPageBtn").on("blur",function(e){
-								$("#table-signal-list").bootstrapTable("selectPage",parseInt($("#tablesignalListPageBtn").val()));
-							})
+							$("#tablesignalListPageBtn").on("blur keydown",function(e){
+								if (e.type=='blur'||(e.type=='keydown'&&e.keyCode == "13")) {
+
+									$("#table-signal-list").bootstrapTable("selectPage",parseInt($("#tablesignalListPageBtn").val()));
+								}
+							});
+
 						},
 						onAll:function(){
 							$("#table-signal-list").find(".dpopover").popover({
@@ -1206,16 +1214,21 @@ define(	["ajax", "dojo/parser", "esri/map",
 									});
 							$(".table-signalsOnMonitors-list").find(".pull-right .pagination").append("<span class='goPage'>跳转到第<input id='signalsOnMonitorsPageBtn' class='pageNum' type='text'>页</span>")
 							//$(".table-radio").find(".pull-right.pagination").append("<input type='button' value='go' class='pageBtn'>")
-							$("#signalsOnMonitorsPageBtn").on("blur",function(e){
-								$("#table-signalsOnMonitors-list").bootstrapTable("selectPage",parseInt($("#signalsOnMonitorsPageBtn").val()));
+							$("#signalsOnMonitorsPageBtn").on("blur keydown",function(e){
+								if (e.type=='blur'||(e.type=='keydown'&&e.keyCode == "13")) {
+
+									$("#table-signalsOnMonitors-list").bootstrapTable("selectPage",parseInt($("#signalsOnMonitorsPageBtn").val()));
+								}
 							})
 
 						},
 						onPageChange:function(){
 							$(".table-signalsOnMonitors-list").find(".pull-right .pagination").append("<span class='goPage'>跳转到第<input id='signalsOnMonitorsPageBtn' class='pageNum' type='text'>页</span>")
 							//$(".table-radio").find(".pull-right.pagination").append("<input type='button' value='go' class='pageBtn'>")
-							$("#signalsOnMonitorsPageBtn").on("blur",function(e){
-								$("#table-signalsOnMonitors-list").bootstrapTable("selectPage",parseInt($("#signalsOnMonitorsPageBtn").val()));
+							$("#signalsOnMonitorsPageBtn").on("blur keydown",function(e){
+									if (e.type=='blur'||(e.type=='keydown'&&e.keyCode == "13")) {
+										$("#table-signalsOnMonitors-list").bootstrapTable("selectPage", parseInt($("#signalsOnMonitorsPageBtn").val()));
+									}
 							})
 						},
 						onAll:function(){
@@ -1303,8 +1316,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 				app = new AppMap('mapDiv2', {
 					// center: [104.360, 33.360],
 					center:center,
-					maxZoom: 10,
-					minZoom: 10 //禁止缩放，就把maxZoom 和minZoom弄成一样的，10
+					maxZoom: 12
+					//minZoom: 10 //禁止缩放，就把maxZoom 和minZoom弄成一样的，10
 				});
 				//初始化所有图层
 				app.polygonLayer();
@@ -1322,6 +1335,9 @@ define(	["ajax", "dojo/parser", "esri/map",
 				//debugger
 				var stationsAll =getstationsInfo().stationsInfo;
 				var data = {"time":time,stations:stationsAll}
+				$.ajaxSetup({
+						async : false
+				});
 				ajax.post("data/alarm/estimate", data, function (result) {
 					var stations = result.stationPiont,
 						data = result.kriking3.result;
@@ -2102,15 +2118,19 @@ define(	["ajax", "dojo/parser", "esri/map",
 						$("#table-alarm-dealed").find(".dpopover").popover({
 									html : true
 								});
-						$(".table-alarm-dealed").find(".pull-right .pagination").append("<span class='goPage'>跳转到第<input id='alarmDealedPageBtn' class='pageNum' type='text'>页</span>")
-						$("#alarmDealedPageBtn").on("blur",function(e){
-							$("#table-alarm-dealed").bootstrapTable("selectPage",parseInt($("#alarmDealedPageBtn").val()));
+						$(".table-alarm-dealed").find(".pull-right .pagination").append("<span class='goPage'>跳转到第<input id='alarmDealedPageBtn' class='pageNum' type='number'>页</span>")
+						$("#alarmDealedPageBtn").on("blur keydown",function(e){
+							if (e.type=='blur'||(e.type=='keydown'&&e.keyCode == "13")) {
+								$("#table-alarm-dealed").bootstrapTable("selectPage",parseInt($("#alarmDealedPageBtn").val()));
+							}
 						})
 					},
 					onPageChange:function(){
-						$(".table-alarm-dealed").find(".pull-right .pagination").append("<span class='goPage'>跳转到第<input id='alarmDealedPageBtn' class='pageNum' type='text'>页</span>")
-						$("#alarmDealedPageBtn").on("blur",function(e){
-							$("#table-alarm-dealed").bootstrapTable("selectPage",parseInt($("#alarmDealedPageBtn").val()));
+						$(".table-alarm-dealed").find(".pull-right .pagination").append("<span class='goPage'>跳转到第<input id='alarmDealedPageBtn' class='pageNum' type='number'>页</span>")
+						$("#alarmDealedPageBtn").on("blur keydown",function(e){
+							if (e.type=='blur'||(e.type=='keydown'&&e.keyCode == "13")) {
+								$("#table-alarm-dealed").bootstrapTable("selectPage",parseInt($("#alarmDealedPageBtn").val()));
+							}
 						})
 					},
 					onAll:function(){
@@ -2252,6 +2272,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 								field : 'mark',
 								width : '10%',
 								title : '描述',
+							    align: 'left',
 								titleTooltip : "描述",
 								formatter : function(value, row, index) {
 									value = value == null ? "-" : value;
@@ -2264,14 +2285,19 @@ define(	["ajax", "dojo/parser", "esri/map",
 						//			html : true
 						//		});
 						$(".table-alarm-undeal").find(".pull-right .pagination").append("<span class='goPage'>跳转到第<input id='alarmUndealPageBtn' class='pageNum' type='text'>页</span>")
-						$("#alarmUndealPageBtn").on("blur",function(e){
-							$("#table-alarm-undeal").bootstrapTable("selectPage",parseInt($("#alarmUndealPageBtn").val()));
+						$("#alarmUndealPageBtn").on("blur keydown",function(e){
+							if (e.type=='blur'||(e.type=='keydown'&&e.keyCode == "13")) {
+								$("#table-alarm-undeal").bootstrapTable("selectPage",parseInt($("#alarmUndealPageBtn").val()));
+							}
 						})
 					},
 					onPageChange:function(){
-						$(".table-alarm-undeal").find(".pull-right .pagination").append("<span class='goPage'>跳转到第<input id='PageBtn' class='pageNum' type='text'>页</span>")
-						$("#alarmUndealPageBtn").on("blur",function(e){
-							$("#table-alarm-undeal").bootstrapTable("selectPage",parseInt($("#alarmUndealPageBtn").val()));
+						$(".table-alarm-undeal").find(".pull-right .pagination").append("<span class='goPage'>跳转到第<input id='alarmUndealPageBtn' class='pageNum' type='text'>页</span>")
+						$("#alarmUndealPageBtn").on("blur keydown",function(e){
+							if (e.type=='blur'||(e.type=='keydown'&&e.keyCode == "13")) {
+
+								$("#table-alarm-undeal").bootstrapTable("selectPage",parseInt($("#alarmUndealPageBtn").val()));
+							}
 						})
 					},
 					onAll:function(){
@@ -2426,14 +2452,20 @@ define(	["ajax", "dojo/parser", "esri/map",
 						}],
 					onLoadSuccess : function() {
 						$(".radio_auto_confirm").find(".pull-right .pagination").append("<span class='goPage'>跳转到第<input id='autoConfirmPageBtn' class='pageNum' type='text'>页</span>")
-						$("#autoConfirmPageBtn").on("blur",function(e){
-							$("#radio_auto_confirm").bootstrapTable("selectPage",parseInt($("#autoConfirmPageBtn").val()));
+						$("#autoConfirmPageBtn").on("blur keydown",function(e){
+							if (e.type=='blur'||(e.type=='keydown'&&e.keyCode == "13")) {
+
+								$("#radio_auto_confirm").bootstrapTable("selectPage",parseInt($("#autoConfirmPageBtn").val()));
+							}
 						})
 					},
 					onPageChange:function(){
 						$(".radio_auto_confirm").find(".pull-right .pagination").append("<span class='goPage'>跳转到第<input id='autoConfirmPageBtn' class='pageNum' type='text'>页</span>")
-						$("#autoConfirmPageBtn").on("blur",function(e){
-							$("#radio_auto_confirm").bootstrapTable("selectPage",parseInt($("#autoConfirmPageBtn").val()));
+						$("#autoConfirmPageBtn").on("blur keydown",function(e){
+							if (e.type=='blur'||(e.type=='keydown'&&e.keyCode == "13")) {
+
+								$("#radio_auto_confirm").bootstrapTable("selectPage",parseInt($("#autoConfirmPageBtn").val()));
+							}
 						})
 					},
 					onAll:function(){
@@ -2496,16 +2528,22 @@ define(	["ajax", "dojo/parser", "esri/map",
 
 						$(".table-radio").find(".pull-right .pagination").append("<span class='goPage'>跳转到第<input id='PageBtn' class='pageNum' type='text'>页</span>")
 						//$(".table-radio").find(".pull-right.pagination").append("<input type='button' value='go' class='pageBtn'>")
-						$("#PageBtn").on("blur",function(e){
-							$("#table-radio").bootstrapTable("selectPage",parseInt($("#PageBtn").val()));
+						$("#PageBtn").on("blur keydown",function(e){
+							if (e.type=='blur'||(e.type=='keydown'&&e.keyCode == "13")) {
+
+								$("#table-radio").bootstrapTable("selectPage",parseInt($("#PageBtn").val()));
+							}
 						})
 
 					},
 					onPageChange:function(){
 						$(".table-radio").find(".pull-right .pagination").append("<span class='goPage'>跳转到第<input id='PageBtn' class='pageNum' type='text'>页</span>")
 						//$(".table-radio").find(".pull-right.pagination").append("<input type='button' value='go' class='pageBtn'>")
-						$("#PageBtn").on("blur",function(e){
-							$("#table-radio").bootstrapTable("selectPage",parseInt($("#PageBtn").val()));
+						$("#PageBtn").on("blur keydown",function(e){
+							if (e.type=='blur'||(e.type=='keydown'&&e.keyCode == "13")) {
+
+								$("#table-radio").bootstrapTable("selectPage",parseInt($("#PageBtn").val()));
+							}
 						})
 					},
 					onAll:function(){
