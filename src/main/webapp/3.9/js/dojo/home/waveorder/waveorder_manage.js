@@ -839,7 +839,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 						search : true,
 						searchAlign:"left",
 //						searchOnEnterKey : true,
-						strictSearch : true,
+//						strictSearch : true,
 //						searchText : "搜索信号",
 						responseHandler : function(res) {
 							return res;
