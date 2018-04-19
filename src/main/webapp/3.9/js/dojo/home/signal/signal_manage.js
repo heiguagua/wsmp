@@ -1406,7 +1406,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
         changesecodView(time);
     })
     function initChart(reslut) {
-        // draw radio pie chart
+        // draw radio pie  chart
         var option = {
             color: ['rgb(44,205,125)', 'rgb(55,165,255)', 'rgb(66,205,255)', 'rgb(77,255,255)', 'rgb(255,205,125)', 'rgb(99,165,255)'],
             tooltip: {
