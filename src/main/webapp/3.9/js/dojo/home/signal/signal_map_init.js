@@ -104,6 +104,7 @@ define(["home/signal/signal_manage", "ajax","library/map/appMap"],
                 data: stations
             });
             document.getElementById('valCtrl').addEventListener('click', function () {
+                event.preventDefault();
                 var opCtrl = document.getElementById("opCtrl").value||0.7;
                 if(opCtrl<0){
                     opCtrl=0

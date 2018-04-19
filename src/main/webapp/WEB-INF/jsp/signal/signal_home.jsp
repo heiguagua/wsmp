@@ -363,7 +363,7 @@
 						<input type="number" name="startVal" min="1" id="minCtrl" value="-40" alt="请输入最小值"  title="请输入最小值">
 						<img src="images/a.png" alt="">
 						<input type="number" name="endVal" max="10" id="maxCtrl" value="120" alt="请输入最大值" title="请输入最大值" >
-						<a href="#" id="valCtrl" ><td  v-text="dd.btn.affirm">确认</a>
+						<a href="#" id="valCtrl"  v-text="dd.btn.affirm">确认</a>
 					</form>
 				</div>
 				<%--控件 end--%>
@@ -498,12 +498,12 @@
       function($, mapInit) {
     	require(["bootstrap", "bootstrapTable","datetimepicker"],function(){
     		 require(["echarts","select2","home/signal/signal_manage","bootstrap_table_cn","datetimepicker_cn"], function(echarts,select2,signal_manage) {
-                 signal_manage.init();
-
-            	 var map = mapInit.init();
+            	 mapInit.init();
                  signal_manage.set(mapInit);
+				 signal_manage.init();
 
-            })
+
+			 })
     	})
 
 
