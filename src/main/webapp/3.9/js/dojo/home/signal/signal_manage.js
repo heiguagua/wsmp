@@ -1411,7 +1411,7 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
             color: ['rgb(44,205,125)', 'rgb(55,165,255)', 'rgb(66,205,255)', 'rgb(77,255,255)', 'rgb(255,205,125)', 'rgb(99,165,255)'],
             tooltip: {
                 trigger: 'item',
-                formatter: "{a} <br/>{b}: {c} ({d}%)"
+                formatter: "{a} <br/>{b}:  {d}%"
             },
             legend: {
                 show: true,
