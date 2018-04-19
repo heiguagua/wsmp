@@ -1728,11 +1728,12 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                 var reopenParam = {};
                 reopenParam.ServerName = "host";
                 reopenParam.DisplayName = "单频测量";
-                reopenParam.MultiTabable = "False";
+                reopenParam.MultiTabable = "True";
                 reopenParam.ReflushIfExist = "False";
                 var statiocode = $('#station_list').find('option:selected').val();
                 var centFreq = $("#search").val();
-                reopenParam.Url = "FIXFQViewModel?SerialNumber=" + statiocode + "&TaskType=FIXFQ&frequency=" + centFreq;
+                var filterspan = $("#redioDetailCentor").val();
+                reopenParam.Url = "FIXFQViewModel?SerialNumber=" + statiocode + "&TaskType=FIXFQ&frequency=" + centFreq+"&filterspan="+filterspan;
                 var paramStr = JSON.stringify(reopenParam)
                     // //console.log(paramStr)
                 Binding.openUrl(paramStr);
