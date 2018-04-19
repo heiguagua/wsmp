@@ -151,10 +151,10 @@
                             <%--<div >--%>
                                 <el-radio :label="0" v-model="searchFre" name="searchFre" @change="searchFreChange()">频率(MHz)：</el-radio>
                                 <input type="text" id="searchFremin"class="searchFre" value="87" placeholder="最小值"
-                                       style="width: 50px; line-height: 1;">
+                                       style="width: 80px; line-height: 1;">
                                 <em style="margin: 0px 5px;">-</em>
                                 <input type="text" id="searchFremax" class="searchFre" value="108" placeholder="最大值"
-                                   style="width: 50px; line-height: 1;">
+                                   style="width: 80px; line-height: 1;">
                                 <%--<el-radio :label="1" v-model="searchFre" name="searchFre" @change="searchFreChange()">频段(MHz)：</el-radio>--%>
                                 <%--<select  class='city-list select2-picker'>--%>
                                 <%--</select>--%>
