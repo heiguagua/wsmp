@@ -217,9 +217,16 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
     }
     function destroy(){
         $('#audio-table').bootstrapTable('destroy');
+        $(".audio-play-control .current-index").html('');
+        $(".audio-play-control .total-length").html(0);
+        $(".audio-play-control .play").html('<i class="fa fa-play"></i>');
+       //音频数据
+       audio_play_list = [];
         if (wavesurfer) {
             wavesurfer.destroy();
         }
+        $("#audio-wrap").slideUp();
+        $("#audio").prop("checked", false);
     }
     function autoClickInit(){
         $("#audio").on("click", function() {
