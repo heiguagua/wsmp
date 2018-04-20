@@ -137,296 +137,296 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
     var total_length = 0;     // x轴数据总数
     var current_index = 1; // 当前播放数据的序号
     var has_changed = false; // 标志timeline是否开始播放
-      function spectrum_player() {
-    if (spectrumChart) {
-      spectrumChart.clear();
-    }
-    current_index = 1; // 重置当前播放数据序号
+    function spectrum_player() {
+        if (spectrumChart) {
+          spectrumChart.clear();
+        }
+        current_index = 1; // 重置当前播放数据序号
 
-    var timeline_length = [];
-    var data_row = [];
-    for (var i = 0; i < spectrum_play_list.length; i++) {
-      timeline_length.push(i + 1);
-      _.forEach(spectrum_play_list[i].freqData, function(value, index) {
-        var data_obj = {};
-        data_obj.freq = value;
-        data_obj.data = spectrum_play_list[i].spectrumdata[index];
-        data_row.push(data_obj);
-      })
-    }
-    var max_min_avg = getMaxMinAvg(data_row);
-    var option = {
-      baseOption: {
-        color: ['#00ff00', '#0000ff', '#ff0000', '#ffa500'],
-        'backgroundColor': '#353535',
-        timeline: {
-          show: false,
-          y2: 0,
-          data: timeline_length,
-          axisType: 'category',
-          autoPlay: true,
-          symbol: 'none',
-          playInterval: 3000,
-          loop: true
-        },
-        title: {
-          'text': '',
-          'subtext': ''
-        },
-        tooltip: {
-          'trigger': 'axis',
-          formatter: function(param) {
-            start_index_temp = param[0].dataIndex;
-            end_index = param[0].dataIndex;
-            var str = param[0].name + " MHz<br />";
-            for (var i = 0; i < param.length; i++) {
-              if (param && param[i] && param[i].name && param[i].value) {
-                str += param[i].seriesName + " ： " + param[i].value + "dBμV" + "<br />"
-              }
-            }
-            return str;
+        var timeline_length = [];
+        var data_row = [];
+        for (var i = 0; i < spectrum_play_list.length; i++) {
+          timeline_length.push(i + 1);
+          _.forEach(spectrum_play_list[i].freqData, function(value, index) {
+            var data_obj = {};
+            data_obj.freq = value;
+            data_obj.data = spectrum_play_list[i].spectrumdata[index];
+            data_row.push(data_obj);
+          })
+        }
+        var max_min_avg = getMaxMinAvg(data_row);
+        var option = {
+          baseOption: {
+            color: ['#00ff00', '#0000ff', '#ff0000', '#ffa500'],
+            'backgroundColor': '#353535',
+            timeline: {
+              show: false,
+              y2: 0,
+              data: timeline_length,
+              axisType: 'category',
+              autoPlay: true,
+              symbol: 'none',
+              playInterval: 3000,
+              loop: true
+            },
+            title: {
+              'text': '',
+              'subtext': ''
+            },
+            tooltip: {
+              'trigger': 'axis',
+              formatter: function(param) {
+                start_index_temp = param[0].dataIndex;
+                end_index = param[0].dataIndex;
+                var str = param[0].name + " MHz<br />";
+                for (var i = 0; i < param.length; i++) {
+                  if (param && param[i] && param[i].name && param[i].value) {
+                    str += param[i].seriesName + " ： " + param[i].value + "dBμV" + "<br />"
+                  }
+                }
+                return str;
 
-          }
-        },
-        legend: {
-          "show": false,
-          x: 'left',
-          'data': [{
-            name: '瞬时值',
-            icon: 'circle'
-          }, {
-            name: '最小值',
-            icon: 'circle'
-          }, {
-            name: '最大值',
-            icon: 'circle'
-          }, {
-            name: '均值',
-            icon: 'circle'
-          }],
-          textStyle: {
-            color: '#FFF'
-          }
-        },
-
-        calculable: true,
-        grid: {
-          'y': 5,
-          'y2': 40,
-          'x': 60,
-          'x2': 10
-        },
-        dataZoom: [{
-          show: false,
-          type: 'slider',
-          start: 0,
-          end: 100,
-          height: 15,
-          y: 260
-        }],
-        xAxis: [{
-          'type': 'category',
-          'splitNumber': 10,
-          'interval': 10,
-          'onZero': false,
-          'axisTick': {
-            show: false
-          },
-          'axisLabel': {
-            // 'interval': 0
-            textStyle: {
-              color: "rgb(183,183,183)"
-            }
-          },
-          'axisLine': {
-            lineStyle: {
-              color: 'rgb(108,108,108)'
-            }
-          },
-
-          'splitLine': {
-            show: true,
-            lineStyle: {
-              color: 'rgb(108,108,108)'
-            }
-          },
-          'data': []
-        }],
-        yAxis: [{
-          'type': 'value',
-          'name': '电平(dBμV)',
-          'nameRotate': 90,
-          'nameLocation': 'middle',
-          'nameGap': 30,
-          'max': 100,
-          'min': -40,
-          'onZero': false,
-          'splitNumber': 6,
-          'axisLabel': {
-            // 'interval': 0
-            margin: 10,
-            textStyle: {
-              color: "rgb(183,183,183)"
-            }
-          },
-          'axisTick': {
-            show: false
-          },
-          'axisLine': {
-            lineStyle: {
-              color: "rgb(183,183,183)"
-            }
-          },
-          'splitLine': {
-            show: true,
-            lineStyle: {
-              color: 'rgb(108,108,108)'
-            }
-          },
-        }, {
-          'type': 'value',
-          'splitNumber': 8,
-          'onZero': false,
-          'axisTick': {
-            show: false
-          },
-          'axisLabel': {
-            show: false
-          },
-          'axisLine': {
-            lineStyle: {
-              color: "rgb(183,183,183)"
-            }
-          },
-          'splitLine': {
-            show: false
-          }
-        }],
-        series: [{
-            'name': '瞬时值',
-            'yAxisIndex': 0,
-            'type': 'line',
-            'connectNulls': true,
-            'lineStyle': {
-              normal: {
-                color: '#00ff00'
               }
             },
-            'symbolSize': 0
-          }, {
-            'name': '最小值',
-            'yAxisIndex': 0,
-            'type': 'line',
-            'connectNulls': true,
-            'lineStyle': {
-              normal: {
-                color: '#0000ff'
+            legend: {
+              "show": false,
+              x: 'left',
+              'data': [{
+                name: '瞬时值',
+                icon: 'circle'
+              }, {
+                name: '最小值',
+                icon: 'circle'
+              }, {
+                name: '最大值',
+                icon: 'circle'
+              }, {
+                name: '均值',
+                icon: 'circle'
+              }],
+              textStyle: {
+                color: '#FFF'
               }
             },
-            'symbolSize': 0
-          }, {
-            'name': '最大值',
-            'yAxisIndex': 0,
-            'type': 'line',
-            'connectNulls': true,
-            'lineStyle': {
-              normal: {
-                color: '#ff0000'
-              }
+
+            calculable: true,
+            grid: {
+              'y': 5,
+              'y2': 40,
+              'x': 60,
+              'x2': 10
             },
-            'symbolSize': 0
+            dataZoom: [{
+              show: false,
+              type: 'slider',
+              start: 0,
+              end: 100,
+              height: 15,
+              y: 260
+            }],
+            xAxis: [{
+              'type': 'category',
+              'splitNumber': 10,
+              'interval': 10,
+              'onZero': false,
+              'axisTick': {
+                show: false
+              },
+              'axisLabel': {
+                // 'interval': 0
+                textStyle: {
+                  color: "rgb(183,183,183)"
+                }
+              },
+              'axisLine': {
+                lineStyle: {
+                  color: 'rgb(108,108,108)'
+                }
+              },
+
+              'splitLine': {
+                show: true,
+                lineStyle: {
+                  color: 'rgb(108,108,108)'
+                }
+              },
+              'data': []
+            }],
+            yAxis: [{
+              'type': 'value',
+              'name': '电平(dBμV)',
+              'nameRotate': 90,
+              'nameLocation': 'middle',
+              'nameGap': 30,
+              'max': 100,
+              'min': -40,
+              'onZero': false,
+              'splitNumber': 6,
+              'axisLabel': {
+                // 'interval': 0
+                margin: 10,
+                textStyle: {
+                  color: "rgb(183,183,183)"
+                }
+              },
+              'axisTick': {
+                show: false
+              },
+              'axisLine': {
+                lineStyle: {
+                  color: "rgb(183,183,183)"
+                }
+              },
+              'splitLine': {
+                show: true,
+                lineStyle: {
+                  color: 'rgb(108,108,108)'
+                }
+              },
+            }, {
+              'type': 'value',
+              'splitNumber': 8,
+              'onZero': false,
+              'axisTick': {
+                show: false
+              },
+              'axisLabel': {
+                show: false
+              },
+              'axisLine': {
+                lineStyle: {
+                  color: "rgb(183,183,183)"
+                }
+              },
+              'splitLine': {
+                show: false
+              }
+            }],
+            series: [{
+                'name': '瞬时值',
+                'yAxisIndex': 0,
+                'type': 'line',
+                'connectNulls': true,
+                'lineStyle': {
+                  normal: {
+                    color: '#00ff00'
+                  }
+                },
+                'symbolSize': 0
+              }, {
+                'name': '最小值',
+                'yAxisIndex': 0,
+                'type': 'line',
+                'connectNulls': true,
+                'lineStyle': {
+                  normal: {
+                    color: '#0000ff'
+                  }
+                },
+                'symbolSize': 0
+              }, {
+                'name': '最大值',
+                'yAxisIndex': 0,
+                'type': 'line',
+                'connectNulls': true,
+                'lineStyle': {
+                  normal: {
+                    color: '#ff0000'
+                  }
+                },
+                'symbolSize': 0
+              },
+
+              {
+                'name': '均值',
+                'yAxisIndex': 0,
+                'type': 'line',
+                'connectNulls': true,
+                'lineStyle': {
+                  normal: {
+                    color: '#ffa500'
+                  }
+                },
+                'symbolSize': 0
+              }
+            ]
           },
+          options: []
+        };
+        // var avga=max_min_avg.avg,avgarr=[];
+        //   for (var i = 0; i < avga.length; i++) {
+        //     avgarr.push(parseFloat(avga[i].toFixed(2)))
+        //   }
+        //   console.log(avgarr)
+        for (var i = 0; i < spectrum_play_list.length; i++) {
+          var single_ser = {};
+          single_ser.series = [];
+          single_ser.xAxis = {
+            data: spectrum_play_list[i].freqData
+          };
+          single_ser.series.push({
+            data: spectrum_play_list[i].spectrumdata
+          });
+          single_ser.series.push({ // 最大值
+            data: max_min_avg.max
+          });
+          single_ser.series.push({ // 最小值
+            data: max_min_avg.min
+          });
+          /////////////////////////////////
+          /////////////////////////////////
+          single_ser.series.push({ // 平均值
+            data: max_min_avg.avg
+          });
+          option.options.push(single_ser);
+          total_length = spectrum_play_list[i].freqData.length;
+        }
+        $(".spectrum-play-control .current-index").html(current_index);
+        $(".spectrum-play-control .total-length").html(spectrum_play_list.length);
+        spectrumChart = echarts.init($('#spectrumChart')[0]);
+        spectrumChart.setOption(option);
+        window.addEventListener("resize", function() {
+          spectrumChart.resize();
+        });
+        spectrumChart.on('timelinechanged', function(p1) {
 
-          {
-            'name': '均值',
-            'yAxisIndex': 0,
-            'type': 'line',
-            'connectNulls': true,
-            'lineStyle': {
-              normal: {
-                color: '#ffa500'
-              }
-            },
-            'symbolSize': 0
+          current_index = p1.currentIndex;
+          has_changed = true;
+          if (current_index >= spectrum_play_list.length) { // 为了解决timelinechanged事件currentIndex第一次的值实际为第二条数据
+            $(".spectrum-play-control .current-index").html(1);
+          } else {
+            $(".spectrum-play-control .current-index").html(current_index + 1);
           }
-        ]
-      },
-      options: []
-    };
-    // var avga=max_min_avg.avg,avgarr=[];
-    //   for (var i = 0; i < avga.length; i++) {
-    //     avgarr.push(parseFloat(avga[i].toFixed(2)))
-    //   }
-    //   console.log(avgarr)
-    for (var i = 0; i < spectrum_play_list.length; i++) {
-      var single_ser = {};
-      single_ser.series = [];
-      single_ser.xAxis = {
-        data: spectrum_play_list[i].freqData
-      };
-      single_ser.series.push({
-        data: spectrum_play_list[i].spectrumdata
-      });
-      single_ser.series.push({ // 最大值
-        data: max_min_avg.max
-      });
-      single_ser.series.push({ // 最小值
-        data: max_min_avg.min
-      });
-      /////////////////////////////////
-      /////////////////////////////////
-      single_ser.series.push({ // 平均值
-        data: max_min_avg.avg
-      });
-      option.options.push(single_ser);
-      total_length = spectrum_play_list[i].freqData.length;
-    }
-    $(".spectrum-play-control .current-index").html(current_index);
-    $(".spectrum-play-control .total-length").html(spectrum_play_list.length);
-    spectrumChart = echarts.init($('#spectrumChart')[0]);
-    spectrumChart.setOption(option);
-    window.addEventListener("resize", function() {
-      spectrumChart.resize();
-    });
-    spectrumChart.on('timelinechanged', function(p1) {
 
-      current_index = p1.currentIndex;
-      has_changed = true;
-      if (current_index >= spectrum_play_list.length) { // 为了解决timelinechanged事件currentIndex第一次的值实际为第二条数据
-        $(".spectrum-play-control .current-index").html(1);
-      } else {
-        $(".spectrum-play-control .current-index").html(current_index + 1);
-      }
+          option.options[current_index - 1].xAxis.data = spectrum_play_list[current_index - 1].freqData;
+          total_length = spectrum_play_list[current_index - 1].freqData.length;
+          spectrumChart.setOption(option);
+        });
 
-      option.options[current_index - 1].xAxis.data = spectrum_play_list[current_index - 1].freqData;
-      total_length = spectrum_play_list[current_index - 1].freqData.length;
-      spectrumChart.setOption(option);
-    });
+        // 加载图标鼠标区域选择事件
 
-    // 加载图标鼠标区域选择事件
+        load_spectrum_mouse_event();
 
-    load_spectrum_mouse_event();
+        // 加载播放控制事件
+        load_play_control();
 
-    // 加载播放控制事件
-    load_play_control();
-
-    // 加载最大最小平均值选择取消事件
-    var str = '<div class="value-type"><div class="checkbox  flex1 ">' +
-      '<input type="checkbox" value="瞬时值" name="freq-type" id="timing" checked>' +
-      '<label for="timing"> <span class="type-sign timing-sign"></span>瞬时值 </label></div></div>' +
-      '<div class="value-type"><div class="checkbox  flex1 ">' +
-      '<input type="checkbox" value="最小值" name="freq-type" id="fmin" checked>' +
-      '<label for="fmin"> <span class="type-sign min-sign"></span>最小值 </label></div></div>' +
-      '<div class="value-type"><div class="checkbox  flex1 ">' +
-      '<input type="checkbox" value="最大值" name="freq-type" id="fmax" checked>' +
-      '<label for="fmax"> <span class="type-sign max-sign"></span>最大值 </label></div></div>' +
-      '<div class="value-type"><div class="checkbox flex1 ">' +
-      '<input type="checkbox" value="均值" name="freq-type" id="favg" checked>' +
-      '<label for="favg"> <span class="type-sign avg-sign"></span>均值 </label></div></div>';
-    $(".check-types").html(str);
+        // 加载最大最小平均值选择取消事件
+        var str = '<div class="value-type"><div class="checkbox  flex1 ">' +
+          '<input type="checkbox" value="瞬时值" name="freq-type" id="timing" checked>' +
+          '<label for="timing"> <span class="type-sign timing-sign"></span>瞬时值 </label></div></div>' +
+          '<div class="value-type"><div class="checkbox  flex1 ">' +
+          '<input type="checkbox" value="最小值" name="freq-type" id="fmin" checked>' +
+          '<label for="fmin"> <span class="type-sign min-sign"></span>最小值 </label></div></div>' +
+          '<div class="value-type"><div class="checkbox  flex1 ">' +
+          '<input type="checkbox" value="最大值" name="freq-type" id="fmax" checked>' +
+          '<label for="fmax"> <span class="type-sign max-sign"></span>最大值 </label></div></div>' +
+          '<div class="value-type"><div class="checkbox flex1 ">' +
+          '<input type="checkbox" value="均值" name="freq-type" id="favg" checked>' +
+          '<label for="favg"> <span class="type-sign avg-sign"></span>均值 </label></div></div>';
+        $(".check-types").html(str);
 
 
-    load_legend_selection();
+        load_legend_selection();
 
   }
 
@@ -647,7 +647,20 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
     if (spectrumChart) {
       spectrumChart.clear();
     }
-    $('#spectrum-table').bootstrapTable('destroy');
+      // 频谱数据
+      spectrum_play_list = [];
+      spectrumChart = null;
+      start_index_temp = 0;
+      end_index = 0;        // mouseup时的x轴index
+      total_length = 0;     // x轴数据总数
+       current_index = 1; // 当前播放数据的序号
+       has_changed = false; // 标志timeline是否开始播放
+      $('#spectrum-table').bootstrapTable('destroy');
+      $(".spectrum-play-control .current-index").html('');
+      $(".spectrum-play-control .total-length").html(0);
+      $(".spectrum-play-control .play").html('<i class="fa fa-play"></i>');
+      $("#frequency-wrap").slideUp();
+      $("#frequency").prop("checked", false);
   }
 
   // 计算所选中频谱数据的频点最大最小平均值

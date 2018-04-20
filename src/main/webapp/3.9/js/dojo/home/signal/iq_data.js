@@ -583,6 +583,17 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
     		iqChart.clear();
     	}
     	$('#IQ-table').bootstrapTable('destroy');
+        $(".iq-play-control .current-index").html('');
+        $(".iq-play-control .total-length").html(0);
+        $(".iq-play-control .play").html('<i class="fa fa-play"></i>');
+         iq_play_list =[];
+         iq_start_index_temp = 0;
+         iq_end_index = 0;        // mouseup时的x轴index
+         iq_total_length = 0;     // x轴数据总数
+         current_index = 1; // 当前播放数据的序号
+         has_changed = false; // 标志timeline是否开始播放
+         $("#IQ-wrap").slideUp();
+        $("#IQ").prop("checked", false);
     }
 
 	return {
