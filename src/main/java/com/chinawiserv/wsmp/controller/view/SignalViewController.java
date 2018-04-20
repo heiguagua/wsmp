@@ -26,12 +26,10 @@ import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 
@@ -130,13 +128,25 @@ public class SignalViewController {
 			redioDetail.setSymRate(Optional.ofNullable(map.get("symRate")).orElse("-"));
 			redioDetail.setFlatDegree(Optional.ofNullable(map.get("flatDegree")).orElse("-"));
 			redioDetail.setFreqPeakNumFSK(Optional.ofNullable(map.get("freqPeakNumFSK")).orElse("-"));
-
+			Map result=new HashMap<>();
+			for(String key:map.keySet()){
+				Object o=map.get(key);
+				if(o.getClass()==java.lang.Double.class){
+					DecimalFormat dFormat=new DecimalFormat("#.00");
+					String tempStr=dFormat.format((double)o);
+					Double temp= Double.valueOf(tempStr);
+					result.put(key,temp);
+				}else{
+					result.put(key,o);
+				}
+			}
 			model.addAttribute("redioDetail", redioDetail);
-			model.addAttribute("hBaseMap", map);
+			model.addAttribute("hBaseMap", result);
 
 			Logger.info("方法 特征值查询 操作时间{} 请求成功 中心频率{} 开始时间{} 监测站id{} 信号id{} 返回值{} ", "signal_detail", LocalDateTime.now().toString(),centorfreq,beginTime,stationCode,id,JSON.toJSONString(map));
 		}
 		catch (Exception e) {
+			e.printStackTrace();
 			Logger.error("方法 特征值查询 操作时间{} 请求异常  原因{}", "signal_detail", LocalDateTime.now().toString(), e,e.getClass());
 		}
 
