@@ -351,7 +351,7 @@ public class AlarmDataController {
                 collect.add(temp);
                 radis=75;
             }
-            String string = HttpServiceConfig.httpclient(collect.toArray(new double[collect.size()][3]), kringUrl,false);
+            String string = HttpServiceConfig.httpclient(collect.toArray(new double[collect.size()][3]), kringUrl, false);
             kriking3 = JSONObject.parseObject(string);
 
             Logger.info("场强定位计算正常 操作时间{} 返回值为{}", LocalDateTime.now().toString(),kriking3);
@@ -413,13 +413,13 @@ public class AlarmDataController {
         HashMap<String, Object> occReslute = Maps.newHashMap();
         try {
 
-            long frequency = (long) (88.8 * 1000000);
+//            long frequency = (long) (88.8 * 1000000);
             //测试或者正式环境使用
             //            Map<Object, Object> max = hbaseClient.queryMaxLevels(stationCode, centorFreq, upperBound, lowerBound, beginTime);
             //            Map<String, Object> occ = hbaseClient.queryOccDay(stationCode, beginTime, 90, centorFreq).getOcc();
 
             Map<Object, Object> max = hbaseClient.queryMaxLevels(stationCode, centorFreq, upperBound, lowerBound, LocalDateTime.now().format(formatter));
-            Map<String, Object> occ = hbaseClient.queryOccDay(stationCode, LocalDateTime.now().format(formatter), 90, frequency).getOcc();
+            Map<String, Object> occ = hbaseClient.queryOccDay(stationCode, LocalDateTime.now().format(formatter), 90, centorFreq).getOcc();
 
             if (occ.size() == 0) {
 
@@ -455,9 +455,6 @@ public class AlarmDataController {
                 });
 
                 occ = reslute;
-                occ.replace("20170621",0);
-                occ.replace("20170622",0);
-                occ.replace("20170623",0);
                 occ = occ.entrySet().stream().sorted((c1, c2) -> Integer.parseInt(c1.getKey()) > Integer.parseInt(c2.getKey()) ? 1 : -1)
                         .collect(toMap(Map.Entry::getKey, Map.Entry::getValue, throwingMerger(), LinkedHashMap::new));
                 occ.forEach((k, v) -> {
