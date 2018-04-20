@@ -366,17 +366,20 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
             iqChart.resize();
         });
         iqChart.on('timelinechanged', function (p1) {
-        	current_index = p1.currentIndex;
-            has_changed = true;
-            if(current_index >= iq_play_list.length) {// 为了解决timelinechanged事件currentIndex第一次的值实际为第二条数据
-              $(".iq-play-control .current-index").html(1);
+            if(iq_play_list.length>0){
+
+                current_index = p1.currentIndex;
+                has_changed = true;
+                if(current_index >= iq_play_list.length) {// 为了解决timelinechanged事件currentIndex第一次的值实际为第二条数据
+                    $(".iq-play-control .current-index").html(1);
+                }
+                else{
+                    $(".iq-play-control .current-index").html(current_index+1);
+                }
+                option.options[current_index-1].xAxis.data = iq_play_list[current_index-1].freqData;
+                iq_total_length = iq_play_list[current_index-1].nmber;
+                iqChart.setOption(option);
             }
-            else{
-              $(".iq-play-control .current-index").html(current_index+1); 
-            }
-            option.options[current_index-1].xAxis.data = iq_play_list[current_index-1].freqData;
-            iq_total_length = iq_play_list[current_index-1].nmber;
-            iqChart.setOption(option); 
         });
         
         // 加载图标鼠标区域选择事件

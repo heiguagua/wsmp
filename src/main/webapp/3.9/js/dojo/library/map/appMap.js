@@ -4,7 +4,7 @@ define(["esri/layers/ArcGISTiledMapServiceLayer", "esri/map","esri/Color",
         "esri/layers/GraphicsLayer", "esri/graphic",
         "esri/geometry/Point",
         "esri/symbols/PictureMarkerSymbol", "esri/symbols/SimpleMarkerSymbol","esri/symbols/TextSymbol","esri/symbols/Font",
-        "esri/InfoTemplate"], 
+        "esri/InfoTemplate"],
         function(ArcGISTiledMapServiceLayer, Map, Color,
         GraphicsLayer, Graphic,
         Point,
@@ -208,7 +208,7 @@ define(["esri/layers/ArcGISTiledMapServiceLayer", "esri/map","esri/Color",
                 layers.stations.add(g.textbg);
                 layers.stations.add(g.graphicText);
             };
-            
+
         },
         pushData: function(layer, options) {
             //新增数据，在已有的基础上增加新的数据，不会清除图层上的所有数据。
@@ -291,12 +291,12 @@ define(["esri/layers/ArcGISTiledMapServiceLayer", "esri/map","esri/Color",
         };
         stationParamsDefault = {
             url: "images/monitor-station-union.png",
-            height: 15,
-            width: 15
+            height: 10,
+            width: 10
         };
         //设置基站点 和文字模板
         point = new Point(x, y, map.SpatialReference);
-        infoTemplate = new InfoTemplate("场强定位信息","名称: ${d} <br/> 经度: ${a} <br/> 纬度: ${b} <br/>统计:${c}dBμV");
+        infoTemplate = new InfoTemplate("场强定位信息","监测站名称: ${d} <br/> 电平值:${c}dBμV <br/>经纬度:  ${b}°, ${a}° <br/>");
         attr = {
             d: getStationName(stationId),
             c: count,

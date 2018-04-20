@@ -1738,10 +1738,10 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
                     // //console.log(paramStr)
                 Binding.openUrl(paramStr);
             });
-            $(".features-list .item-value").each(function(i, e) {
-                var dd = $(e).html();
-                $(e).html(dd.substr(0, dd.indexOf(".") + 3))
-            });
+            //$(".features-list .item-value").each(function(i, e) {
+            //    var dd = $(e).html();
+            //    $(e).html(dd.substr(0, dd.indexOf(".") + 3))
+            //});
         });
     }
     $.fn.serializeObject = function() {

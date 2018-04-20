@@ -389,18 +389,20 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
           spectrumChart.resize();
         });
         spectrumChart.on('timelinechanged', function(p1) {
+            if(spectrum_play_list.length>0){
+                current_index = p1.currentIndex;
+                has_changed = true;
+                if (current_index >= spectrum_play_list.length) { // 为了解决timelinechanged事件currentIndex第一次的值实际为第二条数据
+                    $(".spectrum-play-control .current-index").html(1);
+                } else {
+                    $(".spectrum-play-control .current-index").html(current_index + 1);
+                }
 
-          current_index = p1.currentIndex;
-          has_changed = true;
-          if (current_index >= spectrum_play_list.length) { // 为了解决timelinechanged事件currentIndex第一次的值实际为第二条数据
-            $(".spectrum-play-control .current-index").html(1);
-          } else {
-            $(".spectrum-play-control .current-index").html(current_index + 1);
-          }
+                option.options[current_index - 1].xAxis.data = spectrum_play_list[current_index - 1].freqData;
+                total_length = spectrum_play_list[current_index - 1].freqData.length;
+                spectrumChart.setOption(option);
+            }
 
-          option.options[current_index - 1].xAxis.data = spectrum_play_list[current_index - 1].freqData;
-          total_length = spectrum_play_list[current_index - 1].freqData.length;
-          spectrumChart.setOption(option);
         });
 
         // 加载图标鼠标区域选择事件
