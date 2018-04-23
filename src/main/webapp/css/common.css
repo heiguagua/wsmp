@@ -803,5 +803,16 @@ border-radius: 4px;
 	background: #8492A6;
 	border-radius: 1rem;
 }
+.dijitTooltipContainer {
+	position: relative;
+	max-height: 300px;
+	overflow: auto;
+	padding: 10px 6px 6px 10px;
+	background-color: #F7F7F7 !important;
+	border: 1px solid #999999 !important;
+	border-top: none;
+	border-bottom: none;
+	color: #333333 !important;
+}
 
 

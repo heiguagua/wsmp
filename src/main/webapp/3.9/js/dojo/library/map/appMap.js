@@ -4,12 +4,12 @@ define(["esri/layers/ArcGISTiledMapServiceLayer", "esri/map","esri/Color",
         "esri/layers/GraphicsLayer", "esri/graphic",
         "esri/geometry/Point",
         "esri/symbols/PictureMarkerSymbol", "esri/symbols/SimpleMarkerSymbol","esri/symbols/TextSymbol","esri/symbols/Font",
-        "esri/InfoTemplate"],
+        "esri/InfoTemplate","dijit/popup","dijit/TooltipDialog","esri/lang"],
         function(ArcGISTiledMapServiceLayer, Map, Color,
         GraphicsLayer, Graphic,
         Point,
         PictureMarkerSymbol, SimpleMarkerSymbol,TextSymbol,Font,
-        InfoTemplate) {
+        InfoTemplate,dijitPopup,TooltipDialog,esriLang) {
     var map,
         layers = {
             situation: null, //热力图层
@@ -208,6 +208,37 @@ define(["esri/layers/ArcGISTiledMapServiceLayer", "esri/map","esri/Color",
                 layers.stations.add(g.textbg);
                 layers.stations.add(g.graphicText);
             };
+            var dialog = new TooltipDialog({
+                class : "tooltipDialog",
+                style : "position: absolute;  font: normal normal normal 10pt Helvetica;z-index:100"
+            });
+            dialog.startup();
+            //console.log(layers.stations)
+            layers.stations.on("mouse-over", function(e) {
+                var x = parseFloat(e.graphic.geometry.x);
+                var y = parseFloat(e.graphic.geometry.y);
+                var monitorName= e.graphic.geometry.monitorName;
+                var text = e.graphic.symbol.text;
+                if(text){
+                    //console.log(layers.stations)
+                    //console.log(e)
+                    var t = "监测站名称："+monitorName+"<br>"
+                        + "电平值: "+ text+"dBμV<br>"
+                        + "经纬度: "+ x.toFixed(5)+"°,"+y.toFixed(5) +"°<br>"
+
+                    var content = esriLang.substitute(
+                        e.graphic.attributes, t);
+                    dialog.setContent(content);
+                    dijitPopup.open({
+                        popup : dialog,
+                        x : e.pageX,
+                        y : e.pageY
+                    });
+                }
+            });
+            layers.stations.on("mouse-out", function(e) {
+                dijitPopup.close(dialog);
+            });
 
         },
         pushData: function(layer, options) {
@@ -295,7 +326,12 @@ define(["esri/layers/ArcGISTiledMapServiceLayer", "esri/map","esri/Color",
             width: 10
         };
         //设置基站点 和文字模板
-        point = new Point(x, y, map.SpatialReference);
+        var monitor = {};
+        monitor.x = x;
+        monitor.y = y;
+        monitor.monitorName = getStationName(stationId);
+        point = new Point(monitor);
+        //point = new Point(x, y, map.SpatialReference);
         infoTemplate = new InfoTemplate("场强定位信息","监测站名称: ${d} <br/> 电平值:${c}dBμV <br/>经纬度:  ${b}°, ${a}° <br/>");
         attr = {
             d: getStationName(stationId),
