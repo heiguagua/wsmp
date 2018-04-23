@@ -273,4 +273,7 @@ line-height: 20px;
 .table-radio .fixed-table-body {
   height: 270px;
 }
+.el-radio {
+  cursor: default!important;
 
+}

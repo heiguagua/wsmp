@@ -102,7 +102,7 @@
         <div class="nav-right" style="height:100%">
             <div class="col-xs-2">
                 <span class="tit " v-text="dd.waveorder.top1"></span>
-                <span id="alarmTotalCount"class="numFont pt top1 "></span>
+                <span id="alarmTotalCount"class="numFont  top1 "></span>
             </div>
             <div class="col-xs-2">
                 <span class="tit" v-text="dd.waveorder.top2"></span>
@@ -118,7 +118,7 @@
             </div>
             <div class="col-xs-2">
                 <span class="tit" v-text="dd.waveorder.top5"></span>
-                <span id="signalCounts" class="numFont pt top5 "></span>
+                <span id="signalCounts" class="numFont  top5 "></span>
             </div>
         </div>
         <!-- 暂时隐藏 -->
