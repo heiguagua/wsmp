@@ -128,8 +128,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 								var t = "<b>监测站名称：</b>"+ info.monitorName+"<br>"
 										//+ "<hr style='margin-top: 8px;margin-bottom: 8px;'>"
 										+"<b>ID: </b>"+ info.monitorID +"<br>"
-									+ "<b>纬度: </b>"+ info.x.toFixed(5) +"°<br>"
-									+ "<b>经度: </b>"+ info.y.toFixed(5)  +"°<br>"
+									+ "<b>纬度: </b>"+ info.y.toFixed(5) +"°<br>"
+									+ "<b>经度: </b>"+ info.x.toFixed(5)  +"°<br>"
 
 								var content = esriLang.substitute(
 									e.graphic.attributes, t);

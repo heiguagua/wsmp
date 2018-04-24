@@ -1629,10 +1629,10 @@ define(	["ajax", "dojo/parser", "esri/map",
 					//按频段过滤显示“实时告警未确认”、“实时告警已确认”、“信号智能识别”的内容
 					var beginFreq =$("#searchFremin").val(),
 						endFreq =$("#searchFremax").val();
-					//console.log('过滤频段：'+beginFreq+'-'+endFreq)
+					console.log('过滤频段：'+beginFreq+'-'+endFreq)
 					var filter ={
-						beginFreq:parseInt(beginFreq)*1000000,
-						endFreq:parseInt(endFreq)*1000000
+						beginFreq:parseFloat(beginFreq)*1000000,
+						endFreq:parseFloat(endFreq)*1000000
 					}
 					table_alarm_undealed(monitorsID, monitors,filter);
 					table_alarm_dealed(monitorsID, monitors,filter);
@@ -1643,8 +1643,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 					endFreq =$("#searchFremax").val();
 				//console.log('过滤频段：'+beginFreq+'-'+endFreq)
 				var filter ={
-					beginFreq:parseInt(beginFreq)*1000000,
-					endFreq:parseInt(endFreq)*1000000
+					beginFreq:parseFloat(beginFreq)*1000000,
+					endFreq:parseFloat(endFreq)*1000000
 				}
 				getSignalCounts(areaCode,monitorsID,beginFreq,endFreq);
 				table_radio_init(monitors, userID);
@@ -1959,8 +1959,8 @@ define(	["ajax", "dojo/parser", "esri/map",
 								var t = "<b>监测站名称：</b>"+ info.monitorName+"<br>"
 									//+ "<hr style='margin-top: 8px;margin-bottom: 8px;'>"
 										+"<b>ID: </b>"+ info.monitorID +"<br>"
-										+ "<b>纬度: </b>"+ info.x.toFixed(5) +"°<br>"
-										+ "<b>经度: </b>"+ info.y.toFixed(5)  +"°<br>"
+										+ "<b>纬度: </b>"+ info.y.toFixed(5) +"°<br>"
+										+ "<b>经度: </b>"+ info.x.toFixed(5)  +"°<br>"
 
 								var content = esriLang.substitute(
 									e.graphic.attributes, t);
