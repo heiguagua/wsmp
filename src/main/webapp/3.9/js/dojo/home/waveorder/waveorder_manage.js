@@ -180,17 +180,20 @@ define(	["ajax", "dojo/parser", "esri/map",
 									vm.startTime = vm.endTime - 3600 * 1000 * 24*365;
 								}
 								this.autoPlay();
+								$("#btn-play").html('<i class="fa fa-play-circle"></i>');
 
 							},
 							//拖动进度条或点击进度条位置来切换到指定帧，继续播放
 							changeSlider: function(){
-								//console.log(vm.sliderProgress,vm.step);
+								var int =sessionStorage.getItem("evaluatePlay");
+								clearInterval(int);
 								vm.count =vm.sliderProgress/vm.step;
+								//console.log(vm.sliderProgress,vm.step);
+								$("#btn-play").html('<i class="fa fa-play-circle"></i>');
 								this.autoPlay();
 							},
 							//自动播放，自动修改进度条值，即修改某帧的值，自动调用态势图的接口数据
 							autoPlay:function(){
-
 								var int = setInterval(function(){
 									if(vm.playType=='hour'){
 										//默认设置为近一天

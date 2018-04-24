@@ -814,5 +814,8 @@ border-radius: 4px;
 	border-bottom: none;
 	color: #333333 !important;
 }
+.dijitPopup {
+	z-index: 1100!important;
+}
 
 
