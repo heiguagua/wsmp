@@ -58,6 +58,7 @@ public class SignalViewController {
 	@PostConstruct
 	public void init() throws MalformedURLException {
 		URL url3 = new URL(urlImportFreqRange);
+
 		serviceImportFreqRangeManage = new ImportFreqRangeManageService(url3).getBasicHttpBindingIImportFreqRangeManageService();
 
 	}

@@ -194,6 +194,7 @@ public class WaveOrderDataController {
 		for(RedioStatusCount countRow : rsCountRows) {
 			warningRequest.setBeginFreq(countRow.getBeginFreq());
 			warningRequest.setEndFreq(countRow.getEndFreq());
+			warningRequest.setStationIDs(stationArray);
 			warningResponse = serviceFreqWarningSoap.queryStandard(warningRequest);
 			Long warningTotalCount = warningResponse.getTotalCount();
 			countRow.setAlarmingNumber(null == warningTotalCount?0 : warningTotalCount);
@@ -207,31 +208,34 @@ public class WaveOrderDataController {
 	@PostMapping("/statisticsForSingnalsAndWarnings")
 	public Map<String, Object> getStatisticsForSingnalsAndWarnings(@RequestBody Map<String, Object> param) {
 		// 根据未确认和监测站查询告警
-		FreqWarningQueryRequest request = new FreqWarningQueryRequest();
+		FreqWarningStandardQueryRequest request = new FreqWarningStandardQueryRequest();
 //		request.setAreaCode(Integer.valueOf(param.get("areaCode").toString()));
 		// 设置监测站ID列表
 		ArrayOfString stationArray = new ArrayOfString();
 		List<String> stationString = (List<String>) param.get("monitorsID");
 		stationArray.setString(stationString);
 		request.setStationIDs(stationArray);
-		FreqWarningQueryResponse response = serviceFreqWarningSoap.query(request);
+		FreqWarningQueryResponse response = serviceFreqWarningSoap.queryStandard(request);
 		//Logger.info("查询告警未确认,{},返回:{}",urlFreqWarning,JSON.toJSONString(response));
 		List<FreqWarningDTO> alarmRows = response.getWarningInfos().getFreqWarningDTO();
 		int alarmTotalCount = alarmRows.size();
+		//未处理
 		int alarmUnconfiredCount = 0;
+		//已处理
 		int alarmConfirmedCount = 0;
 		for(FreqWarningDTO warning : alarmRows) {
-			if(0 == warning.getStatus()) {
+			if(0 == warning.getStatus()||1 == warning.getStatus()) {
 				alarmUnconfiredCount++;
-			} else if(1 == warning.getStatus()) {
+			} else if(2 == warning.getStatus()) {
 				alarmConfirmedCount++;
 			}
 		}
 		RadioSignalQueryRequest signalRequest = new RadioSignalQueryRequest();
-		String areaCode = (String) param.get("areaCode");
-		ArrayOfInt areaIntCodes = new ArrayOfInt();
-		areaIntCodes.getInt().add(Integer.valueOf(areaCode));
-		signalRequest.setAreaCodes(areaIntCodes);
+//		String areaCode = (String) param.get("areaCode");
+//		ArrayOfInt areaIntCodes = new ArrayOfInt();
+//		areaIntCodes.getInt().add(Integer.valueOf(areaCode));
+//		signalRequest.setAreaCodes(areaIntCodes);
+		signalRequest.setStationIDs(stationArray);
 		RadioSignalQueryResponse signalResponse = serviceRadioSignalSoap.queryRadioSignal(signalRequest);
 		List<RadioSignalDTO> signals = signalResponse.getRadioSignals().getRadioSignalDTO();
 		int signalCount = signals.size();
