@@ -120,6 +120,8 @@ public class AlarmDataController {
 
     private DecimalFormat df = new DecimalFormat("0.00");
 
+    private static List<Map<String,Map<String,Object>>> estimateList=new ArrayList<>();
+
     @GetMapping(path = "/secondLevelChart")
     public Object secondLevelChart(@RequestParam String beginTime, @RequestParam long centorFreq, @RequestParam String stationCode) {
 
@@ -288,7 +290,7 @@ public class AlarmDataController {
     @PostMapping(path = "/estimate")
     public @ResponseBody
     Map<String, Object> estimate(@RequestBody EstimateRequest param) {
-
+        String reskey="";
         JSONObject kriking3=null;
         String beginTime = param.getTime();
         List<StationPositionInfo> stationsList = param.getStations();
@@ -299,6 +301,12 @@ public class AlarmDataController {
             }
             if(param.getType()==null){
                 param.setType("day");
+            }
+            reskey=beginTime+"-"+param.getType()+"-"+Arrays.toString(stations);
+            for(Map<String,Map<String,Object>> tempMap:estimateList){
+                if(tempMap.containsKey(reskey)){
+                    return tempMap.get(reskey);
+                }
             }
             Map<String, Object> reMap = hbaseClient.queryPower(param.getType(), beginTime, stations);
 
@@ -387,7 +395,13 @@ public class AlarmDataController {
         mapPiont.put("stationPiont", stationPiont);
         mapPiont.put("kriking3", kriking3);
         mapPiont.put("electrCoverage", electrCoverage);
-
+        Map<String,Map<String, Object>> addmap =new HashMap<>();
+        addmap.put(reskey,mapPiont);
+        estimateList.add(addmap);
+        int size=estimateList.size();
+        if(size>100){
+            estimateList=  estimateList.subList(size-100,size);
+        }
         return mapPiont;
     }
 
