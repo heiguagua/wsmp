@@ -23,10 +23,12 @@ define(["home/alarm/alarm_manage", "ajax","library/map/appMap"],
                 var signalId = $('#signal_list').find('option:selected').val();
                 var warningFreqID = $('#signal_list').find('option:selected').val();
                 var typeCode = $('#typeCode').val();
+                var isSubType = $('#isSubType').val();
                 var data = {};
                 var station = {};
                 var singal = {}
                 singal.stationId = stationId;
+                singal.isSubType = isSubType;
                 station.des = des;
                 station.warningFreqID = warningFreqID;
                 station.radioStation = {};
@@ -210,7 +212,7 @@ define(["home/alarm/alarm_manage", "ajax","library/map/appMap"],
         function signalClick(map, pSymbol, glayer) {
             require(["bootstrap", "bootstrapTable"], function() {
                 require(["bootstrap_table_cn"], function() {
-                    $("#legal-normal").click(function() {
+                    $("#legal-normal").click(function(e) {
                         if ($(".select2-picker").find("option").length == 0 || $(".select2-picker").find("option").val() == '未查询到数据') { //中心频率有相关记录时弹出模态框
                             return
                         }
@@ -224,6 +226,10 @@ define(["home/alarm/alarm_manage", "ajax","library/map/appMap"],
                         data.type = "none";
                         var typeCode = $(this).val();
                         $("#typeCode").val(typeCode);
+                        var isSubType = e.target.getAttribute("issubtype");
+                        $("#isSubType").val(isSubType);
+                        console.log($("#isSubType").val())
+
                         var temp =
                             '<table class="table table-striped" id="table-station-list"></table>' +
                             '<div class="mark-content"><p>备注</p><textarea id = "des" rows="5" placeholder="请输入备注信息">' + text + '</textarea></div>';
@@ -313,7 +319,7 @@ define(["home/alarm/alarm_manage", "ajax","library/map/appMap"],
                         $("#modalStationAlarm").modal();
                     });
                     //合法违规
-                    $("#legal-wrong").click(function() {
+                    $("#legal-wrong").click(function(e) {
                         if ($(".select2-picker").find("option").length == 0 || $(".select2-picker").find("option").val() == '未查询到数据') { //中心频率有相关记录时弹出模态框
                             return
                         }
@@ -326,6 +332,8 @@ define(["home/alarm/alarm_manage", "ajax","library/map/appMap"],
                         var data = {};
                         var typeCode = $(this).val();
                         $("#typeCode").val(typeCode);
+                        var isSubType = e.target.getAttribute("issubtype");
+                        $("#isSubType").val(isSubType);
                         data.type = "none";
                         var temp =
                             '<table class="table table-striped" id="table-station-list"></table>' +

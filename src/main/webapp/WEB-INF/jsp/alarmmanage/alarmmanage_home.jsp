@@ -110,11 +110,11 @@
     <div class='box2 flex-column'>
       <div class='flex-row radio-type-check align-center flex1' style="padding: 15px">
         <div class="radio radio-primary flex1 ">
-          <input class ="typeCode"  type="radio" value="1" name="signal-type" id="legal-normal">
+          <input class ="typeCode"  type="radio" value="1" isSubType="false" name="signal-type" id="legal-normal">
           <label for="legal-normal"> ${redioType.legalNormalStation} </label>
         </div>
         <div class="radio radio-primary flex1 ">
-          <input class ="typeCode" type="radio" value="1" RadioStionType ="L_B" name="signal-type" id="legal-wrong">
+          <input class ="typeCode" type="radio" value="1" isSubType="true" RadioStionType ="L_B" name="signal-type" id="legal-wrong">
           <label for="legal-wrong"> ${redioType.illegalNormalStation} </label>
         </div>
         <div class="radio radio-primary flex1 ">
@@ -272,6 +272,7 @@
 <input id="stationCode" value="" style="display: none;">
 <input id="stationId" class ="after_modal_colse" style="display: none;"  value="" >
 <input id="typeCode" class ="after_modal_colse" style="display: none;"  value="" >
+<input id="isSubType"  style="display: none;"  value="" >
 <input id="FormQZ"  style="display: none;"  value="${FromQz}" >
 <input id="waringId"  style="display: none;"  value="${waringId}" >
 <input style="display: none" id ='mapUrl' value="${mapUrl}" />
