@@ -1025,7 +1025,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 							MAP1.setZoom(8);
 							MAP1.centerAt(center);
 							redioType(MONITORS);
-							addSignalCountOnMonitors(MONITORS, 1, "false");
+							addSignalCountOnMonitors(MONITORS, 3, "false");
 						});
 
 				// 初始化电磁环境评估地图事件
