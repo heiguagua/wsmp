@@ -1320,9 +1320,9 @@ define(	["ajax", "dojo/parser", "esri/map",
 				app = new AppMap('mapDiv2', {
 					// center: [104.360, 33.360],
 					center:center,
-					slider:false //隐藏放大缩小按钮
-					//maxZoom: 10
-					//minZoom: 10 //禁止缩放，就把maxZoom 和minZoom弄成一样的，10
+					slider:false,//隐藏放大缩小按钮
+					maxZoom: 10,
+					minZoom: 10 //禁止缩放，就把maxZoom 和minZoom弄成一样的，10
 				});
 				//初始化所有图层
 				app.polygonLayer();
