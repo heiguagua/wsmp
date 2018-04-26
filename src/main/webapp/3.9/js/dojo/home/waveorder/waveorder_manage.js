@@ -2094,6 +2094,7 @@ define(	["ajax", "dojo/parser", "esri/map",
 								field : 'status',
 								width : '10%',
 								title : '状态',
+							     align: "left",
 								titleTooltip : "状态",
 								formatter : function(value, row, index) {
 									return '已确认';

@@ -232,7 +232,7 @@ define(["home/alarm/alarm_manage", "ajax","library/map/appMap"],
 
                         var temp =
                             '<table class="table table-striped" id="table-station-list"></table>' +
-                            '<div class="mark-content"><p>备注</p><textarea id = "des" rows="5" placeholder="请输入备注信息">' + text + '</textarea></div>';
+                            '<div class="mark-content"><p>描述</p><textarea id = "des" rows="5" placeholder="请输入描述信息">' + text + '</textarea></div>';
                         $("#stationWrap").html("");
                         $("#stationWrap").html(temp);
                         var table = $('#table-station-list').bootstrapTable({
@@ -338,7 +338,7 @@ define(["home/alarm/alarm_manage", "ajax","library/map/appMap"],
                         var temp =
                             '<table class="table table-striped" id="table-station-list"></table>' +
                             '<div class="mark-content">' +
-                            '<p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息">' + text + '</textarea></div>';
+                            '<p>描述</p><textarea id="des" rows="5" placeholder="请输入描述信息">' + text + '</textarea></div>';
                         $("#stationWrap").html("");
                         $("#stationWrap").html(temp);
                         //合法违规和已知单击触发时，，点击添加台站按钮之后关闭弹出窗口，然后跳转到博创的台站数据分析模块中添加台站（需要博创提供链接）
@@ -463,7 +463,7 @@ define(["home/alarm/alarm_manage", "ajax","library/map/appMap"],
                             '<table class="table table-striped" id="table-station-list"></table>' +
                             '<div class="mark-content">' +
                             '<button type="button" class="btn btn-primary addStation">添加台站</button>' +
-                            '<p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息">' + text + '</textarea></div>';
+                            '<p>描述</p><textarea id="des" rows="5" placeholder="请输入描述信息">' + text + '</textarea></div>';
                         $("#stationWrap").html("");
                         $("#stationWrap").html(temp);
                         //合法违规和已知单击触发时，，点击添加台站按钮之后关闭弹出窗口，然后跳转到博创的台站数据分析模块中添加台站（需要博创提供链接）
@@ -575,7 +575,7 @@ define(["home/alarm/alarm_manage", "ajax","library/map/appMap"],
                         var typeCode = $(this).val();
                         $("#typeCode").val(typeCode);
                         var temp =
-                            '<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息">' + text + '</textarea></div>';
+                            '<div class="mark-content"><p>描述</p><textarea id="des" rows="5" placeholder="请输入描述信息">' + text + '</textarea></div>';
                         $("#stationWrap").html("");
                         $("#stationWrap").html(temp);
                         $("#submitButton").removeAttr('disabled');
@@ -604,7 +604,7 @@ define(["home/alarm/alarm_manage", "ajax","library/map/appMap"],
                         var typeCode = $(this).val();
                         $("#typeCode").val(typeCode);
                         var temp =
-                            '<div class="mark-content"><p>备注</p><textarea id="des" rows="5" placeholder="请输入备注信息">' + text + '</textarea></div>';
+                            '<div class="mark-content"><p>描述</p><textarea id="des" rows="5" placeholder="请输入描述信息">' + text + '</textarea></div>';
                         $("#stationWrap").html("");
                         $("#stationWrap").html(temp);
                         $("#submitButton").removeAttr('disabled');
