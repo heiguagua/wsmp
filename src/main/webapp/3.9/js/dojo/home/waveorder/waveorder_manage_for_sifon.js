@@ -120,16 +120,16 @@ define(	["ajax", "dojo/parser", "esri/map",
 				//监测站图标点击事件aaa
 							dialog = new TooltipDialog({
 								id : "tooltipDialog",
-								style : "position: absolute; width: 250px; font: normal normal normal 10pt Helvetica;z-index:100"
+								style : "position: absolute; width: 250px;font-size:12px; z-index:100"
 							});
 							dialog.startup();
 							glayer.on("mouse-over", function(e) {
 								var info = e.graphic.geometry;
-								var t = "<b>监测站名称：</b>"+ info.monitorName+"<br>"
+								var t = "监测站名称："+ info.monitorName+"<br>"
 										//+ "<hr style='margin-top: 8px;margin-bottom: 8px;'>"
-										+"<b>ID: </b>"+ info.monitorID +"<br>"
-									+ "<b>纬度: </b>"+ info.y.toFixed(5) +"°<br>"
-									+ "<b>经度: </b>"+ info.x.toFixed(5)  +"°<br>"
+										+"ID: "+ info.monitorID +"<br>"
+									+ "经纬度: "+ info.x.toFixed(5)  +"°,"+ info.y.toFixed(5) +"°<br>"
+									+ "信号数: "+ info.count +"<br>"
 
 								var content = esriLang.substitute(
 									e.graphic.attributes, t);

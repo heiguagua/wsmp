@@ -817,5 +817,8 @@ border-radius: 4px;
 .dijitPopup {
 	z-index: 1100!important;
 }
+.dijitTooltipContainer{
+	font-size: 12px!important;
+}
 
 

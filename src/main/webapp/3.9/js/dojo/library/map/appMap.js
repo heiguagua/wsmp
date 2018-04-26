@@ -210,7 +210,7 @@ define(["esri/layers/ArcGISTiledMapServiceLayer", "esri/map","esri/Color",
             };
             var dialog = new TooltipDialog({
                 class : "tooltipDialog",
-                style : "position: absolute; min-width:200px; font: normal normal normal 10pt Helvetica;z-index:1060"
+                style : "position: absolute; min-width:200px;z-index:1060"
             });
             dialog.startup();
             //console.log(layers.stations)
