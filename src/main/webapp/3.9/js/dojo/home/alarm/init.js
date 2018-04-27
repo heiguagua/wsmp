@@ -13,6 +13,7 @@ define(["home/alarm/alarm_manage", "ajax","library/map/appMap"],
                 var des = $("#des").val();
                 if (des && des.length > 255) {
                     layer.alert('备注信息不能超过255个字符');
+                    $("#submitButton").removeAttr('disabled', 'disabled');
                     return
                 }
                 var centerFrq = $('#search').val();
