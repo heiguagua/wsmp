@@ -1030,6 +1030,36 @@ define(	["ajax", "dojo/parser", "esri/map",
 
 				// 初始化电磁环境评估地图事件
 				$('#modalEvaluate').on('shown.bs.modal', function(e) {
+					//透明度输入框失去焦点，验证是否是0-1
+					$("#opCtrl").on("blur",function(e){
+						var value = parseFloat(e.target.value)
+						if(value-1>0||e.target.value<0){
+							layer.msg('透明度范围值0~1');
+							$("#opCtrl").val('');
+						}
+					})
+					//颜色值输入框失去焦点，验证是否有值，且min小于max
+					$("#minCtrl").on("blur",function(e){
+						var value = parseInt(e.target.value);
+						var value2 = parseInt($("#maxCtrl").val());
+						if(!value){
+							layer.msg('请输入颜色值的最小值');
+						}else if(value>value2){
+							layer.msg('颜色值的最小值不能大于最大值！');
+							$("#minCtrl").val('');
+						}
+					});
+					//颜色值输入框失去焦点，验证是否有值，且min小于max
+					$("#maxCtrl").on("blur",function(e){
+						var value = parseInt(e.target.value);
+						var value1 = parseInt($("#minCtrl").val());
+						if(!value){
+							layer.msg('请输入颜色值的最大值');
+						}else if(value<value1){
+							layer.msg('颜色值的最大值不能小于最小值！');
+							$("#maxCtrl").val('');
+						}
+					});
 					baseMapInit();
 					vm.autoPlay();
 				});
@@ -1379,15 +1409,25 @@ define(	["ajax", "dojo/parser", "esri/map",
 						data: stations
 					});
 					document.getElementById('valCtrl').addEventListener('click', function () {
-						var opCtrl = document.getElementById("opCtrl").value||0.7;
-						if(opCtrl<0){
-							opCtrl=0
-						}else if(opCtrl>1){
-							opCtrl=1
+						if($("#opCtrl").val() && $("#minCtrl").val() &&$("#maxCtrl").val()){
+							layer.msg('设置成功!');
+							var opCtrl = document.getElementById("opCtrl").value||0.7;
+							if(opCtrl<0){
+								opCtrl=0
+							}else if(opCtrl>1){
+								opCtrl=1
+							}
+							app.update('situation', {
+								opacity: opCtrl
+							});
+						}else if(!$("#opCtrl").val()){
+							layer.msg('请输入透明度!');
+						}else if(!$("#minCtrl").val()){
+							layer.msg('请输入颜色值的最小值!');
+						}else{
+							layer.msg('请输入颜色值的最大值!');
 						}
-						app.update('situation', {
-							opacity: opCtrl
-						});
+
 					});
 					$(".coverage-number").html(parseInt(result.electrCoverage* 100)+ "%");
 				})
