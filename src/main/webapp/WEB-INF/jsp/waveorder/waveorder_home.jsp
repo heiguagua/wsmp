@@ -191,10 +191,8 @@
                         <input class="minutes"
                             placeholder='更新间隔/分钟' id="minutes"
                             type="number"
-                            style="IME-MODE: disabled; width: 100px;line-height: 1.8;"
-                            onkeyup="this.value=this.value.replace(/\D/g,'')"
-                            onafterpaste="this.value=this.value.replace(/\D/g,'')"
-                            maxlength="2" max="30" type="number" oninvalid="setCustomValidity('刷新范围1-30分钟');" oninput="setCustomValidity('');"/>
+                            style="width: 100px;line-height: 1.8;"
+                            maxlength="2"/>
                         <button id="minutesButton" class="btn btn-info btn-refresh-table">
                             <%--<img src="images/refresh.png">&nbsp;&nbsp;--%>
                             确认

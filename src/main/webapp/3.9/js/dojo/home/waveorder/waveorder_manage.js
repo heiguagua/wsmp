@@ -1055,10 +1055,16 @@ define(	["ajax", "dojo/parser", "esri/map",
 				// 监听更新时间回车按下事件
 				$("#minutes").keyup(function(e) {
 							if (e.keyCode == 13) {
-								layer.msg("设置更新时间成功！时间：" + e.target.value
-										+ "分钟");
-								refresh_timer_init(e.target.value);
-								$("#minutes").val("");
+								var value=parseInt(e.target.value);
+								if(value>0&&value<=30){
+									layer.msg("设置更新时间成功！时间：" + e.target.value
+									+ "分钟");
+									refresh_timer_init(e.target.value);
+								}else{
+									layer.msg('刷新范围为1-30分钟');
+									$("#minutes").val("");
+								}
+
 							}
 						});
 						
@@ -1070,6 +1076,9 @@ define(	["ajax", "dojo/parser", "esri/map",
 						layer.msg("设置更新时间成功！时间：" +value
 						+ "分钟");
 						refresh_timer_init(value);
+						//$("#minutes").val("");
+					}else{
+						layer.msg('刷新范围为1-30分钟');
 						$("#minutes").val("");
 					}
 				});
