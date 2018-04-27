@@ -1634,14 +1634,19 @@ define(	["ajax", "dojo/parser", "esri/map",
 					//按频段过滤显示“实时告警未确认”、“实时告警已确认”、“信号智能识别”的内容
 					var beginFreq =$("#searchFremin").val(),
 						endFreq =$("#searchFremax").val();
-					console.log('过滤频段：'+beginFreq+'-'+endFreq)
+					//console.log('过滤频段：'+beginFreq+'-'+endFreq)
 					var filter ={
 						beginFreq:parseFloat(beginFreq)*1000000,
 						endFreq:parseFloat(endFreq)*1000000
 					}
-					table_alarm_undealed(monitorsID, monitors,filter);
-					table_alarm_dealed(monitorsID, monitors,filter);
-					radio_auto_confirm(monitorsID, monitors,filter);
+					if(filter.endFreq-filter.beginFreq>0){
+						$('#undeal').html('<table class="table table-striped text-center"id="table-alarm-undeal"> </table>');
+						$('#dealed').html('<table class="table table-striped text-center"id="table-alarm-dealed"> </table>');
+						$('#auto_confirm').html('<table class="table table-striped text-center"id="radio_auto_confirm"> </table>');
+						table_alarm_undealed(monitorsID, monitors,filter);
+						table_alarm_dealed(monitorsID, monitors,filter);
+						radio_auto_confirm(monitorsID, monitors,filter);
+					}
 				});
 				//按频段过滤显示“实时告警未确认”、“实时告警已确认”、“信号智能识别”的内容
 				var beginFreq =$("#searchFremin").val(),
