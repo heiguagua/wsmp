@@ -295,8 +295,8 @@ public class SiganlDataController {
 		HashMap<String, Object> resoluteHashMap = Maps.newHashMap();
 		try {
 
-			centorFreq = (long) (88.8 * 1000000);
-			OccAndMax reslutResponce = hbaseClient.queryOccDay("52010062", beginTime, 90, centorFreq);
+			//centorFreq = (long) (88.8 * 1000000);
+			OccAndMax reslutResponce = hbaseClient.queryOccDay(stationCode, beginTime, 90, centorFreq);
 			Map<String, Object> occMap = reslutResponce.getOcc();
 			if (occMap.size() == 0) {
 				HashMap<String, Object> restlutHashMap = Maps.newHashMap();

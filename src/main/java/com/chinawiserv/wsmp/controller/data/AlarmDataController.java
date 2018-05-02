@@ -12,15 +12,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 
@@ -37,17 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.tempuri.FreqWarningDTO;
-import org.tempuri.FreqWarningOperationResponse;
-import org.tempuri.FreqWarningQueryRequest;
-import org.tempuri.FreqWarningQueryResponse;
-import org.tempuri.RStatQuerySignalsRequest;
-import org.tempuri.RStatQuerySignalsResponse2;
-import org.tempuri.RadioFreqDTO;
-import org.tempuri.RadioSignalDTO;
-import org.tempuri.RadioSignalOperationReponse;
-import org.tempuri.RadioStationDTO;
-import org.tempuri.RadioStationSignalDTO;
+import org.tempuri.*;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -1090,7 +1072,8 @@ public class AlarmDataController {
         final RadioSignalOperationReponse res;
         try {
             final Map<String, Object> signal = param.get("sigal");
-
+            //如果是true 那么则是合法违规信号
+            String issubtype=(String)signal.get("isSubType");
             final Map<String, Object> station = param.get("station");
             station.put("isManualInsert", true);
             final FreqWarningQueryResponse response = (FreqWarningQueryResponse) service.freqWarnServiceCall("query",
@@ -1114,21 +1097,37 @@ public class AlarmDataController {
             String stationId = (String) signal.get("stationId");
 
             String typeCode = (String) signal.get("typeCode");
-
+            String des = (String) station.get("des");
+            station.put("des", des);
             String areaCode = stationId.substring(0, 4);
 
             station.put("stationKey", station.get("stationKey"));
 
             station.put("typeCode", typeCode);
 
+
             station.put("areaCode", areaCode);
 
-            Map<String, Object> radioSignalAbnormalHistoryDTO = Maps.newHashMap();
+            Map<String, Object> radioSignalStationDTO = Maps.newHashMap();
 
-            radioSignalAbnormalHistoryDTO.put("radioSignalStationDTO", ids);
+            radioSignalStationDTO.put("radioSignalStationDTO", ids);
 
-            station.put("stationDTOs", radioSignalAbnormalHistoryDTO);
+            station.put("stationDTOs", radioSignalStationDTO);
 
+            if(issubtype!=null&&"true".equals(issubtype)){
+                List<HashMap<String, Object>> hlist=new ArrayList<>();
+                HashMap<String, Object> map = Maps.newHashMap();
+                map.put("historyType", 11);
+                map.put("isInvalid",true);
+                Calendar calendar=Calendar.getInstance();
+                map.put("saveDate",calendar);
+                map.put("invalidDate",calendar);
+                map.put("id",signal.get("warmingId"));
+                hlist.add(map);
+                Map<String, Object> radioSignalAbnormalHistoryDTO = Maps.newHashMap();
+                radioSignalAbnormalHistoryDTO.put("radioSignalAbnormalHistoryDTO", hlist);
+                station.put("abnormalHistory",radioSignalAbnormalHistoryDTO);
+            }
             res = (RadioSignalOperationReponse) service.radioSignalServiceCall("insertRadioSignal",
                     mapper.writeValueAsString(station), RadioSignalDTO.class);
             Map<String, Object> waringID = (Map<String, Object>) signal.get("warmingId");

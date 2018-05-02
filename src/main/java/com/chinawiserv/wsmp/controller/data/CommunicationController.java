@@ -1,6 +1,7 @@
 package com.chinawiserv.wsmp.controller.data;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.chinawiserv.apps.logger.Logger;
 import com.chinawiserv.wsmp.pojo.CommunicationTableButtom;
@@ -60,26 +61,26 @@ public class CommunicationController {
 
     @Value("${sefon.webservice.queryToolservice}")
 	private String urlQueryTool;
-    
+
     @Value("${sefon.httpservice.getFreqBandList}")
     private String urlFreqBandList;
-    
+
     @Value("${sefon.httpservice.getFreqBandListByOption}")
     private String urlFreqBandListByOption;
-    
+
     @Value("${radioSignalWebService.wsdl}")
     private String urlRadioSignal;
-    
+
     private static QueryToolsServicePortType queryToolsService;
-    
+
     private static RadioSignalWebServiceSoap radioSignalServiceSoap;
-    
+
     private static Map<String,String> techCodingTable;
-    
+
     private static Map<String,String> operatorTable;
-    
+
     private static ExecutorService eService;
-	
+
     private RestTemplate restTemplate;
 	@PostConstruct
 	public void init() throws MalformedURLException {
@@ -108,7 +109,7 @@ public class CommunicationController {
 		//初始化线程池
 		eService = Executors.newCachedThreadPool();
 	}
-	
+
 //    @PostMapping("/topTable")
 //    public Map<String, Object> getTopTable(@RequestBody Map<String,Object> param) {
 //    	System.out.println("===param:"+param);
@@ -165,8 +166,8 @@ public class CommunicationController {
 //		result.put("data", communicationRows);
 //		return result;
 //    }
-    
-    
+
+
     @PostMapping("/topTable")
     public Map<String, Object> getTopTable(@RequestBody Map<String,Object> param) {
     	System.out.println("===param:"+param);
@@ -181,9 +182,9 @@ public class CommunicationController {
     	request.put("userId", param.get("userID"));
     	List<FreqSelfInfo> response = queryToolsService.querySelfFreqInfoByPID("1");
     	List<CommunicationTableTop> communicationRows = Lists.newArrayList();
-    	
+
     	List<Future<CommunicationTableTop>> futureList = Lists.newArrayList();
-    	
+
     	long loopStartTime = System.currentTimeMillis();
     	response.forEach(m -> {
     		Callable<CommunicationTableTop> task = new Callable<CommunicationTableTop>() {
@@ -201,8 +202,13 @@ public class CommunicationController {
 		    		request.put("freqMax", m.getFreqMax());
 		    		HttpEntity<String> entity = new HttpEntity<String>(JSON.toJSONString(request), headers);
 		    		JSONObject result = restTemplate.postForObject(urlFreqBandList, entity, JSONObject.class);
-		    		String stationCoverageRate = result.getJSONObject("data").getJSONArray("result").getJSONObject(0).getString("stationCoverageRate");
-		    		String freqBandOccupyAngle = result.getJSONObject("data").getJSONArray("result").getJSONObject(0).getString("freqBandOccupyAngle");
+		    		String stationCoverageRate=null;
+					String freqBandOccupyAngle =null;
+					JSONArray array= result.getJSONObject("data").getJSONArray("result");
+					if(array!=null&&array.size()>0){
+						stationCoverageRate = result.getJSONObject("data").getJSONArray("result").getJSONObject(0).getString("stationCoverageRate");
+						freqBandOccupyAngle = result.getJSONObject("data").getJSONArray("result").getJSONObject(0).getString("freqBandOccupyAngle");
+					}
 		    		freqBandOccupyAngle = freqBandOccupyAngle.equals("无") || freqBandOccupyAngle == null ? "0" : freqBandOccupyAngle;
 		    		stationCoverageRate = stationCoverageRate.equals("--") || stationCoverageRate == null || stationCoverageRate.equals("无") ? "0" : stationCoverageRate;
 		    		communication.setStationCoverage(stationCoverageRate);
@@ -246,7 +252,7 @@ public class CommunicationController {
     	result.put("data", communicationRows);
     	return result;
     }
-    
+
 //    @PostMapping("/topTable1")
 //    public Map<String, Object> getTopTable1(@RequestBody Map<String,Object> param) {
 //    	System.out.println("===param:"+param);
@@ -266,7 +272,7 @@ public class CommunicationController {
 //			freqBandList.add(freqBand);
 //			return communication;
 //    	}).collect(Collectors.toList());
-//    	
+//
 //    	//根据频段查询台站覆盖率和频段覆盖率
 //    	@SuppressWarnings("unchecked")
 //    	List<String> monitorsID = (List<String>) param.get("monitorsID");
@@ -292,7 +298,7 @@ public class CommunicationController {
     public Map<String, Object> bottomtable(){
         //List<CountResult> current = service.getCurrentYearCount();//2017年没有数据，暂时用去年的
         List<CountResult> last = service.getLastYearCount();
-        
+
         List<CommunicationTableButtom> resultList = last.stream().collect(Collectors.groupingBy(CountResult :: getOrgSystemCode)).entrySet().stream().map(m -> {
         	CommunicationTableButtom row = new CommunicationTableButtom();
         	row.setStation_type(operatorTable.get(m.getKey()));
