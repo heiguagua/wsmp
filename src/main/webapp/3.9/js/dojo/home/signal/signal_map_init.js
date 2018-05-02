@@ -7,7 +7,7 @@ define(["home/signal/signal_manage", "ajax","library/map/appMap"],
       var app =null;
     function pares() {
       var map = mapInit();
-        透明度输入框失去焦点，验证是否是0-1
+        //透明度输入框失去焦点，验证是否是0-1
         $("#opCtrl").on("blur",function(e){
             var value = parseFloat(e.target.value)
             if(value-1>0||e.target.value<0){
