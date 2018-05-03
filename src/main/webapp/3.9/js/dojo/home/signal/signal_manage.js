@@ -997,7 +997,9 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
             	$("#dk").html("");
                 $("#stationName").html("");
                 $("#levelChartTitle").html("电平峰值");
+                $("#levelChart").html("");
                 $("#monthChartTitle").html("近3个月占用度（按天统计）");
+                $("#monthChart1").html("");
                 return;
             }
             if ($("#singalID").val() != null && $("#singalID").val().length != 0) {
@@ -1228,25 +1230,24 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
             }
             // ///////////////////////////////////////////////////////////////
             month_total_length = levelParam.monthOcc.xAxis.length;
-        }
-        monthChart = echarts.init($('#monthChart1')[0]);
-        monthChart.setOption(optionMonth1);
-        window.onresize = function() {
-            monthChart.clear();
+            monthChart = echarts.init($('#monthChart1')[0]);
             monthChart.setOption(optionMonth1);
-        }
-        window.addEventListener("resize", function() {
-            monthChart.resize();
-        });
-        //渲染图表title，添加监测站名称
-        var name = $('#station-list2').find('option:selected').text(); //选中的台站名称
-        // //console.log(name)
-        name = name.replace("未查询到数据", "");
-        $("#stationName").html(name);
-        $("#levelChartTitle").html(name + "——电平峰值");
-        $("#monthChartTitle").html(name + "——近3个月占用度（按天统计）");
-        load_month_mouse_event();
-        monthChart.on('click', function(params) {
+            window.onresize = function() {
+                monthChart.clear();
+                monthChart.setOption(optionMonth1);
+            }
+            window.addEventListener("resize", function() {
+                monthChart.resize();
+            });
+            //渲染图表title，添加监测站名称
+            var name = $('#station-list2').find('option:selected').text(); //选中的台站名称
+            // //console.log(name)
+            name = name.replace("未查询到数据", "");
+            $("#stationName").html(name);
+            $("#levelChartTitle").html(name + "——电平峰值");
+            $("#monthChartTitle").html(name + "——近3个月占用度（按天统计）");
+            load_month_mouse_event();
+            monthChart.on('click', function(params) {
             if (drag_flag) {
                 drag_flag = false;
                 return;
@@ -1268,6 +1269,9 @@ define(["jquery", "bootstrap", "echarts", "ajax", "home/signal/spectrum_data", "
             $("#dayChartTitle").html(year + '年' + month + '月' + day + '日的日占用度');
             $('#modalDay').modal();
         });
+        }else{
+            $('#monthChart1').html('<h4 style="text-align: center;"><br><br><br>没有数据</h4>')
+        }
     }
     function load_month_mouse_event() {
         document.oncontextmenu = new Function("event.returnValue=false;");

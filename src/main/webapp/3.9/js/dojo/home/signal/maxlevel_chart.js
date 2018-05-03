@@ -121,20 +121,22 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
                 ]
             };
             maxlevel_total_length = reslut.max.xAxis.length;
-        }
-        maxlevelChart = echarts.init($('#levelChart')[0]);
-        maxlevelChart.setOption(optionMonth);
-        
-        load_level_mouse_event();
-
-        window.onresize = function() {
-            maxlevelChart.clear();
+            maxlevelChart = echarts.init($('#levelChart')[0]);
             maxlevelChart.setOption(optionMonth);
-        }
 
-        window.addEventListener("resize",function(){
-            maxlevelChart.resize();
-        });
+            load_level_mouse_event();
+
+            window.onresize = function() {
+                maxlevelChart.clear();
+                maxlevelChart.setOption(optionMonth);
+            }
+
+            window.addEventListener("resize",function(){
+                maxlevelChart.resize();
+            });
+        }else{
+            $('#levelChart').html('<h4 style="text-align: center;"><br><br><br>没有数据</h4>')
+        }
     }
     
     // 电平峰值鼠标区域选择放大缩小事件
