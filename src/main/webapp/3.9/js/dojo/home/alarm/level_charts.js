@@ -8,26 +8,26 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
 	    var maxlevel_total_length = 0;     // x轴数据总数
 		function charts_init(reslut,centorFreq) {
 			var optionMonth ={};
-			if(reslut.max &&(reslut.max.xAxis.length>0)&&(reslut.max.series.length>0)){
-				var x=0;
-				var y=0;
-				for(var i in reslut.max.xAxis ){
-					if(reslut.max.xAxis[i] ==centorFreq){
-						x=parseInt(i);
-						y=reslut.max.series[i];
+			if(reslut.max &&(reslut.max.xAxis.length>0)&&(reslut.max.series.length>0)) {
+				var x = 0;
+				var y = 0;
+				for (var i in reslut.max.xAxis) {
+					if (reslut.max.xAxis[i] == centorFreq) {
+						x = parseInt(i);
+						y = reslut.max.series[i];
 					}
 				}
 				optionMonth = {
-					color : [ 'rgb(55,165,255)' ],
-					tooltip : {
-						trigger : 'axis',
-						formatter:function(param){
+					color: ['rgb(55,165,255)'],
+					tooltip: {
+						trigger: 'axis',
+						formatter: function (param) {
 							maxlevel_start_index_temp = param[0].dataIndex;
 							maxlevel_end_index = param[0].dataIndex;
-							if( param[0].value!=null){
-								return "<div align='left'>信号频率 :  "+(param[0].name).toFixed(1) + "MHz <br/>电平峰值 : " + param[0].value+"dBμV</div>";
-							}else{
-								return "<div align='left'>信号频率 :  "+(param[0].name).toFixed(1) + "MHz <br/>电平峰值 : 没有数据</div>";
+							if (param[0].value != null) {
+								return "<div align='left'>信号频率 :  " + (param[0].name).toFixed(1) + "MHz <br/>电平峰值 : " + param[0].value + "dBμV</div>";
+							} else {
+								return "<div align='left'>信号频率 :  " + (param[0].name).toFixed(1) + "MHz <br/>电平峰值 : 没有数据</div>";
 							}
 
 						},
@@ -35,85 +35,85 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
 							type: 'line',
 							animation: false,
 							lineStyle: {
-								type:'dashed',
-								opacity:0.5
+								type: 'dashed',
+								opacity: 0.5
 								//color:'red'
 							}
 						}
 
 					},
-					dataZoom : [{
-						show:false,
-						type : 'slider',
-						start : 0,
-						end : 100,
-						height : 15,
-						y : 260
+					dataZoom: [{
+						show: false,
+						type: 'slider',
+						start: 0,
+						end: 100,
+						height: 15,
+						y: 260
 					}],
-					grid : {
-						left : '1%',
-						right : '6%',
-						bottom : '2%',
-						top : 30,
-						containLabel : true
+					grid: {
+						left: '1%',
+						right: '6%',
+						bottom: '2%',
+						top: 30,
+						containLabel: true
 					},
 					textStyle: {
 						color: "#505363"
 					},
-					xAxis : {
-						type : 'category',
-						name:'信号频率(MHz)',
-						nameRotate:'-45',
+					xAxis: {
+						type: 'category',
+						name: '信号频率(MHz)',
+						nameRotate: '-45',
 						//nameLocation:'end',
 						//boundaryGap : false,
-						axisLine : {
-							lineStyle : {
-								color : '#DAE5F0'
+						axisLine: {
+							lineStyle: {
+								color: '#DAE5F0'
 							}
 						},
-						axisTick : {
-							show : false
+						axisTick: {
+							show: false
 						},
-						axisLabel : {
-							textStyle : {
-								color : '#505363'
+						axisLabel: {
+							textStyle: {
+								color: '#505363'
 							}
 						},
-						data : reslut.max.xAxis
+						data: reslut.max.xAxis
 						//
 					},
-					yAxis : {
-						type : 'value',
-						name:'电平(dBμV)',
-						max : 120,
-						min : -40,
-						splitNumber : 10,
-						axisLine : {
-							lineStyle : {
-								color : '#DAE5F0'
+					yAxis: {
+						type: 'value',
+						name: '电平(dBμV)',
+						max: 120,
+						min: -40,
+						splitNumber: 10,
+						axisLine: {
+							lineStyle: {
+								color: '#DAE5F0'
 							}
 						},
-						axisTick : {
-							show : false
+						axisTick: {
+							show: false
 						},
-						axisLabel : {
-							textStyle : {
-								color : '#505363'
+						axisLabel: {
+							textStyle: {
+								color: '#505363'
 							}
 						},
-						splitLine : {
-							lineStyle : {
-								color : '#DAE5F0'
+						splitLine: {
+							lineStyle: {
+								color: '#DAE5F0'
 							}
 						}
 					},
-					series : [
+					series: [
 						{
-							name : '',
-							type : 'line',
-							showSymbol : false,
-							symbolSize : 6,
-							data : reslut.max.series,
+							name: '',
+							type: 'line',
+							showSymbol: false,
+							symbolSize: 6,
+							data: reslut.max.series,
 							markPoint: {
 								data: [
 									{
@@ -130,26 +130,27 @@ define([ "ajax", "echarts", "jquery" ], function(ajax, echarts, jquery) {
 					]
 				};
 				maxlevel_total_length = reslut.max.xAxis.length;
-			}
 
-			if (maxlevelChart){
-				maxlevelChart.clear();
-			}
+				if (maxlevelChart) {
+					maxlevelChart.clear();
+				}
 
-			maxlevelChart = echarts.init($('.levelChart')[0]);
-			maxlevelChart.setOption(optionMonth);
-
-			window.onresize = function(){
-				maxlevelChart.clear();
+				maxlevelChart = echarts.init($('.levelChart')[0]);
 				maxlevelChart.setOption(optionMonth);
 
+				window.onresize = function () {
+					maxlevelChart.clear();
+					maxlevelChart.setOption(optionMonth);
+
+				}
+				window.addEventListener("resize", function () {
+					maxlevelChart.resize();
+				});
+
+				load_level_mouse_event();
+			}else{
+				$('#level').html('<h4 style="text-align: center;"><br><br><br>没有数据</h4>')
 			}
-			window.addEventListener("resize",function(){
-				maxlevelChart.resize();
-			});
-
-			load_level_mouse_event();
-
 
 	}
 

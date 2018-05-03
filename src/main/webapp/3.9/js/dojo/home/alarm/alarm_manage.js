@@ -344,6 +344,8 @@ define(["ajax", "echarts", "home/alarm/month_charts", "home/alarm/day_chart", "h
                             $("#stationName").html("");
                             $("#levelTitle").html("电平峰值");
                             $("#monthTitle").html("近3个月占用度（按天统计）");
+                            $("#month1").html("");
+                            $("#level").html("");
                             return;
                         }
                         if ($("#waringId").val() != null && $("#waringId").val().length != 0) {

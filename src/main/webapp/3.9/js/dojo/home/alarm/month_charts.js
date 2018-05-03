@@ -132,49 +132,51 @@ define([ "ajax", "echarts", "jquery" ,"home/alarm/day_chart","home/alarm/day_lev
 			}
 			// ///////////////////////////////////////////////////////////////
 			maxlevel_total_length = reslut.monthOcc.xAxis.length;
-		}
 
-		if(monthChart){
-			monthChart.clear();
-		}
-		monthChart = echarts.init($('#month1')[0]);
-		monthChart.setOption(optionMonth);
-		window.onresize = function(){
-			monthChart.clear();
+
+			if(monthChart){
+				monthChart.clear();
+			}
+			monthChart = echarts.init($('#month1')[0]);
 			monthChart.setOption(optionMonth);
+			window.onresize = function(){
+				monthChart.clear();
+				monthChart.setOption(optionMonth);
+			}
+			window.addEventListener("resize",function(){
+				monthChart.resize();
+			});
+			monthChart.on('click', function(params) {
+				console.log(params.name)
+				var time =params.name+'';
+				var year =time.substring(0,4);
+				var month =time.substring(4,6);
+				var day =time.substring(6);
+				if(month.substring(0,1)=='0'){
+					month = month.substring(1);
+				}
+				if(day.substring(0,1)=='0'){
+					day = day.substring(1);
+				}
+				$("#modalDayLabel").html(year+'年'+month+'月'+day+'日'+name+'的电平峰值与日占用度（按24小时统计）');
+				$("#dayLevelChartTitle").html(year+'年'+month+'月'+day+'日的电平峰值');
+				$("#dayChartTitle").html(year+'年'+month+'月'+day+'日的日占用度');
+				if(drag_flag){
+					drag_flag = false;
+					return;
+				}
+				$('#modalDay').modal();
+
+				changeView(params.name);
+
+			})
+
+
+
+			load_month_mouse_event();
+		}else{
+			$('#month1').html('<h4 style="text-align: center;"><br><br><br>没有数据</h4>')
 		}
-		window.addEventListener("resize",function(){
-			monthChart.resize();
-		});
-		monthChart.on('click', function(params) {
-			console.log(params.name)
-			var time =params.name+'';
-			var year =time.substring(0,4);
-			var month =time.substring(4,6);
-			var day =time.substring(6);
-			if(month.substring(0,1)=='0'){
-				month = month.substring(1);
-			}
-			if(day.substring(0,1)=='0'){
-				day = day.substring(1);
-			}
-			$("#modalDayLabel").html(year+'年'+month+'月'+day+'日'+name+'的电平峰值与日占用度（按24小时统计）');
-			$("#dayLevelChartTitle").html(year+'年'+month+'月'+day+'日的电平峰值');
-			$("#dayChartTitle").html(year+'年'+month+'月'+day+'日的日占用度');
-			if(drag_flag){
-				drag_flag = false;
-				return;
-			}
-			$('#modalDay').modal();
-
-			changeView(params.name);
-
-		})
-
-
-
-		load_month_mouse_event();
-
 	}
 
 	function clearMonthCharts() {
