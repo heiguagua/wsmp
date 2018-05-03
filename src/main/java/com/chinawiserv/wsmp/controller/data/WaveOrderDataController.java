@@ -463,7 +463,7 @@ public class WaveOrderDataController {
 			//如果是子类型
 			response.getRadioSignals().getRadioSignalDTO().stream().forEach(t -> {
 				// 判断是否存在任何同一频段下合法信号的子类型信号，如果存在，则添加到返回集里面
-				if (t.getAbnormalHistory().getRadioSignalAbnormalHistoryDTO().stream().findAny().isPresent() && t.getAbnormalHistory().getRadioSignalAbnormalHistoryDTO().stream().findAny().get().isIsInvalid() == false) {
+				if (t.getAbnormalHistory().getRadioSignalAbnormalHistoryDTO().stream().findAny().isPresent()) {
 					Logger.debug("存在子类的大类型频段：{}", t.getCenterFreq());
 					t.getAbnormalHistory().getRadioSignalAbnormalHistoryDTO().stream().forEach(t2 -> {
 						Logger.debug("子类型:{}", t2.getHistoryType());
@@ -647,7 +647,7 @@ public class WaveOrderDataController {
 		if(param.get("isSubType").toString().equals("true")) {
 			//如果是子类型
 			Map<String, List<RadioSignalStationDTO>> map1 = response.getRadioSignals().getRadioSignalDTO().stream()
-					.filter(t -> t.getAbnormalHistory().getRadioSignalAbnormalHistoryDTO().stream().findAny().isPresent() && t.getAbnormalHistory().getRadioSignalAbnormalHistoryDTO().stream().findAny().get().isIsInvalid() == false)
+					.filter(t -> t.getAbnormalHistory().getRadioSignalAbnormalHistoryDTO().stream().findAny().isPresent() )
 					.flatMap(m ->m.getStationDTOs().getRadioSignalStationDTO().stream())
 					.collect(Collectors.groupingBy(RadioSignalStationDTO::getStationNumber));
 			//统计有信号的同一种监测站的信号数

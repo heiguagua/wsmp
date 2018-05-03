@@ -7,6 +7,7 @@ import com.chinawiserv.apps.logger.Logger;
 import com.chinawiserv.wsmp.pojo.MeasureTaskParamDto;
 import com.chinawiserv.wsmp.pojo.RedioStatusCount;
 
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -163,25 +164,45 @@ public class WaveOrderViewController {
 		value.setString(monitorsNum);
 		request.setStationNumber(value);
 		RadioSignalClassifiedQueryResponse response = serviceRadioSignalSoap.queryRadioSignalClassified(request);
-		//System.out.println("===============================response:"+JSON.toJSONString(response));
 		RedioStatusCount rsCount = new RedioStatusCount();
-		//设置合法子类型(违规),并且是有效的
-		RadioSignalSubClassifiedQueryRequest request2 = new RadioSignalSubClassifiedQueryRequest();
-		request2.setStationNumber(value);
-		request2.setType(1);
-		request2.setIsInValid(false);
-		RadioSignalSubClassifiedQueryResponse response2 = serviceRadioSignalSoap.queryRadioSignalSubClassified(request2);
-		Integer legalSubTypeValidCount = response2.getLstOnStation().getSignalSubStaticsOnStation().stream().mapToInt(m -> m.getCount()).reduce(0,(a,b) -> a + b);
+		RadioSignalQueryRequest radioSignalQueryRequest = new RadioSignalQueryRequest();
+		radioSignalQueryRequest.setStationIDs(value);
+		List<SignalTypeDTO> signalTypeDTO = Lists.newArrayList();
+		SignalTypeDTO dto = new SignalTypeDTO();
+		dto.setSignalType(1);
+		signalTypeDTO.add(dto);
+		ArrayOfSignalTypeDTO arrayOfSignalTypeDTOs = new ArrayOfSignalTypeDTO();
+		arrayOfSignalTypeDTOs.setSignalTypeDTO(signalTypeDTO);
+		radioSignalQueryRequest.setTypeCodes(arrayOfSignalTypeDTOs);
+		RadioSignalQueryResponse radioSignalQueryResponse = serviceRadioSignalSoap.queryRadioSignal(radioSignalQueryRequest);
+		int tempCount=0;
+		List<RadioSignalDTO> radioSignalDTOList= radioSignalQueryResponse.getRadioSignals().getRadioSignalDTO();
+		if(radioSignalDTOList!=null){
+			for(RadioSignalDTO radioSignalDTO:radioSignalDTOList){
+
+				ArrayOfRadioSignalAbnormalHistoryDTO arrayOfRadioSignalAbnormalHistoryDTO=radioSignalDTO.getAbnormalHistory();
+				if(arrayOfRadioSignalAbnormalHistoryDTO!=null&&arrayOfRadioSignalAbnormalHistoryDTO.getRadioSignalAbnormalHistoryDTO()!=null){
+					List<RadioSignalAbnormalHistoryDTO> radioSignalAbnormalHistoryDTOList=arrayOfRadioSignalAbnormalHistoryDTO.getRadioSignalAbnormalHistoryDTO();
+					if(radioSignalAbnormalHistoryDTOList!=null){
+						for(RadioSignalAbnormalHistoryDTO radioSignalAbnormalHistoryDTO:radioSignalAbnormalHistoryDTOList){
+							if(radioSignalAbnormalHistoryDTO.getHistoryType()==11&&radioSignalDTO.getStationDTOs()!=null
+									&&radioSignalDTO.getStationDTOs().getRadioSignalStationDTO()!=null){
+								List<RadioSignalStationDTO> radioSignalStationDTOList=radioSignalDTO.getStationDTOs().getRadioSignalStationDTO();
+								for(RadioSignalStationDTO radioSignalStationDTO:radioSignalStationDTOList){
+									if(value.getString().contains(radioSignalStationDTO.getStationNumber())){
+										tempCount++;
+									}
+								}
+
+							}
+						}
+					}
+				}
+			}
+		}
+		final int legalSubTypeValidCount=tempCount;
 		rsCount.setLegalUnNormalStationNumber(legalSubTypeValidCount);
-		
-		//设置合法子类型(违规),并且是失效的
-		RadioSignalSubClassifiedQueryRequest request3 = new RadioSignalSubClassifiedQueryRequest();
-		request3.setStationNumber(value);
-		request3.setType(1);
-		request3.setIsInValid(true);
-		RadioSignalSubClassifiedQueryResponse response3 = serviceRadioSignalSoap.queryRadioSignalSubClassified(request3);
-		Integer legalSubTypeInvalidCount = response3.getLstOnStation().getSignalSubStaticsOnStation().stream().mapToInt(m -> m.getCount()).reduce(0,(a,b) -> a + b);
-		
+
 		response.getLstOnStation().getSignalStaticsOnStation().stream()
 			.flatMap(t -> t.getSignalStaticsLst().getSignalStatics().stream())
 			.collect(Collectors.groupingBy(SignalStatics :: getSignalType))
@@ -191,7 +212,7 @@ public class WaveOrderViewController {
 			.forEach(f -> {
 				switch(f.getKey()) {
 				case 1:
-					rsCount.setLegalNormalStationNumber(f.getValue() - legalSubTypeInvalidCount - legalSubTypeValidCount);
+					rsCount.setLegalNormalStationNumber(f.getValue()  - legalSubTypeValidCount);
 					break;
 				case 2:
 					rsCount.setKonwStationNumber(f.getValue());
@@ -213,59 +234,76 @@ public class WaveOrderViewController {
 	@PostMapping("/redioTypeForSiFon")
 	public String redioTypeForSiFon(Model model, @RequestBody Map<String, Object> map) {
 		//根据监测站查询信号类型统计
-//		System.out.println("================================map:"+map);
 		//设置大类型
 		RadioSignalClassifiedQueryRequest request = new RadioSignalClassifiedQueryRequest();
 		ArrayOfString value = new ArrayOfString();
-		@SuppressWarnings("unchecked")
 		List<String> monitorsNum = (List<String>) map.get("monitorsNum");
 		value.setString(monitorsNum);
 		request.setStationNumber(value);
 		RadioSignalClassifiedQueryResponse response = serviceRadioSignalSoap.queryRadioSignalClassified(request);
-		//System.out.println("===============================response:"+JSON.toJSONString(response));
 		RedioStatusCount rsCount = new RedioStatusCount();
-		//设置合法子类型(违规),并且是有效的
-		RadioSignalSubClassifiedQueryRequest request2 = new RadioSignalSubClassifiedQueryRequest();
-		request2.setStationNumber(value);
-		request2.setType(1);
-		request2.setIsInValid(false);
-		RadioSignalSubClassifiedQueryResponse response2 = serviceRadioSignalSoap.queryRadioSignalSubClassified(request2);
-		Integer legalSubTypeValidCount = response2.getLstOnStation().getSignalSubStaticsOnStation().stream().mapToInt(m -> m.getCount()).reduce(0,(a,b) -> a + b);
-		rsCount.setLegalUnNormalStationNumber(legalSubTypeValidCount);
-		
-		//设置合法子类型(违规),并且是失效的
-		RadioSignalSubClassifiedQueryRequest request3 = new RadioSignalSubClassifiedQueryRequest();
-		request3.setStationNumber(value);
-		request3.setType(1);
-		request3.setIsInValid(true);
-		RadioSignalSubClassifiedQueryResponse response3 = serviceRadioSignalSoap.queryRadioSignalSubClassified(request3);
-		Integer legalSubTypeInvalidCount = response3.getLstOnStation().getSignalSubStaticsOnStation().stream().mapToInt(m -> m.getCount()).reduce(0,(a,b) -> a + b);
-		
-		response.getLstOnStation().getSignalStaticsOnStation().stream()
-			.flatMap(t -> t.getSignalStaticsLst().getSignalStatics().stream())
-			.collect(Collectors.groupingBy(SignalStatics :: getSignalType))
-			.entrySet().stream()
-			.collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue().stream().mapToInt(m -> m.getCount()).reduce(0,(a,b) -> a + b)))
-			.entrySet().stream()
-			.forEach(f -> {
-				switch(f.getKey()) {
-				case 1:
-					rsCount.setLegalNormalStationNumber(f.getValue() - legalSubTypeInvalidCount - legalSubTypeValidCount);
-					break;
-				case 2:
-					rsCount.setKonwStationNumber(f.getValue());
-					break;
-				case 3:
-					rsCount.setIllegalSignal(f.getValue());
-					break;
-				case 4:
-					rsCount.setUnKonw(f.getValue());
-					break;
-				default:
-					;
+		RadioSignalQueryRequest radioSignalQueryRequest = new RadioSignalQueryRequest();
+		radioSignalQueryRequest.setStationIDs(value);
+		List<SignalTypeDTO> signalTypeDTO = Lists.newArrayList();
+		SignalTypeDTO dto = new SignalTypeDTO();
+		dto.setSignalType(1);
+		signalTypeDTO.add(dto);
+		ArrayOfSignalTypeDTO arrayOfSignalTypeDTOs = new ArrayOfSignalTypeDTO();
+		arrayOfSignalTypeDTOs.setSignalTypeDTO(signalTypeDTO);
+		radioSignalQueryRequest.setTypeCodes(arrayOfSignalTypeDTOs);
+		RadioSignalQueryResponse radioSignalQueryResponse = serviceRadioSignalSoap.queryRadioSignal(radioSignalQueryRequest);
+		int tempCount=0;
+		List<RadioSignalDTO> radioSignalDTOList= radioSignalQueryResponse.getRadioSignals().getRadioSignalDTO();
+		if(radioSignalDTOList!=null){
+			for(RadioSignalDTO radioSignalDTO:radioSignalDTOList){
+
+				ArrayOfRadioSignalAbnormalHistoryDTO arrayOfRadioSignalAbnormalHistoryDTO=radioSignalDTO.getAbnormalHistory();
+				if(arrayOfRadioSignalAbnormalHistoryDTO!=null&&arrayOfRadioSignalAbnormalHistoryDTO.getRadioSignalAbnormalHistoryDTO()!=null){
+					List<RadioSignalAbnormalHistoryDTO> radioSignalAbnormalHistoryDTOList=arrayOfRadioSignalAbnormalHistoryDTO.getRadioSignalAbnormalHistoryDTO();
+					if(radioSignalAbnormalHistoryDTOList!=null){
+						for(RadioSignalAbnormalHistoryDTO radioSignalAbnormalHistoryDTO:radioSignalAbnormalHistoryDTOList){
+							if(radioSignalAbnormalHistoryDTO.getHistoryType()==11&&radioSignalDTO.getStationDTOs()!=null
+									&&radioSignalDTO.getStationDTOs().getRadioSignalStationDTO()!=null){
+								List<RadioSignalStationDTO> radioSignalStationDTOList=radioSignalDTO.getStationDTOs().getRadioSignalStationDTO();
+								for(RadioSignalStationDTO radioSignalStationDTO:radioSignalStationDTOList){
+									if(value.getString().contains(radioSignalStationDTO.getStationNumber())){
+										tempCount++;
+									}
+								}
+
+							}
+						}
+					}
 				}
-			});
-		
+			}
+		}
+		final int legalSubTypeValidCount=tempCount;
+		rsCount.setLegalUnNormalStationNumber(legalSubTypeValidCount);
+
+		response.getLstOnStation().getSignalStaticsOnStation().stream()
+				.flatMap(t -> t.getSignalStaticsLst().getSignalStatics().stream())
+				.collect(Collectors.groupingBy(SignalStatics :: getSignalType))
+				.entrySet().stream()
+				.collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue().stream().mapToInt(m -> m.getCount()).reduce(0,(a,b) -> a + b)))
+				.entrySet().stream()
+				.forEach(f -> {
+					switch(f.getKey()) {
+						case 1:
+							rsCount.setLegalNormalStationNumber(f.getValue()  - legalSubTypeValidCount);
+							break;
+						case 2:
+							rsCount.setKonwStationNumber(f.getValue());
+							break;
+						case 3:
+							rsCount.setIllegalSignal(f.getValue());
+							break;
+						case 4:
+							rsCount.setUnKonw(f.getValue());
+							break;
+						default:
+							;
+					}
+				});
 		model.addAttribute("redio", rsCount);
 		return "waveorder/redio_type_list_to_sifon";
 	}
