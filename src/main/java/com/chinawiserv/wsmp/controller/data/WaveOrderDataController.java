@@ -119,29 +119,19 @@ public class WaveOrderDataController {
 		RadioSignalClassifiedQueryResponse response2 = serviceRadioSignalSoap.queryRadioSignalClassified(request2);
 		Logger.info("查询信号类型统计,{},返回:{}",urlRadioSignal,JSON.toJSONString(response2));
 
-		//查询合法子类型(违规),并且是有效的
-		RadioSignalSubClassifiedQueryRequest request3 = new RadioSignalSubClassifiedQueryRequest();
-		request3.setFreqBandList(array);
-		request3.setStationsOnBand(stationArray);
-		request3.setType(1);
-		request3.setIsInValid(false);
-		RadioSignalSubClassifiedQueryResponse response3 = serviceRadioSignalSoap.queryRadioSignalSubClassified(request3);
-		Logger.info("查询有效的合法信号(违规)子类型统计,{},返回:{}",urlRadioSignal,JSON.toJSONString(response3));
-		final List<Integer> legalSubTypeValidCountList = response3.getLstOnFreqBand().getSignalSubStaticsOnFreqBand().stream()
-				.map(m -> m.getCount())
-				.collect(Collectors.toList());
 
-		//查询合法子类型(违规),并且是无效的
-		RadioSignalSubClassifiedQueryRequest request4 = new RadioSignalSubClassifiedQueryRequest();
-		request4.setFreqBandList(array);
-		request4.setStationsOnBand(stationArray);
-		request4.setType(1);
-		request4.setIsInValid(true);
-		RadioSignalSubClassifiedQueryResponse response4 = serviceRadioSignalSoap.queryRadioSignalSubClassified(request4);
-		Logger.info("查询无效的合法信号(违规)类型统计,{},返回:{}",urlRadioSignal,JSON.toJSONString(response4));
-		final List<Integer> legalSubTypeInvalidCountList = response4.getLstOnFreqBand().getSignalSubStaticsOnFreqBand().stream()
-				.map(m -> m.getCount())
-				.collect(Collectors.toList());
+
+//		//查询合法子类型(违规),并且是无效的
+//		RadioSignalSubClassifiedQueryRequest request4 = new RadioSignalSubClassifiedQueryRequest();
+//		request4.setFreqBandList(array);
+//		request4.setStationsOnBand(stationArray);
+//		request4.setType(1);
+//		request4.setIsInValid(true);
+//		RadioSignalSubClassifiedQueryResponse response4 = serviceRadioSignalSoap.queryRadioSignalSubClassified(request4);
+//		Logger.info("查询无效的合法信号(违规)类型统计,{},返回:{}",urlRadioSignal,JSON.toJSONString(response4));
+//		final List<Integer> legalSubTypeInvalidCountList = response4.getLstOnFreqBand().getSignalSubStaticsOnFreqBand().stream()
+//				.map(m -> m.getCount())
+//				.collect(Collectors.toList());
 
 		//查询该频段是否有重点监测数据
 		String important = serviceImportFreqRangeManage.findAllFreqRange();
@@ -154,8 +144,43 @@ public class WaveOrderDataController {
 		response2.getLstOnFreqBand().getSignalStaticsOnFreqBand().stream().forEach(t -> {
 			RedioStatusCount rsCount = new RedioStatusCount();
 			rsCount.setRedioName(freqNames.get(index.get()));
+
+			//查询合法子类型(违规)
+			RadioSignalQueryRequest request3 = new RadioSignalQueryRequest();
+			request3.setStationIDs(stationArray);
+			request3.setBeginFreq(t.getBand().getFreqMin());
+			request3.setEndFreq(t.getBand().getFreqMax());
+			ArrayOfSignalTypeDTO arrayOfSignalTypeDTO=new ArrayOfSignalTypeDTO();
+			SignalTypeDTO signalTypeDTO=new SignalTypeDTO();
+			ArrayOfSignalTypeDTO arrayOfSignalTypeDTO1=new ArrayOfSignalTypeDTO();
+			SignalTypeDTO signalTypeDTO2=new SignalTypeDTO();
+			signalTypeDTO2.setSignalType(11);
+			arrayOfSignalTypeDTO1.getSignalTypeDTO().add(signalTypeDTO2);
+			signalTypeDTO.setAbnormalTypes(arrayOfSignalTypeDTO1);
+			signalTypeDTO.setSignalType(1);
+			arrayOfSignalTypeDTO.getSignalTypeDTO().add(signalTypeDTO);
+			request3.setTypeCodes(arrayOfSignalTypeDTO);
+			RadioSignalQueryResponse response3 = serviceRadioSignalSoap.queryRadioSignal(request3);
+			Logger.info("查询有效的合法信号(违规)子类型统计,{},返回:{}",urlRadioSignal,JSON.toJSONString(response3));
+			ArrayOfRadioSignalDTO arrayOfRadioSignalDTO=response3.getRadioSignals();
+			int tempNumber=0;
+			if(arrayOfRadioSignalDTO!=null){
+				List<RadioSignalDTO> radioSignalDTOList=arrayOfRadioSignalDTO.getRadioSignalDTO();
+				if(radioSignalDTOList!=null&&radioSignalDTOList.size()>0){
+					for(RadioSignalDTO radioSignalDTO:radioSignalDTOList){
+						ArrayOfRadioSignalAbnormalHistoryDTO arrayOfRadioSignalAbnormalHistoryDTO=radioSignalDTO.getAbnormalHistory();
+						if(arrayOfRadioSignalAbnormalHistoryDTO!=null){
+							List<RadioSignalAbnormalHistoryDTO> radioSignalAbnormalHistoryDTOList=arrayOfRadioSignalAbnormalHistoryDTO.getRadioSignalAbnormalHistoryDTO();
+							if(radioSignalAbnormalHistoryDTOList!=null){
+								tempNumber+=radioSignalAbnormalHistoryDTOList.size();
+							}
+						}
+					}
+				}
+			}
+			final int legalUnNormalStationNumber=tempNumber;
 			//设置合法子类型（违规）
-			rsCount.setLegalUnNormalStationNumber(legalSubTypeValidCountList.get(index.get()));
+			rsCount.setLegalUnNormalStationNumber(legalUnNormalStationNumber);
 			rsCount.setBeginFreq(t.getBand().getFreqMin());
 			rsCount.setEndFreq(t.getBand().getFreqMax());
 			//是否有重点监测信息
@@ -171,7 +196,7 @@ public class WaveOrderDataController {
 				int count = t1.getCount();
 				switch (signalType) {
 					case 1:
-						rsCount.setLegalNormalStationNumber(count - legalSubTypeInvalidCountList.get(index.get()) - legalSubTypeValidCountList.get(index.get()));
+						rsCount.setLegalNormalStationNumber(count - legalUnNormalStationNumber);
 						break;
 					case 2:
 						rsCount.setKonwStationNumber(count);
